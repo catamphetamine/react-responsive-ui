@@ -1,8 +1,8 @@
 # react-responsive-ui
 
 [![NPM Version][npm-badge]][npm]
-[![Build Status][travis-badge]][travis]
-[![Test Coverage][coveralls-badge]][coveralls]
+<!-- [![Build Status][travis-badge]][travis]
+[![Test Coverage][coveralls-badge]][coveralls] -->
 
 Slick and accurate React UI components.
 
@@ -127,6 +127,10 @@ The CSS for this library is distributed along with the React components. Just co
 
 This CSS file is meant as a starting point and one should edit the CSS rules in it to better suit the project's needs.
 
+## API
+
+See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
+
 ## Javascript
 
 (Advanced feature)
@@ -179,11 +183,9 @@ body:not(.javascript-is-enabled)
 }
 ```
 
-## API
-
-See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
-
 ### Menu
+
+Responsive `<Menu/>` example
 
 ```js
 <PageAndMenu>
