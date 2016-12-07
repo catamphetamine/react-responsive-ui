@@ -6,7 +6,7 @@
 
 Slick and accurate React UI components.
 
-[See Demo](http://google.com)
+[See Demo](https://halt-hammerzeit.github.io/react-responsive-ui/)
 
 ## Installation
 
@@ -16,7 +16,7 @@ npm install react-responsive-ui --save
 
 ## Usage
 
-See the demo page source code.
+See the [demo page](https://halt-hammerzeit.github.io/react-responsive-ui/) source code.
 
 ```js
 import
