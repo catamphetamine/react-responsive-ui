@@ -288,7 +288,7 @@ const style = styler
 	text_input
 
 	input
-		max-width : 100%
+		// max-width : 100%
 
 	label
 		-webkit-user-select : none
