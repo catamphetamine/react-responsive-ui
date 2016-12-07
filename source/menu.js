@@ -48,23 +48,6 @@ export default class Menu extends Component
 		// this.document_clicked = this.document_clicked.bind(this)
 	}
 
-	componentWillMount()
-	{
-		const { slideout } = this.props
-
-		if (!slideout)
-		{
-			return
-		}
-
-		this.unregister = this.context.react_responsive_ui_menu.register
-		({
-			hide    : () => this.setState({ show: false }),
-			toggle  : () => this.setState({ show: !this.state.show }),
-			element : () => ReactDOM.findDOMNode(this.menu)
-		})
-	}
-
 	componentDidMount()
 	{
 		const { slideout } = this.props
@@ -85,6 +68,13 @@ export default class Menu extends Component
 				}
 			})
 		}
+
+		this.unregister = this.context.react_responsive_ui_menu.register
+		({
+			hide    : () => this.setState({ show: false }),
+			toggle  : () => this.setState({ show: !this.state.show }),
+			element : () => ReactDOM.findDOMNode(this.menu)
+		})
 
 		// this.calculate_width()
 	}
@@ -111,7 +101,7 @@ export default class Menu extends Component
 			return
 		}
 
-		this.unregister(this)
+		this.unregister()
 
 		if (this.unlisten_history)
 		{

@@ -55,13 +55,14 @@ export default class Page_and_menu extends Component
 
 	hide_menu_on_click(event)
 	{
-		if (!this.menu)
+		if (!this.menu || !this.menu_button)
 		{
 			return
 		}
 
 		// Hide the menu if clicked outside
-		if (!is_reachable(event.target, this.menu.element()))
+		if (!is_reachable(event.target, this.menu.element())
+			&& !is_reachable(event.target, this.menu_button.element()))
 		{
 			this.menu.hide()
 		}
@@ -107,6 +108,18 @@ export default class Page_and_menu extends Component
 					this.menu = menu
 
 					return () => this.menu = undefined
+				},
+
+				register_menu_button: (menu_button) =>
+				{
+					if (this.menu_button)
+					{
+						throw new Error('There already is a menu button registered for this page')
+					}
+
+					this.menu_button = menu_button
+
+					return () => this.menu_button = undefined
 				}
 			}
 		}

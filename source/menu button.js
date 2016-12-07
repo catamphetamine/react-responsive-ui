@@ -27,6 +27,20 @@ export default class Menu_button extends Component
 
 	static contextTypes = Page_and_menu.childContextTypes
 
+	componentDidMount()
+	{
+		this.unregister = this.context.react_responsive_ui_menu.register_menu_button
+		({
+			element : () => ReactDOM.findDOMNode(this.button)
+		})
+	}
+
+	componentWillUnmount()
+	{
+		this.unregister()
+	}
+
+
 	render()
 	{
 		const { link, style, buttonStyle, className } = this.props
@@ -37,9 +51,10 @@ export default class Menu_button extends Component
 		const markup =
 		(
 			<Button
-				className={classNames('rrui__slideout-menu-button', className)}
+				ref={ref => this.button = ref}
 				link={link}
 				action={this.context.react_responsive_ui_menu.toggle}
+				className={classNames('rrui__slideout-menu-button', className)}
 				style={style}
 				buttonStyle={buttonStyle}>
 				{/*<div className="menu-icon"/>*/}
