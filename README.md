@@ -117,7 +117,7 @@ from 'react-responsive-ui'
 
 ## CSS
 
-The CSS for this library is distributed along with the React components. Just copy `styles/react-responsive-ui.css` to your project folder and include it on a page:
+The CSS for this library is distributed along with the React components. Just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
 
 ```html
 <head>

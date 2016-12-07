@@ -73,56 +73,36 @@ textarea[disabled]
 	background-color : white;
 }
 
-/* When changing this placeholder color
-   also change ".text-input label" color */
-
+/* Changing input `placeholder` color to be lighter */
+/* When changing input placeholder color
+   also change ".rrui__text-input label" color */
 input[type="text"]::placeholder,
 input[type="tel"]::placeholder,
 input[type="number"]::placeholder,
 input[type="email"]::placeholder,
 input[type="password"]::placeholder,
-textarea::placeholder
-{
-	color   : #9FA8B3;
-	opacity : 1 !important;
-}
-
+textarea::placeholder,
 /* Chrome/Opera/Safari */
 input[type="text"]::-webkit-input-placeholder,
 input[type="tel"]::-webkit-input-placeholder,
 input[type="number"]::-webkit-input-placeholder,
 input[type="email"]::-webkit-input-placeholder,
 input[type="password"]::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder
-{
-	color   : #9FA8B3;
-	opacity : 1 !important;
-}
-
+textarea::-webkit-input-placeholder,
 /* Firefox 19+ */
 input[type="text"]::-moz-placeholder,
 input[type="tel"]::-moz-placeholder,
 input[type="number"]::-moz-placeholder,
 input[type="email"]::-moz-placeholder,
 input[type="password"]::-moz-placeholder,
-textarea::-moz-placeholder
-{
-	color   : #9FA8B3;
-	opacity : 1 !important;
-}
-
+textarea::-moz-placeholder,
 /* Firefox 18- */
 input[type="text"]:-moz-placeholder,
 input[type="tel"]:-moz-placeholder,
 input[type="number"]:-moz-placeholder,
 input[type="email"]:-moz-placeholder,
 input[type="password"]:-moz-placeholder,
-textarea:-moz-placeholder
-{
-	color   : #9FA8B3;
-	opacity : 1 !important;
-}
-
+textarea:-moz-placeholder,
 /* IE 10+ */
 input[type="text"]:-ms-input-placeholder,
 input[type="tel"]:-ms-input-placeholder,
