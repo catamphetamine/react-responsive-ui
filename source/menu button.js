@@ -13,13 +13,16 @@ export default class Menu_button extends Component
 		// if a web browser has javascript disabled (e.g. Tor),
 		// then the menu button will redirect to this Menu page URL.
 		// If not set then won't redirect anywhere.
-		link : PropTypes.string,
+		link        : PropTypes.string,
+
+		// HTML `title` attribute
+		title       : PropTypes.string,
 
 		// CSS class
-		className : PropTypes.string,
+		className   : PropTypes.string,
 
 		// CSS style object
-		style : PropTypes.object,
+		style       : PropTypes.object,
 
 		// CSS style object for the button
 		buttonStyle : PropTypes.object
@@ -40,10 +43,9 @@ export default class Menu_button extends Component
 		this.unregister()
 	}
 
-
 	render()
 	{
-		const { link, style, buttonStyle, className } = this.props
+		const { link, title, style, buttonStyle, className } = this.props
 
 		// "Hamburger" icon (24x24)
 		const svg_path = "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
@@ -54,6 +56,7 @@ export default class Menu_button extends Component
 				ref={ref => this.button = ref}
 				link={link}
 				action={this.context.react_responsive_ui_menu.toggle}
+				title={title}
 				className={classNames('rrui__slideout-menu-button', className)}
 				style={style}
 				buttonStyle={buttonStyle}>

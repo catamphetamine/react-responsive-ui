@@ -29,6 +29,9 @@ export default class Button extends Component
 		// If `link` is set, then the button is gonna be an <a/> tag.
 		link            : PropTypes.string,
 
+		// HTML `title` attribute
+		title           : PropTypes.string,
+
 		// CSS class name
 		className       : PropTypes.string,
 
@@ -39,9 +42,17 @@ export default class Button extends Component
 		buttonStyle     : PropTypes.object
 	}
 
+	constructor(props)
+	{
+		super(props)
+
+		this.link_on_click = this.link_on_click.bind(this)
+		this.button_on_click = this.button_on_click.bind(this)
+	}
+
 	render()
 	{
-		const { busy, primary, submit, className } = this.props
+		const { busy, primary, submit, title, className } = this.props
 
 		const markup =
 		(
@@ -64,7 +75,18 @@ export default class Button extends Component
 
 	render_button()
 	{
-		const { link, busy, primary, disabled, action, submit, className, buttonStyle } = this.props
+		const
+		{
+			link,
+			title,
+			primary,
+			busy,
+			disabled,
+			submit,
+			className,
+			buttonStyle
+		}
+		= this.props
 
 		let button_style = busy ? style.button_hide : style.button_show
 
@@ -80,28 +102,8 @@ export default class Button extends Component
 				<a
 					ref={ref => this.button = ref}
 					href={link}
-					onClick={event =>
-					{
-						// Ignore mouse wheel clicks
-						// and clicks with a modifier key pressed
-						if (event.nativeEvent.which === 2
-							|| event.shiftKey
-							|| event.altKey
-							|| event.ctrlKey
-							|| event.metaKey)
-						{
-							return
-						}
-
-						event.preventDefault()
-
-						if (busy || disabled)
-						{
-							return
-						}
-
-						action(event)
-					}}
+					onClick={this.link_on_click}
+					title={title}
 					className="rrui__button__link"
 					style={button_style}>
 
@@ -118,7 +120,8 @@ export default class Button extends Component
 				ref={ref => this.button = ref}
 				type={submit ? 'submit' : 'button'}
 				disabled={busy || disabled}
-				onClick={action}
+				onClick={this.button_on_click}
+				title={title}
 				className="rrui__button__button"
 				style={button_style}>
 
@@ -132,6 +135,44 @@ export default class Button extends Component
 	focus()
 	{
 		ReactDOM.findDOMNode(this.button).focus()
+	}
+
+	link_on_click(event)
+	{
+		const
+		{
+			busy,
+			disabled,
+			action
+		}
+		= this.props
+
+		// Ignore mouse wheel clicks
+		// and clicks with a modifier key pressed
+		if (event.nativeEvent.which === 2
+			|| event.shiftKey
+			|| event.altKey
+			|| event.ctrlKey
+			|| event.metaKey)
+		{
+			return
+		}
+
+		event.preventDefault()
+
+		if (busy || disabled)
+		{
+			return
+		}
+
+		action()
+	}
+
+	button_on_click(event)
+	{
+		const { action } = this.props
+
+		action()
 	}
 }
 
