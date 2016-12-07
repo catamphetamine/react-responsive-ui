@@ -1,0 +1,476 @@
+<html>
+	<head>
+		<title>React Responsive UI</title>
+
+		<script src="https://unpkg.com/react@15.3.1/dist/react.js"></script>
+		<script src="https://unpkg.com/react-dom@15.3.1/dist/react-dom.js"></script>
+		<script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+
+		<link rel="stylesheet" href="./react-responsive-ui.css"/>
+		<script src="./react-responsive-ui.min.js"></script>
+	</head>
+
+	<style>
+		body
+		{
+			padding: 40px;
+		}
+
+		h2
+		{
+			margin-top: 60px;
+			margin-bottom: 40px;
+			border-bottom: 1px solid #afafaf;
+		}
+
+		h2:first-child
+		{
+			margin-top: 0;
+		}
+
+		a
+		{
+			text-decoration: none;
+			color: #0093C4;
+		}
+
+		a:hover
+		{
+			text-decoration: underline;
+		}
+
+		a.main
+		{
+			display: block;
+			font-size: 32px;
+		}
+
+		p
+		{
+			margin-top: 10px;
+			margin-bottom: 40px;
+		}
+	</style>
+
+	<body>
+		<a target="_blank" class="main" href="https://github.com/halt-hammerzeit/react-responsive-ui"><code>react-responsive-ui</code></a>
+
+		<p>Responsive UI components for React applications</p>
+
+		<div id="content"></div>
+
+		<script type="text/babel">
+			var Content = React.createClass
+			({
+				getInitialState: function()
+				{
+					return {
+						phone          : '',
+						text_value     : '',
+						select_value   : 'B',
+						textarea_value : '',
+						checked        : true,
+						// selected: 'A',
+						// switched: true,
+					}
+				},
+
+				render: function()
+				{
+					const library = window['react-responsive-ui']
+
+					const PageAndMenu       = library.PageAndMenu
+					const Page              = library.Page
+					const Menu              = library.Menu
+					const MenuButton        = library.MenuButton
+					const Form              = library.Form
+					const Snackbar          = library.Snackbar
+					const Tooltip           = library.Tooltip
+					const ActivityIndicator = library.ActivityIndicator
+					const TextInput         = library.TextInput
+					const Select            = library.Select
+					const Button            = library.Button
+					const Switch            = library.Switch
+					const Checkbox          = library.Checkbox
+					const SegmentedControl  = library.SegmentedControl
+					const FileUpload        = library.FileUpload
+					const Modal             = library.Modal
+
+					const style =
+					{
+						form:
+						{
+							marginTop : '2em'
+						},
+
+						input:
+						{
+							marginTop    : '1em',
+							marginRight  : '1em',
+							marginBottom : '1em'
+						},
+
+						select:
+						{
+							marginTop    : '0em',
+							marginRight  : '1em',
+							marginBottom : '1em'
+						},
+
+						textarea:
+						{
+							marginTop    : '0em',
+							marginRight  : '1em',
+							marginBottom : '1em'
+						},
+
+						label:
+						{
+							display      : 'block',
+							marginTop    : '1.6em',
+							marginBottom : '0.8em',
+							fontSize     : '1.4em'
+						},
+
+						checkbox:
+						{
+							display      : 'block',
+							marginTop    : '1em',
+							marginBottom : '1em'
+						},
+
+						switch_container:
+						{
+							marginBottom : '1em'
+						},
+
+						switch_label:
+						{
+							display      : 'inline-block',
+							marginBottom : '0.14em'
+						},
+
+						switch:
+						{
+							marginLeft    : '1.5em',
+							verticalAlign : 'bottom'
+						},
+
+						phone:
+						{
+							display    : 'inline-block',
+							marginLeft : '0.3em'
+						},
+
+						dropdown_icon_style:
+						{
+							width        : '1em',
+							marginBottom : '-0.05em',
+							border       : '1px solid #5f5f5f'
+						}
+					}
+
+					const modal_style =
+					{
+						container:
+						{
+							margin    : '2em',
+							textAlign : 'center'
+						},
+
+						modal:
+						{
+							width      : '40em',
+							lineHeight : '1.35em'
+						}
+					}
+
+					return (
+						<PageAndMenu>
+							<Menu
+								slideout
+								items=
+								{[
+									{ name: 'Google.com', link: 'http://google.com' },
+									{ name: 'Yandex.ru', link: 'http://yandex.ru' },
+									{ name: 'Inner Link 1', link: '/1' },
+									{ name: 'Inner Link 2', link: '/2' }
+								]}/>
+
+							<Page>
+								<MenuButton buttonStyle={{ cursor: 'pointer' }}/>
+
+								<Form
+									action={() => alert('on submit')}
+									style={style.form}>
+
+									<h2 style={style.label}>{'Text input field'}</h2>
+
+									<TextInput
+										style={style.input}
+										name="text_input"
+										value={this.state.text_value}
+										onChange={value => this.setState({ text_value: value })}
+										label="Enter text"/>
+
+									You entered: {this.state.text_value}
+
+									<h2 style={style.label}>{'Textarea'}</h2>
+
+									<TextInput
+										multiline={true}
+										name="description"
+										style={style.textarea}
+										value={this.state.textarea_value}
+										onChange={value => this.setState({ textarea_value: value })}
+										label="Enter text"/>
+
+									You entered: {this.state.textarea_value}
+
+									<h2 style={style.label}>Select (HTML)</h2>
+									<select style={style.select} name="select" value={this.state.select_value} onChange={event => this.setState({ select_value: event.target.value })}>
+										<option value="A">Apple</option>
+										<option value="B">Banana</option>
+										<option value="C">Cranberry</option>
+									</select>
+									You selected: {this.state.select_value}
+
+									<h2 style={style.label}>Select</h2>
+
+									<Select
+										style={style.checkbox}
+										name="dropdown"
+										value={this.state.selected}
+										options={[{
+											value: 'A',
+											label: 'Apple'
+										},
+										{
+											value: 'B',
+											label: 'Banana'
+										},
+										{
+											value: 'C',
+											label: 'Cranberry'
+										},
+										{
+											value: 'D',
+											label: 'Date'
+										},
+										{
+											value: 'E',
+											label: 'Elderberry'
+										},
+										{
+											value: 'F',
+											label: 'Fig'
+										},
+										{
+											value: 'G',
+											label: 'Garlic'
+										}]}
+										label="Choose"
+										onChange={ selected => this.setState({ selected }) }/>
+
+									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+
+									<h2 style={style.label}>Select (autocomplete)</h2>
+
+									<Select
+										style={style.checkbox}
+										autocomplete
+										name="dropdown"
+										value={this.state.selected}
+										options={[{
+											value: 'A',
+											label: 'Apple'
+										},
+										{
+											value: 'B',
+											label: 'Banana'
+										},
+										{
+											value: 'C',
+											label: 'Cranberry'
+										},
+										{
+											value: 'D',
+											label: 'Date'
+										},
+										{
+											value: 'E',
+											label: 'Elderberry'
+										},
+										{
+											value: 'F',
+											label: 'Fig'
+										},
+										{
+											value: 'G',
+											label: 'Garlic'
+										}]}
+										label="Choose"
+										onChange={ selected => this.setState({ selected }) }/>
+
+									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+
+									<h2 style={style.label}>Select (icons)</h2>
+
+									<Select
+										style={style.checkbox}
+										concise
+										name="dropdown"
+										value={this.state.selected_with_icon}
+										options={[{
+											value: 'A',
+											label: 'Afghanistan',
+											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
+										},
+										{
+											value: 'B',
+											label: 'Barbados',
+											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
+										},
+										{
+											value: 'C',
+											label: 'Canada',
+											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
+										}]}
+										label="Choose"
+										onChange={ selected_with_icon => this.setState({ selected_with_icon }) }/>
+
+									You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
+
+									<h2 style={style.label}>Checkbox</h2>
+
+									<Checkbox
+										style={style.checkbox}
+										name="checkbox"
+										value={this.state.checked}
+										onChange={ checked => this.setState({ checked: checked }) }>
+										Checkbox
+									</Checkbox>
+
+									You checked: {this.state.checked ? 'checked' : 'unchecked'}
+
+									<h2 style={style.label}>Switch</h2>
+
+									<div style={style.switch_container}>
+										<label style={style.switch_label}>iOS style switch</label>
+										<Switch
+											style={style.switch}
+											name="switch"
+											value={this.state.switched}
+											onChange={ switched => this.setState({ switched: switched }) }/>
+									</div>
+
+									You switched: {this.state.switched ? 'on' : 'off'}
+
+									<h2 style={style.label}>Segmented Control</h2>
+
+									<SegmentedControl
+										style={style.checkbox}
+										name="button_group"
+										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
+										value={this.state.button_group}
+										onChange={ value => this.setState({ button_group: value }) }/>
+
+									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
+
+									<h2 style={style.label}>File upload</h2>
+
+									<FileUpload action={file => alert('File chosen: ' + file.name)} style={{ cursor: 'pointer' }}>
+										Click here to choose a file
+									</FileUpload>
+
+									{/*
+									<h2 style={style.label}>File upload (original HTML)</h2>
+
+									<div className="file-upload">
+										<div className="file-upload__button">
+											<button>File</button>
+											<input multiple="true" type="file" name="file" style={style.file} onChange={event =>
+											{
+												const files = event.target.files
+												const file_names = []
+
+												// `files` is not an array
+												let i = 0
+												while (i < files.length)
+												{
+													file_names.push(files[i].name)
+													i++
+												}
+
+												this.setState({ file_list : file_names.join(", ") })
+											}}/>
+										</div>
+
+										<div className="file-upload__file-list">
+											<input type="text" placeholder="Upload one or more files" value={this.state.file_list}/>
+										</div>
+									</div>
+									*/}
+
+									<h2 style={style.label}>Activity Indicator</h2>
+									<ActivityIndicator style={style.spinner}/>
+
+									<h2 style={style.label}>International phone number input</h2>
+
+									See <a href="https://github.com/halt-hammerzeit/react-phone-number-input"><code>react-phone-number-input</code></a>
+
+									<h2 style={style.label}>Tooltip</h2>
+
+									<Tooltip text="Testing testing" container={() => document.querySelector('.content')}>
+										Hover this element
+									</Tooltip>
+
+									<h2 style={style.label}>Snackbar</h2>
+
+									<Button action={() => this.setState({ snack: `Current time — ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}` })}>Show a snack</Button>
+									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
+
+									<Button submit style={{ display: 'block', marginTop: '1em' }}>Submit form</Button>
+								</Form>
+
+								<h2 style={style.label}>Modal</h2>
+
+								<Button action={() => this.setState({ show_modal: true })}>Show</Button>
+
+								<Modal
+									shown={this.state.show_modal}
+									close={() => this.setState({ show_modal: false })}
+									style={modal_style.modal}
+									title="Dialog"
+									actions={[{ action: () => this.setState({ show_modal: false }), text: "Hide" }]}>
+
+									<p style={{ marginTop: 0 }}>
+										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+									</p>
+
+									<p>
+										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+									</p>
+
+									<p>
+										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+									</p>
+
+									<p style={{ marginBottom: 0 }}>
+										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+									</p>
+								</Modal>
+							</Page>
+						</PageAndMenu>
+					)
+				}
+			})
+
+			ReactDOM.render
+			(
+				<Content />,
+				document.getElementById('content')
+			)
+		</script>
+	</body>
+</html>
