@@ -50,7 +50,7 @@ const config =
 		"react"     : "React",
 		"react-dom" : "ReactDOM"
 	},
-	// plugins
+	plugins
 }
 
 module.exports = config
