@@ -175,6 +175,11 @@ textarea[disabled]
 	overflow-y: auto;
 }
 
+.rrui__select__options--expanded
+{
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
 .rrui__select__options--simple-left-aligned
 {
 	left: calc(0.3rem * 4 * -1) !important;
