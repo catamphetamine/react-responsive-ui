@@ -380,7 +380,7 @@ export default class Select extends Component
 				key={value}
 				className={classNames
 				({
-					'rrui__select__separator-option' : element && element.type === Separator
+					'rrui__select__separator-option' : element && element.type === Select.Separator
 				})}
 				style={list_item_style}>
 				{button}
@@ -974,7 +974,7 @@ export default class Select extends Component
 	// }
 }
 
-export function Separator(props)
+Select.Separator = function(props)
 {
 	return <div className="rrui__select__separator" style={style.separator}/>
 }
