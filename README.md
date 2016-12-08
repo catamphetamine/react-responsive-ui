@@ -91,15 +91,20 @@ from 'react-responsive-ui'
 
       <Switch
         value={this.state.switch}
-        onChange{switch => this.setState({ switch })}>
+        onChange={switch => this.setState({ switch })}>
         IOS style
       </Switch>
 
       <Checkbox
         value={this.state.checkbox}
-        onChange{checkbox => this.setState({ checkbox })}>
+        onChange={checkbox => this.setState({ checkbox })}>
         Tickable
       </Switch>
+
+      <FileUpload
+        onChange={file => alert(file.name)}>
+        Click here to choose file for upload
+      </FileUpload>
 
       <Button submit>Submit</Button>
     </Form>
