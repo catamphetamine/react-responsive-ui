@@ -174,6 +174,7 @@ export default class Modal extends Component
 			cancel,
 			actions,
 			scroll,
+			cancelLabel,
 			children
 		}
 		= this.props
