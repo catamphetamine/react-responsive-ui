@@ -20,7 +20,7 @@ const show_selected_item_in_list = true
 //
 // https://material.google.com/components/menus.html
 
-export default class Picker extends Component
+export default class Select extends Component
 {
 	static propTypes =
 	{
@@ -136,24 +136,24 @@ export default class Picker extends Component
 			{
 				if (!element.props.value)
 				{
-					throw new Error(`You must specify "value" prop on each child of <Picker/>`)
+					throw new Error(`You must specify "value" prop on each child of <Select/>`)
 				}
 
 				if (!element.props.label)
 				{
-					throw new Error(`You must specify "label" prop on each child of <Picker/>`)
+					throw new Error(`You must specify "label" prop on each child of <Select/>`)
 				}
 			})
 		}
 
 		if (props.menu && !props.toggler)
 		{
-			throw new Error(`Supply a "toggler" component when enabling "menu" in <Picker/>`)
+			throw new Error(`Supply a "toggler" component when enabling "menu" in <Select/>`)
 		}
 
 		if (!props.menu && !props.onChange)
 		{
-			throw new Error(`"onChange" property must be specified for <Picker/>`)
+			throw new Error(`"onChange" property must be specified for <Select/>`)
 		}
 	}
 
@@ -380,7 +380,7 @@ export default class Picker extends Component
 				key={value}
 				className={classNames
 				({
-					'rrui__select__separator-option' : element && element.type === Item_list_separator
+					'rrui__select__separator-option' : element && element.type === Separator
 				})}
 				style={list_item_style}>
 				{button}
@@ -974,7 +974,7 @@ export default class Picker extends Component
 	// }
 }
 
-export function Item_list_separator(props)
+export function Separator(props)
 {
 	return <div className="rrui__select__separator" style={style.separator}/>
 }
