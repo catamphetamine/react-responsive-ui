@@ -16,15 +16,9 @@
 			padding: 40px;
 		}
 
-		h2
-		{
-			margin-top: 60px;
-			margin-bottom: 40px;
-		}
-
 		h2:first-child
 		{
-			margin-top: 0;
+			margin-top: 2.4em !important;
 		}
 
 		a
@@ -52,10 +46,6 @@
 	</style>
 
 	<body>
-		<a target="_blank" class="main" href="https://github.com/halt-hammerzeit/react-responsive-ui"><code>react-responsive-ui</code></a>
-
-		<p>Responsive UI components for React applications</p>
-
 		<div id="content"></div>
 
 		<script type="text/babel">
@@ -126,7 +116,7 @@
 						label:
 						{
 							display      : 'block',
-							marginTop    : '1.6em',
+							marginTop    : '3em',
 							marginBottom : '0.8em',
 							fontSize     : '1.4em'
 						},
@@ -197,7 +187,18 @@
 								]}/>
 
 							<Page>
-								<MenuButton buttonStyle={{ cursor: 'pointer' }} title="Show menu"/>
+								<div>
+									<MenuButton
+										style={{ display: 'inline-block', verticalAlign: 'top' }}
+										buttonStyle={{ cursor: 'pointer' }}
+										title="Show menu"/>
+
+									<div style={{ display: 'inline-block', padding: '0.6em' }}>
+										<a target="_blank" class="main" href="https://github.com/halt-hammerzeit/react-responsive-ui"><code>react-responsive-ui</code></a>
+
+										<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
+									</div>
+								</div>
 
 								<Form
 									action={() => alert('on submit')}
