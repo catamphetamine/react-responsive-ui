@@ -396,13 +396,13 @@ textarea[disabled]
 	transition : none !important;
 }
 
-.rrui__rich-fallback .rrui__segmented-control__option:active
+.rrui__rich__fallback .rrui__segmented-control__option:active
 {
 	color            : black;
 	background-color : transparent;
 }
 
-.rrui__rich-fallback .rrui__segmented-control__option input
+.rrui__rich__fallback .rrui__segmented-control__option input
 {
 	margin-left: 0;
 }
