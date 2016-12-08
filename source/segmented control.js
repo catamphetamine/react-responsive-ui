@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
 

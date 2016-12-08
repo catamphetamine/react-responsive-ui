@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
 import styler from 'react-styling'
 import classNames from 'classnames'
 // `react-modal` takes styles as an object of style objects,
