@@ -4,7 +4,7 @@
 <!-- [![Build Status][travis-badge]][travis]
 [![Test Coverage][coveralls-badge]][coveralls] -->
 
-Slick and accurate React UI components.
+Slick and accurate React UI components. Work both on client side and server side, with javascript enabled and with javascript disabled (e.g. DarkNet).
 
 [See Demo](https://halt-hammerzeit.github.io/react-responsive-ui/)
 
