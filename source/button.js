@@ -165,14 +165,22 @@ export default class Button extends Component
 			return
 		}
 
-		action()
+		// Could be just a "submit" button
+		if (action)
+		{
+			action()
+		}
 	}
 
 	button_on_click(event)
 	{
 		const { action } = this.props
 
-		action()
+		// Could be just a "submit" button
+		if (action)
+		{
+			action()
+		}
 	}
 }
 
