@@ -11,8 +11,8 @@ body
 
 html, body, button, input, textarea, select
 {
-	font-family: Arial, Helvetica;
-	font-size : 20px;
+	font-family : Arial, Helvetica;
+	font-size   : 20px;
 }
 
 input[type="text"],
@@ -173,6 +173,11 @@ textarea[disabled]
 	-webkit-background-clip : padding-box;
 
 	overflow-y: auto;
+}
+
+.rrui__select__options--expanded
+{
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 
 .rrui__select__options--simple-left-aligned
