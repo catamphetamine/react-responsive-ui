@@ -76,16 +76,16 @@ export default class Form extends Component
 			let index = 0
 			for (let child of form_elements)
 			{
-				if (child.type === Form_error)
+				if (child.type === Form.Error)
 				{
 					form_elements[index] = React.cloneElement(child, { key: 'form-errors' }, errors)
 					errors_inserted = true
 					break
 				}
 
-				if (child.type === Form_actions)
+				if (child.type === Form.Actions)
 				{
-					form_elements.insert_at(index, <Form_error key="form-errors">{errors}</Form_error>)
+					form_elements.insert_at(index, <Form.Error key="form-errors">{errors}</Form.Error>)
 					errors_inserted = true
 					break
 				}
@@ -95,7 +95,7 @@ export default class Form extends Component
 
 			if (!errors_inserted)
 			{
-				form_elements.push(<Form_error key="form-errors">{errors}</Form_error>)
+				form_elements.push(<Form.Error key="form-errors">{errors}</Form.Error>)
 			}
 		}
 
@@ -142,12 +142,12 @@ export default class Form extends Component
 	}
 }
 
-export function Form_error({ children })
+Form.Error = function({ children })
 {
 	return <div className="rrui__form__error">{children}</div>
 }
 
-export function Form_actions(props, context)
+Form.Actions = function(props, context)
 {
 	const { children, className, style } = props
 
