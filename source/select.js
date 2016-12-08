@@ -678,35 +678,19 @@ export default class Select extends Component
 
 	document_clicked(event)
 	{
-		// const { menu } = this.props
-
-		const select_node = ReactDOM.findDOMNode(this.select)
-
-		// const autocomplete = ReactDOM.findDOMNode(this.autocomplete)
-		// const selected_value_node = ReactDOM.findDOMNode(this.selected)
+		const autocomplete = ReactDOM.findDOMNode(this.autocomplete)
+		const selected_option = ReactDOM.findDOMNode(this.selected)
+		const options_list = ReactDOM.findDOMNode(this.list)
 
 		// Don't close the select if its expander button has been clicked,
-		// or if autocomplete has been clicked.
-		if (is_reachable(event.target, select_node))
+		// or if autocomplete has been clicked,
+		// or if an option was selected from the list.
+		if (is_reachable(event.target, options_list)
+			|| (autocomplete && is_reachable(event.target, autocomplete))
+			|| (selected_option && is_reachable(event.target, selected_option)))
 		{
 			return
 		}
-
-		// // Don't close the select if menu toggler has been clicked
-		// if (menu && is_descendant(event.target, ReactDOM.findDOMNode(this.menu_toggler)))
-		// {
-		// 	return
-		// }
-
-		// // Don't close the select if a blank spot in the list was clicked
-		// if (is_descendant(event.target, ReactDOM.findDOMNode(this.list)))
-		// {
-		// 	if (!event.target.classList.contains('select-item')
-		// 		&& !find_ancestor_by_class(event.target, 'select-item'))
-		// 	{
-		// 		return
-		// 	}
-		// }
 
 		this.setState({ expanded: false })
 	}
