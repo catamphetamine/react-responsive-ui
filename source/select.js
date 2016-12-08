@@ -291,7 +291,7 @@ export default class Select extends Component
 
 	render_list_item({ element, value, label, icon, overflow }) // , first, last
 	{
-		const { disabled } = this.props
+		const { disabled, menu } = this.props
 		const { selected } = this.state
 
 		// If a list of options is supplied as a set of child React elements,
@@ -344,9 +344,23 @@ export default class Select extends Component
 				)
 			}
 
-			if (!this.props.menu)
+			const onClick = element.props.onClick
+
+			extra_props.onClick = (event) =>
 			{
-				extra_props.onClick = event => this.item_clicked(value, event)
+				if (menu)
+				{
+					this.toggle()
+				}
+				else
+				{
+					this.item_clicked(value, event)
+				}
+
+				if (onClick)
+				{
+					onClick(event)
+				}
 			}
 
 			button = React.cloneElement(element, extra_props)
