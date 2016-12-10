@@ -44,6 +44,10 @@ export default class Select extends Component
 		// Default label (like "Choose")
 		label      : PropTypes.string,
 
+		// Show icon only for selected item,
+		// and only if `concise` is `true`.
+		saveOnIcons : PropTypes.bool,
+
 		// Disables this control
 		disabled   : PropTypes.bool,
 
@@ -186,7 +190,19 @@ export default class Select extends Component
 
 	render()
 	{
-		const { upward, scroll, children, menu, toggler, alignment, autocomplete } = this.props
+		const
+		{
+			upward,
+			scroll,
+			children,
+			menu,
+			toggler,
+			alignment,
+			autocomplete,
+			saveOnIcons
+		}
+		= this.props
+
 		const { filtered_options } = this.state
 		const options = autocomplete ? filtered_options : this.props.options
 
@@ -222,7 +238,10 @@ export default class Select extends Component
 		// then transform those elements to <buttons/>
 		if (options)
 		{
-			list_items = options.map(({ value, label, icon }, index) => this.render_list_item({ value, label, icon, overflow }))
+			list_items = options.map(({ value, label, icon }, index) =>
+			{
+				return this.render_list_item({ value, label, icon: !saveOnIcons && icon, overflow })
+			})
 		}
 		// Else, if a list of options is supplied as a set of child React elements,
 		// then render those elements.
