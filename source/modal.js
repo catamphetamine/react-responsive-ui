@@ -3,6 +3,7 @@ import styler from 'react-styling'
 import classNames from 'classnames'
 // `react-modal` takes styles as an object of style objects,
 // therefore not using `/flat` styler here.
+
 import React_modal from 'react-modal'
 
 import Button from './button'
@@ -119,11 +120,11 @@ export default class Modal extends Component
 		this.close_if_not_busy = this.close_if_not_busy.bind(this)
 	}
 
-	// https://github.com/reactjs/react-modal/issues/133
-	componentWillMount()
-	{
-		React_modal.setAppElement('body')
-	}
+	// // https://github.com/reactjs/react-modal/issues/133
+	// componentWillMount()
+	// {
+	// 	React_modal.setAppElement('body')
+	// }
 
 	componentDidMount()
 	{
@@ -131,12 +132,14 @@ export default class Modal extends Component
 		this.on_window_resize()
 	}
 
+	// A modal umounts only when the user leaves a page
 	componentWillUnmount()
 	{
 		window.removeEventListener('resize', this.on_window_resize)
 		this.restore_document_scroll()
 	}
 
+	// Restore document scroll after modal is hidden
 	componentWillUpdate(next_props)
 	{
 		if (next_props.shown === false && this.props.shown === true)

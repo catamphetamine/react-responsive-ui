@@ -41,13 +41,6 @@ export default class Menu extends Component
 		show: false
 	}
 
-	constructor(props)
-	{
-		super(props)
-
-		// this.document_clicked = this.document_clicked.bind(this)
-	}
-
 	componentDidMount()
 	{
 		const { slideout } = this.props
