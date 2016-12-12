@@ -21,7 +21,7 @@ export default class Modal extends Component
 	static propTypes =
 	{
 		// If `true` then the modal is shown
-		shown            : PropTypes.bool,
+		shown            : PropTypes.bool.isRequired,
 
 		// Closes the modal (must set the `shown` flag to `false`)
 		close            : PropTypes.func.isRequired,
@@ -92,6 +92,8 @@ export default class Modal extends Component
 
 	static defaultProps =
 	{
+		shown : false,
+
 		bodyOverflowX : 'auto',
 		// Prevents document width from jumping due to the
 		// vertical scrollbar appearance/disappearance
@@ -114,8 +116,8 @@ export default class Modal extends Component
 		this.on_request_close = this.on_request_close.bind(this)
 		this.on_after_open    = this.on_after_open.bind(this)
 
-		this.on_window_resize        = this.on_window_resize.bind(this)
-		this.restore_document_scroll = this.restore_document_scroll.bind(this)
+		this.on_window_resize = this.on_window_resize.bind(this)
+		this.closing          = this.closing.bind(this)
 
 		this.close_if_not_busy = this.close_if_not_busy.bind(this)
 	}
@@ -136,7 +138,11 @@ export default class Modal extends Component
 	componentWillUnmount()
 	{
 		window.removeEventListener('resize', this.on_window_resize)
-		this.restore_document_scroll()
+
+		if (this.props.shown)
+		{
+			this.closing()
+		}
 	}
 
 	// Restore document scroll after modal is hidden
@@ -144,7 +150,7 @@ export default class Modal extends Component
 	{
 		if (next_props.shown === false && this.props.shown === true)
 		{
-			this.restore_document_scroll()
+			this.closing()
 		}
 	}
 
@@ -321,8 +327,7 @@ export default class Modal extends Component
 			return this.indicate_cannot_close()
 		}
 
-		// Restore original `document` scrollbar
-		this.restore_document_scroll()
+		this.closing()
 
 		// Abruptly end "couldn't close" animation to make room for closing animation
 		this.setState({ could_not_close_because_busy: false })
@@ -352,7 +357,8 @@ export default class Modal extends Component
 		}
 	}
 
-	restore_document_scroll()
+	// Restore original `document` scrollbar
+	closing()
 	{
 		const { closeTimeout, bodyOverflowX, bodyOverflowY, afterClose } = this.props
 
