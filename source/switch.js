@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import styler from 'react-styling/flat'
+import classNames from 'classnames'
 
 // http://wd.dizaina.net/en/experiments/ios7-style-switch/
 
@@ -17,13 +18,18 @@ export default class Switch extends Component
 		disabled  : PropTypes.bool,
 
 		// Either `true` or `false`
-		value     : PropTypes.bool,
+		value     : PropTypes.bool.isRequired,
 
 		// Is called when the switch is switched
 		onChange  : PropTypes.func.isRequired,
 
 		// CSS style object
 		style     : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		value : false
 	}
 
 	constructor(props, context)
@@ -46,17 +52,25 @@ export default class Switch extends Component
 		const markup =
 		(
 			<label
-				className="rrui__rich rrui__switch"
+				className={classNames('rrui__rich', 'rrui__switch',
+				{
+					'rrui__switch--on': value
+				})}
 				style={ this.props.style ? { ...style.switch, ...this.props.style } : style.switch }>
 
 				<input
 					type="checkbox"
-					style={style.input}
 					value={value}
-					onChange={this.toggle}/>
+					onChange={this.toggle}
+					style={style.input}/>
 
-				<span className="rrui__switch__groove" style={value ? style.groove_when_checked : style.groove}/>
-				<div className="rrui__switch__knob" style={value ? style.knob_when_checked : style.knob}/>
+				<span
+					style={style.groove}
+					className="rrui__switch__groove"/>
+
+				<div
+					style={style.knob}
+					className="rrui__switch__knob"/>
 
 				{!this.state.javascript && this.render_static()}
 			</label>
@@ -118,29 +132,8 @@ const style = styler
 	groove
 		position : relative
 		display  : inline-block
-		width    : 1.65em
-		height   : 1em
-
-		background    : white
-		box-shadow    : inset 0 0 0 0.0625em #d7d7d7
-		border-radius : 0.5em
-		transition    : all 0.40s cubic-bezier(.17,.67,.43,.98)
-
-		&when_checked
-			box-shadow : inset 0 0 0 0.73em #4cd964
 
 	knob
-		position      : absolute
-		display       : block
-		width         : 0.875em
-		height        : 0.875em
-		border-radius : 0.4375em
-		top           : 0.0625em
-		left          : 0.0625em
-		background    : white
-		box-shadow    : inset 0 0 0 0.03em rgba(0,0,0,0.3), 0 0 0.05em rgba(0,0,0,0.05), 0 0.1em 0.2em rgba(0,0,0,0.2)
-		transition    : all 0.25s ease-out
-
-		&when_checked
-			left : 0.7125em
+		position : absolute
+		display  : block
 `

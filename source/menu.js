@@ -220,23 +220,18 @@ const style = styler
 		text-decoration : none
 
 	slideout
-		display: inline-block
-
-		min-height: 100%
-
+		display  : inline-block
 		position : fixed
 		left     : 0
 		top      : 0
 		bottom   : 0
 		z-index  : 1
+		min-height : 100%
+		overflow-y : auto
 
-		overflow-y: auto
-
-		opacity    : 0.9
 		transform  : translate3d(-100%, 0, 0)
 		transition : transform 120ms ease-out
 
 	slideout_shown
 		transform  : translate3d(0, 0, 0)
-		box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4)
 `

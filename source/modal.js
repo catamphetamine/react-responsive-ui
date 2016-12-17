@@ -205,7 +205,10 @@ export default class Modal extends Component
 
 				<div style={style.content_wrapper} onClick={this.on_request_close}>
 					{/* top padding, grows less than bottom padding */}
-					<div style={style.top_padding} onClick={this.on_request_close}></div>
+					<div
+						style={style.vertical_padding}
+						className="rrui__modal__padding--top"
+						onClick={this.on_request_close}/>
 
 					{/* dialog window title */}
 					{title &&
@@ -258,7 +261,10 @@ export default class Modal extends Component
 					}
 
 					{/* bottom padding, grows more than top padding */}
-					<div style={style.bottom_padding} onClick={this.on_request_close}></div>
+					<div
+						style={style.vertical_padding}
+						className="rrui__modal__padding--bottom"
+						onClick={this.on_request_close}/>
 				</div>
 			</React_modal>
 		)
@@ -393,22 +399,10 @@ export default class Modal extends Component
 // https://material.google.com/components/dialogs.html
 const style = styler
 `
-	top_padding
+	vertical_padding
 		width : 100%
-
+		flex-shrink : 0
 		flex-grow   : 1
-		flex-shrink : 0
-		flex-basis  : 80px
-
-	bottom_padding
-		width : 100%
-
-		flex-grow   : 4
-		flex-shrink : 0
-		flex-basis  : 80px
-
-	content, header, actions
-		background-color : white
 
 	content
 		display : inline-block
@@ -417,10 +411,6 @@ const style = styler
 		flex-shrink : 1
 		flex-basis  : auto
 		overflow    : auto
-
-		padding-left  : 1.2rem
-		padding-right : 1.2rem
-		padding-bottom : 1.2rem
 
 	header, actions
 		flex-grow   : 0
@@ -432,14 +422,7 @@ const style = styler
 
 		box-sizing: border-box
 
-	header
-		text-align : left
-		font-size : 1.3rem
-
 	actions
-		// height     : 2.4rem
-		// max-height : 2.4rem
-
 		text-align : right
 		// fixes display inline-block whitespaces causing scrollbar
 		line-height : 0

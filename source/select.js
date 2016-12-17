@@ -479,8 +479,11 @@ export default class Select extends Component
 
 				{/* an arrow */}
 				<div
-					className=".rrui__select__arrow"
-					style={ expanded ? style.arrow_expanded : style.arrow }/>
+					className={classNames('rrui__select__arrow',
+					{
+						'rrui__select__arrow--expanded': expanded
+					})}
+					style={style.arrow}/>
 			</button>
 		)
 
@@ -996,9 +999,6 @@ Select.Separator = function(props)
 	return <div className="rrui__select__separator" style={style.separator}/>
 }
 
-const arrow_height = 0.35
-const arrow_width = 0.4
-
 const style = styler
 `
 	wrapper
@@ -1017,41 +1017,15 @@ const style = styler
 	arrow
 		display  : inline-block
 
-		width        : 0
-		height       : 0
-
-		margin-left   : 0.35em
-		margin-bottom : 0.1em
-
-		opacity: 0.7
-
-		transition: opacity 100ms ease-out
-
-		border-width : ${arrow_height}em ${arrow_width / 2}em 0 ${arrow_width / 2}em
-
-		border-style       : solid
-		border-left-color  : transparent
-		border-right-color : transparent
-
-		&expanded
-			opacity: 0.3
-
 	list
-		position : absolute
-
-		z-index  : 1
-
+		position        : absolute
+		z-index         : 1
 		margin          : 0
 		padding         : 0
 		list-style-type : none
-
-		overflow-x : hidden
-
-		background-color: white
+		overflow-x      : hidden
 
 		&downward
-			// top  : 100%
-
 			// when html page is overflown by a long list
 			// this bottom margin takes effect
 			margin-bottom : 1em
@@ -1062,14 +1036,6 @@ const style = styler
 			// when html page is overflown by a long list
 			// this top margin takes effect
 			margin-top : 1em
-
-		// &placeholder
-		// 	position            : static
-		// 	max-height          : 0
-		// 	border-top-width    : 0
-		// 	border-bottom-width : 0
-		// 	opacity             : 1
-		// 	visibility          : hidden
 
 	list_item
 		display     : inline-block

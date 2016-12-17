@@ -280,8 +280,6 @@ const style = styler
 		white-space : nowrap
 
 	option
-		transition: all 50ms ease-out
-
 		&first
 			border-top-right-radius    : 0
 			border-bottom-right-radius : 0

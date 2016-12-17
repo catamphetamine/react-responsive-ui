@@ -64,7 +64,7 @@ export default class Button extends Component
 				})}
 				style={ this.props.style ? { ...style.container, ...this.props.style } : style.container }>
 
-				<Activity_indicator style={ busy ? style.spinner_show : style.spinner_hide }/>
+				<Activity_indicator style={ busy ? style.spinner : style.spinner_hide }/>
 
 				{this.render_button()}
 			</div>
@@ -88,7 +88,7 @@ export default class Button extends Component
 		}
 		= this.props
 
-		let button_style = busy ? style.button_hide : style.button_show
+		let button_style = busy ? style.button_hide : style.button
 
 		if (buttonStyle)
 		{
@@ -191,32 +191,15 @@ const style = styler
 		display  : inline-block
 
 	spinner
-		position   : absolute
+		position : absolute
 		// (if z-index = -1 then it disappears)
-		z-index    : 0
-		top        : 0.1em
-
-		width  : 1em
-		height : 1em
-
+		z-index  : 0
 		pointer-events : none
 
-		transition : opacity 300ms ease-out
-
-		&show
-			opacity          : 1
-			transition-delay : 350ms
 		&hide
-			transition : opacity 200ms ease-out
-			opacity    : 0
+			opacity : 0
 
 	button
-		&show
-			opacity          : 1
-			transition       : opacity 150ms ease-out
-			transition-delay : 100ms
 		&hide
-			opacity          : 0
-			transition       : opacity 200ms ease-out
-			transition-delay : 300ms
+			opacity : 0
 `

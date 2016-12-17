@@ -15,7 +15,7 @@ export default class Checkbox extends Component
 		name      : PropTypes.string,
 
 		// `true`/`false`
-		value     : PropTypes.bool,
+		value     : PropTypes.bool.isRequired,
 
 		// Disables the checkbox
 		disabled  : PropTypes.bool,
@@ -34,6 +34,11 @@ export default class Checkbox extends Component
 
 		// CSS style object
 		style     : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		value : false
 	}
 
 	constructor(props, context)
@@ -74,27 +79,35 @@ export default class Checkbox extends Component
 			<div
 				className={classNames(className, 'rrui__rich', 'rrui__checkbox',
 				{
+					'rrui__checkbox--checked': value,
 					'rrui__checkbox--invalid': indicate_invalid && error
 				})}
-				style={ this.props.style ? { ...style.container, ...this.props.style } : style.container }>
+				style={this.props.style}>
 
 				<input
 					ref={ref => this.checkbox = ref}
 					type="checkbox"
+					checked={value}
 					disabled={disabled}
 					onChange={this.toggle}
 					onFocus={this.on_focus}
 					onBlur={this.on_blur}
 					style={style.checkbox_input}
-					checked={(value === undefined || value === null) ? false : value}/>
+					className="rrui__checkbox__input"/>
 
-				<div className="rrui__checkbox__border" style={ !value ? style.checkbox_label_before : style.checkbox_label_before_when_checked }/>
+				<div style={style.checkbox_box} className="rrui__checkbox__box"/>
 
-				<svg viewBox="0 0 100 100" style={style.checkbox_svg}>
+				<svg
+					viewBox="0 0 100 100"
+					style={style.checkbox_checkmark}
+					className="rrui__checkbox__checkmark">
 					{ value ? this.render_checkmark() : null }
 				</svg>
 
-				<label className="rrui__checkbox__label" style={style.label} onClick={this.toggle}>
+				<label
+					onClick={this.toggle}
+					className="rrui__checkbox__label"
+					style={style.label}>
 					{children}
 				</label>
 
@@ -147,7 +160,7 @@ export default class Checkbox extends Component
 					defaultChecked={value}
 					autoFocus={focus}/>
 
-				<label className="rrui__checkbox__label" style={style.label.static}>
+				<label className="rrui__checkbox__label" style={style.label_static}>
 					{children}
 				</label>
 			</div>
@@ -237,16 +250,8 @@ export default class Checkbox extends Component
 
 const style = styler
 `
-	container
-		position : relative
-
 	label
-		display        : inline-block
-		position       : relative
-		padding-left   : 1.5em
-		vertical-align : bottom
-		color          : inherit
-		cursor         : default
+		display : inline-block
 
 		-webkit-user-select : none
 		-moz-user-select    : none
@@ -259,12 +264,11 @@ const style = styler
 	checkbox
 		position : absolute
 		left     : 0
-		top      : 0.05em
 
-		width  : 0.9em
-		height : 0.9em
+		&checkmark
+			pointer-events : none
 
-		position: absolute
+		&box
 
 		&input
 			display        : inline-block
@@ -273,25 +277,7 @@ const style = styler
 			z-index        : 100
 			opacity        : 0
 
-		&label_before
-			border     : 0.1em solid #cfcfcf
-			transition : opacity 0.3s
-
-			&when_checked
-				border : 0.1em solid #e7e7e7
-
-		&svg
-			width  : 0.8em
-			height : 0.8em
-
-			margin-left : 0.1em
-			margin-top  : 0.1em
-
-			pointer-events : none
-
 	svg_path
-		stroke          : #000000
-		stroke-width    : 0.4em
 		stroke-linecap  : round
 		stroke-linejoin : round
 		fill            : none

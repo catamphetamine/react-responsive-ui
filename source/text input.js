@@ -99,13 +99,13 @@ export default class Text_input extends Component
 		const markup =
 		(
 			<div
-				style={ this.props.style ? { ...style.text_input, ...this.props.style } : style.text_input }
+				style={this.props.style}
 				className={classNames
 				(
 					'rrui__rich',
 					'rrui__text-input',
 					{
-						'rrui__text-input--empty'   : !value,
+						'rrui__text-input--empty'   : !value || !value.trim(),
 						'rrui__text-input--invalid' : indicateInvalid && error
 					},
 					className
@@ -148,9 +148,7 @@ export default class Text_input extends Component
 
 		const markup =
 		(
-			<p
-				className="rrui__text-input__description"
-				style={value && value.trim() ? style.description_tame : style.description}>
+			<p className="rrui__text-input__description">
 				{description}
 			</p>
 		)
@@ -178,12 +176,6 @@ export default class Text_input extends Component
 			type = 'text'
 		}
 
-		let input_style = style.input
-		if (inputStyle)
-		{
-			input_style = { ...input_style, ...inputStyle }
-		}
-
 		const properties =
 		{
 			name        : name === false ? undefined : this.props.name,
@@ -193,10 +185,8 @@ export default class Text_input extends Component
 			onChange    : this.on_change,
 			onKeyDown   : this.on_key_down,
 			disabled,
-			// onFocus     : this.props.on_focus,
-			// onBlur      : this.props.on_blur,
 			className   : 'rrui__text-input__field',
-			style       : input_style,
+			style       : inputStyle,
 			autoFocus   : focus
 		}
 
@@ -285,22 +275,11 @@ export default class Text_input extends Component
 
 const style = styler
 `
-	text_input
-
-	input
-		// max-width : 100%
-
 	label
 		-webkit-user-select : none
 		-moz-user-select    : none
 		-ms-user-select     : none
 		user-select         : none
-
-	description
-		transition : opacity 160ms ease-out
-
-		&tame
-			opacity : 0.6
 `
 
 // <textarea/> autoresize (without ghost elements)
