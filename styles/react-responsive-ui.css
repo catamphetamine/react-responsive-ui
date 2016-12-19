@@ -288,7 +288,7 @@ textarea[disabled]
 	transform-origin: 50% bottom 0px;
 }
 
-.rrui__select__option--selected
+.rrui__select__option--focused
 {
 	background-color: #ECF1F6;
 }

@@ -5,14 +5,8 @@ import classNames from 'classnames'
 
 import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/dom'
 
-const add_padding_for_scrollbar = true
-const show_selected_item_in_list = true
-
 // Possible enhancements:
 //
-//  * Scroll the list scrollbar when navigating with Up/Down keys
-//  * Position the selected element on top
-//    (scroll the list upon opening until it's positioned on top)
 //  * If the menu is close to a screen edge,
 //    automatically reposition it so that it fits on the screen
 //  * Maybe show menu immediately above the toggler
@@ -93,6 +87,9 @@ export default class Select extends Component
 		// Is `6` by default.
 		maxItems  : PropTypes.number.isRequired,
 
+		// Is `true` by default (only when the list of options is scrollable)
+		scrollbarPadding : PropTypes.bool
+
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
 		// transition_duration_max : PropTypes.number
@@ -106,6 +103,8 @@ export default class Select extends Component
 
 		maxItems : 6,
 
+		scrollbarPadding : true
+
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
 		// transition_duration_max : 100 // milliseconds
@@ -116,6 +115,10 @@ export default class Select extends Component
 	constructor(props, context)
 	{
 		super(props, context)
+
+		// Shouldn't memory leak because
+		// the set of options is assumed to be constant.
+		this.options = {}
 
 		this.toggle           = this.toggle.bind(this)
 		this.document_clicked = this.document_clicked.bind(this)
@@ -310,8 +313,8 @@ export default class Select extends Component
 
 	render_list_item({ element, value, label, icon, overflow }) // , first, last
 	{
-		const { disabled, menu } = this.props
-		const { selected } = this.state
+		const { disabled, menu, scrollbarPadding } = this.props
+		const { focused_option_value } = this.state
 
 		// If a list of options is supplied as a set of child React elements,
 		// then extract values from their props.
@@ -320,15 +323,9 @@ export default class Select extends Component
 			value = element.props.value
 		}
 
-		const is_selected = value !== undefined && value === selected
+		const is_focused = value !== undefined && value === focused_option_value
 
 		let list_item_style = { textAlign: 'left' }
-
-		if (!show_selected_item_in_list && is_selected)
-		{
-			list_item_style.maxHeight = 0
-			list_item_style.overflow  = 'hidden'
-		}
 
 		let item_style = style.list_item
 
@@ -337,7 +334,7 @@ export default class Select extends Component
 		// is to add additional padding-right
 		//
 		// a hack to restore padding-right taken up by a vertical scrollbar
-		if (overflow && add_padding_for_scrollbar)
+		if (overflow && scrollbarPadding)
 		{
 			item_style = { ...style.list.item }
 
@@ -357,7 +354,7 @@ export default class Select extends Component
 				(
 					'rrui__select__option',
 					{
-						'rrui__select__option--selected' : is_selected
+						'rrui__select__option--focused' : is_focused
 					},
 					element.props.className
 				)
@@ -398,7 +395,7 @@ export default class Select extends Component
 					'rrui__select__option',
 					'rrui__button__button',
 					{
-						'rrui__select__option--selected' : is_selected
+						'rrui__select__option--focused' : is_focused
 					}
 				)}
 				style={item_style}>
@@ -411,6 +408,7 @@ export default class Select extends Component
 		(
 			<li
 				key={value}
+				ref={ref => this.options[value] = ref}
 				className={classNames
 				({
 					'rrui__select__separator-option' : element && element.type === Select.Separator
@@ -428,7 +426,7 @@ export default class Select extends Component
 		const { options, children, value, label, disabled, autocomplete, concise } = this.props
 		const { expanded, autocomplete_width, autocomplete_input_value } = this.state
 
-		const selected_label = this.get_selected_item_label()
+		const selected_label = this.get_selected_option_label()
 
 		if (autocomplete && expanded)
 		{
@@ -455,7 +453,7 @@ export default class Select extends Component
 			return markup
 		}
 
-		const selected = this.get_selected_item()
+		const selected = this.get_selected_option()
 
 		const markup =
 		(
@@ -539,9 +537,14 @@ export default class Select extends Component
 		return markup
 	}
 
-	get_selected_item()
+	get_selected_option()
 	{
-		const { options, value, children } = this.props
+		return this.get_option(this.props.value)
+	}
+
+	get_option(value)
+	{
+		const { options, children } = this.props
 
 		if (options)
 		{
@@ -561,11 +564,11 @@ export default class Select extends Component
 		return selected
 	}
 
-	get_selected_item_label()
+	get_selected_option_label()
 	{
 		const { options } = this.props
 
-		const selected = this.get_selected_item()
+		const selected = this.get_selected_option()
 
 		if (selected)
 		{
@@ -645,16 +648,27 @@ export default class Select extends Component
 
 			if (!expanded && options)
 			{
+				// Focus either the selected option
+				// or the first option in the list.
+
+				const focused_option_value = value || options[0].value
+
 				this.setState
 				({
-					selected: value || options[0].value
+					focused_option_value
 				})
+
+				// Scroll down to the focused option
+				this.scroll_to(focused_option_value)
 			}
 
+			// If it's autocomplete, then focus <input/> field
+			// upon toggling the select component.
 			if (autocomplete && !toggle_options.dont_focus_after_toggle)
 			{
 				setTimeout(() =>
 				{
+					// Focus the toggler
 					if (expanded)
 					{
 						this.selected.focus()
@@ -684,6 +698,7 @@ export default class Select extends Component
 			return
 		}
 
+		// Focus the toggler
 		if (autocomplete)
 		{
 			this.autocomplete.focus()
@@ -724,7 +739,7 @@ export default class Select extends Component
 			return
 		}
 
-		const { expanded, selected } = this.state
+		const { expanded } = this.state
 
 		switch (event.keyCode)
 		{
@@ -746,7 +761,7 @@ export default class Select extends Component
 		}
 
 		const { options, value, autocomplete } = this.props
-		const { expanded, selected } = this.state
+		const { expanded, focused_option_value } = this.state
 
 		// Maybe add support for `children` arrow navigation in future
 		if (options)
@@ -757,11 +772,12 @@ export default class Select extends Component
 				case 38:
 					event.preventDefault()
 
-					const previous = this.previous_selected_value()
+					const previous = this.previous_focusable_option_value()
 
 					if (previous !== undefined)
 					{
-						return this.setState({ selected: previous })
+						this.show_option(previous, 'top')
+						return this.setState({ focused_option_value: previous })
 					}
 
 					return
@@ -770,11 +786,12 @@ export default class Select extends Component
 				case 40:
 					event.preventDefault()
 
-					const next = this.next_selected_value()
+					const next = this.next_focusable_option_value()
 
 					if (next !== undefined)
 					{
-						return this.setState({ selected: next })
+						this.show_option(next, 'bottom')
+						return this.setState({ focused_option_value: next })
 					}
 
 					return
@@ -804,18 +821,18 @@ export default class Select extends Component
 
 				// on Enter
 				case 13:
-					// Choose the selected item on Enter
+					// Choose the focused item on Enter
 					if (expanded)
 					{
 						event.preventDefault()
 
-						// If an item is selected
+						// If an item is focused
 						// (which may not be a case
 						//  when autocomplete is matching no items)
-						if (selected)
+						if (focused_option_value)
 						{
-							// Choose the selected item
-							this.item_clicked(selected)
+							// Choose the focused item
+							this.item_clicked(focused_option_value)
 							// And collapse the select
 							this.toggle()
 						}
@@ -836,7 +853,7 @@ export default class Select extends Component
 
 				// Open on Spacebar
 				case 32:
-					// Choose the selected item on Enter
+					// Choose the focused item on Enter
 					if (expanded)
 					{
 						// ... only if it's not an autocomplete
@@ -844,9 +861,9 @@ export default class Select extends Component
 						{
 							event.preventDefault()
 
-							if (selected)
+							if (focused_option_value)
 							{
-								this.item_clicked(selected)
+								this.item_clicked(focused_option_value)
 								this.toggle()
 							}
 						}
@@ -863,21 +880,16 @@ export default class Select extends Component
 		}
 	}
 
-	select(value)
-	{
-		this.setState({ selected: value })
-	}
-
-	// Get the previous value (relative to the currently selected value)
-	previous_selected_value()
+	// Get the previous value (relative to the currently focused value)
+	previous_focusable_option_value()
 	{
 		const { options } = this.props
-		const { selected } = this.state
+		const { focused_option_value } = this.state
 
 		let i = 0
 		while (i < options.length)
 		{
-			if (options[i].value === selected)
+			if (options[i].value === focused_option_value)
 			{
 				if (i - 1 >= 0)
 				{
@@ -888,16 +900,16 @@ export default class Select extends Component
 		}
 	}
 
-	// Get the next value (relative to the currently selected value)
-	next_selected_value()
+	// Get the next value (relative to the currently focused value)
+	next_focusable_option_value()
 	{
 		const { options } = this.props
-		const { selected } = this.state
+		const { focused_option_value } = this.state
 
 		let i = 0
 		while (i < options.length)
 		{
-			if (options[i].value === selected)
+			if (options[i].value === focused_option_value)
 			{
 				if (i + 1 < options.length)
 				{
@@ -905,6 +917,39 @@ export default class Select extends Component
 				}
 			}
 			i++
+		}
+	}
+
+	// Scrolls to an option having the value
+	scroll_to(value)
+	{
+		const option_element = ReactDOM.findDOMNode(this.options[value])
+		ReactDOM.findDOMNode(this.list).scrollTop = option_element.offsetTop
+	}
+
+	// Fully shows an option (scrolls to it if neccessary)
+	show_option(value, gravity)
+	{
+		const option_element = ReactDOM.findDOMNode(this.options[value])
+		const list = ReactDOM.findDOMNode(this.list)
+
+		switch (gravity)
+		{
+			case 'top':
+				if (option_element.offsetTop < list.scrollTop)
+				{
+					const padding_top = parseFloat(getComputedStyle(list.firstChild).paddingTop)
+					list.scrollTop = option_element.offsetTop + padding_top
+				}
+				return
+
+			case 'bottom':
+				if (option_element.offsetTop + option_element.offsetHeight > list.scrollTop + list.offsetHeight)
+				{
+					const padding_bottom = parseFloat(getComputedStyle(list.lastChild).paddingBottom)
+					list.scrollTop = option_element.offsetTop + option_element.offsetHeight - list.offsetHeight - padding_bottom
+				}
+				return
 		}
 	}
 
@@ -962,7 +1007,7 @@ export default class Select extends Component
 		({
 			autocomplete_input_value: input,
 			filtered_options,
-			selected: filtered_options.length > 0 ? filtered_options[0].value : undefined
+			focused_option_value: filtered_options.length > 0 ? filtered_options[0].value : undefined
 		})
 	}
 
