@@ -88,7 +88,9 @@ export default class Select extends Component
 		maxItems  : PropTypes.number.isRequired,
 
 		// Is `true` by default (only when the list of options is scrollable)
-		scrollbarPadding : PropTypes.bool
+		scrollbarPadding : PropTypes.bool,
+
+		focusUponSelection : PropTypes.bool.isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -103,7 +105,9 @@ export default class Select extends Component
 
 		maxItems : 6,
 
-		scrollbarPadding : true
+		scrollbarPadding : true,
+
+		focusUponSelection : true
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -612,7 +616,15 @@ export default class Select extends Component
 			// event.nativeEvent.stopImmediatePropagation()
 		}
 
-		const { disabled, autocomplete, options, value } = this.props
+		const
+		{
+			disabled,
+			autocomplete,
+			options,
+			value,
+			focusUponSelection
+		}
+		= this.props
 
 		if (disabled)
 		{
@@ -653,10 +665,7 @@ export default class Select extends Component
 
 				const focused_option_value = value || options[0].value
 
-				this.setState
-				({
-					focused_option_value
-				})
+				this.setState({ focused_option_value })
 
 				// Scroll down to the focused option
 				this.scroll_to(focused_option_value)
@@ -666,19 +675,22 @@ export default class Select extends Component
 			// upon toggling the select component.
 			if (autocomplete && !toggle_options.dont_focus_after_toggle)
 			{
-				setTimeout(() =>
+				if (!expanded || (expanded && focusUponSelection))
 				{
-					// Focus the toggler
-					if (expanded)
+					setTimeout(() =>
 					{
-						this.selected.focus()
-					}
-					else
-					{
-						this.autocomplete.focus()
-					}
-				},
-				0)
+						// Focus the toggler
+						if (expanded)
+						{
+							this.selected.focus()
+						}
+						else
+						{
+							this.autocomplete.focus()
+						}
+					},
+					0)
+				}
 			}
 		},
 		0)
@@ -691,7 +703,14 @@ export default class Select extends Component
 			event.preventDefault()
 		}
 
-		const { disabled, onChange, autocomplete } = this.props
+		const
+		{
+			disabled,
+			onChange,
+			autocomplete,
+			focusUponSelection
+		}
+		= this.props
 
 		if (disabled)
 		{
@@ -699,13 +718,16 @@ export default class Select extends Component
 		}
 
 		// Focus the toggler
-		if (autocomplete)
+		if (focusUponSelection)
 		{
-			this.autocomplete.focus()
-		}
-		else
-		{
-			this.selected.focus()
+			if (autocomplete)
+			{
+				this.autocomplete.focus()
+			}
+			else
+			{
+				this.selected.focus()
+			}
 		}
 
 		onChange(value)
@@ -938,16 +960,14 @@ export default class Select extends Component
 			case 'top':
 				if (option_element.offsetTop < list.scrollTop)
 				{
-					const padding_top = parseFloat(getComputedStyle(list.firstChild).paddingTop)
-					list.scrollTop = option_element.offsetTop + padding_top
+					list.scrollTop = option_element.offsetTop
 				}
 				return
 
 			case 'bottom':
 				if (option_element.offsetTop + option_element.offsetHeight > list.scrollTop + list.offsetHeight)
 				{
-					const padding_bottom = parseFloat(getComputedStyle(list.lastChild).paddingBottom)
-					list.scrollTop = option_element.offsetTop + option_element.offsetHeight - list.offsetHeight - padding_bottom
+					list.scrollTop = option_element.offsetTop + option_element.offsetHeight - list.offsetHeight
 				}
 				return
 		}
