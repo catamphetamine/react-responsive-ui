@@ -186,8 +186,9 @@ textarea[disabled]
 	transition-duration        : 0ms; /* don't animate short lists */
 	transition-timing-function : ease-out;
 
-	opacity: 0;
-	overflow-y: auto;
+	pointer-events : none;
+	opacity        : 0;
+	overflow-y     : auto;
 
 	background-color: white;
 
@@ -233,6 +234,8 @@ textarea[disabled]
 
 .rrui__select__options--expanded
 {
+	pointer-events : auto;
+
 	box-shadow       : 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 	opacity          : 1;
 	transform        : scaleY(1);
