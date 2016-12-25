@@ -476,8 +476,8 @@ export default class Select extends Component
 					}
 				)}>
 
-				{/* the label */}
-				{ (concise && selected && selected.icon) ? selected.icon : (selected_label || label) }
+				{/* the label (or icon) */}
+				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label) }
 
 				{/* an arrow */}
 				<div
