@@ -754,6 +754,15 @@ export default class Select extends Component
 		this.setState({ expanded: false })
 	}
 
+	// Would have used `onBlur()` handler here
+	// with `is_reachable(event.relatedTarget, container)`,
+	// but it has an IE bug in React.
+	// https://github.com/facebook/react/issues/3751
+	//
+	// Therefore, using the hacky `document.onClick` handlers
+	// and this `onKeyDown` Tab handler
+	// until `event.relatedTarget` support is consistent in React.
+	//
 	on_key_down_in_container(event)
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
