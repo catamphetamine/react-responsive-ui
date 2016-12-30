@@ -415,8 +415,8 @@ textarea[disabled]
 	width  : 0.8em;
 	height : 0.8em;
 
-	margin-left : 0.1em;
-	margin-top  : 0.1em;
+	margin-left : 1px;
+	margin-top  : 1px;
 }
 
 /* Checkmark color */
