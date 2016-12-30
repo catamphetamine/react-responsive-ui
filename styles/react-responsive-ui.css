@@ -309,7 +309,7 @@ textarea[disabled]
 	padding-bottom : 0.15rem;
 
 	border: none;
-	border-bottom: 2pt solid #C5D2E0;
+	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
 }
 
