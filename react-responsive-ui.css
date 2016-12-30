@@ -309,7 +309,7 @@ textarea[disabled]
 	padding-bottom : 0.15rem;
 
 	border: none;
-	border-bottom: 2pt solid #C5D2E0;
+	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
 }
 
@@ -428,7 +428,7 @@ textarea[disabled]
 
 .rrui__checkbox__box
 {
-	border     : 0.1em solid #cfcfcf;
+	border     : 1px solid #cfcfcf;
 	transition : opacity 0.3s;
 }
 
@@ -506,7 +506,7 @@ textarea[disabled]
 
 	color            : black;
 	background-color : transparent;
-	border           : 0.1em solid #3678D1;
+	border           : 1px solid #3678D1;
 	border-radius    : 0.2em;
 	outline          : none;
 
