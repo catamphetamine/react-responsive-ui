@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
@@ -14,7 +14,7 @@ import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/do
 //
 // https://material.google.com/components/menus.html
 
-export default class Select extends Component
+export default class Select extends PureComponent
 {
 	static propTypes =
 	{
