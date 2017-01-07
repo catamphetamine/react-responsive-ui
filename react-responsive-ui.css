@@ -711,11 +711,6 @@ but introduces page width jumps.
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input
-{
-	position: relative;
-}
-
 .rrui__text-input--floating-label
 {
 	padding-top : 0.75rem;
@@ -723,10 +718,7 @@ but introduces page width jumps.
 
 .rrui__text-input label
 {
-	position : absolute;
-	top      : 0.15rem;
-	left     : 0;
-
+	top        : 0.15rem;
 	margin-top : 0.75rem;
 
 	/*
@@ -738,7 +730,6 @@ but introduces page width jumps.
 	transform        : scale(0.8) translateY(-1.2em);
 	transform-origin : left top;
 	transition       : color 0.1s ease-out, transform 0.1s ease-out;
-	pointer-events   : none;
 }
 
 /* Either label or description */
@@ -756,12 +747,6 @@ but introduces page width jumps.
 .rrui__text-input--empty .rrui__text-input__description
 {
 	opacity : 0.6;
-}
-
-.rrui__text-input input,
-.rrui__text-input textarea
-{
-	order: -1;
 }
 
 .rrui__text-input input:focus + label,
