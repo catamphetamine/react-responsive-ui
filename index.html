@@ -137,6 +137,7 @@
 					const Switch            = library.Switch
 					const Checkbox          = library.Checkbox
 					const SegmentedControl  = library.SegmentedControl
+					const DatePicker        = library.DatePicker
 					const FileUpload        = library.FileUpload
 					const Modal             = library.Modal
 
@@ -211,6 +212,16 @@
 							height       : '0.75em',
 							marginBottom : '-0.05em',
 							border       : '1px solid #5f5f5f'
+						},
+
+						file_upload:
+						{
+							display: 'inline-block',
+							padding: '10px',
+							border: '1px dashed #afafaf',
+							borderRadius: '5px',
+							backgroundColor: '#fbfbfb',
+							cursor: 'pointer'
 						}
 					}
 
@@ -459,40 +470,20 @@
 
 									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
 
+									<h2 style={style.label}>Date picker</h2>
+
+									<DatePicker
+										style={style.checkbox}
+										value={this.state.selectedDay}
+										onChange={selectedDay => this.setState({ selectedDay })}/>
+
+									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
+
 									<h2 style={style.label}>File upload</h2>
 
-									<FileUpload action={file => alert('File chosen: ' + file.name)} style={{ cursor: 'pointer' }}>
+									<FileUpload action={file => alert('File chosen: ' + file.name)} style={style.file_upload}>
 										Click here to choose a file
 									</FileUpload>
-
-									{/*
-									<h2 style={style.label}>File upload (original HTML)</h2>
-
-									<div className="file-upload">
-										<div className="file-upload__button">
-											<button>File</button>
-											<input multiple="true" type="file" name="file" style={style.file} onChange={event =>
-											{
-												const files = event.target.files
-												const file_names = []
-
-												// `files` is not an array
-												let i = 0
-												while (i < files.length)
-												{
-													file_names.push(files[i].name)
-													i++
-												}
-
-												this.setState({ file_list : file_names.join(", ") })
-											}}/>
-										</div>
-
-										<div className="file-upload__file-list">
-											<input type="text" placeholder="Upload one or more files" value={this.state.file_list}/>
-										</div>
-									</div>
-									*/}
 
 									<h2 style={style.label}>Activity Indicator</h2>
 									<ActivityIndicator style={style.spinner}/>
