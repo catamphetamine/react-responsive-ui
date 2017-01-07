@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 
 import { is_reachable } from './misc/dom'
 
-export default class Page_and_menu extends Component
+export default class Page_and_menu extends PureComponent
 {
 	// static propTypes =
 	// {

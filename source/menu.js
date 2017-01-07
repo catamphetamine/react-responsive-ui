@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
@@ -11,7 +11,7 @@ import { Link } from 'react-router'
 import Page_and_menu from './page and menu'
 
 // A slideout menu
-export default class Menu extends Component
+export default class Menu extends PureComponent
 {
 	static propTypes =
 	{

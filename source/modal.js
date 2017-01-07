@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import styler from 'react-styling'
 import classNames from 'classnames'
 // `react-modal` takes styles as an object of style objects,
@@ -14,7 +14,7 @@ import { get_scrollbar_width } from './misc/dom'
 // css transition times accordingly
 const could_not_close_because_busy_animation_duration = 1500 // ms
 
-export default class Modal extends Component
+export default class Modal extends PureComponent
 {
 	state = {}
 

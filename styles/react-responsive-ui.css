@@ -1,64 +1,4 @@
 /*===========================================================
-= Base styles (may be removed, it's just an example)        =
-===========================================================*/
-
-body
-{
-	margin : 0;
-	/* Always show vertical scrollbar to avoid page width jumping */
-	overflow-y : scroll;
-}
-
-html, body, button, input, textarea, select
-{
-	font-family : Arial, Helvetica;
-	font-size   : 20px;
-}
-
-input[type="text"],
-input[type="tel"],
-input[type="number"],
-input[type="email"],
-input[type="password"],
-textarea
-{
-	display : block;
-	width   : calc(0.3rem * 60);
-	margin  : 0;
-
-	padding-top    : 0.15rem;
-	padding-bottom : 0.15rem;
-
-	outline    : none;
-	appearance : none;
-	box-sizing : border-box;
-
-	border        : none;
-	border-bottom : 1px solid #C5D2E0;
-	transition    : border 0.1s;
-}
-
-input[type="text"]:focus,
-input[type="tel"]:focus,
-input[type="number"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-textarea:focus
-{
-	border-bottom-color: #03B2CB;
-}
-
-input[type="text"][disabled],
-input[type="tel"][disabled],
-input[type="number"][disabled],
-input[type="email"][disabled],
-input[type="password"][disabled],
-textarea[disabled]
-{
-	background-color : white;
-}
-
-/*===========================================================
 = Buttons                                                   =
 ===========================================================*/
 
@@ -771,47 +711,30 @@ but introduces page width jumps.
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input
+.rrui__text-input--floating-label
 {
-	/*
-	"flex" is for the <label/> which goes after the <input/> in markup
-	but is then placed before the <input/> using "order".
+	padding-top : 0.75rem;
+}
 
-	The reason for this is "input:focus + label" selector,
-	which highlights the <label/> when the input is focused.
-	(there's no CSS selector for "label [before] input:focus")
-	*/
-
-	display        : flex;
-	flex-direction : column;
+.rrui__text-input label
+{
+	top        : 0.15rem;
+	margin-top : 0.75rem;
 
 	/*
 	When changing this label color
 	also change "input" and "textarea" placeholder color.
 	*/
-}
-
-.rrui__text-input label
-{
-	order : -2;
-
-	margin-top : -0.6em;
-
-	padding-top    : 0.15rem;
-
 	color : #9FA8B3;
 
-	transform        : scale(0.8) translateY(0.6em);
+	transform        : scale(0.8) translateY(-1.2em);
 	transform-origin : left top;
 	transition       : color 0.1s ease-out, transform 0.1s ease-out;
-	pointer-events   : none;
 }
 
 /* Either label or description */
 .rrui__text-input p
 {
-	order: -2;
-
 	margin-top    : 0;
 	margin-bottom : 0;
 }
@@ -824,12 +747,6 @@ but introduces page width jumps.
 .rrui__text-input--empty .rrui__text-input__description
 {
 	opacity : 0.6;
-}
-
-.rrui__text-input input,
-.rrui__text-input textarea
-{
-	order: -1;
 }
 
 .rrui__text-input input:focus + label,
@@ -851,7 +768,7 @@ but introduces page width jumps.
 .rrui__text-input--empty label
 {
 	color     : #888C91;
-	transform : translateY(1.4em) scale(1);
+	transform : translateY(0) scale(1);
 }
 
 .rrui__text-input--empty input:focus + label,

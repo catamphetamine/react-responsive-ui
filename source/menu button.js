@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import Page_and_menu from './page and menu'
 import Button from './button'
 
-export default class Menu_button extends Component
+export default class Menu_button extends PureComponent
 {
 	static propTypes =
 	{

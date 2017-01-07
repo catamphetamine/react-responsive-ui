@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
 // https://github.com/Dogfalo/materialize/blob/master/js/tooltip.js
-export default class Tooltip extends Component
+export default class Tooltip extends PureComponent
 {
 	static propTypes =
 	{

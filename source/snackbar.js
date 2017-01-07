@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 
 // Sits at the bottom of a page and displays notifications
-export default class Snackbar extends Component
+export default class Snackbar extends PureComponent
 {
 	static propTypes =
 	{

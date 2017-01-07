@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
 
 import Activity_indicator from './activity indicator'
 
-export default class Button extends Component
+export default class Button extends PureComponent
 {
 	static propTypes =
 	{

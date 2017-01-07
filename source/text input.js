@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling/flat'
 import classNames from 'classnames'
 
 import { submit_parent_form } from './misc/dom'
 
-export default class Text_input extends Component
+export default class Text_input extends PureComponent
 {
 	state = {}
 
@@ -48,8 +48,14 @@ export default class Text_input extends Component
 		// Sets HTML input `type` attribute to `password`
 		password         : PropTypes.bool,
 
+		// A manually specified `type` attribute
+		type             : PropTypes.string.isRequired,
+
 		// Autofocuses the input field
 		focus            : PropTypes.bool,
+
+		// `<textarea/>` row count
+		rows             : PropTypes.number.isRequired,
 
 		// CSS style object
 		style            : PropTypes.object,
@@ -59,6 +65,15 @@ export default class Text_input extends Component
 
 		// CSS style object for the label
 		labelStyle       : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		// `<textarea/>` row count
+		rows : 2,
+
+		// HTML input `type` attribute
+		type : 'text'
 	}
 
 	constructor(props, context)
@@ -96,17 +111,25 @@ export default class Text_input extends Component
 		}
 		= this.props
 
+		let input_style = this.props.style
+
+		if (label)
+		{
+			input_style = { ...style.input_with_label, ...input_style }
+		}
+
 		const markup =
 		(
 			<div
-				style={this.props.style}
+				style={input_style}
 				className={classNames
 				(
 					'rrui__rich',
 					'rrui__text-input',
 					{
-						'rrui__text-input--empty'   : !value || !value.trim(),
-						'rrui__text-input--invalid' : indicateInvalid && error
+						'rrui__text-input--empty'          : !value || !value.trim(),
+						'rrui__text-input--invalid'        : indicateInvalid && error,
+						'rrui__text-input--floating-label' : label
 					},
 					className
 				)}>
@@ -159,22 +182,7 @@ export default class Text_input extends Component
 	render_input(options = {})
 	{
 		const { placeholder, ref, name } = options
-		const { value, multiline, email, password, focus, onChange, disabled, inputStyle } = this.props
-
-		let type
-
-		if (email)
-		{
-			type = 'email'
-		}
-		else if (password)
-		{
-			type = 'password'
-		}
-		else
-		{
-			type = 'text'
-		}
+		const { value, multiline, focus, onChange, disabled, inputStyle, rows } = this.props
 
 		const properties =
 		{
@@ -194,13 +202,13 @@ export default class Text_input extends Component
 		{
 			// maybe add autoresize for textarea (smoothly animated)
 			return <textarea
-				rows={2}
+				rows={rows}
 				onInput={this.autoresize}
 				onKeyUp={this.autoresize}
 				{...properties}/>
 		}
 
-		return <input type={type} {...properties}/>
+		return <input type={this.get_input_type()} {...properties}/>
 	}
 
 	render_error_message()
@@ -231,6 +239,24 @@ export default class Text_input extends Component
 		)
 
 		return markup
+	}
+
+	// "text", "email", "password", etc
+	get_input_type()
+	{
+		const { type, email, password } = this.props
+
+		if (email)
+		{
+			return 'email'
+		}
+
+		if (password)
+		{
+			return 'password'
+		}
+
+		return type
 	}
 
 	// "keyup" is required for IE to properly reset height when deleting text
@@ -275,11 +301,19 @@ export default class Text_input extends Component
 
 const style = styler
 `
+	input_with_label
+		position : relative
+
 	label
+		position : absolute
+		left     : 0
+
 		-webkit-user-select : none
 		-moz-user-select    : none
 		-ms-user-select     : none
 		user-select         : none
+
+		pointer-events      : none
 `
 
 // <textarea/> autoresize (without ghost elements)

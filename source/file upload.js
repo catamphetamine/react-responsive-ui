@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
 
-export default class File_upload extends React.Component
+export default class File_upload extends PureComponent
 {
 	static propTypes =
 	{
