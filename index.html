@@ -42,6 +42,56 @@
 			margin-top: 10px;
 			margin-bottom: 40px;
 		}
+
+		html, body, button, input, textarea, select
+		{
+			font-family : Arial, Helvetica;
+			font-size   : 20px;
+		}
+
+		input[type="text"],
+		input[type="tel"],
+		input[type="number"],
+		input[type="email"],
+		input[type="password"],
+		textarea
+		{
+			display : block;
+			width   : calc(0.3rem * 60);
+			margin  : 0;
+
+			padding : 0;
+			padding-top    : 0.15rem;
+			padding-bottom : 0.15rem;
+
+			outline    : none;
+			appearance : none;
+			box-sizing : border-box;
+
+			border        : none;
+			border-bottom : 1px solid #C5D2E0;
+			transition    : border 0.1s;
+		}
+
+		input[type="text"]:focus,
+		input[type="tel"]:focus,
+		input[type="number"]:focus,
+		input[type="email"]:focus,
+		input[type="password"]:focus,
+		textarea:focus
+		{
+			border-bottom-color: #03B2CB;
+		}
+
+		input[type="text"][disabled],
+		input[type="tel"][disabled],
+		input[type="number"][disabled],
+		input[type="email"][disabled],
+		input[type="password"][disabled],
+		textarea[disabled]
+		{
+			background-color : white;
+		}
 	</style>
 
 	<body>
@@ -205,7 +255,19 @@
 									action={() => alert('on submit')}
 									style={style.form}>
 
-									<h2 style={style.label}>{'Text input field'}</h2>
+									<h2 style={style.label}>{'Text input field (with placeholder)'}</h2>
+
+									<TextInput
+										focus={true}
+										style={style.input}
+										name="text_input"
+										value={this.state.text_value}
+										onChange={value => this.setState({ text_value: value })}
+										placeholder="Enter text"/>
+
+									You entered: {this.state.text_value}
+
+									<h2 style={style.label}>{'Text input field (with floating label)'}</h2>
 
 									<TextInput
 										focus={true}
@@ -217,7 +279,19 @@
 
 									You entered: {this.state.text_value}
 
-									<h2 style={style.label}>{'Textarea'}</h2>
+									<h2 style={style.label}>{'Textarea (with placeholder)'}</h2>
+
+									<TextInput
+										multiline={true}
+										name="description"
+										style={style.textarea}
+										value={this.state.textarea_value}
+										onChange={value => this.setState({ textarea_value: value })}
+										placeholder="Enter text"/>
+
+									You entered: {this.state.textarea_value}
+
+									<h2 style={style.label}>{'Textarea (with floating label)'}</h2>
 
 									<TextInput
 										multiline={true}
