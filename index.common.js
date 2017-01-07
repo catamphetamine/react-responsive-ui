@@ -16,6 +16,7 @@ exports.Button = require('./build/button')
 exports.Switch = require('./build/switch')
 exports.Checkbox = require('./build/checkbox')
 exports.SegmentedControl = require('./build/segmented control')
+exports.DatePicker = require('./build/date picker')
 exports.FileUpload = require('./build/file upload')
 exports.Modal = require('./build/modal')
 

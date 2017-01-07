@@ -84,6 +84,12 @@ from './source/segmented control'
 
 export
 {
+	default as DatePicker
+}
+from './source/date picker'
+
+export
+{
 	default as FileUpload
 }
 from './source/file upload'

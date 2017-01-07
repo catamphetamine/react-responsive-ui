@@ -35,6 +35,7 @@ import
   Switch,
   Checkbox,
   SegmentedControl,
+  DatePicker,
   FileUpload,
   Modal
 }
@@ -99,7 +100,11 @@ from 'react-responsive-ui'
         value={this.state.checkbox}
         onChange={checkbox => this.setState({ checkbox })}>
         Tickable
-      </Switch>
+      </Checkbox>
+
+      <DatePicker
+        value={this.state.selectedDay}
+        onChange={selectedDay => this.setState({ selectedDay })}/>
 
       <FileUpload
         onChange={file => alert(file.name)}>
