@@ -137,7 +137,13 @@ The CSS for this library is distributed along with the React components. Just co
 </head>
 ```
 
-This CSS file is meant as a starting point and one should edit the CSS rules in it to better suit the project's needs.
+This CSS file is meant as a starting point and one should override the CSS rules defined in it to better suit the project's needs.
+
+An alternative way of including the base CSS file when using Webpack would be:
+
+```js
+require('~/react-responsive-ui/styles/react-responsive-ui.css')
+```
 
 ## API
 
