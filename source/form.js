@@ -21,11 +21,19 @@ export default class Form extends PureComponent
 		// in case of a non-javascript old-school POST submission.
 		post        : PropTypes.string,
 
+		// Is form submission in progress
+		busy        : PropTypes.bool.isRequired,
+
 		// CSS class
 		className   : PropTypes.string,
 
 		// CSS style object
 		style       : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		busy : false
 	}
 
 	constructor(props, context)

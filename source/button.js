@@ -84,15 +84,16 @@ export default class Button extends PureComponent
 			disabled,
 			submit,
 			className,
-			buttonStyle
+			buttonStyle,
+			children
 		}
 		= this.props
 
-		let button_style = busy ? style.button_hide : style.button
-
-		if (buttonStyle)
+		const properties =
 		{
-			button_style = { ...button_style, ...buttonStyle }
+			ref: ref => this.button = ref,
+			title,
+			style: buttonStyle ? { ...style.button, ...buttonStyle } : style.button
 		}
 
 		if (link)
@@ -100,14 +101,12 @@ export default class Button extends PureComponent
 			const markup =
 			(
 				<a
-					ref={ref => this.button = ref}
-					href={link}
-					onClick={this.link_on_click}
-					title={title}
+					href={ link }
+					onClick={ this.link_on_click }
 					className="rrui__button__link"
-					style={button_style}>
+					{ ...properties }>
 
-					{this.props.children}
+					{ children }
 				</a>
 			)
 
@@ -117,15 +116,13 @@ export default class Button extends PureComponent
 		const markup =
 		(
 			<button
-				ref={ref => this.button = ref}
-				type={submit ? 'submit' : 'button'}
-				disabled={busy || disabled}
-				onClick={this.button_on_click}
-				title={title}
+				type={ submit ? 'submit' : 'button' }
+				disabled={ busy || disabled }
+				onClick={ this.button_on_click }
 				className="rrui__button__button"
-				style={button_style}>
+				{ ...properties }>
 
-				{this.props.children}
+				{ children }
 			</button>
 		)
 
@@ -200,6 +197,8 @@ const style = styler
 			opacity : 0
 
 	button
-		&hide
-			opacity : 0
+		-webkit-user-select : none
+		-moz-user-select    : none
+		-ms-user-select     : none
+		user-select         : none
 `
