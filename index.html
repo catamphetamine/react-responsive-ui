@@ -96,6 +96,41 @@
 		{
 			background-color : white;
 		}
+
+		.bordered-button .rrui__button__button,
+		.bordered-button .rrui__button__link
+		{
+			padding-left   : 35px;
+			padding-right  : 35px;
+			padding-top    : 12px;
+			padding-bottom : 10px;
+
+			border: 2px solid #03B2CB;
+			border-radius: 5px;
+		}
+
+		.bordered-button:active
+		{
+			border-color: #2BD7F0;
+		}
+
+		.bordered-button,
+		.bordered-button .rrui__button__button
+		{
+			cursor: pointer;
+		}
+
+		.bordered-button .rrui__activity-indicator
+		{
+			top: 14px;
+			left: 10px;
+		}
+
+		.bordered-button.rrui__button--busy .rrui__button__button,
+		.bordered-button.rrui__button--busy .rrui__button__link
+		{
+			opacity: 1;
+		}
 	</style>
 
 	<body>
@@ -267,7 +302,16 @@
 								</div>
 
 								<Form
-									action={() => alert('on submit')}
+									busy={this.state.busy}
+									action={() => {
+										alert('Submitting form...')
+										this.setState({ busy: true })
+										setTimeout(() => {
+											alert('Form submitted.')
+											this.setState({ busy: false })
+										},
+										3000)
+									}}
 									style={style.form}>
 
 									<h2 style={style.label}>{'Text input field (with placeholder)'}</h2>
@@ -503,7 +547,14 @@
 									<Button action={() => this.setState({ snack: `Current time — ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}` })}>Show a snack</Button>
 									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
 
-									<Button submit style={{ display: 'block', marginTop: '1em' }}>Submit form</Button>
+									<div style={{ marginTop: '1em' }}>
+										<Button
+											submit
+											busy={this.state.busy}
+											className="bordered-button">
+											Submit form
+										</Button>
+									</div>
 								</Form>
 
 								<h2 style={style.label}>Modal</h2>

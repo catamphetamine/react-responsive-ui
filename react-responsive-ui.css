@@ -2,14 +2,22 @@
 = Buttons                                                   =
 ===========================================================*/
 
-.rrui__button--primary .rrui__button__button,
-.rrui__button--primary .rrui__button__link
+.rrui__button
+{
+	color: #3678D1;
+}
+
+.rrui__button:active
+{
+	color: #4F9BFF;
+}
+
+.rrui__button--primary
 {
 	color : #03B2CB;
 }
 
-.rrui__button--primary .rrui__button__button:active,
-.rrui__button--primary .rrui__button__link:active
+.rrui__button--primary:active
 {
 	color: #2BD7F0;
 }
@@ -24,7 +32,7 @@
 
 	white-space: nowrap;
 
-	color: #3678D1;
+	color: inherit;
 
 	transition : color 30ms ease-out, opacity 150ms ease-out 100ms;
 }
@@ -32,13 +40,8 @@
 .rrui__button--busy .rrui__button__button,
 .rrui__button--busy .rrui__button__link
 {
+	opacity    : 0;
 	transition : color 30ms ease-out, opacity 200ms ease-out 300ms;
-}
-
-.rrui__button__button:active,
-.rrui__button__link:active
-{
-	color: #4F9BFF;
 }
 
 .rrui__button .rrui__activity-indicator
@@ -330,7 +333,6 @@
 	padding-left   : 1.5em;
 	vertical-align : bottom;
 	color          : inherit;
-	cursor         : default;
 }
 
 /* Checkbox label color */
