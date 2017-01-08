@@ -43,6 +43,3 @@ npm-debug.log
 
 # browser builds
 /bundle/
-
-# styles should be downloaded from GitHub and tweaked
-/styles/react-responsive-ui.css
