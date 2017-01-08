@@ -111,7 +111,9 @@ from 'react-responsive-ui'
         Click here to choose file for upload
       </FileUpload>
 
-      <Button submit>Submit</Button>
+      <Button>Button</Button>
+
+      <Button submit className="rrui__button--border">Submit</Button>
     </Form>
 
     <Modal

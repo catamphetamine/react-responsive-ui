@@ -2,26 +2,6 @@
 = Buttons                                                   =
 ===========================================================*/
 
-.rrui__button
-{
-	color: #3678D1;
-}
-
-.rrui__button:active
-{
-	color: #4F9BFF;
-}
-
-.rrui__button--primary
-{
-	color : #03B2CB;
-}
-
-.rrui__button--primary:active
-{
-	color: #2BD7F0;
-}
-
 .rrui__button__button,
 .rrui__button__link
 {
@@ -57,6 +37,84 @@
 .rrui__button--busy .rrui__activity-indicator
 {
 	transition-delay : 350ms;
+}
+
+/* Bordered button */
+
+.rrui__button--border .rrui__button__button,
+.rrui__button--border .rrui__button__link
+{
+	padding-left   : 1.6em;
+	padding-right  : 1.6em;
+	padding-top    : 0.7em;
+	padding-bottom : 0.55em;
+
+	border: 0.1em solid transparent;
+	border-radius: 0.3em;
+}
+
+.rrui__button--border,
+.rrui__button--border .rrui__button__button
+{
+	cursor: pointer;
+}
+
+.rrui__button--border .rrui__activity-indicator
+{
+	top  : 0.8em;
+	left : 0.5em;
+}
+
+.rrui__button--border.rrui__button--busy .rrui__button__button,
+.rrui__button--border.rrui__button--busy .rrui__button__link
+{
+	opacity: 1;
+}
+
+/* Button colors */
+
+.rrui__button
+{
+	color: #3678D1;
+}
+
+.rrui__button--border .rrui__button__button,
+.rrui__button--border .rrui__button__link
+{
+	border-color: #3678D1;
+}
+
+.rrui__button:active
+{
+	color: #4F9BFF;
+}
+
+.rrui__button--border:active .rrui__button__button,
+.rrui__button--border:active .rrui__button__link
+{
+	border-color: #4F9BFF;
+}
+
+.rrui__button--primary
+{
+	color : #03B2CB;
+}
+
+.rrui__button--primary.rrui__button--border .rrui__button__button,
+.rrui__button--primary.rrui__button--border .rrui__button__link
+{
+	border-color: #03B2CB;
+}
+
+.rrui__button--primary:active
+{
+	color: #2BD7F0;
+}
+
+.rrui__button--primary.rrui__button--border:active .rrui__button__button,
+.rrui__button--primary.rrui__button--border:active .rrui__button__link
+{
+	border-color: #2BD7F0;
 }
 
 /*===========================================================
