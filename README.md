@@ -142,7 +142,7 @@ This CSS file is meant as a base one and a developer should override the CSS rul
 An alternative way of including the base CSS file when using Webpack would be:
 
 ```js
-require('~/react-responsive-ui/styles/react-responsive-ui.css')
+require('react-responsive-ui/styles/react-responsive-ui.css')
 ```
 
 ## API
