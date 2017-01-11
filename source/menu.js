@@ -25,9 +25,18 @@ export default class Menu extends PureComponent
 		}))
 		.isRequired,
 
+		// Is `<Link/>` by default
+		itemComponent : PropTypes.func.isRequired,
+
 		// If `true`, then the menu is made a "slideout" one
 		// (i.e. the usual "hamburger" button menu)
 		slideout : PropTypes.bool
+	}
+
+	static propTypes =
+	{
+		// Is `<Link/>` by default
+		itemComponent : React_router_link
 	}
 
 	static contextTypes =
@@ -160,43 +169,9 @@ export default class Menu extends PureComponent
 
 	render_menu_link(item)
 	{
-		// if (React.isValidElement(item))
-		// {
-		// 	return React.cloneElement(item,
-		// 	{
-		// 		className : classNames(item.props.className, 'rrui__menu__item'),
-		// 		style     : item.props.style ? { ...style.menu_item_link, ...item.props.style } : style.menu_item_link
-		// 	})
-		// }
+		const Component = this.props.itemComponent
 
-		// Inner links get rendered via `react-router` `<Link/>`s
-		if (item.link[0] === '/')
-		{
-			const markup =
-			(
-				<Link
-					to={item.link}
-					style={style.menu_item_link}
-					className="rrui__menu__item"
-					activeClassName="rrui__menu__item--selected">
-					{item.name}
-				</Link>
-			)
-
-			return markup
-		}
-
-		const markup =
-		(
-			<a
-				href={item.link}
-				style={style.menu_item_link}
-				className="rrui__menu__item">
-				{item.name}
-			</a>
-		)
-
-		return markup
+		return <Component to={ item.link }>{ item.name }</Component>
 	}
 
 	// calculate_width()
@@ -204,6 +179,38 @@ export default class Menu extends PureComponent
 	// 	const dom_node = ReactDOM.findDOMNode(this.menu)
 	// 	this.props.updateWidth(dom_node.offsetWidth)
 	// }
+}
+
+const function React_router_link({ to, children })
+{
+	// Inner links get rendered via `react-router` `<Link/>`s
+	if (to && to[0] === '/')
+	{
+		const markup =
+		(
+			<Link
+				to={ to }
+				style={ style.menu_item_link }
+				className="rrui__menu__item"
+				activeClassName="rrui__menu__item--selected">
+				{ children }
+			</Link>
+		)
+
+		return markup
+	}
+
+	const markup =
+	(
+		<a
+			href={ to }
+			style={ style.menu_item_link }
+			className="rrui__menu__item">
+			{ children }
+		</a>
+	)
+
+	return markup
 }
 
 const style = styler
