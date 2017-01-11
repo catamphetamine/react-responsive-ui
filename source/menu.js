@@ -33,7 +33,7 @@ export default class Menu extends PureComponent
 		slideout : PropTypes.bool
 	}
 
-	static propTypes =
+	static defaultProps =
 	{
 		// Is `<Link/>` by default
 		itemComponent : React_router_link
