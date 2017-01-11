@@ -2,100 +2,100 @@ export
 {
 	default as PageAndMenu
 }
-from './source/page and menu'
+from './es6/page and menu'
 
 export
 {
 	default as Page
 }
-from './source/page'
+from './es6/page'
 
 export
 {
 	default as Menu
 }
-from './source/menu'
+from './es6/menu'
 
 export
 {
 	default as MenuButton
 }
-from './source/menu button'
+from './es6/menu button'
 
 export
 {
 	default as Form
 }
-from './source/form'
+from './es6/form'
 
 export
 {
 	default as Snackbar
 }
-from './source/snackbar'
+from './es6/snackbar'
 
 export
 {
 	default as Tooltip
 }
-from './source/tooltip'
+from './es6/tooltip'
 
 export
 {
 	default as ActivityIndicator
 }
-from './source/activity indicator'
+from './es6/activity indicator'
 
 export
 {
 	default as TextInput
 }
-from './source/text input'
+from './es6/text input'
 
 export
 {
 	default as Select
 }
-from './source/select'
+from './es6/select'
 
 export
 {
 	default as Button
 }
-from './source/button'
+from './es6/button'
 
 export
 {
 	default as Switch
 }
-from './source/switch'
+from './es6/switch'
 
 export
 {
 	default as Checkbox
 }
-from './source/checkbox'
+from './es6/checkbox'
 
 export
 {
 	default as SegmentedControl
 }
-from './source/segmented control'
+from './es6/segmented control'
 
 export
 {
 	default as DatePicker
 }
-from './source/date picker'
+from './es6/date picker'
 
 export
 {
 	default as FileUpload
 }
-from './source/file upload'
+from './es6/file upload'
 
 export
 {
 	default as Modal
 }
-from './source/modal'
+from './es6/modal'

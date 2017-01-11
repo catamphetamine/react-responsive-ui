@@ -30,6 +30,7 @@ npm-debug.log
 
 # browser builds
 /bundle/
+/es6/
 
 # demo page
 /demo/

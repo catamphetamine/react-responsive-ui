@@ -144,9 +144,9 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		// Ignore mouse wheel clicks
-		// and clicks with a modifier key pressed
-		if (event.nativeEvent.which === 2
+		// Only handle left mouse button clicks
+		// ignoring those ones with a modifier key pressed
+		if (event.button !== 0
 			|| event.shiftKey
 			|| event.altKey
 			|| event.ctrlKey
