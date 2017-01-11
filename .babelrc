@@ -25,7 +25,8 @@
 
 			"plugins":
 			[
-				"transform-runtime"
+				"transform-runtime",
+				"transform-react-display-name"
 			]
 		},
 		"es6":
@@ -40,8 +41,7 @@
 			"plugins":
 			[
 				"transform-runtime",
-				"transform-react-display-name",
-				"transform-decorators-legacy"
+				"transform-react-display-name"
 			]
 		}
 	}
