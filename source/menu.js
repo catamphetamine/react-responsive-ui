@@ -181,7 +181,7 @@ export default class Menu extends PureComponent
 	// }
 }
 
-const function React_router_link({ to, children })
+function React_router_link({ to, children })
 {
 	// Inner links get rendered via `react-router` `<Link/>`s
 	if (to && to[0] === '/')
