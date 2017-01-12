@@ -54,8 +54,11 @@ export default class Text_input extends PureComponent
 		// Autofocuses the input field
 		focus            : PropTypes.bool,
 
-		// `<textarea/>` row count
+		// `<textarea/>` `rows` attribute (row count, i.e. height)
 		rows             : PropTypes.number.isRequired,
+
+		// `<textarea/>` `cols` attribute (column count, i.e. width)
+		cols             : PropTypes.number,
 
 		// CSS style object
 		style            : PropTypes.object,
@@ -182,7 +185,7 @@ export default class Text_input extends PureComponent
 	render_input(options = {})
 	{
 		const { placeholder, ref, name } = options
-		const { value, multiline, focus, onChange, disabled, inputStyle, rows } = this.props
+		const { value, multiline, focus, onChange, disabled, inputStyle, rows, cols } = this.props
 
 		const properties =
 		{
@@ -203,6 +206,7 @@ export default class Text_input extends PureComponent
 			// maybe add autoresize for textarea (smoothly animated)
 			return <textarea
 				rows={rows}
+				cols={cols}
 				onInput={this.autoresize}
 				onKeyUp={this.autoresize}
 				{...properties}/>
