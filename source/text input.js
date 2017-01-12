@@ -310,7 +310,6 @@ const style = styler
 
 	label
 		position : absolute
-		left     : 0
 
 		-webkit-user-select : none
 		-moz-user-select    : none
