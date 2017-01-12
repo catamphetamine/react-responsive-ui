@@ -778,6 +778,7 @@ but introduces page width jumps.
 
 .rrui__text-input label
 {
+	left       : 0;
 	top        : 0.15rem;
 	margin-top : 0.75rem;
 
