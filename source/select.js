@@ -938,7 +938,9 @@ export default class Select extends PureComponent
 						// If an item is focused
 						// (which may not be a case
 						//  when autocomplete is matching no items)
-						if (focused_option_value)
+						// (still for non-autocomplete select
+						//  it is valid to have a default option)
+						if (!autocomplete || focused_option_value)
 						{
 							// Choose the focused item
 							this.item_clicked(focused_option_value)
@@ -960,7 +962,7 @@ export default class Select extends PureComponent
 
 					return
 
-				// Open on Spacebar
+				// on Spacebar
 				case 32:
 					// Choose the focused item on Enter
 					if (expanded)
@@ -970,11 +972,12 @@ export default class Select extends PureComponent
 						{
 							event.preventDefault()
 
-							if (focused_option_value)
-							{
-								this.item_clicked(focused_option_value)
-								this.toggle()
-							}
+							// `focused_option_value` could be non-existent
+							// in case of `autocomplete`, but since
+							// we're explicitly not handling autocomplete here
+							// it is valid to select any options including the default ones.
+							this.item_clicked(focused_option_value)
+							this.toggle()
 						}
 					}
 					// Expand the select otherwise
