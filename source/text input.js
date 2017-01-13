@@ -114,17 +114,17 @@ export default class Text_input extends PureComponent
 		}
 		= this.props
 
-		let input_style = this.props.style
+		let container_style = this.props.style
 
 		if (label)
 		{
-			input_style = { ...style.input_with_label, ...input_style }
+			container_style = { ...style.input_with_label, ...container_style }
 		}
 
 		const markup =
 		(
 			<div
-				style={input_style}
+				style={container_style}
 				className={classNames
 				(
 					'rrui__rich',
@@ -197,7 +197,7 @@ export default class Text_input extends PureComponent
 			onKeyDown   : this.on_key_down,
 			disabled,
 			className   : 'rrui__text-input__field',
-			style       : inputStyle,
+			style       : inputStyle ? { ...style.input, ...inputStyle } : style.input,
 			autoFocus   : focus
 		}
 
@@ -305,6 +305,9 @@ export default class Text_input extends PureComponent
 
 const style = styler
 `
+	input
+		font-size : inherit
+
 	input_with_label
 		position : relative
 

@@ -24,9 +24,9 @@ export default class Select extends PureComponent
 			PropTypes.shape
 			({
 				// Option value
-				value : React.PropTypes.string.isRequired,
+				value : React.PropTypes.string,
 				// Option label
-				label : React.PropTypes.string.isRequired,
+				label : React.PropTypes.string,
 				// Option icon
 				icon  : React.PropTypes.node
 			})
@@ -258,7 +258,7 @@ export default class Select extends PureComponent
 		{
 			list_items = options.map(({ value, label, icon }, index) =>
 			{
-				return this.render_list_item({ value, label, icon: !saveOnIcons && icon, overflow })
+				return this.render_list_item({ index, value, label, icon: !saveOnIcons && icon, overflow })
 			})
 		}
 		// Else, if a list of options is supplied as a set of child React elements,
@@ -286,39 +286,34 @@ export default class Select extends PureComponent
 						'rrui__select--expanded'  : this.state.expanded,
 						'rrui__select--collapsed' : !this.state.expanded
 					}
-				)}
-				style={this.props.style}>
+				)}>
 
-				{/* List container */}
-				<div style={style.container}>
+				{/* Currently selected item */}
+				{!menu && this.render_selected_item()}
 
-					{/* Currently selected item */}
-					{!menu && this.render_selected_item()}
+				{/* Menu toggler */}
+				{menu &&
+					<div ref={ref => this.menu_toggler} style={style.menu_toggler}>
+						{React.cloneElement(toggler, { onClick : this.toggle })}
+					</div>
+				}
 
-					{/* Menu toggler */}
-					{menu &&
-						<div ref={ref => this.menu_toggler} style={style.menu_toggler}>
-							{React.cloneElement(toggler, { onClick : this.toggle })}
-						</div>
-					}
-
-					{/* The list of selectable options */}
-					{/* Math.max(this.state.height, this.props.max_height) */}
-					<ul
-						ref={ref => this.list = ref}
-						style={list_style}
-						className={classNames
-						(
-							'rrui__select__options',
-							{
-								'rrui__select__options--expanded'             : this.state.expanded,
-								'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
-								'rrui__select__options--simple-right-aligned' : !children && alignment === 'right'
-							}
-						)}>
-						{list_items}
-					</ul>
-				</div>
+				{/* The list of selectable options */}
+				{/* Math.max(this.state.height, this.props.max_height) */}
+				<ul
+					ref={ref => this.list = ref}
+					style={list_style}
+					className={classNames
+					(
+						'rrui__select__options',
+						{
+							'rrui__select__options--expanded'             : this.state.expanded,
+							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
+							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right'
+						}
+					)}>
+					{list_items}
+				</ul>
 
 				{/* Fallback in case javascript is disabled */}
 				{!this.state.javascript && this.render_static()}
@@ -328,7 +323,7 @@ export default class Select extends PureComponent
 		return markup
 	}
 
-	render_list_item({ element, value, label, icon, overflow }) // , first, last
+	render_list_item({ index, element, value, label, icon, overflow }) // , first, last
 	{
 		const { disabled, menu, scrollbarPadding } = this.props
 		const { focused_option_value } = this.state
@@ -424,14 +419,14 @@ export default class Select extends PureComponent
 		const markup =
 		(
 			<li
-				key={value}
-				ref={ref => this.options[value] = ref}
-				className={classNames
+				key={ typeof index !== undefined ? `${index} ${value}` : value }
+				ref={ ref => this.options[value] = ref }
+				className={ classNames
 				({
 					'rrui__select__separator-option' : element && element.type === Select.Separator
-				})}
-				style={list_item_style}>
-				{button}
+				}) }
+				style={ list_item_style }>
+				{ button }
 			</li>
 		)
 
@@ -540,13 +535,13 @@ export default class Select extends PureComponent
 					{
 						options
 						?
-						options.map(item =>
+						options.map((item, i) =>
 						{
 							return <option
 								className="rrui__select__option"
-								key={item.value}
-								value={item.value}>
-								{item.label}
+								key={ `${i} ${item.value}` }
+								value={ item.value }>
+								{ item.label }
 							</option>
 						})
 						:
@@ -554,9 +549,9 @@ export default class Select extends PureComponent
 						{
 							return <option
 								className="rrui__select__option"
-								key={child.props.value}
-								value={child.props.value}>
-								{child.props.label}
+								key={ child.props.value }
+								value={ child.props.value }>
+								{ child.props.label }
 							</option>
 						})
 					}
@@ -1130,12 +1125,9 @@ Select.Separator = function(props)
 const style = styler
 `
 	wrapper
-		display        : inline-block
-		vertical-align : bottom
-
-	container
 		position   : relative
-		text-align : inherit
+		display    : inline-block
+		// text-align : inherit
 
 		-webkit-user-select : none
 		-moz-user-select    : none
