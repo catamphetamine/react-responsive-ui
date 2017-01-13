@@ -265,7 +265,10 @@ export default class Select extends PureComponent
 		// then render those elements.
 		else
 		{
-			list_items = React.Children.map(children, element => this.render_list_item({ element }))
+			list_items = React.Children.map(children, (element, index) =>
+			{
+				return this.render_list_item({ index, element })
+			})
 		}
 
 		const wrapper_style = { ...style.wrapper, textAlign: alignment }
@@ -335,7 +338,7 @@ export default class Select extends PureComponent
 			value = element.props.value
 		}
 
-		const is_focused = value !== undefined && value === focused_option_value
+		const is_focused = value === focused_option_value
 
 		let list_item_style = { textAlign: 'left' }
 
@@ -416,11 +419,20 @@ export default class Select extends PureComponent
 			</button>
 		}
 
+		// There can be an `undefined` value,
+		// so just `{ value }` won't do here,
+		// and `{ `${value}` }` is not ideal too,
+		// because there theoretically can be a value `"undefined"`.
+		const key = `${index} ${value}`
+
+		// Using just `index` for `ref`s is safe
+		// because when `key` changes then the `ref` is updated
+		// so there won't be inconsistencies.
 		const markup =
 		(
 			<li
-				key={ typeof index !== undefined ? `${index} ${value}` : value }
-				ref={ ref => this.options[value] = ref }
+				key={ key }
+				ref={ ref => this.options[index] = ref }
 				className={ classNames
 				({
 					'rrui__select__separator-option' : element && element.type === Select.Separator
@@ -576,17 +588,39 @@ export default class Select extends PureComponent
 			return options.filter(x => x.value === value)[0]
 		}
 
-		let selected
+		let option
 
 		React.Children.forEach(children, function(child)
 		{
 			if (child.props.value === value)
 			{
-				selected = child
+				option = child
 			}
 		})
 
-		return selected
+		return option
+	}
+
+	get_option_index(option)
+	{
+		const { options, children } = this.props
+
+		if (options)
+		{
+			return options.indexOf(option)
+		}
+
+		let option_index
+
+		React.Children.forEach(children, function(child, index)
+		{
+			if (child.props.value === option.value)
+			{
+				option_index = index
+			}
+		})
+
+		return option_index
 	}
 
 	get_selected_option_label()
@@ -690,7 +724,7 @@ export default class Select extends PureComponent
 				this.setState({ focused_option_value })
 
 				// Scroll down to the focused option
-				this.scroll_to(focused_option_value)
+				this.scroll_to(this.get_option(focused_option_value))
 			}
 
 			// If it's autocomplete, then focus <input/> field
@@ -847,12 +881,12 @@ export default class Select extends PureComponent
 				case 38:
 					event.preventDefault()
 
-					const previous = this.previous_focusable_option_value()
+					const previous = this.previous_focusable_option()
 
-					if (previous !== undefined)
+					if (previous)
 					{
 						this.show_option(previous, 'top')
-						return this.setState({ focused_option_value: previous })
+						return this.setState({ focused_option_value: previous.value })
 					}
 
 					return
@@ -861,12 +895,12 @@ export default class Select extends PureComponent
 				case 40:
 					event.preventDefault()
 
-					const next = this.next_focusable_option_value()
+					const next = this.next_focusable_option()
 
-					if (next !== undefined)
+					if (next)
 					{
 						this.show_option(next, 'bottom')
-						return this.setState({ focused_option_value: next })
+						return this.setState({ focused_option_value: next.value })
 					}
 
 					return
@@ -961,7 +995,7 @@ export default class Select extends PureComponent
 	}
 
 	// Get the previous value (relative to the currently focused value)
-	previous_focusable_option_value()
+	previous_focusable_option()
 	{
 		const options = this.get_options()
 		const { focused_option_value } = this.state
@@ -973,7 +1007,7 @@ export default class Select extends PureComponent
 			{
 				if (i - 1 >= 0)
 				{
-					return options[i - 1].value
+					return options[i - 1]
 				}
 			}
 			i++
@@ -981,7 +1015,7 @@ export default class Select extends PureComponent
 	}
 
 	// Get the next value (relative to the currently focused value)
-	next_focusable_option_value()
+	next_focusable_option()
 	{
 		const options = this.get_options()
 		const { focused_option_value } = this.state
@@ -993,7 +1027,7 @@ export default class Select extends PureComponent
 			{
 				if (i + 1 < options.length)
 				{
-					return options[i + 1].value
+					return options[i + 1]
 				}
 			}
 			i++
@@ -1001,16 +1035,18 @@ export default class Select extends PureComponent
 	}
 
 	// Scrolls to an option having the value
-	scroll_to(value)
+	scroll_to(option)
 	{
-		const option_element = ReactDOM.findDOMNode(this.options[value])
+		const index = this.get_option_index(option)
+		const option_element = ReactDOM.findDOMNode(this.options[index])
 		ReactDOM.findDOMNode(this.list).scrollTop = option_element.offsetTop
 	}
 
 	// Fully shows an option (scrolls to it if neccessary)
-	show_option(value, gravity)
+	show_option(option, gravity)
 	{
-		const option_element = ReactDOM.findDOMNode(this.options[value])
+		const index = this.get_option_index(option)
+		const option_element = ReactDOM.findDOMNode(this.options[index])
 		const list = ReactDOM.findDOMNode(this.list)
 
 		switch (gravity)
