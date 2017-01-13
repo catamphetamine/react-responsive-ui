@@ -338,7 +338,7 @@ export default class Select extends PureComponent
 			value = element.props.value
 		}
 
-		const is_focused = value === focused_option_value
+		const is_focused = !menu && value === focused_option_value
 
 		let list_item_style = { textAlign: 'left' }
 
