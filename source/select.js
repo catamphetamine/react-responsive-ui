@@ -940,7 +940,7 @@ export default class Select extends PureComponent
 						//  when autocomplete is matching no items)
 						// (still for non-autocomplete select
 						//  it is valid to have a default option)
-						if (!autocomplete || focused_option_value)
+						if (get_options() && get_options().length > 0)
 						{
 							// Choose the focused item
 							this.item_clicked(focused_option_value)
@@ -967,8 +967,9 @@ export default class Select extends PureComponent
 					// Choose the focused item on Enter
 					if (expanded)
 					{
-						// ... only if it's not an autocomplete
-						if (!autocomplete)
+						// only if it it's an `options` select
+						// and also if it's not an autocomplete
+						if (get_options() && !autocomplete)
 						{
 							event.preventDefault()
 
@@ -994,7 +995,10 @@ export default class Select extends PureComponent
 
 	get_options()
 	{
-		return this.props.autocomplete ? this.state.filtered_options : this.props.options
+		const { autocomplete, options } = this.props
+		const { filtered_options } = this.state
+
+		return autocomplete ? filtered_options : options
 	}
 
 	// Get the previous value (relative to the currently focused value)
