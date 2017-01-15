@@ -576,7 +576,9 @@ export default class Select extends PureComponent
 
 	get_selected_option()
 	{
-		return this.get_option(this.props.value)
+		const { value } = this.props
+
+		return this.get_option(value)
 	}
 
 	get_option(value)
@@ -629,15 +631,17 @@ export default class Select extends PureComponent
 
 		const selected = this.get_selected_option()
 
-		if (selected)
+		if (!selected)
 		{
-			if (options)
-			{
-				return selected.label
-			}
-
-			return selected.props.label
+			return
 		}
+
+		if (options)
+		{
+			return selected.label
+		}
+
+		return selected.props.label
 	}
 
 	overflown()
@@ -940,7 +944,7 @@ export default class Select extends PureComponent
 						//  when autocomplete is matching no items)
 						// (still for non-autocomplete select
 						//  it is valid to have a default option)
-						if (get_options() && get_options().length > 0)
+						if (this.get_options() && this.get_options().length > 0)
 						{
 							// Choose the focused item
 							this.item_clicked(focused_option_value)
@@ -969,7 +973,7 @@ export default class Select extends PureComponent
 					{
 						// only if it it's an `options` select
 						// and also if it's not an autocomplete
-						if (get_options() && !autocomplete)
+						if (this.get_options() && !autocomplete)
 						{
 							event.preventDefault()
 

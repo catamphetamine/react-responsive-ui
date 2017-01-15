@@ -4,7 +4,7 @@
 		{
 			"follow_symlinks": true,
 			"path": ".",
-			"folder_exclude_patterns": ["react-responsive-ui/node_modules", "react-responsive-ui/coverage", "react-responsive-ui/build", "react-responsive-ui/es6", "react-responsive-ui/lib", "project.sublime-workspace"]
+			"folder_exclude_patterns": ["react-responsive-ui/node_modules", "react-responsive-ui/coverage", "react-responsive-ui/bundle", "react-responsive-ui/build", "react-responsive-ui/es6", "react-responsive-ui/lib", "project.sublime-workspace"]
 		}
 	],
 	"settings":
