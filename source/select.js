@@ -1187,7 +1187,8 @@ const style = styler
 	list
 		position        : absolute
 		z-index         : 1
-		margin          : 0
+		margin-top      : 0
+		margin-bottom   : 0
 		padding         : 0
 		list-style-type : none
 		overflow-x      : hidden

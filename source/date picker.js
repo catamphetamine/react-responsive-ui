@@ -114,9 +114,9 @@ export default class DatePicker extends PureComponent {
 
   handleInputChange(event) {
     const { value } = event.target;
-    const { onChange } = this.props;
+    const { onChange, format } = this.props;
 
-    const selectedDay = parseDate(value);
+    const selectedDay = parseDate(value, format);
 
     if (!selectedDay) {
       onChange(undefined);
@@ -184,8 +184,8 @@ export default class DatePicker extends PureComponent {
   }
 }
 
-function parseDate(textValue) {
-  const momentDay = moment(textValue, 'L', true);
+function parseDate(textValue, format) {
+  const momentDay = moment(textValue, format, true);
   if (!momentDay.isValid()) {
     return;
   }
@@ -193,7 +193,7 @@ function parseDate(textValue) {
 }
 
 function formatDate(date, format) {
-  return moment(date).format('L');
+  return moment(date).format(format);
 }
 
 const datePickerContainerStyle = {
