@@ -1,224 +1,281 @@
 // Derived from `react-day-picker` example
 // http://react-day-picker.js.org/examples/?overlay
 
-import React, { PureComponent, PropTypes } from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import classNames from 'classnames';
+import React, { PureComponent, PropTypes } from 'react'
+import DayPicker, { DateUtils } from 'react-day-picker'
+import classNames from 'classnames'
 
-import moment from 'moment';
+import moment from 'moment'
 
 // `date-fns` would be a better alternative to moment
 // but it doesn't support templated date parsing
 // until version `2.0.0` of it is released.
 // https://github.com/date-fns/date-fns/issues/347
-// import parseDate from 'date-fns/parse';
-// import formatDate from 'date-fns/format';
+// import parse_date from 'date-fns/parse'
+// import format_date from 'date-fns/format'
 
-export default class DatePicker extends PureComponent {
+export default class DatePicker extends PureComponent
+{
+	static propTypes =
+	{
+		// `0` means "Sunday", `1` means "Monday", etc.
+		// (is `0` by default)
+		firstDayOfWeek: PropTypes.number.isRequired,
 
-  static propTypes = {
-    // `0` means "Sunday", `1` means "Monday", etc.
-    // (is `0` by default)
-    firstDayOfWeek: PropTypes.number.isRequired,
+		// Date format
+		// http://momentjs.com/docs/#/displaying/
+		// (is `DD/MM/YYYY` by default)
+		format: PropTypes.string.isRequired,
+		// format: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 
-    // Date format
-    // http://momentjs.com/docs/#/displaying/
-    // (is `DD/MM/YYYY` by default)
-    format: PropTypes.string.isRequired,
-    // format: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+		// Internationalization
+		// locale: PropTypes.string,
 
-    // Internationalization
-    // locale: PropTypes.string,
+		// The Date `value`
+		value: PropTypes.instanceOf(Date),
 
-    // The Date `value`
-    value: PropTypes.instanceOf(Date),
+		// Writes new `value`
+		onChange: PropTypes.func.isRequired,
 
-    // Writes new `value`
-    onChange: PropTypes.func.isRequired,
+		// CSS class
+		className: PropTypes.string,
 
-    // CSS class
-    className: PropTypes.string,
+		// CSS style object
+		style: PropTypes.object
+	}
 
-    // CSS style object
-    style: PropTypes.object
-  }
+	static defaultProps =
+	{
+		format: 'DD/MM/YYYY',
+		// locale: 'en-US',
+		firstDayOfWeek: 0
+	}
 
-  static defaultProps = {
-    format: 'DD/MM/YYYY',
-    // locale: 'en-US',
-    firstDayOfWeek: 0
-  }
+	state =
+	{
+		editing       : false,
+		show_calendar : false,
+		text_value    : '',
+		selected_day  : null
+	}
 
-  state = {
-    showOverlay: false,
-    textValue: '',
-    selectedDay: null
-  };
+	constructor(props)
+	{
+		super(props)
 
-  constructor(props) {
-    super(props);
+		// const { value, format } = props
 
-    if (props.value) {
-      this.state.textValue = formatDate(props.value, props.format);
-    }
+		// if (value)
+		// {
+		// 	this.state.text_value = format_date(value, format)
+		// }
 
-    this.handleDayClick = this.handleDayClick.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputFocus = this.handleInputFocus.bind(this);
-    this.handleInputBlur = this.handleInputBlur.bind(this);
-    this.handleContainerMouseDown = this.handleContainerMouseDown.bind(this);
-  }
+		this.on_day_click    = this.on_day_click.bind(this)
+		this.on_input_change = this.on_input_change.bind(this)
+		this.on_input_focus  = this.on_input_focus.bind(this)
+		this.on_input_blur   = this.on_input_blur.bind(this)
+		this.on_mouse_down   = this.on_mouse_down.bind(this)
+	}
 
-  componentWillUnmount() {
-    clearTimeout(this.clickTimeout);
-  }
+	componentWillUnmount()
+	{
+		clearTimeout(this.clicked_inside_reset_timeout)
+	}
 
-  handleContainerMouseDown() {
-    this.clickedInside = true;
-    // The input's onBlur method is called from a queue right after onMouseDown event.
-    // setTimeout adds another callback in the queue, but is called later than onBlur event
-    this.clickTimeout = setTimeout(() => {
-      this.clickedInside = false;
-    }, 0);
-  }
+	on_mouse_down()
+	{
+		this.clicked_inside = true
+		// The `<input/>`'s `onBlur` method is called
+		// from a queue right after `onMouseDown` event on the calendar.
+		// Therefore `setTimeout` can be used to immediately
+		// clear the `clicked_inside` flag (right after setting it)
+		// in such a way that its lifetime is sufficient
+		// for `on_input_blur()` to process it correctly.
+		this.clicked_inside_reset_timeout = setTimeout(() => this.clicked_inside = false, 0)
+	}
 
-  handleInputFocus() {
-    this.setState({
-      showOverlay: true
-    });
-  }
+	on_input_focus()
+	{
+		const { value, format } = this.props
 
-  handleInputBlur() {
-    const showOverlay = this.clickedInside;
+		this.setState
+		({
+			editing       : true,
+			text_value    : format_date(value, format),
+			show_calendar : true
+		})
+	}
 
-    this.setState({
-      showOverlay
-    });
+	on_input_blur()
+	{
+		// Don't hide the calendar when `mouseDown`ing a day in it.
+		// The calendar will be hidden later when `click` handler fires.
+		// Force input's focus if blur event was caused by clicking on the calendar
+		if (this.clicked_inside)
+		{
+			return this.input.focus()
+		}
 
-    // Force input's focus if blur event was caused by clicking on the calendar
-    if (showOverlay) {
-      this.input.focus();
-    }
+		this.setState
+		({
+			editing       : false,
+			text_value    : undefined,
+			show_calendar : false
+		})
 
-    // Let the `onChange` handler fire after this `onBlur`
-    // in case when a user clicked a day in the calendar
-    // and the `value` is still the old one.
-    setTimeout(() => {
-      // If an entered date isn't valid then clear the <input/> field
-      const { value } = this.props;
-      if (!value) {
-        this.setState({ textValue: '' });
-      }
-    }, 0);
-  }
+		// `onChange` fires on calendar day `click`
+		// but the `value` hasn't neccessarily been updated yet,
+		// therefore, say, if `value` was not set
+		// and a user select a day in the calendar
+		// then the `value` is technically still `undefined`
+		// so can't just set `state.text_value = format_date(value)` here.
+		//
+		// Analogous, `setState({ text_value })` has been called
+		// in calendar day `onClick` but `state.text_value`
+		// hasn't neccessarily been updated yet.
+		//
+		// Still must validate (recompute) `text_value` on `<input/>` blur
+		// in cases when a user manually typed in a date and then tabbed away.
+		//
+		// So, if the entered date isn't valid
+		// then clear the `<input/>` field.
 
-  handleInputChange(event) {
-    const { value } = event.target;
-    const { onChange, format } = this.props;
+		// const { text_value } = this.state
+		// const { format } = this.props
 
-    const selectedDay = parseDate(value, format);
+		// if (!parse_date(text_value, format))
+		// {
+		// 	this.setState({ text_value: '' })
+		// }
+	}
 
-    if (!selectedDay) {
-      onChange(undefined);
-      return this.setState({ textValue: value });
-    }
+	on_input_change(event)
+	{
+		const { value } = event.target
+		const { onChange, format } = this.props
 
-    onChange(selectedDay);
+		const selected_day = parse_date(value, format)
 
-    this.setState({
-      textValue: value
-    }, () => {
-      this.daypicker.showMonth(selectedDay);
-    });
-  }
+		if (!selected_day)
+		{
+			return this.setState({ text_value: value })
+		}
 
-  handleDayClick(event, selectedDay) {
-    const { format, onChange } = this.props;
+		onChange(selected_day)
 
-    onChange(selectedDay);
+		this.setState
+		({
+			text_value: value
+		},
+		() => this.daypicker.showMonth(selected_day))
+	}
 
-    this.setState({
-      textValue: formatDate(selectedDay, format),
-      showOverlay: false
-    });
+	on_day_click(event, selected_day)
+	{
+		const { format, onChange } = this.props
 
-    this.input.blur();
-  }
+		// `onChange` fires but the `value`
+		// hasn't neccessarily been updated yet
+		onChange(selected_day)
 
-  render() {
-    const { format, value, firstDayOfWeek, className, style } = this.props;
-    const { textValue, showOverlay } = this.state;
+		this.setState
+		({
+			// text_value: format_date(selected_day, format),
+			show_calendar: false
+		})
 
-    return (
-      <div
-        onMouseDown={ this.handleContainerMouseDown }
-        className={ classNames('rrui__date-picker', className) }
-        style={ style }>
+		this.input.blur()
+	}
 
-        <input
-          type="text"
-          ref={ ref => this.input = ref }
-          placeholder={ typeof format === 'string' ? format : undefined }
-          value={ textValue }
-          onChange={ this.handleInputChange }
-          onFocus={ this.handleInputFocus }
-          onBlur={ this.handleInputBlur }
-          className="rrui__date-picker__input"/>
+	render()
+	{
+		const { format, value, firstDayOfWeek, className, style } = this.props
+		const { editing, text_value, show_calendar } = this.state
 
-        { showOverlay &&
-          <div style={ { position: 'relative' } }>
-            {/* <DayPicker/> doesn't support `style` property */}
-            <div style={ datePickerContainerStyle }>
-              <DayPicker
-                ref={ ref => this.daypicker = ref }
-                initialMonth={ value }
-                firstDayOfWeek={ firstDayOfWeek }
-                onDayClick={ this.handleDayClick }
-                selectedDays={ day => DateUtils.isSameDay(value, day) }
-                className="rrui__date-picker__calendar"/>
-            </div>
-          </div>
-        }
-      </div>
-    );
-  }
+		return (
+			<div
+				onMouseDown={ this.on_mouse_down }
+				className={ classNames('rrui__date-picker', className) }
+				style={ style }>
+
+				<input
+					type="text"
+					ref={ ref => this.input = ref }
+					placeholder={ typeof format === 'string' ? format : undefined }
+					value={ editing ? text_value : format_date(value, format) }
+					onChange={ this.on_input_change }
+					onFocus={ this.on_input_focus }
+					onBlur={ this.on_input_blur }
+					className="rrui__date-picker__input"/>
+
+				{/* <DayPicker/> doesn't support `style` property */}
+				{ show_calendar &&
+					<div style={ calendar_container_style }>
+						<DayPicker
+							ref={ ref => this.daypicker = ref }
+							initialMonth={ value }
+							firstDayOfWeek={ firstDayOfWeek }
+							onDayClick={ this.on_day_click }
+							selectedDays={ day => DateUtils.isSameDay(value, day) }
+							className="rrui__date-picker__calendar"/>
+					</div>
+				}
+			</div>
+		)
+	}
 }
 
-function parseDate(textValue, format) {
-  const momentDay = moment(textValue, format, true);
-  if (!momentDay.isValid()) {
-    return;
-  }
-  return momentDay.toDate();
+function parse_date(text_value, format)
+{
+	if (!text_value)
+	{
+		return
+	}
+
+	const moment_day = moment(text_value, format, true)
+
+	if (!moment_day.isValid())
+	{
+		return
+	}
+
+	return moment_day.toDate()
 }
 
-function formatDate(date, format) {
-  return moment(date).format(format);
+function format_date(date, format)
+{
+	if (!date)
+	{
+		return ''
+	}
+
+	return moment(date).format(format)
 }
 
-const datePickerContainerStyle = {
-  position: 'absolute',
-  zIndex: 1
+const calendar_container_style =
+{
+	position : 'absolute',
+	zIndex   : 1
 }
 
 // // Intl date formatting
 //
-// const dateFormatters = {};
+// const dateFormatters = {}
 //
-// function formatDateIntl(date, locale) {
+// function format_dateIntl(date, locale) {
 //   if (typeof Intl === 'undefined') {
-//     return date.toISOString();
+//     return date.toISOString()
 //   }
 //
-//   const key = typeof locale === 'string' ? locale : locale.join(',');
+//   const key = typeof locale === 'string' ? locale : locale.join(',')
 //
 //   if (!dateFormatters[key]) {
 //     dateFormatters[key] = new Intl.DateTimeFormat(locale, {
 //       day: '2-digit',
 //       month: '2-digit',
 //       year: 'numeric'
-//     });
+//     })
 //   }
 //
-//   return dateFormatters[key];
+//   return dateFormatters[key]
 // }
