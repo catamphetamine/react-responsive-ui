@@ -51,11 +51,18 @@ from 'react-responsive-ui'
     ]}/>
 
   <Page>
-    <MenuButton/>
+    <MenuButton title="Show menu"/>
 
-    <Snackbar value="That's the snackbar on the bottom of the screen"/>
+    <Snackbar
+      value={ this.state.snack }
+      reset={ () => this.setState({ snack: undefined }) }/>
 
-    <Tooltip text="A tooltip">Hover this</Tooltip>
+    <Button
+      action={ () => this.setState({ snack: Math.random() }) }>
+      Show a snack notification
+    </Button>
+
+    <Tooltip text="A tooltip">Hover this for a tooltip</Tooltip>
 
     <ActivityIndicator/>
 
