@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 import Activity_indicator from './activity indicator'
@@ -42,31 +42,42 @@ export default class Button extends PureComponent
 		buttonStyle     : PropTypes.object
 	}
 
-	constructor(props)
+	constructor()
 	{
-		super(props)
+		super()
 
-		this.link_on_click = this.link_on_click.bind(this)
+		this.link_on_click   = this.link_on_click.bind(this)
 		this.button_on_click = this.button_on_click.bind(this)
 	}
 
 	render()
 	{
-		const { busy, primary, submit, title, className } = this.props
+		const
+		{
+			disabled,
+			busy,
+			primary,
+			submit,
+			title,
+			style,
+			className
+		}
+		= this.props
 
 		const markup =
 		(
 			<div
-				className={classNames('rrui__button', className,
+				className={ classNames('rrui__button', className,
 				{
-					'rrui__button--primary' : primary || submit,
-					'rrui__button--busy'    : busy
-				})}
-				style={ this.props.style ? { ...style.container, ...this.props.style } : style.container }>
+					'rrui__button--primary'  : primary || submit,
+					'rrui__button--busy'     : busy,
+					'rrui__button--disabled' : disabled
+				}) }
+				style={ style ? { ...styles.container, ...style } : styles.container }>
 
-				<Activity_indicator style={ busy ? style.spinner : style.spinner_hide }/>
+				<Activity_indicator style={ busy ? styles.spinner : styles.spinner_hide }/>
 
-				{this.render_button()}
+				{ this.render_button() }
 			</div>
 		)
 
@@ -93,7 +104,7 @@ export default class Button extends PureComponent
 		{
 			ref: ref => this.button = ref,
 			title,
-			style: buttonStyle ? { ...style.button, ...buttonStyle } : style.button
+			style: buttonStyle ? { ...styles.button, ...buttonStyle } : styles.button
 		}
 
 		if (link)
@@ -103,7 +114,7 @@ export default class Button extends PureComponent
 				<a
 					href={ link }
 					onClick={ this.link_on_click }
-					className="rrui__button__link"
+					className="rrui__button__button rrui__button__button--link"
 					{ ...properties }>
 
 					{ children }
@@ -181,7 +192,7 @@ export default class Button extends PureComponent
 	}
 }
 
-const style = styler
+const styles = styler
 `
 	container
 		position : relative

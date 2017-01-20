@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 export default class Segmented_control extends PureComponent
@@ -34,6 +34,11 @@ export default class Segmented_control extends PureComponent
 		// Is called when an option is selected
 		onChange     : PropTypes.func.isRequired,
 
+		// (exotic use case)
+		// Falls back to a plain HTML input
+		// when javascript is disabled (e.g. Tor)
+		fallback  : PropTypes.bool.isRequired,
+
 		// CSS class
 		className    : PropTypes.string,
 
@@ -41,9 +46,14 @@ export default class Segmented_control extends PureComponent
 		style        : PropTypes.object
 	}
 
-	constructor(props)
+	static defaultProps =
 	{
-		super(props)
+		fallback : false
+	}
+
+	constructor()
+	{
+		super()
 
 		this.on_key_down = this.on_key_down.bind(this)
 	}
@@ -51,23 +61,40 @@ export default class Segmented_control extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		this.setState({ javascript: true })
+		const { fallback } = this.props
+
+		if (fallback)
+		{
+			this.setState({ javascript: true })
+		}
 	}
 
 	render()
 	{
-		const { options, className } = this.props
+		const
+		{
+			disabled,
+			options,
+			fallback,
+			style,
+			className
+		}
+		= this.props
 
 		const markup =
 		(
 			<div
-				onKeyDown={this.on_key_down}
-				className={classNames(className, 'rrui__rich', 'rrui__segmented-control')}
-				style={ this.props.style ? { ...style.container, ...this.props.style } : style.container }>
+				onKeyDown={ this.on_key_down }
+				className={ classNames(className, 'rrui__segmented-control',
+				{
+					'rrui__rich'                        : fallback,
+					'rrui__segmented-control--disabled' : disabled
+				}) }
+				style={ style ? { ...styles.container, ...style } : styles.container }>
 
-				{options.map((option, index) => this.render_button(option, index))}
+				{ options.map((option, index) => this.render_button(option, index)) }
 
-				{!this.state.javascript && this.render_static()}
+				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
 
@@ -76,28 +103,29 @@ export default class Segmented_control extends PureComponent
 
 	render_button(option, index)
 	{
-		const { value } = this.props
+		const { value, disabled } = this.props
 
 		const selected = value === option.value
 
 		const markup =
 		(
 			<button
-				key={option.value}
-				ref={ref => this[`button_${index}`] = ref}
+				key={ option.value }
+				ref={ ref => this[`button_${index}`] = ref }
 				type="button"
-				tabIndex={index === 0 ? undefined : "-1"}
-				onClick={this.chooser(option.value)}
-				className={classNames
+				tabIndex={ index === 0 ? undefined : '-1' }
+				disabled={ disabled }
+				onClick={ this.chooser(option.value) }
+				className={ classNames
 				(
 					'rrui__button__button',
 					'rrui__segmented-control__option',
 					{
 						'rrui__segmented-control__option--selected' : selected
 					}
-				)}
-				style={this.option_style(option, index)}>
-				{option.label}
+				) }
+				style={ this.option_style(option, index) }>
+				{ option.label }
 			</button>
 		)
 
@@ -112,7 +140,7 @@ export default class Segmented_control extends PureComponent
 		const markup =
 		(
 			<div className="rrui__rich__fallback">
-				{options.map((option, index) => this.render_static_option(option, index))}
+				{ options.map((option, index) => this.render_static_option(option, index)) }
 			</div>
 		)
 
@@ -126,14 +154,14 @@ export default class Segmented_control extends PureComponent
 		const markup =
 		(
 			<span
-				key={option.value}
+				key={ option.value }
 				className="rrui__segmented-control__option"
-				style={this.option_style(option, index)}>
+				style={ this.option_style(option, index) }>
 				<input
 					type="radio"
-					name={name}
-					checked={value === option.value}/>
-				{option.label}
+					name={ name }
+					checked={ value === option.value }/>
+				{ option.label }
 			</span>
 		)
 
@@ -146,15 +174,15 @@ export default class Segmented_control extends PureComponent
 
 		if (index === 0)
 		{
-			option_style = { ...style.option_first }
+			option_style = { ...styles.option_first }
 		}
 		else if (index === this.props.options.length - 1)
 		{
-			option_style = { ...style.option_last }
+			option_style = { ...styles.option_last }
 		}
 		else
 		{
-			option_style = { ...style.option_middle }
+			option_style = { ...styles.option_middle }
 		}
 
 		return option_style
@@ -272,7 +300,7 @@ export default class Segmented_control extends PureComponent
 	}
 }
 
-const style = styler
+const styles = styler
 `
 	container
 		position    : relative

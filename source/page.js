@@ -19,8 +19,8 @@ export default function Page(props)
 
 	const markup =
 	(
-		<div {...rest}>
-			{children}
+		<div { ...rest }>
+			{ children }
 		</div>
 	)
 

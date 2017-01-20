@@ -1,3 +1,10 @@
+0.1.48 / 20.01.2017
+===================
+
+  * (breaking change) Renamed `shown` property of `Modal` to `isOpen`
+  * (breaking change) Renamed `.rrui__button__link` CSS class to `.rrui__button__button .rrui__button__button--link`
+  * For "rich" components now not rendering static HTML fallback by default (unless `fallback` property is explicitly set to `true`) since it's a very exotic use case and therefore is not default behaviour now
+
 0.1.27 / 07.01.2017
 ===================
 

@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
-import styler from 'react-styling/flat'
+import styler from 'react-styling'
 import classNames from 'classnames'
 
 // http://wd.dizaina.net/en/experiments/ios7-style-switch/
@@ -23,18 +23,27 @@ export default class Switch extends PureComponent
 		// Is called when the switch is switched
 		onChange  : PropTypes.func.isRequired,
 
+		// (exotic use case)
+		// Falls back to a plain HTML input
+		// when javascript is disabled (e.g. Tor)
+		fallback  : PropTypes.bool.isRequired,
+
 		// CSS style object
-		style     : PropTypes.object
+		style     : PropTypes.object,
+
+		// CSS class
+		className : PropTypes.string
 	}
 
 	static defaultProps =
 	{
-		value : false
+		value    : false,
+		fallback : false
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.toggle = this.toggle.bind(this)
 	}
@@ -42,37 +51,52 @@ export default class Switch extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		this.setState({ javascript: true })
+		const { fallback } = this.props
+
+		if (fallback)
+		{
+			this.setState({ javascript: true })
+		}
 	}
 
 	render()
 	{
-		const { value } = this.props
+		const
+		{
+			value,
+			fallback,
+			disabled,
+			style,
+			className
+		}
+		= this.props
 
 		const markup =
 		(
 			<label
-				className={classNames('rrui__rich', 'rrui__switch',
+				className={ classNames('rrui__switch', className,
 				{
-					'rrui__switch--on': value
-				})}
-				style={ this.props.style ? { ...style.switch, ...this.props.style } : style.switch }>
+					'rrui__rich'             : fallback,
+					'rrui__switch--on'       : value,
+					'rrui__switch--disabled' : disabled
+				}) }
+				style={ this.props.style ? { ...styles.switch, ...style } : styles.switch }>
 
 				<input
 					type="checkbox"
-					value={value}
-					onChange={this.toggle}
-					style={style.input}/>
+					value={ value }
+					onChange={ this.toggle }
+					style={ styles.input }/>
 
 				<span
-					style={style.groove}
+					style={ styles.groove }
 					className="rrui__switch__groove"/>
 
 				<div
-					style={style.knob}
+					style={ styles.knob }
 					className="rrui__switch__knob"/>
 
-				{!this.state.javascript && this.render_static()}
+				{ fallback && !this.state.javascript && this.render_static() }
 			</label>
 		)
 
@@ -82,16 +106,16 @@ export default class Switch extends PureComponent
 	// supports disabled javascript
 	render_static()
 	{
-		const { name, disabled } = this.props
+		const { name, disabled, value } = this.props
 
 		const markup =
 		(
 			<div className="rrui__rich__fallback">
 				<input
 					type="checkbox"
-					name={name}
-					disabled={disabled}
-					value={this.props.value}/>
+					name={ name }
+					disabled={ disabled }
+					value={ value }/>
 			</div>
 		)
 
@@ -111,7 +135,7 @@ export default class Switch extends PureComponent
 	}
 }
 
-const style = styler
+const styles = styler
 `
 	switch
 		display  : inline-block

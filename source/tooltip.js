@@ -29,9 +29,9 @@ export default class Tooltip extends PureComponent
 		hidingAnimationDuration : 120 // in milliseconds
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.show = this.show.bind(this)
 		this.hide = this.hide.bind(this)
@@ -175,6 +175,8 @@ export default class Tooltip extends PureComponent
 			return
 		}
 
+		const { delay } = this.props
+
 		// Don't show the tooltip immediately
 		// but rather wait for the user to
 		// "mouse over" it for a short time interval.
@@ -184,7 +186,7 @@ export default class Tooltip extends PureComponent
 			this.show_timeout = undefined
 			this.show()
 		},
-		this.props.delay)
+		delay)
 	}
 
 	on_mouse_leave()
@@ -222,18 +224,21 @@ export default class Tooltip extends PureComponent
 		// Shows tooltip on mouse over when on desktop.
 		// Shows tooltip on touch when on mobile.
 
+		const { style, className, children } = this.props
+
 		const markup =
 		(
 			<div
-				ref={ref => this.origin = ref}
-				onMouseEnter={this.on_mouse_enter}
-				onMouseLeave={this.on_mouse_leave}
-				onTouchStart={this.on_touch_start}
-				onTouchMove={this.hide}
-				onTouchEnd={this.hide}
-				onTouchCancel={this.hide}
-				style={{ display: 'inline-block' }}>
-				{this.props.children}
+				ref={ ref => this.origin = ref }
+				onMouseEnter={ this.on_mouse_enter }
+				onMouseLeave={ this.on_mouse_leave }
+				onTouchStart={ this.on_touch_start }
+				onTouchMove={ this.hide }
+				onTouchEnd={ this.hide }
+				onTouchCancel={ this.hide }
+				style={ style ? { ...tooltip_style, ...style } : tooltip_style }
+				className={ className }>
+				{ children }
 			</div>
 		)
 
@@ -278,4 +283,9 @@ function offset(element)
 	const left = rect.left + window.pageXOffset - client_left
 
 	return { top, left }
+}
+
+const tooltip_style =
+{
+	display: 'inline-block'
 }

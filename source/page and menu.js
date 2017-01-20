@@ -27,9 +27,9 @@ export default class Page_and_menu extends PureComponent
 	// 	page_moved_aside : false
 	// }
 
-	constructor(props)
+	constructor()
 	{
-		super(props)
+		super()
 
 		this.hide_menu_on_click = this.hide_menu_on_click.bind(this)
 		// this.toggle_menu        = this.toggle_menu.bind(this)
@@ -43,10 +43,10 @@ export default class Page_and_menu extends PureComponent
 		const markup =
 		(
 			<div
-				onTouchStart={this.hide_menu_on_click}
-				onMouseDown={this.hide_menu_on_click}
-				{...rest}>
-				{children}
+				onTouchStart={ this.hide_menu_on_click }
+				onMouseDown={ this.hide_menu_on_click }
+				{ ...rest }>
+				{ children }
 			</div>
 		)
 

@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import styler from 'react-styling'
 
 // Sits at the bottom of a page and displays notifications
 export default class Snackbar extends PureComponent
@@ -31,30 +31,35 @@ export default class Snackbar extends PureComponent
 		values: []
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.next = this.next.bind(this)
 	}
 
 	componentWillReceiveProps(new_props)
 	{
+		const { reset } = this.props
+		const { value } = new_props
+
 		// Since Redux won't rerender
 		// if the snack value is the same as the previous one,
 		// an explicit change detection variable is introduced.
-		if (new_props.value)
+		if (value)
 		{
-			this.push(new_props.value)
-			this.props.reset()
+			this.push(value)
+			reset()
 		}
 	}
 
-	push(value)
+	push(new_value)
 	{
-		this.state.values.push(value)
+		const { values, value } = this.state
 
-		if (!this.state.value)
+		values.push(new_value)
+
+		if (!value)
 		{
 			this.next()
 		}
@@ -62,7 +67,10 @@ export default class Snackbar extends PureComponent
 
 	next()
 	{
-		const value = this.state.values.shift()
+		const { values } = this.state
+		const { hideAnimationDuration, autoHideTimeout } = this.props
+
+		const value = values.shift()
 		this.setState({ value, height: undefined, hiding: false })
 
 		if (!value)
@@ -80,18 +88,20 @@ export default class Snackbar extends PureComponent
 			this.auto_hide_timer = undefined
 			this.setState({ show: false, hiding: true })
 
-			setTimeout(this.next, this.props.hideAnimationDuration)
+			setTimeout(this.next, hideAnimationDuration)
 		},
-		this.props.autoHideTimeout || (800 + String(value).length * 100))
+		autoHideTimeout || (800 + String(value).length * 100))
 	}
 
 	componentDidUpdate()
 	{
+		let { height, value } = this.state
+
 		// Calculate rendered DOM element height
 		// so that the slide-from-bottom animation could be played.
-		if (this.state.height === undefined && this.state.value)
+		if (height === undefined && value)
 		{
-			const height = ReactDOM.findDOMNode(this.snackbar).offsetHeight
+			height = ReactDOM.findDOMNode(this.snackbar).offsetHeight
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
 			this.setState({ height }, () => setTimeout(() => this.setState({ show: true }), anti_lag_timeout))
 		}
@@ -137,10 +147,19 @@ export default class Snackbar extends PureComponent
 
 		const markup =
 		(
-			<div style={container_style} className="rrui__snackbar__container">
-				<div ref={ref => this.snackbar = ref} style={snackbar_style} className="rrui__snackbar">
-					<div style={snackbar_text_style} className="rrui__snackbar__text">
-						{value}
+			<div
+				style={ container_style }
+				className="rrui__snackbar__container">
+
+				<div
+					ref={ ref => this.snackbar = ref }
+					style={ snackbar_style }
+					className="rrui__snackbar">
+
+					<div
+						style={ snackbar_text_style }
+						className="rrui__snackbar__text">
+						{ value }
 					</div>
 				</div>
 			</div>

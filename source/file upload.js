@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
+import classNames from 'classnames'
 
 export default class File_upload extends PureComponent
 {
@@ -26,38 +27,24 @@ export default class File_upload extends PureComponent
 		style     : PropTypes.object
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.on_file_selected = this.on_file_selected.bind(this)
 		this.on_click         = this.on_click.bind(this)
+		this.on_input_click   = this.on_input_click.bind(this)
+		this.on_input_change  = this.on_input_change.bind(this)
 	}
 
-	render()
+	on_input_click(event)
 	{
-		const { style, className, children } = this.props
+		event.stopPropagation()
+	}
 
-		const markup =
-		(
-			<div
-				style={style}
-				className={className}
-				onClick={this.on_click}>
-
-				<input
-					type="file"
-					ref={ref => this.file_upload = ref}
-					key="file_input"
-					style={{ display: 'none' }}
-					onClick={event => event.stopPropagation()}
-					onChange={event => this.on_file_selected(event)}/>
-
-				{children}
-			</div>
-		)
-
-		return markup
+	on_input_change(event)
+	{
+		this.on_file_selected(event)
 	}
 
 	on_file_selected(event)
@@ -95,4 +82,45 @@ export default class File_upload extends PureComponent
 
 		this.file_upload.click()
 	}
+
+	render()
+	{
+		const
+		{
+			disabled,
+			style,
+			className,
+			children
+		}
+		= this.props
+
+		const markup =
+		(
+			<div
+				style={ style }
+				className={ classNames('rrui__file-upload', className,
+				{
+					'rrui__file-upload--disabled' : disabled
+				}) }
+				onClick={ this.on_click }>
+
+				<input
+					type="file"
+					ref={ ref => this.file_upload = ref }
+					key="file_input"
+					style={ input_style }
+					onClick={ this.on_click }
+					onChange={ this.on_input_change }/>
+
+				{ children }
+			</div>
+		)
+
+		return markup
+	}
+}
+
+const input_style =
+{
+	display: 'none'
 }

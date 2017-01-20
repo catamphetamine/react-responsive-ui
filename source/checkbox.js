@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 // http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
@@ -29,6 +29,11 @@ export default class Checkbox extends PureComponent
 		// The label (text)
 		children  : PropTypes.node,
 
+		// (exotic use case)
+		// Falls back to a plain HTML input
+		// when javascript is disabled (e.g. Tor)
+		fallback  : PropTypes.bool.isRequired,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -38,12 +43,13 @@ export default class Checkbox extends PureComponent
 
 	static defaultProps =
 	{
-		value : false
+		value    : false,
+		fallback : false
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.toggle = this.toggle.bind(this)
 	}
@@ -51,12 +57,17 @@ export default class Checkbox extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		if (this.props.value)
+		const { value, fallback } = this.props
+
+		if (value)
 		{
 			this.draw_checkmark()
 		}
 
-		this.setState({ javascript: true })
+		if (fallback)
+		{
+			this.setState({ javascript: true })
+		}
 	}
 
 	componentDidUpdate(previous_props, previous_state)
@@ -72,17 +83,30 @@ export default class Checkbox extends PureComponent
 
 	render()
 	{
-		const { value, error, indicate_invalid, disabled, children, className } = this.props
+		const
+		{
+			value,
+			error,
+			indicate_invalid,
+			disabled,
+			children,
+			fallback,
+			style,
+			className
+		}
+		= this.props
 
 		const markup =
 		(
 			<div
-				className={classNames(className, 'rrui__rich', 'rrui__checkbox',
+				className={ classNames(className, 'rrui__checkbox',
 				{
-					'rrui__checkbox--checked': value,
-					'rrui__checkbox--invalid': indicate_invalid && error
-				})}
-				style={this.props.style}>
+					'rrui__rich'               : fallback,
+					'rrui__checkbox--checked'  : value,
+					'rrui__checkbox--invalid'  : indicate_invalid && error,
+					'rrui__checkbox--disabled' : disabled
+				}) }
+				style={ style }>
 
 				<input
 					ref={ref => this.checkbox = ref}
@@ -92,14 +116,14 @@ export default class Checkbox extends PureComponent
 					onChange={this.toggle}
 					onFocus={this.on_focus}
 					onBlur={this.on_blur}
-					style={style.checkbox_input}
+					style={styles.checkbox_input}
 					className="rrui__checkbox__input"/>
 
-				<div style={style.checkbox_box} className="rrui__checkbox__box"/>
+				<div style={styles.checkbox_box} className="rrui__checkbox__box"/>
 
 				<svg
-					viewBox="0 0 100 100"
-					style={style.checkbox_checkmark}
+					viewBox={checkmark_svg_canvas_dimensions}
+					style={styles.checkbox_checkmark}
 					className="rrui__checkbox__checkmark">
 					{ value ? this.render_checkmark() : null }
 				</svg>
@@ -107,13 +131,13 @@ export default class Checkbox extends PureComponent
 				<label
 					onClick={this.toggle}
 					className="rrui__checkbox__label"
-					style={style.label}>
+					style={styles.label}>
 					{children}
 				</label>
 
 				{ indicate_invalid && error && <div className="rrui__checkbox__error">{error}</div> }
 
-				{!this.state.javascript && this.render_static()}
+				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
 
@@ -122,26 +146,21 @@ export default class Checkbox extends PureComponent
 
 	render_checkmark()
 	{
-		const path = ['M16.667,62.167c3.109,5.55,7.217,10.591,10.926,15.75 c2.614,3.636,5.149,7.519,8.161,10.853c-0.046-0.051,1.959,2.414,2.692,2.343c0.895-0.088,6.958-8.511,6.014-7.3 c5.997-7.695,11.68-15.463,16.931-23.696c6.393-10.025,12.235-20.373,18.104-30.707C82.004,24.988,84.802,20.601,87,16']
-
-		const path_style =
-		{
-			fill           : 'transparent',
-			strokeLinecap  : 'round',
-			strokeLinejoin : 'round'
-		}
+		const { path_style } = this.state
 
 		// For a web browser
 		if (typeof window !== 'undefined')
 		{
 			return <path
-				ref={ref => this.path = ref}
-				d={path}
-				style={this.state.path_style || path_style}/>
+				ref={ ref => this.path = ref }
+				d={ checkmark_svg_path }
+				style={ path_style || checkmark_svg_path_style }/>
 		}
 
 		// For Node.js
-		return <path d={path} style={path_style}/>
+		return <path
+			d={ checkmark_svg_path }
+			style={ checkmark_svg_path_style }/>
 	}
 
 	// supports disabled javascript
@@ -155,13 +174,13 @@ export default class Checkbox extends PureComponent
 				{/* This checkbox will be sent as either "on" or `undefined` */}
 				<input
 					type="checkbox"
-					name={name}
-					disabled={disabled}
-					defaultChecked={value}
-					autoFocus={focus}/>
+					name={ name }
+					disabled={ disabled }
+					defaultChecked={ value }
+					autoFocus={ focus }/>
 
-				<label className="rrui__checkbox__label" style={style.label_static}>
-					{children}
+				<label className="rrui__checkbox__label" style={ styles.label_static }>
+					{ children }
 				</label>
 			</div>
 		)
@@ -184,14 +203,7 @@ export default class Checkbox extends PureComponent
 		const length = path_element.getTotalLength() // in pixels
 		path_style.strokeDasharray = `${length} ${length}`
 
-		// if (i === 0)
-		// {
-			path_element.style.strokeDashoffset = Math.floor(length) - 1
-		// }
-		// else
-		// {
-		// 	path_element.style.strokeDashoffset = length
-		// }
+		path_element.style.strokeDashoffset = Math.floor(length) - 1
 
 		// Trigger a layout so styles are calculated & the browser
 		// picks up the starting position before animating
@@ -210,7 +222,7 @@ export default class Checkbox extends PureComponent
 		// Go
 		path_style.strokeDashoffset = 0
 
-		this.setState({ path_style: { ...path_style, ...style.svg_path } })
+		this.setState({ path_style: { ...path_style, ...styles.svg_path } })
 	}
 
 	focus()
@@ -248,7 +260,17 @@ export default class Checkbox extends PureComponent
 	}
 }
 
-const style = styler
+const checkmark_svg_canvas_dimensions = '0 0 100 100'
+const checkmark_svg_path = ['M16.667,62.167c3.109,5.55,7.217,10.591,10.926,15.75 c2.614,3.636,5.149,7.519,8.161,10.853c-0.046-0.051,1.959,2.414,2.692,2.343c0.895-0.088,6.958-8.511,6.014-7.3 c5.997-7.695,11.68-15.463,16.931-23.696c6.393-10.025,12.235-20.373,18.104-30.707C82.004,24.988,84.802,20.601,87,16']
+
+const checkmark_svg_path_style =
+{
+	fill           : 'transparent',
+	strokeLinecap  : 'round',
+	strokeLinejoin : 'round'
+}
+
+const styles = styler
 `
 	label
 		display : inline-block

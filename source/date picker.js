@@ -37,6 +37,12 @@ export default class DatePicker extends PureComponent
 		// Writes new `value`
 		onChange: PropTypes.func.isRequired,
 
+		// Disables the input
+		disabled : PropTypes.bool,
+
+		// HTML `<input/>` `name` attribute
+		name: PropTypes.string,
+
 		// CSS class
 		className: PropTypes.string,
 
@@ -59,16 +65,9 @@ export default class DatePicker extends PureComponent
 		selected_day  : null
 	}
 
-	constructor(props)
+	constructor()
 	{
-		super(props)
-
-		// const { value, format } = props
-
-		// if (value)
-		// {
-		// 	this.state.text_value = format_date(value, format)
-		// }
+		super()
 
 		this.on_day_click    = this.on_day_click.bind(this)
 		this.on_input_change = this.on_input_change.bind(this)
@@ -189,19 +188,38 @@ export default class DatePicker extends PureComponent
 
 	render()
 	{
-		const { format, value, firstDayOfWeek, className, style } = this.props
+		const
+		{
+			format,
+			value,
+			firstDayOfWeek,
+			disabled,
+			className,
+			style
+		}
+		= this.props
+
 		const { editing, text_value, show_calendar } = this.state
+
+		// `<input type="date"/>` renders a browser-specific date picker
+		// which can not be turned off using a simple HTML attribute
+		// and also date format is not customizable,
+		// therefore just using `<input type="text"/>` here
 
 		return (
 			<div
 				onMouseDown={ this.on_mouse_down }
-				className={ classNames('rrui__date-picker', className) }
+				className={ classNames('rrui__date-picker', className,
+				{
+					'rrui__date-picker--disabled' : disabled
+				}) }
 				style={ style }>
 
 				<input
 					type="text"
 					ref={ ref => this.input = ref }
 					placeholder={ typeof format === 'string' ? format : undefined }
+					disabled={ disabled }
 					value={ editing ? text_value : format_date(value, format) }
 					onChange={ this.on_input_change }
 					onFocus={ this.on_input_focus }
@@ -225,6 +243,7 @@ export default class DatePicker extends PureComponent
 	}
 }
 
+// Parses a text value into a `Date` provided a `format`
 function parse_date(text_value, format)
 {
 	if (!text_value)
@@ -242,6 +261,7 @@ function parse_date(text_value, format)
 	return moment_day.toDate()
 }
 
+// Formats a `Date` into a text value provided a `format`
 function format_date(date, format)
 {
 	if (!date)

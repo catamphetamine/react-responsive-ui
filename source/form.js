@@ -36,9 +36,9 @@ export default class Form extends PureComponent
 		busy : false
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.on_submit   = this.on_submit.bind(this)
 		this.submit      = this.submit.bind(this)
@@ -60,7 +60,7 @@ export default class Form extends PureComponent
 				style={style}
 				noValidate>
 
-				{this.children(error)}
+				{ this.children(error) }
 			</form>
 		)
 
@@ -152,12 +152,18 @@ export default class Form extends PureComponent
 
 Form.Error = function({ children })
 {
-	return <div className="rrui__form__error">{children}</div>
+	return <div className="rrui__form__error">
+		{ children }
+	</div>
 }
 
 Form.Actions = function(props, context)
 {
 	const { children, className, style } = props
 
-	return <div className={classNames('rrui__form__actions', className)} style={style}>{children}</div>
+	return <div
+		className={ classNames('rrui__form__actions', className) }
+		style={ style }>
+		{ children }
+	</div>
 }

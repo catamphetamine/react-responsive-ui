@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import styler from 'react-styling'
 import classNames from 'classnames'
 
 import { submit_parent_form } from './misc/dom'
@@ -60,8 +60,16 @@ export default class Text_input extends PureComponent
 		// `<textarea/>` `cols` attribute (column count, i.e. width)
 		cols             : PropTypes.number,
 
+		// (exotic use case)
+		// Falls back to a plain HTML input
+		// when javascript is disabled (e.g. Tor)
+		fallback  : PropTypes.bool.isRequired,
+
 		// CSS style object
 		style            : PropTypes.object,
+
+		// CSS name
+		className        : PropTypes.string,
 
 		// CSS style object for `<input/>`
 		inputStyle       : PropTypes.object,
@@ -76,27 +84,34 @@ export default class Text_input extends PureComponent
 		rows : 2,
 
 		// HTML input `type` attribute
-		type : 'text'
+		type : 'text',
+
+		fallback : false
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
-		this.autoresize = this.autoresize.bind(this)
-		this.on_change = this.on_change.bind(this)
+		this.autoresize  = this.autoresize.bind(this)
+		this.on_change   = this.on_change.bind(this)
 		this.on_key_down = this.on_key_down.bind(this)
 	}
 
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		if (this.props.multiline)
+		const { multiline, fallback } = this.props
+
+		if (multiline)
 		{
 			this.setState({ autoresize: autoresize_measure(ReactDOM.findDOMNode(this.input)) })
 		}
 
-		this.setState({ javascript: true })
+		if (fallback)
+		{
+			this.setState({ javascript: true })
+		}
 	}
 
 	render()
@@ -110,53 +125,57 @@ export default class Text_input extends PureComponent
 			description,
 			error,
 			indicateInvalid,
+			fallback,
+			disabled,
+			style,
 			className
 		}
 		= this.props
 
-		let container_style = this.props.style
+		let container_style = style
 
 		if (label)
 		{
-			container_style = { ...style.input_with_label, ...container_style }
+			container_style = { ...styles.input_with_label, ...container_style }
 		}
 
 		const markup =
 		(
 			<div
-				style={container_style}
-				className={classNames
+				style={ container_style }
+				className={ classNames
 				(
-					'rrui__rich',
 					'rrui__text-input',
 					{
+						'rrui__rich'                       : fallback,
 						'rrui__text-input--empty'          : !value || !value.trim(),
 						'rrui__text-input--invalid'        : indicateInvalid && error,
-						'rrui__text-input--floating-label' : label
+						'rrui__text-input--floating-label' : label,
+						'rrui__text-input--disabled'       : disabled
 					},
 					className
-				)}>
+				) }>
 
 				{/* Description */}
-				{this.render_description()}
+				{ this.render_description() }
 
 				{/* <input/> */}
-				{this.render_input({ name: false })}
+				{ this.render_input({ name: false }) }
 
 				{/* input label */}
-				{!description && label &&
+				{ !description && label &&
 					<label
 						className="rrui__text-input__label"
-						style={ labelStyle ? { ...style.label, ...labelStyle } : style.label }>
-						{label}
+						style={ labelStyle ? { ...styles.label, ...labelStyle } : styles.label }>
+						{ label }
 					</label>
 				}
 
 				{/* Error message */}
-				{this.render_error_message()}
+				{ this.render_error_message() }
 
 				{/* Fallback in case javascript is disabled (no animated <label/>) */}
-				{!this.state.javascript && this.render_static()}
+				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
 
@@ -165,7 +184,7 @@ export default class Text_input extends PureComponent
 
 	render_description()
 	{
-		const { description, value } = this.props
+		const { description } = this.props
 
 		if (!description)
 		{
@@ -175,7 +194,7 @@ export default class Text_input extends PureComponent
 		const markup =
 		(
 			<p className="rrui__text-input__description">
-				{description}
+				{ description }
 			</p>
 		)
 
@@ -185,7 +204,19 @@ export default class Text_input extends PureComponent
 	render_input(options = {})
 	{
 		const { placeholder, ref, name } = options
-		const { value, multiline, focus, onChange, disabled, inputStyle, rows, cols } = this.props
+
+		const
+		{
+			value,
+			multiline,
+			focus,
+			onChange,
+			disabled,
+			inputStyle,
+			rows,
+			cols
+		}
+		= this.props
 
 		const properties =
 		{
@@ -197,7 +228,7 @@ export default class Text_input extends PureComponent
 			onKeyDown   : this.on_key_down,
 			disabled,
 			className   : 'rrui__text-input__field',
-			style       : inputStyle ? { ...style.input, ...inputStyle } : style.input,
+			style       : inputStyle ? { ...styles.input, ...inputStyle } : styles.input,
 			autoFocus   : focus
 		}
 
@@ -205,14 +236,14 @@ export default class Text_input extends PureComponent
 		{
 			// maybe add autoresize for textarea (smoothly animated)
 			return <textarea
-				rows={rows}
-				cols={cols}
-				onInput={this.autoresize}
-				onKeyUp={this.autoresize}
-				{...properties}/>
+				rows={ rows }
+				cols={ cols }
+				onInput={ this.autoresize }
+				onKeyUp={ this.autoresize }
+				{ ...properties }/>
 		}
 
-		return <input type={this.get_input_type()} {...properties}/>
+		return <input type={ this.get_input_type() } { ...properties }/>
 	}
 
 	render_error_message()
@@ -221,24 +252,26 @@ export default class Text_input extends PureComponent
 
 		if (indicateInvalid && error)
 		{
-			return <div className="rrui__text-input__error">{error}</div>
+			return <div className="rrui__text-input__error">{ error }</div>
 		}
 	}
 
 	// Fallback in case javascript is disabled (no animated <label/>)
 	render_static()
 	{
+		const { label } = this.props
+
 		const markup =
 		(
 			<div className="rrui__rich__fallback">
 				{/* Description */}
-				{this.render_description()}
+				{ this.render_description() }
 
 				{/* <input/> */}
-				{this.render_input({ placeholder: this.props.label, ref: false })}
+				{ this.render_input({ placeholder: label, ref: false }) }
 
 				{/* Error message */}
-				{this.render_error_message()}
+				{ this.render_error_message() }
 			</div>
 		)
 
@@ -266,14 +299,15 @@ export default class Text_input extends PureComponent
 	// "keyup" is required for IE to properly reset height when deleting text
 	autoresize(event)
 	{
-		const element = event.target
+		const { autoresize } = this.state
 
+		const element = event.target
 		const current_scroll_position = window.pageYOffset
 
 		element.style.height = 0
 
-		let height = element.scrollHeight + this.state.autoresize.extra_height
-		height = Math.max(height, this.state.autoresize.initial_height)
+		let height = element.scrollHeight + autoresize.extra_height
+		height = Math.max(height, autoresize.initial_height)
 
 		element.style.height = height + 'px'
 
@@ -282,7 +316,9 @@ export default class Text_input extends PureComponent
 
 	on_change(event)
 	{
-		this.props.onChange(event.target.value)
+		const { onChange } = this.props
+
+		onChange(event.target.value)
 	}
 
 	on_key_down(event)
@@ -303,7 +339,7 @@ export default class Text_input extends PureComponent
 	}
 }
 
-const style = styler
+const styles = styler
 `
 	input
 		font-size : inherit

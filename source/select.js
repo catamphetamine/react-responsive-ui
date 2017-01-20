@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
+import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/dom'
@@ -50,6 +50,11 @@ export default class Select extends PureComponent
 
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
+
+		// (exotic use case)
+		// Falls back to a plain HTML input
+		// when javascript is disabled (e.g. Tor)
+		fallback  : PropTypes.bool.isRequired,
 
 		// CSS class
 		className  : PropTypes.string,
@@ -117,7 +122,9 @@ export default class Select extends PureComponent
 
 		scrollbarPadding : true,
 
-		focusUponSelection : true
+		focusUponSelection : true,
+
+		fallback : false,
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -126,9 +133,9 @@ export default class Select extends PureComponent
 
 	state = {}
 
-	constructor(props, context)
+	constructor(props)
 	{
-		super(props, context)
+		super(props)
 
 		// Shouldn't memory leak because
 		// the set of options is assumed to be constant.
@@ -141,19 +148,30 @@ export default class Select extends PureComponent
 		this.on_autocomplete_input_change = this.on_autocomplete_input_change.bind(this)
 		this.on_key_down_in_container = this.on_key_down_in_container.bind(this)
 
-		if (props.autocomplete)
+		const
 		{
-			if (!props.options)
+			autocomplete,
+			options,
+			children,
+			menu,
+			toggler,
+			onChange
+		}
+		= props
+
+		if (autocomplete)
+		{
+			if (!options)
 			{
 				throw new Error(`"options" property is required for an "autocomplete" select`)
 			}
 
-			this.state.filtered_options = props.options
+			this.state.filtered_options = options
 		}
 
-		if (props.children && !props.menu)
+		if (children && !menu)
 		{
-			React.Children.forEach(props.children, function(element)
+			React.Children.forEach(children, function(element)
 			{
 				if (!element.props.value)
 				{
@@ -167,12 +185,12 @@ export default class Select extends PureComponent
 			})
 		}
 
-		if (props.menu && !props.toggler)
+		if (menu && !toggler)
 		{
 			throw new Error(`Supply a "toggler" component when enabling "menu" in <Select/>`)
 		}
 
-		if (!props.menu && !props.onChange)
+		if (!menu && !onChange)
 		{
 			throw new Error(`"onChange" property must be specified for <Select/>`)
 		}
@@ -183,16 +201,23 @@ export default class Select extends PureComponent
 	{
 		document.addEventListener('click', this.document_clicked)
 
-		this.setState({ javascript: true })
+		const { fallback } = this.props
+
+		if (fallback)
+		{
+			this.setState({ javascript: true })
+		}
 	}
 
 	componentDidUpdate(previous_props, previous_state)
 	{
-		if (this.state.expanded !== previous_state.expanded)
+		const { expanded, height } = this.state
+
+		if (expanded !== previous_state.expanded)
 		{
-			if (this.state.expanded && this.should_animate())
+			if (expanded && this.should_animate())
 			{
-				if (this.state.height === undefined)
+				if (height === undefined)
 				{
 					this.calculate_height()
 				}
@@ -217,14 +242,17 @@ export default class Select extends PureComponent
 			alignment,
 			autocomplete,
 			saveOnIcons,
+			fallback,
+			disabled,
+			style,
 			className
 		}
 		= this.props
 
-		const { filtered_options } = this.state
+		const { filtered_options, expanded } = this.state
 		const options = autocomplete ? filtered_options : this.props.options
 
-		let list_style = upward ? style.list_upward : style.list_downward
+		let list_style = upward ? styles.list_upward : styles.list_downward
 
 		// Will be altered
 		list_style = { ...list_style }
@@ -271,55 +299,58 @@ export default class Select extends PureComponent
 			})
 		}
 
-		const wrapper_style = { ...style.wrapper, textAlign: alignment }
+		const wrapper_style = { ...styles.wrapper, textAlign: alignment }
 
 		const markup =
 		(
 			<div
-				ref={ref => this.select = ref}
-				onKeyDown={this.on_key_down_in_container}
-				style={ this.props.style ? { ...wrapper_style, ...this.props.style } : wrapper_style }
-				className={classNames
+				ref={ ref => this.select = ref }
+				onKeyDown={ this.on_key_down_in_container }
+				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
+				className={ classNames
 				(
 					className,
-					'rrui__rich',
 					'rrui__select',
 					{
+						'rrui__rich'              : fallback,
 						'rrui__select--upward'    : upward,
-						'rrui__select--expanded'  : this.state.expanded,
-						'rrui__select--collapsed' : !this.state.expanded
+						'rrui__select--expanded'  : expanded,
+						'rrui__select--collapsed' : !expanded,
+						'rrui__select--disabled'  : disabled
 					}
-				)}>
+				) }>
 
 				{/* Currently selected item */}
-				{!menu && this.render_selected_item()}
+				{ !menu && this.render_selected_item() }
 
 				{/* Menu toggler */}
-				{menu &&
-					<div ref={ref => this.menu_toggler} style={style.menu_toggler}>
-						{React.cloneElement(toggler, { onClick : this.toggle })}
+				{ menu &&
+					<div
+						ref={ ref => this.menu_toggler }
+						style={ styles.menu_toggler }>
+						{ React.cloneElement(toggler, { onClick : this.toggle }) }
 					</div>
 				}
 
 				{/* The list of selectable options */}
 				{/* Math.max(this.state.height, this.props.max_height) */}
 				<ul
-					ref={ref => this.list = ref}
-					style={list_style}
-					className={classNames
+					ref={ ref => this.list = ref }
+					style={ list_style }
+					className={ classNames
 					(
 						'rrui__select__options',
 						{
-							'rrui__select__options--expanded'             : this.state.expanded,
+							'rrui__select__options--expanded'             : expanded,
 							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
 							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right'
 						}
-					)}>
-					{list_items}
+					) }>
+					{ list_items }
 				</ul>
 
 				{/* Fallback in case javascript is disabled */}
-				{!this.state.javascript && this.render_static()}
+				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
 
@@ -342,7 +373,7 @@ export default class Select extends PureComponent
 
 		let list_item_style = { textAlign: 'left' }
 
-		let item_style = style.list_item
+		let item_style = styles.list_item
 
 		// on overflow the vertical scrollbar will take up space
 		// reducing padding-right and the only way to fix that
@@ -351,7 +382,7 @@ export default class Select extends PureComponent
 		// a hack to restore padding-right taken up by a vertical scrollbar
 		if (overflow && scrollbarPadding)
 		{
-			item_style = { ...style.list.item }
+			item_style = { ...styles.list.item }
 
 			item_style.marginRight = get_scrollbar_width() + 'px'
 		}
@@ -505,7 +536,7 @@ export default class Select extends PureComponent
 					{
 						'rrui__select__arrow--expanded': expanded
 					})}
-					style={style.arrow}/>
+					style={styles.arrow}/>
 			</button>
 		)
 
@@ -524,6 +555,7 @@ export default class Select extends PureComponent
 			options,
 			menu,
 			toggler,
+			style,
 			className,
 			children
 		}
@@ -542,7 +574,7 @@ export default class Select extends PureComponent
 					value={value === null ? undefined : value}
 					disabled={disabled}
 					onChange={event => {}}
-					style={ this.props.style ? { ...this.props.style, width: 'auto' } : { width: 'auto' } }
+					style={ style ? { ...style, width: 'auto' } : { width: 'auto' } }
 					className={className}>
 					{
 						options
@@ -1111,8 +1143,8 @@ export default class Select extends PureComponent
 
 		const style = getComputedStyle(label)
 
-		const width = parseFloat(style.width)
-		const side_padding = parseFloat(style.paddingLeft)
+		const width = parseFloat(styles.width)
+		const side_padding = parseFloat(styles.paddingLeft)
 
 		return width - 2 * side_padding
 	}
@@ -1166,10 +1198,10 @@ export default class Select extends PureComponent
 
 Select.Separator = function(props)
 {
-	return <div className="rrui__select__separator" style={style.separator}/>
+	return <div className="rrui__select__separator" style={styles.separator}/>
 }
 
-const style = styler
+const styles = styler
 `
 	wrapper
 		position   : relative

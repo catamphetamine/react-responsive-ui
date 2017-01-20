@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling/flat'
 import classNames from 'classnames'
 
 import Page_and_menu from './page and menu'
@@ -46,24 +45,39 @@ export default class Menu_button extends PureComponent
 
 	render()
 	{
-		const { link, title, style, buttonStyle, className } = this.props
+		const
+		{
+			link,
+			title,
+			style,
+			buttonStyle,
+			className
+		}
+		= this.props
 
-		// "Hamburger" icon (24x24)
-		const svg_path = "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+		const
+		{
+			react_responsive_ui_menu:
+			{
+				toggle
+			}
+		}
+		= this.context
 
 		const markup =
 		(
 			<Button
-				ref={ref => this.button = ref}
-				link={link}
-				action={this.context.react_responsive_ui_menu.toggle}
-				title={title}
-				className={classNames('rrui__slideout-menu-button', className)}
-				style={style}
-				buttonStyle={buttonStyle}>
-				{/*<div className="menu-icon"/>*/}
-				<svg className="rrui__slideout-menu-button__icon" viewBox="0 0 24 24">
-					<path d={svg_path}/>
+				ref={ ref => this.button = ref }
+				link={ link }
+				action={ toggle }
+				title={ title }
+				className={ classNames('rrui__slideout-menu-button', className) }
+				style={ style }
+				buttonStyle={ buttonStyle }>
+				<svg
+					className="rrui__slideout-menu-button__icon"
+					viewBox={ svg_canvas_dimensions }>
+					<path d={ svg_path }/>
 				</svg>
 			</Button>
 		)
@@ -71,3 +85,7 @@ export default class Menu_button extends PureComponent
 		return markup
 	}
 }
+
+// "Hamburger" icon (24x24)
+const svg_canvas_dimensions = "0 0 24 24"
+const svg_path = "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"

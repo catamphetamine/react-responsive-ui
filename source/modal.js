@@ -1,9 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react'
-import styler from 'react-styling'
 import classNames from 'classnames'
 // `react-modal` takes styles as an object of style objects,
 // therefore not using `/flat` styler here.
-
+import styler from 'react-styling'
 import React_modal from 'react-modal'
 
 import Button from './button'
@@ -21,9 +20,9 @@ export default class Modal extends PureComponent
 	static propTypes =
 	{
 		// If `true` then the modal is shown
-		shown            : PropTypes.bool.isRequired,
+		isOpen           : PropTypes.bool.isRequired,
 
-		// Closes the modal (must set the `shown` flag to `false`)
+		// Closes the modal (must set the `isOpen` flag to `false`)
 		close            : PropTypes.func.isRequired,
 
 		// A time required for CSS hiding animation to complete
@@ -92,7 +91,7 @@ export default class Modal extends PureComponent
 
 	static defaultProps =
 	{
-		shown : false,
+		isOpen : false,
 
 		bodyOverflowX : 'auto',
 		// Prevents document width from jumping due to the
@@ -139,7 +138,9 @@ export default class Modal extends PureComponent
 	{
 		window.removeEventListener('resize', this.on_window_resize)
 
-		if (this.props.shown)
+		const { isOpen } = this.props
+
+		if (isOpen)
 		{
 			this.closing()
 		}
@@ -148,7 +149,9 @@ export default class Modal extends PureComponent
 	// Restore document scroll after modal is hidden
 	componentWillUpdate(next_props)
 	{
-		if (next_props.shown === false && this.props.shown === true)
+		const { isOpen } = this.props
+
+		if (next_props.isOpen === false && isOpen === true)
 		{
 			this.closing()
 		}
@@ -156,7 +159,9 @@ export default class Modal extends PureComponent
 
 	componentWillReceiveProps(next_props)
 	{
-		if (this.props.shown && !next_props.shown)
+		const { isOpen } = this.props
+
+		if (isOpen && !next_props.isOpen)
 		{
 			const { reset, closeTimeout } = this.props
 
@@ -175,7 +180,7 @@ export default class Modal extends PureComponent
 		const
 		{
 			busy,
-			shown,
+			isOpen,
 			closeTimeout,
 			contentLabel,
 			title,
@@ -183,7 +188,9 @@ export default class Modal extends PureComponent
 			actions,
 			scroll,
 			cancelLabel,
-			children
+			children,
+			style,
+			className
 		}
 		= this.props
 
@@ -192,21 +199,21 @@ export default class Modal extends PureComponent
 		const markup =
 		(
 			<React_modal
-				isOpen={shown}
+				isOpen={isOpen}
 				onAfterOpen={this.on_after_open}
 				onRequestClose={this.on_request_close}
 				closeTimeoutMS={closeTimeout}
 				contentLabel={contentLabel}
-				className={classNames('rrui__modal',
+				className={classNames('rrui__modal', className,
 				{
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
 				})}
-				style={busy ? style.modal_busy : style.modal}>
+				style={busy ? styles.modal_busy : styles.modal}>
 
-				<div style={style.content_wrapper} onClick={this.on_request_close}>
+				<div style={styles.content_wrapper} onClick={this.on_request_close}>
 					{/* top padding, grows less than bottom padding */}
 					<div
-						style={style.vertical_padding}
+						style={styles.vertical_padding}
 						className="rrui__modal__padding--top"
 						onClick={this.on_request_close}/>
 
@@ -218,7 +225,7 @@ export default class Modal extends PureComponent
 							{
 								'rrui__modal__header--separated': scroll
 							})}
-							style={style.header}>
+							style={styles.header}>
 							{title}
 						</h1>
 					}
@@ -230,9 +237,9 @@ export default class Modal extends PureComponent
 							'rrui__modal__content--no-bars': !title
 						})}
 						onClick={this.block_event}
-						style={ this.props.style ? { ...style.content, ...this.props.style } : style.content }>
+						style={ style ? { ...styles.content, ...style } : styles.content }>
 
-						{this.content()}
+						{ children }
 					</div>
 
 					{/* dialog window actions */}
@@ -243,7 +250,7 @@ export default class Modal extends PureComponent
 								'rrui__modal__actions--separated': scroll
 							})}
 							onClick={this.block_event}
-							style={style.actions}>
+							style={styles.actions}>
 
 							{/* Cancel button */}
 							{cancel &&
@@ -256,13 +263,20 @@ export default class Modal extends PureComponent
 							}
 
 							{/* Other buttons ("Next", "OK", ...) */}
-							{actions.map((action, i) => <Button key={i} disabled={busy} {...action}>{action.text}</Button>)}
+							{actions.map((action, i) => (
+								<Button
+									key={i}
+									disabled={busy}
+									{...action}>
+									{action.text}
+								</Button>
+							))}
 						</div>
 					}
 
 					{/* bottom padding, grows more than top padding */}
 					<div
-						style={style.vertical_padding}
+						style={styles.vertical_padding}
 						className="rrui__modal__padding--bottom"
 						onClick={this.on_request_close}/>
 				</div>
@@ -270,20 +284,6 @@ export default class Modal extends PureComponent
 		)
 
 		return markup
-	}
-
-	content()
-	{
-		const { children } = this.props
-
-		// if (React.Children.count(children) === 1)
-		// {
-		// 	return React.cloneElement(React.Children.only(children),
-		// 	{
-		// 	})
-		// }
-
-		return children
 	}
 
 	// Play "cannot close" animation on the modal
@@ -397,7 +397,7 @@ export default class Modal extends PureComponent
 }
 
 // https://material.google.com/components/dialogs.html
-const style = styler
+const styles = styler
 `
 	vertical_padding
 		width : 100%
@@ -499,8 +499,8 @@ const style = styler
 			// 	height  : 100%
 `
 
-style.modal_busy =
+styles.modal_busy =
 {
-	overlay: { ...style.modal.overlay, cursor: 'wait' },
-	content: style.modal.content
+	overlay: { ...styles.modal.overlay, cursor: 'wait' },
+	content: styles.modal.content
 }
