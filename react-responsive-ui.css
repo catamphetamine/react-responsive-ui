@@ -2,23 +2,36 @@
 = Buttons                                                   =
 ===========================================================*/
 
-.rrui__button__button,
-.rrui__button__link
+.rrui__button__button
 {
-	background : none;
-	border     : none;
-	outline    : none;
-	padding    : 0;
-
-	white-space: nowrap;
-
-	color: inherit;
-
-	transition : color 30ms ease-out, opacity 150ms ease-out 100ms;
+	background  : none;
+	border      : none;
+	outline     : none;
+	padding     : 0;
+	white-space : nowrap;
+	color       : inherit;
+	transition  : background-color 30ms ease-out, color 30ms ease-out, opacity 150ms ease-out 100ms;
 }
 
-.rrui__button--busy .rrui__button__button,
-.rrui__button--busy .rrui__button__link
+.rrui__button,
+.rrui__button .rrui__button__button
+{
+	cursor : pointer;
+}
+
+.rrui__button--busy,
+.rrui__button--busy .rrui__button__button
+{
+	cursor : wait;
+}
+
+.rrui__button--disabled,
+.rrui__button--disabled .rrui__button__button
+{
+	cursor : default;
+}
+
+.rrui__button--busy .rrui__button__button
 {
 	opacity    : 0;
 	transition : color 30ms ease-out, opacity 200ms ease-out 300ms;
@@ -50,19 +63,12 @@
 	border-radius : 0.3em;
 }
 
-.rrui__button--border .rrui__button__button,
-.rrui__button--border .rrui__button__link
+.rrui__button--border .rrui__button__button
 {
 	padding-left   : 1.6em;
 	padding-right  : 1.6em;
 	padding-top    : 0.7em;
 	padding-bottom : 0.55em;
-}
-
-.rrui__button--border,
-.rrui__button--border .rrui__button__button
-{
-	cursor: pointer;
 }
 
 .rrui__button--border .rrui__activity-indicator
@@ -263,9 +269,22 @@
 	text-align: left;
 }
 
+.rrui__select__selected,
+.rrui__select__option
+{
+	cursor : pointer;
+}
+
+.rrui__select--disabled .rrui__select__selected,
+.rrui__select--disabled .rrui__select__option
+{
+	cursor : default;
+}
+
 .rrui__select__option:active
 {
-	background-color: #ECF1F6;
+	background-color: #3678D1;
+	color : white;
 }
 
 .rrui__select__option-icon
@@ -312,6 +331,11 @@
 	transition: border 0.1s;
 }
 
+.rrui__select__selected
+{
+	cursor: pointer;
+}
+
 .rrui__select__selected:focus
 {
 	border-bottom-color: #03B2CB;
@@ -323,7 +347,7 @@
 	font-weight: normal;
 }
 
-.rrui__select__option:active, .rrui__select__selected:active
+.rrui__select__selected:active
 {
 	color: #3678D1;
 }
@@ -386,9 +410,22 @@
 .rrui__checkbox__label
 {
 	position       : relative;
+	z-index        : 1;
 	padding-left   : 1.5em;
 	vertical-align : bottom;
 	color          : inherit;
+}
+
+.rrui__checkbox__input,
+.rrui__checkbox__label
+{
+	cursor : pointer;
+}
+
+.rrui__checkbox--disabled .rrui__checkbox__input,
+.rrui__checkbox--disabled .rrui__checkbox__label
+{
+	cursor : default;
 }
 
 /* Checkbox label color */
@@ -402,7 +439,7 @@
 .rrui__checkbox__checkmark
 {
 	position : absolute;
-	top      : 0.05em;
+	top      : 0.1em;
 
 	width  : 0.9em;
 	height : 0.9em;
@@ -410,24 +447,24 @@
 
 .rrui__checkbox__checkmark
 {
-	width  : 0.8em;
-	height : 0.8em;
-
-	margin-left : 1px;
-	margin-top  : 1px;
+	width       : 0.75em;
+	height      : 0.75em;
+	margin-left : 0.07em;
+	margin-top  : 0.05em;
 }
 
 /* Checkmark color */
 .rrui__checkbox__checkmark path
 {
 	stroke       : #3678D1;
-	stroke-width : 0.6em;
+	stroke-width : 1em;
 }
 
 .rrui__checkbox__box
 {
 	border     : 1px solid #cfcfcf;
 	transition : opacity 0.3s;
+	box-sizing : border-box;
 }
 
 .rrui__checkbox--checked .rrui__checkbox__box
@@ -491,6 +528,16 @@
 	left : 0.7125em;
 }
 
+.rrui__switch
+{
+	cursor : pointer;
+}
+
+.rrui__switch--disabled
+{
+	cursor : default;
+}
+
 /*===========================================================
 = Segmented control                                         =
 ===========================================================*/
@@ -534,6 +581,16 @@
 {
 	color            : white;
 	background-color : #3678D1;
+}
+
+.rrui__segmented-control .rrui__button__button
+{
+  cursor : pointer;
+}
+
+.rrui__segmented-control--disabled .rrui__button__button
+{
+  cursor : default;
 }
 
 /*===========================================================

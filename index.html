@@ -527,7 +527,7 @@
 								<Button action={() => this.setState({ show_modal: true })}>Show</Button>
 
 								<Modal
-									shown={this.state.show_modal}
+									isOpen={this.state.show_modal}
 									close={() => this.setState({ show_modal: false })}
 									style={modal_style.modal}
 									title="Dialog"
