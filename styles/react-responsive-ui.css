@@ -900,6 +900,11 @@ but introduces page width jumps.
 	color: #D30F00;
 }
 
+.rrui__text-input--disabled .rrui__text-input__field
+{
+	cursor: default;
+}
+
 /*===========================================================
 = Tooltip                                                   =
 ===========================================================*/
