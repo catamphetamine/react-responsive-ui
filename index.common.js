@@ -20,4 +20,12 @@ exports.DatePicker = require('./build/date picker').default
 exports.FileUpload = require('./build/file upload').default
 exports.Modal = require('./build/modal').default
 
+// Drag'n'drop
+exports.DragAndDrop = require('./build/drag-n-drop').DragAndDrop
+exports.CanDrop = require('./build/drag-n-drop').CanDrop
+exports.File = require('./build/drag-n-drop').File
+exports.FILE = exports.File
+exports.Files = require('./build/drag-n-drop').Files
+exports.FILES = exports.Files
+
 // exports['default'] = ...

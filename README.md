@@ -135,6 +135,32 @@ from 'react-responsive-ui'
 </PageWithMenu>
 ```
 
+## Drag'n'drop
+
+Drag'n'drop is implemented internally using [`react-dnd`](https://github.com/gaearon/react-dnd) providing a much simpler-to-use API. Currently only file upload is supported but new features could be added upon request.
+
+```js
+import { DragAndDrop, CanDrop, FILE, FILES } from 'react-responsive-ui'
+
+@DragAndDrop()
+class Application extends Component {
+  render() {
+    const { isDragging, children } = this.props
+    return <div>{ children }</div>
+  }
+}
+
+@CanDrop(FILE, (props, dropped) => alert('Uploading file'))
+class FileDropArea extends Component {
+  render() {
+    const { dropTarget, draggedOver, canDrop } = this.props
+    return dropTarget(<div>Drop a file here</div>)
+  }
+}
+```
+
+Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
+
 ## CSS
 
 The CSS for this library is distributed along with the React components. Just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:

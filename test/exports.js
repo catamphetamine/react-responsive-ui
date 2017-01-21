@@ -16,7 +16,13 @@ import
 	SegmentedControl,
 	DatePicker,
 	FileUpload,
-	Modal
+	Modal,
+	DragAndDrop,
+	CanDrop,
+	File,
+	FILE,
+	Files,
+	FILES
 }
 from '../index.es6'
 
@@ -43,6 +49,14 @@ describe('React Responsive UI', function()
 		expect(DatePicker).to.be.a('function')
 		expect(FileUpload).to.be.a('function')
 		expect(Modal).to.be.a('function')
+
+		// Drag'n'drop
+		expect(DragAndDrop({})).to.be.a('function')
+		expect(CanDrop(File, () => {})).to.be.a('function')
+		expect(File).to.be.a('string')
+		expect(FILE).to.be.a('string')
+		expect(Files).to.be.a('string')
+		expect(FILES).to.be.a('string')
 	})
 
 	it('should export CommonJS', function()
@@ -66,5 +80,13 @@ describe('React Responsive UI', function()
 		expect(_.DatePicker).to.be.a('function')
 		expect(_.FileUpload).to.be.a('function')
 		expect(_.Modal).to.be.a('function')
+
+		// Drag'n'drop
+		expect(_.DragAndDrop({})).to.be.a('function')
+		expect(_.CanDrop(_.File, () => {})).to.be.a('function')
+		expect(_.File).to.be.a('string')
+		expect(_.FILE).to.be.a('string')
+		expect(_.Files).to.be.a('string')
+		expect(_.FILES).to.be.a('string')
 	})
 })

@@ -99,3 +99,15 @@ export
 	default as Modal
 }
 from './es6/modal'
+
+// Drag'n'drop
+export
+{
+	DragAndDrop,
+	CanDrop,
+	File,
+	File as FILE,
+	Files,
+	Files as FILES
+}
+from './es6/drag-n-drop'
