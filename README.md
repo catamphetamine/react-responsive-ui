@@ -124,7 +124,8 @@ from 'react-responsive-ui'
     </Form>
 
     <Modal
-      shown={this.state.showModal}>
+      isOpen={this.state.showModal}
+      close={() => this.setState({ showModal: false })>
       This is a modal
       <Button action={() => this.setState({ showModal: false })>Hide</Button>
     </Modal>
