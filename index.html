@@ -104,6 +104,158 @@
 		<div id="content"></div>
 
 		<script type="text/babel">
+			const library = window['react-responsive-ui']
+
+			const PageAndMenu       = library.PageAndMenu
+			const Page              = library.Page
+			const Menu              = library.Menu
+			const MenuButton        = library.MenuButton
+			const Form              = library.Form
+			const Snackbar          = library.Snackbar
+			const Tooltip           = library.Tooltip
+			const ActivityIndicator = library.ActivityIndicator
+			const TextInput         = library.TextInput
+			const Select            = library.Select
+			const Button            = library.Button
+			const Switch            = library.Switch
+			const Checkbox          = library.Checkbox
+			const SegmentedControl  = library.SegmentedControl
+			const DatePicker        = library.DatePicker
+			const FileUpload        = library.FileUpload
+			const Modal             = library.Modal
+
+			const DragAndDrop       = library.DragAndDrop
+			const CanDrop           = library.CanDrop
+			const File              = library.File
+
+			const style =
+			{
+				form:
+				{
+					marginTop : '2em'
+				},
+
+				input:
+				{
+					marginTop    : '1em',
+					marginRight  : '1em',
+					marginBottom : '1em'
+				},
+
+				select:
+				{
+					marginTop    : '0em',
+					marginRight  : '1em',
+					marginBottom : '1em'
+				},
+
+				textarea:
+				{
+					marginTop    : '0em',
+					marginRight  : '1em',
+					marginBottom : '1em'
+				},
+
+				label:
+				{
+					display      : 'block',
+					marginTop    : '3em',
+					marginBottom : '0.8em',
+					fontSize     : '1.4em'
+				},
+
+				checkbox:
+				{
+					display      : 'block',
+					marginTop    : '1em',
+					marginBottom : '1em'
+				},
+
+				switch_container:
+				{
+					marginBottom : '1em'
+				},
+
+				switch_label:
+				{
+					display      : 'inline-block',
+					marginBottom : '0.14em'
+				},
+
+				switch:
+				{
+					marginLeft    : '1.5em'
+				},
+
+				phone:
+				{
+					display    : 'inline-block',
+					marginLeft : '0.3em'
+				},
+
+				dropdown_icon_style:
+				{
+					width        : '1em',
+					height       : '0.75em',
+					marginBottom : '-0.05em',
+					border       : '1px solid #5f5f5f'
+				},
+
+				file_upload:
+				{
+					display: 'inline-block',
+					padding: '10px',
+					border: '1px dashed #afafaf',
+					borderRadius: '5px',
+					backgroundColor: '#fbfbfb',
+					cursor: 'pointer',
+					textAlign: 'center',
+					lineHeight: '1.5em'
+				}
+			}
+
+			style.file_upload_dragged_over =
+			{
+				...style.file_upload,
+				backgroundColor : '#3678D1',
+				color           : 'white'
+			}
+
+			const modal_style =
+			{
+				container:
+				{
+					margin    : '2em',
+					textAlign : 'center'
+				},
+
+				modal:
+				{
+					width      : '40em',
+					lineHeight : '1.35em'
+				}
+			}
+
+			var FileUploadArea = React.createClass
+			({
+				render: function()
+				{
+					const { dropTarget, draggedOver } = this.props
+
+					return dropTarget(
+						<div style={ { display: 'inline-block' } }>
+							<FileUpload action={file => alert('File chosen: ' + file.name)} style={ draggedOver ? style.file_upload_dragged_over : style.file_upload }>
+								Click here to choose a file
+								<br/>
+								or drop a file here
+							</FileUpload>
+						</div>
+					)
+				}
+			})
+
+			FileUploadArea = CanDrop(File, (props, file) => alert('File dropped: ' + file.name))(FileUploadArea)
+
 			var Content = React.createClass
 			({
 				getInitialState: function()
@@ -121,125 +273,6 @@
 
 				render: function()
 				{
-					const library = window['react-responsive-ui']
-
-					const PageAndMenu       = library.PageAndMenu
-					const Page              = library.Page
-					const Menu              = library.Menu
-					const MenuButton        = library.MenuButton
-					const Form              = library.Form
-					const Snackbar          = library.Snackbar
-					const Tooltip           = library.Tooltip
-					const ActivityIndicator = library.ActivityIndicator
-					const TextInput         = library.TextInput
-					const Select            = library.Select
-					const Button            = library.Button
-					const Switch            = library.Switch
-					const Checkbox          = library.Checkbox
-					const SegmentedControl  = library.SegmentedControl
-					const DatePicker        = library.DatePicker
-					const FileUpload        = library.FileUpload
-					const Modal             = library.Modal
-
-					const style =
-					{
-						form:
-						{
-							marginTop : '2em'
-						},
-
-						input:
-						{
-							marginTop    : '1em',
-							marginRight  : '1em',
-							marginBottom : '1em'
-						},
-
-						select:
-						{
-							marginTop    : '0em',
-							marginRight  : '1em',
-							marginBottom : '1em'
-						},
-
-						textarea:
-						{
-							marginTop    : '0em',
-							marginRight  : '1em',
-							marginBottom : '1em'
-						},
-
-						label:
-						{
-							display      : 'block',
-							marginTop    : '3em',
-							marginBottom : '0.8em',
-							fontSize     : '1.4em'
-						},
-
-						checkbox:
-						{
-							display      : 'block',
-							marginTop    : '1em',
-							marginBottom : '1em'
-						},
-
-						switch_container:
-						{
-							marginBottom : '1em'
-						},
-
-						switch_label:
-						{
-							display      : 'inline-block',
-							marginBottom : '0.14em'
-						},
-
-						switch:
-						{
-							marginLeft    : '1.5em'
-						},
-
-						phone:
-						{
-							display    : 'inline-block',
-							marginLeft : '0.3em'
-						},
-
-						dropdown_icon_style:
-						{
-							width        : '1em',
-							height       : '0.75em',
-							marginBottom : '-0.05em',
-							border       : '1px solid #5f5f5f'
-						},
-
-						file_upload:
-						{
-							display: 'inline-block',
-							padding: '10px',
-							border: '1px dashed #afafaf',
-							borderRadius: '5px',
-							backgroundColor: '#fbfbfb',
-							cursor: 'pointer'
-						}
-					}
-
-					const modal_style =
-					{
-						container:
-						{
-							margin    : '2em',
-							textAlign : 'center'
-						},
-
-						modal:
-						{
-							width      : '40em',
-							lineHeight : '1.35em'
-						}
-					}
-
 					return (
 						<PageAndMenu>
 							<Menu
@@ -490,9 +523,7 @@
 
 									<h2 style={style.label}>File upload</h2>
 
-									<FileUpload action={file => alert('File chosen: ' + file.name)} style={style.file_upload}>
-										Click here to choose a file
-									</FileUpload>
+									<FileUploadArea/>
 
 									<h2 style={style.label}>Activity Indicator</h2>
 									<ActivityIndicator style={style.spinner}/>
@@ -554,6 +585,8 @@
 					)
 				}
 			})
+
+			Content = DragAndDrop()(Content)
 
 			ReactDOM.render
 			(
