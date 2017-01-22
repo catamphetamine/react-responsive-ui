@@ -135,6 +135,28 @@ from 'react-responsive-ui'
 </PageWithMenu>
 ```
 
+## CSS
+
+The CSS for this library is distributed along with the React components. Just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
+
+```html
+<head>
+  <link rel="stylesheet" href="/css/react-responsive-ui.css"/>
+</head>
+```
+
+This CSS file is meant as a base one and a developer should override the CSS rules defined in it (this can be done in a separate file) to better suit the project's needs.
+
+An alternative way of including the base CSS file when using Webpack would be:
+
+```js
+require('react-responsive-ui/styles/react-responsive-ui.css')
+```
+
+## API
+
+See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
+
 ## Drag'n'drop
 
 Drag'n'drop is implemented internally using [`react-dnd`](https://github.com/gaearon/react-dnd) providing a much simpler-to-use API. Currently only file upload is supported but new features could be added upon request.
@@ -160,80 +182,6 @@ class FileDropArea extends Component {
 ```
 
 Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
-
-## CSS
-
-The CSS for this library is distributed along with the React components. Just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
-
-```html
-<head>
-  <link rel="stylesheet" href="/css/react-responsive-ui.css"/>
-</head>
-```
-
-This CSS file is meant as a base one and a developer should override the CSS rules defined in it (this can be done in a separate file) to better suit the project's needs.
-
-An alternative way of including the base CSS file when using Webpack would be:
-
-```js
-require('react-responsive-ui/styles/react-responsive-ui.css')
-```
-
-## API
-
-See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
-
-## Javascript
-
-(Advanced feature)
-
-This library is also responsive in a sense that it works both with javascript enabled and disabled (e.g. [Tor](https://www.torproject.org/)). It does so by rendering two components inside one: one for javascript enabled browsers and the other one (fallback) for javascript disabled browsers. It then automatically hides the non-javascript (fallback) counterpart component in `componentDidMount` call, but if you're a perfectionist and are willing to get Server Side Rendering 100% precise (`componentDidMount` is not called on server side) then this section explains how to achieve that.
-
-A bit of extra CSS is added to `styles/react-responsive-ui.css` to make it work the best way (it would still work without this extra touch though).
-
-In cases when support for javascript-less browsers is not required, simply this CSS would have been enough:
-
-```css
-// Shows only javascript-powered components
-// and hides javascriptless (fallback) components
-.rrui__rich__fallback
-{
-  display: none !important;
-}
-```
-
-But, if your website supports both javascript-enabled and javascript-less browsers, then this CSS is what's required:
-
-```html
-<body>
-  <script>document.body.classList.add('javascript-is-enabled')</script>
-</body>
-```
-
-```css
-// Shows javascript-powered components
-// and hides javascriptless (fallback) components
-body.javascript-is-enabled
-{
-  .rrui__rich__fallback
-  {
-    display: none !important;
-  }
-}
-
-// Hides javascript-powered components
-// and shows only javascriptless (fallback) components
-body:not(.javascript-is-enabled)
-{
-  .rrui__rich
-  {
-    > *:not(.rrui__rich__fallback)
-    {
-      display: none !important;
-    }
-  }
-}
-```
 
 ### Menu
 
