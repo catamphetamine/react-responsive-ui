@@ -121,6 +121,7 @@ export default class Modal extends PureComponent
 		this.on_window_resize = this.on_window_resize.bind(this)
 		this.closing          = this.closing.bind(this)
 
+		this.close             = this.close.bind(this)
 		this.close_if_not_busy = this.close_if_not_busy.bind(this)
 	}
 
@@ -203,87 +204,98 @@ export default class Modal extends PureComponent
 		const markup =
 		(
 			<React_modal
-				isOpen={isOpen}
-				onAfterOpen={this.on_after_open}
-				onRequestClose={this.on_request_close}
-				closeTimeoutMS={closeTimeout}
-				contentLabel={contentLabel}
-				className={classNames('rrui__modal', className,
+				isOpen={ isOpen }
+				onAfterOpen={ this.on_after_open }
+				onRequestClose={ this.on_request_close }
+				closeTimeoutMS={ closeTimeout }
+				contentLabel={ contentLabel }
+				className={ classNames('rrui__modal', className,
 				{
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
-				})}
-				style={busy ? styles.modal_busy : styles.modal}>
+				}) }
+				style={ busy ? styles.modal_busy : styles.modal }>
 
-				<div style={styles.content_wrapper} onClick={this.on_request_close}>
+				<div style={ styles.content_wrapper } onClick={ this.on_request_close }>
 					{/* top padding, grows less than bottom padding */}
 					<div
-						style={styles.vertical_padding}
+						style={ styles.vertical_padding }
 						className="rrui__modal__padding--top"
-						onClick={this.on_request_close}/>
+						onClick={ this.on_request_close }/>
 
 					{/* dialog window title */}
-					{title &&
+					{ title &&
 						<h1
-							onClick={this.block_event}
-							className={classNames('rrui__modal__header',
+							onClick={ this.block_event }
+							className={ classNames('rrui__modal__header',
 							{
 								'rrui__modal__header--separated': scroll
-							})}
-							style={styles.header}>
-							{title}
-							{closeButton}
+							}) }
+							style={ styles.header }>
+
+							{ title }
+
+							{ closeButton &&
+								<button
+									onClick={ this.close }
+									className={ classNames('rrui__modal__close',
+									{
+										'rrui__modal__close--busy' : busy
+									}) }>
+									{ closeButton }
+								</button>
+							}
 						</h1>
 					}
 
 					{/* dialog window content */}
 					<div
-						className={classNames('rrui__modal__content',
+						className={ classNames('rrui__modal__content',
 						{
 							'rrui__modal__content--no-bars': !title
-						})}
-						onClick={this.block_event}
+						}) }
+						onClick={ this.block_event }
 						style={ style ? { ...styles.content, ...style } : styles.content }>
 
 						{ children }
 					</div>
 
 					{/* dialog window actions */}
-					{actions &&
+					{ actions &&
 						<div
-							className={classNames('rrui__modal__actions',
+							className={ classNames('rrui__modal__actions',
 							{
 								'rrui__modal__actions--separated': scroll
-							})}
-							onClick={this.block_event}
-							style={styles.actions}>
+							}) }
+							onClick={ this.block_event }
+							style={ styles.actions }>
 
 							{/* Cancel button */}
-							{cancel &&
+							{ cancel &&
 								<Button
 									key="-1"
-									disabled={busy}
-									action={cancel === true ? this.close_if_not_busy : cancel}>
-									{cancelLabel}
+									disabled={ busy }
+									action={ cancel === true ? this.close_if_not_busy : cancel }>
+									{ cancelLabel }
 								</Button>
 							}
 
 							{/* Other buttons ("Next", "OK", ...) */}
-							{actions.map((action, i) => (
+							{ actions.map((action, i) => (
 								<Button
-									key={i}
-									disabled={busy}
-									{...action}>
-									{action.text}
+									key={ i }
+									disabled={ busy }
+									{ ...action }>
+									{ action.text }
 								</Button>
-							))}
+							)) }
 						</div>
 					}
 
 					{/* bottom padding, grows more than top padding */}
 					<div
-						style={styles.vertical_padding}
+						style={ styles.vertical_padding }
 						className="rrui__modal__padding--bottom"
-						onClick={this.on_request_close}/>
+						onClick={ this.on_request_close }/>
 				</div>
 			</React_modal>
 		)
@@ -318,8 +330,8 @@ export default class Modal extends PureComponent
 		const { cancel } = this.props
 
 		// If the modal has an explicit "Cancel" button,
-		// allow closing it by hitting "Escape" key,
-		// then don't close it on a click outside.
+		// then allow closing it by hitting "Escape" key,
+		// but don't close it on a click outside.
 		if (cancel && event && event.type !== 'keydown')
 		{
 			return this.indicate_cannot_close()
