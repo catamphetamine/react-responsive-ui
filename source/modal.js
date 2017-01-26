@@ -82,6 +82,9 @@ export default class Modal extends PureComponent
 		// (is "Popup" by default)
 		contentLabel     : PropTypes.string.isRequired,
 
+		// An optional close button (like a cross)
+		closeButton      : PropTypes.node,
+
 		// CSS class
 		className        : PropTypes.string,
 
@@ -188,6 +191,7 @@ export default class Modal extends PureComponent
 			actions,
 			scroll,
 			cancelLabel,
+			closeButton,
 			children,
 			style,
 			className
@@ -227,6 +231,7 @@ export default class Modal extends PureComponent
 							})}
 							style={styles.header}>
 							{title}
+							{closeButton}
 						</h1>
 					}
 
