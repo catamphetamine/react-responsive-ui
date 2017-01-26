@@ -686,6 +686,11 @@ but introduces page width jumps.
 	font-size  : 1.3rem;
 }
 
+.rrui__modal__close--busy
+{
+	cursor : wait;
+}
+
 .rrui__modal__actions
 {
 	padding-left   : calc(4 * 0.3rem);
