@@ -735,10 +735,17 @@ but introduces page width jumps.
 	padding-bottom : 1.2rem;
 }
 
-.rrui__modal__content--no-bars
+.rrui__modal__content--no-title
 {
-	padding-top   : calc(4 * 0.3rem);
-	border-radius : 0.2rem;
+	padding-top             : calc(4 * 0.3rem);
+	border-top-left-radius  : 0.2rem;
+	border-top-right-radius : 0.2rem;
+}
+
+.rrui__modal__content--no-actions
+{
+	border-bottom-left-radius  : 0.2rem;
+	border-bottom-right-radius : 0.2rem;
 }
 
 .rrui__modal__content,
