@@ -750,7 +750,7 @@ but introduces page width jumps.
 .rrui__modal__padding--top,
 .rrui__modal__padding--bottom
 {
-	flex-basis : 80px;
+	flex-basis : 3%;
 }
 
 .rrui__modal__padding--bottom
