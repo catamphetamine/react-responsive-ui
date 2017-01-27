@@ -30,7 +30,7 @@ export default class Snackbar extends PureComponent
 	{
 		hideAnimationDuration : 400,
 		minTime          : 1200,
-		lengthTimeFactor : 80
+		lengthTimeFactor : 60
 	}
 
 	state =

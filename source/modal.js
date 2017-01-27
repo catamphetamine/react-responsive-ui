@@ -195,7 +195,6 @@ export default class Modal extends PureComponent
 			actions,
 			scroll,
 			cancelLabel,
-			closeButton,
 			children,
 			style,
 			className
@@ -225,7 +224,7 @@ export default class Modal extends PureComponent
 						className="rrui__modal__padding--top"
 						onClick={ this.on_request_close }/>
 
-					{/* dialog window title */}
+					{/* Modal window title (with an optional close button) */}
 					{ title &&
 						<h1
 							onClick={ this.block_event }
@@ -237,16 +236,7 @@ export default class Modal extends PureComponent
 
 							{ title }
 
-							{ closeButton &&
-								<button
-									onClick={ this.close }
-									className={ classNames('rrui__modal__close',
-									{
-										'rrui__modal__close--busy' : busy
-									}) }>
-									{ closeButton }
-								</button>
-							}
+							{ this.render_close_button() }
 						</h1>
 					}
 
@@ -254,10 +244,13 @@ export default class Modal extends PureComponent
 					<div
 						className={ classNames('rrui__modal__content',
 						{
-							'rrui__modal__content--no-bars': !title
+							'rrui__modal__content--no-title'   : !title,
+							'rrui__modal__content--no-actions' : !actions
 						}) }
 						onClick={ this.block_event }
 						style={ style ? { ...styles.content, ...style } : styles.content }>
+
+						{ !title && this.render_close_button() }
 
 						{ children }
 					</div>
@@ -301,6 +294,30 @@ export default class Modal extends PureComponent
 						onClick={ this.on_request_close }/>
 				</div>
 			</React_modal>
+		)
+
+		return markup
+	}
+
+	render_close_button()
+	{
+		const { closeButton, busy } = this.props
+
+		if (!closeButton)
+		{
+			return
+		}
+
+		const markup =
+		(
+			<button
+				onClick={ this.close }
+				className={ classNames('rrui__modal__close',
+				{
+					'rrui__modal__close--busy' : busy
+				}) }>
+				{ closeButton }
+			</button>
 		)
 
 		return markup

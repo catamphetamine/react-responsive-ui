@@ -688,6 +688,7 @@ but introduces page width jumps.
 
 .rrui__modal__close
 {
+	float  : right;
 	cursor : pointer;
 }
 
@@ -729,15 +730,22 @@ but introduces page width jumps.
 
 .rrui__modal__content
 {
-	padding-left   : 1.2rem;
-	padding-right  : 1.2rem;
-	padding-bottom : 1.2rem;
+	padding-left   : calc(4 * 0.3rem);
+	padding-right  : calc(4 * 0.3rem);
+	padding-bottom : calc(4 * 0.3rem);
 }
 
-.rrui__modal__content--no-bars
+.rrui__modal__content--no-title
 {
-	padding-top   : calc(4 * 0.3rem);
-	border-radius : 0.2rem;
+	padding-top             : calc(4 * 0.3rem);
+	border-top-left-radius  : 0.2rem;
+	border-top-right-radius : 0.2rem;
+}
+
+.rrui__modal__content--no-actions
+{
+	border-bottom-left-radius  : 0.2rem;
+	border-bottom-right-radius : 0.2rem;
 }
 
 .rrui__modal__content,
@@ -750,7 +758,7 @@ but introduces page width jumps.
 .rrui__modal__padding--top,
 .rrui__modal__padding--bottom
 {
-	flex-basis : 80px;
+	flex-basis : 3%;
 }
 
 .rrui__modal__padding--bottom
