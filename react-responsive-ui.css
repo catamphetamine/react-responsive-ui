@@ -688,6 +688,7 @@ but introduces page width jumps.
 
 .rrui__modal__close
 {
+	float  : right;
 	cursor : pointer;
 }
 
