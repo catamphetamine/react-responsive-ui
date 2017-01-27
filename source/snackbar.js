@@ -7,8 +7,11 @@ export default class Snackbar extends PureComponent
 {
 	static propTypes =
 	{
-		// A timeout for a "snack" to hide itself.
-		autoHideTimeout : PropTypes.number,
+		// Snackbar value (either a message, or an object)
+		value : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+
+		// Must reset the `value`.
+		reset : PropTypes.func.isRequired,
 
 		// "Snack" hiding CSS animation duration.
 		// Is 400 milliseconds by default.
@@ -17,13 +20,7 @@ export default class Snackbar extends PureComponent
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
 		minTime          : PropTypes.number.isRequired,
-		lengthTimeFactor : PropTypes.number.isRequired,
-
-		// Snackbar value (either a message, or an object)
-		value : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-
-		// Must reset the `value`.
-		reset : PropTypes.func.isRequired
+		lengthTimeFactor : PropTypes.number.isRequired
 	}
 
 	static defaultProps =
@@ -47,65 +44,97 @@ export default class Snackbar extends PureComponent
 
 	componentWillReceiveProps(new_props)
 	{
-		const { reset } = this.props
-		const { value } = new_props
+		const { value, reset } = new_props
 
-		// Since Redux won't rerender
-		// if the snack value is the same as the previous one,
-		// an explicit change detection variable is introduced.
+		// Redux has an optimization built in:
+		// it won't rerender a `@connect`ed component
+		// if its new `props` are shallowly equal to the previous ones.
+		// Therefore, manually resetting the `value` property here
+		// immediately after receiving it (a non-`undefined` value)
+		// so that the same notification message could later be displayed.
 		if (value)
 		{
+			// Add the notification to the queue
 			this.push(value)
+			// Reset the `value` property immediately
 			reset()
 		}
 	}
 
+	// Adds a notification to the queue
 	push(new_value)
 	{
 		const { values, value } = this.state
 
+		// Add the notification to the queue
 		values.push(new_value)
 
+		// If the notification queue was empty
+		// then kick-start it.
 		if (!value)
 		{
 			this.next()
 		}
 	}
 
+	// Displays the next notification in the queue
 	next()
 	{
 		const { values } = this.state
-		const { hideAnimationDuration, autoHideTimeout, minTime, lengthTimeFactor } = this.props
 
+		const
+		{
+			hideAnimationDuration,
+			minTime,
+			lengthTimeFactor
+		}
+		= this.props
+
+		// Get the next notification from the queue
+		// (will be `undefined` if the queue is empty)
 		const value = values.shift()
+
+		// Reset the notification display
 		this.setState({ value, height: undefined, hiding: false })
 
+		// If the queue is empty, then just exit
 		if (!value)
 		{
 			return
 		}
 
-		// `show` will be set to `true` later,
+		// `state.show` will be set to `true` later,
 		// when the height of the element is measured
-		// (after it renders)
-		// this.setState({ show: true })
+		// (which is after it renders)
 
+		// Hide the notification after it expires
 		this.auto_hide_timer = setTimeout(() =>
 		{
+			// Clearing memory
 			this.auto_hide_timer = undefined
+
+			// Start the hiding animation for the notification
 			this.setState({ show: false, hiding: true })
 
+			// Display the next notification
+			// after the currently being hidden one
+			// finishes its hiding animation.
 			setTimeout(this.next, hideAnimationDuration)
 		},
-		autoHideTimeout || (minTime + String(value).length * lengthTimeFactor))
+		// The total display duration (in milliseconds) of a snack
+		// is `minTime + message.length * lengthTimeFactor`
+		minTime + String(value).length * lengthTimeFactor)
 	}
 
 	componentDidUpdate()
 	{
 		let { height, value } = this.state
 
-		// Calculate rendered DOM element height
-		// so that the slide-from-bottom animation could be played.
+		// The notification DOM element has just been rendered
+		// which means its dimensions are set by now.
+		// Calculate the notification container DOM element height
+		// so that the slide-from-bottom animation knows
+		// its target Y-position for the CSS `translate` transform.
 		if (height === undefined && value)
 		{
 			height = ReactDOM.findDOMNode(this.snackbar).offsetHeight
