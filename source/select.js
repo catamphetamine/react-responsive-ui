@@ -528,7 +528,7 @@ export default class Select extends PureComponent
 				)}>
 
 				{/* the label (or icon) */}
-				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label || ' ') }
+				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label || '\u00a0') }
 
 				{/* an arrow */}
 				<div
