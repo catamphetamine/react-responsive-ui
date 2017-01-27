@@ -14,6 +14,11 @@ export default class Snackbar extends PureComponent
 		// Is 400 milliseconds by default.
 		hideAnimationDuration : PropTypes.number.isRequired,
 
+		// The total display duration (in milliseconds) of a snack
+		// is `minTime + message.length * lengthTimeFactor`
+		minTime          : PropTypes.number.isRequired,
+		lengthTimeFactor : PropTypes.number.isRequired,
+
 		// Snackbar value (either a message, or an object)
 		value : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
@@ -23,7 +28,9 @@ export default class Snackbar extends PureComponent
 
 	static defaultProps =
 	{
-		hideAnimationDuration : 400
+		hideAnimationDuration : 400,
+		minTime          : 1200,
+		lengthTimeFactor : 80
 	}
 
 	state =
@@ -68,7 +75,7 @@ export default class Snackbar extends PureComponent
 	next()
 	{
 		const { values } = this.state
-		const { hideAnimationDuration, autoHideTimeout } = this.props
+		const { hideAnimationDuration, autoHideTimeout, minTime, lengthTimeFactor } = this.props
 
 		const value = values.shift()
 		this.setState({ value, height: undefined, hiding: false })
@@ -90,7 +97,7 @@ export default class Snackbar extends PureComponent
 
 			setTimeout(this.next, hideAnimationDuration)
 		},
-		autoHideTimeout || (800 + String(value).length * 100))
+		autoHideTimeout || (minTime + String(value).length * lengthTimeFactor))
 	}
 
 	componentDidUpdate()
