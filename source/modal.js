@@ -82,7 +82,10 @@ export default class Modal extends PureComponent
 		// (is "Popup" by default)
 		contentLabel     : PropTypes.string.isRequired,
 
-		// An optional close button (like a cross)
+		// An optional close button (like a cross).
+		// This is not actually a "button"
+		// but instead "button contents",
+		// i.e. `closeButton` will be wrapped with a `<button/>`.
 		closeButton      : PropTypes.node,
 
 		// CSS class
