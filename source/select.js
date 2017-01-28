@@ -1155,8 +1155,8 @@ export default class Select extends PureComponent
 
 		const style = getComputedStyle(label)
 
-		const width = parseFloat(styles.width)
-		const side_padding = parseFloat(styles.paddingLeft)
+		const width = parseFloat(style.width)
+		const side_padding = parseFloat(style.paddingLeft)
 
 		return width - 2 * side_padding
 	}
