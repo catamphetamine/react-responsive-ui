@@ -14,6 +14,11 @@ import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/do
 //
 // https://material.google.com/components/menus.html
 
+// This is to stretch the selected option `icon`
+// to the appropriate `line-height` when `concise` mode is set.
+// (And also to stretch the selected option with no `label`)
+const Zero_width_space = '\u200b'
+
 export default class Select extends PureComponent
 {
 	static propTypes =
@@ -527,8 +532,15 @@ export default class Select extends PureComponent
 					}
 				)}>
 
+				{/*
+				This is to stretch the selected option `icon`
+				to the appropriate `line-height` when `concise` mode is set.
+				(And also to stretch the selected option with no `label`)
+				*/}
+				{ Zero_width_space }
+
 				{/* the label (or icon) */}
-				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label || '\u00a0') }
+				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label) }
 
 				{/* an arrow */}
 				<div
