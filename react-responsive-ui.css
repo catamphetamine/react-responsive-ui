@@ -812,6 +812,11 @@ but introduces page width jumps.
 	margin-bottom : 0;
 }
 
+.rrui__form__error:empty
+{
+	display : none;
+}
+
 /*===========================================================
 = Form                                                      =
 ===========================================================*/
