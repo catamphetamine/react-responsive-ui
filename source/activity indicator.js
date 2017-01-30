@@ -15,12 +15,13 @@ const svg_stroke_miter_limit = radius / 2
 
 export default function Activity_indicator(props)
 {
-	const { className } = props
+	const { className, style } = props
 
 	const markup =
 	(
 		<div
 			{ ...props }
+			style={ style ? { ...styles.container, ...style } : styles.container }
 			className={ classNames('rrui__activity-indicator', className) }>
 			<svg viewBox={ svg_canvas_dimensions }>
 				<circle
@@ -41,11 +42,17 @@ export default function Activity_indicator(props)
 Activity_indicator.propTypes =
 {
 	// CSS class
-	className : PropTypes.string
+	className : PropTypes.string,
+
+	// CSS style object
+	style     : PropTypes.object
 }
 
 const styles = styler
 `
+	container
+		line-height : 0
+
 	path
 		stroke-dashoffset : 0
 		stroke-linecap    : round
