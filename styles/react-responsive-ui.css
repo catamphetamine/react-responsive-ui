@@ -840,6 +840,11 @@ but introduces page width jumps.
 	margin-bottom : calc(0.3rem * 2);
 }
 
+.rrui__form__error:empty
+{
+	display : none;
+}
+
 /*===========================================================
 = Text input                                                =
 ===========================================================*/
