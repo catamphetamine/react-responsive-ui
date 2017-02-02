@@ -849,13 +849,6 @@ but introduces page width jumps.
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input,
-.rrui__text-input__label
-{
-	padding-top    : calc(0.3rem / 2);
-	padding-bottom : calc(0.3rem / 2);
-}
-
 .rrui__text-input--floating-label
 {
 	padding-top : calc(0.3rem * 2.5);
