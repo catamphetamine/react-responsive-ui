@@ -863,7 +863,8 @@ but introduces page width jumps.
 
 .rrui__text-input__label
 {
-	top : calc(0.3rem * 2.5);
+	left : 0;
+	top  : calc(0.3rem * 2.5);
 
 	/*
 	When changing this label color
