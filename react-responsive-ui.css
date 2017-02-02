@@ -283,8 +283,8 @@
 
 .rrui__select__option:active
 {
-	background-color: #3678D1;
-	color : white;
+	background-color : #3678D1;
+	color            : white;
 }
 
 .rrui__select__option-icon
@@ -730,9 +730,9 @@ but introduces page width jumps.
 
 .rrui__modal__content
 {
-	padding-left   : 1.2rem;
-	padding-right  : 1.2rem;
-	padding-bottom : 1.2rem;
+	padding-left   : calc(4 * 0.3rem);
+	padding-right  : calc(4 * 0.3rem);
+	padding-bottom : calc(4 * 0.3rem);
 }
 
 .rrui__modal__content--no-title
@@ -812,11 +812,6 @@ but introduces page width jumps.
 	margin-bottom : 0;
 }
 
-.rrui__form__error:empty
-{
-	display : none;
-}
-
 /*===========================================================
 = Form                                                      =
 ===========================================================*/
@@ -845,20 +840,30 @@ but introduces page width jumps.
 	margin-bottom : calc(0.3rem * 2);
 }
 
+.rrui__form__error:empty
+{
+	display : none;
+}
+
 /*===========================================================
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input--floating-label
+.rrui__text-input,
+.rrui__text-input__label
 {
-	padding-top : 0.75rem;
+	padding-top    : calc(0.3rem / 2);
+	padding-bottom : calc(0.3rem / 2);
 }
 
-.rrui__text-input label
+.rrui__text-input--floating-label
 {
-	left       : 0;
-	top        : 0.15rem;
-	margin-top : 0.75rem;
+	padding-top : calc(0.3rem * 2.5);
+}
+
+.rrui__text-input__label
+{
+	top : calc(0.3rem * 2.5);
 
 	/*
 	When changing this label color
@@ -871,47 +876,43 @@ but introduces page width jumps.
 	transition       : color 0.1s ease-out, transform 0.1s ease-out;
 }
 
-/* Either label or description */
-.rrui__text-input p
+.rrui__text-input__description
 {
 	margin-top    : 0;
 	margin-bottom : 0;
-}
-
-.rrui__text-input__description
-{
 	transition : opacity 160ms ease-out;
 }
 
-.rrui__text-input--empty .rrui__text-input__description
+.rrui__text-input__field,
+.rrui__text-input__label
 {
-	opacity : 0.6;
+	min-height: calc(0.3rem * 6);
+	/* `line-height` is for `<input/>` text vertical centering */
+	line-height: calc(0.3rem * 6);
 }
 
-.rrui__text-input input:focus + label,
-.rrui__text-input textarea:focus + label
+.rrui__text-input__field:focus + .rrui__text-input__label
 {
 	color: #03B2CB;
 }
 
-.rrui__text-input--invalid label
+.rrui__text-input__label--invalid
 {
 	color: #D30F00;
 }
 
-.rrui__text-input--invalid .rrui__text-input__field
+.rrui__text-input__field--invalid
 {
 	border-bottom-color: #EB2010 !important;
 }
 
-.rrui__text-input--empty label
+.rrui__text-input__label--empty
 {
 	color     : #888C91;
 	transform : translateY(0) scale(1);
 }
 
-.rrui__text-input--empty input:focus + label,
-.rrui__text-input--empty textarea:focus + label
+.rrui__text-input__field--empty:focus + .rrui__text-input__label
 {
 	color: #888C91;
 }
@@ -923,7 +924,7 @@ but introduces page width jumps.
 	color: #D30F00;
 }
 
-.rrui__text-input--disabled .rrui__text-input__field
+.rrui__text-input__field--disabled
 {
 	cursor: default;
 }
