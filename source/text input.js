@@ -148,8 +148,8 @@ export default class Text_input extends PureComponent
 					'rrui__text-input',
 					{
 						'rrui__rich'                       : fallback,
-						'rrui__text-input--empty'          : !value || !value.trim(),
-						'rrui__text-input--invalid'        : indicateInvalid && error,
+						'rrui__text-input--empty'          : this.is_empty(),
+						'rrui__text-input--invalid'        : this.should_indicate_invalid(),
 						'rrui__text-input--floating-label' : label,
 						'rrui__text-input--disabled'       : disabled
 					},
@@ -162,17 +162,24 @@ export default class Text_input extends PureComponent
 				{/* <input/> */}
 				{ this.render_input({ name: false }) }
 
-				{/* input label */}
+				{/* Input `<label/>`. */}
+				{/* It is rendered after the input to utilize the
+			       `input:focus + label` CSS selector rule */}
 				{ !description && label &&
 					<label
-						className="rrui__text-input__label"
+						className={ classNames('rrui__text-input__label',
+						{
+							// CSS selector performance optimization
+							'rrui__text-input__label--empty'   : this.is_empty(),
+							'rrui__text-input__label--invalid' : this.should_indicate_invalid()
+						}) }
 						style={ labelStyle ? { ...styles.label, ...labelStyle } : styles.label }>
 						{ label }
 					</label>
 				}
 
 				{/* Error message */}
-				{ this.render_error_message() }
+				{ this.should_indicate_invalid() && this.render_error_message() }
 
 				{/* Fallback in case javascript is disabled (no animated <label/>) */}
 				{ fallback && !this.state.javascript && this.render_static() }
@@ -193,7 +200,7 @@ export default class Text_input extends PureComponent
 
 		const markup =
 		(
-			<p className="rrui__text-input__description">
+			<p className={ classNames('rrui__text-input__description') }>
 				{ description }
 			</p>
 		)
@@ -214,7 +221,10 @@ export default class Text_input extends PureComponent
 			disabled,
 			inputStyle,
 			rows,
-			cols
+			cols,
+
+			// Passthrough properties
+			onBlur
 		}
 		= this.props
 
@@ -226,8 +236,16 @@ export default class Text_input extends PureComponent
 			placeholder : placeholder || this.props.placeholder,
 			onChange    : this.on_change,
 			onKeyDown   : this.on_key_down,
+			onBlur,
 			disabled,
-			className   : 'rrui__text-input__field',
+			className   : classNames('rrui__text-input__field',
+			{
+				// CSS selector performance optimization
+				'rrui__text-input__field--empty'     : this.is_empty(),
+				'rrui__text-input__field--invalid'   : this.should_indicate_invalid(),
+				'rrui__text-input__field--disabled'  : disabled,
+				'rrui__text-input__field--multiline' : multiline
+			}),
 			style       : inputStyle ? { ...styles.input, ...inputStyle } : styles.input,
 			autoFocus   : focus
 		}
@@ -248,12 +266,9 @@ export default class Text_input extends PureComponent
 
 	render_error_message()
 	{
-		const { error, indicateInvalid } = this.props
+		const { error } = this.props
 
-		if (indicateInvalid && error)
-		{
-			return <div className="rrui__text-input__error">{ error }</div>
-		}
+		return <div className="rrui__text-input__error">{ error }</div>
 	}
 
 	// Fallback in case javascript is disabled (no animated <label/>)
@@ -271,7 +286,7 @@ export default class Text_input extends PureComponent
 				{ this.render_input({ placeholder: label, ref: false }) }
 
 				{/* Error message */}
-				{ this.render_error_message() }
+				{ this.should_indicate_invalid() && this.render_error_message() }
 			</div>
 		)
 
@@ -294,6 +309,20 @@ export default class Text_input extends PureComponent
 		}
 
 		return type
+	}
+
+	// Whether the input is empty
+	is_empty()
+	{
+		const { value } = this.props
+		return !value || !value.trim()
+	}
+
+	// Whether should indicate that the input value is invalid
+	should_indicate_invalid()
+	{
+		const { indicateInvalid, error } = this.props
+		return indicateInvalid && error
 	}
 
 	// "keyup" is required for IE to properly reset height when deleting text
