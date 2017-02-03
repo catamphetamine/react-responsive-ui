@@ -65,68 +65,37 @@
 	padding     : 0;
 	white-space : nowrap;
 	color       : inherit;
-	transition  : background-color 30ms ease-out, color 30ms ease-out, opacity 150ms ease-out 100ms;
+	transition  : background-color 30ms ease-out, color 30ms ease-out;
 }
 
-.rrui__button__button
+.rrui__button
 {
 	cursor : pointer;
 }
 
-.rrui__button__button--busy
+.rrui__button__contents
 {
-	cursor : wait;
+	transition : opacity 150ms ease-out 100ms;
 }
 
-.rrui__button__button--disabled
-{
-	cursor : default;
-}
-
-.rrui__button__button--busy
+.rrui__button__contents--busy
 {
 	opacity    : 0;
-	transition : color 30ms ease-out, opacity 200ms ease-out 300ms;
+	transition : opacity 200ms ease-out 300ms;
 }
 
 .rrui__button__activity-indicator
 {
-	top : 0.1em;
-
+	left   : calc(50% - 0.5em);
+	top    : calc(50% - 0.5em);
 	width  : 1em;
 	height : 1em;
-
 	transition : opacity 200ms ease-out;
 }
 
-.rrui__activity-indicator--busy
+.rrui__button__activity-indicator--busy
 {
 	transition-delay : 350ms;
-}
-
-/* Bordered button */
-
-.rrui__button--border
-{
-	height : calc(0.3rem * 8);
-	/* Using `box-shadow` here instead of `border`
-	   to make the entire area clickable */
-	border-radius : 0.3em;
-}
-
-.rrui__button__button--border
-{
-	height         : 100%;
-	padding-left   : 1.6em;
-	padding-right  : 1.6em;
-}
-
-.rrui__button__activity-indicator--border
-{
-	left   : calc(50% - 0.7em);
-	top    : calc(50% - 0.7em);
-	width  : 1.4em;
-	height : 1.4em;
 }
 
 /* Button colors */
@@ -136,23 +105,9 @@
 	color: #3678D1;
 }
 
-.rrui__button--border
-{
-	/* Using `box-shadow` here instead of `border`
-	   to make the entire area clickable */
-	box-shadow : inset 0 0 0 0.1em #3678D1;
-}
-
 .rrui__button:active
 {
 	color: #4F9BFF;
-}
-
-.rrui__button--border:active
-{
-	/* Using `box-shadow` here instead of `border`
-	   to make the entire area clickable */
-	box-shadow : inset 0 0 0 0.1em #4F9BFF;
 }
 
 /*===========================================================
@@ -863,19 +818,15 @@ but introduces page width jumps.
 .rrui__text-input__field,
 .rrui__text-input__label
 {
-	/* `line-height` is for `<input/>` text vertical centering */
-	min-height  : calc(0.3rem * 6);
-	line-height : calc(0.3rem * 6);
+	min-height : calc(0.3rem * 6);
 }
 
-/* For `<textarea/>` the `line-height` must be `normal`
-   so vertical padding is the only way to go here
-   and it's purely a guessing game */
+/* For `<textarea/>` vertical paddings are a guessing game
+   to make the floating `<label/>` align with the text itself */
 .rrui__text-input__field--multiline
 {
 	padding-top    : calc(0.3rem * 1.3);
 	padding-bottom : calc(0.3rem * 1.3);
-	line-height    : normal;
 }
 
 .rrui__text-input__field:focus + .rrui__text-input__label

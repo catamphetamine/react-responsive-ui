@@ -1,8 +1,8 @@
-0.1.66 / 03.02.2017
+0.1.67 / 03.02.2017
 ===================
 
-  * Removed `--primary` button modificator (use `className` manually instead since there are usually more than two kinds of buttons in an application UI)
-  * Added `border` property for `<Button/>` (can use it instead of `rrui__button--border` class name)
+  * Removed `--primary` and `--border` button flavours (use `className` manually instead since there are usually more than two kinds of buttons in an application UI)
+  * Button contents are now a `<div/>` and the button itself is not made `opacity: 0` during `busy` state but instead that contents `<div/>` is
 
 0.1.50 / 21.01.2017
 ===================
