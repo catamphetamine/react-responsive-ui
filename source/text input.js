@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling'
+import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 import { submit_parent_form } from './misc/dom'
@@ -122,6 +122,7 @@ export default class Text_input extends PureComponent
 			value,
 			label,
 			labelStyle,
+			multiline,
 			description,
 			error,
 			indicateInvalid,
@@ -133,10 +134,13 @@ export default class Text_input extends PureComponent
 		= this.props
 
 		let container_style = style
+		let label_style
 
 		if (label)
 		{
 			container_style = { ...styles.input_with_label, ...container_style }
+
+			label_style = multiline ? styles.label_multiline : styles.label_single_line
 		}
 
 		const markup =
@@ -151,7 +155,9 @@ export default class Text_input extends PureComponent
 						'rrui__text-input--empty'          : this.is_empty(),
 						'rrui__text-input--invalid'        : this.should_indicate_invalid(),
 						'rrui__text-input--floating-label' : label,
-						'rrui__text-input--disabled'       : disabled
+						'rrui__text-input--disabled'       : disabled,
+						'rrui__text-input--multiline'      : multiline,
+						'rrui__text-input--single-line'    : !multiline
 					},
 					className
 				) }>
@@ -170,10 +176,12 @@ export default class Text_input extends PureComponent
 						className={ classNames('rrui__text-input__label',
 						{
 							// CSS selector performance optimization
-							'rrui__text-input__label--empty'   : this.is_empty(),
-							'rrui__text-input__label--invalid' : this.should_indicate_invalid()
+							'rrui__text-input__label--empty'       : this.is_empty(),
+							'rrui__text-input__label--invalid'     : this.should_indicate_invalid(),
+							'rrui__text-input__label--multiline'   : multiline,
+							'rrui__text-input__label--single-line' : !multiline
 						}) }
-						style={ labelStyle ? { ...styles.label, ...labelStyle } : styles.label }>
+						style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
 						{ label }
 					</label>
 				}
@@ -228,6 +236,8 @@ export default class Text_input extends PureComponent
 		}
 		= this.props
 
+		const input_style = multiline ? styles.input_multiline : styles.input_single_line
+
 		const properties =
 		{
 			name        : name === false ? undefined : this.props.name,
@@ -246,7 +256,7 @@ export default class Text_input extends PureComponent
 				'rrui__text-input__field--disabled'  : disabled,
 				'rrui__text-input__field--multiline' : multiline
 			}),
-			style       : inputStyle ? { ...styles.input, ...inputStyle } : styles.input,
+			style       : inputStyle ? { ...input_style, ...inputStyle } : input_style,
 			autoFocus   : focus
 		}
 
@@ -373,11 +383,18 @@ const styles = styler
 	input
 		font-size : inherit
 
+		&multiline
+
+		&single_line
+			height : 100%
+
 	input_with_label
 		position : relative
 
 	label
 		position : absolute
+		top      : 0
+		left     : 0
 
 		-webkit-user-select : none
 		-moz-user-select    : none
@@ -385,6 +402,14 @@ const styles = styler
 		user-select         : none
 
 		pointer-events      : none
+
+		&multiline
+
+		&single_line
+			// Vertically align
+			display     : flex
+			align-items : center
+			height      : 100%
 `
 
 // <textarea/> autoresize (without ghost elements)

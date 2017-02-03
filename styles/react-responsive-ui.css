@@ -787,16 +787,8 @@ but introduces page width jumps.
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input--floating-label
-{
-	padding-top : calc(0.3rem * 2.5);
-}
-
 .rrui__text-input__label
 {
-	left : 0;
-	top  : calc(0.3rem * 2.5);
-
 	/*
 	When changing this label color
 	also change "input" and "textarea" placeholder color.
@@ -815,18 +807,9 @@ but introduces page width jumps.
 	transition : opacity 160ms ease-out;
 }
 
-.rrui__text-input__field,
-.rrui__text-input__label
+.rrui__text-input--single-line
 {
-	min-height : calc(0.3rem * 6);
-}
-
-/* For `<textarea/>` vertical paddings are a guessing game
-   to make the floating `<label/>` align with the text itself */
-.rrui__text-input__field--multiline
-{
-	padding-top    : calc(0.3rem * 1.3);
-	padding-bottom : calc(0.3rem * 1.3);
+	height : calc(0.3rem * 6);
 }
 
 .rrui__text-input__field:focus + .rrui__text-input__label

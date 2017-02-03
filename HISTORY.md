@@ -3,6 +3,7 @@
 
   * Removed `--primary` and `--border` button flavours (use `className` manually instead since there are usually more than two kinds of buttons in an application UI)
   * Button contents are now a `<div/>` and the button itself is not made `opacity: 0` during `busy` state but instead that contents `<div/>` is
+  * Refactoring floating label input
 
 0.1.50 / 21.01.2017
 ===================
