@@ -789,6 +789,9 @@ but introduces page width jumps.
 
 .rrui__text-input__label
 {
+	left : 0;
+	top  : 0;
+	
 	/*
 	When changing this label color
 	also change "input" and "textarea" placeholder color.
@@ -807,12 +810,12 @@ but introduces page width jumps.
 	transition : opacity 160ms ease-out;
 }
 
-.rrui__text-input--single-line
+.rrui__text-input__field--single-line
 {
 	height : calc(0.3rem * 6);
 }
 
-.rrui__text-input__field:focus + .rrui__text-input__label
+.rrui__text-input__input:focus + .rrui__text-input__label
 {
 	color: #03B2CB;
 }
@@ -822,7 +825,7 @@ but introduces page width jumps.
 	color: #D30F00;
 }
 
-.rrui__text-input__field--invalid
+.rrui__text-input__input--invalid
 {
 	border-bottom-color: #EB2010 !important;
 }
@@ -833,7 +836,7 @@ but introduces page width jumps.
 	transform : translateY(0) scale(1);
 }
 
-.rrui__text-input__field--empty:focus + .rrui__text-input__label
+.rrui__text-input__input--empty:focus + .rrui__text-input__label
 {
 	color: #888C91;
 }
@@ -845,7 +848,7 @@ but introduces page width jumps.
 	color: #D30F00;
 }
 
-.rrui__text-input__field--disabled
+.rrui__text-input__input--disabled
 {
 	cursor: default;
 }
