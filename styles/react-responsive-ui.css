@@ -91,6 +91,11 @@
 	width  : 1em;
 	height : 1em;
 	transition : opacity 200ms ease-out;
+
+	circle
+	{
+		stroke-width: 0.2em;
+	}
 }
 
 .rrui__button__activity-indicator--busy
