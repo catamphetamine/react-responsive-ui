@@ -488,8 +488,12 @@ export default class Select extends PureComponent
 
 		const selected_label = this.get_selected_option_label()
 
+		let style = styles.selected
+
 		if (autocomplete && expanded)
 		{
+			style = { ...style, width: autocomplete_width + 'px' }
+
 			const markup =
 			(
 				<input
@@ -499,7 +503,7 @@ export default class Select extends PureComponent
 					value={autocomplete_input_value}
 					onChange={this.on_autocomplete_input_change}
 					onKeyDown={this.on_key_down}
-					style={{ width: autocomplete_width + 'px' }}
+					style={style}
 					className={classNames
 					(
 						'rrui__select__selected',
@@ -523,6 +527,7 @@ export default class Select extends PureComponent
 				disabled={disabled}
 				onClick={this.toggle}
 				onKeyDown={this.on_key_down}
+				style={style}
 				className={classNames
 				(
 					'rrui__select__selected',
@@ -1252,6 +1257,9 @@ const styles = styler
 	list_item
 		display     : inline-block
 		white-space : nowrap
+
+	selected
+		height : 100%
 
 	menu_toggler
 		display : inline-block

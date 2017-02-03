@@ -121,7 +121,7 @@
 
 .rrui__select
 {
-	color: black;
+	height : calc(0.3rem * 6);
 }
 
 .rrui__select__options
