@@ -1,3 +1,9 @@
+0.1.66 / 03.02.2017
+===================
+
+  * Removed `--primary` button modificator (use `className` manually instead since there are usually more than two kinds of buttons in an application UI)
+  * Added `border` property for `<Button/>` (can use it instead of `rrui__button--border` class name)
+
 0.1.50 / 21.01.2017
 ===================
 

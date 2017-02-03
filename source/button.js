@@ -19,12 +19,12 @@ export default class Button extends PureComponent
 		// Disables the button
 		disabled        : PropTypes.bool,
 
-		// If `primary` is `true`,
-		// then the button will have CSS class of a primary button.
-		primary         : PropTypes.bool,
-
 		// When `true`, the button will submit an enclosing form.
 		submit          : PropTypes.bool,
+
+		// If `border` is `true`,
+		// then the button will have CSS class of a bordered button.
+		border          : PropTypes.bool,
 
 		// If `link` is set, then the button is gonna be an <a/> tag.
 		link            : PropTypes.string,
@@ -56,8 +56,8 @@ export default class Button extends PureComponent
 		{
 			disabled,
 			busy,
-			primary,
 			submit,
+			border,
 			title,
 			style,
 			className
@@ -69,13 +69,21 @@ export default class Button extends PureComponent
 			<div
 				className={ classNames('rrui__button', className,
 				{
-					'rrui__button--primary'  : primary || submit,
-					'rrui__button--busy'     : busy,
-					'rrui__button--disabled' : disabled
+					// With CSS selector optimization
+					'rrui__button--border'         : border,
+					'rrui__button--busy'           : busy,
+					'rrui__button--disabled'       : disabled
 				}) }
 				style={ style ? { ...styles.container, ...style } : styles.container }>
 
-				<Activity_indicator style={ busy ? styles.spinner : styles.spinner_hide }/>
+				<Activity_indicator
+					className={ classNames('rrui__button__activity-indicator',
+					{
+						// CSS selector optimization
+						'rrui__button__activity-indicator--busy'   : busy,
+						'rrui__button__activity-indicator--border' : border
+					}) }
+					style={ busy ? styles.spinner : styles.spinner_hide }/>
 
 				{ this.render_button() }
 			</div>
@@ -90,20 +98,29 @@ export default class Button extends PureComponent
 		{
 			link,
 			title,
-			primary,
+			border,
 			busy,
 			disabled,
 			submit,
-			className,
 			buttonStyle,
 			children
 		}
 		= this.props
 
+		const className = classNames('rrui__button__button',
+		{
+			'rrui__button__button--link'     : link,
+			// CSS selector optimization
+			'rrui__button__button--border'   : border,
+			'rrui__button__button--busy'     : busy,
+			'rrui__button__button--disabled' : disabled
+		})
+
 		const properties =
 		{
 			ref: ref => this.button = ref,
 			title,
+			className,
 			style: buttonStyle ? { ...styles.button, ...buttonStyle } : styles.button
 		}
 
@@ -114,7 +131,6 @@ export default class Button extends PureComponent
 				<a
 					href={ link }
 					onClick={ this.link_on_click }
-					className="rrui__button__button rrui__button__button--link"
 					{ ...properties }>
 
 					{ children }
@@ -130,7 +146,6 @@ export default class Button extends PureComponent
 				type={ submit ? 'submit' : 'button' }
 				disabled={ busy || disabled }
 				onClick={ this.button_on_click }
-				className="rrui__button__button"
 				{ ...properties }>
 
 				{ children }
