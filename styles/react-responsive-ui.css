@@ -10,13 +10,13 @@
 	stroke : black;
 }
 
-.rrui__activity-indicator svg
+.rrui__activity-indicator-circle-container
 {
 	animation: spinner-rotate 2s linear infinite;
 	transform-origin: center center;
 }
 
-.rrui__activity-indicator circle
+.rrui__activity-indicator-circle
 {
 	stroke-dasharray  : 1,200;
 	stroke-dashoffset : 0;

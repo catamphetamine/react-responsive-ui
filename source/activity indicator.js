@@ -23,8 +23,11 @@ export default function Activity_indicator(props)
 			{ ...props }
 			style={ style ? { ...styles.container, ...style } : styles.container }
 			className={ classNames('rrui__activity-indicator', className) }>
-			<svg viewBox={ svg_canvas_dimensions }>
+			<svg
+				viewBox={ svg_canvas_dimensions }
+				className="rrui__activity-indicator-circle-container">
 				<circle
+					className="rrui__activity-indicator-circle"
 					style={ styles.path }
 					cx={ svg_circe_center }
 					cy={ svg_circe_center }
