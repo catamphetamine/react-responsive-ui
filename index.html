@@ -93,6 +93,27 @@
 		{
 			background-color : white;
 		}
+
+		.button--border
+		{
+			height        : calc(0.3rem * 8);
+			color         : #03B2CB;
+			border        : 0.1em solid #03B2CB;
+			border-radius : 0.3em;
+		}
+
+		.button--border .rrui__button__button
+		{
+			height        : 100%;
+			padding-left  : calc(0.3rem * 2.5);
+			padding-right : calc(0.3rem * 2.5);
+		}
+
+		.button--border:active
+		{
+			color        : #2BD7F0;
+			border-color : #2BD7F0;
+		}
 	</style>
 
 	<body>
@@ -544,7 +565,7 @@
 										<Button
 											submit
 											busy={this.state.busy}
-											className="rrui__button--border">
+											className="button--border">
 											Submit form
 										</Button>
 									</div>

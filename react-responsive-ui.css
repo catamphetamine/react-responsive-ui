@@ -1,127 +1,4 @@
 /*===========================================================
-= Buttons                                                   =
-===========================================================*/
-
-.rrui__button__button
-{
-	background  : none;
-	border      : none;
-	outline     : none;
-	padding     : 0;
-	white-space : nowrap;
-	color       : inherit;
-	transition  : background-color 30ms ease-out, color 30ms ease-out, opacity 150ms ease-out 100ms;
-}
-
-.rrui__button,
-.rrui__button .rrui__button__button
-{
-	cursor : pointer;
-}
-
-.rrui__button--busy,
-.rrui__button--busy .rrui__button__button
-{
-	cursor : wait;
-}
-
-.rrui__button--disabled,
-.rrui__button--disabled .rrui__button__button
-{
-	cursor : default;
-}
-
-.rrui__button--busy .rrui__button__button
-{
-	opacity    : 0;
-	transition : color 30ms ease-out, opacity 200ms ease-out 300ms;
-}
-
-.rrui__button .rrui__activity-indicator
-{
-	top : 0.1em;
-
-	width  : 1em;
-	height : 1em;
-
-	transition : opacity 200ms ease-out;
-}
-
-.rrui__button--busy .rrui__activity-indicator
-{
-	transition-delay : 350ms;
-}
-
-/* Bordered button */
-
-.rrui__button--border
-{
-	/* Could use `box-shadow` here instead of border
-	   to make the entire area clickable */
-	/* box-shadow: inset 0 0 0 0.1em transparent; */
-	border        : 0.1em solid transparent;
-	border-radius : 0.3em;
-}
-
-.rrui__button--border .rrui__button__button
-{
-	padding-left   : 1.6em;
-	padding-right  : 1.6em;
-	padding-top    : 0.7em;
-	padding-bottom : 0.55em;
-}
-
-.rrui__button--border .rrui__activity-indicator
-{
-	left   : calc(50% - 0.7em);
-	top    : calc(50% - 0.7em);
-	width  : 1.4em;
-	height : 1.4em;
-}
-
-/* Button colors */
-
-.rrui__button
-{
-	color: #3678D1;
-}
-
-.rrui__button--border
-{
-	border-color: #3678D1;
-}
-
-.rrui__button:active
-{
-	color: #4F9BFF;
-}
-
-.rrui__button--border:active
-{
-	border-color: #4F9BFF;
-}
-
-.rrui__button--primary
-{
-	color : #03B2CB;
-}
-
-.rrui__button--primary.rrui__button--border
-{
-	border-color: #03B2CB;
-}
-
-.rrui__button--primary:active
-{
-	color: #2BD7F0;
-}
-
-.rrui__button--primary.rrui__button--border:active
-{
-	border-color: #2BD7F0;
-}
-
-/*===========================================================
 = Activity indicator                                        =
 ===========================================================*/
 
@@ -174,6 +51,63 @@
 		stroke-dasharray  : 89,200;
 		stroke-dashoffset : -124;
 	}
+}
+
+/*===========================================================
+= Buttons                                                   =
+===========================================================*/
+
+.rrui__button__button
+{
+	background  : none;
+	border      : none;
+	outline     : none;
+	padding     : 0;
+	white-space : nowrap;
+	color       : inherit;
+	transition  : background-color 30ms ease-out, color 30ms ease-out;
+}
+
+.rrui__button
+{
+	cursor : pointer;
+}
+
+.rrui__button__contents
+{
+	transition : opacity 150ms ease-out 100ms;
+}
+
+.rrui__button__contents--busy
+{
+	opacity    : 0;
+	transition : opacity 200ms ease-out 300ms;
+}
+
+.rrui__button__activity-indicator
+{
+	left   : calc(50% - 0.5em);
+	top    : calc(50% - 0.5em);
+	width  : 1em;
+	height : 1em;
+	transition : opacity 200ms ease-out;
+}
+
+.rrui__button__activity-indicator--busy
+{
+	transition-delay : 350ms;
+}
+
+/* Button colors */
+
+.rrui__button
+{
+	color: #3678D1;
+}
+
+.rrui__button:active
+{
+	color: #4F9BFF;
 }
 
 /*===========================================================
@@ -542,10 +476,14 @@
 = Segmented control                                         =
 ===========================================================*/
 
+.rrui__segmented-control
+{
+	height : calc(0.3rem * 6);
+}
+
 .rrui__segmented-control__option
 {
-	padding-top    : 0.3rem;
-	padding-bottom : 0.3rem;
+	height         : 100%;
 	padding-left   : calc(0.3rem * 1.5);
 	padding-right  : calc(0.3rem * 1.5);
 
@@ -849,15 +787,8 @@ but introduces page width jumps.
 = Text input                                                =
 ===========================================================*/
 
-.rrui__text-input--floating-label
-{
-	padding-top : calc(0.3rem * 2.5);
-}
-
 .rrui__text-input__label
 {
-	top : calc(0.3rem * 2.5);
-
 	/*
 	When changing this label color
 	also change "input" and "textarea" placeholder color.
@@ -876,22 +807,9 @@ but introduces page width jumps.
 	transition : opacity 160ms ease-out;
 }
 
-.rrui__text-input__field,
-.rrui__text-input__label
+.rrui__text-input--single-line
 {
-	/* `line-height` is for `<input/>` text vertical centering */
-	min-height  : calc(0.3rem * 6);
-	line-height : calc(0.3rem * 6);
-}
-
-/* For `<textarea/>` the `line-height` must be `normal`
-   so vertical padding is the only way to go here
-   and it's purely a guessing game */
-.rrui__text-input__field--multiline
-{
-	padding-top    : calc(0.3rem * 1.3);
-	padding-bottom : calc(0.3rem * 1.3);
-	line-height    : normal;
+	height : calc(0.3rem * 6);
 }
 
 .rrui__text-input__field:focus + .rrui__text-input__label
