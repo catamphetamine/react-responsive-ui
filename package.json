@@ -1,6 +1,6 @@
 {
   "name": "react-responsive-ui",
-  "version": "0.1.67",
+  "version": "0.2.1",
   "description": "Slick and accurate React UI components",
   "main": "index.common.js",
   "module": "index.es6.js",
@@ -11,6 +11,7 @@
   "dependencies": {
     "babel-runtime": "^6.6.1",
     "classnames": "^2.2.5",
+    "lodash-es": "^4.17.4",
     "moment": "^2.17.1",
     "react-day-picker": "^3.1.1",
     "react-dnd": "^2.1.4",
@@ -37,7 +38,7 @@
     "react-dom": "^15.4.1",
     "react-router": "^3.0.0",
     "rimraf": "^2.5.0",
-    "webpack": "^2.2.0-rc.7"
+    "webpack": "^2.2.0"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --colors --bail --reporter spec test/ --recursive",

@@ -224,7 +224,10 @@ export default class DatePicker extends PureComponent
 					onChange={ this.on_input_change }
 					onFocus={ this.on_input_focus }
 					onBlur={ this.on_input_blur }
-					className="rrui__date-picker__input"/>
+					className={ classNames('rrui__date-picker__input',
+					{
+						'rrui__text-input__field--single-line' : true
+					}) }/>
 
 				{/* <DayPicker/> doesn't support `style` property */}
 				{ show_calendar &&

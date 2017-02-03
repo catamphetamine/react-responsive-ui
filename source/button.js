@@ -211,8 +211,9 @@ export default class Button extends PureComponent
 const styles = styler
 `
 	container
-		position : relative
-		display  : inline-block
+		position   : relative
+		display    : inline-block
+		box-sizing : border-box
 
 		&busy
 			// "pointer-events" prevents "cursor: wait" from working

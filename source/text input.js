@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
+// import { throttle } from 'lodash-es'
 
 import { submit_parent_form } from './misc/dom'
 
@@ -25,9 +26,6 @@ export default class Text_input extends PureComponent
 
 		// Disables the text field
 		disabled         : PropTypes.bool,
-
-		// Renders description text before the `<input/>`
-		description      : PropTypes.string,
 
 		// Renders an error message below the `<input/>`
 		error            : PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
@@ -96,6 +94,9 @@ export default class Text_input extends PureComponent
 		this.autoresize  = this.autoresize.bind(this)
 		this.on_change   = this.on_change.bind(this)
 		this.on_key_down = this.on_key_down.bind(this)
+
+		// const autoresize = this.autoresize()
+		// this.autoresize = throttle(() => autoresize(), 1000)
 	}
 
 	// Client side rendering, javascript is enabled
@@ -120,10 +121,10 @@ export default class Text_input extends PureComponent
 		{
 			name,
 			value,
+			placeholder,
 			label,
 			labelStyle,
 			multiline,
-			description,
 			error,
 			indicateInvalid,
 			fallback,
@@ -133,58 +134,61 @@ export default class Text_input extends PureComponent
 		}
 		= this.props
 
-		let container_style = style
-		let label_style
-
-		if (label)
-		{
-			container_style = { ...styles.input_with_label, ...container_style }
-
-			label_style = multiline ? styles.label_multiline : styles.label_single_line
-		}
+		const label_style = multiline ? styles.label_multiline : styles.label_single_line
 
 		const markup =
 		(
 			<div
-				style={ container_style }
+				style={ style }
 				className={ classNames
 				(
 					'rrui__text-input',
 					{
 						'rrui__rich'                       : fallback,
-						'rrui__text-input--empty'          : this.is_empty(),
-						'rrui__text-input--invalid'        : this.should_indicate_invalid(),
-						'rrui__text-input--floating-label' : label,
-						'rrui__text-input--disabled'       : disabled,
-						'rrui__text-input--multiline'      : multiline,
-						'rrui__text-input--single-line'    : !multiline
+						// 'rrui__text-input--empty'          : this.is_empty(),
+						// 'rrui__text-input--invalid'        : this.should_indicate_invalid(),
+						// 'rrui__text-input--floating-label' : label,
+						// 'rrui__text-input--disabled'       : disabled,
+						// 'rrui__text-input--multiline'      : multiline,
+						// 'rrui__text-input--single-line'    : !multiline
 					},
 					className
 				) }>
 
-				{/* Description */}
-				{ this.render_description() }
+				{/* `<input/>` and its `<label/>` */}
+				<label
+					className={ classNames('rrui__text-input__field',
+					{
+						// 'rrui__text-input__field--multiline'   : multiline,
+						'rrui__text-input__field--single-line' : !multiline
+					}) }
+					style={ styles.field }>
 
-				{/* <input/> */}
-				{ this.render_input({ name: false }) }
+					{/* Machine-readable (semantic) label */}
+					{ label || placeholder }
 
-				{/* Input `<label/>`. */}
-				{/* It is rendered after the input to utilize the
-			       `input:focus + label` CSS selector rule */}
-				{ !description && label &&
-					<label
-						className={ classNames('rrui__text-input__label',
-						{
-							// CSS selector performance optimization
-							'rrui__text-input__label--empty'       : this.is_empty(),
-							'rrui__text-input__label--invalid'     : this.should_indicate_invalid(),
-							'rrui__text-input__label--multiline'   : multiline,
-							'rrui__text-input__label--single-line' : !multiline
-						}) }
-						style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
-						{ label }
-					</label>
-				}
+					{/* `<input/>` */}
+					{ this.render_input({ name: false }) }
+
+					{/* Input `<label/>`. */}
+					{/* It is rendered after the input to utilize the
+				       `input:focus + label` CSS selector rule */}
+					{ !placeholder && label &&
+						<div
+							className={ classNames('rrui__text-input__label',
+							{
+								// CSS selector performance optimization
+								'rrui__text-input__label--empty'       : this.is_empty(),
+								'rrui__text-input__label--filled'      : !this.is_empty(),
+								'rrui__text-input__label--invalid'     : this.should_indicate_invalid(),
+								'rrui__text-input__label--multiline'   : multiline,
+								// 'rrui__text-input__label--single-line' : !multiline
+							}) }
+							style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
+							{ label }
+						</div>
+					}
+				</label>
 
 				{/* Error message */}
 				{ this.should_indicate_invalid() && this.render_error_message() }
@@ -192,25 +196,6 @@ export default class Text_input extends PureComponent
 				{/* Fallback in case javascript is disabled (no animated <label/>) */}
 				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
-		)
-
-		return markup
-	}
-
-	render_description()
-	{
-		const { description } = this.props
-
-		if (!description)
-		{
-			return
-		}
-
-		const markup =
-		(
-			<p className={ classNames('rrui__text-input__description') }>
-				{ description }
-			</p>
 		)
 
 		return markup
@@ -248,13 +233,13 @@ export default class Text_input extends PureComponent
 			onKeyDown   : this.on_key_down,
 			onBlur,
 			disabled,
-			className   : classNames('rrui__text-input__field',
+			className   : classNames('rrui__text-input__input',
 			{
 				// CSS selector performance optimization
-				'rrui__text-input__field--empty'     : this.is_empty(),
-				'rrui__text-input__field--invalid'   : this.should_indicate_invalid(),
-				'rrui__text-input__field--disabled'  : disabled,
-				'rrui__text-input__field--multiline' : multiline
+				'rrui__text-input__input--empty'     : this.is_empty(),
+				'rrui__text-input__input--invalid'   : this.should_indicate_invalid(),
+				'rrui__text-input__input--disabled'  : disabled,
+				'rrui__text-input__input--multiline' : multiline
 			}),
 			style       : inputStyle ? { ...input_style, ...inputStyle } : input_style,
 			autoFocus   : focus
@@ -289,9 +274,6 @@ export default class Text_input extends PureComponent
 		const markup =
 		(
 			<div className="rrui__rich__fallback">
-				{/* Description */}
-				{ this.render_description() }
-
 				{/* <input/> */}
 				{ this.render_input({ placeholder: label, ref: false }) }
 
@@ -340,7 +322,8 @@ export default class Text_input extends PureComponent
 	{
 		const { autoresize } = this.state
 
-		const element = event.target
+		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
+
 		const current_scroll_position = window.pageYOffset
 
 		element.style.height = 0
@@ -348,7 +331,8 @@ export default class Text_input extends PureComponent
 		let height = element.scrollHeight + autoresize.extra_height
 		height = Math.max(height, autoresize.initial_height)
 
-		element.style.height = height + 'px'
+		element.parentNode.style.height = height + 'px'
+		element.style.height            = height + 'px'
 
 		window.scroll(window.pageXOffset, current_scroll_position)
 	}
@@ -381,20 +365,23 @@ export default class Text_input extends PureComponent
 const styles = styler
 `
 	input
-		font-size : inherit
+		position : absolute
+		top      : 0
+		left     : 0
+
+		font-size  : inherit
+		box-sizing : border-box
 
 		&multiline
+			resize : none
 
 		&single_line
 			height : 100%
 
-	input_with_label
-		position : relative
-
 	label
 		position : absolute
-		top      : 0
-		left     : 0
+
+		font-size : inherit
 
 		-webkit-user-select : none
 		-moz-user-select    : none
@@ -410,6 +397,10 @@ const styles = styler
 			display     : flex
 			align-items : center
 			height      : 100%
+
+	field
+		display  : block
+		position : relative
 `
 
 // <textarea/> autoresize (without ghost elements)
@@ -427,7 +418,7 @@ function autoresize_measure(element)
 	// but setting `.scrollHeight` has no non-rounded equivalent.
 	const initial_height = Math.ceil(element.getBoundingClientRect().height) // element.offsetHeight
 	// Apply height rounding
-	element.style.height = initial_height + 'px'
+	element.parentNode.style.height = initial_height + 'px'
 
 	return { extra_height, initial_height }
 }

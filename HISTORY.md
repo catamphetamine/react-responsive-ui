@@ -1,3 +1,9 @@
+0.2.0 / 03.02.2017
+==================
+
+  * (breaking change) Renamed `.rrui__text-input__field` to `.rrui__text-input__input`. `.rrui__text-input__field` now wraps `.rrui__text-input__input` and `.rrui__text-input__label`. This is done to be able to set `.rrui__text-input__field` exact height while also keeping `height: auto` for description and error message.
+  * Dropped `description` property on `<TextInput/>`
+
 0.1.67 / 03.02.2017
 ===================
 
