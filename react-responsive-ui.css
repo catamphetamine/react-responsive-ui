@@ -10,13 +10,13 @@
 	stroke : black;
 }
 
-.rrui__activity-indicator svg
+.rrui__activity-indicator-circle-container
 {
 	animation: spinner-rotate 2s linear infinite;
 	transform-origin: center center;
 }
 
-.rrui__activity-indicator circle
+.rrui__activity-indicator-circle
 {
 	stroke-dasharray  : 1,200;
 	stroke-dashoffset : 0;
@@ -93,6 +93,11 @@
 	transition : opacity 200ms ease-out;
 }
 
+.rrui__button .rrui__activity-indicator-circle
+{
+	stroke-width: 0.2em;
+}
+
 .rrui__button__activity-indicator--busy
 {
 	transition-delay : 350ms;
@@ -116,7 +121,7 @@
 
 .rrui__select
 {
-	color: black;
+	height : calc(0.3rem * 6);
 }
 
 .rrui__select__options
