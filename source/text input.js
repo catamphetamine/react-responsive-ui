@@ -164,9 +164,6 @@ export default class Text_input extends PureComponent
 					}) }
 					style={ styles.field }>
 
-					{/* Machine-readable (semantic) label */}
-					{ label || placeholder }
-
 					{/* `<input/>` */}
 					{ this.render_input({ name: false }) }
 
@@ -217,6 +214,7 @@ export default class Text_input extends PureComponent
 			cols,
 
 			// Passthrough properties
+			id,
 			onBlur
 		}
 		= this.props
@@ -225,6 +223,7 @@ export default class Text_input extends PureComponent
 
 		const properties =
 		{
+			id,
 			name        : name === false ? undefined : this.props.name,
 			ref         : ref === false ? undefined : ref => this.input = ref,
 			value       : (value === undefined || value === null) ? '' : value,
@@ -331,8 +330,7 @@ export default class Text_input extends PureComponent
 		let height = element.scrollHeight + autoresize.extra_height
 		height = Math.max(height, autoresize.initial_height)
 
-		element.parentNode.style.height = height + 'px'
-		element.style.height            = height + 'px'
+		element.style.height = height + 'px'
 
 		window.scroll(window.pageXOffset, current_scroll_position)
 	}
@@ -365,15 +363,10 @@ export default class Text_input extends PureComponent
 const styles = styler
 `
 	input
-		position : absolute
-		top      : 0
-		left     : 0
-
 		font-size  : inherit
 		box-sizing : border-box
 
 		&multiline
-			resize : none
 
 		&single_line
 			height : 100%
@@ -418,7 +411,7 @@ function autoresize_measure(element)
 	// but setting `.scrollHeight` has no non-rounded equivalent.
 	const initial_height = Math.ceil(element.getBoundingClientRect().height) // element.offsetHeight
 	// Apply height rounding
-	element.parentNode.style.height = initial_height + 'px'
+	element.style.height = initial_height + 'px'
 
 	return { extra_height, initial_height }
 }
