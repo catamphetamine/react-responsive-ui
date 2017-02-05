@@ -244,6 +244,7 @@ export default class Select extends PureComponent
 	{
 		const
 		{
+			id,
 			upward,
 			scroll,
 			children,
@@ -345,6 +346,7 @@ export default class Select extends PureComponent
 				     to utilize the CSS `+` selector) */}
 				{ label &&
 					<label
+						htmlFor={ id }
 						className={ classNames('rrui__input-label',
 						{
 							'rrui__input-label--invalid' : error && indicateInvalid
@@ -587,6 +589,7 @@ export default class Select extends PureComponent
 	{
 		const
 		{
+			id,
 			name,
 			value,
 			label,
@@ -609,12 +612,13 @@ export default class Select extends PureComponent
 		(
 			<div className="rrui__rich__fallback">
 				<select
-					name={name}
-					value={value === null ? undefined : value}
-					disabled={disabled}
-					onChange={event => {}}
+					id={ id }
+					name={ name }
+					value={ value === null ? undefined : value }
+					disabled={ disabled }
+					onChange={ event => {} }
 					style={ style ? { ...style, width: 'auto' } : { width: 'auto' } }
-					className={className}>
+					className={ className }>
 					{
 						options
 						?

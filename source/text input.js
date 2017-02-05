@@ -119,6 +119,7 @@ export default class Text_input extends PureComponent
 	{
 		const
 		{
+			id,
 			name,
 			value,
 			placeholder,
@@ -165,6 +166,7 @@ export default class Text_input extends PureComponent
 				       `input:focus + label` CSS selector rule */}
 					{ label &&
 						<label
+							htmlFor={ id }
 							className={ classNames('rrui__input-label',
 							{
 								// CSS selector performance optimization

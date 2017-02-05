@@ -194,6 +194,7 @@ export default class DatePicker extends PureComponent
 	{
 		const
 		{
+			id,
 			format,
 			value,
 			firstDayOfWeek,
@@ -223,6 +224,7 @@ export default class DatePicker extends PureComponent
 				style={ style ? { ...styles.container, ...style } : styles.container }>
 
 				<input
+					id={ id }
 					type="text"
 					ref={ ref => this.input = ref }
 					placeholder={ typeof format === 'string' ? format : undefined }
@@ -243,6 +245,7 @@ export default class DatePicker extends PureComponent
 				     to utilize the CSS `+` selector) */}
 				{ label &&
 					<label
+						htmlFor={ id }
 						className={ classNames('rrui__input-label',
 						{
 							'rrui__input-label--invalid' : error && indicateInvalid
