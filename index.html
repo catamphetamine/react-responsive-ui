@@ -337,7 +337,7 @@
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
-										placeholder="Enter text"/>
+										placeholder="Enter some text"/>
 
 									You entered: {this.state.text_value}
 
@@ -349,7 +349,20 @@
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
-										label="Enter text"/>
+										label="Text"/>
+
+									You entered: {this.state.text_value}
+
+									<h2 style={style.label}>{'Text input field (with both placeholder and floating label)'}</h2>
+
+									<TextInput
+										focus={true}
+										style={style.input}
+										name="text_input"
+										value={this.state.text_value}
+										onChange={value => this.setState({ text_value: value })}
+										label="Text"
+										placeholder="Enter something"/>
 
 									You entered: {this.state.text_value}
 
@@ -377,21 +390,12 @@
 
 									You entered: {this.state.textarea_value}
 
-									{/*
-									<h2 style={style.label}>Select (HTML)</h2>
-									<select style={style.select} name="select" value={this.state.select_value} onChange={event => this.setState({ select_value: event.target.value })}>
-										<option value="A">Apple</option>
-										<option value="B">Banana</option>
-										<option value="C">Cranberry</option>
-									</select>
-									You selected: {this.state.select_value}
-									*/}
-
 									<h2 style={style.label}>Select</h2>
 
 									<Select
 										style={style.checkbox}
 										name="dropdown"
+										label="Fruit"
 										value={this.state.selected}
 										options={[{
 											value: 'A',
@@ -421,7 +425,7 @@
 											value: 'G',
 											label: 'Garlic'
 										}]}
-										label="Choose"
+										placeholder="Choose"
 										onChange={ selected => this.setState({ selected }) }/>
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
@@ -431,6 +435,7 @@
 									<Select
 										style={style.checkbox}
 										autocomplete
+										maxItems={1}
 										name="dropdown"
 										value={this.state.selected}
 										options={[{
@@ -461,7 +466,7 @@
 											value: 'G',
 											label: 'Garlic'
 										}]}
-										label="Choose"
+										placeholder="Choose"
 										onChange={ selected => this.setState({ selected }) }/>
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
@@ -488,7 +493,7 @@
 											label: 'Canada',
 											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
 										}]}
-										label="Choose"
+										placeholder="Choose"
 										onChange={ selected_with_icon => this.setState({ selected_with_icon }) }/>
 
 									You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
@@ -533,6 +538,7 @@
 
 									<DatePicker
 										style={style.checkbox}
+										label="date"
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}/>
 
