@@ -91,11 +91,11 @@
 	width  : 1em;
 	height : 1em;
 	transition : opacity 200ms ease-out;
+}
 
-	circle
-	{
-		stroke-width: 0.2em;
-	}
+.rrui__button .rrui__activity-indicator-circle
+{
+	stroke-width: 0.2em;
 }
 
 .rrui__button__activity-indicator--busy
@@ -193,6 +193,18 @@
 	opacity: 1;
 }
 
+/* Reset the default `<button/>` styles */
+.rrui__select__selected,
+.rrui__select__option
+{
+	padding    : 0;
+	outline    : none;
+	appearance : none;
+	border     : none;
+	background : transparent;
+	cursor     : pointer;
+}
+
 .rrui__select__option
 {
 	width: 100%;
@@ -206,12 +218,6 @@
 	box-sizing: border-box;
 
 	text-align: left;
-}
-
-.rrui__select__selected,
-.rrui__select__option
-{
-	cursor : pointer;
 }
 
 .rrui__select--disabled .rrui__select__selected,
@@ -260,19 +266,9 @@
 
 .rrui__select__selected
 {
-	padding-left   : 0;
-	padding-right  : 0;
-	padding-top    : 0.15rem;
-	padding-bottom : 0.15rem;
-
 	border: none;
 	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
-}
-
-.rrui__select__selected
-{
-	cursor: pointer;
 }
 
 .rrui__select__selected:focus
@@ -421,13 +417,6 @@
 .rrui__checkbox--invalid .rrui__checkbox__box
 {
 	border-color: #EB2010;
-}
-
-/* Checkbox error message */
-.rrui__checkbox__error
-{
-	padding-top: 0.15rem;
-	color: #D30F00;
 }
 
 /*===========================================================
@@ -789,10 +778,30 @@ but introduces page width jumps.
 }
 
 /*===========================================================
-= Text input                                                =
+= Input                                                     =
 ===========================================================*/
 
-.rrui__text-input__label
+.rrui__input
+{
+	height : calc(0.3rem * 6);
+}
+
+.rrui__input--multiline
+{
+	height : auto;
+}
+
+.rrui__input-error
+{
+	padding-top : calc(2 * 0.15rem);
+	color       : #D30F00;
+}
+
+/*===========================================================
+= Input label                                               =
+===========================================================*/
+
+.rrui__input-label
 {
 	left : 0;
 	top  : 0;
@@ -808,22 +817,17 @@ but introduces page width jumps.
 	transition       : color 0.1s ease-out, transform 0.1s ease-out;
 }
 
-.rrui__text-input__description
-{
-	margin-top    : 0;
-	margin-bottom : 0;
-	transition : opacity 160ms ease-out;
-}
-
-.rrui__text-input__field--single-line
-{
-	height : calc(0.3rem * 6);
-}
-
-.rrui__text-input__input:focus + .rrui__text-input__label
+/* Focused input label */
+.rrui__text-input__input:focus  + .rrui__input-label,
+.rrui__select__selected:focus   + .rrui__input-label,
+.rrui__date-picker__input:focus + .rrui__input-label
 {
 	color: #03B2CB;
 }
+
+/*===========================================================
+= Text input                                                =
+===========================================================*/
 
 .rrui__text-input__label--invalid
 {
@@ -835,22 +839,15 @@ but introduces page width jumps.
 	border-bottom-color: #EB2010 !important;
 }
 
-.rrui__text-input__label--empty
+.rrui__text-input__label--placeholder
 {
 	color     : #888C91;
 	transform : translateY(0) scale(1);
 }
 
-.rrui__text-input__input--empty:focus + .rrui__text-input__label
+.rrui__text-input__input--empty:focus + .rrui__input-label
 {
 	color: #888C91;
-}
-
-.rrui__text-input__error
-{
-	padding-top: calc(2 * 0.15rem);
-
-	color: #D30F00;
 }
 
 .rrui__text-input__input--disabled

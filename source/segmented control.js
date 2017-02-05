@@ -76,6 +76,8 @@ export default class Segmented_control extends PureComponent
 			disabled,
 			options,
 			fallback,
+			indicateInvalid,
+			error,
 			style,
 			className
 		}
@@ -85,16 +87,21 @@ export default class Segmented_control extends PureComponent
 		(
 			<div
 				onKeyDown={ this.on_key_down }
-				className={ classNames(className, 'rrui__segmented-control',
+				className={ classNames('rrui__segmented-control',
 				{
 					'rrui__rich'                        : fallback,
 					'rrui__segmented-control--disabled' : disabled
-				}) }
+				},
+				className) }
 				style={ style ? { ...styles.container, ...style } : styles.container }>
 
-				{ options.map((option, index) => this.render_button(option, index)) }
+				<div className="rrui__input">
+					{ options.map((option, index) => this.render_button(option, index)) }
+				</div>
 
 				{ fallback && !this.state.javascript && this.render_static() }
+
+				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
 			</div>
 		)
 
@@ -118,7 +125,6 @@ export default class Segmented_control extends PureComponent
 				onClick={ this.chooser(option.value) }
 				className={ classNames
 				(
-					'rrui__button__button',
 					'rrui__segmented-control__option',
 					{
 						'rrui__segmented-control__option--selected' : selected

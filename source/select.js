@@ -40,8 +40,11 @@ export default class Select extends PureComponent
 		// HTML form input `name` attribute
 		name       : PropTypes.string,
 
-		// Default label (like "Choose")
+		// Label which is placed above the select
 		label      : PropTypes.string,
+
+		// Placeholder (like "Choose")
+		placeholder : PropTypes.string,
 
 		// Show icon only for selected item,
 		// and only if `concise` is `true`.
@@ -100,8 +103,9 @@ export default class Select extends PureComponent
 		upward     : PropTypes.bool,
 
 		// Maximum items fitting the options list height (scrollable).
+		// In case of `autocomplete` that's the maximum number of matched items shown.
 		// Is `6` by default.
-		maxItems  : PropTypes.number.isRequired,
+		maxItems   : PropTypes.number.isRequired,
 
 		// Is `true` by default (only when the list of options is scrollable)
 		scrollbarPadding : PropTypes.bool,
@@ -155,6 +159,7 @@ export default class Select extends PureComponent
 
 		const
 		{
+			value,
 			autocomplete,
 			options,
 			children,
@@ -171,7 +176,7 @@ export default class Select extends PureComponent
 				throw new Error(`"options" property is required for an "autocomplete" select`)
 			}
 
-			this.state.filtered_options = options
+			this.state.matching_options = this.get_matching_options(options, value)
 		}
 
 		if (children && !menu)
@@ -249,13 +254,18 @@ export default class Select extends PureComponent
 			saveOnIcons,
 			fallback,
 			disabled,
+			placeholder,
+			label,
+			error,
+			indicateInvalid,
 			style,
 			className
 		}
 		= this.props
 
-		const { filtered_options, expanded } = this.state
-		const options = autocomplete ? filtered_options : this.props.options
+		const { expanded } = this.state
+
+		const options = this.get_options()
 
 		let list_style = upward ? styles.list_upward : styles.list_downward
 
@@ -276,7 +286,9 @@ export default class Select extends PureComponent
 				throw new Error(`Unsupported alignment: "${alignment}"`)
 		}
 
-		if (!menu && scroll && this.state.list_height !== undefined)
+		// When `autocomplete` mode is on, don't show any scroll
+		// because it would make no sense.
+		if (this.is_scrollable() && this.state.list_height !== undefined)
 		{
 			list_style.maxHeight = this.state.list_height + 'px'
 		}
@@ -314,7 +326,6 @@ export default class Select extends PureComponent
 				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
 				className={ classNames
 				(
-					className,
 					'rrui__select',
 					{
 						'rrui__rich'              : fallback,
@@ -322,11 +333,26 @@ export default class Select extends PureComponent
 						'rrui__select--expanded'  : expanded,
 						'rrui__select--collapsed' : !expanded,
 						'rrui__select--disabled'  : disabled
-					}
+					},
+					className
 				) }>
 
 				{/* Currently selected item */}
 				{ !menu && this.render_selected_item() }
+
+				{/* Label */}
+				{/* (this label is placed after the "selected" button
+				     to utilize the CSS `+` selector) */}
+				{ label &&
+					<label
+						className={ classNames('rrui__input-label',
+						{
+							'rrui__input-label--invalid' : error && indicateInvalid
+						}) }
+						style={ styles.label }>
+						{ label }
+					</label>
+				}
 
 				{/* Menu toggler */}
 				{ menu &&
@@ -356,6 +382,11 @@ export default class Select extends PureComponent
 
 				{/* Fallback in case javascript is disabled */}
 				{ fallback && !this.state.javascript && this.render_static() }
+
+				{/* Error message */}
+				{ error && indicateInvalid &&
+					<div className="rrui__input-error">{ error }</div>
+				}
 			</div>
 		)
 
@@ -444,7 +475,6 @@ export default class Select extends PureComponent
 				className={classNames
 				(
 					'rrui__select__option',
-					'rrui__button__button',
 					{
 						'rrui__select__option--focused' : is_focused
 					}
@@ -455,20 +485,11 @@ export default class Select extends PureComponent
 			</button>
 		}
 
-		// There can be an `undefined` value,
-		// so just `{ value }` won't do here,
-		// and `{ `${value}` }` is not ideal too,
-		// because there theoretically can be a value `"undefined"`.
-		const key = `${index} ${value}`
-
-		// Using just `index` for `ref`s is safe
-		// because when `key` changes then the `ref` is updated
-		// so there won't be inconsistencies.
 		const markup =
 		(
 			<li
-				key={ key }
-				ref={ ref => this.options[index] = ref }
+				key={ get_option_key(value) }
+				ref={ ref => this.options[get_option_key(value)] = ref }
 				className={ classNames
 				({
 					'rrui__select__separator-option' : element && element.type === Select.Separator
@@ -483,7 +504,7 @@ export default class Select extends PureComponent
 
 	render_selected_item()
 	{
-		const { children, value, label, disabled, autocomplete, concise } = this.props
+		const { children, value, placeholder, disabled, autocomplete, concise } = this.props
 		const { expanded, autocomplete_width, autocomplete_input_value } = this.state
 
 		const selected_label = this.get_selected_option_label()
@@ -492,20 +513,21 @@ export default class Select extends PureComponent
 
 		if (autocomplete && expanded)
 		{
-			style = { ...style, width: autocomplete_width + 'px' }
+			// style = { ...style, width: autocomplete_width + 'px' }
 
 			const markup =
 			(
 				<input
 					type="text"
 					ref={ref => this.autocomplete = ref}
-					placeholder={selected_label || label}
+					placeholder={selected_label || placeholder}
 					value={autocomplete_input_value}
 					onChange={this.on_autocomplete_input_change}
 					onKeyDown={this.on_key_down}
 					style={style}
 					className={classNames
 					(
+						'rrui__input',
 						'rrui__select__selected',
 						'rrui__select__selected--autocomplete',
 						{
@@ -530,8 +552,8 @@ export default class Select extends PureComponent
 				style={style}
 				className={classNames
 				(
+					'rrui__input',
 					'rrui__select__selected',
-					'rrui__button__button',
 					{
 						'rrui__select__selected--nothing' : !selected_label
 					}
@@ -545,15 +567,15 @@ export default class Select extends PureComponent
 				{ Zero_width_space }
 
 				{/* the label (or icon) */}
-				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || label) }
+				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || placeholder) }
 
 				{/* an arrow */}
 				<div
-					className={classNames('rrui__select__arrow',
+					className={ classNames('rrui__select__arrow',
 					{
 						'rrui__select__arrow--expanded': expanded
-					})}
-					style={styles.arrow}/>
+					}) }
+					style={ styles.arrow }/>
 			</button>
 		)
 
@@ -695,12 +717,17 @@ export default class Select extends PureComponent
 
 	overflown()
 	{
-		return this.props.options.length > this.props.maxItems
+		const { options, maxItems } = this.props
+
+		return options.length > maxItems
 	}
 
 	scrollable_list_height(state = this.state)
 	{
-		return (state.height - 2 * state.vertical_padding) * (this.props.maxItems / this.props.options.length) + state.vertical_padding
+		const { maxItems, options } = this.props
+
+		// (Adding vertical padding so that it shows these `maxItems` options fully)
+		return (state.height - 2 * state.vertical_padding) * (maxItems / options.length) + state.vertical_padding
 	}
 
 	should_animate()
@@ -744,16 +771,18 @@ export default class Select extends PureComponent
 
 		if (!expanded && autocomplete)
 		{
+			const autocomplete_value = this.get_selected_option_label() || ''
+
 			this.setState
 			({
-				autocomplete_input_value: '',
-				filtered_options: options
+				autocomplete_input_value : autocomplete_value,
+				matching_options         : this.get_matching_options(options, autocomplete_value)
 			})
 
-			if (!this.state.autocomplete_width)
-			{
-				this.setState({ autocomplete_width: this.get_widest_label_width() })
-			}
+			// if (!this.state.autocomplete_width)
+			// {
+			// 	this.setState({ autocomplete_width: this.get_widest_label_width() })
+			// }
 		}
 
 		// Deferring expanding the select upon click
@@ -777,7 +806,7 @@ export default class Select extends PureComponent
 				this.setState({ focused_option_value })
 
 				// Scroll down to the focused option
-				this.scroll_to(this.get_option(focused_option_value))
+				this.scroll_to(focused_option_value)
 			}
 
 			// If it's autocomplete, then focus <input/> field
@@ -938,7 +967,7 @@ export default class Select extends PureComponent
 
 					if (previous)
 					{
-						this.show_option(previous, 'top')
+						this.show_option(previous.value, 'top')
 						return this.setState({ focused_option_value: previous.value })
 					}
 
@@ -952,7 +981,7 @@ export default class Select extends PureComponent
 
 					if (next)
 					{
-						this.show_option(next, 'bottom')
+						this.show_option(next.value, 'bottom')
 						return this.setState({ focused_option_value: next.value })
 					}
 
@@ -1048,13 +1077,13 @@ export default class Select extends PureComponent
 
 	get_options()
 	{
-		const { autocomplete, options } = this.props
-		const { filtered_options } = this.state
+		const { autocomplete, maxItems, options } = this.props
+		const { matching_options } = this.state
 
-		return autocomplete ? filtered_options : options
+		return autocomplete ? matching_options.slice(0, maxItems) : options
 	}
 
-	// Get the previous value (relative to the currently focused value)
+	// Get the previous option (relative to the currently focused option)
 	previous_focusable_option()
 	{
 		const options = this.get_options()
@@ -1074,7 +1103,7 @@ export default class Select extends PureComponent
 		}
 	}
 
-	// Get the next value (relative to the currently focused value)
+	// Get the next option (relative to the currently focused option)
 	next_focusable_option()
 	{
 		const options = this.get_options()
@@ -1095,18 +1124,25 @@ export default class Select extends PureComponent
 	}
 
 	// Scrolls to an option having the value
-	scroll_to(option)
+	scroll_to(value)
 	{
-		const index = this.get_option_index(option)
-		const option_element = ReactDOM.findDOMNode(this.options[index])
+		const option_element = ReactDOM.findDOMNode(this.options[get_option_key(value)])
+
+		// If this option isn't even shown
+		// (e.g. autocomplete)
+		// then don't scroll to it because there's nothing to scroll to.
+		if (!option_element)
+		{
+			return
+		}
+
 		ReactDOM.findDOMNode(this.list).scrollTop = option_element.offsetTop
 	}
 
-	// Fully shows an option (scrolls to it if neccessary)
-	show_option(option, gravity)
+	// Fully shows an option having the `value` (scrolls to it if neccessary)
+	show_option(value, gravity)
 	{
-		const index = this.get_option_index(option)
-		const option_element = ReactDOM.findDOMNode(this.options[index])
+		const option_element = ReactDOM.findDOMNode(this.options[get_option_key(value)])
 		const list = ReactDOM.findDOMNode(this.list)
 
 		switch (gravity)
@@ -1130,6 +1166,8 @@ export default class Select extends PureComponent
 	// Calculates height of the expanded item list
 	calculate_height()
 	{
+		const { options } = this.props
+
 		const list_dom_node = ReactDOM.findDOMNode(this.list)
 		const border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth)
 		const height = list_dom_node.scrollHeight // + 2 * border // inner height + 2 * border
@@ -1145,7 +1183,7 @@ export default class Select extends PureComponent
 
 		const state = { height, vertical_padding, border }
 
-		if (!this.props.menu && this.props.scroll && this.props.options && this.overflown())
+		if (this.is_scrollable() && options && this.overflown())
 		{
 			state.list_height = this.scrollable_list_height(state)
 		}
@@ -1153,35 +1191,55 @@ export default class Select extends PureComponent
 		this.setState(state)
 	}
 
-	get_widest_label_width()
+	is_scrollable()
 	{
-		// <ul/> -> <li/> -> <button/>
-		const label = ReactDOM.findDOMNode(this.list).firstChild.firstChild
+		const { menu, autocomplete, scroll } = this.props
 
-		const style = getComputedStyle(label)
+		return !menu && !autocomplete && scroll
+	}
 
-		const width = parseFloat(style.width)
-		const side_padding = parseFloat(style.paddingLeft)
+	// This turned out not to work for `autocomplete`
+	// because not all options are ever shown.
+	// get_widest_label_width()
+	// {
+	// 	// <ul/> -> <li/> -> <button/>
+	// 	const label = ReactDOM.findDOMNode(this.list).firstChild.firstChild
+	//
+	// 	const style = getComputedStyle(label)
+	//
+	// 	const width = parseFloat(style.width)
+	// 	const side_padding = parseFloat(style.paddingLeft)
+	//
+	// 	return width - 2 * side_padding
+	// }
 
-		return width - 2 * side_padding
+	get_matching_options(options, value)
+	{
+		// If the autocomplete value is `undefined` or empty
+		if (!value)
+		{
+			return options
+		}
+
+		value = value.toLowerCase()
+
+		return options.filter(({ label, verbose }) =>
+		{
+			return (verbose || label).toLowerCase().indexOf(value) >= 0
+		})
 	}
 
 	on_autocomplete_input_change(event)
 	{
-		const input = event.target.value
-
 		const { options } = this.props
-
-		const filtered_options = options.filter(({ value, label, verbose, icon }) =>
-		{
-			return (verbose || label).toLowerCase().indexOf(input.toLowerCase()) !== -1
-		})
+		const input = event.target.value
+		const matching_options = this.get_matching_options(options, input)
 
 		this.setState
 		({
 			autocomplete_input_value: input,
-			filtered_options,
-			focused_option_value: filtered_options.length > 0 ? filtered_options[0].value : undefined
+			matching_options,
+			focused_option_value: matching_options.length > 0 ? matching_options[0].value : undefined
 		})
 	}
 
@@ -1259,7 +1317,7 @@ const styles = styler
 		white-space : nowrap
 
 	selected
-		height : 100%
+		box-sizing : border-box
 
 	menu_toggler
 		display : inline-block
@@ -1268,4 +1326,19 @@ const styles = styler
 		padding     : 0
 		line-height : 0
 		font-size   : 0
+
+	label
+		position : absolute
+
+		-webkit-user-select : none
+		-moz-user-select    : none
+		-ms-user-select     : none
+		user-select         : none
 `
+
+// There can be an `undefined` value,
+// so just `{ value }` won't do here.
+function get_option_key(value)
+{
+	return value === undefined ? '@@rrui/select/undefined' : value
+}

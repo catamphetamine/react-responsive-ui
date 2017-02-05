@@ -79,7 +79,7 @@ from 'react-responsive-ui'
         onChange={description => this.setState({ description })}/>
 
       <Select
-        label="Select one"
+        placeholder="Select one"
         value={this.state.fruit}
         onChange={fruit => this.setState({ fruit })}
         options=

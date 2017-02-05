@@ -1,3 +1,13 @@
+0.2.5 / 04.02.2017
+==================
+
+  * (breaking change) Renamed `.rrui__text-input__label` to `.rrui__input-label`
+  * `<TextInput/>` can now have both a `placeholder` and a `label`
+  * Added `label`s to `<Select/>` and `<DatePicker/>` (analogous to text input)
+  * (breaking change) Renamed `.rrui__text-input__error` to `.rrui__input-error`
+  * (breaking change) Renamed `label` property of `<Select/>` to `placeholer`
+  * (breaking change) Renamed `.rrui__text-input__field` and `.rrui__text-input__input--single-line` to `.rrui__input` and `.rrui__input--multiline`
+
 0.2.0 / 03.02.2017
 ==================
 

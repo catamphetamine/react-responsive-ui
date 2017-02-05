@@ -4,6 +4,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import classNames from 'classnames'
+import { flat as style } from 'react-styling'
 
 import moment from 'moment'
 
@@ -18,36 +19,39 @@ export default class DatePicker extends PureComponent
 {
 	static propTypes =
 	{
+		// An optional label placed on top of the input field
+		label : PropTypes.string,
+
 		// `0` means "Sunday", `1` means "Monday", etc.
 		// (is `0` by default)
-		firstDayOfWeek: PropTypes.number.isRequired,
+		firstDayOfWeek : PropTypes.number.isRequired,
 
 		// Date format
 		// http://momentjs.com/docs/#/displaying/
 		// (is `DD/MM/YYYY` by default)
-		format: PropTypes.string.isRequired,
-		// format: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+		format : PropTypes.string.isRequired,
+		// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 
 		// Internationalization
-		// locale: PropTypes.string,
+		// locale : PropTypes.string,
 
 		// The Date `value`
-		value: PropTypes.instanceOf(Date),
+		value : PropTypes.instanceOf(Date),
 
 		// Writes new `value`
-		onChange: PropTypes.func.isRequired,
+		onChange : PropTypes.func.isRequired,
 
 		// Disables the input
 		disabled : PropTypes.bool,
 
 		// HTML `<input/>` `name` attribute
-		name: PropTypes.string,
+		name : PropTypes.string,
 
 		// CSS class
-		className: PropTypes.string,
+		className : PropTypes.string,
 
 		// CSS style object
-		style: PropTypes.object
+		style : PropTypes.object
 	}
 
 	static defaultProps =
@@ -194,6 +198,9 @@ export default class DatePicker extends PureComponent
 			value,
 			firstDayOfWeek,
 			disabled,
+			label,
+			error,
+			indicateInvalid,
 			className,
 			style
 		}
@@ -213,7 +220,7 @@ export default class DatePicker extends PureComponent
 				{
 					'rrui__date-picker--disabled' : disabled
 				}) }
-				style={ style }>
+				style={ style ? { ...styles.container, ...style } : styles.container }>
 
 				<input
 					type="text"
@@ -224,10 +231,26 @@ export default class DatePicker extends PureComponent
 					onChange={ this.on_input_change }
 					onFocus={ this.on_input_focus }
 					onBlur={ this.on_input_blur }
-					className={ classNames('rrui__date-picker__input',
-					{
-						'rrui__text-input__field--single-line' : true
-					}) }/>
+					className={ classNames
+					(
+						'rrui__input',
+						'rrui__date-picker__input'
+					) }
+					style={ styles.input }/>
+
+				{/* Label */}
+				{/* (this label is placed after the `<input/>`
+				     to utilize the CSS `+` selector) */}
+				{ label &&
+					<label
+						className={ classNames('rrui__input-label',
+						{
+							'rrui__input-label--invalid' : error && indicateInvalid
+						}) }
+						style={ styles.label }>
+						{ label }
+					</label>
+				}
 
 				{/* <DayPicker/> doesn't support `style` property */}
 				{ show_calendar &&
@@ -240,6 +263,11 @@ export default class DatePicker extends PureComponent
 							selectedDays={ day => DateUtils.isSameDay(value, day) }
 							className="rrui__date-picker__calendar"/>
 					</div>
+				}
+
+				{/* Error message */}
+				{ error && indicateInvalid &&
+					<div className="rrui__input-error">{ error }</div>
 				}
 			</div>
 		)
@@ -302,3 +330,20 @@ const calendar_container_style =
 //
 //   return dateFormatters[key]
 // }
+
+const styles = style
+`
+	container
+		position : relative
+
+	label
+		position : absolute
+
+		-webkit-user-select : none
+		-moz-user-select    : none
+		-ms-user-select     : none
+		user-select         : none
+
+	input
+		box-sizing : border-box
+`

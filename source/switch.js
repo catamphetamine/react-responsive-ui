@@ -66,6 +66,8 @@ export default class Switch extends PureComponent
 			value,
 			fallback,
 			disabled,
+			indicateInvalid,
+			error,
 			style,
 			className
 		}
@@ -74,29 +76,34 @@ export default class Switch extends PureComponent
 		const markup =
 		(
 			<label
-				className={ classNames('rrui__switch', className,
+				className={ classNames('rrui__switch',
 				{
 					'rrui__rich'             : fallback,
 					'rrui__switch--on'       : value,
 					'rrui__switch--disabled' : disabled
-				}) }
+				},
+				className) }
 				style={ this.props.style ? { ...styles.switch, ...style } : styles.switch }>
 
-				<input
-					type="checkbox"
-					value={ value }
-					onChange={ this.toggle }
-					style={ styles.input }/>
+				<div className="rrui__input">
+					<input
+						type="checkbox"
+						value={ value }
+						onChange={ this.toggle }
+						style={ styles.input }/>
 
-				<span
-					style={ styles.groove }
-					className="rrui__switch__groove"/>
+					<span
+						style={ styles.groove }
+						className="rrui__switch__groove"/>
 
-				<div
-					style={ styles.knob }
-					className="rrui__switch__knob"/>
+					<div
+						style={ styles.knob }
+						className="rrui__switch__knob"/>
+				</div>
 
 				{ fallback && !this.state.javascript && this.render_static() }
+
+				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
 			</label>
 		)
 

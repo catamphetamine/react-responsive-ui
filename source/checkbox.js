@@ -87,7 +87,7 @@ export default class Checkbox extends PureComponent
 		{
 			value,
 			error,
-			indicate_invalid,
+			indicateInvalid,
 			disabled,
 			children,
 			fallback,
@@ -99,43 +99,46 @@ export default class Checkbox extends PureComponent
 		const markup =
 		(
 			<div
-				className={ classNames(className, 'rrui__checkbox',
+				className={ classNames('rrui__checkbox',
 				{
 					'rrui__rich'               : fallback,
 					'rrui__checkbox--checked'  : value,
-					'rrui__checkbox--invalid'  : indicate_invalid && error,
+					'rrui__checkbox--invalid'  : indicateInvalid && error,
 					'rrui__checkbox--disabled' : disabled
-				}) }
+				},
+				className) }
 				style={ style }>
 
-				<input
-					ref={ref => this.checkbox = ref}
-					type="checkbox"
-					checked={value}
-					disabled={disabled}
-					onChange={this.toggle}
-					onFocus={this.on_focus}
-					onBlur={this.on_blur}
-					style={styles.checkbox_input}
-					className="rrui__checkbox__input"/>
+				<div className="rrui__input">
+					<input
+						ref={ref => this.checkbox = ref}
+						type="checkbox"
+						checked={value}
+						disabled={disabled}
+						onChange={this.toggle}
+						onFocus={this.on_focus}
+						onBlur={this.on_blur}
+						style={styles.checkbox_input}
+						className="rrui__checkbox__input"/>
 
-				<div style={styles.checkbox_box} className="rrui__checkbox__box"/>
+					<div style={styles.checkbox_box} className="rrui__checkbox__box"/>
 
-				<svg
-					viewBox={checkmark_svg_canvas_dimensions}
-					style={styles.checkbox_checkmark}
-					className="rrui__checkbox__checkmark">
-					{ value ? this.render_checkmark() : null }
-				</svg>
+					<svg
+						viewBox={checkmark_svg_canvas_dimensions}
+						style={styles.checkbox_checkmark}
+						className="rrui__checkbox__checkmark">
+						{ value ? this.render_checkmark() : null }
+					</svg>
 
-				<label
-					onClick={this.toggle}
-					className="rrui__checkbox__label"
-					style={styles.label}>
-					{children}
-				</label>
+					<label
+						onClick={this.toggle}
+						className="rrui__checkbox__label"
+						style={styles.label}>
+						{children}
+					</label>
+				</div>
 
-				{ indicate_invalid && error && <div className="rrui__checkbox__error">{error}</div> }
+				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
 
 				{ fallback && !this.state.javascript && this.render_static() }
 			</div>

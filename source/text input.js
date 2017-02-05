@@ -144,23 +144,16 @@ export default class Text_input extends PureComponent
 				(
 					'rrui__text-input',
 					{
-						'rrui__rich'                       : fallback,
-						// 'rrui__text-input--empty'          : this.is_empty(),
-						// 'rrui__text-input--invalid'        : this.should_indicate_invalid(),
-						// 'rrui__text-input--floating-label' : label,
-						// 'rrui__text-input--disabled'       : disabled,
-						// 'rrui__text-input--multiline'      : multiline,
-						// 'rrui__text-input--single-line'    : !multiline
+						'rrui__rich' : fallback
 					},
 					className
 				) }>
 
 				{/* `<input/>` and its `<label/>` */}
-				<label
-					className={ classNames('rrui__text-input__field',
+				<div
+					className={ classNames('rrui__input',
 					{
-						// 'rrui__text-input__field--multiline'   : multiline,
-						'rrui__text-input__field--single-line' : !multiline
+						'rrui__input--multiline' : multiline,
 					}) }
 					style={ styles.field }>
 
@@ -170,22 +163,20 @@ export default class Text_input extends PureComponent
 					{/* Input `<label/>`. */}
 					{/* It is rendered after the input to utilize the
 				       `input:focus + label` CSS selector rule */}
-					{ !placeholder && label &&
-						<div
-							className={ classNames('rrui__text-input__label',
+					{ label &&
+						<label
+							className={ classNames('rrui__input-label',
 							{
 								// CSS selector performance optimization
-								'rrui__text-input__label--empty'       : this.is_empty(),
-								'rrui__text-input__label--filled'      : !this.is_empty(),
-								'rrui__text-input__label--invalid'     : this.should_indicate_invalid(),
-								'rrui__text-input__label--multiline'   : multiline,
-								// 'rrui__text-input__label--single-line' : !multiline
+								'rrui__input-label--invalid'           : this.should_indicate_invalid(),
+								'rrui__text-input__label--placeholder' : !placeholder && this.is_empty(),
+								'rrui__text-input__label--multiline'   : multiline
 							}) }
 							style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
 							{ label }
-						</div>
+						</label>
 					}
-				</label>
+				</div>
 
 				{/* Error message */}
 				{ this.should_indicate_invalid() && this.render_error_message() }
@@ -262,7 +253,7 @@ export default class Text_input extends PureComponent
 	{
 		const { error } = this.props
 
-		return <div className="rrui__text-input__error">{ error }</div>
+		return <div className="rrui__input-error">{ error }</div>
 	}
 
 	// Fallback in case javascript is disabled (no animated <label/>)

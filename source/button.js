@@ -64,11 +64,12 @@ export default class Button extends PureComponent
 		const markup =
 		(
 			<div
-				className={ classNames('rrui__button', className,
+				className={ classNames('rrui__input', 'rrui__button',
 				{
 					'rrui__button--busy'     : busy,
 					'rrui__button--disabled' : disabled
-				}) }
+				},
+				className) }
 				style={ style ? { ...container_style, ...style } : container_style }>
 
 				<Activity_indicator
