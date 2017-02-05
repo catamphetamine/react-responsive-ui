@@ -584,15 +584,15 @@ also change `default_close_timeout` in ./modal.js accordingly
 	transition: transform 120ms ease-out;
 }
 
-/* hides `react-modal` scrollbar when closing the modal */
+/* Hides `react-modal` scrollbar when closing the modal */
 .ReactModal__Overlay--before-close
 {
 	overflow: hidden;
 }
 
 /*
-disables page scrolling when modal is presented,
-but introduces page width jumps.
+While this would disable page scrolling when modal is presented,
+it would introduce page width jumps.
 .ReactModal__Body--open
 {
 	height: 100%;
@@ -603,6 +603,64 @@ but introduces page width jumps.
 /*===========================================================
 = Modal                                                     =
 ===========================================================*/
+
+.rrui__modal__overlay
+{
+	/* Apparently this `1px` height was some kind of a hack, probably for IE or something */
+	height     : 1px;
+	min-height : 100%;
+
+	/* Could center with `flexbox` here
+	   but modal content needs to be `display: inline-block` anyway */
+	text-align : center;
+	/* Fixes `display: inline-block` whitespace causing scrollbar to appear */
+	line-height : 0;
+
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.rrui__modal__overlay--fullscreen
+{
+	background-color: transparent;
+}
+
+.rrui__modal__overlay--busy
+{
+	cursor : wait;
+}
+
+.rrui__modal__container
+{
+	/* `display : inline-block` so that
+	   the modal won't stretch itself horizontally */
+	display : inline-block;
+	height  : 100%;
+
+	/* Restore the default `line-height`
+	   after the `line-height: 0` workaround
+	   has been applied in `.rrui__modal__overlay` */
+	text-align : left;
+
+	/* Restore the default `line-height`
+	   after the `line-height: 0` workaround
+	   has been applied in `.rrui__modal__overlay` */
+	line-height : normal;
+}
+
+.rrui__modal__container--fullscreen
+{
+	display : block;
+}
+
+.rrui__modal__vertical-container
+{
+	align-items : center;
+}
+
+.rrui__modal__vertical-container--fullscreen
+{
+	align-items : stretch;
+}
 
 .rrui__modal__header
 {
@@ -627,6 +685,26 @@ but introduces page width jumps.
 .rrui__modal__close--busy
 {
 	cursor : wait;
+}
+
+.rrui__modal__content
+{
+	/* So that modal content won't neccessarily
+	   stretch horizontally to the full width of the screen */
+	display : inline-block;
+
+	/* Modal content shouldn't stretch vertically */
+	flex-grow : 0
+}
+
+.rrui__modal__content--fullscreen
+{
+	/* Stretch modal content horizontally to the full width of the screen */
+	display : block;
+
+	/* Modal content won't stretch vertically
+	   unless it's in the fullscreen mode */
+	flex-grow : 1
 }
 
 .rrui__modal__actions
@@ -687,15 +765,26 @@ but introduces page width jumps.
 	background-color : white;
 }
 
-.rrui__modal__padding--top,
-.rrui__modal__padding--bottom
+.rrui__modal__top-padding,
+.rrui__modal__bottom-padding
 {
 	flex-basis : 3%;
 }
 
-.rrui__modal__padding--bottom
+.rrui__modal__top-padding
+{
+	flex-grow : 1;
+}
+
+.rrui__modal__bottom-padding
 {
 	flex-grow : 4;
+}
+
+.rrui__modal__top-padding--fullscreen,
+.rrui__modal__bottom-padding--fullscreen
+{
+	display: none;
 }
 
 .rrui__modal--could-not-close-because-busy

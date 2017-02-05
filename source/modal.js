@@ -1,8 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
-// `react-modal` takes styles as an object of style objects,
-// therefore not using `/flat` styler here.
-import styler from 'react-styling'
+import { flat as style } from 'react-styling'
 import React_modal from 'react-modal'
 
 import Button from './button'
@@ -207,20 +205,6 @@ export default class Modal extends PureComponent
 
 		const { could_not_close_because_busy } = this.state
 
-		let modal_style
-
-		if (busy)
-		{
-			modal_style = fullscreen ? styles.modal_busy_fullscreen : styles.modal_busy
-		}
-		else
-		{
-			modal_style = fullscreen ? styles.modal : styles.modal_fullscreen
-		}
-
-		const content_wrapper_style = fullscreen ? styles.content_wrapper_fullscreen : styles.content_wrapper
-		const content_style         = fullscreen ? styles.content_fullscreen         : styles.content
-
 		const markup =
 		(
 			<React_modal
@@ -229,23 +213,37 @@ export default class Modal extends PureComponent
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
-				className={ classNames('rrui__modal', className,
+				style={ react_modal_style }
+				overlayClassName={ classNames('rrui__modal__overlay',
 				{
-					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+					'rrui__modal__overlay--busy'       : busy,
+					'rrui__modal__overlay--fullscreen' : fullscreen
 				}) }
-				style={ modal_style }>
+				className={ classNames('rrui__modal__container', className,
+				{
+					'rrui__modal__container--fullscreen' : fullscreen
+				}) }>
 
 				<div
-					style={ content_wrapper_style }
+					style={ styles.vertical_container }
+					className={ classNames('rrui__modal__vertical-container',
+					{
+						'rrui__modal__vertical-container--fullscreen' : fullscreen,
+
+						// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
+						'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+					}) }
 					onClick={ this.on_request_close }>
 
-					{/* top padding, grows less than bottom padding */}
-					{ !fullscreen &&
-						<div
-							style={ styles.vertical_padding }
-							className="rrui__modal__padding--top"
-							onClick={ this.on_request_close }/>
-					}
+					{/* Top padding, grows less than bottom padding */}
+					<div
+						style={ styles.vertical_padding }
+						className={ classNames('rrui__modal__top-padding',
+						{
+							// CSS selector performance optimization
+							'rrui__modal__top-padding--fullscreen' : fullscreen
+						}) }
+						onClick={ this.on_request_close }/>
 
 					{/* Modal window title (with an optional close button) */}
 					{ title &&
@@ -253,7 +251,7 @@ export default class Modal extends PureComponent
 							onClick={ this.block_event }
 							className={ classNames('rrui__modal__header',
 							{
-								'rrui__modal__header--separated': scroll
+								'rrui__modal__header--separated' : scroll
 							}) }
 							style={ styles.header }>
 
@@ -263,27 +261,28 @@ export default class Modal extends PureComponent
 						</h1>
 					}
 
-					{/* dialog window content */}
+					{/* Modal window content */}
 					<div
 						className={ classNames('rrui__modal__content',
 						{
 							'rrui__modal__content--no-title'   : !title,
-							'rrui__modal__content--no-actions' : !actions
+							'rrui__modal__content--no-actions' : !actions,
+							'rrui__modal__content--fullscreen' : fullscreen
 						}) }
 						onClick={ this.block_event }
-						style={ style ? { ...content_style, ...style } : content_style }>
+						style={ style ? { ...styles.content, ...style } : styles.content }>
 
 						{ !title && this.render_close_button() }
 
 						{ children }
 					</div>
 
-					{/* dialog window actions */}
+					{/* Modal window actions */}
 					{ actions &&
 						<div
 							className={ classNames('rrui__modal__actions',
 							{
-								'rrui__modal__actions--separated': scroll
+								'rrui__modal__actions--separated' : scroll
 							}) }
 							onClick={ this.block_event }
 							style={ styles.actions }>
@@ -310,13 +309,15 @@ export default class Modal extends PureComponent
 						</div>
 					}
 
-					{/* bottom padding, grows more than top padding */}
-					{ !fullscreen &&
-						<div
-							style={ styles.vertical_padding }
-							className="rrui__modal__padding--bottom"
-							onClick={ this.on_request_close }/>
-					}
+					{/* Bottom padding, grows more than top padding */}
+					<div
+						style={ styles.vertical_padding }
+						className={ classNames('rrui__modal__bottom-padding',
+						{
+							// CSS selector performance optimization
+							'rrui__modal__bottom-padding--fullscreen' : fullscreen
+						}) }
+						onClick={ this.on_request_close }/>
 				</div>
 			</React_modal>
 		)
@@ -458,129 +459,59 @@ export default class Modal extends PureComponent
 	}
 }
 
-// https://material.google.com/components/dialogs.html
-const styles = styler
+const styles = style
 `
 	vertical_padding
-		width : 100%
+		// Perhaps "width : 100%" was needed for it to work properly
+		width       : 100%
+
+		// Vertical padding won't ever shrink below the minimum size
 		flex-shrink : 0
-		flex-grow   : 1
 
 	content
-		display : inline-block
-
-		flex-grow   : 0
+		// Modal content will contract vertically showing a scrollbar
 		flex-shrink : 1
 		flex-basis  : auto
 		overflow    : auto
 
-		&fullscreen
-			flex-grow : 1
-
 	header, actions
+		// No vertical growing or shrinking for header and actions
 		flex-grow   : 0
 		flex-shrink : 0
 		flex-basis  : auto
 
 		margin : 0
+		// Stretch header and actions to the full width of the modal content
 		width  : 100%
 
-		box-sizing: border-box
+		// Padding will be included in "width : 100%"
+		box-sizing : border-box
 
 	actions
 		text-align : right
 		// fixes display inline-block whitespaces causing scrollbar
 		line-height : 0
 
-	// вместо использования этого content_wrapper'а
+	// Вместо использования этого vertical_container'а
 	// можно было бы использовать то же самое на modal.content,
 	// но тогда этот слой займёт весь экран, а в react-modal
 	// на него вешается onClick со stopPropagation,
 	// поэтому клики слева и справа не будут закрывать окошко.
-	content_wrapper
+	vertical_container
 		display        : flex
 		flex-direction : column
-		align-items    : center
 		height         : 100%
 
-		&fullscreen
-			align-items : stretch
-
-	// react-modal takes styles as an object of style objects
-	modal
-		overlay
-			height     : 1px
-			min-height : 100%
-
-			text-align : center
-			// fixes display inline-block whitespaces causing scrollbar
-			line-height : 0
-
-			background-color: rgba(0, 0, 0, 0.2)
-
-		content
-			// position : static
-			height : 100%
-
-			// top    : auto
-			// left   : auto
-			// right  : auto
-			// bottom : auto
-
-			text-align : left
-
-			// margin-left  : auto
-			// margin-right : auto
-
-			padding : 0
-			border : none
-			background-color: transparent
-
-			// вместо обойтись этим и не использовать content_wrapper,
-			// но тогда этот слой займёт весь экран, а в react-modal
-			// на него вешается onClick со stopPropagation,
-			// поэтому клики на нём не будут закрывать окошко.
-			//
-			// display        : flex
-			// flex-direction : column
-			// align-items    : center
-
-			// alternative centering (not using flexbox)
-			// top                   : 50%
-			// left                  : 50%
-			// right                 : auto
-			// bottom                : auto
-			// margin-right          : -50%
-			// transform             : translate(-50%, -50%)
-
-			// // centering
-			// display      : table
-			// margin-left  : auto
-			// margin-right : auto
-
-			display: inline-block
-			line-height: normal
-
-			// content_cell
-			// 	// // centering
-			// 	// display : table-cell
-			// 	height  : 100%
 `
 
-styles.modal_busy =
+const react_modal_style =
 {
-	overlay: { ...styles.modal.overlay, cursor: 'wait' },
-	content: styles.modal.content
-}
-
-styles.modal_fullscreen =
-{
-	overlay: styles.modal.overlay,
-	content: { ...styles.modal.content, display: 'block' }
-}
-
-styles.modal_busy_fullscreen =
-{
-	overlay: styles.modal_busy.overlay,
-	content: { ...styles.modal_busy.content, display: 'block' }
+	overlay : style
+	`
+		position : fixed
+		left     : 0
+		top      : 0
+		right    : 0
+		bottom   : 0
+	`
 }

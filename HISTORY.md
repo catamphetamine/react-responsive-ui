@@ -1,7 +1,8 @@
-0.2.8 / 05.02.2017
+0.2.10 / 05.02.2017
 ==================
 
   * Added `fullscreen` mode for `<Modal/>`
+  * (breaking change) Refactoring `<Modal/>` (for better `fullscreen` support)
 
 0.2.5 / 04.02.2017
 ==================
