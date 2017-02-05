@@ -344,6 +344,11 @@ const styles = style
 		-ms-user-select     : none
 		user-select         : none
 
+		// Vertically align
+		display     : flex
+		align-items : center
+		height      : 100%
+
 	input
 		box-sizing : border-box
 `

@@ -169,6 +169,7 @@ export default class Text_input extends PureComponent
 							{
 								// CSS selector performance optimization
 								'rrui__input-label--invalid'           : this.should_indicate_invalid(),
+								'rrui__input-label--floating'          : !placeholder,
 								'rrui__text-input__label--placeholder' : !placeholder && this.is_empty(),
 								'rrui__text-input__label--multiline'   : multiline
 							}) }
@@ -364,8 +365,6 @@ const styles = styler
 
 	label
 		position : absolute
-
-		font-size : inherit
 
 		-webkit-user-select : none
 		-moz-user-select    : none

@@ -806,6 +806,8 @@ but introduces page width jumps.
 	left : 0;
 	top  : 0;
 
+	font-size : inherit;
+
 	/*
 	When changing this label color
 	also change "input" and "textarea" placeholder color.
@@ -845,7 +847,7 @@ but introduces page width jumps.
 	transform : translateY(0) scale(1);
 }
 
-.rrui__text-input__input--empty:focus + .rrui__input-label
+.rrui__text-input__input--empty:focus + .rrui__input-label--floating
 {
 	color: #888C91;
 }

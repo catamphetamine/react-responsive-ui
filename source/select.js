@@ -1334,6 +1334,11 @@ const styles = styler
 		-moz-user-select    : none
 		-ms-user-select     : none
 		user-select         : none
+
+		// Vertically align
+		display     : flex
+		align-items : center
+		height      : 100%
 `
 
 // There can be an `undefined` value,
