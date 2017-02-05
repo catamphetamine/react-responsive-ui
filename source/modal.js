@@ -35,6 +35,9 @@ export default class Modal extends PureComponent
 		// Is called after the modal is closed
 		afterClose       : PropTypes.func,
 
+		// Enters fullscreen mode
+		fullscreen       : PropTypes.bool,
+
 		// The modal title
 		title            : PropTypes.string,
 
@@ -186,6 +189,7 @@ export default class Modal extends PureComponent
 	{
 		const
 		{
+			fullscreen,
 			busy,
 			isOpen,
 			closeTimeout,
@@ -203,6 +207,20 @@ export default class Modal extends PureComponent
 
 		const { could_not_close_because_busy } = this.state
 
+		let modal_style
+
+		if (busy)
+		{
+			modal_style = fullscreen ? styles.modal_busy_fullscreen : styles.modal_busy
+		}
+		else
+		{
+			modal_style = fullscreen ? styles.modal : styles.modal_fullscreen
+		}
+
+		const content_wrapper_style = fullscreen ? styles.content_wrapper_fullscreen : styles.content_wrapper
+		const content_style         = fullscreen ? styles.content_fullscreen         : styles.content
+
 		const markup =
 		(
 			<React_modal
@@ -215,14 +233,19 @@ export default class Modal extends PureComponent
 				{
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
 				}) }
-				style={ busy ? styles.modal_busy : styles.modal }>
+				style={ modal_style }>
 
-				<div style={ styles.content_wrapper } onClick={ this.on_request_close }>
+				<div
+					style={ content_wrapper_style }
+					onClick={ this.on_request_close }>
+
 					{/* top padding, grows less than bottom padding */}
-					<div
-						style={ styles.vertical_padding }
-						className="rrui__modal__padding--top"
-						onClick={ this.on_request_close }/>
+					{ !fullscreen &&
+						<div
+							style={ styles.vertical_padding }
+							className="rrui__modal__padding--top"
+							onClick={ this.on_request_close }/>
+					}
 
 					{/* Modal window title (with an optional close button) */}
 					{ title &&
@@ -248,7 +271,7 @@ export default class Modal extends PureComponent
 							'rrui__modal__content--no-actions' : !actions
 						}) }
 						onClick={ this.block_event }
-						style={ style ? { ...styles.content, ...style } : styles.content }>
+						style={ style ? { ...content_style, ...style } : content_style }>
 
 						{ !title && this.render_close_button() }
 
@@ -288,10 +311,12 @@ export default class Modal extends PureComponent
 					}
 
 					{/* bottom padding, grows more than top padding */}
-					<div
-						style={ styles.vertical_padding }
-						className="rrui__modal__padding--bottom"
-						onClick={ this.on_request_close }/>
+					{ !fullscreen &&
+						<div
+							style={ styles.vertical_padding }
+							className="rrui__modal__padding--bottom"
+							onClick={ this.on_request_close }/>
+					}
 				</div>
 			</React_modal>
 		)
@@ -449,6 +474,9 @@ const styles = styler
 		flex-basis  : auto
 		overflow    : auto
 
+		&fullscreen
+			flex-grow : 1
+
 	header, actions
 		flex-grow   : 0
 		flex-shrink : 0
@@ -474,6 +502,9 @@ const styles = styler
 		flex-direction : column
 		align-items    : center
 		height         : 100%
+
+		&fullscreen
+			align-items : stretch
 
 	// react-modal takes styles as an object of style objects
 	modal
@@ -540,4 +571,16 @@ styles.modal_busy =
 {
 	overlay: { ...styles.modal.overlay, cursor: 'wait' },
 	content: styles.modal.content
+}
+
+styles.modal_fullscreen =
+{
+	overlay: styles.modal.overlay,
+	content: { ...styles.modal.content, display: 'block' }
+}
+
+styles.modal_busy_fullscreen =
+{
+	overlay: styles.modal_busy.overlay,
+	content: { ...styles.modal_busy.content, display: 'block' }
 }
