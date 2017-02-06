@@ -6,11 +6,6 @@ import React_modal from 'react-modal'
 import Button from './button'
 import { get_scrollbar_width } from './misc/dom'
 
-// when changing this also change
-// your .rrui__modal--could-not-close-because-busy
-// css transition times accordingly
-const could_not_close_because_busy_animation_duration = 1500 // ms
-
 export default class Modal extends PureComponent
 {
 	state = {}
@@ -89,6 +84,9 @@ export default class Modal extends PureComponent
 		// i.e. `closeButton` will be wrapped with a `<button/>`.
 		closeButton      : PropTypes.node,
 
+		// Internal property
+		could_not_close_because_busy_animation_duration : PropTypes.number.isRequired,
+
 		// CSS class
 		className        : PropTypes.string,
 
@@ -113,11 +111,16 @@ export default class Modal extends PureComponent
 		cancelLabel : 'Cancel',
 
 		contentLabel : 'Popup',
+
+		// When changing this also change
+		// `.rrui__modal--could-not-close-because-busy`
+		// css transition time accordingly
+		could_not_close_because_busy_animation_duration: 1500 // ms
 	}
 
-	constructor(props, context)
+	constructor()
 	{
-		super(props, context)
+		super()
 
 		this.on_request_close = this.on_request_close.bind(this)
 		this.on_after_open    = this.on_after_open.bind(this)
@@ -352,7 +355,10 @@ export default class Modal extends PureComponent
 	// Play "cannot close" animation on the modal
 	indicate_cannot_close()
 	{
-		if (!this.state.could_not_close_because_busy)
+		const { could_not_close_because_busy_animation_duration } = this.props
+		const { could_not_close_because_busy } = this.state
+
+		if (!could_not_close_because_busy)
 		{
 			setTimeout(() =>
 			{
@@ -413,8 +419,25 @@ export default class Modal extends PureComponent
 	{
 		const { afterOpen } = this.props
 
-		document.body.style.marginRight = this.scrollbar_width + 'px'
-		document.body.style.overflow    = 'hidden'
+		const div = document.createElement('div')
+		div.style.position = 'fixed'
+		div.style.left     = 0
+		div.style.right    = 0
+		document.body.appendChild(div)
+
+		const width_before = div.clientWidth
+
+		document.body.style.overflow = 'hidden'
+
+		const width_adjustment = div.clientWidth - width_before
+
+		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+		full_width_elements.push(document.body)
+
+		for (const element of full_width_elements)
+		{
+			element.style.marginRight = width_adjustment + 'px'
+		}
 
 		// If the user scrolled on a previously shown react-modal,
 		// then reset that previously scrolled position.
@@ -422,7 +445,7 @@ export default class Modal extends PureComponent
 
 		if (afterOpen)
 		{
-			afterOpen({ scrollbarWidth: this.scrollbar_width })
+			afterOpen()
 		}
 	}
 
@@ -438,9 +461,16 @@ export default class Modal extends PureComponent
 				afterClose()
 			}
 
-			document.body.style.marginRight = 0
-			document.body.style.overflowX   = bodyOverflowX
-			document.body.style.overflowY   = bodyOverflowY
+			const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+			full_width_elements.push(document.body)
+
+			for (const element of full_width_elements)
+			{
+				element.style.marginRight = 0
+			}
+
+			document.body.style.overflowX = bodyOverflowX
+			document.body.style.overflowY = bodyOverflowY
 		},
 		closeTimeout)
 	}

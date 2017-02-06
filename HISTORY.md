@@ -1,5 +1,10 @@
+0.2.11 / 06.02.2017
+===================
+
+  * Added `.rrui__fixed-full-width` CSS class for self-adjusting the width of specific DOM elements when a modal opens
+
 0.2.10 / 05.02.2017
-==================
+===================
 
   * Added `fullscreen` mode for `<Modal/>`
   * (breaking change) Refactoring `<Modal/>` (for better `fullscreen` support)
