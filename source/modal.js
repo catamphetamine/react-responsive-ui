@@ -414,26 +414,54 @@ export default class Modal extends PureComponent
 		}
 	}
 
-	// This solution may break a bit when a user resizes the browser window
+	// Hides the main (body) scrollbar upon showing a modal
+	// and also adjusts the width of all "full-width" elements
+	// so that they don't expand no that the scrollbar is absent.
+	//
+	// This doesn't account for window resizes
+	// but since my body is always `overflow: visible` (a good practice)
+	// there's no difference and it should work in any scenario.
+	//
 	on_after_open()
 	{
 		const { afterOpen } = this.props
 
+		// A dummy `<div/>` to measure
+		// the difference in width
+		// needed for the "full-width" elements
+		// after the main (body) scrollbar is deliberately hidden.
 		const div = document.createElement('div')
 		div.style.position = 'fixed'
 		div.style.left     = 0
 		div.style.right    = 0
 		document.body.appendChild(div)
 
+		// Calculate the width of the dummy `<div/>`
+		// before the main (body) scrollbar is deliberately hidden.
 		const width_before = div.clientWidth
 
+		// Hide the main (body) scrollbar
+		// so that when a user scrolls in an open modal
+		// this `scroll` event doesn't go through
+		// and scroll the main page.
 		document.body.style.overflow = 'hidden'
 
+		// All "full-width" elements will need their
+		// width to be adjusted by this amount
+		// because of the now-hidden main (body) scrollbar
+
+		// Calculate the width of the dummy `<div/>`
+		// after the main (body) scrollbar is deliberately hidden.
 		const width_adjustment = div.clientWidth - width_before
 
+		// "full-width" elements include `document.body`
+		// and all `position: fixed` elements
+		// which should be marked with this special CSS class.
 		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
 		full_width_elements.push(document.body)
 
+		// Adjust the width of all "full-width" elements
+		// so that they don't expand by the width of the (now absent) scrollbar
 		for (const element of full_width_elements)
 		{
 			element.style.marginRight = width_adjustment + 'px'
@@ -461,14 +489,24 @@ export default class Modal extends PureComponent
 				afterClose()
 			}
 
+			// All "full-width" elements will need their
+			// width to be restored back to the original value
+			// now that the main (body) scrollbar is being restored.
+
+			// "full-width" elements include `document.body`
+			// and all `position: fixed` elements
+			// which should be marked with this special CSS class.
 			const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
 			full_width_elements.push(document.body)
 
+			// Adjust the width of all "full-width" elements back to their original value
+			// now that the main (body) scrollbar is being restored.
 			for (const element of full_width_elements)
 			{
 				element.style.marginRight = 0
 			}
 
+			// Restore the main (body) scrollbar
 			document.body.style.overflowX = bodyOverflowX
 			document.body.style.overflowY = bodyOverflowY
 		},
