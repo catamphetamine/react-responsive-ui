@@ -604,6 +604,14 @@ it would introduce page width jumps.
 = Modal                                                     =
 ===========================================================*/
 
+.rrui__fixed-full-width
+{
+	position : fixed;
+	top      : 0;
+	left     : 0;
+	right    : 0;
+}
+
 .rrui__modal__overlay
 {
 	/* Apparently this `1px` height was some kind of a hack, probably for IE or something */
