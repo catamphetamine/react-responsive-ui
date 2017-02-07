@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent, PropTypes, createElement } from 'react'
 import ReactDOM from 'react-dom'
 import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
@@ -58,10 +58,13 @@ export default class Text_input extends PureComponent
 		// `<textarea/>` `cols` attribute (column count, i.e. width)
 		cols             : PropTypes.number,
 
+		// A custom `input` component can be passed
+		input            : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+
 		// (exotic use case)
 		// Falls back to a plain HTML input
 		// when javascript is disabled (e.g. Tor)
-		fallback  : PropTypes.bool.isRequired,
+		fallback         : PropTypes.bool.isRequired,
 
 		// CSS style object
 		style            : PropTypes.object,
@@ -84,7 +87,11 @@ export default class Text_input extends PureComponent
 		// HTML input `type` attribute
 		type : 'text',
 
-		fallback : false
+		// Javascriptless users support (e.g. Tor)
+		fallback : false,
+
+		// Render an `<input/>` by default
+		input: 'input'
 	}
 
 	constructor()
@@ -207,6 +214,9 @@ export default class Text_input extends PureComponent
 			rows,
 			cols,
 
+			// A custom input component
+			input,
+
 			// Passthrough properties
 			id,
 			onBlur
@@ -238,9 +248,10 @@ export default class Text_input extends PureComponent
 			autoFocus   : focus
 		}
 
+		// In case of `multiline` set to `true`
+		// this is gonna be a `<textarea/>`
 		if (multiline)
 		{
-			// maybe add autoresize for textarea (smoothly animated)
 			return <textarea
 				rows={ rows }
 				cols={ cols }
@@ -249,7 +260,12 @@ export default class Text_input extends PureComponent
 				{ ...properties }/>
 		}
 
-		return <input type={ this.get_input_type() } { ...properties }/>
+		// Add `<input/>` `type` to properties
+		properties.type = this.get_input_type()
+
+		// If a custom `input` component was passed then use it.
+		// Otherwise use a simple `<input/>`.
+		return createElement(input, properties)
 	}
 
 	render_error_message()
@@ -329,11 +345,21 @@ export default class Text_input extends PureComponent
 		window.scroll(window.pageXOffset, current_scroll_position)
 	}
 
+	// The underlying `input` component
+	// can pass both `event`s and `value`s
+	// to this parent `onChange` listener.
 	on_change(event)
 	{
+		let value = event
+
+		if (event.target !== undefined)
+		{
+			value = event.target.value
+		}
+
 		const { onChange } = this.props
 
-		onChange(event.target.value)
+		onChange(value)
 	}
 
 	on_key_down(event)
