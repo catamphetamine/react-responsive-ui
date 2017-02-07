@@ -1364,7 +1364,8 @@ const styles = styler
 		font-size   : 0
 
 	label
-		position : absolute
+		position    : absolute
+		white-space : nowrap
 
 		-webkit-user-select : none
 		-moz-user-select    : none

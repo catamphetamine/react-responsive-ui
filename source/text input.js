@@ -410,7 +410,8 @@ const styles = styler
 			height : 100%
 
 	label
-		position : absolute
+		position    : absolute
+		white-space : nowrap
 
 		-webkit-user-select : none
 		-moz-user-select    : none

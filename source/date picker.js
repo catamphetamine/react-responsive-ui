@@ -340,7 +340,8 @@ const styles = style
 		position : relative
 
 	label
-		position : absolute
+		position    : absolute
+		white-space : nowrap
 
 		-webkit-user-select : none
 		-moz-user-select    : none
