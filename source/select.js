@@ -314,6 +314,8 @@ export default class Select extends PureComponent
 
 		const wrapper_style = { ...styles.wrapper, textAlign: alignment }
 
+		const selected = this.get_selected_option()
+
 		const markup =
 		(
 			<div
@@ -339,7 +341,11 @@ export default class Select extends PureComponent
 				{/* Label */}
 				{/* (this label is placed after the "selected" button
 				     to utilize the CSS `+` selector) */}
-				{ label &&
+				{/* If the `placeholder` wasn't specified
+				    but `label` was and no option is currently selected
+				    then the `label` becomes the `placeholder`
+				    until something is selected */}
+				{ label && (this.get_selected_option() || placeholder) &&
 					<label
 						htmlFor={ id }
 						className={ classNames('rrui__input-label',
@@ -501,10 +507,30 @@ export default class Select extends PureComponent
 
 	render_selected_item()
 	{
-		const { children, value, placeholder, disabled, autocomplete, concise } = this.props
-		const { expanded, autocomplete_width, autocomplete_input_value } = this.state
+		const
+		{
+			children,
+			value,
+			placeholder,
+			label,
+			disabled,
+			autocomplete,
+			concise
+		}
+		= this.props
 
+		const
+		{
+			expanded,
+			autocomplete_width,
+			autocomplete_input_value
+		}
+		= this.state
+
+		const selected = this.get_selected_option()
 		const selected_label = this.get_selected_option_label()
+
+		const selected_text = selected ? selected_label : (placeholder || label)
 
 		let style = styles.selected
 
@@ -516,13 +542,13 @@ export default class Select extends PureComponent
 			(
 				<input
 					type="text"
-					ref={ref => this.autocomplete = ref}
-					placeholder={selected_label || placeholder}
-					value={autocomplete_input_value}
-					onChange={this.on_autocomplete_input_change}
-					onKeyDown={this.on_key_down}
-					style={style}
-					className={classNames
+					ref={ ref => this.autocomplete = ref }
+					placeholder={ selected_text }
+					value={ autocomplete_input_value }
+					onChange={ this.on_autocomplete_input_change }
+					onKeyDown={ this.on_key_down }
+					style={ style }
+					className={ classNames
 					(
 						'rrui__input',
 						'rrui__select__selected',
@@ -530,37 +556,35 @@ export default class Select extends PureComponent
 						{
 							'rrui__select__selected--nothing' : !selected_label
 						}
-					)}/>
+					) }/>
 			)
 
 			return markup
 		}
 
-		const selected = this.get_selected_option()
-
 		const markup =
 		(
 			<button
-				ref={ref => this.selected = ref}
+				ref={ ref => this.selected = ref }
 				type="button"
-				disabled={disabled}
-				onClick={this.toggle}
-				onKeyDown={this.on_key_down}
-				style={style}
-				className={classNames
+				disabled={ disabled }
+				onClick={ this.toggle }
+				onKeyDown={ this.on_key_down }
+				style={ style }
+				className={ classNames
 				(
 					'rrui__input',
 					'rrui__select__selected',
 					{
 						'rrui__select__selected--nothing' : !selected_label
 					}
-				)}>
+				) }>
 
 				{/* http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers */}
 				<div style={ styles.selected_flex_wrapper }>
 					{/* Selected option label (or icon) */}
 					<div style={ styles.selected_label }>
-						{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || placeholder) }
+						{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : selected_text }
 					</div>
 
 					{/* An arrow */}
