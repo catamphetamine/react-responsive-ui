@@ -421,7 +421,7 @@ export default class Select extends PureComponent
 		// a hack to restore padding-right taken up by a vertical scrollbar
 		if (overflow && scrollbarPadding)
 		{
-			item_style = { ...styles.list.item }
+			item_style = { ...styles.list_item }
 
 			item_style.marginRight = get_scrollbar_width() + 'px'
 		}
@@ -1333,10 +1333,12 @@ const styles = styler
 	list_item
 		display     : inline-block
 		white-space : nowrap
+		font-size   : inherit
 
 	selected
 		box-sizing : border-box
 		text-align : left
+		font-size  : inherit
 
 	selected_flex_wrapper
 		display     : flex
