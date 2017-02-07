@@ -556,16 +556,21 @@ export default class Select extends PureComponent
 					}
 				)}>
 
-				{/* the label (or icon) */}
-				{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || placeholder) }
+				{/* http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers */}
+				<div style={ styles.selected_flex_wrapper }>
+					{/* Selected option label (or icon) */}
+					<div style={ styles.selected_label }>
+						{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : (selected_label || placeholder) }
+					</div>
 
-				{/* an arrow */}
-				<div
-					className={ classNames('rrui__select__arrow',
-					{
-						'rrui__select__arrow--expanded': expanded
-					}) }
-					style={ styles.arrow }/>
+					{/* An arrow */}
+					<div
+						className={ classNames('rrui__select__arrow',
+						{
+							'rrui__select__arrow--expanded': expanded
+						}) }
+						style={ styles.arrow }/>
+				</div>
 			</button>
 		)
 
@@ -1280,9 +1285,6 @@ const styles = styler
 		-ms-user-select     : none
 		user-select         : none
 
-	arrow
-		display  : inline-block
-
 	list
 		position        : absolute
 		z-index         : 1
@@ -1310,6 +1312,16 @@ const styles = styler
 
 	selected
 		box-sizing : border-box
+		text-align : left
+
+	selected_flex_wrapper
+		display     : flex
+		align-items : center
+
+	selected_label
+		flex : 1
+
+	arrow
 
 	menu_toggler
 		display : inline-block
