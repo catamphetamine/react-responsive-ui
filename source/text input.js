@@ -350,12 +350,20 @@ export default class Text_input extends PureComponent
 	// to this parent `onChange` listener.
 	on_change(event)
 	{
+		// Extract `value` from the argument
+		// of this `onChange` listener
+		// (for convenience)
+
 		let value = event
 
 		if (event.target !== undefined)
 		{
 			value = event.target.value
 		}
+
+		// Call the parent `onChange` handler
+		// with the `value` as an argument
+		// (for convenience)
 
 		const { onChange } = this.props
 
@@ -376,7 +384,17 @@ export default class Text_input extends PureComponent
 
 	focus()
 	{
-		ReactDOM.findDOMNode(this.input).focus()
+		const { input } = this.props
+
+		// For simple DOM nodes like `<input/>`
+		// just focus on them.
+		if (typeof input === 'string') {
+			return ReactDOM.findDOMNode(this.input).focus()
+		}
+
+		// For custom components call `.focus()` on them
+		// (if available)
+		return this.input.focus && this.input.focus()
 	}
 }
 
