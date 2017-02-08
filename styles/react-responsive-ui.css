@@ -519,12 +519,12 @@
 	background-color : #3678D1;
 }
 
-.rrui__segmented-control .rrui__button__button
+.rrui__segmented-control__option
 {
   cursor : pointer;
 }
 
-.rrui__segmented-control--disabled .rrui__button__button
+.rrui__segmented-control__option--disabled
 {
   cursor : default;
 }

@@ -127,7 +127,9 @@ export default class Segmented_control extends PureComponent
 				(
 					'rrui__segmented-control__option',
 					{
-						'rrui__segmented-control__option--selected' : selected
+						'rrui__segmented-control__option--selected' : selected,
+						// CSS selector performance optimization
+						'rrui__segmented-control__option--disabled' : disabled
 					}
 				) }
 				style={ this.option_style(option, index) }>
