@@ -292,6 +292,7 @@ const styles = styler
 
 		&checkmark
 			pointer-events : none
+			overflow       : visible
 
 		&box
 
