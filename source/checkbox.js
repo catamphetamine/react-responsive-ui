@@ -109,26 +109,34 @@ export default class Checkbox extends PureComponent
 				className) }
 				style={ style }>
 
-				<div className="rrui__input">
-					<input
-						ref={ref => this.checkbox = ref}
-						type="checkbox"
-						checked={value}
-						disabled={disabled}
-						onChange={this.toggle}
-						onFocus={this.on_focus}
-						onBlur={this.on_blur}
-						style={styles.checkbox_input}
-						className="rrui__checkbox__input"/>
+				<div
+					style={ styles.checkbox_and_label }
+					className="rrui__input">
 
-					<div style={styles.checkbox_box} className="rrui__checkbox__box"/>
+					<div
+						style={ styles.checkbox_container }
+						className="rrui__checkbox__checkbox">
 
-					<svg
-						viewBox={checkmark_svg_canvas_dimensions}
-						style={styles.checkbox_checkmark}
-						className="rrui__checkbox__checkmark">
-						{ value ? this.render_checkmark() : null }
-					</svg>
+						<input
+							ref={ref => this.checkbox = ref}
+							type="checkbox"
+							checked={value}
+							disabled={disabled}
+							onChange={this.toggle}
+							onFocus={this.on_focus}
+							onBlur={this.on_blur}
+							style={styles.checkbox_input}
+							className="rrui__checkbox__input"/>
+
+						<div className="rrui__checkbox__box"/>
+
+						<svg
+							viewBox={checkmark_svg_canvas_dimensions}
+							style={styles.checkbox_checkmark}
+							className="rrui__checkbox__checkmark">
+							{ value ? this.render_checkmark() : null }
+						</svg>
+					</div>
 
 					<label
 						onClick={this.toggle}
@@ -286,15 +294,19 @@ const styles = styler
 		&static
 			padding-left : 0
 
+	checkbox_and_label
+		display     : flex
+		align-items : center
+
+	checkbox_container
+		position : relative
+
 	checkbox
 		position : absolute
-		left     : 0
 
 		&checkmark
 			pointer-events : none
 			overflow       : visible
-
-		&box
 
 		&input
 			display        : inline-block

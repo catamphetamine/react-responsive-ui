@@ -338,11 +338,6 @@
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 
-.rrui__checkbox
-{
-	position: relative;
-}
-
 .rrui__checkbox__label
 {
 	position       : relative;
@@ -370,11 +365,19 @@
 	color: #3678D1;
 }
 
+.rrui__checkbox__checkbox
+{
+	/* The `height` is a bit more than the real height
+	   just to elevate the checkbox a bit */
+	height : 1em;
+}
+
 .rrui__checkbox__input,
 .rrui__checkbox__box,
 .rrui__checkbox__checkmark
 {
 	position : absolute;
+	left     : 0;
 	top      : 0.1em;
 
 	width  : 0.9em;
