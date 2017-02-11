@@ -59,6 +59,7 @@
 
 .rrui__button__button
 {
+	height      : 100%;
 	background  : none;
 	border      : none;
 	outline     : none;

@@ -1333,18 +1333,10 @@ const styles = styler
 	list_item
 		display     : inline-block
 		white-space : nowrap
-		font-size   : inherit
-		font-family : inherit
-		font-weight : inherit
-		font-style  : inherit
 
 	selected
 		box-sizing  : border-box
 		text-align  : left
-		font-size   : inherit
-		font-family : inherit
-		font-weight : inherit
-		font-style  : inherit
 
 	selected_flex_wrapper
 		display     : flex
