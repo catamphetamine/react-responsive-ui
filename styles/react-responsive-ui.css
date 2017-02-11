@@ -274,7 +274,6 @@
 
 .rrui__select__selected
 {
-	border: none;
 	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
 }
@@ -282,12 +281,6 @@
 .rrui__select__selected:focus
 {
 	border-bottom-color: #03B2CB;
-}
-
-.rrui__select__option, .rrui__select__selected
-{
-	color: inherit;
-	font-weight: normal;
 }
 
 .rrui__select__selected:active
