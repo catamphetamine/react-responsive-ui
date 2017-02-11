@@ -198,12 +198,16 @@
 .rrui__select__selected,
 .rrui__select__option
 {
-	padding    : 0;
-	outline    : none;
-	appearance : none;
-	border     : none;
-	background : transparent;
-	cursor     : pointer;
+	padding     : 0;
+	outline     : none;
+	appearance  : none;
+	border      : none;
+	background  : transparent;
+	cursor      : pointer;
+	font-size   : inherit;
+	font-family : inherit;
+	font-weight : inherit;
+	font-style  : inherit;
 }
 
 .rrui__select__option

@@ -1330,12 +1330,6 @@ const styles = styler
 			// this top margin takes effect
 			margin-top : 1em
 
-	list_item, selected
-		font-size   : inherit
-		font-family : inherit
-		font-weight : inherit
-		font-style  : inherit
-
 	list_item
 		display     : inline-block
 		white-space : nowrap
