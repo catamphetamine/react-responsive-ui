@@ -516,8 +516,7 @@
 {
 	color            : white;
 	background-color : #4F9BFF;
-
-	transition : none !important;
+	transition       : none;
 }
 
 .rrui__rich__fallback .rrui__segmented-control__option:active
