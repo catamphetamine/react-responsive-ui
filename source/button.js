@@ -185,16 +185,21 @@ export default class Button extends PureComponent
 			return
 		}
 
-		event.preventDefault()
-
 		if (busy || disabled)
 		{
 			return
 		}
 
-		// Could be just a "submit" button
+		// Could be just a "submit" button without having any `action`.
+		// Could also be just a `link` button.
+		// Therefore "preventing default" only if `action` is set:
+		// for example, if `link` is set and no `action`
+		// then it should proceed with navigating to the `link`.
+		// And if `link` is set and `action` is specified too
+		// then it will prevent it from navigating to the `link`.
 		if (action)
 		{
+			event.preventDefault()
 			action()
 		}
 	}
