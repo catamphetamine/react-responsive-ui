@@ -248,7 +248,6 @@ const styles = styler
 		text-decoration : none
 
 	slideout
-		display  : inline-block
 		position : fixed
 		left     : 0
 		top      : 0

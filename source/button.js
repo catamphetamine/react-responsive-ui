@@ -109,12 +109,14 @@ export default class Button extends PureComponent
 			'rrui__button__button--disabled' : disabled
 		})
 
+		const button_style = link ? styles.button_link : styles.button
+
 		const properties =
 		{
 			ref: ref => this.button = ref,
 			title,
 			className,
-			style: buttonStyle ? { ...styles.button, ...buttonStyle } : styles.button
+			style: buttonStyle ? { ...button_style, ...buttonStyle } : button_style
 		}
 
 		const contents = <div
@@ -213,7 +215,6 @@ const styles = styler
 `
 	container
 		position   : relative
-		display    : inline-block
 		box-sizing : border-box
 
 		&busy
@@ -239,4 +240,12 @@ const styles = styler
 		user-select         : none
 
 		cursor : inherit
+
+		&link
+			// <button/> tends to vertially align its contents by itself
+		   // (I guess that's a <button/>'s natural behaviour)
+		   // but <a/> needs special treatment in this sense.
+			display         : flex
+			align-items     : center
+			text-decoration : none
 `

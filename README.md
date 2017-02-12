@@ -210,14 +210,11 @@ Responsive `<Menu/>` example
   display: none;
 }
 
-.rrui__slideout-menu-button__icon
+.rrui__slideout-menu-button__icon-path
 {
-  path
-  {
-    // In case of a black backround,
-    // overrides the default menu button icon color.
-    fill: white !important;
-  }
+  // In case of a black backround,
+  // overrides the default menu button icon color.
+  fill: white;
 }
 
 // Widescreen
@@ -227,7 +224,7 @@ Responsive `<Menu/>` example
   .rrui__slideout-menu,
   .rrui__slideout-menu-button
   {
-    display: none !important;
+    display: none;
   }
 
   // Show the widescreen full-sized menu

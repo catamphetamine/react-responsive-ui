@@ -78,6 +78,7 @@
 
 .rrui__button
 {
+	display    : inline-block;
 	cursor     : pointer;
 	transition : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
 }
@@ -795,7 +796,7 @@ it would introduce page width jumps.
 
 .rrui__modal__bottom-padding
 {
-	flex-grow : 4;
+	flex-grow : 3;
 }
 
 .rrui__modal__top-padding--fullscreen,
@@ -944,7 +945,7 @@ it would introduce page width jumps.
 
 .rrui__text-input__input--invalid
 {
-	border-bottom-color: #EB2010 !important;
+	border-color: #EB2010;
 }
 
 .rrui__text-input__label--placeholder
@@ -1101,12 +1102,12 @@ it would introduce page width jumps.
 	height  : calc(0.3rem * 5);
 }
 
-.rrui__slideout-menu-button__icon path
+.rrui__slideout-menu-button__icon-path
 {
 	fill: black;
 }
 
-.rrui__slideout-menu-button:active .rrui__slideout-menu-button__icon path
+.rrui__slideout-menu-button:active .rrui__slideout-menu-button__icon-path
 {
 	fill: #018395;
 }

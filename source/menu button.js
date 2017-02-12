@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import Page_and_menu from './page and menu'
-import Button from './button'
 
 export default class Menu_button extends PureComponent
 {
@@ -22,13 +21,17 @@ export default class Menu_button extends PureComponent
 		className   : PropTypes.string,
 
 		// CSS style object
-		style       : PropTypes.object,
-
-		// CSS style object for the button
-		buttonStyle : PropTypes.object
+		style       : PropTypes.object
 	}
 
 	static contextTypes = Page_and_menu.childContextTypes
+
+	constructor()
+	{
+		super()
+
+		this.on_click = this.on_click.bind(this)
+	}
 
 	componentDidMount()
 	{
@@ -43,17 +46,9 @@ export default class Menu_button extends PureComponent
 		this.unregister()
 	}
 
-	render()
+	on_click(event)
 	{
-		const
-		{
-			link,
-			title,
-			style,
-			buttonStyle,
-			className
-		}
-		= this.props
+		event.preventDefault()
 
 		const
 		{
@@ -64,22 +59,39 @@ export default class Menu_button extends PureComponent
 		}
 		= this.context
 
+		toggle()
+	}
+
+	render()
+	{
+		const
+		{
+			link,
+			title,
+			style,
+			className
+		}
+		= this.props
+
 		const markup =
 		(
-			<Button
+			<a
 				ref={ ref => this.button = ref }
-				link={ link }
-				action={ toggle }
+				href={ link }
+				onClick={ this.on_click }
 				title={ title }
 				className={ classNames('rrui__slideout-menu-button', className) }
-				style={ style }
-				buttonStyle={ buttonStyle }>
+				style={ style }>
+
 				<svg
 					className="rrui__slideout-menu-button__icon"
 					viewBox={ svg_canvas_dimensions }>
-					<path d={ svg_path }/>
+
+					<path
+						d={ svg_path }
+						className="rrui__slideout-menu-button__icon-path"/>
 				</svg>
-			</Button>
+			</a>
 		)
 
 		return markup
