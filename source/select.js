@@ -259,34 +259,21 @@ export default class Select extends PureComponent
 		}
 		= this.props
 
-		const { expanded } = this.state
+		const
+		{
+			expanded,
+			list_height
+		}
+		= this.state
 
 		const options = this.get_options()
 
 		let list_style = upward ? styles.list_upward : styles.list_downward
 
-		// Will be altered
-		list_style = { ...list_style }
-
-		switch (alignment)
-		{
-			case 'left':
-				list_style.left = 0
-				break
-
-			case 'right':
-				list_style.right = 0
-				break
-
-			default:
-				throw new Error(`Unsupported alignment: "${alignment}"`)
-		}
-
-		// When `autocomplete` mode is on, don't show any scroll
-		// because it would make no sense.
+		// Makes the options list scrollable (only when not in `autocomplete` mode).
 		if (this.is_scrollable() && this.state.list_height !== undefined)
 		{
-			list_style.maxHeight = this.state.list_height + 'px'
+			list_style = { ...list_style, maxHeight: `${list_height}px` }
 		}
 
 		const overflow = scroll && options && this.overflown()
@@ -376,8 +363,12 @@ export default class Select extends PureComponent
 						'rrui__select__options',
 						{
 							'rrui__select__options--expanded'             : expanded,
+							'rrui__select__options--left-aligned'         : alignment === 'left',
+							'rrui__select__options--right-aligned'        : alignment === 'right',
 							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
-							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right'
+							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
+							// CSS selector performance optimization
+							'rrui__select__options--upward'               : upward
 						}
 					) }>
 					{ list_items }
@@ -399,7 +390,7 @@ export default class Select extends PureComponent
 	render_list_item({ index, element, value, label, icon, overflow }) // , first, last
 	{
 		const { disabled, menu, scrollbarPadding } = this.props
-		const { focused_option_value } = this.state
+		const { focused_option_value, expanded } = this.state
 
 		// If a list of options is supplied as a set of child React elements,
 		// then extract values from their props.
@@ -472,17 +463,19 @@ export default class Select extends PureComponent
 		{
 			button = <button
 				type="button"
-				onClick={event => this.item_clicked(value, event)}
-				disabled={disabled}
+				onClick={ event => this.item_clicked(value, event) }
+				disabled={ disabled }
 				tabIndex="-1"
-				className={classNames
+				className={ classNames
 				(
 					'rrui__select__option',
 					{
-						'rrui__select__option--focused' : is_focused
+						'rrui__select__option--focused' : is_focused,
+						// CSS selector performance optimization
+						'rrui__select__option--disabled' : disabled
 					}
-				)}
-				style={item_style}>
+				) }
+				style={ item_style }>
 				{ icon && React.cloneElement(icon, { className: classNames(icon.props.className, 'rrui__select__option-icon') }) }
 				{ label }
 			</button>
@@ -493,9 +486,11 @@ export default class Select extends PureComponent
 			<li
 				key={ get_option_key(value) }
 				ref={ ref => this.options[get_option_key(value)] = ref }
-				className={ classNames
-				({
-					'rrui__select__separator-option' : element && element.type === Select.Separator
+				className={ classNames('rrui__select__options-list-item',
+				{
+					'rrui__select__separator-option' : element && element.type === Select.Separator,
+					// CSS selector performance optimization
+					'rrui__select__options-list-item--expanded' : expanded
 				}) }
 				style={ list_item_style }>
 				{ button }
@@ -554,7 +549,10 @@ export default class Select extends PureComponent
 						'rrui__select__selected',
 						'rrui__select__selected--autocomplete',
 						{
-							'rrui__select__selected--nothing' : !selected_label
+							'rrui__select__selected--nothing'  : !selected_label,
+							// CSS selector performance optimization
+							'rrui__select__selected--expanded' : expanded,
+							'rrui__select__selected--disabled' : disabled
 						}
 					) }/>
 			)
@@ -591,6 +589,7 @@ export default class Select extends PureComponent
 					<div
 						className={ classNames('rrui__select__arrow',
 						{
+							// CSS selector performance optimization
 							'rrui__select__arrow--expanded': expanded
 						}) }
 						style={ styles.arrow }/>
