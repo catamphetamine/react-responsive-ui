@@ -68,7 +68,6 @@
 	appearance  : none;
 	border      : none;
 	background  : none;
-	color       : inherit;
 	cursor      : pointer;
 	font-size   : inherit;
 	font-family : inherit;
@@ -81,12 +80,6 @@
 	display    : inline-block;
 	cursor     : pointer;
 	transition : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
-}
-
-.rrui__select__selected,
-.rrui__select__option
-{
-	transition : background-color 30ms ease-out, color 30ms ease-out;
 }
 
 .rrui__button__button
@@ -304,6 +297,13 @@
 .rrui__select--expanded .rrui__select__selected--autocomplete
 {
 	color: black;
+}
+
+.rrui__select__selected,
+.rrui__select__option
+{
+	color      : inherit;
+	transition : background-color 30ms ease-out, color 30ms ease-out;
 }
 
 .rrui__select__arrow

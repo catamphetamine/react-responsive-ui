@@ -240,11 +240,12 @@ const styles = styler
 		user-select         : none
 
 		cursor : inherit
+		color  : inherit
 
 		&link
 			// <button/> tends to vertially align its contents by itself
-		   // (I guess that's a <button/>'s natural behaviour)
-		   // but <a/> needs special treatment in this sense.
+			// (I guess that's a <button/>'s natural behaviour)
+			// but <a/> needs special treatment in this sense.
 			display         : flex
 			align-items     : center
 			text-decoration : none
