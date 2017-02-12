@@ -12,7 +12,7 @@ export default class Menu_button extends PureComponent
 		// if a web browser has javascript disabled (e.g. Tor),
 		// then the menu button will redirect to this Menu page URL.
 		// If not set then won't redirect anywhere.
-		link        : PropTypes.string,
+		link        : PropTypes.string.isRequired,
 
 		// HTML `title` attribute
 		title       : PropTypes.string,
@@ -22,6 +22,11 @@ export default class Menu_button extends PureComponent
 
 		// CSS style object
 		style       : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		link : '#'
 	}
 
 	static contextTypes = Page_and_menu.childContextTypes
