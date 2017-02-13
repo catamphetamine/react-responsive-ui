@@ -239,6 +239,8 @@ const styles = styler
 			opacity : 0
 
 	button
+		width : 100%
+
 		-webkit-user-select : none
 		-moz-user-select    : none
 		-ms-user-select     : none

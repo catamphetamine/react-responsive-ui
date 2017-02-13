@@ -312,7 +312,6 @@ const styles = styler
 `
 	container
 		position    : relative
-		display     : inline-block
 		white-space : nowrap
 
 	option

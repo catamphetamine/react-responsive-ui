@@ -145,7 +145,6 @@ export default class Switch extends PureComponent
 const styles = styler
 `
 	switch
-		display  : inline-block
 		position : relative
 
 		-webkit-user-select : none

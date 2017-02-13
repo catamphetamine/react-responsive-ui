@@ -118,31 +118,31 @@ export default class Checkbox extends PureComponent
 						className="rrui__checkbox__checkbox">
 
 						<input
-							ref={ref => this.checkbox = ref}
+							ref={ ref => this.checkbox = ref }
 							type="checkbox"
-							checked={value}
-							disabled={disabled}
-							onChange={this.toggle}
-							onFocus={this.on_focus}
-							onBlur={this.on_blur}
-							style={styles.checkbox_input}
+							checked={ value }
+							disabled={ disabled }
+							onChange={ this.toggle }
+							onFocus={ this.on_focus }
+							onBlur={ this.on_blur }
+							style={ styles.checkbox_input }
 							className="rrui__checkbox__input"/>
 
 						<div className="rrui__checkbox__box"/>
 
 						<svg
-							viewBox={checkmark_svg_canvas_dimensions}
-							style={styles.checkbox_checkmark}
+							viewBox={ checkmark_svg_canvas_dimensions }
+							style={ styles.checkbox_checkmark }
 							className="rrui__checkbox__checkmark">
 							{ value ? this.render_checkmark() : null }
 						</svg>
 					</div>
 
 					<label
-						onClick={this.toggle}
+						onClick={ this.toggle }
 						className="rrui__checkbox__label"
-						style={styles.label}>
-						{children}
+						style={ styles.label }>
+						{ children }
 					</label>
 				</div>
 

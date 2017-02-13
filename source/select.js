@@ -1299,9 +1299,7 @@ Select.Separator = function(props)
 const styles = styler
 `
 	wrapper
-		position   : relative
-		display    : inline-block
-		// text-align : inherit
+		position : relative
 
 		-webkit-user-select : none
 		-moz-user-select    : none
