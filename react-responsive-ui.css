@@ -135,7 +135,7 @@
 
 .rrui__select
 {
-	height : calc(0.3rem * 6);
+	display : inline-block;
 }
 
 .rrui__select__options
@@ -480,7 +480,8 @@
 
 .rrui__switch
 {
-	cursor : pointer;
+	display : inline-block;
+	cursor  : pointer;
 }
 
 .rrui__switch--disabled
@@ -494,7 +495,7 @@
 
 .rrui__segmented-control
 {
-	height : calc(0.3rem * 6);
+	display : inline-block;
 }
 
 .rrui__segmented-control__option
