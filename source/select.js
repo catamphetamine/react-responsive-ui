@@ -75,6 +75,10 @@ export default class Select extends PureComponent
 		// upon expanding the options list.
 		autocomplete : PropTypes.bool,
 
+		// If set to `true`, autocomple will show all
+		// matching options instead of just `maxItems`.
+		autocompleteShowAll : PropTypes.bool,
+
 		// Options list alignment ("left", "right")
 		alignment  : PropTypes.oneOf(['left', 'right']),
 
@@ -348,6 +352,7 @@ export default class Select extends PureComponent
 				{ menu &&
 					<div
 						ref={ ref => this.menu_toggler }
+						className="rrui__select__toggler"
 						style={ styles.menu_toggler }>
 						{ React.cloneElement(toggler, { onClick : this.toggle }) }
 					</div>
@@ -1097,10 +1102,20 @@ export default class Select extends PureComponent
 
 	get_options()
 	{
-		const { autocomplete, maxItems, options } = this.props
+		const { autocomplete, autocompleteShowAll, maxItems, options } = this.props
 		const { matching_options } = this.state
 
-		return autocomplete ? matching_options.slice(0, maxItems) : options
+		if (!autocomplete)
+		{
+			return options
+		}
+
+		if (autocompleteShowAll)
+		{
+			return matching_options
+		}
+
+		return matching_options.slice(0, maxItems)
 	}
 
 	// Get the previous option (relative to the currently focused option)
@@ -1213,9 +1228,9 @@ export default class Select extends PureComponent
 
 	is_scrollable()
 	{
-		const { menu, autocomplete, scroll } = this.props
+		const { menu, autocomplete, autocompleteShowAll, scroll } = this.props
 
-		return !menu && !autocomplete && scroll
+		return !menu && (autocomplete && autocompleteShowAll || !autocomplete) && scroll
 	}
 
 	// This turned out not to work for `autocomplete`
