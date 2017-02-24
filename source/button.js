@@ -25,6 +25,9 @@ export default class Button extends PureComponent
 		// If `link` is set, then the button is gonna be an <a/> tag.
 		link            : PropTypes.string,
 
+		// `<a download="..."/>` HTML attribute
+		linkDownload    : PropTypes.string,
+
 		// HTML `title` attribute
 		title           : PropTypes.string,
 
@@ -92,6 +95,7 @@ export default class Button extends PureComponent
 		const
 		{
 			link,
+			linkDownload,
 			title,
 			busy,
 			disabled,
@@ -134,6 +138,7 @@ export default class Button extends PureComponent
 			(
 				<a
 					href={ link }
+					download={ linkDownload }
 					onClick={ this.link_on_click }
 					{ ...properties }>
 
