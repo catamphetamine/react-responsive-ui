@@ -1314,7 +1314,7 @@ const styles = styler
 `
 	wrapper
 		// Sometimes (e.g. when using mobile dropdown menus)
-		// `position: relative` could be overridden to `static`
+		// "position: relative" could be overridden to "static"
 		// to allow for the menu stretching to full screen width.
 		// position : relative
 
