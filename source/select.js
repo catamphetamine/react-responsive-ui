@@ -1313,7 +1313,10 @@ Select.Separator = function(props)
 const styles = styler
 `
 	wrapper
-		position : relative
+		// Sometimes (e.g. when using mobile dropdown menus)
+		// `position: relative` could be overridden to `static`
+		// to allow for the menu stretching to full screen width.
+		// position : relative
 
 		-webkit-user-select : none
 		-moz-user-select    : none

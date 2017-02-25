@@ -1,3 +1,8 @@
+0.3.0 / 25.02.2017
+===================
+
+  * (could be a breaking change) Moving `position: relative` from inline styles to the CSS file therefore if using an edited CSS file from older versions add `position: relative` for `.rrui__select`
+
 0.2.14 / 07.02.2017
 ===================
 
