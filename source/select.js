@@ -352,8 +352,7 @@ export default class Select extends PureComponent
 				{ menu &&
 					<div
 						ref={ ref => this.menu_toggler }
-						className="rrui__select__toggler"
-						style={ styles.menu_toggler }>
+						className="rrui__select__toggler">
 						{ React.cloneElement(toggler, { onClick : this.toggle }) }
 					</div>
 				}
@@ -1358,9 +1357,6 @@ const styles = styler
 		flex : 1
 
 	arrow
-
-	menu_toggler
-		display : inline-block
 
 	separator
 		padding     : 0
