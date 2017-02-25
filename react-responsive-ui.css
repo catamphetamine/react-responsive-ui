@@ -135,7 +135,13 @@
 
 .rrui__select
 {
-	display : inline-block;
+	/*
+	Sometimes (e.g. when using mobile dropdown menus)
+	`position: relative` could be overridden to `static`
+	to allow for the menu stretching to full screen width.
+	*/
+	position : relative;
+	display  : inline-block;
 }
 
 .rrui__select__options
@@ -926,8 +932,7 @@ it would introduce page width jumps.
 
 .rrui__input-label
 {
-	left : 0;
-	top  : 0;
+	top : 0;
 
 	font-size : inherit;
 
