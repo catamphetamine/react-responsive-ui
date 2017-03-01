@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import styler from 'react-styling'
+import classNames from 'classnames'
 
 // Sits at the bottom of a page and displays notifications
 export default class Snackbar extends PureComponent
