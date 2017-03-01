@@ -207,12 +207,12 @@ export default class Snackbar extends PureComponent
 				<div
 					ref={ ref => this.snackbar = ref }
 					style={ snackbar_style }
-					className={ classNames('rrui__snackbar', value.type && `rrui__snackbar--${value.type}`) }>
+					className={ classNames('rrui__snackbar', value && value.type && `rrui__snackbar--${value.type}`) }>
 
 					<div
 						style={ snackbar_text_style }
 						className="rrui__snackbar__text">
-						{ value.content }
+						{ value && value.content }
 					</div>
 				</div>
 			</div>
