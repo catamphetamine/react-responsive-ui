@@ -8,13 +8,19 @@ export default class Snackbar extends PureComponent
 	static propTypes =
 	{
 		// Snackbar value (either a message, or an object)
-		value : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+		value : PropTypes.oneOfType
+		([
+			PropTypes.string,
+			PropTypes.shape
+			({
+				content  : PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+				type     : PropTypes.string,
+				duration : PropTypes.number
+			})
+		]),
 
 		// Must reset the `value`.
 		reset : PropTypes.func.isRequired,
-
-		// A type of a message (e.g. "error")
-		type : PropTypes.string,
 
 		// "Snack" hiding CSS animation duration.
 		// Is 400 milliseconds by default.
@@ -47,7 +53,7 @@ export default class Snackbar extends PureComponent
 
 	componentWillReceiveProps(new_props)
 	{
-		const { value, reset } = new_props
+		let { value, reset } = new_props
 
 		// Redux has an optimization built in:
 		// it won't rerender a `@connect`ed component
@@ -57,6 +63,13 @@ export default class Snackbar extends PureComponent
 		// so that the same notification message could later be displayed.
 		if (value)
 		{
+			// Normalize value (make it a plain javascript object)
+			// if it's a string or a react element.
+			if (!(typeof value === 'object' && !value.props))
+			{
+				value = { content: value }
+			}
+
 			// Add the notification to the queue
 			this.push(value)
 			// Reset the `value` property immediately
@@ -126,7 +139,7 @@ export default class Snackbar extends PureComponent
 		},
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
-		minTime + String(value).length * lengthTimeFactor)
+		value.duration || (minTime + (typeof value.content === 'string' ? value.content.length * lengthTimeFactor : 0)))
 	}
 
 	componentDidUpdate()
@@ -193,12 +206,12 @@ export default class Snackbar extends PureComponent
 				<div
 					ref={ ref => this.snackbar = ref }
 					style={ snackbar_style }
-					className={ classNames('rrui__snackbar', type && `rrui__snackbar--${type}`) }>
+					className={ classNames('rrui__snackbar', value.type && `rrui__snackbar--${value.type}`) }>
 
 					<div
 						style={ snackbar_text_style }
 						className="rrui__snackbar__text">
-						{ value }
+						{ value.content }
 					</div>
 				</div>
 			</div>
