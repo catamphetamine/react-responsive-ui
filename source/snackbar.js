@@ -13,6 +13,9 @@ export default class Snackbar extends PureComponent
 		// Must reset the `value`.
 		reset : PropTypes.func.isRequired,
 
+		// A type of a message (e.g. "error")
+		type : PropTypes.string,
+
 		// "Snack" hiding CSS animation duration.
 		// Is 400 milliseconds by default.
 		hideAnimationDuration : PropTypes.number.isRequired,
@@ -145,7 +148,7 @@ export default class Snackbar extends PureComponent
 
 	render()
 	{
-		const { hideAnimationDuration } = this.props
+		const { hideAnimationDuration, type } = this.props
 		const { show, value, height, hiding } = this.state
 
 		let y = 0
@@ -190,7 +193,7 @@ export default class Snackbar extends PureComponent
 				<div
 					ref={ ref => this.snackbar = ref }
 					style={ snackbar_style }
-					className="rrui__snackbar">
+					className={ classNames('rrui__snackbar', type && `rrui__snackbar--${type}`) }>
 
 					<div
 						style={ snackbar_text_style }

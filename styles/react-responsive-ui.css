@@ -240,8 +240,8 @@
 	padding-bottom : calc(0.3rem * 1);
 
 	box-sizing: border-box;
-
 	text-align: left;
+	white-space: nowrap;
 }
 
 .rrui__select__selected--disabled,

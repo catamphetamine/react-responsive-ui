@@ -180,7 +180,7 @@ export default class Select extends PureComponent
 
 		if (children && !menu)
 		{
-			React.Children.forEach(children, function(element)
+			React.Children.forEach(children, (element) =>
 			{
 				if (!element.props.value)
 				{
@@ -297,7 +297,7 @@ export default class Select extends PureComponent
 		// then render those elements.
 		else
 		{
-			list_items = React.Children.map(children, (element, index) =>
+			list_items = React.Children.toArray(children).map((element, index) =>
 			{
 				return this.render_list_item({ index, element })
 			})
@@ -405,9 +405,7 @@ export default class Select extends PureComponent
 
 		const is_focused = !menu && value === focused_option_value
 
-		let list_item_style = { textAlign: 'left' }
-
-		let item_style = styles.list_item
+		let item_style
 
 		// on overflow the vertical scrollbar will take up space
 		// reducing padding-right and the only way to fix that
@@ -416,9 +414,7 @@ export default class Select extends PureComponent
 		// a hack to restore padding-right taken up by a vertical scrollbar
 		if (overflow && scrollbarPadding)
 		{
-			item_style = { ...styles.list_item }
-
-			item_style.marginRight = get_scrollbar_width() + 'px'
+			item_style = { marginRight: get_scrollbar_width() + 'px' }
 		}
 
 		let button
@@ -429,7 +425,7 @@ export default class Select extends PureComponent
 		{
 			const extra_props =
 			{
-				style     : { ...item_style, ...element.props.style },
+				style     : item_style ? { ...item_style, ...element.props.style } : element.props.style,
 				className : classNames
 				(
 					'rrui__select__option',
@@ -495,8 +491,7 @@ export default class Select extends PureComponent
 					'rrui__select__separator-option' : element && element.type === Select.Separator,
 					// CSS selector performance optimization
 					'rrui__select__options-list-item--expanded' : expanded
-				}) }
-				style={ list_item_style }>
+				}) }>
 				{ button }
 			</li>
 		)
@@ -652,7 +647,7 @@ export default class Select extends PureComponent
 							</option>
 						})
 						:
-						React.Children.map(children, child =>
+						React.Children.toArray(children).map((child) =>
 						{
 							return <option
 								className="rrui__select__option"
@@ -1344,13 +1339,8 @@ const styles = styler
 			// this top margin takes effect
 			margin-top : 1em
 
-	list_item
-		display     : inline-block
-		white-space : nowrap
-
 	selected
-		box-sizing  : border-box
-		text-align  : left
+		box-sizing : border-box
 
 	selected_flex_wrapper
 		display     : flex
