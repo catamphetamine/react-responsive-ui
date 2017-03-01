@@ -297,8 +297,13 @@ export default class Select extends PureComponent
 		// then render those elements.
 		else
 		{
-			list_items = React.Children.toArray(children).map((element, index) =>
+			list_items = React.Children.map(children, (element, index) =>
 			{
+				if (!element)
+				{
+					return
+				}
+
 				return this.render_list_item({ index, element })
 			})
 		}
@@ -647,8 +652,13 @@ export default class Select extends PureComponent
 							</option>
 						})
 						:
-						React.Children.toArray(children).map((child) =>
+						React.Children.map(children, (child) =>
 						{
+							if (!child)
+							{
+								return
+							}
+
 							return <option
 								className="rrui__select__option"
 								key={ child.props.value }
