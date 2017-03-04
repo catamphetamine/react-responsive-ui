@@ -1,12 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 
+// Prevents `<form/> submission when `busy` is `true`.
+// And also inserts `<Form.Error/>` when `error` is passed.
 export default class Form extends PureComponent
 {
 	static propTypes =
 	{
 		// `onSubmit` handler
-		action      : PropTypes.func,
+		submit      : PropTypes.func,
 
 		// On `Escape` keydown handler
 		cancel      : PropTypes.func,
@@ -40,7 +42,6 @@ export default class Form extends PureComponent
 	{
 		super()
 
-		this.on_submit   = this.on_submit.bind(this)
 		this.submit      = this.submit.bind(this)
 		this.on_key_down = this.on_key_down.bind(this)
 	}
@@ -52,84 +53,85 @@ export default class Form extends PureComponent
 		const markup =
 		(
 			<form
-				onSubmit={this.on_submit}
-				onKeyDown={this.on_key_down}
-				action={post}
+				onSubmit={ this.submit }
+				onKeyDown={ this.on_key_down }
+				action={ post }
 				method="POST"
-				className={className}
-				style={style}
+				className={ classNames('rrui__form', className) }
+				style={ style }
 				noValidate>
 
-				{ this.children(error) }
+				{ this.render_children(error) }
 			</form>
 		)
 
 		return markup
 	}
 
-	// Adds `errors` element to the form
-	children(errors)
+	// Adds `error` element to the form
+	render_children(error)
 	{
 		const { children } = this.props
 
 		const form_elements = React.Children.toArray(children)
 
-		// Insert `errors` element
-		if (errors)
+		// Insert `error` element
+		if (error)
 		{
-			let errors_inserted = false
+			// Will be set to `null` upon insertion
+			let error_element = <Form.Error key="form-error">{ error }</Form.Error>
 
-			// Show form errors above form actions,
-			// so that the errors will be visible and won't be overlooked.
+			// Show form error above form actions,
+			// so that the error will be visible and won't be overlooked.
 			let index = 0
 			for (let child of form_elements)
 			{
 				if (child.type === Form.Error)
 				{
-					form_elements[index] = React.cloneElement(child, { key: 'form-errors' }, errors)
-					errors_inserted = true
+					form_elements[index] = React.cloneElement(child, { key: 'form-error' }, error)
+					error_element = null
 					break
 				}
 
 				if (child.type === Form.Actions)
 				{
-					form_elements.insert_at(index, <Form.Error key="form-errors">{errors}</Form.Error>)
-					errors_inserted = true
+					form_elements.insert_at(index, error_element)
+					error_element = null
 					break
 				}
 
 				index++
 			}
 
-			if (!errors_inserted)
+			if (error_element)
 			{
-				form_elements.push(<Form.Error key="form-errors">{errors}</Form.Error>)
+				form_elements.push(error_element)
 			}
 		}
 
 		return form_elements
 	}
 
-	// "Enter" key handler
-	on_submit(event)
+	submit(event)
 	{
-		event.preventDefault()
+		if (event)
+		{
+			event.preventDefault()
+		}
+
+		const { busy, submit } = this.props
 
 		// Prevent form double submit
-		if (this.props.busy)
+		// (because not only buttons submit a form,
+		//  therefore just disabling buttons is not enough).
+		if (busy)
 		{
 			return
 		}
 
-		this.submit()
-	}
-
-	// Submit form
-	submit()
-	{
-		if (this.props.action)
+		if (submit)
 		{
-			this.props.action()
+			return submit()
 		}
 	}
 

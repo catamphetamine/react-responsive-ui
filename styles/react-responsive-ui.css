@@ -562,9 +562,12 @@ when changing css transition times here
 also change `default_close_timeout` in ./modal.js accordingly
 */
 
+/* Could have used `opacity` transition on `.ReactModal__Overlay`
+   but it introduced a bug in Chrome: the fixed Overlay shriked vertically
+   while having its opacity animated at the same time as the Content being scaled */
 .ReactModal__Overlay
 {
-	opacity: 0;
+	background-color: rgba(0, 0, 0, 0);
 	/* "auto" introduces a vertical scrollbar when "bouncing" (animation) */
 	/* overflow: auto; */
 	overflow: hidden;
@@ -572,18 +575,19 @@ also change `default_close_timeout` in ./modal.js accordingly
 
 .ReactModal__Overlay--after-open
 {
-	opacity: 1;
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
+/* This rule is required for closing animation */
 .ReactModal__Overlay--before-close
 {
-	opacity: 0;
+	background-color: rgba(0, 0, 0, 0);
 }
 
 .ReactModal__Overlay--after-open,
 .ReactModal__Overlay--before-close
 {
-	transition: opacity 100ms ease-out;
+	transition: background-color 100ms ease-out;
 }
 
 .ReactModal__Content
@@ -593,23 +597,27 @@ also change `default_close_timeout` in ./modal.js accordingly
 
 .ReactModal__Content
 {
+	opacity: 0;
 	transform: scale(0.8);
 }
 
 .ReactModal__Content--after-open
 {
-	transform: scale(1);
+	opacity: 1;
+	transform: none;
 }
 
+/* This rule is required for closing animation */
 .ReactModal__Content--before-close
 {
+	opacity: 0;
 	transform: scale(0.8);
 }
 
 .ReactModal__Content--after-open,
 .ReactModal__Content--before-close
 {
-	transition: transform 120ms ease-out;
+	transition: transform 120ms ease-out, opacity 100ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
@@ -642,22 +650,18 @@ it would introduce page width jumps.
 
 .rrui__modal__overlay
 {
-	/* Apparently this `1px` height was some kind of a hack, probably for IE or something */
-	height     : 1px;
-	min-height : 100%;
-
-	/* Could center with `flexbox` here
-	   but modal content needs to be `display: inline-block` anyway */
-	text-align : center;
-	/* Fixes `display: inline-block` whitespace causing scrollbar to appear */
-	line-height : 0;
-
-	background-color: rgba(0, 0, 0, 0.2);
+	/* Horizontal centering */
+	display         : flex;
+	justify-content : center;
 }
 
 .rrui__modal__overlay--fullscreen
 {
-	background-color: transparent;
+	/* `display: flex` results in a weird content clipping bug in fullscreen mode
+	   because of `justify-content: center` on the container */
+	display : block;
+
+	background-color : white;
 }
 
 .rrui__modal__overlay--busy
@@ -667,44 +671,24 @@ it would introduce page width jumps.
 
 .rrui__modal__container
 {
-	/* `display : inline-block` so that
-	   the modal won't stretch itself horizontally */
-	display : inline-block;
-	height  : 100%;
+	/* Centers everything vertically */
+	min-height : 100%;
 
-	/* Restore the default `line-height`
-	   after the `line-height: 0` workaround
-	   has been applied in `.rrui__modal__overlay` */
-	text-align : left;
-
-	/* Restore the default `line-height`
-	   after the `line-height: 0` workaround
-	   has been applied in `.rrui__modal__overlay` */
-	line-height : normal;
+	/* Using `inline-flex` here so that it doesn't
+	   stretch to the whole overlay width */
+	display         : inline-flex;
+	flex-direction  : column;
 }
 
 .rrui__modal__container--fullscreen
 {
-	display : block;
-}
-
-.rrui__modal__vertical-container
-{
-	align-items : center;
-}
-
-.rrui__modal__vertical-container--fullscreen
-{
-	align-items : stretch;
+	display         : flex;
+	align-items     : center;
+	justify-content : center;
 }
 
 .rrui__modal__header
 {
-	padding-left   : calc(4 * 0.3rem);
-	padding-right  : calc(4 * 0.3rem);
-	padding-top    : calc(3 * 0.3rem);
-	padding-bottom : calc(3 * 0.3rem);
-
 	border-top-left-radius  : 0.2rem;
 	border-top-right-radius : 0.2rem;
 
@@ -734,95 +718,38 @@ it would introduce page width jumps.
 	display : inline-block;
 
 	/* Modal content shouldn't stretch vertically */
-	flex-grow : 0
+	flex-grow : 0;
+
+	padding-left   : calc(4 * 0.3rem);
+	padding-right  : calc(4 * 0.3rem);
+	padding-top    : calc(4 * 0.3rem);
+	padding-bottom : calc(4 * 0.3rem);
+	border-radius  : 0.2rem;
+	background-color : white;
 }
 
 .rrui__modal__content--fullscreen
 {
-	/* Stretch modal content horizontally to the full width of the screen */
-	display : block;
-
-	/* Modal content won't stretch vertically
-	   unless it's in the fullscreen mode */
-	flex-grow : 1
+	/* Completely cover the screen */
+	border-radius : 0;
 }
 
-.rrui__modal__actions
-{
-	padding-left   : calc(4 * 0.3rem);
-	padding-right  : calc(2 * 0.3rem);
-	padding-top    : calc(1.5 * 0.3rem);
-	padding-bottom : calc(1.5 * 0.3rem);
-
-	border-bottom-left-radius  : 0.2rem;
-	border-bottom-right-radius : 0.2rem;
-}
-
-.rrui__modal__actions .rrui__button
-{
-	margin-right : calc(2 * 0.3rem);
-}
-
-.rrui__modal__actions .rrui__button:last-child
-{
-	margin-right : 0;
-}
-
-.rrui__modal__header--separated
-{
-	border-bottom: 1px solid #e0e0e0;
-}
-
-.rrui__modal__actions--separated
-{
-	border-top: 1px solid #e0e0e0;
-}
-
-.rrui__modal__content
-{
-	padding-left   : calc(4 * 0.3rem);
-	padding-right  : calc(4 * 0.3rem);
-	padding-bottom : calc(4 * 0.3rem);
-}
-
-.rrui__modal__content--no-title
-{
-	padding-top             : calc(4 * 0.3rem);
-	border-top-left-radius  : 0.2rem;
-	border-top-right-radius : 0.2rem;
-}
-
-.rrui__modal__content--no-actions
-{
-	border-bottom-left-radius  : 0.2rem;
-	border-bottom-right-radius : 0.2rem;
-}
-
-.rrui__modal__content,
-.rrui__modal__header,
-.rrui__modal__actions
-{
-	background-color : white;
-}
-
-.rrui__modal__top-padding,
-.rrui__modal__bottom-padding
+.rrui__modal__vertical-margin
 {
 	flex-basis : 3%;
 }
 
-.rrui__modal__top-padding
+.rrui__modal__vertical-margin--top
 {
-	flex-grow : 1;
+	flex-grow : 2;
 }
 
-.rrui__modal__bottom-padding
+.rrui__modal__vertical-margin--bottom
 {
-	flex-grow : 3;
+	flex-grow : 5;
 }
 
-.rrui__modal__top-padding--fullscreen,
-.rrui__modal__bottom-padding--fullscreen
+.rrui__modal__vertical-margin--fullscreen
 {
 	display: none;
 }
@@ -877,13 +804,17 @@ it would introduce page width jumps.
 = Form                                                      =
 ===========================================================*/
 
+.rrui__form
+{
+	/* Chrome adds margin-bottom for all <form/>s for some weird reason */
+	margin-bottom : 0;
+}
+
 .rrui__form__actions
 {
 	margin-top : calc(0.3rem * 4);
-}
 
-.rrui__form__actions--right
-{
+	/* Right alignment */
 	display         : flex;
 	flex-direction  : row;
 	justify-content : flex-end;
@@ -891,9 +822,17 @@ it would introduce page width jumps.
 
 .rrui__form__actions--left-right
 {
-	display         : flex;
-	flex-direction  : row;
 	justify-content : space-between;
+}
+
+.rrui__form__actions .rrui__button
+{
+	margin-right : calc(4 * 0.3rem);
+}
+
+.rrui__form__actions .rrui__button:last-child
+{
+	margin-right : 0;
 }
 
 .rrui__form__field

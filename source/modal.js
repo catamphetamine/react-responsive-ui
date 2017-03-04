@@ -1,9 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { flat as style } from 'react-styling'
-import React_modal from 'react-modal'
 
+import React_modal from './react-modal'
 import Button from './button'
+import Form from './form'
 import { get_scrollbar_width } from './misc/dom'
 
 export default class Modal extends PureComponent
@@ -31,9 +32,6 @@ export default class Modal extends PureComponent
 		// Enters fullscreen mode
 		fullscreen       : PropTypes.bool,
 
-		// The modal title
-		title            : PropTypes.string,
-
 		// Modal content
 		children         : PropTypes.node,
 
@@ -41,26 +39,9 @@ export default class Modal extends PureComponent
 		// (e.g. could reset edited form fields)
 		reset            : PropTypes.func,
 
+		// "Cancel" button label.
 		// If set, the modal will have a "Cancel" button.
-		cancel           : PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-
-		// "Cancel" button label (if `cancel` is set)
-		cancelLabel      : PropTypes.string.isRequired,
-
-		// If set, the modal will have action buttons
-		actions          : PropTypes.arrayOf
-		(
-			PropTypes.shape
-			({
-				// Action button `onClick` handler
-				action : PropTypes.func,
-				// Action button title
-				text   : PropTypes.string
-			})
-		),
-
-		// If set, the modal contents will be scrollable
-		scroll           : PropTypes.bool,
+		cancelLabel      : PropTypes.string,
 
 		// The default `overflow-x` of the <body/>.
 		// Is `auto` by default.
@@ -108,8 +89,6 @@ export default class Modal extends PureComponent
 		// css transition times accordingly
 		closeTimeout : 150, // ms
 
-		cancelLabel : 'Cancel',
-
 		contentLabel : 'Popup',
 
 		// When changing this also change
@@ -126,17 +105,11 @@ export default class Modal extends PureComponent
 		this.on_after_open    = this.on_after_open.bind(this)
 
 		this.on_window_resize = this.on_window_resize.bind(this)
-		this.closing          = this.closing.bind(this)
+		this.closed           = this.closed.bind(this)
 
 		this.close             = this.close.bind(this)
 		this.close_if_not_busy = this.close_if_not_busy.bind(this)
 	}
-
-	// // https://github.com/reactjs/react-modal/issues/133
-	// componentWillMount()
-	// {
-	// 	React_modal.setAppElement('body')
-	// }
 
 	componentDidMount()
 	{
@@ -153,36 +126,7 @@ export default class Modal extends PureComponent
 
 		if (isOpen)
 		{
-			this.closing()
-		}
-	}
-
-	// Restore document scroll after modal is hidden
-	componentWillUpdate(next_props)
-	{
-		const { isOpen } = this.props
-
-		if (next_props.isOpen === false && isOpen === true)
-		{
-			this.closing()
-		}
-	}
-
-	componentWillReceiveProps(next_props)
-	{
-		const { isOpen } = this.props
-
-		if (isOpen && !next_props.isOpen)
-		{
-			const { reset, closeTimeout } = this.props
-
-			// Reset modal after its closing animation finishes
-			// (to avoid weird content jumping)
-			// https://github.com/reactjs/react-modal/issues/214
-			if (reset)
-			{
-				setTimeout(reset, closeTimeout)
-			}
+			this.closed()
 		}
 	}
 
@@ -190,23 +134,16 @@ export default class Modal extends PureComponent
 	{
 		const
 		{
-			fullscreen,
 			busy,
+			fullscreen,
 			isOpen,
 			closeTimeout,
 			contentLabel,
 			title,
-			cancel,
 			actions,
-			scroll,
-			cancelLabel,
-			children,
-			style,
 			className
 		}
 		= this.props
-
-		const { could_not_close_because_busy } = this.state
 
 		const markup =
 		(
@@ -214,6 +151,7 @@ export default class Modal extends PureComponent
 				isOpen={ isOpen }
 				onAfterOpen={ this.on_after_open }
 				onRequestClose={ this.on_request_close }
+				onAfterClose={ this.closed }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
 				style={ react_modal_style }
@@ -222,115 +160,140 @@ export default class Modal extends PureComponent
 					'rrui__modal__overlay--busy'       : busy,
 					'rrui__modal__overlay--fullscreen' : fullscreen
 				}) }
-				className={ classNames('rrui__modal__container', className,
+				className={ classNames('rrui__modal__container',
 				{
 					'rrui__modal__container--fullscreen' : fullscreen
 				}) }>
 
+				{/* Top margin, grows less than bottom margin */}
 				<div
-					style={ styles.vertical_container }
-					className={ classNames('rrui__modal__vertical-container',
+					style={ styles.vertical_margin }
+					className={ classNames('rrui__modal__vertical-margin', 'rrui__modal__vertical-margin--top',
 					{
-						'rrui__modal__vertical-container--fullscreen' : fullscreen,
-
-						// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
-						'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+						// CSS selector performance optimization
+						'rrui__modal__vertical-margin--fullscreen' : fullscreen
 					}) }
-					onClick={ this.on_request_close }>
+					onClick={ this.on_request_close }/>
 
-					{/* Top padding, grows less than bottom padding */}
-					<div
-						style={ styles.vertical_padding }
-						className={ classNames('rrui__modal__top-padding',
-						{
-							// CSS selector performance optimization
-							'rrui__modal__top-padding--fullscreen' : fullscreen
-						}) }
-						onClick={ this.on_request_close }/>
+				{/* Modal window content */}
+				{ this.render_content() }
 
-					{/* Modal window title (with an optional close button) */}
-					{ title &&
-						<h1
-							onClick={ this.block_event }
-							className={ classNames('rrui__modal__header',
-							{
-								'rrui__modal__header--separated' : scroll
-							}) }
-							style={ styles.header }>
-
-							{ title }
-
-							{ this.render_close_button() }
-						</h1>
-					}
-
-					{/* Modal window content */}
-					<div
-						className={ classNames('rrui__modal__content',
-						{
-							'rrui__modal__content--no-title'   : !title,
-							'rrui__modal__content--no-actions' : !actions,
-							'rrui__modal__content--fullscreen' : fullscreen
-						}) }
-						onClick={ this.block_event }
-						style={ style ? { ...styles.content, ...style } : styles.content }>
-
-						{ !title && this.render_close_button() }
-
-						{ children }
-					</div>
-
-					{/* Modal window actions */}
-					{ actions &&
-						<div
-							className={ classNames('rrui__modal__actions',
-							{
-								'rrui__modal__actions--separated' : scroll
-							}) }
-							onClick={ this.block_event }
-							style={ styles.actions }>
-
-							{/* Cancel button */}
-							{ cancel &&
-								<Button
-									key="-1"
-									disabled={ busy }
-									action={ cancel === true ? this.close_if_not_busy : cancel }>
-									{ cancelLabel }
-								</Button>
-							}
-
-							{/* Other buttons ("Next", "OK", ...) */}
-							{ actions.map((action, i) => (
-								<Button
-									key={ i }
-									disabled={ busy }
-									{ ...action }>
-									{ action.text }
-								</Button>
-							)) }
-						</div>
-					}
-
-					{/* Bottom padding, grows more than top padding */}
-					<div
-						style={ styles.vertical_padding }
-						className={ classNames('rrui__modal__bottom-padding',
-						{
-							// CSS selector performance optimization
-							'rrui__modal__bottom-padding--fullscreen' : fullscreen
-						}) }
-						onClick={ this.on_request_close }/>
-				</div>
+				{/* Bottom margin, grows more than top margin */}
+				<div
+					style={ styles.vertical_margin }
+					className={ classNames('rrui__modal__vertical-margin', 'rrui__modal__vertical-margin--bottom',
+					{
+						// CSS selector performance optimization
+						'rrui__modal__vertical-margin--fullscreen' : fullscreen
+					}) }
+					onClick={ this.on_request_close }/>
 			</React_modal>
 		)
 
 		return markup
 	}
 
+	render_content()
+	{
+		const
+		{
+			busy,
+			fullscreen,
+			children,
+			cancelLabel,
+			className,
+			style
+		}
+		= this.props
+
+		const
+		{
+			could_not_close_because_busy
+		}
+		= this.state
+
+		let cancelButton
+
+		if (cancelLabel)
+		{
+			cancelButton =
+			(
+				<Button action={ this.close_if_not_busy }>
+					{ cancelLabel }
+				</Button>
+			)
+		}
+
+		// If it's not a `<Form/>`, then just render as is.
+		if (!this.is_form(children))
+		{
+			return (
+				<div
+					className={ classNames('rrui__modal__content',
+					{
+						// CSS selector performance optimization
+						'rrui__modal__content--fullscreen' : fullscreen,
+
+						// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
+						'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+					},
+					className) }
+					style={ style ? { ...styles.content, ...style } : styles.content }>
+
+					{ this.render_close_button() }
+
+					{ children }
+
+					{ cancelButton &&
+						<Form.Actions>
+							{ cancelButton }
+						</Form.Actions>
+					}
+				</div>
+			)
+		}
+
+		// Render the ehanced `<Form/>`
+		return React.cloneElement(children,
+		{
+			className: classNames('rrui__modal__content',
+			{
+				// CSS selector performance optimization
+				'rrui__modal__content--fullscreen' : fullscreen
+			},
+			children.props.className),
+			style: children.props.style ? { ...styles.content, ...children.props.style } : styles.content
+		},
+		React.Children.map(children.props.children, (child) =>
+		{
+			if (child.type === 'h1')
+			{
+				return (
+					<header
+						className={ classNames('rrui__modal__header') }>
+						{ child }
+						{ this.render_close_button() }
+					</header>
+				)
+			}
+
+			if (child.type === Form.Actions)
+			{
+				return React.cloneElement(child,
+				{
+					className: classNames('rrui__modal__actions', child.props.className)
+				},
+				cancelButton,
+				child.props.children)
+			}
+
+			return child
+		}))
+	}
+
 	render_close_button()
 	{
-		const { closeButton, busy } = this.props
+		const { closeButton, busy, cancel } = this.props
 
 		if (!closeButton)
 		{
@@ -350,6 +313,11 @@ export default class Modal extends PureComponent
 		)
 
 		return markup
+	}
+
+	is_form(children)
+	{
+		return React.Children.count(children) === 1 && children.type === Form
 	}
 
 	// Play "cannot close" animation on the modal
@@ -401,8 +369,6 @@ export default class Modal extends PureComponent
 		{
 			return this.indicate_cannot_close()
 		}
-
-		this.closing()
 
 		// Abruptly end "couldn't close" animation to make room for closing animation
 		this.setState({ could_not_close_because_busy: false })
@@ -478,39 +444,49 @@ export default class Modal extends PureComponent
 	}
 
 	// Restore original `document` scrollbar
-	closing()
+	// and reset the modal content (e.g. a form)
+	closed()
 	{
-		const { closeTimeout, bodyOverflowX, bodyOverflowY, afterClose } = this.props
-
-		setTimeout(() =>
+		const
 		{
-			if (afterClose)
-			{
-				afterClose()
-			}
+			bodyOverflowX,
+			bodyOverflowY,
+			afterClose,
+			reset
+		}
+		= this.props
 
-			// All "full-width" elements will need their
-			// width to be restored back to the original value
-			// now that the main (body) scrollbar is being restored.
+		if (reset)
+		{
+			reset()
+		}
 
-			// "full-width" elements include `document.body`
-			// and all `position: fixed` elements
-			// which should be marked with this special CSS class.
-			const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
-			full_width_elements.push(document.body)
+		if (afterClose)
+		{
+			afterClose()
+		}
 
-			// Adjust the width of all "full-width" elements back to their original value
-			// now that the main (body) scrollbar is being restored.
-			for (const element of full_width_elements)
-			{
-				element.style.marginRight = 0
-			}
+		// All "full-width" elements will need their
+		// width to be restored back to the original value
+		// now that the main (body) scrollbar is being restored.
 
-			// Restore the main (body) scrollbar
-			document.body.style.overflowX = bodyOverflowX
-			document.body.style.overflowY = bodyOverflowY
-		},
-		closeTimeout)
+		// "full-width" elements include `document.body`
+		// and all `position: fixed` elements
+		// which should be marked with this special CSS class.
+		// (`Array.from` is transpiled by Babel)
+		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+		full_width_elements.push(document.body)
+
+		// Adjust the width of all "full-width" elements back to their original value
+		// now that the main (body) scrollbar is being restored.
+		for (const element of full_width_elements)
+		{
+			element.style.marginRight = 0
+		}
+
+		// Restore the main (body) scrollbar.
+		document.body.style.overflowX = bodyOverflowX
+		document.body.style.overflowY = bodyOverflowY
 	}
 
 	on_window_resize()
@@ -520,27 +496,29 @@ export default class Modal extends PureComponent
 		// from scrolling when the mouse wheel is scrolled.
 		this.scrollbar_width = get_scrollbar_width()
 	}
-
-	block_event(event)
-	{
-		event.stopPropagation()
-	}
 }
 
 const styles = style
 `
-	vertical_padding
+	vertical_margin
 		// Perhaps "width : 100%" was needed for it to work properly
 		width       : 100%
 
 		// Vertical padding won't ever shrink below the minimum size
 		flex-shrink : 0
 
-	content
-		// Modal content will contract vertically showing a scrollbar
+	content_wrapper
+		// The content wrapper will shrink vertically
 		flex-shrink : 1
 		flex-basis  : auto
-		overflow    : auto
+
+	content
+		// Modal content will contract vertically
+		flex-shrink : 1
+		flex-basis  : auto
+		// Will show a scrollbar not inside conent but rather on the overlay
+		// overflow    : auto
+		// box-sizing  : border-box
 
 	header, actions
 		// No vertical growing or shrinking for header and actions
@@ -555,10 +533,10 @@ const styles = style
 		// Padding will be included in "width : 100%"
 		box-sizing : border-box
 
-	actions
-		text-align : right
-		// fixes display inline-block whitespaces causing scrollbar
-		line-height : 0
+	// actions
+	// 	text-align : right
+	// 	// fixes display inline-block whitespaces causing scrollbar
+	// 	line-height : 0
 
 	// Вместо использования этого vertical_container'а
 	// можно было бы использовать то же самое на modal.content,
@@ -569,7 +547,6 @@ const styles = style
 		display        : flex
 		flex-direction : column
 		height         : 100%
-
 `
 
 const react_modal_style =
@@ -581,5 +558,7 @@ const react_modal_style =
 		top      : 0
 		right    : 0
 		bottom   : 0
+		// Will show a scrollbar in case of modal content overflowing viewport height
+		overflow : auto
 	`
 }
