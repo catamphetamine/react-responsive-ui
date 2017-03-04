@@ -252,7 +252,7 @@ export default class Modal extends PureComponent
 
 					{ children }
 
-					{ !form &&
+					{ closeLabel && !form &&
 						<div className="rrui__form__actions">
 							<Button
 								className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
