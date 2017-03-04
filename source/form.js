@@ -165,11 +165,9 @@ Form.Error = function({ children })
 
 Form.Actions = class Actions extends PureComponent
 {
-	constructor(props, context)
+	componentWillMount()
 	{
-		super(props, context)
-
-		const { rrui__modal } = context
+		const { rrui__modal } = this.context
 
 		if (rrui__modal)
 		{

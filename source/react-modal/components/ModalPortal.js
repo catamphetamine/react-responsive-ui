@@ -165,7 +165,9 @@ export default class ModalPortal extends Component {
     }
     if (this.shouldClose && this.props.shouldCloseOnOverlayClick) {
       if (this.ownerHandlesClose()) {
-        this.requestClose(event);
+        if (this.requestClose(event) === false) {
+          this.focusContent();
+        }
       } else {
         this.focusContent();
       }
@@ -179,7 +181,7 @@ export default class ModalPortal extends Component {
 
   requestClose (event) {
     if (this.ownerHandlesClose()) {
-      this.props.onRequestClose(event);
+      return this.props.onRequestClose(event);
     }
   }
 

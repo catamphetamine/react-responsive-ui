@@ -234,6 +234,7 @@ export default class Modal extends PureComponent
 
 		return (
 			<div
+				ref={ ref => this.content = ref }
 				className={ classNames('rrui__modal__content',
 				{
 					// CSS selector performance optimization
@@ -333,9 +334,11 @@ export default class Modal extends PureComponent
 		// If the modal has an explicit "Cancel" button,
 		// then allow closing it by hitting "Escape" key,
 		// but don't close it on a click outside.
+		// (because a user wouldn't want to loose form data due to a misclick)
 		if (closeLabel && form && event && event.type !== 'keydown')
 		{
-			return this.indicate_cannot_close()
+			this.indicate_cannot_close()
+			return false
 		}
 
 		this.close_if_not_busy()

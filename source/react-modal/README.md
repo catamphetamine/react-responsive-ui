@@ -8,6 +8,8 @@ Forked on 03.03.2017.
 
 Changes made:
 
+Added `onAfterClose` handler
+
 #### components/ModalPortal.js
 
 ```js
@@ -16,6 +18,32 @@ Changes made:
     teardownScopedFocus();
     if (this.props.onAfterClose) {
       this.props.onAfterClose();
+    }
+  }
+```
+
+`focusContent()` if `requestClose()` returned `false`
+
+```js
+  handleOverlayOnClick = (event) => {
+    if (this.shouldClose === null) {
+      this.shouldClose = true;
+    }
+    if (this.shouldClose && this.props.shouldCloseOnOverlayClick) {
+      if (this.ownerHandlesClose()) {
+        if (this.requestClose(event) === false) {
+          this.focusContent();
+        }
+      } else {
+        this.focusContent();
+      }
+    }
+    this.shouldClose = null;
+  }
+
+  requestClose (event) {
+    if (this.ownerHandlesClose()) {
+      return this.props.onRequestClose(event);
     }
   }
 ```
