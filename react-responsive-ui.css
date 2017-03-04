@@ -146,6 +146,11 @@
 
 .rrui__select__options
 {
+	position : absolute;
+	z-index  : 1;
+	margin   : 0;
+	padding  : 0;
+
 	transition-property        : max-height, border-color, box-shadow, opacity;
 	transition-duration        : 0ms; /* don't animate short lists */
 	transition-timing-function : ease-out;
@@ -186,6 +191,24 @@
 .rrui__select__options--simple-right-aligned
 {
 	right : calc(0.3rem * 4 * -1);
+}
+
+.rrui__select__options--downward
+{
+	/* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+	margin-bottom : 1em;
+}
+
+.rrui__select__options--upward
+{
+	bottom : 100%;
+
+	/* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+	margin-top : 1em;
 }
 
 .rrui__select__options-list-item
@@ -292,6 +315,8 @@
 {
 	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
+	/* Because Chrome adds `text-align: center` for all buttons */
+	text-align: left;
 }
 
 .rrui__select__selected:focus
@@ -682,12 +707,8 @@ it would introduce page width jumps.
 
 .rrui__modal__container--fullscreen
 {
-	/* Makes container take up full width so that clicks
-	   outside main content don't close the modal */
 	display         : flex;
-	/* Centers content horizontally */
 	align-items     : center;
-	/* Centers content vertically */
 	justify-content : center;
 }
 
@@ -723,13 +744,14 @@ it would introduce page width jumps.
 
 	/* Modal content shouldn't stretch vertically */
 	flex-grow : 0;
-	
-	padding-left   : calc(4 * 0.3rem);
-	padding-right  : calc(4 * 0.3rem);
-	padding-top    : calc(4 * 0.3rem);
-	padding-bottom : calc(4 * 0.3rem);
+
 	border-radius  : 0.2rem;
 	background-color : white;
+}
+
+.rrui__modal__content-body
+{
+	margin : calc(4 * 0.3rem);
 }
 
 .rrui__modal__content--fullscreen
