@@ -3,6 +3,7 @@
 
   * (breaking change) `<Modal/>` now no longer takes `actions`, create the buttons manually instead. `title` property is gone too, use `<h1/>` instead. Changed `.rrui__modal__top-padding` and `.rrui__modal__bottom-padding` into `.rrui__modal__margin`. `cancel` property is gone, use `closeLabel` instead. Changed some styles for modal (see the relevant commit)
   * (breaking change) `<Form/>`'s `action` has been renamed to `submit`.
+  * (might be a breaking change) Moved `<Select/>` option list styles from inline to `.rrui__select__options`
 
 0.3.0 / 25.02.2017
 ===================

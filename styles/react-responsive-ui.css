@@ -146,6 +146,11 @@
 
 .rrui__select__options
 {
+	position : absolute;
+	z-index  : 1;
+	margin   : 0;
+	padding  : 0;
+
 	transition-property        : max-height, border-color, box-shadow, opacity;
 	transition-duration        : 0ms; /* don't animate short lists */
 	transition-timing-function : ease-out;
