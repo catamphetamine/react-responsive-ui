@@ -604,7 +604,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 .ReactModal__Content--after-open
 {
 	opacity: 1;
-	transform: scale(1);
+	transform: none;
 }
 
 /* This rule is required for closing animation */
@@ -650,21 +650,18 @@ it would introduce page width jumps.
 
 .rrui__modal__overlay
 {
-	/* `display: flex` would be better for centering the container
-	   but it was buggy when set on the overlay:
-	   it simply cut the top part of the container */
-	/*
-    display         : flex;
-    justify-content : center;
-    */
-
-	/* Centering the container this way. */
-	text-align : center;
+	/* Horizontal centering */
+	display         : flex;
+	justify-content : center;
 }
 
 .rrui__modal__overlay--fullscreen
 {
-	background-color: white;
+	/* `display: flex` results in a weird content clipping bug in fullscreen mode
+	   because of `justify-content: center` on the container */
+	display : block;
+
+	background-color : white;
 }
 
 .rrui__modal__overlay--busy
@@ -675,23 +672,22 @@ it would introduce page width jumps.
 .rrui__modal__container
 {
 	/* Centers everything vertically */
-	height : 100%;
+	min-height : 100%;
 
 	/* Using `inline-flex` here so that it doesn't
 	   stretch to the whole overlay width */
 	display         : inline-flex;
 	flex-direction  : column;
-
-	/* Revert `text-align: center` set in the overlay. */
-	/* Because `display: flex` was buggy when set on the overlay:
-	   it simply cut the top part of the container */
-	text-align : left;
 }
 
 .rrui__modal__container--fullscreen
 {
+	/* Makes container take up full width so that clicks
+	   outside main content don't close the modal */
 	display         : flex;
+	/* Centers content horizontally */
 	align-items     : center;
+	/* Centers content vertically */
 	justify-content : center;
 }
 
