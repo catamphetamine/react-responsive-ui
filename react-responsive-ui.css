@@ -675,7 +675,7 @@ it would introduce page width jumps.
 .rrui__modal__container
 {
 	/* Centers everything vertically */
-	min-height : 100%;
+	height : 100%;
 
 	/* Using `inline-flex` here so that it doesn't
 	   stretch to the whole overlay width */
