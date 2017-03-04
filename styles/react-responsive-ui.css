@@ -720,12 +720,13 @@ it would introduce page width jumps.
 	/* Modal content shouldn't stretch vertically */
 	flex-grow : 0;
 
-	padding-left   : calc(4 * 0.3rem);
-	padding-right  : calc(4 * 0.3rem);
-	padding-top    : calc(4 * 0.3rem);
-	padding-bottom : calc(4 * 0.3rem);
 	border-radius  : 0.2rem;
 	background-color : white;
+}
+
+.rrui__modal__content-body
+{
+	margin : calc(4 * 0.3rem);
 }
 
 .rrui__modal__content--fullscreen

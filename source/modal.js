@@ -5,7 +5,6 @@ import { flat as style } from 'react-styling'
 import React_modal from './react-modal'
 import Button from './button'
 import Form from './form'
-import { get_scrollbar_width } from './misc/dom'
 
 export default class Modal extends PureComponent
 {
@@ -41,7 +40,8 @@ export default class Modal extends PureComponent
 
 		// "Cancel" button label.
 		// If set, the modal will have a "Cancel" button.
-		cancelLabel      : PropTypes.string,
+		// (only if `<Form.Actions/>` is found in content)
+		closeLabel       : PropTypes.string,
 
 		// The default `overflow-x` of the <body/>.
 		// Is `auto` by default.
@@ -97,31 +97,49 @@ export default class Modal extends PureComponent
 		could_not_close_because_busy_animation_duration: 1500 // ms
 	}
 
+	static childContextTypes =
+	{
+		rrui__modal : PropTypes.object
+	}
+
 	constructor()
 	{
 		super()
 
-		this.on_request_close = this.on_request_close.bind(this)
-		this.on_after_open    = this.on_after_open.bind(this)
-
-		this.on_window_resize = this.on_window_resize.bind(this)
-		this.closed           = this.closed.bind(this)
-
+		this.on_request_close  = this.on_request_close.bind(this)
+		this.on_after_open     = this.on_after_open.bind(this)
+		this.closed            = this.closed.bind(this)
 		this.close             = this.close.bind(this)
 		this.close_if_not_busy = this.close_if_not_busy.bind(this)
+		this.register_form     = this.register_form.bind(this)
+		this.unregister_form   = this.unregister_form.bind(this)
 	}
 
-	componentDidMount()
+	getChildContext()
 	{
-		window.addEventListener('resize', this.on_window_resize)
-		this.on_window_resize()
+		const
+		{
+			closeLabel
+		}
+		= this.props
+
+		const context =
+		{
+			rrui__modal:
+			{
+				closeLabel,
+				close_if_not_busy : this.close_if_not_busy,
+				register_form     : this.register_form,
+				unregister_form   : this.unregister_form
+			}
+		}
+
+		return context
 	}
 
 	// A modal umounts only when the user leaves a page
 	componentWillUnmount()
 	{
-		window.removeEventListener('resize', this.on_window_resize)
-
 		const { isOpen } = this.props
 
 		if (isOpen)
@@ -176,6 +194,7 @@ export default class Modal extends PureComponent
 					onClick={ this.on_request_close }/>
 
 				{/* Modal window content */}
+
 				{ this.render_content() }
 
 				{/* Bottom margin, grows more than top margin */}
@@ -197,10 +216,10 @@ export default class Modal extends PureComponent
 	{
 		const
 		{
+			closeLabel,
 			busy,
 			fullscreen,
 			children,
-			cancelLabel,
 			className,
 			style
 		}
@@ -208,87 +227,43 @@ export default class Modal extends PureComponent
 
 		const
 		{
-			could_not_close_because_busy
+			could_not_close_because_busy,
+			form
 		}
 		= this.state
 
-		let cancelButton
+		return (
+			<div
+				className={ classNames('rrui__modal__content',
+				{
+					// CSS selector performance optimization
+					'rrui__modal__content--fullscreen' : fullscreen,
 
-		if (cancelLabel)
-		{
-			cancelButton =
-			(
-				<Button action={ this.close_if_not_busy }>
-					{ cancelLabel }
-				</Button>
-			)
-		}
+					// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
+					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+				}) }
+				style={ styles.content }>
 
-		// If it's not a `<Form/>`, then just render as is.
-		if (!this.is_form(children))
-		{
-			return (
 				<div
-					className={ classNames('rrui__modal__content',
-					{
-						// CSS selector performance optimization
-						'rrui__modal__content--fullscreen' : fullscreen,
-
-						// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
-						'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
-					},
-					className) }
-					style={ style ? { ...styles.content, ...style } : styles.content }>
+					className={ classNames('rrui__modal__content-body', className) }
+					style={ style }>
 
 					{ this.render_close_button() }
 
 					{ children }
 
-					{ cancelButton &&
-						<Form.Actions>
-							{ cancelButton }
-						</Form.Actions>
+					{ !form &&
+						<div className="rrui__form__actions">
+							<Button
+								className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
+								action={ this.close_if_not_busy }>
+								{ closeLabel }
+							</Button>
+						</div>
 					}
 				</div>
-			)
-		}
-
-		// Render the ehanced `<Form/>`
-		return React.cloneElement(children,
-		{
-			className: classNames('rrui__modal__content',
-			{
-				// CSS selector performance optimization
-				'rrui__modal__content--fullscreen' : fullscreen
-			},
-			children.props.className),
-			style: children.props.style ? { ...styles.content, ...children.props.style } : styles.content
-		},
-		React.Children.map(children.props.children, (child) =>
-		{
-			if (child.type === 'h1')
-			{
-				return (
-					<header
-						className={ classNames('rrui__modal__header') }>
-						{ child }
-						{ this.render_close_button() }
-					</header>
-				)
-			}
-
-			if (child.type === Form.Actions)
-			{
-				return React.cloneElement(child,
-				{
-					className: classNames('rrui__modal__actions', child.props.className)
-				},
-				cancelButton,
-				child.props.children)
-			}
-
-			return child
-		}))
+			</div>
+		)
 	}
 
 	render_close_button()
@@ -304,7 +279,7 @@ export default class Modal extends PureComponent
 		(
 			<button
 				onClick={ this.close }
-				className={ classNames('rrui__modal__close',
+				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
 					'rrui__modal__close--busy' : busy
 				}) }>
@@ -315,9 +290,14 @@ export default class Modal extends PureComponent
 		return markup
 	}
 
-	is_form(children)
+	register_form()
 	{
-		return React.Children.count(children) === 1 && children.type === Form
+		this.setState({ form: true })
+	}
+
+	unregister_form()
+	{
+		this.setState({ form: false })
 	}
 
 	// Play "cannot close" animation on the modal
@@ -347,12 +327,13 @@ export default class Modal extends PureComponent
 
 	on_request_close(event)
 	{
-		const { cancel } = this.props
+		const { closeLabel } = this.props
+		const { form } = this.state
 
 		// If the modal has an explicit "Cancel" button,
 		// then allow closing it by hitting "Escape" key,
 		// but don't close it on a click outside.
-		if (cancel && event && event.type !== 'keydown')
+		if (closeLabel && form && event && event.type !== 'keydown')
 		{
 			return this.indicate_cannot_close()
 		}
@@ -488,14 +469,6 @@ export default class Modal extends PureComponent
 		document.body.style.overflowX = bodyOverflowX
 		document.body.style.overflowY = bodyOverflowY
 	}
-
-	on_window_resize()
-	{
-		// Scrollbar is hidden when the modal is shown
-		// in order to prevent the page behind the modal
-		// from scrolling when the mouse wheel is scrolled.
-		this.scrollbar_width = get_scrollbar_width()
-	}
 }
 
 const styles = style
@@ -506,11 +479,6 @@ const styles = style
 
 		// Vertical padding won't ever shrink below the minimum size
 		flex-shrink : 0
-
-	content_wrapper
-		// The content wrapper will shrink vertically
-		flex-shrink : 1
-		flex-basis  : auto
 
 	content
 		// Modal content will contract vertically

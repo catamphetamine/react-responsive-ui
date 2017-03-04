@@ -1,6 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 
+import Button from './button'
+
 // Prevents `<form/> submission when `busy` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.
 export default class Form extends PureComponent
@@ -154,18 +156,58 @@ export default class Form extends PureComponent
 
 Form.Error = function({ children })
 {
-	return <div className="rrui__form__error">
-		{ children }
-	</div>
+	return (
+		<div className="rrui__form__error">
+			{ children }
+		</div>
+	)
 }
 
-Form.Actions = function(props, context)
+Form.Actions = class Actions extends PureComponent
 {
-	const { children, className, style } = props
+	constructor(props, context)
+	{
+		super(props, context)
 
-	return <div
-		className={ classNames('rrui__form__actions', className) }
-		style={ style }>
-		{ children }
-	</div>
+		const { rrui__modal } = context
+
+		if (rrui__modal)
+		{
+			rrui__modal.register_form()
+		}
+	}
+
+	componentWillUnmount()
+	{
+		const { rrui__modal } = this.context
+
+		if (rrui__modal)
+		{
+			rrui__modal.unregister_form()
+		}
+	}
+
+	render()
+	{
+		const { children, className, style } = this.props
+		const { rrui__modal } = this.context
+
+		return (
+			<div
+				className={ classNames('rrui__form__actions', className) }
+				style={ style }>
+				{ rrui__modal &&
+					<Button action={ rrui__modal.close_if_not_busy }>
+						{ rrui__modal.closeLabel }
+					</Button>
+				}
+				{ children }
+			</div>
+		)
+	}
+}
+
+Form.Actions.contextTypes =
+{
+	rrui__modal : PropTypes.object
 }
