@@ -272,7 +272,7 @@ export default class Select extends PureComponent
 
 		const options = this.get_options()
 
-		let list_style = upward ? styles.list_upward : styles.list_downward
+		let list_style = styles.list
 
 		// Makes the options list scrollable (only when not in `autocomplete` mode).
 		if (this.is_scrollable() && this.state.list_height !== undefined)
@@ -377,7 +377,8 @@ export default class Select extends PureComponent
 							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
 							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
 							// CSS selector performance optimization
-							'rrui__select__options--upward'               : upward
+							'rrui__select__options--upward'               : upward,
+							'rrui__select__options--downward'             : !upward
 						}
 					) }>
 					{ list_items }
@@ -1331,18 +1332,6 @@ const styles = styler
 	list
 		list-style-type : none
 		overflow-x      : hidden
-
-		&downward
-			// when html page is overflown by a long list
-			// this bottom margin takes effect
-			margin-bottom : 1em
-
-		&upward
-			bottom: 100%
-
-			// when html page is overflown by a long list
-			// this top margin takes effect
-			margin-top : 1em
 
 	selected
 		box-sizing : border-box
