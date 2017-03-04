@@ -315,6 +315,8 @@
 {
 	border-bottom: 1px solid #C5D2E0;
 	transition: border 0.1s;
+	/* Because Chrome adds `text-align: center` for all buttons */
+	text-align: left;
 }
 
 .rrui__select__selected:focus
