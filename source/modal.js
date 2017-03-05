@@ -146,6 +146,8 @@ export default class Modal extends PureComponent
 		{
 			this.closed()
 		}
+
+		this.unmounted = true
 	}
 
 	render()
@@ -298,6 +300,11 @@ export default class Modal extends PureComponent
 
 	unregister_form()
 	{
+		if (this.unmounted)
+		{
+			return
+		}
+
 		this.setState({ form: false })
 	}
 
