@@ -225,6 +225,26 @@ export default class DatePicker extends PureComponent
 		this.date_chosen()
 	}
 
+	on_calendar_key_down = (event) =>
+	{
+		switch (event)
+		{
+			// The next year is selected on "Up" arrow,
+			// so `.preventDefault()` it to prevent page scrolling.
+			// https://github.com/gpbl/react-day-picker/issues/273
+			case 38:
+				event.preventDefault()
+				return
+
+			// The previous year is selected on "Down" arrow,
+			// so `.preventDefault()` it to prevent page scrolling.
+			// https://github.com/gpbl/react-day-picker/issues/273
+			case 40:
+				event.preventDefault()
+				return
+		}
+	}
+
 	document_clicked(event)
 	{
 		const dom_node = ReactDOM.findDOMNode(this.container)
@@ -321,6 +341,7 @@ export default class DatePicker extends PureComponent
 						initialMonth={ value }
 						firstDayOfWeek={ firstDayOfWeek }
 						onDayClick={ this.on_day_click }
+						onKeyDown={ this.on_calendar_key_down }
 						selectedDays={ day => DateUtils.isSameDay(value, day) }
 						className={ classNames
 						(

@@ -14,6 +14,13 @@ import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/do
 //
 // https://material.google.com/components/menus.html
 
+const value_prop_type = React.PropTypes.oneOfType
+([
+	React.PropTypes.string,
+	React.PropTypes.number,
+	React.PropTypes.bool
+])
+
 export default class Select extends PureComponent
 {
 	static propTypes =
@@ -23,9 +30,9 @@ export default class Select extends PureComponent
 		(
 			PropTypes.shape
 			({
-				// Option value
-				value : React.PropTypes.string,
-				// Option label
+				// Option value (may be `undefined`)
+				value : value_prop_type,
+				// Option label (may be `undefined`)
 				label : React.PropTypes.string,
 				// Option icon
 				icon  : React.PropTypes.node
@@ -49,7 +56,7 @@ export default class Select extends PureComponent
 		disabled   : PropTypes.bool,
 
 		// Selected option value
-		value      : PropTypes.any,
+		value      : value_prop_type,
 
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
