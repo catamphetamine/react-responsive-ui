@@ -324,9 +324,11 @@ export default class DatePicker extends PureComponent
 						selectedDays={ day => DateUtils.isSameDay(value, day) }
 						className={ classNames
 						(
+							'rrui__expandable__content',
 							'rrui__date-picker__calendar',
 							{
 								// CSS selector performance optimization
+								'rrui__expandable__content--expanded'   : expanded,
 								'rrui__date-picker__calendar--expanded' : expanded
 							}
 						) }/>

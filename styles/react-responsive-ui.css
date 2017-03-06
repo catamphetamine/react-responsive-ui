@@ -179,7 +179,7 @@
 	z-index  : 1;
 }
 
-.rrui__expandable-content
+.rrui__expandable__content
 {
 	/*
 	The inner block's `opacity` is animated too
@@ -193,7 +193,7 @@
 	transition: opacity 150ms ease-out;
 }
 
-.rrui__expandable-content--expanded
+.rrui__expandable__content--expanded
 {
 	opacity: 1;
 }

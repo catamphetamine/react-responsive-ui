@@ -498,11 +498,11 @@ export default class Select extends PureComponent
 				ref={ ref => this.options[get_option_key(value)] = ref }
 				className={ classNames
 				(
-					'rrui__expandable-content',
+					'rrui__expandable__content',
 					'rrui__select__options-list-item',
 					{
 						'rrui__select__separator-option' : element && element.type === Select.Separator,
-						'rrui__expandable-content--expanded' : expanded,
+						'rrui__expandable__content--expanded' : expanded,
 						// CSS selector performance optimization
 						'rrui__select__options-list-item--expanded' : expanded
 					}
