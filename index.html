@@ -17,9 +17,9 @@
 			padding: 40px;
 		}
 
-		h2:first-child
+		body > form
 		{
-			margin-top: 2.4em !important;
+			margin-top: 2.4em;
 		}
 
 		a
@@ -197,11 +197,6 @@
 				{
 					display      : 'inline-block',
 					marginBottom : '0.14em'
-				},
-
-				switch:
-				{
-					marginLeft    : '1.5em'
 				},
 
 				phone:
@@ -513,12 +508,12 @@
 									<h2 style={style.label}>Switch</h2>
 
 									<div style={style.switch_container}>
-										<label style={style.switch_label}>iOS style switch</label>
 										<Switch
-											style={style.switch}
 											name="switch"
 											value={this.state.switched}
-											onChange={ switched => this.setState({ switched: switched }) }/>
+											onChange={ switched => this.setState({ switched: switched }) }>
+											iOS style switch
+										</Switch>
 									</div>
 
 									You switched: {this.state.switched ? 'on' : 'off'}
@@ -585,9 +580,9 @@
 									close={() => this.setState({ show_modal: false })}
 									style={modal_style.modal}>
 
-									<h1 style={modal_style.title}>
+									<h2 style={modal_style.title}>
 										Dialog
-									</h1>
+									</h2>
 
 									<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
 										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
@@ -609,11 +604,12 @@
 										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
 									</p>
 
-									<Button
-										action={ () => this.setState({ show_modal: false }) }
-										style={{ float: 'right' }}>
-										Hide
-									</Button>
+									<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+										<Button
+											action={ () => this.setState({ show_modal: false }) }>
+											Hide
+										</Button>
+									</div>
 								</Modal>
 							</Page>
 						</PageAndMenu>
