@@ -369,8 +369,12 @@ export default class Select extends PureComponent
 					style={ list_style }
 					className={ classNames
 					(
+						'rrui__expandable',
+						'rrui__expandable--overlay',
 						'rrui__select__options',
+						'rrui__shadow',
 						{
+							'rrui__expandable--expanded'                  : expanded,
 							'rrui__select__options--expanded'             : expanded,
 							'rrui__select__options--left-aligned'         : alignment === 'left',
 							'rrui__select__options--right-aligned'        : alignment === 'right',
@@ -492,12 +496,17 @@ export default class Select extends PureComponent
 			<li
 				key={ get_option_key(value) }
 				ref={ ref => this.options[get_option_key(value)] = ref }
-				className={ classNames('rrui__select__options-list-item',
-				{
-					'rrui__select__separator-option' : element && element.type === Select.Separator,
-					// CSS selector performance optimization
-					'rrui__select__options-list-item--expanded' : expanded
-				}) }>
+				className={ classNames
+				(
+					'rrui__expandable-content',
+					'rrui__select__options-list-item',
+					{
+						'rrui__select__separator-option' : element && element.type === Select.Separator,
+						'rrui__expandable-content--expanded' : expanded,
+						// CSS selector performance optimization
+						'rrui__select__options-list-item--expanded' : expanded
+					}
+				) }>
 				{ button }
 			</li>
 		)
@@ -1214,8 +1223,10 @@ export default class Select extends PureComponent
 
 		const vertical_padding = parseInt(window.getComputedStyle(list_dom_node.firstChild).paddingTop)
 
+		// For things like "accordeon".
+		//
 		// const images = list_dom_node.querySelectorAll('img')
-
+		//
 		// if (images.length > 0)
 		// {
 		// 	return this.preload_images(list_dom_node, images)
@@ -1322,7 +1333,7 @@ const styles = styler
 		// Sometimes (e.g. when using mobile dropdown menus)
 		// "position: relative" could be overridden to "static"
 		// to allow for the menu stretching to full screen width.
-		// position : relative
+		// Therefore it was moved to CSS from inline styles.
 
 		-webkit-user-select : none
 		-moz-user-select    : none

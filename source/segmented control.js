@@ -311,7 +311,6 @@ export default class Segmented_control extends PureComponent
 const styles = styler
 `
 	container
-		position    : relative
 		white-space : nowrap
 
 	option

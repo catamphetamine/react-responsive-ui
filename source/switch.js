@@ -28,6 +28,9 @@ export default class Switch extends PureComponent
 		// when javascript is disabled (e.g. Tor)
 		fallback  : PropTypes.bool.isRequired,
 
+		// A label
+		children  : PropTypes.node,
+
 		// CSS style object
 		style     : PropTypes.object,
 
@@ -69,7 +72,8 @@ export default class Switch extends PureComponent
 			indicateInvalid,
 			error,
 			style,
-			className
+			className,
+			children
 		}
 		= this.props
 
@@ -79,13 +83,21 @@ export default class Switch extends PureComponent
 				className={ classNames('rrui__switch',
 				{
 					'rrui__rich'             : fallback,
-					'rrui__switch--on'       : value,
+					'rrui__input'            : children,
+					'rrui__switch--label'    : children,
 					'rrui__switch--disabled' : disabled
 				},
 				className) }
 				style={ this.props.style ? { ...styles.switch, ...style } : styles.switch }>
 
-				<div className="rrui__input">
+				{ children }
+
+				<div
+					className={ classNames('rrui__switch__switch',
+					{
+						// CSS selector performance optimization
+						'rrui__switch__switch--label' : children
+					}) }>
 					<input
 						type="checkbox"
 						value={ value }
@@ -94,16 +106,20 @@ export default class Switch extends PureComponent
 
 					<span
 						style={ styles.groove }
-						className="rrui__switch__groove"/>
+						className={ classNames('rrui__switch__groove',
+						{
+							// CSS selector performance optimization
+							'rrui__switch__groove--on' : value
+						}) }/>
 
 					<div
 						style={ styles.knob }
-						className="rrui__switch__knob"/>
+						className={ classNames('rrui__switch__knob',
+						{
+							// CSS selector performance optimization
+							'rrui__switch__knob--on' : value
+						}) }/>
 				</div>
-
-				{ fallback && !this.state.javascript && this.render_static() }
-
-				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
 			</label>
 		)
 
@@ -145,8 +161,6 @@ export default class Switch extends PureComponent
 const styles = styler
 `
 	switch
-		position : relative
-
 		-webkit-user-select : none
 		-moz-user-select    : none
 		-ms-user-select     : none

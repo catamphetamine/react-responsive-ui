@@ -1,3 +1,11 @@
+0.5.0 / 06.03.2017
+===================
+
+  * (breaking change) Moved `position: relative` from inline styles to CSS for `<Button/>`, `<Switch/>`, `<DatePicker/>`, `<SegmentedControl/>`.
+  * (breaking change) Refactored CSS classes for `<Select/>` and `<DatePicker/>`.
+  * (breaking change) Refactored CSS classes for `<Switch/>`.
+  * Fixed day clicking bug in `<DatePicker/>` on mobile devices.
+
 0.4.0 / 03.03.2017
 ===================
 

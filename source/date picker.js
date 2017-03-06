@@ -2,6 +2,7 @@
 // http://react-day-picker.js.org/examples/?overlay
 
 import React, { PureComponent, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import classNames from 'classnames'
 import { flat as style } from 'react-styling'
@@ -14,6 +15,8 @@ import moment from 'moment'
 // https://github.com/date-fns/date-fns/issues/347
 // import parse_date from 'date-fns/parse'
 // import format_date from 'date-fns/format'
+
+import { is_reachable } from './misc/dom'
 
 export default class DatePicker extends PureComponent
 {
@@ -63,38 +66,30 @@ export default class DatePicker extends PureComponent
 
 	state =
 	{
-		editing       : false,
-		show_calendar : false,
-		text_value    : '',
-		selected_day  : null
+		expanded     : false,
+		selected_day : null
 	}
 
 	constructor()
 	{
 		super()
 
-		this.on_day_click    = this.on_day_click.bind(this)
-		this.on_input_change = this.on_input_change.bind(this)
-		this.on_input_focus  = this.on_input_focus.bind(this)
-		this.on_input_blur   = this.on_input_blur.bind(this)
-		this.on_mouse_down   = this.on_mouse_down.bind(this)
+		this.on_day_click      = this.on_day_click.bind(this)
+		this.on_input_change   = this.on_input_change.bind(this)
+		this.on_input_focus    = this.on_input_focus.bind(this)
+		this.on_input_key_down = this.on_input_key_down.bind(this)
+		this.on_key_down_in_container = this.on_key_down_in_container.bind(this)
+		this.document_clicked  = this.document_clicked.bind(this)
+	}
+
+	componentDidMount()
+	{
+		document.addEventListener('click', this.document_clicked)
 	}
 
 	componentWillUnmount()
 	{
-		clearTimeout(this.clicked_inside_reset_timeout)
-	}
-
-	on_mouse_down()
-	{
-		this.clicked_inside = true
-		// The `<input/>`'s `onBlur` method is called
-		// from a queue right after `onMouseDown` event on the calendar.
-		// Therefore `setTimeout` can be used to immediately
-		// clear the `clicked_inside` flag (right after setting it)
-		// in such a way that its lifetime is sufficient
-		// for `on_input_blur()` to process it correctly.
-		this.clicked_inside_reset_timeout = setTimeout(() => this.clicked_inside = false, 0)
+		document.removeEventListener('click', this.document_clicked)
 	}
 
 	on_input_focus()
@@ -103,27 +98,69 @@ export default class DatePicker extends PureComponent
 
 		this.setState
 		({
-			editing       : true,
-			text_value    : format_date(value, format),
-			show_calendar : true
+			text_value : format_date(value, format),
+			expanded   : true
 		})
 	}
 
-	on_input_blur()
+	// Would have used `onBlur()` handler here
+	// with `is_reachable(event.relatedTarget, container)`,
+	// but it has an IE bug in React.
+	// https://github.com/facebook/react/issues/3751
+	//
+	// Therefore, using the hacky `document.onClick` handlers
+	// and this `onKeyDown` Tab handler
+	// until `event.relatedTarget` support is consistent in React.
+	//
+	on_key_down_in_container(event)
 	{
-		// Don't hide the calendar when `mouseDown`ing a day in it.
-		// The calendar will be hidden later when `click` handler fires.
-		// Force input's focus if blur event was caused by clicking on the calendar
-		if (this.clicked_inside)
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
-			return this.input.focus()
+			return
 		}
 
+		const { expanded } = this.state
+
+		switch (event.keyCode)
+		{
+			// Toggle on Tab out
+			case 9:
+				if (expanded)
+				{
+					this.date_chosen()
+				}
+				return
+		}
+	}
+
+	on_input_key_down(event)
+	{
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
+		{
+			return
+		}
+
+		const { expanded } = this.state
+
+		switch (event.keyCode)
+		{
+			// Collapse on Escape
+			case 27:
+				if (expanded)
+				{
+					this.date_chosen()
+				}
+				return
+		}
+	}
+
+	// Hides the day picker calendar and cancels textual date editing
+	date_chosen()
+	{
 		this.setState
 		({
-			editing       : false,
-			text_value    : undefined,
-			show_calendar : false
+			text_value : undefined,
+			expanded   : false
 		})
 
 		// `onChange` fires on calendar day `click`
@@ -139,17 +176,6 @@ export default class DatePicker extends PureComponent
 		//
 		// Still must validate (recompute) `text_value` on `<input/>` blur
 		// in cases when a user manually typed in a date and then tabbed away.
-		//
-		// So, if the entered date isn't valid
-		// then clear the `<input/>` field.
-
-		// const { text_value } = this.state
-		// const { format } = this.props
-
-		// if (!parse_date(text_value, format))
-		// {
-		// 	this.setState({ text_value: '' })
-		// }
 	}
 
 	on_input_change(event)
@@ -181,13 +207,32 @@ export default class DatePicker extends PureComponent
 		// hasn't neccessarily been updated yet
 		onChange(selected_day)
 
-		this.setState
-		({
-			// text_value: format_date(selected_day, format),
-			show_calendar: false
-		})
+		// this.setState
+		// ({
+		// 	// text_value: format_date(selected_day, format),
+		// 	expanded: false
+		// })
 
-		this.input.blur()
+		// // Blur the input so that the calendar
+		// // will open upon a future click on it.
+		// // (doesn't work in mobile browsers)
+		// this.input.blur()
+
+		// Hide the calendar
+		this.date_chosen()
+	}
+
+	document_clicked(event)
+	{
+		const dom_node = ReactDOM.findDOMNode(this.container)
+
+		// Don't close the dropdown if the click is inside container
+		if (is_reachable(event.target, dom_node))
+		{
+			return
+		}
+
+		this.setState({ expanded: false })
 	}
 
 	render()
@@ -207,7 +252,7 @@ export default class DatePicker extends PureComponent
 		}
 		= this.props
 
-		const { editing, text_value, show_calendar } = this.state
+		const { text_value, expanded } = this.state
 
 		// `<input type="date"/>` renders a browser-specific date picker
 		// which can not be turned off using a simple HTML attribute
@@ -216,12 +261,13 @@ export default class DatePicker extends PureComponent
 
 		return (
 			<div
-				onMouseDown={ this.on_mouse_down }
+				ref={ ref => this.container = ref }
+				onKeyDown={ this.on_key_down_in_container }
 				className={ classNames('rrui__date-picker', className,
 				{
 					'rrui__date-picker--disabled' : disabled
 				}) }
-				style={ style ? { ...styles.container, ...style } : styles.container }>
+				style={ style }>
 
 				<input
 					id={ id }
@@ -229,10 +275,10 @@ export default class DatePicker extends PureComponent
 					ref={ ref => this.input = ref }
 					placeholder={ typeof format === 'string' ? format : undefined }
 					disabled={ disabled }
-					value={ editing ? text_value : format_date(value, format) }
+					value={ text_value !== undefined ? text_value : format_date(value, format) }
+					onKeyDown={ this.on_input_key_down }
 					onChange={ this.on_input_change }
 					onFocus={ this.on_input_focus }
-					onBlur={ this.on_input_blur }
 					className={ classNames
 					(
 						'rrui__input',
@@ -256,17 +302,32 @@ export default class DatePicker extends PureComponent
 				}
 
 				{/* <DayPicker/> doesn't support `style` property */}
-				{ show_calendar &&
-					<div style={ calendar_container_style }>
-						<DayPicker
-							ref={ ref => this.daypicker = ref }
-							initialMonth={ value }
-							firstDayOfWeek={ firstDayOfWeek }
-							onDayClick={ this.on_day_click }
-							selectedDays={ day => DateUtils.isSameDay(value, day) }
-							className="rrui__date-picker__calendar"/>
-					</div>
-				}
+				<div
+					className={ classNames
+					(
+						'rrui__expandable',
+						'rrui__expandable--overlay',
+						'rrui__shadow',
+						'rrui__date-picker__collapsible',
+						{
+							'rrui__expandable--expanded' : expanded
+						}
+					) }>
+					<DayPicker
+						ref={ ref => this.daypicker = ref }
+						initialMonth={ value }
+						firstDayOfWeek={ firstDayOfWeek }
+						onDayClick={ this.on_day_click }
+						selectedDays={ day => DateUtils.isSameDay(value, day) }
+						className={ classNames
+						(
+							'rrui__date-picker__calendar',
+							{
+								// CSS selector performance optimization
+								'rrui__date-picker__calendar--expanded' : expanded
+							}
+						) }/>
+				</div>
 
 				{/* Error message */}
 				{ error && indicateInvalid &&
@@ -306,12 +367,6 @@ function format_date(date, format)
 	return moment(date).format(format)
 }
 
-const calendar_container_style =
-{
-	position : 'absolute',
-	zIndex   : 1
-}
-
 // // Intl date formatting
 //
 // const dateFormatters = {}
@@ -336,9 +391,6 @@ const calendar_container_style =
 
 const styles = style
 `
-	container
-		position : relative
-
 	label
 		position    : absolute
 		white-space : nowrap

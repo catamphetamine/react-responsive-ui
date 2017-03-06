@@ -224,7 +224,6 @@ export default class Button extends PureComponent
 const styles = styler
 `
 	container
-		position   : relative
 		box-sizing : border-box
 
 		&busy
