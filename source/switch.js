@@ -88,7 +88,7 @@ export default class Switch extends PureComponent
 					'rrui__switch--disabled' : disabled
 				},
 				className) }
-				style={ this.props.style ? { ...styles.switch, ...style } : styles.switch }>
+				style={ style ? { ...styles.switch, ...style } : styles.switch }>
 
 				{ children }
 
