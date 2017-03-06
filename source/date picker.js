@@ -235,7 +235,7 @@ export default class DatePicker extends PureComponent
 			return
 		}
 
-		this.setState({ expanded: false })
+		this.date_chosen()
 	}
 
 	render()
