@@ -149,6 +149,9 @@ export default class DatePicker extends PureComponent
 				if (expanded)
 				{
 					this.date_chosen()
+					// Since this `event` originated in the `<input/>`
+					// mobile web browsers will allow `.blur()`ring it.
+					this.input.blur()
 				}
 				return
 		}
