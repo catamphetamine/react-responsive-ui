@@ -8,7 +8,13 @@ import Form from './form'
 
 export default class Modal extends PureComponent
 {
-	state = {}
+	state =
+	{
+		// Using a counter instead of a boolean here
+		// because a new form may be mounted before the old one is unmounted.
+		// (React reconciliation algorythm implementation details)
+		form : 0
+	}
 
 	static propTypes =
 	{
@@ -100,19 +106,6 @@ export default class Modal extends PureComponent
 	static childContextTypes =
 	{
 		rrui__modal : PropTypes.object
-	}
-
-	constructor()
-	{
-		super()
-
-		this.on_request_close  = this.on_request_close.bind(this)
-		this.on_after_open     = this.on_after_open.bind(this)
-		this.closed            = this.closed.bind(this)
-		this.close             = this.close.bind(this)
-		this.close_if_not_busy = this.close_if_not_busy.bind(this)
-		this.register_form     = this.register_form.bind(this)
-		this.unregister_form   = this.unregister_form.bind(this)
 	}
 
 	getChildContext()
@@ -281,7 +274,7 @@ export default class Modal extends PureComponent
 		const markup =
 		(
 			<button
-				onClick={ this.close }
+				onClick={ this.close_if_not_busy }
 				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
 					'rrui__modal__close--busy' : busy
@@ -293,19 +286,25 @@ export default class Modal extends PureComponent
 		return markup
 	}
 
-	register_form()
+	register_form = () =>
 	{
-		this.setState({ form: true })
+		// Using a counter instead of a boolean here
+		// because a new form may be mounted before the old one is unmounted.
+		// (React reconciliation algorythm implementation details)
+		this.setState(({ form }) => ({ form: form + 1 }))
 	}
 
-	unregister_form()
+	unregister_form = () =>
 	{
 		if (this.unmounted)
 		{
 			return
 		}
 
-		this.setState({ form: false })
+		// Using a counter instead of a boolean here
+		// because a new form may be mounted before the old one is unmounted.
+		// (React reconciliation algorythm implementation details)
+		this.setState(({ form }) => ({ form: form - 1 }))
 	}
 
 	// Play "cannot close" animation on the modal
@@ -327,13 +326,7 @@ export default class Modal extends PureComponent
 		}
 	}
 
-	// Public API method
-	close()
-	{
-		this.close_if_not_busy()
-	}
-
-	on_request_close(event)
+	on_request_close = (event) =>
 	{
 		const { closeLabel } = this.props
 		const { form } = this.state
@@ -351,7 +344,7 @@ export default class Modal extends PureComponent
 		this.close_if_not_busy()
 	}
 
-	close_if_not_busy()
+	close_if_not_busy = () =>
 	{
 		const { busy, close, closeTimeout, reset } = this.props
 
@@ -379,7 +372,7 @@ export default class Modal extends PureComponent
 	// but since my body is always `overflow: visible` (a good practice)
 	// there's no difference and it should work in any scenario.
 	//
-	on_after_open()
+	on_after_open = () =>
 	{
 		const { afterOpen } = this.props
 
@@ -436,7 +429,7 @@ export default class Modal extends PureComponent
 
 	// Restore original `document` scrollbar
 	// and reset the modal content (e.g. a form)
-	closed()
+	closed = () =>
 	{
 		const
 		{
