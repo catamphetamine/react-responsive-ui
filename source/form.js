@@ -1,11 +1,11 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 
 import Button from './button'
 
 // Prevents `<form/> submission when `busy` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.
-export default class Form extends PureComponent
+export default class Form extends Component
 {
 	static propTypes =
 	{
@@ -163,7 +163,7 @@ Form.Error = function({ children })
 	)
 }
 
-Form.Actions = class Actions extends PureComponent
+Form.Actions = class Actions extends Component
 {
 	componentWillMount()
 	{
