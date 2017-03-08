@@ -100,7 +100,7 @@ export default class Modal extends PureComponent
 		// When changing this also change
 		// `.rrui__modal--could-not-close-because-busy`
 		// css transition time accordingly
-		could_not_close_because_busy_animation_duration: 1500 // ms
+		could_not_close_because_busy_animation_duration: 600 // ms
 	}
 
 	static childContextTypes =
