@@ -519,11 +519,13 @@
 	box-shadow    : inset 0 0 0 0.0625em #d7d7d7;
 	border-radius : 0.5em;
 	transition    : all 0.40s cubic-bezier(.17,.67,.43,.98);
+
+	color : #4cd964;
 }
 
 .rrui__switch__groove--on
 {
-	box-shadow : inset 0 0 0 0.73em #4cd964;
+	box-shadow : inset 0 0 0 0.73em currentColor;
 }
 
 .rrui__switch__knob
@@ -1051,24 +1053,35 @@ it would introduce page width jumps.
 	list-style-type : none;
 }
 
-.rrui__slideout-menu li:first-child
+.rrui__slideout-menu-list-item:first-child
 {
 	padding-top    : calc(2 * 0.3rem);
 }
 
-.rrui__slideout-menu li:last-child
+.rrui__slideout-menu-list-item:last-child
 {
 	padding-bottom : calc(2 * 0.3rem);
 }
 
 .rrui__slideout-menu
 {
-	background : black;
+	position : fixed;
+	left     : 0;
+	top      : 0;
+	bottom   : 0;
+	z-index  : 1;
+	min-height : 100%;
+	overflow-y : auto;
 	opacity    : 0.9;
+	background-color : black;
+
+	transform  : translate3d(-100%, 0, 0);
+	transition : transform 120ms ease-out;
 }
 
 .rrui__slideout-menu--shown
 {
+	transform  : translate3d(0, 0, 0);
 	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
 }
 
@@ -1084,13 +1097,16 @@ it would introduce page width jumps.
 
 .rrui__menu__item
 {
-	margin : 0;
+	display : block;
+	margin  : 0;
 
 	padding-top    : 0.3rem;
 	padding-bottom : 0.3rem;
 
 	padding-left  : calc(0.3rem * 2);
 	padding-right : calc(0.3rem * 3);
+
+	text-decoration : none;
 }
 
 .rrui__menu__item--selected
