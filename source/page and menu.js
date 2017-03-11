@@ -1,15 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 
-import { is_reachable } from './misc/dom'
-
-export default class Page_and_menu extends PureComponent
+export default class Page_and_menu extends Component
 {
-	// static propTypes =
-	// {
-	// 	className: PropTypes.string,
-	// 	style: PropTypes.object
-	// }
-
 	static childContextTypes =
 	{
 		react_responsive_ui_menu : PropTypes.shape
@@ -31,7 +23,7 @@ export default class Page_and_menu extends PureComponent
 	{
 		super()
 
-		this.hide_menu_on_click = this.hide_menu_on_click.bind(this)
+		this.hide_menu_on_mouse_down = this.hide_menu_on_mouse_down.bind(this)
 		// this.toggle_menu        = this.toggle_menu.bind(this)
 		// this.update_menu_width  = this.update_menu_width.bind(this)
 	}
@@ -43,8 +35,8 @@ export default class Page_and_menu extends PureComponent
 		const markup =
 		(
 			<div
-				onTouchStart={ this.hide_menu_on_click }
-				onMouseDown={ this.hide_menu_on_click }
+				onTouchStart={ this.hide_menu_on_mouse_down }
+				onMouseDown={ this.hide_menu_on_mouse_down }
 				{ ...rest }>
 				{ children }
 			</div>
@@ -53,19 +45,21 @@ export default class Page_and_menu extends PureComponent
 		return markup
 	}
 
-	hide_menu_on_click(event)
+	hide_menu_on_mouse_down(event)
 	{
 		if (!this.menu || !this.menu_button)
 		{
 			return
 		}
 
-		// Hide the menu if clicked outside
-		if (!is_reachable(event.target, this.menu.element())
-			&& !is_reachable(event.target, this.menu_button.element()))
+		// Hide the menu only if clicked outside
+		if (this.menu.element().contains(event.target)
+			|| this.menu_button.element().contains(event.target))
 		{
-			this.menu.hide()
+			return
 		}
+
+		this.menu.hide()
 	}
 
 	// toggle_menu()

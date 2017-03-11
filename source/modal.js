@@ -1,8 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react'
+import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import { flat as style } from 'react-styling'
+import React_modal from 'react-modal'
 
-import React_modal from './react-modal'
 import Button from './button'
 import Form from './form'
 
@@ -130,14 +131,21 @@ export default class Modal extends PureComponent
 		return context
 	}
 
-	// A modal umounts only when the user leaves a page
+	// A modal itself umounts only when the user leaves a page,
+	// so in a "Single Page Application", for example,
+	// if this was a regular popup and a user could still navigate
+	// away via a hyperlink then this code becomes neccessary.
 	componentWillUnmount()
 	{
 		const { isOpen } = this.props
 
+		// If the modal is still open
+		// while a user navigates away
+		// then "close" it properly
+		// (restore the document scrollbars, etc).
 		if (isOpen)
 		{
-			this.closed()
+			this.on_after_close()
 		}
 
 		this.unmounted = true
@@ -153,10 +161,21 @@ export default class Modal extends PureComponent
 			closeTimeout,
 			contentLabel,
 			title,
+			closeLabel,
+			closeButton,
 			actions,
-			className
+			style,
+			className,
+			children
 		}
 		= this.props
+
+		const
+		{
+			could_not_close_because_busy,
+			form
+		}
+		= this.state
 
 		const markup =
 		(
@@ -164,7 +183,6 @@ export default class Modal extends PureComponent
 				isOpen={ isOpen }
 				onAfterOpen={ this.on_after_open }
 				onRequestClose={ this.on_request_close }
-				onAfterClose={ this.closed }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
 				style={ react_modal_style }
@@ -190,7 +208,19 @@ export default class Modal extends PureComponent
 
 				{/* Modal window content */}
 
-				{ this.render_content() }
+				<Modal_content
+					ref={ ref => this.content = ref }
+					closeLabel={ closeLabel }
+					closeButton={ closeButton }
+					close={ this.close_if_not_busy }
+					style={ style }
+					fullscreen={ fullscreen }
+					could_not_close_because_busy={ could_not_close_because_busy }
+					form={ form }
+					busy={ busy }
+					reset={ this.on_after_close }>
+					{ children }
+				</Modal_content>
 
 				{/* Bottom margin, grows more than top margin */}
 				<div
@@ -202,85 +232,6 @@ export default class Modal extends PureComponent
 					}) }
 					onClick={ this.on_request_close }/>
 			</React_modal>
-		)
-
-		return markup
-	}
-
-	render_content()
-	{
-		const
-		{
-			closeLabel,
-			busy,
-			fullscreen,
-			children,
-			className,
-			style
-		}
-		= this.props
-
-		const
-		{
-			could_not_close_because_busy,
-			form
-		}
-		= this.state
-
-		return (
-			<div
-				ref={ ref => this.content = ref }
-				className={ classNames('rrui__modal__content',
-				{
-					// CSS selector performance optimization
-					'rrui__modal__content--fullscreen' : fullscreen,
-
-					// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
-					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
-				}) }
-				style={ styles.content }>
-
-				<div
-					className={ classNames('rrui__modal__content-body', className) }
-					style={ style }>
-
-					{ this.render_close_button() }
-
-					{ children }
-
-					{ closeLabel && !form &&
-						<div className="rrui__form__actions">
-							<Button
-								className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
-								action={ this.close_if_not_busy }>
-								{ closeLabel }
-							</Button>
-						</div>
-					}
-				</div>
-			</div>
-		)
-	}
-
-	render_close_button()
-	{
-		const { closeButton, busy, cancel } = this.props
-
-		if (!closeButton)
-		{
-			return
-		}
-
-		const markup =
-		(
-			<button
-				onClick={ this.close_if_not_busy }
-				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
-				{
-					'rrui__modal__close--busy' : busy
-				}) }>
-				{ closeButton }
-			</button>
 		)
 
 		return markup
@@ -338,7 +289,7 @@ export default class Modal extends PureComponent
 		if (closeLabel && form && event && event.type !== 'keydown')
 		{
 			this.indicate_cannot_close()
-			return false
+			return ReactDOM.findDOMNode(this.content).parentNode.focus()
 		}
 
 		this.close_if_not_busy()
@@ -346,7 +297,7 @@ export default class Modal extends PureComponent
 
 	close_if_not_busy = () =>
 	{
-		const { busy, close, closeTimeout, reset } = this.props
+		const { busy, close, closeTimeout } = this.props
 
 		// Don't close the modal if it's busy
 		if (busy)
@@ -429,7 +380,7 @@ export default class Modal extends PureComponent
 
 	// Restore original `document` scrollbar
 	// and reset the modal content (e.g. a form)
-	closed = () =>
+	on_after_close = () =>
 	{
 		const
 		{
@@ -471,6 +422,95 @@ export default class Modal extends PureComponent
 		// Restore the main (body) scrollbar.
 		document.body.style.overflowX = bodyOverflowX
 		document.body.style.overflowY = bodyOverflowY
+	}
+}
+
+class Modal_content extends PureComponent
+{
+	componentWillUnmount()
+	{
+		const { reset } = this.props
+
+		if (reset)
+		{
+			reset()
+		}
+	}
+
+	render()
+	{
+		const
+		{
+			closeLabel,
+			close,
+			fullscreen,
+			children,
+			className,
+			style,
+			form,
+			could_not_close_because_busy
+		}
+		= this.props
+
+		const markup =
+		(
+			<div
+				className={ classNames('rrui__modal__content',
+				{
+					// CSS selector performance optimization
+					'rrui__modal__content--fullscreen' : fullscreen,
+
+					// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
+					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
+				}) }
+				style={ styles.content }>
+
+				<div
+					className={ classNames('rrui__modal__content-body', className) }
+					style={ style }>
+
+					{ this.render_close_button() }
+
+					{ children }
+
+					{ closeLabel && !form &&
+						<div className="rrui__form__actions">
+							<Button
+								className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
+								action={ close }>
+								{ closeLabel }
+							</Button>
+						</div>
+					}
+				</div>
+			</div>
+		)
+
+		return markup
+	}
+
+	render_close_button()
+	{
+		const { closeButton, close, busy } = this.props
+
+		if (!closeButton)
+		{
+			return
+		}
+
+		const markup =
+		(
+			<button
+				onClick={ close }
+				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
+				{
+					'rrui__modal__close--busy' : busy
+				}) }>
+				{ closeButton }
+			</button>
+		)
+
+		return markup
 	}
 }
 

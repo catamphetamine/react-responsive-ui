@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling'
 import classNames from 'classnames'
 
 // Either provide custom `itemComponent` or `react-router`'s `<Link/>` is used by default
@@ -45,7 +44,7 @@ export default class Menu extends PureComponent
 
 	static contextTypes =
 	{
-		history : PropTypes.object, // .isRequired, // `react-router` may not be used at all
+		router : PropTypes.object, // .isRequired, // `react-router` may not be used at all
 		...Page_and_menu.childContextTypes
 	}
 
@@ -60,7 +59,7 @@ export default class Menu extends PureComponent
 
 		const
 		{
-			history,
+			router,
 			react_responsive_ui_menu:
 			{
 				register,
@@ -76,12 +75,13 @@ export default class Menu extends PureComponent
 			return
 		}
 
-		if (history)
+		// If `react-router` is being used
+		if (router)
 		{
 			// Hide slideout menu on navigation
-			this.unlisten_history = history.listen((location) =>
+			this.unlisten_history = router.listen((location) =>
 			{
-				if (show)
+				if (this.state.show)
 				{
 					toggle()
 				}
@@ -147,27 +147,16 @@ export default class Menu extends PureComponent
 			return markup
 		}
 
-		let menu_style = styles.slideout
-
-		if (show)
-		{
-			menu_style = { ...menu_style, ...styles.slideout_shown }
-		}
-
-		if (style)
-		{
-			menu_style = { ...menu_style, ...style }
-		}
-
 		const markup =
 		(
 			<ul
 				ref={ ref => this.menu = ref }
-				className={ classNames('rrui__slideout-menu', className,
+				className={ classNames('rrui__slideout-menu',
 				{
 					'rrui__slideout-menu--shown': show
-				}) }
-				style={ menu_style }>
+				},
+				className) }
+				style={ style }>
 				{ this.render_menu_items() }
 			</ul>
 		)
@@ -180,7 +169,9 @@ export default class Menu extends PureComponent
 		const { items } = this.props
 
 		return items.map((item, i) => (
-			<li key={ i } style={ styles.menu_item }>
+			<li
+				key={ i }
+				className="rrui__slideout-menu-list-item">
 				{ this.render_menu_link(item) }
 			</li>
 		))
@@ -202,12 +193,6 @@ export default class Menu extends PureComponent
 
 function React_router_link({ to, children })
 {
-	const properties =
-	{
-		style     : styles.menu_item_link,
-		className : 'rrui__menu__item'
-	}
-
 	// Inner links get rendered via `react-router` `<Link/>`s
 	if (to && to[0] === '/')
 	{
@@ -215,8 +200,8 @@ function React_router_link({ to, children })
 		(
 			<Link
 				to={ to }
-				activeClassName="rrui__menu__item--selected"
-				{ ...properties }>
+				className="rrui__menu__item"
+				activeClassName="rrui__menu__item--selected">
 				{ children }
 			</Link>
 		)
@@ -226,39 +211,12 @@ function React_router_link({ to, children })
 
 	const markup =
 	(
-		<a href={ to } { ...properties }>
+		<a
+			href={ to }
+			className="rrui__menu__item">
 			{ children }
 		</a>
 	)
 
 	return markup
 }
-
-const styles = styler
-`
-	menu
-		// Reset default <ul/> styling
-		margin-top      : 0
-		margin-bottom   : 0
-		padding         : 0
-		list-style-type : none
-
-	menu_item_link
-		display : block
-		text-decoration : none
-
-	slideout
-		position : fixed
-		left     : 0
-		top      : 0
-		bottom   : 0
-		z-index  : 1
-		min-height : 100%
-		overflow-y : auto
-
-		transform  : translate3d(-100%, 0, 0)
-		transition : transform 120ms ease-out
-
-	slideout_shown
-		transform  : translate3d(0, 0, 0)
-`

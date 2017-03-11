@@ -16,8 +16,6 @@ import moment from 'moment'
 // import parse_date from 'date-fns/parse'
 // import format_date from 'date-fns/format'
 
-import { is_reachable } from './misc/dom'
-
 export default class DatePicker extends PureComponent
 {
 	static propTypes =
@@ -104,7 +102,7 @@ export default class DatePicker extends PureComponent
 	}
 
 	// Would have used `onBlur()` handler here
-	// with `is_reachable(event.relatedTarget, container)`,
+	// with `container.contains(event.relatedTarget)`,
 	// but it has an IE bug in React.
 	// https://github.com/facebook/react/issues/3751
 	//
@@ -247,10 +245,10 @@ export default class DatePicker extends PureComponent
 
 	document_clicked(event)
 	{
-		const dom_node = ReactDOM.findDOMNode(this.container)
+		const container = ReactDOM.findDOMNode(this.container)
 
 		// Don't close the dropdown if the click is inside container
-		if (is_reachable(event.target, dom_node))
+		if (container.contains(event.target))
 		{
 			return
 		}

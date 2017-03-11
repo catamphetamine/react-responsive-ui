@@ -5,6 +5,7 @@
   * (breaking change) Refactored CSS classes for `<Select/>` and `<DatePicker/>`.
   * (breaking change) Refactored CSS classes for `<Switch/>`.
   * Fixed day clicking bug in `<DatePicker/>` on mobile devices.
+  * Moved slideout menu styles to CSS classes `.rrui__slideout-menu`, `.rrui__slideout-menu--shown`, `.rrui__slideout-menu-list-item` and `.rrui__menu__item`
 
 0.4.0 / 03.03.2017
 ===================

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
-import { is_reachable, submit_parent_form, get_scrollbar_width } from './misc/dom'
+import { submit_parent_form, get_scrollbar_width } from './misc/dom'
 
 // Possible enhancements:
 //
@@ -936,9 +936,9 @@ export default class Select extends PureComponent
 		// Don't close the select if its expander button has been clicked,
 		// or if autocomplete has been clicked,
 		// or if an option was selected from the list.
-		if (is_reachable(event.target, options_list)
-			|| (autocomplete && is_reachable(event.target, autocomplete))
-			|| (selected_option && is_reachable(event.target, selected_option)))
+		if (options_list.contains(event.target)
+			|| (autocomplete && autocomplete.contains(event.target))
+			|| (selected_option && selected_option.contains(event.target)))
 		{
 			return
 		}
@@ -954,7 +954,7 @@ export default class Select extends PureComponent
 	}
 
 	// Would have used `onBlur()` handler here
-	// with `is_reachable(event.relatedTarget, container)`,
+	// with `container.contains(event.relatedTarget)`,
 	// but it has an IE bug in React.
 	// https://github.com/facebook/react/issues/3751
 	//

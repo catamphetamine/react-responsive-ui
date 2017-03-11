@@ -5,6 +5,11 @@ import Button from './button'
 
 // Prevents `<form/> submission when `busy` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.
+// Using `Component` here instead of `PureComponent`
+// because `<Form.Actions>` depends on `context` and therefore
+// should be rerendered even if the `props` haven't changed.
+// And probably that was also why it would keep displaying an old error
+// (and not resetting it for some reason).
 export default class Form extends Component
 {
 	static propTypes =
@@ -163,6 +168,9 @@ Form.Error = function({ children })
 	)
 }
 
+// Using `Component` here instead of `PureComponent`
+// because it depends on `context` and therefore should be
+// rerendered even if the `props` haven't changed.
 Form.Actions = class Actions extends Component
 {
 	componentWillMount()
