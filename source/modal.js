@@ -75,6 +75,9 @@ export default class Modal extends PureComponent
 		// Internal property
 		could_not_close_because_busy_animation_duration : PropTypes.number.isRequired,
 
+		// CSS class for overlay (e.g. for fullscreen modal background color)
+		overlayClassName : PropTypes.string,
+
 		// CSS class
 		className        : PropTypes.string,
 
@@ -166,6 +169,7 @@ export default class Modal extends PureComponent
 			actions,
 			style,
 			className,
+			overlayClassName,
 			children
 		}
 		= this.props
@@ -190,7 +194,8 @@ export default class Modal extends PureComponent
 				{
 					'rrui__modal__overlay--busy'       : busy,
 					'rrui__modal__overlay--fullscreen' : fullscreen
-				}) }
+				},
+				overlayClassName) }
 				className={ classNames('rrui__modal__container',
 				{
 					'rrui__modal__container--fullscreen' : fullscreen
