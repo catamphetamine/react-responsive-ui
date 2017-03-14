@@ -139,6 +139,8 @@ export default class Modal extends PureComponent
 	{
 		const { isOpen } = this.props
 
+		this.unmounted = true
+
 		// If the modal is still open
 		// while a user navigates away
 		// then "close" it properly
@@ -147,8 +149,6 @@ export default class Modal extends PureComponent
 		{
 			this.on_after_close()
 		}
-
-		this.unmounted = true
 	}
 
 	render()
@@ -298,6 +298,12 @@ export default class Modal extends PureComponent
 	close_if_not_busy = () =>
 	{
 		const { busy, close, closeTimeout } = this.props
+
+		// For weird messed development mode cases
+		if (this.unmounted)
+		{
+			return
+		}
 
 		// Don't close the modal if it's busy
 		if (busy)

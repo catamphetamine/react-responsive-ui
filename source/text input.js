@@ -113,7 +113,7 @@ export default class Text_input extends PureComponent
 
 		if (multiline)
 		{
-			this.setState({ autoresize: autoresize_measure(ReactDOM.findDOMNode(this.input)) })
+			this.measure(true)
 		}
 
 		if (fallback)
@@ -329,10 +329,20 @@ export default class Text_input extends PureComponent
 	// "keyup" is required for IE to properly reset height when deleting text
 	autoresize(event)
 	{
-		const { autoresize } = this.state
+		let { autoresize } = this.state
+
+		// If the textarea was initially hidden
+		// (like `display: none` for a mobile-oriented responsive design)
+		// then make the initial measurements now.
+		if (!autoresize.initial_height)
+		{
+			autoresize = this.measure()
+		}
 
 		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
 
+		// Keep the current vertical scroll position so that
+		// it doesn't jump due to textarea resize.
 		const current_scroll_position = window.pageYOffset
 
 		element.style.height = 0
@@ -342,6 +352,8 @@ export default class Text_input extends PureComponent
 
 		element.style.height = height + 'px'
 
+		// Restore vertical scroll position so that
+		// it doesn't jump due to textarea resize.
 		window.scroll(window.pageXOffset, current_scroll_position)
 	}
 
@@ -396,6 +408,21 @@ export default class Text_input extends PureComponent
 		// (if available)
 		return this.input.focus && this.input.focus()
 	}
+
+	measure(initial_measurement)
+	{
+		const measurements = autoresize_measure(ReactDOM.findDOMNode(this.input))
+
+		// If the `<textarea/>` is not hidden (e.g. via `display: none`)
+		// then keep its initial (minimum) height
+		// so that it doesn't shrink below this value
+		if (initial_measurement || measurements.initial_height)
+		{
+			this.setState({ autoresize: measurements })
+		}
+
+		return measurements
+	}
 }
 
 const styles = styler
@@ -439,16 +466,21 @@ function autoresize_measure(element)
 {
 	const style = window.getComputedStyle(element)
 
+	// Borders extra height, because `.scrollHeight` doesn't include borders.
 	const extra_height =
 		parseInt(style.borderTopWidth) +
 		parseInt(style.borderBottomWidth)
 
-	// Raw `.getBoundingClientRect().height` could be used here
-	// to avoid rounding (e.g. `em`, `rem`, `pt`, etc),
-	// but setting `.scrollHeight` has no non-rounded equivalent.
-	const initial_height = Math.ceil(element.getBoundingClientRect().height) // element.offsetHeight
-	// Apply height rounding
-	element.style.height = initial_height + 'px'
+	// `<textarea/>`'s height is a float when using `em`, `rem`, `pt`, etc.
+	const non_rounded_initial_height = element.getBoundingClientRect().height
+	const initial_height = Math.ceil(non_rounded_initial_height)
+
+	// Round the height of `<textarea/>` so that it doesn't jump
+	// when autoresizing while typing for the first time.
+	if (initial_height !== non_rounded_initial_height)
+	{
+		element.style.height = initial_height + 'px'
+	}
 
 	return { extra_height, initial_height }
 }
