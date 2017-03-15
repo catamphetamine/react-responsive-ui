@@ -113,7 +113,8 @@ export default class Text_input extends PureComponent
 
 		if (multiline)
 		{
-			this.measure(true)
+			// Measure `<textarea/>` inner height and borders
+			this.setState({ autoresize: this.measure() })
 		}
 
 		if (fallback)
@@ -329,16 +330,7 @@ export default class Text_input extends PureComponent
 	// "keyup" is required for IE to properly reset height when deleting text
 	autoresize(event)
 	{
-		let { autoresize } = this.state
-
-		// If the textarea was initially hidden
-		// (like `display: none` for a mobile-oriented responsive design)
-		// then make the initial measurements now.
-		if (!autoresize.initial_height)
-		{
-			autoresize = this.measure()
-		}
-
+		const measurements = this.measurements()
 		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
 
 		// Keep the current vertical scroll position so that
@@ -347,8 +339,8 @@ export default class Text_input extends PureComponent
 
 		element.style.height = 0
 
-		let height = element.scrollHeight + autoresize.extra_height
-		height = Math.max(height, autoresize.initial_height)
+		let height = element.scrollHeight + measurements.extra_height
+		height = Math.max(height, measurements.initial_height)
 
 		element.style.height = height + 'px'
 
@@ -409,16 +401,29 @@ export default class Text_input extends PureComponent
 		return this.input.focus && this.input.focus()
 	}
 
-	measure(initial_measurement)
+	measure()
 	{
-		const measurements = autoresize_measure(ReactDOM.findDOMNode(this.input))
+		return autoresize_measure(ReactDOM.findDOMNode(this.input))
+	}
 
-		// If the `<textarea/>` is not hidden (e.g. via `display: none`)
-		// then keep its initial (minimum) height
-		// so that it doesn't shrink below this value
-		if (initial_measurement || measurements.initial_height)
+	measurements()
+	{
+		let measurements = this.state.autoresize
+
+		// If the textarea was initially hidden
+		// (like `display: none` for a mobile-oriented responsive design)
+		// then make the initial measurements now.
+		if (!measurements.initial_height)
 		{
-			this.setState({ autoresize: measurements })
+			measurements = this.measure()
+
+			// If the `<textarea/>` is not hidden (e.g. via `display: none`)
+			// then keep its initial (minimum) height
+			// so that it doesn't shrink below this value
+			if (measurements.initial_height)
+			{
+				this.setState({ autoresize: measurements })
+			}
 		}
 
 		return measurements
