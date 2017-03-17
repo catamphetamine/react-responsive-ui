@@ -238,7 +238,6 @@ const styles = styler
 		pointer-events : auto
 
 	text
-		opacity : 0
-		white-space : nowrap
-		overflow    : hidden
+		opacity  : 0
+		overflow : hidden
 `
