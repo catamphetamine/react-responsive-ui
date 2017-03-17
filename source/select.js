@@ -770,10 +770,10 @@ export default class Select extends PureComponent
 
 	scrollable_list_height(state = this.state)
 	{
-		const { maxItems, options } = this.props
+		const { maxItems } = this.props
 
 		// (Adding vertical padding so that it shows these `maxItems` options fully)
-		return (state.height - 2 * state.vertical_padding) * (maxItems / options.length) + state.vertical_padding
+		return (state.height - 2 * state.vertical_padding) * (maxItems / this.get_options().length) + state.vertical_padding
 	}
 
 	should_animate()
