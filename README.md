@@ -172,7 +172,7 @@ class Application extends Component {
   }
 }
 
-@CanDrop(FILE, (props, dropped) => alert('Uploading file'))
+@CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
 class FileDropArea extends Component {
   render() {
     const { dropTarget, draggedOver, canDrop } = this.props

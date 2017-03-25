@@ -13,7 +13,7 @@ import { DragDropContext, DragLayer, DropTarget } from 'react-dnd'
 // 	}
 // }
 //
-// @CanDrop(FILE, (props, dropped) => alert('Uploading file'))
+// @CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
 // class FileDropArea extends Component {
 // 	render() {
 // 		const { dropTarget, draggedOver, canDrop } = this.props
@@ -31,7 +31,7 @@ export function CanDrop(type, drop)
 
 	return DropTarget(get_react_dnd_type(type),
 	{
-		drop: (props, monitor) => drop(props, get_dropped_object(monitor, type)),
+		drop: (props, monitor, component) => drop(props, get_dropped_object(monitor, type), component),
 
 		// canDrop(props, monitor)
 		// {
