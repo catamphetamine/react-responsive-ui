@@ -1,8 +1,6 @@
 # react-responsive-ui
 
-[![NPM Version][npm-badge]][npm]
-<!-- [![Build Status][travis-badge]][travis]
-[![Test Coverage][coveralls-badge]][coveralls] -->
+[![npm version](https://img.shields.io/npm/v/react-responsive-ui.svg?style=flat-square)](https://www.npmjs.com/package/react-responsive-ui)
 
 Slick and accurate React UI components. Work both on client side and server side, with javascript enabled and with javascript disabled (e.g. DarkNet).
 
@@ -274,9 +272,3 @@ npm install [module name with version].tar.gz
 ## License
 
 [MIT](LICENSE)
-[npm]: https://www.npmjs.org/package/react-responsive-ui
-[npm-badge]: https://img.shields.io/npm/v/react-responsive-ui.svg?style=flat-square
-[travis]: https://travis-ci.org/halt-hammerzeit/react-responsive-ui
-[travis-badge]: https://img.shields.io/travis/halt-hammerzeit/react-responsive-ui/master.svg?style=flat-square
-[coveralls]: https://coveralls.io/r/halt-hammerzeit/react-responsive-ui?branch=master
-[coveralls-badge]: https://img.shields.io/coveralls/halt-hammerzeit/react-responsive-ui/master.svg?style=flat-square
