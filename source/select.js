@@ -1364,7 +1364,9 @@ const styles = styler
 		align-items : center
 
 	selected_label
-		flex : 1
+		flex          : 1
+		overflow      : hidden
+		text-overflow : ellipsis
 
 	arrow
 
