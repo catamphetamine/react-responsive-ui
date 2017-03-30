@@ -7,7 +7,7 @@
 	width  : 2em;
 	height : 2em;
 
-	stroke : black;
+	stroke : currentColor;
 }
 
 .rrui__activity-indicator-circle-container
@@ -211,12 +211,12 @@
 	background-color : white;
 }
 
-.rrui__select__options--left-aligned
+.rrui__expandable--left-aligned
 {
 	left : 0;
 }
 
-.rrui__select__options--right-aligned
+.rrui__expandable--right-aligned
 {
 	right : 0;
 }

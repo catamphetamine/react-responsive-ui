@@ -383,8 +383,8 @@ export default class Select extends PureComponent
 						{
 							'rrui__expandable--expanded'                  : expanded,
 							'rrui__select__options--expanded'             : expanded,
-							'rrui__select__options--left-aligned'         : alignment === 'left',
-							'rrui__select__options--right-aligned'        : alignment === 'right',
+							'rrui__expandable--left-aligned'              : alignment === 'left',
+							'rrui__expandable--right-aligned'             : alignment === 'right',
 							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
 							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
 							// CSS selector performance optimization
