@@ -128,7 +128,11 @@ export default class Checkbox extends PureComponent
 							style={ styles.checkbox_input }
 							className="rrui__checkbox__input"/>
 
-						<div className="rrui__checkbox__box"/>
+						<div
+							className={ classNames('rrui__checkbox__box',
+							{
+								'rrui__checkbox__box--no-label' : !children
+							}) }/>
 
 						<svg
 							viewBox={ checkmark_svg_canvas_dimensions }
