@@ -822,12 +822,13 @@ export default class Select extends PureComponent
 
 		if (!expanded && autocomplete)
 		{
-			const autocomplete_value = this.get_selected_option_label() || ''
-
 			this.setState
 			({
-				autocomplete_input_value : autocomplete_value,
-				matching_options         : this.get_matching_options(options, autocomplete_value)
+				// The input value can't be `undefined`
+				// because in that case React would complain
+				// about it being an "uncontrolled input"
+				autocomplete_input_value : undefined,
+				matching_options         : options
 			})
 
 			// if (!this.state.autocomplete_width)
