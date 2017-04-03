@@ -138,12 +138,14 @@ export default class Checkbox extends PureComponent
 						</svg>
 					</div>
 
-					<label
-						onClick={ this.toggle }
-						className="rrui__checkbox__label"
-						style={ styles.label }>
-						{ children }
-					</label>
+					{ children &&
+						<label
+							onClick={ this.toggle }
+							className="rrui__checkbox__label"
+							style={ styles.label }>
+							{ children }
+						</label>
+					}
 				</div>
 
 				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }

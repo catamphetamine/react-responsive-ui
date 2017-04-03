@@ -45,13 +45,6 @@ export default class Snackbar extends PureComponent
 		values: []
 	}
 
-	constructor()
-	{
-		super()
-
-		this.next = this.next.bind(this)
-	}
-
 	componentWillReceiveProps(new_props)
 	{
 		let { value, reset } = new_props
@@ -95,7 +88,7 @@ export default class Snackbar extends PureComponent
 	}
 
 	// Displays the next notification in the queue
-	next()
+	next = () =>
 	{
 		const { values } = this.state
 
