@@ -656,7 +656,7 @@ export default class Select extends PureComponent
 				<select
 					id={ id }
 					name={ name }
-					value={ value === null ? undefined : value }
+					value={ value === null ? '' : value }
 					disabled={ disabled }
 					onChange={ event => {} }
 					style={ style ? { ...style, width: 'auto' } : { width: 'auto' } }
