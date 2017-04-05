@@ -48,6 +48,12 @@ export default class Select extends PureComponent
 		// Placeholder (like "Choose")
 		placeholder : PropTypes.string,
 
+		// Whether to use native `<select/>`
+		native      : PropTypes.bool.isRequired,
+
+		// Whether to use native `<select/>` when expanded
+		nativeExpanded : PropTypes.bool.isRequired,
+
 		// Show icon only for selected item,
 		// and only if `concise` is `true`.
 		saveOnIcons : PropTypes.bool,
@@ -129,17 +135,14 @@ export default class Select extends PureComponent
 
 	static defaultProps =
 	{
-		alignment : 'left',
-
-		scroll : true,
-
-		maxItems : 6,
-
-		scrollbarPadding : true,
-
+		alignment          : 'left',
+		scroll             : true,
+		maxItems           : 6,
+		scrollbarPadding   : true,
 		focusUponSelection : true,
-
-		fallback : false,
+		fallback           : false,
+		native             : false,
+		nativeExpanded     : false
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -155,13 +158,6 @@ export default class Select extends PureComponent
 		// Shouldn't memory leak because
 		// the set of options is assumed to be constant.
 		this.options = {}
-
-		this.toggle           = this.toggle.bind(this)
-		this.document_clicked = this.document_clicked.bind(this)
-		this.on_key_down      = this.on_key_down.bind(this)
-
-		this.on_autocomplete_input_change = this.on_autocomplete_input_change.bind(this)
-		this.on_key_down_in_container = this.on_key_down_in_container.bind(this)
 
 		const
 		{
@@ -215,18 +211,25 @@ export default class Select extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		document.addEventListener('click', this.document_clicked)
+		const { fallback, nativeExpanded } = this.props
 
-		const { fallback } = this.props
+		document.addEventListener('click', this.document_clicked)
 
 		if (fallback)
 		{
 			this.setState({ javascript: true })
 		}
+
+		if (nativeExpanded)
+		{
+			this.resize_native_expanded_select()
+			window.addEventListener('resize', this.resize_native_expanded_select)
+		}
 	}
 
 	componentDidUpdate(previous_props, previous_state)
 	{
+		const { nativeExpanded, value } = this.props
 		const { expanded, height } = this.state
 
 		if (expanded !== previous_state.expanded)
@@ -239,11 +242,24 @@ export default class Select extends PureComponent
 				}
 			}
 		}
+
+		// If the `value` changed then resize the native expanded `<select/>`
+		if (nativeExpanded && value !== previous_props.value)
+		{
+			this.resize_native_expanded_select()
+		}
 	}
 
 	componentWillUnmount()
 	{
+		const { nativeExpanded } = this.props
+
 		document.removeEventListener('click', this.document_clicked)
+
+		if (nativeExpanded)
+		{
+			window.removeEventListener('resize', this.resize_native_expanded_select)
+		}
 	}
 
 	render()
@@ -260,6 +276,8 @@ export default class Select extends PureComponent
 			autocomplete,
 			saveOnIcons,
 			fallback,
+			native,
+			nativeExpanded,
 			disabled,
 			placeholder,
 			label,
@@ -339,7 +357,7 @@ export default class Select extends PureComponent
 				) }>
 
 				{/* Currently selected item */}
-				{ !menu && this.render_selected_item() }
+				{ !menu && !native && this.render_selected_item() }
 
 				{/* Label */}
 				{/* (this label is placed after the "selected" button
@@ -371,32 +389,34 @@ export default class Select extends PureComponent
 
 				{/* The list of selectable options */}
 				{/* Math.max(this.state.height, this.props.max_height) */}
-				<ul
-					ref={ ref => this.list = ref }
-					style={ list_style }
-					className={ classNames
-					(
-						'rrui__expandable',
-						'rrui__expandable--overlay',
-						'rrui__select__options',
-						'rrui__shadow',
-						{
-							'rrui__expandable--expanded'                  : expanded,
-							'rrui__select__options--expanded'             : expanded,
-							'rrui__expandable--left-aligned'              : alignment === 'left',
-							'rrui__expandable--right-aligned'             : alignment === 'right',
-							'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
-							'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
-							// CSS selector performance optimization
-							'rrui__select__options--upward'               : upward,
-							'rrui__select__options--downward'             : !upward
-						}
-					) }>
-					{ list_items }
-				</ul>
+				{ !native && !nativeExpanded &&
+					<ul
+						ref={ ref => this.list = ref }
+						style={ list_style }
+						className={ classNames
+						(
+							'rrui__expandable',
+							'rrui__expandable--overlay',
+							'rrui__select__options',
+							'rrui__shadow',
+							{
+								'rrui__expandable--expanded'                  : expanded,
+								'rrui__select__options--expanded'             : expanded,
+								'rrui__expandable--left-aligned'              : alignment === 'left',
+								'rrui__expandable--right-aligned'             : alignment === 'right',
+								'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
+								'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
+								// CSS selector performance optimization
+								'rrui__select__options--upward'               : upward,
+								'rrui__select__options--downward'             : !upward
+							}
+						) }>
+						{ list_items }
+					</ul>
+				}
 
 				{/* Fallback in case javascript is disabled */}
-				{ fallback && !this.state.javascript && this.render_static() }
+				{ (native || (fallback && !this.state.javascript)) && this.render_static() }
 
 				{/* Error message */}
 				{ error && indicateInvalid &&
@@ -521,7 +541,34 @@ export default class Select extends PureComponent
 		return markup
 	}
 
+	// Renders the selected option
+	// and possibly a transparent native `<select/>` above it
+	// so that the native `<select/>` expands upon click
+	// on the selected option
+	// (in case of `nativeExpanded` setting).
 	render_selected_item()
+	{
+		const { nativeExpanded } = this.props
+
+		const selected = this.render_selected_item_only()
+
+		if (!nativeExpanded)
+		{
+			return selected
+		}
+
+		const markup =
+		(
+			<div style={ styles.native_expanded_select_container }>
+				{ this.render_static() }
+				{ selected }
+			</div>
+		)
+
+		return markup
+	}
+
+	render_selected_item_only()
 	{
 		const
 		{
@@ -639,61 +686,131 @@ export default class Select extends PureComponent
 			options,
 			menu,
 			toggler,
-			style,
-			className,
+			fallback,
+			nativeExpanded,
 			children
 		}
 		= this.props
 
 		if (menu)
 		{
-			return <div className="rrui__rich__fallback">{toggler}</div>
+			const markup =
+			(
+				<div
+					className={ classNames
+					({
+						'rrui__rich__fallback' : fallback
+					}) }>
+					{toggler}
+				</div>
+			)
+
+			return markup
 		}
+
+		const value_is_empty = value === null || value === undefined
 
 		const markup =
 		(
-			<div className="rrui__rich__fallback">
-				<select
-					id={ id }
-					name={ name }
-					value={ value === null ? '' : value }
-					disabled={ disabled }
-					onChange={ event => {} }
-					style={ style ? { ...style, width: 'auto' } : { width: 'auto' } }
-					className={ className }>
+			<select
+				ref={ ref => this.native = ref }
+				id={ id }
+				name={ name }
+				value={ value_is_empty ? '' : value }
+				disabled={ disabled }
+				onChange={ this.native_select_on_change }
+				className={ classNames('rrui__input', 'rrui__select__native',
+				{
+					'rrui__select__native-expanded' : nativeExpanded,
+					'rrui__rich__fallback'          : fallback
+				}) }>
+				{
+					options
+					?
+					this.render_native_select_options(options, value_is_empty)
+					:
+					React.Children.map(children, (child) =>
 					{
-						options
-						?
-						options.map((item, i) =>
+						if (!child)
 						{
-							return <option
-								className="rrui__select__option"
-								key={ `${i} ${item.value}` }
-								value={ item.value }>
-								{ item.label }
-							</option>
-						})
-						:
-						React.Children.map(children, (child) =>
-						{
-							if (!child)
-							{
-								return
-							}
+							return
+						}
 
-							return <option
-								className="rrui__select__option"
+						const markup =
+						(
+							<option
+								className="rrui__select__native-option"
 								key={ child.props.value }
 								value={ child.props.value }>
 								{ child.props.label }
 							</option>
-						})
-					}
-				</select>
-			</div>
+						)
+
+						return markup
+					})
+				}
+			</select>
 		)
 
 		return markup
+	}
+
+	render_native_select_options(options, value_is_empty)
+	{
+		const { placeholder } = this.props
+
+		let empty_option_present = false
+
+		const rendered_options = options.map((option) =>
+		{
+			const { value, label } = option
+
+			if (value === null || value === undefined)
+			{
+				empty_option_present = true
+			}
+
+			const markup =
+			(
+				<option
+					className="rrui__select__native-option"
+					key={ get_option_key(value) }
+					value={ value }>
+					{ label }
+				</option>
+			)
+
+			return markup
+		})
+
+		if (value_is_empty && !empty_option_present)
+		{
+			rendered_options.unshift
+			(
+				<option
+					className="rrui__select__native-option"
+					key={ get_option_key(undefined) }
+					value="">
+					{ placeholder }
+				</option>
+			)
+		}
+
+		return rendered_options
+	}
+
+	native_select_on_change = (event) =>
+	{
+		const { onChange } = this.props
+
+		onChange(event.target.value)
+	}
+
+	resize_native_expanded_select = () =>
+	{
+		// For some strange reason 1px on the right side of the `<select/>`
+		// still falls through to the underlying selected option label.
+		ReactDOM.findDOMNode(this.native).style.width = (ReactDOM.findDOMNode(this.selected).offsetWidth + 1) + 'px'
 	}
 
 	get_selected_option()
@@ -788,7 +905,7 @@ export default class Select extends PureComponent
 		// return this.props.options.length >= this.props.transition_item_count_min
 	}
 
-	toggle(event, toggle_options = {})
+	toggle = (event, toggle_options = {}) =>
 	{
 		if (event)
 		{
@@ -809,9 +926,15 @@ export default class Select extends PureComponent
 			options,
 			value,
 			focusUponSelection,
-			onToggle
+			onToggle,
+			nativeExpanded
 		}
 		= this.props
+
+		if (nativeExpanded)
+		{
+			return
+		}
 
 		if (disabled)
 		{
@@ -933,7 +1056,7 @@ export default class Select extends PureComponent
 		this.toggle(undefined, { callback: () => onChange(value) })
 	}
 
-	document_clicked(event)
+	document_clicked = (event) =>
 	{
 		const autocomplete = ReactDOM.findDOMNode(this.autocomplete)
 		const selected_option = ReactDOM.findDOMNode(this.selected)
@@ -942,7 +1065,7 @@ export default class Select extends PureComponent
 		// Don't close the select if its expander button has been clicked,
 		// or if autocomplete has been clicked,
 		// or if an option was selected from the list.
-		if (options_list.contains(event.target)
+		if (options_list && options_list.contains(event.target)
 			|| (autocomplete && autocomplete.contains(event.target))
 			|| (selected_option && selected_option.contains(event.target)))
 		{
@@ -968,7 +1091,7 @@ export default class Select extends PureComponent
 	// and this `onKeyDown` Tab handler
 	// until `event.relatedTarget` support is consistent in React.
 	//
-	on_key_down_in_container(event)
+	on_key_down_in_container = (event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -996,7 +1119,7 @@ export default class Select extends PureComponent
 		}
 	}
 
-	on_key_down(event)
+	on_key_down = (event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -1293,7 +1416,7 @@ export default class Select extends PureComponent
 		})
 	}
 
-	on_autocomplete_input_change(event)
+	on_autocomplete_input_change = (event) =>
 	{
 		const { options } = this.props
 		const input = event.target.value
@@ -1389,6 +1512,9 @@ const styles = styler
 		display     : flex
 		align-items : center
 		height      : 100%
+
+	native_expanded_select_container
+		display : inline-block
 `
 
 // There can be an `undefined` value,
