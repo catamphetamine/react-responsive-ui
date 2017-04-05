@@ -14,6 +14,8 @@ import { submit_parent_form, get_scrollbar_width } from './misc/dom'
 //
 // https://material.google.com/components/menus.html
 
+const Empty_value_option_value = ''
+
 const value_prop_type = React.PropTypes.oneOfType
 ([
 	React.PropTypes.string,
@@ -142,7 +144,7 @@ export default class Select extends PureComponent
 		focusUponSelection : true,
 		fallback           : false,
 		native             : false,
-		nativeExpanded     : false
+		nativeExpanded     : false,
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -708,15 +710,13 @@ export default class Select extends PureComponent
 			return markup
 		}
 
-		const value_is_empty = value === null || value === undefined
-
 		const markup =
 		(
 			<select
 				ref={ ref => this.native = ref }
 				id={ id }
 				name={ name }
-				value={ value_is_empty ? '' : value }
+				value={ value_is_empty(value) ? Empty_value_option_value : value }
 				disabled={ disabled }
 				onChange={ this.native_select_on_change }
 				className={ classNames('rrui__input', 'rrui__select__native',
@@ -727,7 +727,7 @@ export default class Select extends PureComponent
 				{
 					options
 					?
-					this.render_native_select_options(options, value_is_empty)
+					this.render_native_select_options(options, value_is_empty(value))
 					:
 					React.Children.map(children, (child) =>
 					{
@@ -755,7 +755,7 @@ export default class Select extends PureComponent
 		return markup
 	}
 
-	render_native_select_options(options, value_is_empty)
+	render_native_select_options(options, empty_option_is_selected)
 	{
 		const { placeholder } = this.props
 
@@ -763,11 +763,12 @@ export default class Select extends PureComponent
 
 		const rendered_options = options.map((option) =>
 		{
-			const { value, label } = option
+			let { value, label } = option
 
-			if (value === null || value === undefined)
+			if (value_is_empty(value))
 			{
 				empty_option_present = true
+				value = Empty_value_option_value
 			}
 
 			const markup =
@@ -783,7 +784,7 @@ export default class Select extends PureComponent
 			return markup
 		})
 
-		if (value_is_empty && !empty_option_present)
+		if (empty_option_is_selected && !empty_option_present)
 		{
 			rendered_options.unshift
 			(
@@ -803,7 +804,16 @@ export default class Select extends PureComponent
 	{
 		const { onChange } = this.props
 
-		onChange(event.target.value)
+		let value = event.target.value
+
+		// Convert back from an empty string to `undefined`
+		if (value === Empty_value_option_value)
+		{
+			// `null` is not accounted for, use `undefined` instead.
+			value = undefined
+		}
+
+		onChange(value)
 	}
 
 	resize_native_expanded_select = () =>
@@ -1521,5 +1531,10 @@ const styles = styler
 // so just `{ value }` won't do here.
 function get_option_key(value)
 {
-	return value === undefined ? '@@rrui/select/undefined' : value
+	return value_is_empty(value) ? '@@rrui/select/undefined' : value
+}
+
+function value_is_empty(value)
+{
+	return value === null || value === undefined
 }
