@@ -52,6 +52,9 @@ export default class Text_input extends PureComponent
 		// Autofocuses the input field
 		focus            : PropTypes.bool,
 
+		// HTML `tabindex` attribute
+		tabIndex         : PropTypes.number,
+
 		// `<textarea/>` `rows` attribute (row count, i.e. height)
 		rows             : PropTypes.number.isRequired,
 
@@ -214,6 +217,7 @@ export default class Text_input extends PureComponent
 			inputStyle,
 			rows,
 			cols,
+			tabIndex,
 
 			// A custom input component
 			input,
@@ -246,7 +250,8 @@ export default class Text_input extends PureComponent
 				'rrui__text-input__input--multiline' : multiline
 			}),
 			style       : inputStyle ? { ...input_style, ...inputStyle } : input_style,
-			autoFocus   : focus
+			autoFocus   : focus,
+			tabIndex
 		}
 
 		// In case of `multiline` set to `true`

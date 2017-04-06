@@ -86,6 +86,9 @@ export default class Select extends PureComponent
 		// as icon only, without the label.
 		concise    : PropTypes.bool,
 
+		// HTML `tabindex` attribute
+		tabIndex   : PropTypes.number,
+
 		// If set to `true`, autocompletion is available
 		// upon expanding the options list.
 		autocomplete : PropTypes.bool,
@@ -580,7 +583,8 @@ export default class Select extends PureComponent
 			label,
 			disabled,
 			autocomplete,
-			concise
+			concise,
+			tabIndex
 		}
 		= this.props
 
@@ -638,6 +642,7 @@ export default class Select extends PureComponent
 				disabled={ disabled }
 				onClick={ this.toggle }
 				onKeyDown={ this.on_key_down }
+				tabIndex={ tabIndex }
 				style={ style }
 				className={ classNames
 				(
