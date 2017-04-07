@@ -157,21 +157,25 @@ export default class Menu extends PureComponent
 				},
 				className) }
 				style={ style }>
-				{ this.render_menu_items() }
+				{ this.render_menu_items(true) }
 			</ul>
 		)
 
 		return markup
 	}
 
-	render_menu_items()
+	render_menu_items(slideout)
 	{
 		const { items } = this.props
 
 		return items.map((item, i) => (
 			<li
 				key={ i }
-				className="rrui__slideout-menu-list-item">
+				className={ classNames('rrui__menu-list-item',
+				{
+					'rrui__slideout-menu-list-item' : slideout
+				},
+				item.className) }>
 				{ this.render_menu_link(item) }
 			</li>
 		))
@@ -191,7 +195,7 @@ export default class Menu extends PureComponent
 	// }
 }
 
-function React_router_link({ to, children })
+function React_router_link({ to, children, linkClassName })
 {
 	// Inner links get rendered via `react-router` `<Link/>`s
 	if (to && to[0] === '/')
@@ -200,7 +204,7 @@ function React_router_link({ to, children })
 		(
 			<Link
 				to={ to }
-				className="rrui__menu__item"
+				className={ classNames('rrui__menu__item', linkClassName) }
 				activeClassName="rrui__menu__item--selected">
 				{ children }
 			</Link>
