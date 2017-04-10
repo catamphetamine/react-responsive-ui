@@ -61,7 +61,6 @@
 		textarea
 		{
 			display : block;
-			width   : calc(0.3rem * 60);
 			margin  : 0;
 			padding : 0;
 
@@ -113,6 +112,11 @@
 			color        : #2BD7F0;
 			border-color : #2BD7F0;
 		}
+
+		.rrui__select__options
+		{
+			width : calc(100% + 0.3rem * 8);
+		}
 	</style>
 
 	<body>
@@ -155,22 +159,8 @@
 				input:
 				{
 					marginTop    : '1em',
-					marginRight  : '1em',
-					marginBottom : '1em'
-				},
-
-				select:
-				{
-					marginTop    : '0em',
-					marginRight  : '1em',
-					marginBottom : '1em'
-				},
-
-				textarea:
-				{
-					marginTop    : '0em',
-					marginRight  : '1em',
-					marginBottom : '1em'
+					marginBottom : '1em',
+					width        : '20rem'
 				},
 
 				label:
@@ -181,12 +171,6 @@
 					fontSize     : '1.4em'
 				},
 
-				checkbox:
-				{
-					display      : 'block',
-					marginTop    : '1em',
-					marginBottom : '1em'
-				},
 
 				switch_container:
 				{
@@ -367,7 +351,7 @@
 									<TextInput
 										multiline={true}
 										name="description"
-										style={style.textarea}
+										style={style.input}
 										value={this.state.textarea_value}
 										onChange={value => this.setState({ textarea_value: value })}
 										placeholder="Enter text"/>
@@ -379,7 +363,7 @@
 									<TextInput
 										multiline={true}
 										name="description"
-										style={style.textarea}
+										style={style.input}
 										value={this.state.textarea_value}
 										onChange={value => this.setState({ textarea_value: value })}
 										label="Enter text"/>
@@ -389,7 +373,7 @@
 									<h2 style={style.label}>Select</h2>
 
 									<Select
-										style={style.checkbox}
+										style={style.input}
 										name="dropdown"
 										label="Fruit"
 										value={this.state.selected}
@@ -429,7 +413,7 @@
 									<h2 style={style.label}>Select (autocomplete)</h2>
 
 									<Select
-										style={style.checkbox}
+										style={style.input}
 										autocomplete
 										name="dropdown"
 										value={this.state.selected}
@@ -469,7 +453,7 @@
 									<h2 style={style.label}>Select (icons)</h2>
 
 									<Select
-										style={style.checkbox}
+										style={style.input}
 										concise
 										name="dropdown"
 										value={this.state.selected_with_icon}
@@ -496,7 +480,7 @@
 									<h2 style={style.label}>Checkbox</h2>
 
 									<Checkbox
-										style={style.checkbox}
+										style={style.input}
 										name="checkbox"
 										value={this.state.checked}
 										onChange={ checked => this.setState({ checked: checked }) }>
@@ -521,7 +505,7 @@
 									<h2 style={style.label}>Segmented Control</h2>
 
 									<SegmentedControl
-										style={style.checkbox}
+										style={style.input}
 										name="button_group"
 										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
 										value={this.state.button_group}
@@ -532,7 +516,7 @@
 									<h2 style={style.label}>Date picker</h2>
 
 									<DatePicker
-										style={style.checkbox}
+										style={style.input}
 										label="date"
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}/>
