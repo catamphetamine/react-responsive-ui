@@ -63,6 +63,9 @@ export default class Select extends PureComponent
 		// Disables this control
 		disabled   : PropTypes.bool,
 
+		// Set to `true` to mark the field as required
+		required   : PropTypes.bool.isRequired,
+
 		// Selected option value
 		value      : value_prop_type,
 
@@ -148,6 +151,9 @@ export default class Select extends PureComponent
 		fallback           : false,
 		native             : false,
 		nativeExpanded     : false,
+
+		// Set to `true` to mark the field as required
+		required : false,
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -284,8 +290,10 @@ export default class Select extends PureComponent
 			native,
 			nativeExpanded,
 			disabled,
+			required,
 			placeholder,
 			label,
+			value,
 			error,
 			indicateInvalid,
 			style,
@@ -361,67 +369,71 @@ export default class Select extends PureComponent
 					className
 				) }>
 
-				{/* Currently selected item */}
-				{ !menu && !native && this.render_selected_item() }
+				<div className="rrui__input">
 
-				{/* Label */}
-				{/* (this label is placed after the "selected" button
-				     to utilize the CSS `+` selector) */}
-				{/* If the `placeholder` wasn't specified
-				    but `label` was and no option is currently selected
-				    then the `label` becomes the `placeholder`
-				    until something is selected */}
-				{ label && (this.get_selected_option() || placeholder) &&
-					<label
-						htmlFor={ id }
-						className={ classNames('rrui__input-label',
-						{
-							'rrui__input-label--invalid' : error && indicateInvalid
-						}) }
-						style={ styles.label }>
-						{ label }
-					</label>
-				}
+					{/* Currently selected item */}
+					{ !menu && !native && this.render_selected_item() }
 
-				{/* Menu toggler */}
-				{ menu &&
-					<div
-						ref={ ref => this.menu_toggler }
-						className="rrui__select__toggler">
-						{ React.cloneElement(toggler, { onClick : this.toggle }) }
-					</div>
-				}
-
-				{/* The list of selectable options */}
-				{/* Math.max(this.state.height, this.props.max_height) */}
-				{ !native && !nativeExpanded &&
-					<ul
-						ref={ ref => this.list = ref }
-						style={ list_style }
-						className={ classNames
-						(
-							'rrui__expandable',
-							'rrui__expandable--overlay',
-							'rrui__select__options',
-							'rrui__shadow',
+					{/* Label */}
+					{/* (this label is placed after the "selected" button
+					     to utilize the CSS `+` selector) */}
+					{/* If the `placeholder` wasn't specified
+					    but `label` was and no option is currently selected
+					    then the `label` becomes the `placeholder`
+					    until something is selected */}
+					{ label && (this.get_selected_option() || placeholder) &&
+						<label
+							htmlFor={ id }
+							className={ classNames('rrui__input-label',
 							{
-								'rrui__expandable--expanded'                  : expanded,
-								'rrui__select__options--expanded'             : expanded,
-								'rrui__expandable--left-aligned'              : alignment === 'left',
-								'rrui__expandable--right-aligned'             : alignment === 'right',
-								'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
-								'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
-								// CSS selector performance optimization
-								'rrui__select__options--upward'               : upward,
-								'rrui__select__options--downward'             : !upward
-							}
-						) }>
-						{ list_items }
-					</ul>
-				}
+								'rrui__input-label--required' : required && value_is_empty(value),
+								'rrui__input-label--invalid'  : error && indicateInvalid
+							}) }
+							style={ styles.label }>
+							{ label }
+						</label>
+					}
 
-				{/* Fallback in case javascript is disabled */}
-				{ (native || (fallback && !this.state.javascript)) && this.render_static() }
+					{/* Menu toggler */}
+					{ menu &&
+						<div
+							ref={ ref => this.menu_toggler }
+							className="rrui__select__toggler">
+							{ React.cloneElement(toggler, { onClick : this.toggle }) }
+						</div>
+					}
+
+					{/* The list of selectable options */}
+					{/* Math.max(this.state.height, this.props.max_height) */}
+					{ !native && !nativeExpanded &&
+						<ul
+							ref={ ref => this.list = ref }
+							style={ list_style }
+							className={ classNames
+							(
+								'rrui__expandable',
+								'rrui__expandable--overlay',
+								'rrui__select__options',
+								'rrui__shadow',
+								{
+									'rrui__expandable--expanded'                  : expanded,
+									'rrui__select__options--expanded'             : expanded,
+									'rrui__expandable--left-aligned'              : alignment === 'left',
+									'rrui__expandable--right-aligned'             : alignment === 'right',
+									'rrui__select__options--simple-left-aligned'  : !children && alignment === 'left',
+									'rrui__select__options--simple-right-aligned' : !children && alignment === 'right',
+									// CSS selector performance optimization
+									'rrui__select__options--upward'               : upward,
+									'rrui__select__options--downward'             : !upward
+								}
+							) }>
+							{ list_items }
+						</ul>
+					}
+
+					{/* Fallback in case javascript is disabled */}
+					{ (native || (fallback && !this.state.javascript)) && this.render_static() }
+				</div>
 
 				{/* Error message */}
 				{ error && indicateInvalid &&
@@ -619,7 +631,6 @@ export default class Select extends PureComponent
 					style={ style }
 					className={ classNames
 					(
-						'rrui__input',
 						'rrui__select__selected',
 						'rrui__select__selected--autocomplete',
 						{
@@ -646,7 +657,6 @@ export default class Select extends PureComponent
 				style={ style }
 				className={ classNames
 				(
-					'rrui__input',
 					'rrui__select__selected',
 					{
 						'rrui__select__selected--nothing' : !selected_label
@@ -1496,6 +1506,7 @@ const styles = styler
 		overflow-x      : hidden
 
 	selected
+		height     : 100%
 		box-sizing : border-box
 
 	selected_flex_wrapper

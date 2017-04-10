@@ -1,3 +1,14 @@
+0.6.0 / 10.04.2017
+==================
+
+Refactoring component styling to better match CSS grid styling (`.col-x`):
+
+  * (breaking change) Now it stretches the inputs to full column width by default. Because everyone uses CSS grids today (like Bootstrap Grid). See `react-responsive-ui.css` diff for the change (a simple `width: 100%` rule).
+  * (breaking change) Changed `<Select/>` and `<DatePicker/>` markup a bit: they're now wrapped in a `<div className="rrui__input"/>` wrapper (and added `height: 100%` CSS rule for the contents).
+  * `<Modal/>` now receives `className` parameter.
+  * Added `stretch` flag for `<Button/>`s to stretch them to full width.
+  * Added `floatingLabel` boolean flag for `<TextInput/>`.
+
 0.5.0 / 06.03.2017
 ===================
 

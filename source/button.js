@@ -31,6 +31,9 @@ export default class Button extends PureComponent
 		// HTML `title` attribute
 		title           : PropTypes.string,
 
+		// Set to `true` to stretch the button to full width
+		stretch         : PropTypes.bool.isRequired,
+
 		// CSS class name
 		className       : PropTypes.string,
 
@@ -39,6 +42,12 @@ export default class Button extends PureComponent
 
 		// CSS style object for the button itself
 		buttonStyle     : PropTypes.object
+	}
+
+	static defaultProps =
+	{
+		// Set to `true` to stretch the button to full width
+		stretch : false
 	}
 
 	constructor()
@@ -57,6 +66,7 @@ export default class Button extends PureComponent
 			busy,
 			submit,
 			title,
+			stretch,
 			style,
 			className
 		}
@@ -70,7 +80,8 @@ export default class Button extends PureComponent
 				className={ classNames('rrui__input', 'rrui__button',
 				{
 					'rrui__button--busy'     : busy,
-					'rrui__button--disabled' : disabled
+					'rrui__button--disabled' : disabled,
+					'rrui__button--stretch'  : stretch
 				},
 				className) }
 				style={ style ? { ...container_style, ...style } : container_style }>

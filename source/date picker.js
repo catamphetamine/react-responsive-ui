@@ -23,6 +23,9 @@ export default class DatePicker extends PureComponent
 		// An optional label placed on top of the input field
 		label : PropTypes.string,
 
+		// `<input/>` placeholder
+		placeholder : PropTypes.string,
+
 		// `0` means "Sunday", `1` means "Monday", etc.
 		// (is `0` by default)
 		firstDayOfWeek : PropTypes.number.isRequired,
@@ -45,6 +48,9 @@ export default class DatePicker extends PureComponent
 		// Disables the input
 		disabled : PropTypes.bool,
 
+		// Set to `true` to mark the field as required
+		required : PropTypes.bool.isRequired,
+
 		// HTML `<input/>` `name` attribute
 		name : PropTypes.string,
 
@@ -57,27 +63,19 @@ export default class DatePicker extends PureComponent
 
 	static defaultProps =
 	{
-		format: 'DD/MM/YYYY',
+		format : 'DD/MM/YYYY',
+
 		// locale: 'en-US',
-		firstDayOfWeek: 0
+		firstDayOfWeek : 0,
+
+		// Set to `true` to mark the field as required
+		required : false
 	}
 
 	state =
 	{
 		expanded     : false,
 		selected_day : null
-	}
-
-	constructor()
-	{
-		super()
-
-		this.on_day_click      = this.on_day_click.bind(this)
-		this.on_input_change   = this.on_input_change.bind(this)
-		this.on_input_focus    = this.on_input_focus.bind(this)
-		this.on_input_key_down = this.on_input_key_down.bind(this)
-		this.on_key_down_in_container = this.on_key_down_in_container.bind(this)
-		this.document_clicked  = this.document_clicked.bind(this)
 	}
 
 	componentDidMount()
@@ -90,7 +88,7 @@ export default class DatePicker extends PureComponent
 		document.removeEventListener('click', this.document_clicked)
 	}
 
-	on_input_focus()
+	on_input_focus = () =>
 	{
 		const { value, format } = this.props
 
@@ -110,7 +108,7 @@ export default class DatePicker extends PureComponent
 	// and this `onKeyDown` Tab handler
 	// until `event.relatedTarget` support is consistent in React.
 	//
-	on_key_down_in_container(event)
+	on_key_down_in_container = (event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -131,7 +129,7 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	on_input_key_down(event)
+	on_input_key_down = (event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -179,7 +177,7 @@ export default class DatePicker extends PureComponent
 		// in cases when a user manually typed in a date and then tabbed away.
 	}
 
-	on_input_change(event)
+	on_input_change = (event) =>
 	{
 		const { value } = event.target
 		const { onChange, format } = this.props
@@ -200,7 +198,7 @@ export default class DatePicker extends PureComponent
 		() => this.daypicker.showMonth(selected_day))
 	}
 
-	on_day_click(event, selected_day)
+	on_day_click = (event, selected_day) =>
 	{
 		const { format, onChange } = this.props
 
@@ -243,7 +241,7 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	document_clicked(event)
+	document_clicked = (event) =>
 	{
 		const container = ReactDOM.findDOMNode(this.container)
 
@@ -265,7 +263,9 @@ export default class DatePicker extends PureComponent
 			value,
 			firstDayOfWeek,
 			disabled,
+			required,
 			label,
+			placeholder,
 			error,
 			indicateInvalid,
 			className,
@@ -290,67 +290,65 @@ export default class DatePicker extends PureComponent
 				}) }
 				style={ style }>
 
-				<input
-					id={ id }
-					type="text"
-					ref={ ref => this.input = ref }
-					placeholder={ typeof format === 'string' ? format : undefined }
-					disabled={ disabled }
-					value={ text_value !== undefined ? text_value : format_date(value, format) }
-					onKeyDown={ this.on_input_key_down }
-					onChange={ this.on_input_change }
-					onFocus={ this.on_input_focus }
-					className={ classNames
-					(
-						'rrui__input',
-						'rrui__date-picker__input'
-					) }
-					style={ styles.input }/>
+				<div className="rrui__input">
+					<input
+						id={ id }
+						type="text"
+						ref={ ref => this.input = ref }
+						placeholder={ placeholder || (typeof format === 'string' ? format : undefined) }
+						disabled={ disabled }
+						value={ text_value !== undefined ? text_value : format_date(value, format) }
+						onKeyDown={ this.on_input_key_down }
+						onChange={ this.on_input_change }
+						onFocus={ this.on_input_focus }
+						className="rrui__date-picker__input"
+						style={ styles.input }/>
 
-				{/* Label */}
-				{/* (this label is placed after the `<input/>`
-				     to utilize the CSS `+` selector) */}
-				{ label &&
-					<label
-						htmlFor={ id }
-						className={ classNames('rrui__input-label',
-						{
-							'rrui__input-label--invalid' : error && indicateInvalid
-						}) }
-						style={ styles.label }>
-						{ label }
-					</label>
-				}
+					{/* Label */}
+					{/* (this label is placed after the `<input/>`
+					     to utilize the CSS `+` selector) */}
+					{ label &&
+						<label
+							htmlFor={ id }
+							className={ classNames('rrui__input-label',
+							{
+								'rrui__input-label--required' : required && !value,
+								'rrui__input-label--invalid'  : error && indicateInvalid
+							}) }
+							style={ styles.label }>
+							{ label }
+						</label>
+					}
 
-				{/* <DayPicker/> doesn't support `style` property */}
-				<div
-					className={ classNames
-					(
-						'rrui__expandable',
-						'rrui__expandable--overlay',
-						'rrui__shadow',
-						'rrui__date-picker__collapsible',
-						{
-							'rrui__expandable--expanded' : expanded
-						}
-					) }>
-					<DayPicker
-						ref={ ref => this.daypicker = ref }
-						initialMonth={ value }
-						firstDayOfWeek={ firstDayOfWeek }
-						onDayClick={ this.on_day_click }
-						onKeyDown={ this.on_calendar_key_down }
-						selectedDays={ day => DateUtils.isSameDay(value, day) }
+					{/* <DayPicker/> doesn't support `style` property */}
+					<div
 						className={ classNames
 						(
-							'rrui__expandable__content',
-							'rrui__date-picker__calendar',
+							'rrui__expandable',
+							'rrui__expandable--overlay',
+							'rrui__shadow',
+							'rrui__date-picker__collapsible',
 							{
-								// CSS selector performance optimization
-								'rrui__expandable__content--expanded'   : expanded,
-								'rrui__date-picker__calendar--expanded' : expanded
+								'rrui__expandable--expanded' : expanded
 							}
-						) }/>
+						) }>
+						<DayPicker
+							ref={ ref => this.daypicker = ref }
+							initialMonth={ value }
+							firstDayOfWeek={ firstDayOfWeek }
+							onDayClick={ this.on_day_click }
+							onKeyDown={ this.on_calendar_key_down }
+							selectedDays={ day => DateUtils.isSameDay(value, day) }
+							className={ classNames
+							(
+								'rrui__expandable__content',
+								'rrui__date-picker__calendar',
+								{
+									// CSS selector performance optimization
+									'rrui__expandable__content--expanded'   : expanded
+								}
+							) }/>
+					</div>
 				</div>
 
 				{/* Error message */}
@@ -430,5 +428,7 @@ const styles = style
 		height      : 100%
 
 	input
+		height     : 100%
+		font-size  : inherit
 		box-sizing : border-box
 `

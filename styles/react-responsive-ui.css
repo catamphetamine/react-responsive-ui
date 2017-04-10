@@ -78,10 +78,15 @@
 
 .rrui__button
 {
-	position   : relative;
 	display    : inline-block;
+	position   : relative;
 	cursor     : pointer;
 	transition : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+}
+
+.rrui__button--stretch
+{
+	display : block;
 }
 
 .rrui__button__button
@@ -134,17 +139,6 @@
 /*===========================================================
 = Select                                                    =
 ===========================================================*/
-
-.rrui__select
-{
-	/*
-	Sometimes (e.g. when using mobile dropdown menus)
-	`position: relative` could be overridden to `static`
-	to allow for the menu stretching to full screen width.
-	*/
-	position : relative;
-	display  : inline-block;
-}
 
 .rrui__expandable
 {
@@ -321,10 +315,11 @@
 
 .rrui__select__selected
 {
-	border-bottom: 1px solid #C5D2E0;
-	transition: border 0.1s;
+	border-bottom : 1px solid #C5D2E0;
+	transition    : border 0.1s;
+
 	/* Because Chrome adds `text-align: center` for all buttons */
-	text-align: left;
+	text-align : left;
 }
 
 .rrui__select__selected:focus
@@ -575,7 +570,6 @@
 .rrui__segmented-control
 {
 	position : relative;
-	display  : inline-block;
 }
 
 .rrui__segmented-control__option
@@ -921,11 +915,31 @@ it would introduce page width jumps.
 }
 
 /*===========================================================
+= Inputs                                                    =
+===========================================================*/
+
+/* Stretches the inputs to full column width by default. */
+/* Because everyone uses CSS grids today. */
+.rrui__text-input,
+.rrui__text-input__input,
+.rrui__select,
+.rrui__select__selected,
+.rrui__select__options,
+.rrui__date-picker__input
+{
+	width: 100%;
+}
+
+/*===========================================================
 = Input                                                     =
 ===========================================================*/
 
 .rrui__input
 {
+	/* `position: relative` is for the floating label absolute positioning
+	   and also for `.rrui__select__options width` sizing */
+	position : relative;
+
 	height     : calc(0.3rem * 6);
 	/* For native `<select/>` in Safari */
 	min-height : calc(0.3rem * 6);
@@ -938,8 +952,8 @@ it would introduce page width jumps.
 
 .rrui__input-error
 {
-	padding-top : calc(2 * 0.15rem);
-	color       : #D30F00;
+	margin-top : calc(0.3rem);
+	color      : #D30F00;
 }
 
 /*===========================================================
@@ -969,6 +983,12 @@ it would introduce page width jumps.
 .rrui__date-picker__input:focus + .rrui__input-label
 {
 	color: #03B2CB;
+}
+
+.rrui__input-label--required:after
+{
+	content     : '*';
+	margin-left : 0.2em;
 }
 
 /*===========================================================
@@ -1330,7 +1350,8 @@ it would introduce page width jumps.
 
 .rrui__date-picker__collapsible
 {
-	background-color: white;
+	min-width : 100%;
+	background-color : white;
 }
 
 .rrui__date-picker__input

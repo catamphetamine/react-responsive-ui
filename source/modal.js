@@ -219,6 +219,7 @@ export default class Modal extends PureComponent
 					closeButton={ closeButton }
 					close={ this.close_if_not_busy }
 					style={ style }
+					className={ className }
 					fullscreen={ fullscreen }
 					could_not_close_because_busy={ could_not_close_because_busy }
 					form={ form }
@@ -473,12 +474,11 @@ class Modal_content extends PureComponent
 
 					// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
-				}) }
-				style={ styles.content }>
+				},
+				className) }
+				style={ style ? { ...styles.content, ...style } : styles.content }>
 
-				<div
-					className={ classNames('rrui__modal__content-body', className) }
-					style={ style }>
+				<div className="rrui__modal__content-body">
 
 					{ this.render_close_button() }
 

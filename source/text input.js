@@ -34,8 +34,14 @@ export default class Text_input extends PureComponent
 		// If this flag is `false` then the `error` is not shown (even if passed).
 		indicateInvalid  : PropTypes.bool,
 
-		// HTML 5 placeholder (instead of a label)
+		// Set to `true` to mark the field as required
+		required         : PropTypes.bool.isRequired,
+
+		// `<input/>` placeholder
 		placeholder      : PropTypes.string,
+
+		// Set to `false` to prevent the `<label/>` from floating
+		floatingLabel    : PropTypes.bool.isRequired,
 
 		// `<textarea/>` instead of an `<input type="text"/>`
 		multiline        : PropTypes.bool,
@@ -90,23 +96,17 @@ export default class Text_input extends PureComponent
 		// HTML input `type` attribute
 		type : 'text',
 
+		// Set to `false` to prevent the `<label/>` from floating
+		floatingLabel : true,
+
 		// Javascriptless users support (e.g. Tor)
 		fallback : false,
 
+		// Set to `true` to mark the field as required
+		required : false,
+
 		// Render an `<input/>` by default
 		input: 'input'
-	}
-
-	constructor()
-	{
-		super()
-
-		this.autoresize  = this.autoresize.bind(this)
-		this.on_change   = this.on_change.bind(this)
-		this.on_key_down = this.on_key_down.bind(this)
-
-		// const autoresize = this.autoresize()
-		// this.autoresize = throttle(() => autoresize(), 1000)
 	}
 
 	// Client side rendering, javascript is enabled
@@ -141,12 +141,16 @@ export default class Text_input extends PureComponent
 			indicateInvalid,
 			fallback,
 			disabled,
+			required,
+			floatingLabel,
 			style,
 			className
 		}
 		= this.props
 
 		const label_style = multiline ? styles.label_multiline : styles.label_single_line
+
+		const label_floats = placeholder === undefined && floatingLabel
 
 		const markup =
 		(
@@ -182,8 +186,9 @@ export default class Text_input extends PureComponent
 							{
 								// CSS selector performance optimization
 								'rrui__input-label--invalid'           : this.should_indicate_invalid(),
-								'rrui__input-label--floating'          : !placeholder,
-								'rrui__text-input__label--placeholder' : !placeholder && this.is_empty(),
+								'rrui__input-label--floating'          : label_floats,
+								'rrui__input-label--required'          : required && this.is_empty(),
+								'rrui__text-input__label--placeholder' : label_floats && this.is_empty(),
 								'rrui__text-input__label--multiline'   : multiline
 							}) }
 							style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
@@ -220,6 +225,7 @@ export default class Text_input extends PureComponent
 			tabIndex,
 
 			// A custom input component
+			// (e.g. for an `input-format` text input, like a phone number)
 			input,
 
 			// Passthrough properties
@@ -258,6 +264,7 @@ export default class Text_input extends PureComponent
 		// this is gonna be a `<textarea/>`
 		if (multiline)
 		{
+			// "keyup" is required for IE to properly reset height when deleting text
 			return <textarea
 				rows={ rows }
 				cols={ cols }
@@ -332,8 +339,7 @@ export default class Text_input extends PureComponent
 		return indicateInvalid && error
 	}
 
-	// "keyup" is required for IE to properly reset height when deleting text
-	autoresize(event)
+	autoresize = (event) =>
 	{
 		const measurements = this.measurements()
 		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
@@ -357,7 +363,7 @@ export default class Text_input extends PureComponent
 	// The underlying `input` component
 	// can pass both `event`s and `value`s
 	// to this parent `onChange` listener.
-	on_change(event)
+	on_change = (event) =>
 	{
 		// Extract `value` from the argument
 		// of this `onChange` listener
@@ -379,7 +385,7 @@ export default class Text_input extends PureComponent
 		onChange(value)
 	}
 
-	on_key_down(event)
+	on_key_down = (event) =>
 	{
 		// Submit the form on Cmd + Enter (or Ctrl + Enter)
 		if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
