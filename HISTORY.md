@@ -1,3 +1,8 @@
+0.6.4 / 11.04.2017
+==================
+
+  * Dropped both `moment` and `date-fns` in favour of a custom date formatter and parser (to reduce bundle size)
+
 0.6.0 / 10.04.2017
 ==================
 

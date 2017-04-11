@@ -7,14 +7,15 @@ import DayPicker, { DateUtils } from 'react-day-picker'
 import classNames from 'classnames'
 import { flat as style } from 'react-styling'
 
-import moment from 'moment'
+// // Moment.js takes 161 KB of space (minified) which is too much
+// import moment from 'moment'
 
-// `date-fns` would be a better alternative to moment
-// but it doesn't support templated date parsing
-// until version `2.0.0` of it is released.
-// https://github.com/date-fns/date-fns/issues/347
-// import parse_date from 'date-fns/parse'
-// import format_date from 'date-fns/format'
+// // `date-fns` would be a better alternative to moment
+// // but it doesn't support templated date parsing
+// // until version `2.0.0` of it is released.
+// // https://github.com/date-fns/date-fns/issues/347
+// import parse_date_date_fns from 'date-fns/parse'
+// import format_date_date_fns from 'date-fns/format'
 
 export default class DatePicker extends PureComponent
 {
@@ -30,8 +31,8 @@ export default class DatePicker extends PureComponent
 		// (is `0` by default)
 		firstDayOfWeek : PropTypes.number.isRequired,
 
-		// Date format
-		// http://momentjs.com/docs/#/displaying/
+		// Date format. Only supports `DD`, `MM` and `YYYY` for now (to reduce bundle size).
+		// Can support custom localized formats, perhaps, when `date-fns@2` is released.
 		// (is `DD/MM/YYYY` by default)
 		format : PropTypes.string.isRequired,
 		// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
@@ -368,16 +369,31 @@ function parse_date(text_value, format)
 		return
 	}
 
-	const moment_day = moment(text_value, format, true)
+	// Custom
+	return parse_date_custom(text_value, format)
 
-	if (!moment_day.isValid())
-	{
-		return
-	}
+	// // Using `date-fns`
+	// const date = parse_date_date_fns(text_value)
 
-	return moment_day.toDate()
+	// if (isNaN(date.getTime()))
+	// {
+	// 	return
+	// }
+
+	// return date
+
+	// // Using `Moment.js`
+	// const moment_day = moment(text_value, format, true)
+
+	// if (!moment_day.isValid())
+	// {
+	// 	return
+	// }
+
+	// return moment_day.toDate()
 }
 
+// (Moment.js)
 // Formats a `Date` into a text value provided a `format`
 function format_date(date, format)
 {
@@ -386,7 +402,143 @@ function format_date(date, format)
 		return ''
 	}
 
-	return moment(date).format(format)
+	// Custom
+	return format_date_custom(date, format)
+
+	// // Using `date-fns`
+	// return format_date_date_fns(date, format)
+
+	// // Using `Moment.js`
+	// return moment(date).format(format)
+}
+
+function parse_date_custom(string, format)
+{
+	if (!string)
+	{
+		return
+	}
+
+	const year  = extract(string, format, 'YYYY')
+	const month = extract(string, format, 'MM')
+	const day   = extract(string, format, 'DD')
+
+	console.log(year, month, day)
+
+	if (year === undefined || month === undefined || day === undefined)
+	{
+		return
+	}
+
+	const date = new Date
+	(
+		year,
+		month - 1,
+		day
+	)
+
+	// If `new Date()` returns "Invalid Date"
+	// (sometimes it does)
+	if (isNaN(date.getTime()))
+	{
+		return
+	}
+
+	return date
+}
+
+function extract(string, template, piece)
+{
+	const starts_at = template.indexOf(piece)
+
+	if (starts_at < 0)
+	{
+		return
+	}
+
+	// Check overall sanity
+	if (!corresponds_to_template(string, template))
+	{
+		return
+	}
+
+	const number = parseInt(string.slice(starts_at, starts_at + piece.length))
+
+	if (!isNaN(number))
+	{
+		return number
+	}
+}
+
+function corresponds_to_template(string, template)
+{
+	if (string.length !== template.length)
+	{
+		return false
+	}
+
+	let i = 0
+	while (i < string.length)
+	{
+		const is_a_digit = string[i] >= '0' && string[i] <= '9'
+
+		if (!is_a_digit)
+		{
+			if (string[i] !== template[i])
+			{
+				return false
+			}
+		}
+		else
+		{
+			if (template[i] !== 'D' && template[i] !== 'M' && template[i] !== 'Y')
+			{
+				return false
+			}
+		}
+
+		i++
+	}
+
+	return true
+}
+
+console.log(corresponds_to_template('1231231234', 'DD.MM.YYYY'))
+console.log(corresponds_to_template('12.12.1234', 'DD.MM.YYYY'))
+
+console.log(parse_date_custom('fadsfasd', 'DD.MM.YYYY'))
+console.log(parse_date_custom('28.02.2017', 'DD.MM.YYYY'))
+console.log(parse_date_custom('12/02/2017', 'MM/DD/YYYY'))
+console.log(parse_date_custom('99/99/2017', 'MM/DD/YYYY'))
+
+function format_date_custom(date, format)
+{
+	if (!(date instanceof Date))
+	{
+		return
+	}
+
+	const day   = date.getDate()
+	const month = date.getMonth() + 1
+	const year  = date.getFullYear()
+
+	return format
+		.replace('DD',   pad_with_zeroes(String(day),   2))
+		.replace('MM',   pad_with_zeroes(String(month), 2))
+		.replace('YYYY', pad_with_zeroes(String(year),  4))
+}
+
+console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
+console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
+
+function pad_with_zeroes(string, target_length)
+{
+	while (string.length < target_length)
+	{
+		string = '0' + string
+	}
+
+	return string
 }
 
 // // Intl date formatting
