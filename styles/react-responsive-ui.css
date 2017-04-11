@@ -256,7 +256,8 @@
 
 .rrui__select__option
 {
-	width: 100%;
+	display : block;
+	width   : 100%;
 
 	padding-left  : calc(0.3rem * 4);
 	padding-right : calc(0.3rem * 4);
@@ -941,8 +942,6 @@ it would introduce page width jumps.
 	position : relative;
 
 	height     : calc(0.3rem * 6);
-	/* For native `<select/>` in Safari */
-	min-height : calc(0.3rem * 6);
 }
 
 .rrui__input--multiline

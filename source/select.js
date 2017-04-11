@@ -399,6 +399,7 @@ export default class Select extends PureComponent
 					{ menu &&
 						<div
 							ref={ ref => this.menu_toggler }
+							style={ styles.selected }
 							className="rrui__select__toggler">
 							{ React.cloneElement(toggler, { onClick : this.toggle }) }
 						</div>
