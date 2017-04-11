@@ -16,9 +16,9 @@ export default class Segmented_control extends PureComponent
 			PropTypes.shape
 			({
 				// Option value
-				value: React.PropTypes.string.isRequired,
+				value: PropTypes.string.isRequired,
 				// Option label
-				label: React.PropTypes.string.isRequired
+				label: PropTypes.string.isRequired
 			})
 		)
 		.isRequired,

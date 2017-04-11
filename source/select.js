@@ -17,11 +17,11 @@ import { submit_parent_form, get_scrollbar_width } from './misc/dom'
 
 const Empty_value_option_value = ''
 
-const value_prop_type = React.PropTypes.oneOfType
+const value_prop_type = PropTypes.oneOfType
 ([
-	React.PropTypes.string,
-	React.PropTypes.number,
-	React.PropTypes.bool
+	PropTypes.string,
+	PropTypes.number,
+	PropTypes.bool
 ])
 
 export default class Select extends PureComponent
@@ -36,9 +36,9 @@ export default class Select extends PureComponent
 				// Option value (may be `undefined`)
 				value : value_prop_type,
 				// Option label (may be `undefined`)
-				label : React.PropTypes.string,
+				label : PropTypes.string,
 				// Option icon
-				icon  : React.PropTypes.node
+				icon  : PropTypes.node
 			})
 		),
 
