@@ -200,7 +200,7 @@ export default class DatePicker extends PureComponent
 		() => this.daypicker.showMonth(selected_day))
 	}
 
-	on_day_click = (event, selected_day) =>
+	on_day_click = (selected_day) =>
 	{
 		const { format, onChange } = this.props
 
@@ -340,7 +340,7 @@ export default class DatePicker extends PureComponent
 							firstDayOfWeek={ firstDayOfWeek }
 							onDayClick={ this.on_day_click }
 							onKeyDown={ this.on_calendar_key_down }
-							selectedDays={ day => DateUtils.isSameDay(value, day) }
+							selectedDays={ value }
 							className={ classNames
 							(
 								'rrui__expandable__content',
