@@ -149,8 +149,6 @@ export default class Text_input extends PureComponent
 		}
 		= this.props
 
-		const label_style = multiline ? styles.label_multiline : styles.label_single_line
-
 		const label_floats = placeholder === undefined && floatingLabel
 
 		const markup =
@@ -191,7 +189,7 @@ export default class Text_input extends PureComponent
 								'rrui__input-label--required'          : required && this.is_empty(),
 								'rrui__text-input__label--placeholder' : label_floats && this.is_empty()
 							}) }
-							style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
+							style={ labelStyle ? { ...styles.label, ...labelStyle } : styles.label }>
 							{ label }
 						</label>
 					}
@@ -463,13 +461,10 @@ const styles = styler
 
 		pointer-events      : none
 
-		&multiline
-
-		&single_line
-			// Vertically align
-			display     : flex
-			align-items : center
-			height      : 100%
+		// Vertically align the text
+		// (the height is gonna be set in a CSS stylesheet)
+		display     : flex
+		align-items : center
 
 	field
 		display  : block
