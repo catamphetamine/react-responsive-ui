@@ -423,8 +423,6 @@ function parse_date_custom(string, format)
 	const month = extract(string, format, 'MM')
 	const day   = extract(string, format, 'DD')
 
-	console.log(year, month, day)
-
 	if (year === undefined || month === undefined || day === undefined)
 	{
 		return
@@ -503,13 +501,13 @@ function corresponds_to_template(string, template)
 	return true
 }
 
-console.log(corresponds_to_template('1231231234', 'DD.MM.YYYY'))
-console.log(corresponds_to_template('12.12.1234', 'DD.MM.YYYY'))
+// console.log(corresponds_to_template('1231231234', 'DD.MM.YYYY'))
+// console.log(corresponds_to_template('12.12.1234', 'DD.MM.YYYY'))
 
-console.log(parse_date_custom('fadsfasd', 'DD.MM.YYYY'))
-console.log(parse_date_custom('28.02.2017', 'DD.MM.YYYY'))
-console.log(parse_date_custom('12/02/2017', 'MM/DD/YYYY'))
-console.log(parse_date_custom('99/99/2017', 'MM/DD/YYYY'))
+// console.log(parse_date_custom('fadsfasd', 'DD.MM.YYYY'))
+// console.log(parse_date_custom('28.02.2017', 'DD.MM.YYYY'))
+// console.log(parse_date_custom('12/02/2017', 'MM/DD/YYYY'))
+// console.log(parse_date_custom('99/99/2017', 'MM/DD/YYYY'))
 
 function format_date_custom(date, format)
 {
@@ -528,8 +526,8 @@ function format_date_custom(date, format)
 		.replace('YYYY', pad_with_zeroes(String(year),  4))
 }
 
-console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
-console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
+// console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
+// console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
 
 function pad_with_zeroes(string, target_length)
 {
