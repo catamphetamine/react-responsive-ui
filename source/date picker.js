@@ -184,6 +184,13 @@ export default class DatePicker extends PureComponent
 		const { value } = event.target
 		const { onChange, format } = this.props
 
+		// When the date is erased, reset it.
+		if (!value)
+		{
+			onChange(undefined)
+			return this.setState({ text_value: '' })
+		}
+
 		const selected_day = parse_date(value, format)
 
 		if (!selected_day)
@@ -245,10 +252,11 @@ export default class DatePicker extends PureComponent
 
 	document_clicked = (event) =>
 	{
-		const container = ReactDOM.findDOMNode(this.container)
+		const input = ReactDOM.findDOMNode(this.input)
+		const calendar = ReactDOM.findDOMNode(this.daypicker)
 
-		// Don't close the dropdown if the click is inside container
-		if (container.contains(event.target))
+		// Don't close the dropdown if the click is inside input or calendar
+		if (input.contains(event.target) || calendar.contains(event.target))
 		{
 			return
 		}
@@ -284,7 +292,6 @@ export default class DatePicker extends PureComponent
 
 		return (
 			<div
-				ref={ ref => this.container = ref }
 				onKeyDown={ this.on_key_down_in_container }
 				className={ classNames('rrui__date-picker', className,
 				{
@@ -336,11 +343,11 @@ export default class DatePicker extends PureComponent
 						) }>
 						<DayPicker
 							ref={ ref => this.daypicker = ref }
-							initialMonth={ value }
+							initialMonth={ normalize_value(value) }
 							firstDayOfWeek={ firstDayOfWeek }
 							onDayClick={ this.on_day_click }
 							onKeyDown={ this.on_calendar_key_down }
-							selectedDays={ value }
+							selectedDays={ normalize_value(value) }
 							className={ classNames
 							(
 								'rrui__expandable__content',
@@ -583,3 +590,14 @@ const styles = style
 		font-size  : inherit
 		box-sizing : border-box
 `
+
+function normalize_value(value)
+{
+	// Specially for `knex.js`
+	if (value === null)
+	{
+		return undefined
+	}
+
+	return value
+}
