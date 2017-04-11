@@ -940,13 +940,12 @@ it would introduce page width jumps.
 	/* `position: relative` is for the floating label absolute positioning
 	   and also for `.rrui__select__options width` sizing */
 	position : relative;
-
-	height     : calc(0.3rem * 6);
 }
 
-.rrui__input--multiline
+.rrui__input:not(.rrui__input--multiline),
+.rrui__input-label
 {
-	height : auto;
+	height : calc(0.3rem * 6);
 }
 
 .rrui__input-error

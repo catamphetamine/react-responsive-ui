@@ -189,8 +189,7 @@ export default class Text_input extends PureComponent
 								'rrui__input-label--invalid'           : this.should_indicate_invalid(),
 								'rrui__input-label--floating'          : label_floats,
 								'rrui__input-label--required'          : required && this.is_empty(),
-								'rrui__text-input__label--placeholder' : label_floats && this.is_empty(),
-								'rrui__text-input__label--multiline'   : multiline
+								'rrui__text-input__label--placeholder' : label_floats && this.is_empty()
 							}) }
 							style={ labelStyle ? { ...label_style, ...labelStyle } : label_style }>
 							{ label }
