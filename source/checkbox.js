@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import { flat as styler } from 'react-styling'
 import classNames from 'classnames'

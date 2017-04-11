@@ -1,6 +1,7 @@
 // http://codepen.io/jczimm/pen/vEBpoL
 
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import styler from 'react-styling'
 import classNames from 'classnames'
 

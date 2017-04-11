@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 
 // // when adjusting this transition time also adjust it in styles/xs-m.scss
 // const menu_transition_duration = 0 // 210 // milliseconds

@@ -1,7 +1,8 @@
 // Derived from `react-day-picker` example
 // http://react-day-picker.js.org/examples/?overlay
 
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import classNames from 'classnames'
