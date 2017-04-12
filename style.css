@@ -478,8 +478,6 @@
 .rrui__checkbox__label
 {
 	display        : inline-block;
-	position       : relative;
-	z-index        : 1;
 	padding-left   : 0.5em;
 	vertical-align : bottom;
 	color          : inherit;
@@ -523,6 +521,7 @@
 {
 	position: relative;
 	margin-top: 0.1em;
+	line-height: 0;
 }
 
 .rrui__checkbox__input,
