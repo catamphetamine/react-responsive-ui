@@ -31,7 +31,7 @@ export default class DatePicker extends PureComponent
 		// (is `0` by default)
 		firstDayOfWeek : PropTypes.number.isRequired,
 
-		// Date format. Only supports `DD`, `MM` and `YYYY` for now (to reduce bundle size).
+		// Date format. Only supports `DD`, `MM`, `YY` and `YYYY` for now (to reduce bundle size).
 		// Can support custom localized formats, perhaps, when `date-fns@2` is released.
 		// (is `DD/MM/YYYY` by default)
 		format : PropTypes.string.isRequired,
@@ -424,13 +424,26 @@ function parse_date_custom(string, format)
 		return
 	}
 
-	const year  = extract(string, format, 'YYYY')
+	let year = extract(string, format, 'YYYY')
+
+	if (year === undefined)
+	{
+		year = extract(string, format, 'YY')
+
+		if (year !== undefined)
+		{
+			const current_year = new Date().getFullYear()
+			const current_year_century = current_year - current_year % 100
+			year += current_year_century
+		}
+	}
+
 	const month = extract(string, format, 'MM')
 	const day   = extract(string, format, 'DD')
 
 	if (year === undefined || month === undefined || day === undefined)
 	{
-		return
+		return console.error(`Couldn't parse date, perhaps an unsupported format: ${format}. Only DD, MM, YY and YYYY are supported.`)
 	}
 
 	const date = new Date
@@ -513,6 +526,7 @@ function corresponds_to_template(string, template)
 // console.log(parse_date_custom('28.02.2017', 'DD.MM.YYYY'))
 // console.log(parse_date_custom('12/02/2017', 'MM/DD/YYYY'))
 // console.log(parse_date_custom('99/99/2017', 'MM/DD/YYYY'))
+// console.log(parse_date_custom('02/03/17', 'MM/DD/YY'))
 
 function format_date_custom(date, format)
 {
@@ -525,14 +539,24 @@ function format_date_custom(date, format)
 	const month = date.getMonth() + 1
 	const year  = date.getFullYear()
 
-	return format
+	let text = format
 		.replace('DD',   pad_with_zeroes(String(day),   2))
 		.replace('MM',   pad_with_zeroes(String(month), 2))
-		.replace('YYYY', pad_with_zeroes(String(year),  4))
+
+	if (text.indexOf('YYYY') >= 0)
+	{
+		return text.replace('YYYY', pad_with_zeroes(String(year), 4))
+	}
+
+	if (text.indexOf('YY') >= 0)
+	{
+		return text.replace('YY', pad_with_zeroes(String(year % 100), 2))
+	}
 }
 
 // console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
 // console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
+console.log(format_date_custom(new Date(), 'MM/DD/YY'))
 
 function pad_with_zeroes(string, target_length)
 {
