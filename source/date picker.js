@@ -556,7 +556,7 @@ function format_date_custom(date, format)
 
 // console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
 // console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
-console.log(format_date_custom(new Date(), 'MM/DD/YY'))
+// console.log(format_date_custom(new Date(), 'MM/DD/YY'))
 
 function pad_with_zeroes(string, target_length)
 {
