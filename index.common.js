@@ -4,7 +4,7 @@ exports = module.exports = {}
 
 exports.PageAndMenu = require('./build/page and menu').default
 exports.Page = require('./build/page').default
-exports.Menu = require('./build/menu').default
+exports.CollapsibleMenu = require('./build/menu').default
 exports.MenuButton = require('./build/menu button').default
 exports.Form = require('./build/form').default
 exports.Snackbar = require('./build/snackbar').default

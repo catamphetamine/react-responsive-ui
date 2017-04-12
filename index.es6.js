@@ -12,7 +12,7 @@ from './es6/page'
 
 export
 {
-	default as Menu
+	default as CollapsibleMenu
 }
 from './es6/menu'
 

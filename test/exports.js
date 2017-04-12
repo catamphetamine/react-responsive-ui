@@ -2,7 +2,7 @@ import
 {
 	PageAndMenu,
 	Page,
-	Menu,
+	CollapsibleMenu,
 	MenuButton,
 	Form,
 	Snackbar,
@@ -34,7 +34,7 @@ describe('React Responsive UI', function()
 	{
 		expect(PageAndMenu).to.be.a('function')
 		expect(Page).to.be.a('function')
-		expect(Menu).to.be.a('function')
+		expect(CollapsibleMenu).to.be.a('function')
 		expect(MenuButton).to.be.a('function')
 		expect(Form).to.be.a('function')
 		expect(Snackbar).to.be.a('function')
@@ -65,7 +65,7 @@ describe('React Responsive UI', function()
 
 		expect(_.PageAndMenu).to.be.a('function')
 		expect(_.Page).to.be.a('function')
-		expect(_.Menu).to.be.a('function')
+		expect(_.CollapsibleMenu).to.be.a('function')
 		expect(_.MenuButton).to.be.a('function')
 		expect(_.Form).to.be.a('function')
 		expect(_.Snackbar).to.be.a('function')
