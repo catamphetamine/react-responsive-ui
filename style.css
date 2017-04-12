@@ -1239,16 +1239,6 @@ it would introduce page width jumps.
 = Menu                                                      =
 ===========================================================*/
 
-.rrui__menu,
-.rrui__slideout-menu
-{
-	margin          : 0;
-	padding-left    : 0;
-	padding-top     : calc(2 * 0.3rem);
-	padding-bottom  : calc(2 * 0.3rem);
-	list-style-type : none;
-}
-
 .rrui__slideout-menu
 {
 	position : fixed;
@@ -1269,35 +1259,6 @@ it would introduce page width jumps.
 {
 	transform  : translate3d(0, 0, 0);
 	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
-}
-
-.rrui__slideout-menu .rrui__menu__item
-{
-	color: #ECF1F6;
-}
-
-.rrui__slideout-menu .rrui__menu__item:active
-{
-	color: #BBD9FA;
-}
-
-.rrui__menu__item
-{
-	display : block;
-	margin  : 0;
-
-	padding-top    : 0.3rem;
-	padding-bottom : 0.3rem;
-
-	padding-left  : calc(0.3rem * 2);
-	padding-right : calc(0.3rem * 3);
-
-	text-decoration : none;
-}
-
-.rrui__menu__item--selected
-{
-	color : #D4E8FF;
 }
 
 .rrui__slideout-menu-button

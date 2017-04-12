@@ -3,6 +3,7 @@
 
   * (breaking change) Dropped inline styles in favour of the CSS stylesheet (seems more convenient and theoretically more performant). Including the CSS via `require()` is the recommended way now.
   * (breaking change) Changed the path to style from `/styles/react-responsive-ui.css` to just `style.css`.
+  * (breaking change) `<Menu/>` has been rewritten and no longer accepts `items` and instead accepts `children`. And it's always `slideout` now.
 
 0.6.4 / 11.04.2017
 ==================
