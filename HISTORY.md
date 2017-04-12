@@ -1,3 +1,8 @@
+0.7.0 / 12.04.2017
+==================
+
+  * Dropped inline styles in favour of the CSS stylesheet (seems more convenient and theoretically more performant)
+
 0.6.4 / 11.04.2017
 ==================
 

@@ -135,7 +135,15 @@ from 'react-responsive-ui'
 
 ## CSS
 
-The CSS for this library is distributed along with the React components. Just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
+The CSS for this library is distributed along with the React components and it must be included on a page too.
+
+When using Webpack:
+
+```js
+require('react-responsive-ui/styles/react-responsive-ui.css')
+```
+
+When not using Webpack, just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
 
 ```html
 <head>
@@ -143,13 +151,7 @@ The CSS for this library is distributed along with the React components. Just co
 </head>
 ```
 
-This CSS file is meant as a base one and a developer should override the CSS rules defined in it (this can be done in a separate file) to better suit the project's needs.
-
-An alternative way of including the base CSS file when using Webpack would be:
-
-```js
-require('react-responsive-ui/styles/react-responsive-ui.css')
-```
+This CSS file is meant as a base one and a developer should override the CSS rules defined in it (in a separate file) to better suit the project's style.
 
 ## API
 

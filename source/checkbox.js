@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 // http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
@@ -110,13 +109,9 @@ export default class Checkbox extends PureComponent
 				className) }
 				style={ style }>
 
-				<div
-					style={ styles.checkbox_and_label }
-					className="rrui__input">
+				<div className="rrui__input">
 
-					<div
-						style={ styles.checkbox_container }
-						className="rrui__checkbox__checkbox">
+					<div className="rrui__checkbox__checkbox">
 
 						<input
 							ref={ ref => this.checkbox = ref }
@@ -126,7 +121,6 @@ export default class Checkbox extends PureComponent
 							onChange={ this.toggle }
 							onFocus={ this.on_focus }
 							onBlur={ this.on_blur }
-							style={ styles.checkbox_input }
 							className="rrui__checkbox__input"/>
 
 						<div
@@ -137,7 +131,6 @@ export default class Checkbox extends PureComponent
 
 						<svg
 							viewBox={ checkmark_svg_canvas_dimensions }
-							style={ styles.checkbox_checkmark }
 							className="rrui__checkbox__checkmark">
 							{ value ? this.render_checkmark() : null }
 						</svg>
@@ -146,8 +139,7 @@ export default class Checkbox extends PureComponent
 					{ children &&
 						<label
 							onClick={ this.toggle }
-							className="rrui__checkbox__label"
-							style={ styles.label }>
+							className="rrui__checkbox__label">
 							{ children }
 						</label>
 					}
@@ -197,7 +189,7 @@ export default class Checkbox extends PureComponent
 					defaultChecked={ value }
 					autoFocus={ focus }/>
 
-				<label className="rrui__checkbox__label" style={ styles.label_static }>
+				<label className="rrui__checkbox__label rrui__checkbox__label--fallback">
 					{ children }
 				</label>
 			</div>
@@ -240,7 +232,7 @@ export default class Checkbox extends PureComponent
 		// Go
 		path_style.strokeDashoffset = 0
 
-		this.setState({ path_style: { ...path_style, ...styles.svg_path } })
+		this.setState({ path_style: { ...path_style, ...svg_path_style } })
 	}
 
 	focus()
@@ -288,42 +280,9 @@ const checkmark_svg_path_style =
 	strokeLinejoin : 'round'
 }
 
-const styles = styler
-`
-	label
-		display : inline-block
-
-		-webkit-user-select : none
-		-moz-user-select    : none
-		-ms-user-select     : none
-		user-select         : none
-
-		&static
-			padding-left : 0
-
-	checkbox_and_label
-		display     : flex
-		align-items : center
-
-	checkbox_container
-		position : relative
-
-	checkbox
-		position : absolute
-
-		&checkmark
-			pointer-events : none
-			overflow       : visible
-
-		&input
-			display        : inline-block
-			margin         : 0
-			vertical-align : bottom
-			z-index        : 100
-			opacity        : 0
-
-	svg_path
-		stroke-linecap  : round
-		stroke-linejoin : round
-		fill            : none
-`
+const svg_path_style =
+{
+	strokeLinecap  : 'round',
+	strokeLinejoin : 'round',
+	fill           : 'none'
+}

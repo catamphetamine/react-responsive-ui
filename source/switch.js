@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import styler from 'react-styling'
 import classNames from 'classnames'
 
 // http://wd.dizaina.net/en/experiments/ios7-style-switch/
@@ -89,7 +88,7 @@ export default class Switch extends PureComponent
 					'rrui__switch--disabled' : disabled
 				},
 				className) }
-				style={ style ? { ...styles.switch, ...style } : styles.switch }>
+				style={ style }>
 
 				{ children }
 
@@ -99,14 +98,14 @@ export default class Switch extends PureComponent
 						// CSS selector performance optimization
 						'rrui__switch__switch--label' : children
 					}) }>
+
 					<input
 						type="checkbox"
 						value={ value }
 						onChange={ this.toggle }
-						style={ styles.input }/>
+						style={ input_style }/>
 
-					<span
-						style={ styles.groove }
+					<div
 						className={ classNames('rrui__switch__groove',
 						{
 							// CSS selector performance optimization
@@ -114,7 +113,6 @@ export default class Switch extends PureComponent
 						}) }/>
 
 					<div
-						style={ styles.knob }
 						className={ classNames('rrui__switch__knob',
 						{
 							// CSS selector performance optimization
@@ -159,26 +157,8 @@ export default class Switch extends PureComponent
 	}
 }
 
-const styles = styler
-`
-	switch
-		-webkit-user-select : none
-		-moz-user-select    : none
-		-ms-user-select     : none
-		user-select         : none
-
-		-webkit-tap-highlight-color : transparent
-		tap-highlight-color         : transparent
-
-	input
-		position : absolute
-		opacity  : 0
-
-	groove
-		position : relative
-		display  : inline-block
-
-	knob
-		position : absolute
-		display  : block
-`
+const input_style =
+{
+	position : 'absolute',
+	opacity  : 0
+}

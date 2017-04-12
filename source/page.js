@@ -27,10 +27,12 @@ export default function Page(props)
 	return markup
 }
 
-// const style = styler
-// `
-// 	page
+// const style =
+// {
+// 	page:
+// 	{
 // 		position : relative
 // 		z-index  : 0
 // 		transition-duration : ${menu_transition_duration}ms
-// `
+// 	}
+// }

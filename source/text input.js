@@ -1,7 +1,6 @@
 import React, { PureComponent, createElement } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 // import { throttle } from 'lodash-es'
 
@@ -169,8 +168,7 @@ export default class Text_input extends PureComponent
 					className={ classNames('rrui__input',
 					{
 						'rrui__input--multiline' : multiline,
-					}) }
-					style={ styles.field }>
+					}) }>
 
 					{/* `<input/>` */}
 					{ this.render_input({ name: false }) }
@@ -189,7 +187,7 @@ export default class Text_input extends PureComponent
 								'rrui__input-label--required'          : required && this.is_empty(),
 								'rrui__text-input__label--placeholder' : label_floats && this.is_empty()
 							}) }
-							style={ labelStyle ? { ...styles.label, ...labelStyle } : styles.label }>
+							style={ labelStyle }>
 							{ label }
 						</label>
 					}
@@ -232,8 +230,6 @@ export default class Text_input extends PureComponent
 		}
 		= this.props
 
-		const input_style = multiline ? styles.input_multiline : styles.input_single_line
-
 		const properties =
 		{
 			id,
@@ -253,7 +249,7 @@ export default class Text_input extends PureComponent
 				'rrui__text-input__input--disabled'  : disabled,
 				'rrui__text-input__input--multiline' : multiline
 			}),
-			style       : inputStyle ? { ...input_style, ...inputStyle } : input_style,
+			style       : inputStyle,
 			autoFocus   : focus,
 			tabIndex
 		}
@@ -438,38 +434,6 @@ export default class Text_input extends PureComponent
 		return measurements
 	}
 }
-
-const styles = styler
-`
-	input
-		font-size  : inherit
-		box-sizing : border-box
-
-		&multiline
-
-		&single_line
-			height : 100%
-
-	label
-		position    : absolute
-		white-space : nowrap
-
-		-webkit-user-select : none
-		-moz-user-select    : none
-		-ms-user-select     : none
-		user-select         : none
-
-		pointer-events      : none
-
-		// Vertically align the text
-		// (the height is gonna be set in a CSS stylesheet)
-		display     : flex
-		align-items : center
-
-	field
-		display  : block
-		position : relative
-`
 
 // <textarea/> autoresize (without ghost elements)
 // https://github.com/javierjulio/textarea-autosize/blob/master/src/jquery.textarea_autosize.js

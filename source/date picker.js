@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import classNames from 'classnames'
-import { flat as style } from 'react-styling'
 
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
@@ -310,8 +309,7 @@ export default class DatePicker extends PureComponent
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
 						onFocus={ this.on_input_focus }
-						className="rrui__date-picker__input"
-						style={ styles.input }/>
+						className="rrui__date-picker__input"/>
 
 					{/* Label */}
 					{/* (this label is placed after the `<input/>`
@@ -323,8 +321,7 @@ export default class DatePicker extends PureComponent
 							{
 								'rrui__input-label--required' : required && !value,
 								'rrui__input-label--invalid'  : error && indicateInvalid
-							}) }
-							style={ styles.label }>
+							}) }>
 							{ label }
 						</label>
 					}
@@ -568,28 +565,6 @@ function pad_with_zeroes(string, target_length)
 //
 //   return dateFormatters[key]
 // }
-
-const styles = style
-`
-	label
-		position    : absolute
-		white-space : nowrap
-
-		-webkit-user-select : none
-		-moz-user-select    : none
-		-ms-user-select     : none
-		user-select         : none
-
-		// Vertically align
-		display     : flex
-		align-items : center
-		height      : 100%
-
-	input
-		height     : 100%
-		font-size  : inherit
-		box-sizing : border-box
-`
 
 function normalize_value(value)
 {

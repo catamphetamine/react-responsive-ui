@@ -2,7 +2,6 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import styler from 'react-styling'
 import classNames from 'classnames'
 
 const radius = 20
@@ -22,14 +21,13 @@ export default function Activity_indicator(props)
 	(
 		<div
 			{ ...props }
-			style={ style ? { ...styles.container, ...style } : styles.container }
+			style={ style }
 			className={ classNames('rrui__activity-indicator', className) }>
 			<svg
 				viewBox={ svg_canvas_dimensions }
 				className="rrui__activity-indicator-circle-container">
 				<circle
 					className="rrui__activity-indicator-circle"
-					style={ styles.path }
 					cx={ svg_circe_center }
 					cy={ svg_circe_center }
 					r={ radius }
@@ -51,14 +49,3 @@ Activity_indicator.propTypes =
 	// CSS style object
 	style     : PropTypes.object
 }
-
-const styles = styler
-`
-	container
-		line-height : 0
-
-	path
-		stroke-dashoffset : 0
-		stroke-linecap    : round
-		transition        : all 1.5s ease-in-out
-`

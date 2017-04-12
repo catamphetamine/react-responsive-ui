@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 import Activity_indicator from './activity indicator'
@@ -73,8 +72,6 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		const container_style = disabled ? styles.container_disabled : (busy ? styles.container_busy : styles.container)
-
 		const markup =
 		(
 			<div
@@ -85,15 +82,14 @@ export default class Button extends PureComponent
 					'rrui__button--stretch'  : stretch
 				},
 				className) }
-				style={ style ? { ...container_style, ...style } : container_style }>
+				style={ style }>
 
 				<Activity_indicator
 					className={ classNames('rrui__button__activity-indicator',
 					{
 						// CSS selector performance optimization
 						'rrui__button__activity-indicator--busy'   : busy
-					}) }
-					style={ busy ? styles.spinner : styles.spinner_hide }/>
+					}) }/>
 
 				{ this.render_button() }
 			</div>
@@ -125,14 +121,12 @@ export default class Button extends PureComponent
 			'rrui__button__button--disabled' : disabled
 		})
 
-		const button_style = link ? styles.button_link : styles.button
-
 		const properties =
 		{
 			ref: ref => this.button = ref,
 			title,
 			className,
-			style: buttonStyle ? { ...button_style, ...buttonStyle } : button_style
+			style: buttonStyle
 		}
 
 		const contents = <div
@@ -232,44 +226,3 @@ export default class Button extends PureComponent
 		}
 	}
 }
-
-const styles = styler
-`
-	container
-		box-sizing : border-box
-
-		&busy
-			// "pointer-events" prevents "cursor: wait" from working
-			pointer-events : none
-
-		&disabled
-			pointer-events : none
-
-	spinner
-		position : absolute
-		// (if z-index = -1 then it disappears)
-		z-index  : 0
-		pointer-events : none
-
-		&hide
-			opacity : 0
-
-	button
-		width : 100%
-
-		-webkit-user-select : none
-		-moz-user-select    : none
-		-ms-user-select     : none
-		user-select         : none
-
-		cursor : inherit
-		color  : inherit
-
-		&link
-			// <button/> tends to vertially align its contents by itself
-			// (I guess that's a <button/>'s natural behaviour)
-			// but <a/> needs special treatment in this sense.
-			display         : flex
-			align-items     : center
-			text-decoration : none
-`

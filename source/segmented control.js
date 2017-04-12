@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import { flat as styler } from 'react-styling'
 import classNames from 'classnames'
 
 export default class Segmented_control extends PureComponent
@@ -94,7 +93,7 @@ export default class Segmented_control extends PureComponent
 					'rrui__segmented-control--disabled' : disabled
 				},
 				className) }
-				style={ style ? { ...styles.container, ...style } : styles.container }>
+				style={ style }>
 
 				<div className="rrui__input">
 					{ options.map((option, index) => this.render_button(option, index)) }
@@ -111,9 +110,12 @@ export default class Segmented_control extends PureComponent
 
 	render_button(option, index)
 	{
-		const { value, disabled } = this.props
+		const { options, value, disabled } = this.props
 
 		const selected = value === option.value
+
+		const first = index === 0
+		const last  = index === options.length - 1
 
 		const markup =
 		(
@@ -130,10 +132,13 @@ export default class Segmented_control extends PureComponent
 					{
 						'rrui__segmented-control__option--selected' : selected,
 						// CSS selector performance optimization
-						'rrui__segmented-control__option--disabled' : disabled
+						'rrui__segmented-control__option--disabled' : disabled,
+						// Ordering
+						'rrui__segmented-control__option--first'    : first,
+						'rrui__segmented-control__option--last'     : last,
+						'rrui__segmented-control__option--middle'   : !first && !last
 					}
-				) }
-				style={ this.option_style(option, index) }>
+				) }>
 				{ option.label }
 			</button>
 		)
@@ -158,14 +163,21 @@ export default class Segmented_control extends PureComponent
 
 	render_static_option(option, index)
 	{
-		const { name, value } = this.props
+		const { options, name, value } = this.props
+
+		const first = index === 0
+		const last  = index === options.length - 1
 
 		const markup =
 		(
 			<span
 				key={ option.value }
-				className="rrui__segmented-control__option"
-				style={ this.option_style(option, index) }>
+				className={ classNames('rrui__segmented-control__option',
+				{
+					'rrui__segmented-control__option--first'  : first,
+					'rrui__segmented-control__option--last'   : last,
+					'rrui__segmented-control__option--middle' : !first && !last
+				}) }>
 				<input
 					type="radio"
 					name={ name }
@@ -175,26 +187,6 @@ export default class Segmented_control extends PureComponent
 		)
 
 		return markup
-	}
-
-	option_style(option, index)
-	{
-		let option_style
-
-		if (index === 0)
-		{
-			option_style = { ...styles.option_first }
-		}
-		else if (index === this.props.options.length - 1)
-		{
-			option_style = { ...styles.option_last }
-		}
-		else
-		{
-			option_style = { ...styles.option_middle }
-		}
-
-		return option_style
 	}
 
 	chooser(value)
@@ -308,23 +300,3 @@ export default class Segmented_control extends PureComponent
 		}
 	}
 }
-
-const styles = styler
-`
-	container
-		white-space : nowrap
-
-	option
-		&first
-			border-top-right-radius    : 0
-			border-bottom-right-radius : 0
-			border-right               : none
-
-		&middle
-			border-radius : 0
-			border-right  : none
-
-		&last
-			border-top-left-radius    : 0
-			border-bottom-left-radius : 0
-`

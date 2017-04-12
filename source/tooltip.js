@@ -237,7 +237,7 @@ export default class Tooltip extends PureComponent
 				onTouchMove={ this.hide }
 				onTouchEnd={ this.hide }
 				onTouchCancel={ this.hide }
-				style={ style ? { ...tooltip_style, ...style } : tooltip_style }
+				style={ style ? { ...hovered_element_wrapper_style, ...style } : hovered_element_wrapper_style }
 				className={ className }>
 				{ children }
 			</div>
@@ -286,7 +286,7 @@ function offset(element)
 	return { top, left }
 }
 
-const tooltip_style =
+const hovered_element_wrapper_style =
 {
 	display: 'inline-block'
 }

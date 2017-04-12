@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
-import { flat as style } from 'react-styling'
 import React_modal from 'react-modal'
 
 import Button from './button'
@@ -204,7 +203,6 @@ export default class Modal extends PureComponent
 
 				{/* Top margin, grows less than bottom margin */}
 				<div
-					style={ styles.vertical_margin }
 					className={ classNames('rrui__modal__vertical-margin', 'rrui__modal__vertical-margin--top',
 					{
 						// CSS selector performance optimization
@@ -231,7 +229,6 @@ export default class Modal extends PureComponent
 
 				{/* Bottom margin, grows more than top margin */}
 				<div
-					style={ styles.vertical_margin }
 					className={ classNames('rrui__modal__vertical-margin', 'rrui__modal__vertical-margin--bottom',
 					{
 						// CSS selector performance optimization
@@ -477,7 +474,7 @@ class Modal_content extends PureComponent
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
 				},
 				className) }
-				style={ style ? { ...styles.content, ...style } : styles.content }>
+				style={ style }>
 
 				<div className="rrui__modal__content-body">
 
@@ -526,62 +523,16 @@ class Modal_content extends PureComponent
 	}
 }
 
-const styles = style
-`
-	vertical_margin
-		// Perhaps "width : 100%" was needed for it to work properly
-		width       : 100%
-
-		// Vertical padding won't ever shrink below the minimum size
-		flex-shrink : 0
-
-	content
-		// Modal content will contract vertically
-		flex-shrink : 1
-		flex-basis  : auto
-		// Will show a scrollbar not inside conent but rather on the overlay
-		// overflow    : auto
-		// box-sizing  : border-box
-
-	header, actions
-		// No vertical growing or shrinking for header and actions
-		flex-grow   : 0
-		flex-shrink : 0
-		flex-basis  : auto
-
-		margin : 0
-		// Stretch header and actions to the full width of the modal content
-		width  : 100%
-
-		// Padding will be included in "width : 100%"
-		box-sizing : border-box
-
-	// actions
-	// 	text-align : right
-	// 	// fixes display inline-block whitespaces causing scrollbar
-	// 	line-height : 0
-
-	// Вместо использования этого vertical_container'а
-	// можно было бы использовать то же самое на modal.content,
-	// но тогда этот слой займёт весь экран, а в react-modal
-	// на него вешается onClick со stopPropagation,
-	// поэтому клики слева и справа не будут закрывать окошко.
-	vertical_container
-		display        : flex
-		flex-direction : column
-		height         : 100%
-`
-
 const react_modal_style =
 {
-	overlay : style
-	`
-		position : fixed
-		left     : 0
-		top      : 0
-		right    : 0
-		bottom   : 0
+	overlay:
+	{
+		position : 'fixed',
+		left     : 0,
+		top      : 0,
+		right    : 0,
+		bottom   : 0,
 		// Will show a scrollbar in case of modal content overflowing viewport height
-		overflow : auto
-	`
+		overflow : 'auto'
+	}
 }

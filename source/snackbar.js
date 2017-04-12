@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import styler from 'react-styling'
 import classNames from 'classnames'
 
 // Sits at the bottom of a page and displays notifications
@@ -172,7 +171,6 @@ export default class Snackbar extends PureComponent
 
 		const container_style =
 		{
-			...styles.container,
 			visibility : show ? 'visible' : 'hidden',
 			transform  : `translateY(${y})`,
 			transition : `transform ${hideAnimationDuration}ms ease-out, visibility ${hideAnimationDuration}ms ease-out`
@@ -183,13 +181,11 @@ export default class Snackbar extends PureComponent
 			container_style.transition = 'none'
 		}
 
-		const snackbar_style = styles.snackbar
-
 		const snackbar_text_style =
 		{
-			...styles.text,
 			opacity    : show ? 1 : 0,
-			transition : `opacity ${hideAnimationDuration}ms cubic-bezier(0.23, 1, 0.32, 1) 0ms`
+			transition : `opacity ${hideAnimationDuration}ms cubic-bezier(0.23, 1, 0.32, 1) 0ms`,
+			overflow   : 'hidden'
 		}
 
 		const markup =
@@ -200,7 +196,6 @@ export default class Snackbar extends PureComponent
 
 				<div
 					ref={ ref => this.snackbar = ref }
-					style={ snackbar_style }
 					className={ classNames('rrui__snackbar', value && value.type && `rrui__snackbar--${value.type}`) }>
 
 					<div
@@ -215,23 +210,3 @@ export default class Snackbar extends PureComponent
 		return markup
 	}
 }
-
-const styles = styler
-`
-	container
-		display  : flex
-		position : fixed
-		left     : 0
-		right    : 0
-		bottom   : 0
-		pointer-events : none
-
-	snackbar
-		flex-grow : 0
-		margin    : auto
-		pointer-events : auto
-
-	text
-		opacity  : 0
-		overflow : hidden
-`
