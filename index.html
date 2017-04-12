@@ -123,6 +123,21 @@
 		{
 			width : calc(100% + 0.3rem * 8);
 		}
+
+		.rrui__slideout-menu__item
+		{
+			display        : block;
+			padding-top    : 0.3rem;
+			padding-bottom : 0.3rem;
+			padding-left   : calc(0.3rem * 3);
+			padding-right  : calc(0.3rem * 3);
+			color          : #ECF1F6;
+		}
+
+		.rrui__slideout-menu__item:active
+		{
+			color: #BBD9FA;
+		}
 	</style>
 
 	<body>
@@ -135,7 +150,7 @@
 
 			const PageAndMenu       = library.PageAndMenu
 			const Page              = library.Page
-			const Menu              = library.Menu
+			const CollapsibleMenu   = library.CollapsibleMenu
 			const MenuButton        = library.MenuButton
 			const Form              = library.Form
 			const Snackbar          = library.Snackbar
@@ -281,15 +296,14 @@
 				{
 					return (
 						<PageAndMenu>
-							<Menu
-								slideout
-								items=
-								{[
-									{ name: 'Google.com', link: 'http://google.com' },
-									{ name: 'Yandex.ru', link: 'http://yandex.ru' },
-									{ name: 'Inner Link 1', link: '/1' },
-									{ name: 'Inner Link 2', link: '/2' }
-								]}/>
+							<CollapsibleMenu>
+								<a href="http://google.com" className="rrui__slideout-menu__item">
+									Google.com
+								</a>
+								<a href="http://yandex.ru" className="rrui__slideout-menu__item">
+									Yandex.ru
+								</a>
+							</CollapsibleMenu>
 
 							<Page>
 								<div>
