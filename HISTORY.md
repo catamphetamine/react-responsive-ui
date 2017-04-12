@@ -1,7 +1,8 @@
 0.7.0 / 12.04.2017
 ==================
 
-  * Dropped inline styles in favour of the CSS stylesheet (seems more convenient and theoretically more performant)
+  * (breaking change) Dropped inline styles in favour of the CSS stylesheet (seems more convenient and theoretically more performant). Including the CSS via `require()` is the recommended way now.
+  * (breaking change) Changed the path to style from `/styles/react-responsive-ui.css` to just `style.css`.
 
 0.6.4 / 11.04.2017
 ==================

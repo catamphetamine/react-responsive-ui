@@ -140,10 +140,10 @@ The CSS for this library is distributed along with the React components and it m
 When using Webpack:
 
 ```js
-require('react-responsive-ui/styles/react-responsive-ui.css')
+require('react-responsive-ui/style.css')
 ```
 
-When not using Webpack, just copy [`styles/react-responsive-ui.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/styles/react-responsive-ui.css) to your project folder and include it on a page:
+When not using Webpack, just copy [`style.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/style.css) to your project folder and include it on a page:
 
 ```html
 <head>
