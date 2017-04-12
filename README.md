@@ -21,7 +21,7 @@ import
 {
   PageAndMenu,
   Page,
-  Menu,
+  CollapsibleMenu,
   MenuButton,
   Form,
   Snackbar,
@@ -40,13 +40,16 @@ import
 from 'react-responsive-ui'
 
 <PageAndMenu>
-  <Menu
-    slideout
-    items=
-    {[
-      { name: 'One', link: '/one' },
-      { name: 'Two', link: '/two' }
-    ]}/>
+  <CollapsibleMenu>
+    <ul>
+      <li>
+        <Link to="/first">First</Link>
+      </li>
+      <li>
+        <Link to="/second">Second</Link>
+      </li>
+    </ul>
+  </CollapsibleMenu>
 
   <Page>
     <MenuButton title="Show menu"/>
@@ -182,58 +185,6 @@ class FileDropArea extends Component {
 ```
 
 Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
-
-### Menu
-
-Responsive `<Menu/>` example
-
-```js
-<PageAndMenu>
-  {/* Slideout menu (for small screens) */}
-  {/* Slides over the `<Page/>` */}
-  <Menu slideout items={...}/>
-  <Page>
-    {/* Slideout menu toggler */}
-    <MenuButton/>
-    {/* Full-sized menu (for wide screens) */}
-    <Menu items={...}/>
-  </Page>
-</PageAndMenu>
-```
-
-```css
-// Default style is for small screens
-
-// Don't show the widescreen full-sized menu
-.rrui__menu
-{
-  display: none;
-}
-
-.rrui__slideout-menu-button__icon-path
-{
-  // In case of a black backround,
-  // overrides the default menu button icon color.
-  fill: white;
-}
-
-// Widescreen
-@media (min-width: 900px)
-{
-  // Hide the slideout menu
-  .rrui__slideout-menu,
-  .rrui__slideout-menu-button
-  {
-    display: none;
-  }
-
-  // Show the widescreen full-sized menu
-  .rrui__menu
-  {
-    display: inline-block;
-  }
-}
-```
 
 ## Contributing
 
