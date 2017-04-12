@@ -1214,7 +1214,7 @@ it would introduce page width jumps.
 	left           : 0;
 	right          : 0;
 	bottom         : 0;
-	pointer-events : none
+	pointer-events : none;
 	z-index        : 1;
 }
 
