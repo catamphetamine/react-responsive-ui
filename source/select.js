@@ -361,6 +361,7 @@ export default class Select extends PureComponent
 					'rrui__select',
 					{
 						'rrui__rich'              : fallback,
+						'rrui__select--menu'      : menu,
 						'rrui__select--upward'    : upward,
 						'rrui__select--expanded'  : expanded,
 						'rrui__select--collapsed' : !expanded,
@@ -369,7 +370,11 @@ export default class Select extends PureComponent
 					className
 				) }>
 
-				<div className={ classNames({ 'rrui__input': !menu }) }>
+				<div
+					className={ classNames
+					({
+						'rrui__input': !menu
+					}) }>
 
 					{/* Currently selected item */}
 					{ !menu && !native && this.render_selected_item() }
@@ -415,6 +420,7 @@ export default class Select extends PureComponent
 								'rrui__select__options',
 								'rrui__shadow',
 								{
+									'rrui__select__options--menu'                 : menu,
 									'rrui__expandable--expanded'                  : expanded,
 									'rrui__select__options--expanded'             : expanded,
 									'rrui__expandable--left-aligned'              : alignment === 'left',

@@ -234,6 +234,11 @@
 	user-select : none;
 }
 
+.rrui__select--menu
+{
+	position : relative;
+}
+
 .rrui__select__options
 {
 	margin   : 0;
@@ -1036,7 +1041,7 @@ it would introduce page width jumps.
 .rrui__text-input__input,
 .rrui__select,
 .rrui__select__selected,
-.rrui__select__options,
+.rrui__select__options:not(.rrui__select__options--menu),
 .rrui__date-picker__input
 {
 	width: 100%;
@@ -1108,7 +1113,7 @@ it would introduce page width jumps.
 }
 
 /* Focused input label */
-.rrui__text-input__input:focus  + .rrui__input-label,
+.rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
 .rrui__select__selected:focus   + .rrui__input-label,
 .rrui__date-picker__input:focus + .rrui__input-label
 {
