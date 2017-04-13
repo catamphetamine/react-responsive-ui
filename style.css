@@ -869,15 +869,6 @@ it would introduce page width jumps.
 	justify-content : center;
 }
 
-.rrui__modal__header
-{
-	border-top-left-radius  : 0.2rem;
-	border-top-right-radius : 0.2rem;
-
-	text-align : left;
-	font-size  : 1.3rem;
-}
-
 .rrui__modal__close
 {
   float      : right;

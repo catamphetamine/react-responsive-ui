@@ -369,7 +369,7 @@ export default class Select extends PureComponent
 					className
 				) }>
 
-				<div className="rrui__input">
+				<div className={ classNames({ 'rrui__input': !menu }) }>
 
 					{/* Currently selected item */}
 					{ !menu && !native && this.render_selected_item() }
