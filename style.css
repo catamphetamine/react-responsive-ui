@@ -474,7 +474,13 @@
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 
-.rrui__checkbox .rrui__input
+.rrui__checkbox .rrui__input:not(.rrui__input--multiline)
+{
+	display     : flex;
+	align-items : center;
+}
+
+.rrui__checkbox .rrui__input--multiline
 {
 	display     : flex;
 	align-items : flex-start;
@@ -487,6 +493,11 @@
 	vertical-align : bottom;
 	color          : inherit;
 	user-select    : none;
+}
+
+.rrui__checkbox__label:not(.rrui__checkbox__label--multiline)
+{
+	white-space : nowrap;
 }
 
 .rrui__checkbox__label--fallback
@@ -524,18 +535,32 @@
 
 .rrui__checkbox__checkbox
 {
-	position: relative;
-	margin-top: 0.1em;
-	line-height: 0;
+	position : relative;
+}
+
+.rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline)
+{
+	margin-bottom : 0.1em;
+}
+
+.rrui__checkbox__checkbox--multiline
+{
+	margin-top  : 0.1em;
+	line-height : 0;
 }
 
 .rrui__checkbox__input,
-.rrui__checkbox__box
+.rrui__checkbox__checkmark
 {
 	position : absolute;
 	left     : 0;
 	top      : 0;
+	width    : 100%;
+	height   : 100%;
+}
 
+.rrui__checkbox__box
+{
 	width  : 0.9em;
 	height : 0.9em;
 }
@@ -547,10 +572,10 @@
 
 .rrui__checkbox__checkmark
 {
-	width       : 0.75em;
-	height      : 0.75em;
-	margin-left : 0.07em;
-	margin-top  : 0.05em;
+	width        : 0.75em;
+	height       : 0.75em;
+	margin-left  : 0.07em;
+	margin-top   : 0.05em;
 
 	pointer-events : none;
 	overflow       : visible;

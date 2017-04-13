@@ -17,14 +17,17 @@ export default class Checkbox extends PureComponent
 		// `true`/`false`
 		value     : PropTypes.bool.isRequired,
 
+		// Set to `true` to enable multiline label
+		multiline : PropTypes.bool.isRequired,
+
 		// Disables the checkbox
-		disabled  : PropTypes.bool,
+		disabled  : PropTypes.bool.isRequired,
 
 		// `onChange` handler
 		onChange  : PropTypes.func.isRequired,
 
 		// When `true` autofocuses the checkbox
-		focus     : PropTypes.bool,
+		focus     : PropTypes.bool.isRequired,
 
 		// The label (text)
 		children  : PropTypes.node,
@@ -43,15 +46,11 @@ export default class Checkbox extends PureComponent
 
 	static defaultProps =
 	{
-		value    : false,
-		fallback : false
-	}
-
-	constructor()
-	{
-		super()
-
-		this.toggle = this.toggle.bind(this)
+		disabled  : false,
+		value     : false,
+		fallback  : false,
+		multiline : false,
+		focus     : false
 	}
 
 	// Client side rendering, javascript is enabled
@@ -70,14 +69,25 @@ export default class Checkbox extends PureComponent
 		}
 	}
 
+	componentWillReceiveProps(next_props)
+	{
+		if (this.props.value !== next_props.value)
+		{
+			// Allows checkmark animation from now on
+			this.was_toggled = true
+		}
+
+		if (this.props.value && !next_props.value)
+		{
+			this.setState({ path_style: undefined })
+		}
+	}
+
 	componentDidUpdate(previous_props, previous_state)
 	{
-		if (this.props.value !== previous_props.value)
+		if (this.props.value && !previous_props.value)
 		{
-			if (this.props.value)
-			{
-				this.draw_checkmark()
-			}
+			this.draw_checkmark()
 		}
 	}
 
@@ -88,6 +98,7 @@ export default class Checkbox extends PureComponent
 			value,
 			error,
 			indicateInvalid,
+			multiline,
 			disabled,
 			children,
 			fallback,
@@ -109,9 +120,17 @@ export default class Checkbox extends PureComponent
 				className) }
 				style={ style }>
 
-				<div className="rrui__input">
+				<div
+					className={ classNames('rrui__input',
+					{
+						'rrui__input--multiline' : multiline
+					}) }>
 
-					<div className="rrui__checkbox__checkbox">
+					<div
+						className={ classNames('rrui__checkbox__checkbox',
+						{
+							'rrui__checkbox__checkbox--multiline' : multiline
+						}) }>
 
 						<input
 							ref={ ref => this.checkbox = ref }
@@ -139,7 +158,10 @@ export default class Checkbox extends PureComponent
 					{ children &&
 						<label
 							onClick={ this.toggle }
-							className="rrui__checkbox__label">
+							className={ classNames('rrui__checkbox__label',
+							{
+								'rrui__checkbox__label--multiline' : multiline
+							}) }>
 							{ children }
 						</label>
 					}
@@ -200,8 +222,6 @@ export default class Checkbox extends PureComponent
 
 	draw_checkmark()
 	{
-		// for (var i = 0, i < paths.length; i++) {
-
 		const i = 0
 
 		const path_element = ReactDOM.findDOMNode(this.path)
@@ -220,7 +240,7 @@ export default class Checkbox extends PureComponent
 		path_element.getBoundingClientRect()
 
 		// Define our transition
-		// (skips the animation on the initial page render)
+		// (skips the animation on the initial page render on the client side)
 		if (this.was_toggled)
 		{
 			path_style.transition =
@@ -240,7 +260,7 @@ export default class Checkbox extends PureComponent
 		ReactDOM.findDOMNode(this.checkbox).focus()
 	}
 
-	toggle(event)
+	toggle = (event) =>
 	{
 		// If a link was clicked - don't treat it as a checkbox label click.
 		// (is used for things like "✓ Read and accepted the <a>licence agreement</a>")
@@ -258,13 +278,10 @@ export default class Checkbox extends PureComponent
 			return
 		}
 
-		// Allows checkmark animation from now on
-		this.was_toggled = true
-
-		if (value)
-		{
-			this.setState({ path_style: undefined })
-		}
+		// if (value)
+		// {
+		// 	this.setState({ path_style: undefined })
+		// }
 
 		onChange(!value)
 	}
