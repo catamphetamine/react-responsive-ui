@@ -504,7 +504,16 @@
 										name="checkbox"
 										value={this.state.checked}
 										onChange={ checked => this.setState({ checked: checked }) }>
-										Checkbox
+										Accept the <a target="_blank" href="https://google.ru">User Agreement</a>
+									</Checkbox>
+
+									<Checkbox
+										style={style.input}
+										name="checkbox"
+										multiline
+										value={this.state.checked}
+										onChange={ checked => this.setState({ checked: checked }) }>
+										(<code>multiline={'{'}true{'}'}</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
 									</Checkbox>
 
 									You checked: {this.state.checked ? 'checked' : 'unchecked'}

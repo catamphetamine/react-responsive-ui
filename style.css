@@ -234,6 +234,11 @@
 	user-select : none;
 }
 
+.rrui__select--menu
+{
+	position : relative;
+}
+
 .rrui__select__options
 {
 	margin   : 0;
@@ -469,7 +474,13 @@
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 
-.rrui__checkbox .rrui__input
+.rrui__checkbox .rrui__input:not(.rrui__input--multiline)
+{
+	display     : flex;
+	align-items : center;
+}
+
+.rrui__checkbox .rrui__input--multiline
 {
 	display     : flex;
 	align-items : flex-start;
@@ -478,12 +489,15 @@
 .rrui__checkbox__label
 {
 	display        : inline-block;
-	position       : relative;
-	z-index        : 1;
 	padding-left   : 0.5em;
 	vertical-align : bottom;
 	color          : inherit;
 	user-select    : none;
+}
+
+.rrui__checkbox__label:not(.rrui__checkbox__label--multiline)
+{
+	white-space : nowrap;
 }
 
 .rrui__checkbox__label--fallback
@@ -521,17 +535,32 @@
 
 .rrui__checkbox__checkbox
 {
-	position: relative;
-	margin-top: 0.1em;
+	position : relative;
+}
+
+.rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline)
+{
+	margin-bottom : 0.1em;
+}
+
+.rrui__checkbox__checkbox--multiline
+{
+	margin-top  : 0.1em;
+	line-height : 0;
 }
 
 .rrui__checkbox__input,
-.rrui__checkbox__box
+.rrui__checkbox__checkmark
 {
 	position : absolute;
 	left     : 0;
 	top      : 0;
+	width    : 100%;
+	height   : 100%;
+}
 
+.rrui__checkbox__box
+{
 	width  : 0.9em;
 	height : 0.9em;
 }
@@ -543,10 +572,10 @@
 
 .rrui__checkbox__checkmark
 {
-	width       : 0.75em;
-	height      : 0.75em;
-	margin-left : 0.07em;
-	margin-top  : 0.05em;
+	width        : 0.75em;
+	height       : 0.75em;
+	margin-left  : 0.07em;
+	margin-top   : 0.05em;
 
 	pointer-events : none;
 	overflow       : visible;
@@ -870,15 +899,6 @@ it would introduce page width jumps.
 	justify-content : center;
 }
 
-.rrui__modal__header
-{
-	border-top-left-radius  : 0.2rem;
-	border-top-right-radius : 0.2rem;
-
-	text-align : left;
-	font-size  : 1.3rem;
-}
-
 .rrui__modal__close
 {
   float      : right;
@@ -1046,7 +1066,7 @@ it would introduce page width jumps.
 .rrui__text-input__input,
 .rrui__select,
 .rrui__select__selected,
-.rrui__select__options,
+.rrui__select__options:not(.rrui__select__options--menu),
 .rrui__date-picker__input
 {
 	width: 100%;
@@ -1118,7 +1138,7 @@ it would introduce page width jumps.
 }
 
 /* Focused input label */
-.rrui__text-input__input:focus  + .rrui__input-label,
+.rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
 .rrui__select__selected:focus   + .rrui__input-label,
 .rrui__date-picker__input:focus + .rrui__input-label
 {
@@ -1240,16 +1260,6 @@ it would introduce page width jumps.
 = Menu                                                      =
 ===========================================================*/
 
-.rrui__menu,
-.rrui__slideout-menu
-{
-	margin          : 0;
-	padding-left    : 0;
-	padding-top     : calc(2 * 0.3rem);
-	padding-bottom  : calc(2 * 0.3rem);
-	list-style-type : none;
-}
-
 .rrui__slideout-menu
 {
 	position : fixed;
@@ -1270,35 +1280,6 @@ it would introduce page width jumps.
 {
 	transform  : translate3d(0, 0, 0);
 	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
-}
-
-.rrui__slideout-menu .rrui__menu__item
-{
-	color: #ECF1F6;
-}
-
-.rrui__slideout-menu .rrui__menu__item:active
-{
-	color: #BBD9FA;
-}
-
-.rrui__menu__item
-{
-	display : block;
-	margin  : 0;
-
-	padding-top    : 0.3rem;
-	padding-bottom : 0.3rem;
-
-	padding-left  : calc(0.3rem * 2);
-	padding-right : calc(0.3rem * 3);
-
-	text-decoration : none;
-}
-
-.rrui__menu__item--selected
-{
-	color : #D4E8FF;
 }
 
 .rrui__slideout-menu-button
