@@ -55,6 +55,12 @@ export default class DatePicker extends PureComponent
 		// HTML `<input/>` `name` attribute
 		name : PropTypes.string,
 
+		// How much years back can a user navigate using the year `<select/>`
+		selectYearsIntoPast : PropTypes.number,
+
+		// How much years forward can a user navigate using the year `<select/>`
+		selectYearsIntoFuture : PropTypes.number,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -95,8 +101,16 @@ export default class DatePicker extends PureComponent
 
 		this.setState
 		({
-			text_value : format_date(value, format),
-			expanded   : true
+			month : undefined
+		},
+		() =>
+		{
+			this.setState
+			({
+				text_value : format_date(value, format),
+				expanded   : true,
+				month      : value ? normalize_value(value) : new Date()
+			})
 		})
 	}
 
@@ -180,8 +194,11 @@ export default class DatePicker extends PureComponent
 
 	on_input_change = (event) =>
 	{
-		const { value } = event.target
+		let { value } = event.target
 		const { onChange, format } = this.props
+
+		value = value.trim()
+		value = trim_invalid_part(value, format)
 
 		// When the date is erased, reset it.
 		if (!value)
@@ -263,6 +280,11 @@ export default class DatePicker extends PureComponent
 		this.date_chosen()
 	}
 
+	on_month_selected = (month) =>
+	{
+		this.setState({ month })
+	}
+
 	render()
 	{
 		const
@@ -270,6 +292,8 @@ export default class DatePicker extends PureComponent
 			id,
 			format,
 			value,
+			selectYearsIntoPast,
+			selectYearsIntoFuture,
 			firstDayOfWeek,
 			disabled,
 			required,
@@ -282,12 +306,28 @@ export default class DatePicker extends PureComponent
 		}
 		= this.props
 
-		const { text_value, expanded } = this.state
+		const
+		{
+			text_value,
+			expanded,
+			month
+		}
+		= this.state
 
 		// `<input type="date"/>` renders a browser-specific date picker
 		// which can not be turned off using a simple HTML attribute
 		// and also date format is not customizable,
 		// therefore just using `<input type="text"/>` here
+
+		let captionElement
+
+		if (selectYearsIntoPast || selectYearsIntoFuture)
+		{
+			captionElement = <YearMonthSelector
+				onChange={ this.on_month_selected }
+				selectYearsIntoPast={ selectYearsIntoPast }
+				selectYearsIntoFuture={ selectYearsIntoFuture } />
+		}
 
 		return (
 			<div
@@ -340,11 +380,12 @@ export default class DatePicker extends PureComponent
 						) }>
 						<DayPicker
 							ref={ ref => this.daypicker = ref }
-							initialMonth={ normalize_value(value) }
+							month={ month }
 							firstDayOfWeek={ firstDayOfWeek }
 							onDayClick={ this.on_day_click }
 							onKeyDown={ this.on_calendar_key_down }
 							selectedDays={ normalize_value(value) }
+							captionElement={ captionElement }
 							className={ classNames
 							(
 								'rrui__expandable__content',
@@ -540,8 +581,8 @@ function format_date_custom(date, format)
 	const year  = date.getFullYear()
 
 	let text = format
-		.replace('DD',   pad_with_zeroes(String(day),   2))
-		.replace('MM',   pad_with_zeroes(String(month), 2))
+		.replace('DD', pad_with_zeroes(String(day),   2))
+		.replace('MM', pad_with_zeroes(String(month), 2))
 
 	if (text.indexOf('YYYY') >= 0)
 	{
@@ -599,4 +640,92 @@ function normalize_value(value)
 	}
 
 	return value
+}
+
+function trim_invalid_part(value, format)
+{
+	let i = 0
+	while (i < value.length && i < format.length)
+	{
+		if (format[i] === 'D' || format[i] === 'M' || format[i] === 'Y')
+		{
+			if (!(value[i] >= '0' && value[i] <= '9'))
+			{
+				break
+			}
+		}
+		else if (format[i] !== value[i])
+		{
+			break
+		}
+		i++
+	}
+
+	return value.slice(0, i)
+}
+
+// console.log(trim_invalid_part('fasdf', 'DD.MM.YYYY'))
+// console.log(trim_invalid_part('01.01.1234', 'DD.MM.YYYY'))
+// console.log(trim_invalid_part('01/02/34', 'MM/DD/YY'))
+// console.log(trim_invalid_part('01/a2/34', 'MM/DD/YY'))
+
+// http://react-day-picker.js.org/examples/?yearNavigation
+// Component will receive date, locale and localeUtils props
+function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture })
+{
+	const current_year = new Date().getFullYear()
+
+	let from_year = selectYearsIntoPast   ? current_year - selectYearsIntoPast   : current_year
+	const to_year = selectYearsIntoFuture ? current_year + selectYearsIntoFuture : current_year
+
+	const years = new Array(to_year - from_year + 1)
+
+	while (from_year <= to_year)
+	{
+		years.push(from_year)
+		from_year++
+	}
+
+	const months = localeUtils.getMonths()
+
+	function handleChange(event)
+	{
+		const { _year_, _month_ } = event.target.form
+		onChange(new Date(_year_.value, _month_.value))
+	}
+
+	const markup =
+	(
+		<div className="DayPicker-Caption">
+			<div className="DayPicker-CaptionSelects">
+				<select
+					name="_month_"
+					onChange={ handleChange }
+					value={ date.getMonth() }
+					className="DayPicker-MonthSelect">
+
+					{ months.map((month, i) => (
+						<option key={ i } value={ i }>
+							{ month }
+						</option>
+					)) }
+				</select>
+
+				<select
+					name="_year_"
+					onChange={ handleChange }
+					value={ date.getFullYear() }
+					className="DayPicker-YearSelect">
+
+					{ years.map((year, i) => (
+						<option key={ i } value={ year }>
+							{ year }
+						</option>
+					)) }
+				</select>
+			</div>
+		</div>
+	)
+
+	return markup
 }

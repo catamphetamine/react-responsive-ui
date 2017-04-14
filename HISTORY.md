@@ -1,3 +1,9 @@
+0.7.11 / 15.04.2017
+===================
+
+  * Added `selectYearsIntoPast` and `selectYearsIntoFuture` to `<DatePicker/>`.
+  * `<DatePicker/>` is now more strict while parsing keyboard input.
+
 0.7.0 / 12.04.2017
 ==================
 
