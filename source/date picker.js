@@ -324,6 +324,7 @@ export default class DatePicker extends PureComponent
 		if (selectYearsIntoPast || selectYearsIntoFuture)
 		{
 			captionElement = <YearMonthSelector
+				selectedDay={ value }
 				onChange={ this.on_month_selected }
 				selectYearsIntoPast={ selectYearsIntoPast }
 				selectYearsIntoFuture={ selectYearsIntoFuture } />
@@ -671,7 +672,7 @@ function trim_invalid_part(value, format)
 
 // http://react-day-picker.js.org/examples/?yearNavigation
 // Component will receive date, locale and localeUtils props
-function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture })
+function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture, selectedDay })
 {
 	const current_year = new Date().getFullYear()
 
@@ -680,10 +681,27 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 
 	const years = new Array(to_year - from_year + 1)
 
-	while (from_year <= to_year)
+	let i = 0
+	while (from_year + i <= to_year)
 	{
-		years.push(from_year)
-		from_year++
+		years[i] = from_year + i
+		i++
+	}
+
+	// Makes sure the currently selected year is in the list
+	// to not confuse the user.
+	if (selectedDay)
+	{
+		const selected_year = selectedDay.getFullYear()
+
+		if (selected_year < from_year)
+		{
+			years.unshift(selected_year)
+		}
+		else if (selected_year > to_year)
+		{
+			years.push(selected_year)
+		}
 	}
 
 	const months = localeUtils.getMonths()
