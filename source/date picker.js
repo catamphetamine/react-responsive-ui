@@ -690,8 +690,10 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 
 	function handleChange(event)
 	{
-		const { _year_, _month_ } = event.target.form
-		onChange(new Date(_year_.value, _month_.value))
+		const month = event.target.parentNode.firstChild.value
+		const year  = event.target.parentNode.lastChild.value
+
+		onChange(new Date(year, month))
 	}
 
 	const markup =
@@ -699,7 +701,6 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 		<div className="DayPicker-Caption">
 			<div className="DayPicker-CaptionSelects">
 				<select
-					name="_month_"
 					onChange={ handleChange }
 					value={ date.getMonth() }
 					className="DayPicker-MonthSelect">
@@ -712,7 +713,6 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 				</select>
 
 				<select
-					name="_year_"
 					onChange={ handleChange }
 					value={ date.getFullYear() }
 					className="DayPicker-YearSelect">
