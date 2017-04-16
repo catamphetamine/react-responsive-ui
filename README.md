@@ -146,15 +146,15 @@ When using Webpack:
 require('react-responsive-ui/style.css')
 ```
 
-When not using Webpack, just copy [`style.css`](https://github.com/halt-hammerzeit/react-responsive-ui/blob/master/style.css) to your project folder and include it on a page:
+When not using Webpack, just include the stylesheet for the installed version of the package directly on a page:
 
 ```html
 <head>
-  <link rel="stylesheet" href="/css/react-responsive-ui.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/react-responsive-ui@x.y.z/style.css"/>
 </head>
 ```
 
-This CSS file is meant as a base one and a developer should override the CSS rules defined in it (in a separate file) to better suit the project's style.
+This CSS file is meant as a base one and a developer should override some of the CSS rules defined in it in a separate file in order to customize the library so that it fits the project's design.
 
 ## API
 
