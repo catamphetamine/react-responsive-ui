@@ -639,6 +639,7 @@ export default class Select extends PureComponent
 					tabIndex={ tabIndex }
 					className={ classNames
 					(
+						'rrui__input-field',
 						'rrui__select__selected',
 						'rrui__select__selected--autocomplete',
 						{
@@ -665,6 +666,7 @@ export default class Select extends PureComponent
 				tabIndex={ tabIndex }
 				className={ classNames
 				(
+					'rrui__input-field',
 					'rrui__select__selected',
 					{
 						'rrui__select__selected--nothing' : !selected_label

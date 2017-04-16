@@ -241,7 +241,7 @@ export default class Text_input extends PureComponent
 			onKeyDown   : this.on_key_down,
 			onBlur,
 			disabled,
-			className   : classNames('rrui__text-input__input',
+			className   : classNames('rrui__input-field', 'rrui__text-input__input',
 			{
 				// CSS selector performance optimization
 				'rrui__text-input__input--empty'     : this.is_empty(),

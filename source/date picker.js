@@ -355,7 +355,7 @@ export default class DatePicker extends PureComponent
 						onChange={ this.on_input_change }
 						onBlur={ onBlur }
 						onFocus={ this.on_input_focus }
-						className="rrui__date-picker__input"/>
+						className={ classNames('rrui__input-field', 'rrui__date-picker__input') }/>
 
 					{/* Label */}
 					{/* (this label is placed after the `<input/>`
