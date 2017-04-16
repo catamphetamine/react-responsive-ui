@@ -634,8 +634,9 @@ export default class Select extends PureComponent
 					placeholder={ selected_text }
 					value={ autocomplete_input_value }
 					onChange={ this.on_autocomplete_input_change }
-					onBlur={ onBlur }
 					onKeyDown={ this.on_key_down }
+					onBlur={ onBlur }
+					tabIndex={ tabIndex }
 					className={ classNames
 					(
 						'rrui__select__selected',

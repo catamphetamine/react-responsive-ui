@@ -727,6 +727,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 				<select
 					onChange={ handleChange }
 					value={ date.getMonth() }
+					tabIndex={ -1 }
 					className="DayPicker-MonthSelect">
 
 					{ months.map((month, i) => (
@@ -739,6 +740,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 				<select
 					onChange={ handleChange }
 					value={ date.getFullYear() }
+					tabIndex={ -1 }
 					className="DayPicker-YearSelect">
 
 					{ years.map((year, i) => (
