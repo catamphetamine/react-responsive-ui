@@ -1089,6 +1089,12 @@ it would introduce page width jumps.
 	height : calc(0.3rem * 6);
 }
 
+/* For native `<select/>` in Safari */
+.rrui__select__native
+{
+	min-height : calc(0.3rem * 6);
+}
+
 .rrui__input-error
 {
 	margin-top : calc(0.3rem);

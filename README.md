@@ -138,19 +138,23 @@ from 'react-responsive-ui'
 
 ## CSS
 
-The CSS for this library is distributed along with the React components and it must be included on a page too.
+The CSS for this library must be included on a page too.
 
-When using Webpack:
+#### When using Webpack
 
 ```js
 import rrui from 'react-responsive-ui/style.css'
 ```
 
-When not using Webpack, just include the stylesheet for the installed version of the package directly on a page:
+And set up an [autoprefixer](https://github.com/postcss/postcss-loader) for supporting old web browsers.
+
+#### When not using Webpack
+
+Get the `style.css` file from this package, process it with a CSS autoprefixer for supporting old web browsers, and then include it on a page.
 
 ```html
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/react-responsive-ui@x.y.z/style.css"/>
+  <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
 </head>
 ```
 
