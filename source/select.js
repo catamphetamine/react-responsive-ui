@@ -72,6 +72,9 @@ export default class Select extends PureComponent
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
 
+		// Is called when the selected is blurred
+		onBlur     : PropTypes.func,
+
 		// (exotic use case)
 		// Falls back to a plain HTML input
 		// when javascript is disabled (e.g. Tor)
@@ -601,7 +604,8 @@ export default class Select extends PureComponent
 			disabled,
 			autocomplete,
 			concise,
-			tabIndex
+			tabIndex,
+			onBlur
 		}
 		= this.props
 
@@ -630,6 +634,7 @@ export default class Select extends PureComponent
 					placeholder={ selected_text }
 					value={ autocomplete_input_value }
 					onChange={ this.on_autocomplete_input_change }
+					onBlur={ onBlur }
 					onKeyDown={ this.on_key_down }
 					className={ classNames
 					(
@@ -655,6 +660,7 @@ export default class Select extends PureComponent
 				disabled={ disabled }
 				onClick={ this.toggle }
 				onKeyDown={ this.on_key_down }
+				onBlur={ onBlur }
 				tabIndex={ tabIndex }
 				className={ classNames
 				(

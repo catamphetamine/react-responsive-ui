@@ -46,6 +46,9 @@ export default class DatePicker extends PureComponent
 		// Writes new `value`
 		onChange : PropTypes.func.isRequired,
 
+		// e.g. for `redux-form` or something like that
+		onBlur : PropTypes.func,
+
 		// Disables the input
 		disabled : PropTypes.bool,
 
@@ -301,6 +304,7 @@ export default class DatePicker extends PureComponent
 			placeholder,
 			error,
 			indicateInvalid,
+			onBlur,
 			className,
 			style
 		}
@@ -349,6 +353,7 @@ export default class DatePicker extends PureComponent
 						value={ text_value !== undefined ? text_value : format_date(value, format) }
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
+						onBlur={ onBlur }
 						onFocus={ this.on_input_focus }
 						className="rrui__date-picker__input"/>
 
@@ -387,6 +392,7 @@ export default class DatePicker extends PureComponent
 							onKeyDown={ this.on_calendar_key_down }
 							selectedDays={ normalize_value(value) }
 							captionElement={ captionElement }
+							tabIndex={ -1 }
 							className={ classNames
 							(
 								'rrui__expandable__content',
