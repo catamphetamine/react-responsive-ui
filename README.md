@@ -143,7 +143,7 @@ The CSS for this library is distributed along with the React components and it m
 When using Webpack:
 
 ```js
-require('react-responsive-ui/style.css')
+import rrui from 'react-responsive-ui/style.css'
 ```
 
 When not using Webpack, just include the stylesheet for the installed version of the package directly on a page:
@@ -153,8 +153,6 @@ When not using Webpack, just include the stylesheet for the installed version of
   <link rel="stylesheet" href="https://unpkg.com/react-responsive-ui@x.y.z/style.css"/>
 </head>
 ```
-
-This CSS file is meant as a base one and a developer should override some of the CSS rules defined in it in a separate file in order to customize the library so that it fits the project's design.
 
 ## API
 
