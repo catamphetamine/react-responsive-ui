@@ -820,6 +820,14 @@ export default class Select extends PureComponent
 		return rendered_options
 	}
 
+	// Whether should indicate that the input value is invalid
+	should_indicate_invalid()
+	{
+		const { indicateInvalid, error } = this.props
+
+		return indicateInvalid && error
+	}
+
 	native_select_on_change = (event) =>
 	{
 		const { onChange } = this.props
