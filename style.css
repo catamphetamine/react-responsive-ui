@@ -373,12 +373,17 @@
 .rrui__select__options.rrui__select__options--simple-left-aligned
 {
 	left : calc(0.3rem * 4 * -1);
-	width : calc(0.3rem * 4 * 2 + 100%);
 }
 
-.rrui__select__options--simple-right-aligned
+.rrui__select__options.rrui__select__options--simple-right-aligned
 {
 	right : calc(0.3rem * 4 * -1);
+}
+
+.rrui__select__options.rrui__select__options--simple-left-aligned,
+.rrui__select__options.rrui__select__options--simple-right-aligned
+{
+	width : calc(0.3rem * 4 * 2 + 100%);
 }
 
 .rrui__select__options--downward
