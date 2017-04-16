@@ -298,7 +298,6 @@ export default class Select extends PureComponent
 			label,
 			value,
 			error,
-			indicateInvalid,
 			style,
 			className
 		}
@@ -395,7 +394,7 @@ export default class Select extends PureComponent
 							className={ classNames('rrui__input-label',
 							{
 								'rrui__input-label--required' : required && value_is_empty(value),
-								'rrui__input-label--invalid'  : error && indicateInvalid
+								'rrui__input-label--invalid'  : this.should_indicate_invalid()
 							}) }>
 							{ label }
 						</label>
@@ -444,7 +443,7 @@ export default class Select extends PureComponent
 				</div>
 
 				{/* Error message */}
-				{ error && indicateInvalid &&
+				{ this.should_indicate_invalid() &&
 					<div className="rrui__input-error">{ error }</div>
 				}
 			</div>
@@ -669,6 +668,7 @@ export default class Select extends PureComponent
 					'rrui__input-field',
 					'rrui__select__selected',
 					{
+						'rrui__input-field--invalid'      : this.should_indicate_invalid(),
 						'rrui__select__selected--nothing' : !selected_label
 					}
 				) }>

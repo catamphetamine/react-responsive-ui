@@ -288,6 +288,14 @@ export default class DatePicker extends PureComponent
 		this.setState({ month })
 	}
 
+	// Whether should indicate that the input value is invalid
+	should_indicate_invalid()
+	{
+		const { indicateInvalid, error } = this.props
+
+		return indicateInvalid && error
+	}
+
 	render()
 	{
 		const
@@ -295,6 +303,7 @@ export default class DatePicker extends PureComponent
 			id,
 			format,
 			value,
+			error,
 			selectYearsIntoPast,
 			selectYearsIntoFuture,
 			firstDayOfWeek,
@@ -302,8 +311,6 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
-			error,
-			indicateInvalid,
 			onBlur,
 			className,
 			style
@@ -355,7 +362,10 @@ export default class DatePicker extends PureComponent
 						onChange={ this.on_input_change }
 						onBlur={ onBlur }
 						onFocus={ this.on_input_focus }
-						className={ classNames('rrui__input-field', 'rrui__date-picker__input') }/>
+						className={ classNames('rrui__input-field', 'rrui__date-picker__input',
+						{
+							'rrui__input-field--invalid' : this.should_indicate_invalid()
+						}) }/>
 
 					{/* Label */}
 					{/* (this label is placed after the `<input/>`
@@ -366,7 +376,7 @@ export default class DatePicker extends PureComponent
 							className={ classNames('rrui__input-label',
 							{
 								'rrui__input-label--required' : required && !value,
-								'rrui__input-label--invalid'  : error && indicateInvalid
+								'rrui__input-label--invalid'  : this.should_indicate_invalid()
 							}) }>
 							{ label }
 						</label>
@@ -406,7 +416,7 @@ export default class DatePicker extends PureComponent
 				</div>
 
 				{/* Error message */}
-				{ error && indicateInvalid &&
+				{ this.should_indicate_invalid() &&
 					<div className="rrui__input-error">{ error }</div>
 				}
 			</div>

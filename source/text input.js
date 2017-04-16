@@ -137,8 +137,6 @@ export default class Text_input extends PureComponent
 			label,
 			labelStyle,
 			multiline,
-			error,
-			indicateInvalid,
 			fallback,
 			disabled,
 			required,
@@ -243,6 +241,7 @@ export default class Text_input extends PureComponent
 			disabled,
 			className   : classNames('rrui__input-field', 'rrui__text-input__input',
 			{
+				'rrui__input-field--invalid'         : this.should_indicate_invalid(),
 				// CSS selector performance optimization
 				'rrui__text-input__input--empty'     : this.is_empty(),
 				'rrui__text-input__input--invalid'   : this.should_indicate_invalid(),
@@ -330,6 +329,7 @@ export default class Text_input extends PureComponent
 	should_indicate_invalid()
 	{
 		const { indicateInvalid, error } = this.props
+
 		return indicateInvalid && error
 	}
 
