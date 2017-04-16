@@ -1,4 +1,114 @@
 /*===========================================================
+= Inputs                                                    =
+===========================================================*/
+
+/* Stretches the inputs to full column width by default. */
+/* Because everyone uses CSS grids today. */
+.rrui__text-input,
+.rrui__text-input__input,
+.rrui__select,
+.rrui__select__selected,
+.rrui__select__options:not(.rrui__select__options--menu),
+.rrui__date-picker__input
+{
+	width: 100%;
+}
+
+/*===========================================================
+= Input                                                     =
+===========================================================*/
+
+.rrui__input
+{
+	/* `position: relative` is for the floating label absolute positioning
+	   and also for `.rrui__select__options width` sizing */
+	position : relative;
+}
+
+.rrui__input:not(.rrui__input--multiline),
+.rrui__input-label
+{
+	height : calc(0.3rem * 6);
+}
+
+/* For native `<select/>` in Safari */
+.rrui__select__native
+{
+	min-height : calc(0.3rem * 6);
+}
+
+.rrui__input-error
+{
+	margin-top : calc(0.3rem);
+	color      : #D30F00;
+}
+
+.rrui__text-input__input,
+.rrui__date-picker__input
+{
+	height     : 100%;
+	font-size  : inherit;
+	box-sizing : border-box;
+}
+
+.rrui__text-input__input--multiline
+{
+	height : auto;
+}
+
+/*===========================================================
+= Input field                                               =
+===========================================================*/
+
+.rrui__input-field
+{
+	outline: none;
+}
+
+/*===========================================================
+= Input label                                               =
+===========================================================*/
+
+.rrui__input-label
+{
+	position : absolute;
+	left     : 0;
+	top      : 0;
+
+	display     : flex;
+	align-items : center;
+
+	white-space : nowrap;
+	font-size   : inherit;
+	user-select : none;
+	pointer-events : none;
+
+	/*
+	When changing this label color
+	also change "input" and "textarea" placeholder color.
+	*/
+	color : #9FA8B3;
+
+	transform        : scale(0.8) translateY(-60%);
+	transform-origin : left top;
+	transition       : color 0.1s ease-out, transform 0.1s ease-out;
+}
+
+/* Focused input label */
+.rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
+.rrui__select__selected:focus   + .rrui__input-label,
+.rrui__date-picker__input:focus + .rrui__input-label
+{
+	color: #03B2CB;
+}
+
+.rrui__input-label--required:after
+{
+	content     : '*';
+	margin-left : 0.2em;
+}
+
+/*===========================================================
 = Activity indicator                                        =
 ===========================================================*/
 
@@ -1054,116 +1164,6 @@ it would introduce page width jumps.
 .rrui__form__error:empty
 {
 	display : none;
-}
-
-/*===========================================================
-= Inputs                                                    =
-===========================================================*/
-
-/* Stretches the inputs to full column width by default. */
-/* Because everyone uses CSS grids today. */
-.rrui__text-input,
-.rrui__text-input__input,
-.rrui__select,
-.rrui__select__selected,
-.rrui__select__options:not(.rrui__select__options--menu),
-.rrui__date-picker__input
-{
-	width: 100%;
-}
-
-/*===========================================================
-= Input                                                     =
-===========================================================*/
-
-.rrui__input
-{
-	/* `position: relative` is for the floating label absolute positioning
-	   and also for `.rrui__select__options width` sizing */
-	position : relative;
-}
-
-.rrui__input:not(.rrui__input--multiline),
-.rrui__input-label
-{
-	height : calc(0.3rem * 6);
-}
-
-/* For native `<select/>` in Safari */
-.rrui__select__native
-{
-	min-height : calc(0.3rem * 6);
-}
-
-.rrui__input-error
-{
-	margin-top : calc(0.3rem);
-	color      : #D30F00;
-}
-
-.rrui__text-input__input,
-.rrui__date-picker__input
-{
-	height     : 100%;
-	font-size  : inherit;
-	box-sizing : border-box;
-}
-
-.rrui__text-input__input--multiline
-{
-	height : auto;
-}
-
-/*===========================================================
-= Input field                                               =
-===========================================================*/
-
-.rrui__input-field
-{
-	outline: none;
-}
-
-/*===========================================================
-= Input label                                               =
-===========================================================*/
-
-.rrui__input-label
-{
-	position : absolute;
-	left     : 0;
-	top      : 0;
-
-	display     : flex;
-	align-items : center;
-
-	white-space : nowrap;
-	font-size   : inherit;
-	user-select : none;
-	pointer-events : none;
-
-	/*
-	When changing this label color
-	also change "input" and "textarea" placeholder color.
-	*/
-	color : #9FA8B3;
-
-	transform        : scale(0.8) translateY(-60%);
-	transform-origin : left top;
-	transition       : color 0.1s ease-out, transform 0.1s ease-out;
-}
-
-/* Focused input label */
-.rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
-.rrui__select__selected:focus   + .rrui__input-label,
-.rrui__date-picker__input:focus + .rrui__input-label
-{
-	color: #03B2CB;
-}
-
-.rrui__input-label--required:after
-{
-	content     : '*';
-	margin-left : 0.2em;
 }
 
 /*===========================================================
