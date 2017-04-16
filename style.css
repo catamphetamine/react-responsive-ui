@@ -173,7 +173,8 @@
 /* Reset the default `<button/>` styles */
 .rrui__button__button,
 .rrui__select__selected,
-.rrui__select__option
+.rrui__select__option,
+.rrui__segmented-control__option
 {
 	margin      : 0;
 	padding     : 0;
@@ -369,9 +370,10 @@
 	right : 0;
 }
 
-.rrui__select__options--simple-left-aligned
+.rrui__select__options.rrui__select__options--simple-left-aligned
 {
 	left : calc(0.3rem * 4 * -1);
+	width : calc(0.3rem * 4 * 2 + 100%);
 }
 
 .rrui__select__options--simple-right-aligned
@@ -645,7 +647,8 @@
 
 .rrui__checkbox__checkbox
 {
-	position : relative;
+	position    : relative;
+	flex-shrink : 0;
 }
 
 .rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline)
