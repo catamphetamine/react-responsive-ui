@@ -1024,23 +1024,33 @@ export default class Select extends PureComponent
 
 			// If it's autocomplete, then focus <input/> field
 			// upon toggling the select component.
-			if (autocomplete && !toggle_options.dont_focus_after_toggle)
+			if (!toggle_options.dont_focus_after_toggle)
 			{
-				if (!expanded || (expanded && focusUponSelection))
+				if (autocomplete)
 				{
-					setTimeout(() =>
+					if (!expanded || (expanded && focusUponSelection))
 					{
-						// Focus the toggler
-						if (expanded)
+						setTimeout(() =>
 						{
-							this.selected.focus()
-						}
-						else
-						{
-							this.autocomplete.focus()
-						}
-					},
-					0)
+							// Focus the toggler
+							if (expanded)
+							{
+								this.selected.focus()
+							}
+							else
+							{
+								this.autocomplete.focus()
+							}
+						},
+						0)
+					}
+				}
+				else
+				{
+					// For some reason Firefox loses focus
+					// upon select expansion via a click,
+					// so this extra `.focus()` works around that issue.
+					this.selected.focus()
 				}
 			}
 
@@ -1276,12 +1286,8 @@ export default class Select extends PureComponent
 							this.toggle()
 						}
 					}
-					// Expand the select otherwise
-					else
-					{
-						event.preventDefault()
-						this.toggle()
-					}
+					// Otherwise, the spacebar keydown event on a `<button/>`
+					// will trigger `onClick` and `.toggle()` will be called.
 
 					return
 			}
