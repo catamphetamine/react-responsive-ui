@@ -648,6 +648,13 @@
 	white-space : nowrap;
 }
 
+.rrui__checkbox__label--multiline
+{
+	/* A fix for IE 11 to force it wrap `<label/>` text */
+	-ms-flex : 1 0 0px;
+	    flex : 1 0 0;
+}
+
 .rrui__checkbox__label--fallback
 {
 	padding-left : 0;
