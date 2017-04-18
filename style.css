@@ -130,8 +130,9 @@
 
 .rrui__activity-indicator-circle
 {
-	stroke-dasharray  : 1,200;
-	stroke-dashoffset : 0;
+	/* IE can not animate SVG */
+	stroke-dasharray  : 89,200;
+	stroke-dashoffset : -35;
 	animation         : spinner-extent 1.5s ease-in-out infinite;
 	stroke-linecap    : round;
 	transition        : all 1.5s ease-in-out;
