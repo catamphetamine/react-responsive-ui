@@ -537,7 +537,7 @@
 
 .rrui__select__selected-label
 {
-	flex          : 1;
+	flex          : 1 0 auto;
 	overflow      : hidden;
 	text-overflow : ellipsis;
 }
