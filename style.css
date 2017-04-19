@@ -102,7 +102,7 @@
 	color: #03B2CB;
 }
 
-.rrui__input-label--required:after
+.rrui__input-label--required:not(.rrui__text-input__label--placeholder):after
 {
 	content     : '*';
 	margin-left : 0.2em;
