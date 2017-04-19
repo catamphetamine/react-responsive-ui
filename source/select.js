@@ -1062,7 +1062,13 @@ export default class Select extends PureComponent
 					// For some reason Firefox loses focus
 					// upon select expansion via a click,
 					// so this extra `.focus()` works around that issue.
-					this.selected.focus()
+					//
+					// `this.selected` may be `undefined` for some reason (weird).
+					//
+					if (this.selected)
+					{
+						this.selected.focus()
+					}
 				}
 			}
 
