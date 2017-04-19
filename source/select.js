@@ -943,6 +943,18 @@ export default class Select extends PureComponent
 		// return this.props.options.length >= this.props.transition_item_count_min
 	}
 
+	focus()
+	{
+		if (this.autocomplete)
+		{
+			this.autocomplete.focus()
+		}
+		else
+		{
+			this.selected.focus()
+		}
+	}
+
 	toggle = (event, toggle_options = {}) =>
 	{
 		if (event)
