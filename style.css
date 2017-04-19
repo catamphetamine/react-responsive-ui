@@ -102,10 +102,16 @@
 	color: #03B2CB;
 }
 
-.rrui__input-label--required:not(.rrui__text-input__label--placeholder):after
+.rrui__input-label--required:after
 {
 	content     : '*';
 	margin-left : 0.2em;
+}
+
+.rrui__input-label--required.rrui__text-input__label--placeholder:after
+{
+	margin-left : 0.3em;
+	font-size   : 0.8em;
 }
 
 /*===========================================================
