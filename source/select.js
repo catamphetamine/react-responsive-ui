@@ -971,6 +971,7 @@ export default class Select extends PureComponent
 
 		const
 		{
+			menu,
 			disabled,
 			autocomplete,
 			options,
@@ -1062,10 +1063,7 @@ export default class Select extends PureComponent
 					// For some reason Firefox loses focus
 					// upon select expansion via a click,
 					// so this extra `.focus()` works around that issue.
-					//
-					// `this.selected` may be `undefined` for some reason (weird).
-					//
-					if (this.selected)
+					if (!menu)
 					{
 						this.selected.focus()
 					}
