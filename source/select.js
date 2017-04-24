@@ -78,10 +78,13 @@ export default class Select extends PureComponent
 		// (exotic use case)
 		// Falls back to a plain HTML input
 		// when javascript is disabled (e.g. Tor)
-		fallback  : PropTypes.bool.isRequired,
+		fallback   : PropTypes.bool.isRequired,
 
-		// CSS class
+		// Component CSS class
 		className  : PropTypes.string,
+
+		// Autocomplete `<input/>` CSS class
+		inputClassName : PropTypes.string,
 
 		// CSS style object
 		style      : PropTypes.object,
@@ -604,7 +607,8 @@ export default class Select extends PureComponent
 			autocomplete,
 			concise,
 			tabIndex,
-			onBlur
+			onBlur,
+			inputClassName
 		}
 		= this.props
 
@@ -646,7 +650,8 @@ export default class Select extends PureComponent
 							// CSS selector performance optimization
 							'rrui__select__selected--expanded' : expanded,
 							'rrui__select__selected--disabled' : disabled
-						}
+						},
+						inputClassName
 					) }/>
 			)
 

@@ -46,6 +46,9 @@ export default class DatePicker extends PureComponent
 		// Writes new `value`
 		onChange : PropTypes.func.isRequired,
 
+		// Is called when the date picker is either collapsed or expanded
+		onToggle : PropTypes.func,
+
 		// e.g. for `redux-form` or something like that
 		onBlur : PropTypes.func,
 
@@ -100,7 +103,7 @@ export default class DatePicker extends PureComponent
 
 	on_input_focus = () =>
 	{
-		const { value, format } = this.props
+		const { value, format, onToggle } = this.props
 
 		this.setState
 		({
@@ -108,6 +111,11 @@ export default class DatePicker extends PureComponent
 		},
 		() =>
 		{
+			if (onToggle)
+			{
+				onToggle(true)
+			}
+
 			this.setState
 			({
 				text_value : format_date(value, format),
@@ -174,6 +182,13 @@ export default class DatePicker extends PureComponent
 	// Hides the day picker calendar and cancels textual date editing
 	date_chosen()
 	{
+		const { onToggle } = this.props
+
+		if (onToggle)
+		{
+			onToggle(false)
+		}
+
 		this.setState
 		({
 			text_value : undefined,
