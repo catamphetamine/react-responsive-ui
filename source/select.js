@@ -72,7 +72,10 @@ export default class Select extends PureComponent
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
 
-		// Is called when the selected is blurred
+		// Is called when the select is focused
+		onFocus    : PropTypes.func,
+
+		// Is called when the select is blurred
 		onBlur     : PropTypes.func,
 
 		// (exotic use case)
@@ -607,6 +610,7 @@ export default class Select extends PureComponent
 			autocomplete,
 			concise,
 			tabIndex,
+			onFocus,
 			onBlur,
 			inputClassName
 		}
@@ -638,6 +642,7 @@ export default class Select extends PureComponent
 					value={ autocomplete_input_value }
 					onChange={ this.on_autocomplete_input_change }
 					onKeyDown={ this.on_key_down }
+					onFocus={ onFocus }
 					onBlur={ onBlur }
 					tabIndex={ tabIndex }
 					className={ classNames
@@ -666,6 +671,7 @@ export default class Select extends PureComponent
 				disabled={ disabled }
 				onClick={ this.toggle }
 				onKeyDown={ this.on_key_down }
+				onFocus={ onFocus }
 				onBlur={ onBlur }
 				tabIndex={ tabIndex }
 				className={ classNames
@@ -1151,9 +1157,9 @@ export default class Select extends PureComponent
 		}
 	}
 
-	// Would have used `onBlur()` handler here
-	// with `container.contains(event.relatedTarget)`,
-	// but it has an IE bug in React.
+	// Would have used `onBlur={...}` event handler here
+	// with `if (container.contains(event.relatedTarget))` condition,
+	// but it doesn't work in IE in React.
 	// https://github.com/facebook/react/issues/3751
 	//
 	// Therefore, using the hacky `document.onClick` handlers

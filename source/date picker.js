@@ -49,7 +49,10 @@ export default class DatePicker extends PureComponent
 		// Is called when the date picker is either collapsed or expanded
 		onToggle : PropTypes.func,
 
-		// e.g. for `redux-form` or something like that
+		// Is called when the input is focused
+		onFocus : PropTypes.func,
+
+		// Is called when the input is blurred
 		onBlur : PropTypes.func,
 
 		// Disables the input
@@ -125,9 +128,9 @@ export default class DatePicker extends PureComponent
 		})
 	}
 
-	// Would have used `onBlur()` handler here
-	// with `container.contains(event.relatedTarget)`,
-	// but it has an IE bug in React.
+	// Would have used `onBlur={...}` event handler here
+	// with `if (container.contains(event.relatedTarget))` condition,
+	// but it doesn't work in IE in React.
 	// https://github.com/facebook/react/issues/3751
 	//
 	// Therefore, using the hacky `document.onClick` handlers
@@ -326,6 +329,7 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
+			onFocus,
 			onBlur,
 			className,
 			style
@@ -375,6 +379,7 @@ export default class DatePicker extends PureComponent
 						value={ text_value !== undefined ? text_value : format_date(value, format) }
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
+						onFocus={ onFocus }
 						onBlur={ onBlur }
 						onFocus={ this.on_input_focus }
 						className={ classNames('rrui__input-field', 'rrui__date-picker__input',

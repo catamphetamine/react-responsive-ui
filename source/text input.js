@@ -75,6 +75,12 @@ export default class Text_input extends PureComponent
 		// when javascript is disabled (e.g. Tor)
 		fallback         : PropTypes.bool.isRequired,
 
+		// Is called when the input is focused
+		onFocus          : PropTypes.func,
+
+		// Is called when the input is blurred
+		onBlur           : PropTypes.func,
+
 		// CSS style object
 		style            : PropTypes.object,
 
@@ -224,6 +230,7 @@ export default class Text_input extends PureComponent
 
 			// Passthrough properties
 			id,
+			onFocus,
 			onBlur
 		}
 		= this.props
@@ -237,6 +244,7 @@ export default class Text_input extends PureComponent
 			placeholder : placeholder || this.props.placeholder,
 			onChange    : this.on_change,
 			onKeyDown   : this.on_key_down,
+			onFocus,
 			onBlur,
 			disabled,
 			className   : classNames('rrui__input-field', 'rrui__text-input__input',
