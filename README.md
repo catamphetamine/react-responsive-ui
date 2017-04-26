@@ -146,11 +146,11 @@ The CSS for this library must be included on a page too.
 import rrui from 'react-responsive-ui/style.css'
 ```
 
-And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `ie >= 11`, `iOS >= 8`, `Android >= 4`).
+And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 8`, `Android >= 4`).
 
 #### When not using Webpack
 
-Get the `style.css` file from this package, process it with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `ie >= 11`, `iOS >= 8`, `Android >= 4`), and then include it on a page.
+Get the `style.css` file from this package, process it with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 8`, `Android >= 4`), and then include it on a page.
 
 ```html
 <head>
