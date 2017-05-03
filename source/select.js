@@ -169,7 +169,11 @@ export default class Select extends PureComponent
 		// transition_duration_max : 100 // milliseconds
 	}
 
-	state = {}
+	state =
+	{
+		// Is initialized during the first `componentDidUpdate()` call
+		vertical_padding: 0
+	}
 
 	constructor(props)
 	{
@@ -1101,32 +1105,7 @@ export default class Select extends PureComponent
 			event.preventDefault()
 		}
 
-		const
-		{
-			disabled,
-			onChange,
-			autocomplete,
-			focusUponSelection
-		}
-		= this.props
-
-		if (disabled)
-		{
-			return
-		}
-
-		// Focus the toggler
-		if (focusUponSelection)
-		{
-			if (autocomplete)
-			{
-				this.autocomplete.focus()
-			}
-			else
-			{
-				this.selected.focus()
-			}
-		}
+		const { onChange } = this.props
 
 		this.toggle(undefined, { callback: () => onChange(value) })
 	}
@@ -1382,7 +1361,10 @@ export default class Select extends PureComponent
 	// Scrolls to an option having the value
 	scroll_to(value)
 	{
+		const { vertical_padding } = this.state
+
 		const option_element = ReactDOM.findDOMNode(this.options[get_option_key(value)])
+		const list = ReactDOM.findDOMNode(this.list)
 
 		// If this option isn't even shown
 		// (e.g. autocomplete)
@@ -1392,29 +1374,60 @@ export default class Select extends PureComponent
 			return
 		}
 
-		ReactDOM.findDOMNode(this.list).scrollTop = option_element.offsetTop
+		let offset_top = option_element.offsetTop
+
+		const is_first_option = list.firstChild === option_element
+
+		// If it's the first one - then scroll to list top
+		if (is_first_option)
+		{
+			offset_top -= vertical_padding
+		}
+
+		list.scrollTop = offset_top
 	}
 
 	// Fully shows an option having the `value` (scrolls to it if neccessary)
 	show_option(value, gravity)
 	{
+		const { vertical_padding } = this.state
+
 		const option_element = ReactDOM.findDOMNode(this.options[get_option_key(value)])
 		const list = ReactDOM.findDOMNode(this.list)
+
+		const is_first_option = list.firstChild === option_element
+		const is_last_option  = list.lastChild === option_element
 
 		switch (gravity)
 		{
 			case 'top':
-				if (option_element.offsetTop < list.scrollTop)
+				let top_line = option_element.offsetTop
+
+				if (is_first_option)
 				{
-					list.scrollTop = option_element.offsetTop
+					top_line -= vertical_padding
 				}
+
+				if (top_line < list.scrollTop)
+				{
+					list.scrollTop = top_line
+				}
+
 				return
 
 			case 'bottom':
-				if (option_element.offsetTop + option_element.offsetHeight > list.scrollTop + list.offsetHeight)
+				let bottom_line = option_element.offsetTop + option_element.offsetHeight
+
+				if (is_last_option)
 				{
-					list.scrollTop = option_element.offsetTop + option_element.offsetHeight - list.offsetHeight
+					bottom_line += vertical_padding
 				}
+
+				if (bottom_line > list.scrollTop + list.offsetHeight)
+				{
+					list.scrollTop = bottom_line - list.offsetHeight
+				}
+
 				return
 		}
 	}
@@ -1426,9 +1439,9 @@ export default class Select extends PureComponent
 
 		const list_dom_node = ReactDOM.findDOMNode(this.list)
 		const border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth)
-		const height = list_dom_node.scrollHeight // + 2 * border // inner height + 2 * border
+		const height = list_dom_node.scrollHeight
 
-		const vertical_padding = parseInt(window.getComputedStyle(list_dom_node.firstChild).paddingTop)
+		const vertical_padding = parseInt(window.getComputedStyle(list_dom_node).paddingTop)
 
 		// For things like "accordeon".
 		//
