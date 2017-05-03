@@ -62,7 +62,13 @@
 
 .rrui__input-field
 {
-	outline: none;
+	outline       : none;
+	border-radius : 0;
+	/* Some web browsers add <input/> padding by default */
+	padding       : 0;
+	-webkit-appearance    : none;
+	   -moz-appearance    : none;
+	        appearance    : none;
 }
 
 /*===========================================================
@@ -75,11 +81,14 @@
 	left     : 0;
 	top      : 0;
 
+	display     : -webkit-flex;
+
 	display     : -ms-flexbox;
 
 	display     : flex;
-	-ms-flex-align : center;
-	    align-items : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
 
 	white-space : nowrap;
 	font-size   : inherit;
@@ -95,12 +104,17 @@
 	*/
 	color : #9FA8B3;
 
-	-ms-transform        : scale(0.8) translateY(-60%);
+	-webkit-transform        : scale(0.8) translateY(-60%);
 
-	    transform        : scale(0.8) translateY(-60%);
-	-ms-transform-origin : left top;
-	    transform-origin : left top;
-	transition       : color 0.1s ease-out, transform 0.1s ease-out;
+	    -ms-transform        : scale(0.8) translateY(-60%);
+
+	        transform        : scale(0.8) translateY(-60%);
+	-webkit-transform-origin : left top;
+	    -ms-transform-origin : left top;
+	        transform-origin : left top;
+	transition: color 0.1s ease-out, -webkit-transform 0.1s ease-out;
+	transition: color 0.1s ease-out, transform 0.1s ease-out;
+	transition       : color 0.1s ease-out, transform 0.1s ease-out, -webkit-transform 0.1s ease-out;
 }
 
 /* Focused input label */
@@ -115,6 +129,12 @@
 {
 	content     : '*';
 	margin-left : 0.2em;
+}
+
+.rrui__input-label--required.rrui__text-input__label--placeholder:after
+{
+	margin-left : 0.3em;
+	font-size   : 0.8em;
 }
 
 /*===========================================================
@@ -133,9 +153,11 @@
 
 .rrui__activity-indicator-circle-container
 {
-	animation: spinner-rotate 2s linear infinite;
-	-ms-transform-origin: center center;
-	    transform-origin: center center;
+	-webkit-animation: spinner-rotate 2s linear infinite;
+	        animation: spinner-rotate 2s linear infinite;
+	-webkit-transform-origin: center center;
+	    -ms-transform-origin: center center;
+	        transform-origin: center center;
 }
 
 .rrui__activity-indicator-circle
@@ -143,16 +165,48 @@
 	/* IE can not animate SVG */
 	stroke-dasharray  : 89,200;
 	stroke-dashoffset : -35;
-	animation         : spinner-extent 1.5s ease-in-out infinite;
+	-webkit-animation         : spinner-extent 1.5s ease-in-out infinite;
+	        animation         : spinner-extent 1.5s ease-in-out infinite;
 	stroke-linecap    : round;
 	transition        : all 1.5s ease-in-out;
+}
+
+@-webkit-keyframes spinner-rotate
+{
+	100%
+	{
+		-webkit-transform: rotate(360deg);
+		        transform: rotate(360deg);
+	}
 }
 
 @keyframes spinner-rotate
 {
 	100%
 	{
-		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		        transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes spinner-extent
+{
+	0%
+	{
+		stroke-dasharray  : 1,200;
+		stroke-dashoffset : 0;
+	}
+
+	50%
+	{
+		stroke-dasharray  : 89,200;
+		stroke-dashoffset : -35;
+	}
+
+	100%
+	{
+		stroke-dasharray  : 89,200;
+		stroke-dashoffset : -124;
 	}
 }
 
@@ -241,10 +295,12 @@
 	/* <button/> tends to vertially align its contents by itself */
 	/* (I guess that's a <button/>'s natural behaviour) */
 	/* but <a/> needs special treatment in this sense. */
+	display         : -webkit-flex;
 	display         : -ms-flexbox;
 	display         : flex;
-	-ms-flex-align     : center;
-	    align-items     : center;
+	-webkit-align-items     : center;
+	    -ms-flex-align     : center;
+	        align-items     : center;
 	text-decoration : none;
 }
 
@@ -305,11 +361,14 @@
 	opacity : 0;
 	pointer-events : none;
 
-	-ms-transform        : scaleY(0);
+	-webkit-transform        : scaleY(0);
 
-	    transform        : scaleY(0);
-	-ms-transform-origin : 50% top 0px;
-	    transform-origin : 50% top 0px;
+	    -ms-transform        : scaleY(0);
+
+	        transform        : scaleY(0);
+	-webkit-transform-origin : 50% top 0px;
+	    -ms-transform-origin : 50% top 0px;
+	        transform-origin : 50% top 0px;
 
 	/* 250ms - too slow for short lists */
 	transition : all 150ms cubic-bezier(.76,.04,.46,.75) 0ms;
@@ -325,11 +384,14 @@
 	opacity        : 1;
 	pointer-events : auto;
 
-	-ms-transform        : scaleY(1);
+	-webkit-transform        : scaleY(1);
 
-	    transform        : scaleY(1);
-	-ms-transform-origin : 50% top 0px;
-	    transform-origin : 50% top 0px;
+	    -ms-transform        : scaleY(1);
+
+	        transform        : scaleY(1);
+	-webkit-transform-origin : 50% top 0px;
+	    -ms-transform-origin : 50% top 0px;
+	        transform-origin : 50% top 0px;
 
 	transition : all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
 }
@@ -379,12 +441,15 @@
 
 .rrui__select__options
 {
-	margin   : 0;
-	padding  : 0;
+	margin           : 0;
+	padding-left     : 0;
+	padding-top      : calc(2 * 0.3rem);
+	padding-bottom   : calc(2 * 0.3rem);
 	overflow-y       : auto;
 	background-color : white;
-	list-style-type : none;
-	overflow-x      : hidden;
+	list-style-type  : none;
+	overflow-x       : hidden;
+	box-sizing       : border-box;
 }
 
 .rrui__expandable--left-aligned
@@ -430,16 +495,6 @@
 	margin-top : 1em;
 }
 
-.rrui__select__options-list-item:first-child
-{
-	padding-top    : calc(2 * 0.3rem);
-}
-
-.rrui__select__options-list-item:last-child
-{
-	padding-bottom : calc(2 * 0.3rem);
-}
-
 .rrui__select__option
 {
 	display : block;
@@ -451,9 +506,14 @@
 	padding-top    : calc(0.3rem * 1);
 	padding-bottom : calc(0.3rem * 1);
 
-	box-sizing: border-box;
-	text-align: left;
-	white-space: nowrap;
+	box-sizing  : border-box;
+	text-align  : left;
+	white-space : nowrap;
+}
+
+.rrui__select__option:hover
+{
+	background-color : #FBFDFD;
 }
 
 .rrui__select__selected--disabled,
@@ -490,13 +550,19 @@
 
 .rrui__select__options--upward
 {
-	-ms-transform-origin: 50% bottom 0px;
-	    transform-origin: 50% bottom 0px;
+	-webkit-transform-origin: 50% bottom 0px;
+	    -ms-transform-origin: 50% bottom 0px;
+	        transform-origin: 50% bottom 0px;
 }
 
 .rrui__select__option--focused
 {
 	background-color: #ECF1F6;
+}
+
+.rrui__select__option--focused:hover
+{
+	background-color: #EFF3F8;
 }
 
 .rrui__select__option-icon
@@ -559,16 +625,19 @@
 
 .rrui__select__selected-content
 {
+	display     : -webkit-flex;
 	display     : -ms-flexbox;
 	display     : flex;
-	-ms-flex-align : center;
-	    align-items : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
 }
 
 .rrui__select__selected-label
 {
-	-ms-flex          : 1 0 auto;
-	    flex          : 1 0 auto;
+	-webkit-flex          : 1 0 auto;
+	    -ms-flex          : 1 0 auto;
+	        flex          : 1 0 auto;
 	overflow      : hidden;
 	text-overflow : ellipsis;
 }
@@ -618,18 +687,22 @@
 
 .rrui__checkbox .rrui__input:not(.rrui__input--multiline)
 {
+	display     : -webkit-flex;
 	display     : -ms-flexbox;
 	display     : flex;
-	-ms-flex-align : center;
-	    align-items : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
 }
 
 .rrui__checkbox .rrui__input--multiline
 {
+	display     : -webkit-flex;
 	display     : -ms-flexbox;
 	display     : flex;
-	-ms-flex-align : start;
-	    align-items : flex-start;
+	-webkit-align-items : flex-start;
+	    -ms-flex-align : start;
+	        align-items : flex-start;
 }
 
 .rrui__checkbox__label
@@ -652,8 +725,9 @@
 .rrui__checkbox__label--multiline
 {
 	/* A fix for IE 11 to force it wrap `<label/>` text */
-	-ms-flex : 1 0 0px;
-	    flex : 1 0 0;
+	-webkit-flex : 1 0 0;
+	    -ms-flex : 1 0 0px;
+	        flex : 1 0 0;
 }
 
 .rrui__checkbox__label--fallback
@@ -692,8 +766,9 @@
 .rrui__checkbox__checkbox
 {
 	position    : relative;
-	-ms-flex-negative : 0;
-	    flex-shrink : 0;
+	-webkit-flex-shrink : 0;
+	    -ms-flex-negative : 0;
+	        flex-shrink : 0;
 }
 
 .rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline)
@@ -798,10 +873,12 @@
 
 .rrui__switch--label
 {
+	display     : -webkit-inline-flex;
 	display     : -ms-inline-flexbox;
 	display     : inline-flex;
-	-ms-flex-align : center;
-	    align-items : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
 }
 
 .rrui__switch__switch
@@ -976,29 +1053,34 @@ also change `default_close_timeout` in ./modal.js accordingly
 .ReactModal__Content
 {
 	opacity: 0;
-	-ms-transform: scale(0.8);
-	    transform: scale(0.8);
+	-webkit-transform: scale(0.8);
+	    -ms-transform: scale(0.8);
+	        transform: scale(0.8);
 }
 
 .ReactModal__Content--after-open
 {
 	opacity: 1;
-	-ms-transform: none;
-	    transform: none;
+	-webkit-transform: none;
+	    -ms-transform: none;
+	        transform: none;
 }
 
 /* This rule is required for closing animation */
 .ReactModal__Content--before-close
 {
 	opacity: 0;
-	-ms-transform: scale(0.8);
-	    transform: scale(0.8);
+	-webkit-transform: scale(0.8);
+	    -ms-transform: scale(0.8);
+	        transform: scale(0.8);
 }
 
 .ReactModal__Content--after-open,
 .ReactModal__Content--before-close
 {
+	transition: opacity 100ms ease-out, -webkit-transform 120ms ease-out;
 	transition: transform 120ms ease-out, opacity 100ms ease-out;
+	transition: transform 120ms ease-out, opacity 100ms ease-out, -webkit-transform 120ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
@@ -1032,10 +1114,12 @@ it would introduce page width jumps.
 .rrui__modal__overlay
 {
 	/* Horizontal centering */
+	display         : -webkit-flex;
 	display         : -ms-flexbox;
 	display         : flex;
-	-ms-flex-pack : center;
-	    justify-content : center;
+	-webkit-justify-content : center;
+	    -ms-flex-pack : center;
+	        justify-content : center;
 }
 
 .rrui__modal__overlay--fullscreen
@@ -1059,20 +1143,25 @@ it would introduce page width jumps.
 
 	/* Using `inline-flex` here so that it doesn't
 	   stretch to the whole overlay width */
+	display         : -webkit-inline-flex;
 	display         : -ms-inline-flexbox;
 	display         : inline-flex;
-	-ms-flex-direction  : column;
-	    flex-direction  : column;
+	-webkit-flex-direction  : column;
+	    -ms-flex-direction  : column;
+	        flex-direction  : column;
 }
 
 .rrui__modal__container--fullscreen
 {
+	display         : -webkit-flex;
 	display         : -ms-flexbox;
 	display         : flex;
-	-ms-flex-align     : center;
-	    align-items     : center;
-	-ms-flex-pack : center;
-	    justify-content : center;
+	-webkit-align-items     : center;
+	    -ms-flex-align     : center;
+	        align-items     : center;
+	-webkit-justify-content : center;
+	    -ms-flex-pack : center;
+	        justify-content : center;
 }
 
 .rrui__modal__close
@@ -1097,13 +1186,16 @@ it would introduce page width jumps.
 	display : inline-block;
 
 	/* Modal content shouldn't stretch vertically */
-	-ms-flex-positive : 0;
-	    flex-grow : 0;
+	-webkit-flex-grow : 0;
+	    -ms-flex-positive : 0;
+	        flex-grow : 0;
 	/* Modal content will contract vertically */
-	-ms-flex-negative : 1;
-	    flex-shrink : 1;
-	-ms-flex-preferred-size  : auto;
-	    flex-basis  : auto;
+	-webkit-flex-shrink : 1;
+	    -ms-flex-negative : 1;
+	        flex-shrink : 1;
+	-webkit-flex-basis  : auto;
+	    -ms-flex-preferred-size  : auto;
+	        flex-basis  : auto;
 
 	border-radius  : 0.2rem;
 	background-color : white;
@@ -1125,22 +1217,26 @@ it would introduce page width jumps.
 	/* Perhaps "width : 100%" was needed for it to work properly */
 	width : 100%;
 	/* Vertical padding won't ever shrink below the minimum size */
-	-ms-flex-negative : 0;
-	    flex-shrink : 0;
-	-ms-flex-preferred-size  : 3%;
-	    flex-basis  : 3%;
+	-webkit-flex-shrink : 0;
+	    -ms-flex-negative : 0;
+	        flex-shrink : 0;
+	-webkit-flex-basis  : 3%;
+	    -ms-flex-preferred-size  : 3%;
+	        flex-basis  : 3%;
 }
 
 .rrui__modal__vertical-margin--top
 {
-	-ms-flex-positive : 2;
-	    flex-grow : 2;
+	-webkit-flex-grow : 2;
+	    -ms-flex-positive : 2;
+	        flex-grow : 2;
 }
 
 .rrui__modal__vertical-margin--bottom
 {
-	-ms-flex-positive : 5;
-	    flex-grow : 5;
+	-webkit-flex-grow : 5;
+	    -ms-flex-positive : 5;
+	        flex-grow : 5;
 }
 
 .rrui__modal__vertical-margin--fullscreen
@@ -1150,42 +1246,88 @@ it would introduce page width jumps.
 
 .rrui__modal--could-not-close-because-busy
 {
-	animation: bounce_z 0.6s;
-	transform: translate3d(0, 0, 0);
+	-webkit-animation: bounce_z 0.6s;
+	        animation: bounce_z 0.6s;
+	-webkit-transform: translate3d(0, 0, 0);
+	        transform: translate3d(0, 0, 0);
 }
 
 /* https://daneden.github.io/animate.css/ */
 /* https://github.com/daneden/animate.css/blob/master/source/bouncing_entrances/bounceIn.css */
-@keyframes bounce_z
+@-webkit-keyframes bounce_z
 {
 	from, 25%, 47%, 72%, to
 	{
-		animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+		-webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+		        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
 	}
 
 	0%
 	{
-		transform: scale3d(1, 1, 1);
+		-webkit-transform: scale3d(1, 1, 1);
+		        transform: scale3d(1, 1, 1);
 	}
 
 	25%
 	{
-		transform: scale3d(.97, .97, .97);
+		-webkit-transform: scale3d(.97, .97, .97);
+		        transform: scale3d(.97, .97, .97);
 	}
 
 	47%
 	{
-		transform: scale3d(1.025, 1.025, 1.025);
+		-webkit-transform: scale3d(1.025, 1.025, 1.025);
+		        transform: scale3d(1.025, 1.025, 1.025);
 	}
 
 	72%
 	{
-		transform: scale3d(0.99, 0.99, 0.99);
+		-webkit-transform: scale3d(0.99, 0.99, 0.99);
+		        transform: scale3d(0.99, 0.99, 0.99);
 	}
 
 	to
 	{
-		transform: scale3d(1, 1, 1);
+		-webkit-transform: scale3d(1, 1, 1);
+		        transform: scale3d(1, 1, 1);
+	}
+}
+@keyframes bounce_z
+{
+	from, 25%, 47%, 72%, to
+	{
+		-webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+		        animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+	}
+
+	0%
+	{
+		-webkit-transform: scale3d(1, 1, 1);
+		        transform: scale3d(1, 1, 1);
+	}
+
+	25%
+	{
+		-webkit-transform: scale3d(.97, .97, .97);
+		        transform: scale3d(.97, .97, .97);
+	}
+
+	47%
+	{
+		-webkit-transform: scale3d(1.025, 1.025, 1.025);
+		        transform: scale3d(1.025, 1.025, 1.025);
+	}
+
+	72%
+	{
+		-webkit-transform: scale3d(0.99, 0.99, 0.99);
+		        transform: scale3d(0.99, 0.99, 0.99);
+	}
+
+	to
+	{
+		-webkit-transform: scale3d(1, 1, 1);
+		        transform: scale3d(1, 1, 1);
 	}
 }
 
@@ -1209,18 +1351,22 @@ it would introduce page width jumps.
 	margin-top : calc(0.3rem * 4);
 
 	/* Right alignment */
+	display         : -webkit-flex;
 	display         : -ms-flexbox;
 	display         : flex;
-	-ms-flex-direction  : row;
-	    flex-direction  : row;
-	-ms-flex-pack : end;
-	    justify-content : flex-end;
+	-webkit-flex-direction  : row;
+	    -ms-flex-direction  : row;
+	        flex-direction  : row;
+	-webkit-justify-content : flex-end;
+	    -ms-flex-pack : end;
+	        justify-content : flex-end;
 }
 
 .rrui__form__actions--left-right
 {
-	-ms-flex-pack : justify;
-	    justify-content : space-between;
+	-webkit-justify-content : space-between;
+	    -ms-flex-pack : justify;
+	        justify-content : space-between;
 }
 
 .rrui__form__actions .rrui__button
@@ -1260,8 +1406,9 @@ it would introduce page width jumps.
 .rrui__text-input__label--placeholder
 {
 	color     : #888C91;
-	-ms-transform : translateY(0) scale(1);
-	    transform : translateY(0) scale(1);
+	-webkit-transform : translateY(0) scale(1);
+	    -ms-transform : translateY(0) scale(1);
+	        transform : translateY(0) scale(1);
 }
 
 .rrui__text-input__input--empty:focus + .rrui__input-label--floating
@@ -1293,30 +1440,35 @@ it would introduce page width jumps.
 	margin-top : -0.3em;
 	opacity    : 0;
 	/* transform  : scale(0.8); */
-	-ms-transform  : translateY(0.5em);
-	    transform  : translateY(0.5em);
+	-webkit-transform  : translateY(0.5em);
+	    -ms-transform  : translateY(0.5em);
+	        transform  : translateY(0.5em);
 }
 
 .rrui__tooltip--after-show
 {
 	opacity: 1;
 	/* transform: scale(1); */
-	-ms-transform: translateY(0);
-	    transform: translateY(0);
+	-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	        transform: translateY(0);
 }
 
 .rrui__tooltip--before-hide
 {
 	opacity: 0;
 	/* transform: scale(0.8); */
-	-ms-transform: translateY(0.5em);
-	    transform: translateY(0.5em);
+	-webkit-transform: translateY(0.5em);
+	    -ms-transform: translateY(0.5em);
+	        transform: translateY(0.5em);
 }
 
 .rrui__tooltip--after-show,
 .rrui__tooltip--before-hide
 {
+	transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
 	transition: opacity 120ms ease-out, transform 120ms ease-out;
+	transition: opacity 120ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out;
 }
 
 /*===========================================================
@@ -1325,6 +1477,7 @@ it would introduce page width jumps.
 
 .rrui__snackbar__container
 {
+	display        : -webkit-flex;
 	display        : -ms-flexbox;
 	display        : flex;
 	position       : fixed;
@@ -1337,8 +1490,9 @@ it would introduce page width jumps.
 
 .rrui__snackbar
 {
-	-ms-flex-positive      : 0;
-	    flex-grow      : 0;
+	-webkit-flex-grow      : 0;
+	    -ms-flex-positive      : 0;
+	        flex-grow      : 0;
 	margin         : auto;
 	pointer-events : auto;
 
@@ -1370,13 +1524,18 @@ it would introduce page width jumps.
 	opacity    : 0.9;
 	background-color : black;
 
-	transform  : translate3d(-100%, 0, 0);
-	transition : transform 120ms ease-out;
+	-webkit-transform  : translate3d(-100%, 0, 0);
+
+	        transform  : translate3d(-100%, 0, 0);
+	transition: -webkit-transform 120ms ease-out;
+	transition: transform 120ms ease-out;
+	transition : transform 120ms ease-out, -webkit-transform 120ms ease-out;
 }
 
 .rrui__slideout-menu--shown
 {
-	transform  : translate3d(0, 0, 0);
+	-webkit-transform  : translate3d(0, 0, 0);
+	        transform  : translate3d(0, 0, 0);
 	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
 }
 
@@ -1428,11 +1587,14 @@ it would introduce page width jumps.
 
 .DayPicker {
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+      -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
   -ms-flex-pack: center;
-      justify-content: center;
+      -webkit-justify-content: center;
+          justify-content: center;
   position: relative;
   padding: 1rem 0;
   -webkit-user-select: none;
@@ -1560,12 +1722,15 @@ it would introduce page width jumps.
 
 .DayPicker-CaptionSelects
 {
+	display: -webkit-flex;
 	display: -ms-flexbox;
 	display: flex;
-	-ms-flex-pack: center;
-	    justify-content: center;
-	-ms-flex-align: center;
-	    align-items: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	height: 100%;
 }
 
