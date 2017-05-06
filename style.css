@@ -55,7 +55,7 @@
 /* Resets height back to 100% for multiline text input */
 .rrui__text-input__input--multiline
 {
-	height : auto;
+	height: auto;
 }
 
 /*===========================================================
