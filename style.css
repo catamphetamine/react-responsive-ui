@@ -51,11 +51,6 @@
 	box-sizing : border-box;
 }
 
-.rrui__text-input__input--multiline
-{
-	height : auto;
-}
-
 /*===========================================================
 = Input field                                               =
 ===========================================================*/
@@ -521,17 +516,15 @@
 	color: #3678D1;
 }
 
-.rrui__select__selected--nothing,
-/* For CSS rule specificity */
-.rrui__select--expanded .rrui__select__selected--nothing
-{
-	color: #888C91;
-}
-
 .rrui__select__selected,
 .rrui__select__option
 {
 	color : inherit;
+}
+
+.rrui__select__selected--nothing:not(.rrui__select__selected--autocomplete)
+{
+	color: #888C91;
 }
 
 /* Not introducing an animation on `.rrui__select__option`
