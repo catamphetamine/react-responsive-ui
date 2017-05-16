@@ -1320,7 +1320,7 @@ export default class Select extends PureComponent
 					...event.target,
 					value
 				}
-			})
+			}
 
 			// For `redux-form` event detection.
 			// https://github.com/erikras/redux-form/blob/v5/src/events/isEvent.js
