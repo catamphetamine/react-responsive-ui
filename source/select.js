@@ -75,7 +75,10 @@ export default class Select extends PureComponent
 		// Is called when the select is focused
 		onFocus    : PropTypes.func,
 
-		// Is called when the select is blurred
+		// Is called when the select is blurred.
+		// This `onBlur` interceptor is a workaround for `redux-form`,
+		// so that it gets the parsed `value` in its `onBlur` handler,
+		// not the formatted text.
 		onBlur     : PropTypes.func,
 
 		// (exotic use case)
@@ -615,7 +618,6 @@ export default class Select extends PureComponent
 			concise,
 			tabIndex,
 			onFocus,
-			onBlur,
 			inputClassName
 		}
 		= this.props
@@ -647,7 +649,7 @@ export default class Select extends PureComponent
 					onChange={ this.on_autocomplete_input_change }
 					onKeyDown={ this.on_key_down }
 					onFocus={ onFocus }
-					onBlur={ onBlur }
+					onBlur={ this.on_blur }
 					tabIndex={ tabIndex }
 					className={ classNames
 					(
@@ -676,7 +678,7 @@ export default class Select extends PureComponent
 				onClick={ this.toggle }
 				onKeyDown={ this.on_key_down }
 				onFocus={ onFocus }
-				onBlur={ onBlur }
+				onBlur={ this.on_blur }
 				tabIndex={ tabIndex }
 				className={ classNames
 				(
@@ -1297,6 +1299,28 @@ export default class Select extends PureComponent
 
 					return
 			}
+		}
+	}
+
+	// This handler is a workaround for `redux-form`
+	on_blur = (event) =>
+	{
+		const { onBlur, value } = this.props
+
+		// This `onBlur` interceptor is a workaround for `redux-form`,
+		// so that it gets the right (parsed, not the formatted one)
+		// `event.target.value` in its `onBlur` handler.
+		if (onBlur)
+		{
+			onBlur
+			({
+				...event,
+				target:
+				{
+					...event.target,
+					value
+				}
+			})
 		}
 	}
 

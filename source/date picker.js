@@ -33,7 +33,7 @@ export default class DatePicker extends PureComponent
 
 		// Date format. Only supports `DD`, `MM`, `YY` and `YYYY` for now (to reduce bundle size).
 		// Can support custom localized formats, perhaps, when `date-fns@2` is released.
-		// (is `DD/MM/YYYY` by default)
+		// (is US `MM/DD/YYYY` by default)
 		format : PropTypes.string.isRequired,
 		// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 
@@ -52,7 +52,10 @@ export default class DatePicker extends PureComponent
 		// Is called when the input is focused
 		onFocus : PropTypes.func,
 
-		// Is called when the input is blurred
+		// Is called when the input is blurred.
+		// This `onBlur` interceptor is a workaround for `redux-form`,
+		// so that it gets the parsed `value` in its `onBlur` handler,
+		// not the formatted text.
 		onBlur : PropTypes.func,
 
 		// Disables the input
@@ -79,7 +82,8 @@ export default class DatePicker extends PureComponent
 
 	static defaultProps =
 	{
-		format : 'DD/MM/YYYY',
+		// Default US format
+		format : 'MM/DD/YYYY',
 
 		// locale: 'en-US',
 		firstDayOfWeek : 0,
@@ -219,7 +223,6 @@ export default class DatePicker extends PureComponent
 		const { onChange, format } = this.props
 
 		value = value.trim()
-		value = trim_invalid_part(value, format)
 
 		// When the date is erased, reset it.
 		if (!value)
@@ -227,6 +230,8 @@ export default class DatePicker extends PureComponent
 			onChange(undefined)
 			return this.setState({ text_value: '' })
 		}
+
+		value = trim_invalid_part(value, format)
 
 		const selected_day = parse_date(value, format)
 
@@ -314,6 +319,28 @@ export default class DatePicker extends PureComponent
 		return indicateInvalid && error
 	}
 
+	// This handler is a workaround for `redux-form`
+	on_blur = (event) =>
+	{
+		const { onBlur, value } = this.props
+
+		// This `onBlur` interceptor is a workaround for `redux-form`,
+		// so that it gets the right (parsed, not the formatted one)
+		// `event.target.value` in its `onBlur` handler.
+		if (onBlur)
+		{
+			onBlur
+			({
+				...event,
+				target:
+				{
+					...event.target,
+					value
+				}
+			})
+		}
+	}
+
 	render()
 	{
 		const
@@ -330,7 +357,6 @@ export default class DatePicker extends PureComponent
 			label,
 			placeholder,
 			onFocus,
-			onBlur,
 			className,
 			style
 		}
@@ -380,7 +406,7 @@ export default class DatePicker extends PureComponent
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
 						onFocus={ onFocus }
-						onBlur={ onBlur }
+						onBlur={ this.on_blur }
 						onFocus={ this.on_input_focus }
 						className={ classNames('rrui__input-field', 'rrui__date-picker__input',
 						{
