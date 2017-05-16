@@ -329,8 +329,8 @@ export default class DatePicker extends PureComponent
 		// `event.target.value` in its `onBlur` handler.
 		if (onBlur)
 		{
-			onBlur
-			({
+			const _event =
+			{
 				...event,
 				target:
 				{
@@ -338,6 +338,13 @@ export default class DatePicker extends PureComponent
 					value
 				}
 			})
+
+			// For `redux-form` event detection.
+			// https://github.com/erikras/redux-form/blob/v5/src/events/isEvent.js
+			_event.stopPropagation = event.stopPropagation
+			_event.preventDefault  = event.preventDefault
+
+			onBlur(_event)
 		}
 	}
 
