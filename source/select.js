@@ -370,6 +370,7 @@ export default class Select extends PureComponent
 			<div
 				ref={ ref => this.select = ref }
 				onKeyDown={ this.on_key_down_in_container }
+				onBlur={ this.on_blur }
 				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
 				className={ classNames
 				(
@@ -649,7 +650,6 @@ export default class Select extends PureComponent
 					onChange={ this.on_autocomplete_input_change }
 					onKeyDown={ this.on_key_down }
 					onFocus={ onFocus }
-					onBlur={ this.on_blur }
 					tabIndex={ tabIndex }
 					className={ classNames
 					(
@@ -678,7 +678,6 @@ export default class Select extends PureComponent
 				onClick={ this.toggle }
 				onKeyDown={ this.on_key_down }
 				onFocus={ onFocus }
-				onBlur={ this.on_blur }
 				tabIndex={ tabIndex }
 				className={ classNames
 				(

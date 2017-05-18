@@ -396,6 +396,7 @@ export default class DatePicker extends PureComponent
 		return (
 			<div
 				onKeyDown={ this.on_key_down_in_container }
+				onBlur={ this.on_blur }
 				className={ classNames('rrui__date-picker', className,
 				{
 					'rrui__date-picker--disabled' : disabled
@@ -413,7 +414,6 @@ export default class DatePicker extends PureComponent
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
 						onFocus={ onFocus }
-						onBlur={ this.on_blur }
 						onFocus={ this.on_input_focus }
 						className={ classNames('rrui__input-field', 'rrui__date-picker__input',
 						{
