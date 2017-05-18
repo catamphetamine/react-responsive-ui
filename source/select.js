@@ -1306,6 +1306,12 @@ export default class Select extends PureComponent
 	{
 		const { onBlur, value } = this.props
 
+		// If clicked on a select option then don't trigger "blur" event
+		if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget))
+		{
+			return
+		}
+
 		// This `onBlur` interceptor is a workaround for `redux-form`,
 		// so that it gets the right (parsed, not the formatted one)
 		// `event.target.value` in its `onBlur` handler.
