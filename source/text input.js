@@ -329,7 +329,13 @@ export default class Text_input extends PureComponent
 	// Whether the input is empty
 	is_empty()
 	{
-		const { value } = this.props
+		const { value, type } = this.props
+
+		if (type === 'number')
+		{
+			return !value && value !== 0
+		}
+
 		return !value || !value.trim()
 	}
 
