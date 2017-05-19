@@ -19,7 +19,7 @@ export default class Text_input extends PureComponent
 		name             : PropTypes.string,
 
 		// Text field value
-		value            : PropTypes.string,
+		value            : PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 
 		// Is called when the `value` is edited
 		onChange         : PropTypes.func.isRequired,
