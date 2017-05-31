@@ -329,14 +329,29 @@ export default class Text_input extends PureComponent
 	// Whether the input is empty
 	is_empty()
 	{
-		const { value, type } = this.props
+		const { value } = this.props
 
-		if (type === 'number')
+		// `0` is not an empty value
+		if (typeof value === 'number' && value === 0)
 		{
-			return !value && value !== 0
+			return false
 		}
 
-		return !value || !(typeof value === 'string' ? value : String(value)).trim()
+		// An empty string, `undefined`, `null` –
+		// all those are an empty value.
+		if (!value)
+		{
+			return true
+		}
+
+		// Whitespace string is also considered empty
+		if (typeof value === 'string' && !value.trim())
+		{
+			return true
+		}
+
+		// Not empty
+		return false
 	}
 
 	// Whether should indicate that the input value is invalid
