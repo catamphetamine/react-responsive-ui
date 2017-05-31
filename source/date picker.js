@@ -560,7 +560,7 @@ function parse_date_custom(string, format)
 
 	if (year === undefined || month === undefined || day === undefined)
 	{
-		return console.error(`Couldn't parse date, perhaps an unsupported format: ${format}. Only DD, MM, YY and YYYY are supported.`)
+		return console.error(`Couldn't parse date. Most likely an invalid date entered (manually). Otherwise it could be an unsupported date format: ${format} (only DD, MM, YY and YYYY literals are supported).`)
 	}
 
 	const date = new Date

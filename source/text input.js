@@ -336,7 +336,7 @@ export default class Text_input extends PureComponent
 			return !value && value !== 0
 		}
 
-		return !value || !value.trim()
+		return !value || !String(value).trim()
 	}
 
 	// Whether should indicate that the input value is invalid
