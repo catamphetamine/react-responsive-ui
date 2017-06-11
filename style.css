@@ -141,12 +141,14 @@
 
 .rrui__activity-indicator-circle
 {
-	/* IE can not animate SVG */
-	stroke-dasharray  : 89,200;
-	stroke-dashoffset : -35;
+	/* IE can not animate SVG. */
+	/* Only Microsoft Edge supports SVG CSS Transitions and Animation. */
+	/* Could use `stroke-dasharray: 89,200` and `stroke-dashoffset: -35` here */
+	/* to show an indicator in IE but the aethetics is better othewise so screw IE. */
+	stroke-dasharray  : 1,200;
+	stroke-dashoffset : 0;
 	animation         : spinner-extent 1.5s ease-in-out infinite;
 	stroke-linecap    : round;
-	transition        : all 1.5s ease-in-out;
 }
 
 @keyframes spinner-rotate
