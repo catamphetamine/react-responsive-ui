@@ -117,7 +117,9 @@ export default class Select extends PureComponent
 
 		// If `menu` flag is set to `true`
 		// then it's gonna be a dropdown menu
-		// with `children` elements inside.
+		// with `children` elements inside
+		// and therefore `onChange` won't be called
+		// on menu item click.
 		menu       : PropTypes.bool,
 
 		// If `menu` flag is set to `true`
@@ -196,7 +198,7 @@ export default class Select extends PureComponent
 			toggler,
 			onChange
 		}
-		= props
+		= this.props
 
 		if (autocomplete)
 		{
@@ -231,7 +233,7 @@ export default class Select extends PureComponent
 
 		if (!menu && !onChange)
 		{
-			throw new Error(`"onChange" property must be specified for <Select/>`)
+			throw new Error(`"onChange" property must be specified for a non-menu <Select/>`)
 		}
 	}
 
@@ -377,7 +379,6 @@ export default class Select extends PureComponent
 					'rrui__select',
 					{
 						'rrui__rich'              : fallback,
-						'rrui__select--menu'      : menu,
 						'rrui__select--upward'    : upward,
 						'rrui__select--expanded'  : expanded,
 						'rrui__select--collapsed' : !expanded,
@@ -389,7 +390,7 @@ export default class Select extends PureComponent
 				<div
 					className={ classNames
 					({
-						'rrui__input': !menu
+						'rrui__input': !toggler
 					}) }>
 
 					{/* Currently selected item */}
@@ -415,13 +416,7 @@ export default class Select extends PureComponent
 					}
 
 					{/* Menu toggler */}
-					{ menu &&
-						<div
-							ref={ ref => this.menu_toggler }
-							className="rrui__select__toggler">
-							{ React.cloneElement(toggler, { onClick : this.toggle }) }
-						</div>
-					}
+					{ menu && this.render_toggler() }
 
 					{/* The list of selectable options */}
 					{/* Math.max(this.state.height, this.props.max_height) */}
@@ -586,24 +581,26 @@ export default class Select extends PureComponent
 	// (in case of `nativeExpanded` setting).
 	render_selected_item()
 	{
-		const { nativeExpanded } = this.props
+		const { nativeExpanded, toggler } = this.props
+
+		if (toggler)
+		{
+			return this.render_toggler()
+		}
 
 		const selected = this.render_selected_item_only()
 
-		if (!nativeExpanded)
+		if (nativeExpanded)
 		{
-			return selected
+			return (
+				<div style={ native_expanded_select_container_style }>
+					{ this.render_static() }
+					{ selected }
+				</div>
+			)
 		}
 
-		const markup =
-		(
-			<div style={ native_expanded_select_container_style }>
-				{ this.render_static() }
-				{ selected }
-			</div>
-		)
-
-		return markup
+		return selected
 	}
 
 	render_selected_item_only()
@@ -619,6 +616,7 @@ export default class Select extends PureComponent
 			concise,
 			tabIndex,
 			onFocus,
+			title,
 			inputClassName
 		}
 		= this.props
@@ -651,6 +649,7 @@ export default class Select extends PureComponent
 					onKeyDown={ this.on_key_down }
 					onFocus={ onFocus }
 					tabIndex={ tabIndex }
+					title={ title }
 					className={ classNames
 					(
 						'rrui__input-field',
@@ -679,6 +678,7 @@ export default class Select extends PureComponent
 				onKeyDown={ this.on_key_down }
 				onFocus={ onFocus }
 				tabIndex={ tabIndex }
+				title={ title }
 				className={ classNames
 				(
 					'rrui__input-field',
@@ -709,6 +709,21 @@ export default class Select extends PureComponent
 		)
 
 		return markup
+	}
+
+	render_toggler()
+	{
+		const { toggler } = this.props
+
+		return (
+			<div className="rrui__select__toggler">
+				{ React.cloneElement(toggler,
+				{
+					onClick   : this.toggle,
+					onKeyDown : this.on_key_down
+				}) }
+			</div>
+		)
 	}
 
 	// supports disabled javascript
@@ -987,7 +1002,7 @@ export default class Select extends PureComponent
 
 		const
 		{
-			menu,
+			toggler,
 			disabled,
 			autocomplete,
 			options,
@@ -1079,7 +1094,7 @@ export default class Select extends PureComponent
 					// For some reason Firefox loses focus
 					// upon select expansion via a click,
 					// so this extra `.focus()` works around that issue.
-					if (!menu)
+					if (!toggler)
 					{
 						this.selected.focus()
 					}

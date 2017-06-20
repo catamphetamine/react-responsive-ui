@@ -20,8 +20,7 @@
 
 .rrui__input
 {
-	/* `position: relative` is for the floating label absolute positioning
-	   and also for `.rrui__select__options width` sizing */
+	/* `position: relative` is for the floating label absolute positioning */
 	position : relative;
 }
 
@@ -356,12 +355,11 @@
 
 .rrui__select
 {
-	user-select : none;
-}
-
-.rrui__select--menu
-{
+	/* This is for `.rrui__select__options` to be positioned
+	   correctly relative to the `<Select/>` itself. */
 	position : relative;
+
+	user-select : none;
 }
 
 .rrui__select__options
