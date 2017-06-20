@@ -719,6 +719,7 @@ export default class Select extends PureComponent
 			<div className="rrui__select__toggler">
 				{ React.cloneElement(toggler,
 				{
+					ref       : ref => this.selected = ref,
 					onClick   : this.toggle,
 					onKeyDown : this.on_key_down
 				}) }
@@ -1094,10 +1095,7 @@ export default class Select extends PureComponent
 					// For some reason Firefox loses focus
 					// upon select expansion via a click,
 					// so this extra `.focus()` works around that issue.
-					if (!toggler)
-					{
-						this.selected.focus()
-					}
+					this.selected.focus()
 				}
 			}
 
