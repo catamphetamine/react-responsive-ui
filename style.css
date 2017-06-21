@@ -983,12 +983,19 @@ it would introduce page width jumps.
 = Modal                                                     =
 ===========================================================*/
 
+/*
+Make sure to add `.rrui__fixed-full-width` CSS class
+to all full-width `position: fixed` elements.
+Such elements must not be `width: 100%`
+but rather `width: auto` or `left: 0; right: 0;`.
+*/
 .rrui__fixed-full-width
 {
 	position : fixed;
 	top      : 0;
 	left     : 0;
 	right    : 0;
+	width    : auto;
 }
 
 .rrui__modal__overlay

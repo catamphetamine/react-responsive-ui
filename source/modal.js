@@ -7,6 +7,10 @@ import React_modal from 'react-modal'
 import Button from './button'
 import Form from './form'
 
+// Make sure to add `.rrui__fixed-full-width` CSS class
+// to all full-width `position: fixed` elements.
+// Such elements must not be `width: 100%`
+// but rather `width: auto` or `left: 0; right: 0;`.
 export default class Modal extends PureComponent
 {
 	state =
@@ -368,6 +372,12 @@ export default class Modal extends PureComponent
 		// "full-width" elements include `document.body`
 		// and all `position: fixed` elements
 		// which should be marked with this special CSS class.
+		//
+		// Make sure to add `.rrui__fixed-full-width` CSS class
+		// to all full-width `position: fixed` elements.
+		// Such elements must not be `width: 100%`
+		// but rather `width: auto` or `left: 0; right: 0;`.
+		//
 		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
 		full_width_elements.push(document.body)
 
