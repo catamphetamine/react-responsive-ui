@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
+import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
 import { submit_parent_form, get_scrollbar_width } from './misc/dom'
 
@@ -146,6 +147,17 @@ export default class Select extends PureComponent
 
 		focusUponSelection : PropTypes.bool.isRequired,
 
+		// When the `<Select/>` is expanded
+		// the options list may not fit on the screen.
+		// If `scrollIntoView` is `true` (which is the default)
+		// then the browser will automatically scroll
+		// so that the expanded options list fits on the screen.
+		scrollIntoView : PropTypes.bool.isRequired,
+
+		// If `scrollIntoView` is `true` (which is the default)
+		// then this is gonna be the delay after which it scrolls into view.
+		expandAnimationDuration : PropTypes.number.isRequired,
+
 		onTabOut : PropTypes.func,
 
 		onToggle : PropTypes.func
@@ -165,6 +177,8 @@ export default class Select extends PureComponent
 		fallback           : false,
 		native             : false,
 		nativeExpanded     : false,
+		scrollIntoView     : true,
+		expandAnimationDuration : 150,
 
 		// Set to `true` to mark the field as required
 		required : false,
@@ -296,10 +310,16 @@ export default class Select extends PureComponent
 			this.toggle_timeout = undefined
 		}
 
-		if (this.focus_timeout)
+		if (this.scroll_into_view_timeout)
 		{
-			clearTimeout(this.focus_timeout)
-			this.focus_timeout = undefined
+			clearTimeout(this.scroll_into_view_timeout)
+			this.scroll_into_view_timeout = undefined
+		}
+
+		if (this.restore_focus_on_collapse_timeout)
+		{
+			clearTimeout(this.restore_focus_on_collapse_timeout)
+			this.restore_focus_on_collapse_timeout = undefined
 		}
 	}
 
@@ -1022,7 +1042,9 @@ export default class Select extends PureComponent
 			value,
 			focusUponSelection,
 			onToggle,
-			nativeExpanded
+			nativeExpanded,
+			scrollIntoView,
+			expandAnimationDuration
 		}
 		= this.props
 
@@ -1034,6 +1056,18 @@ export default class Select extends PureComponent
 		if (disabled)
 		{
 			return
+		}
+
+		if (this.toggle_timeout)
+		{
+			clearTimeout(this.toggle_timeout)
+			this.toggle_timeout = undefined
+		}
+
+		if (this.scroll_into_view_timeout)
+		{
+			clearTimeout(this.scroll_into_view_timeout)
+			this.scroll_into_view_timeout = undefined
 		}
 
 		const { expanded } = this.state
@@ -1056,9 +1090,10 @@ export default class Select extends PureComponent
 		}
 
 		// Deferring expanding the select upon click
-		// because document.onClick should finish first,
-		// otherwise `event.target` may be detached from the DOM
-		// and it would immediately toggle back to collapsed state.
+		// because `document.onClick(event)` should fire first,
+		// otherwise `event.target` in that handler will be detached
+		// from the document and so `this.document_clicked()` handler will
+		// immediately toggle the select back to collapsed state.
 		this.toggle_timeout = setTimeout(() =>
 		{
 			this.toggle_timeout = undefined
@@ -1066,6 +1101,60 @@ export default class Select extends PureComponent
 			this.setState
 			({
 				expanded: !expanded
+			},
+			() =>
+			{
+				const is_now_expanded = this.state.expanded
+
+				if (!toggle_options.dont_focus_after_toggle)
+				{
+					// If it's autocomplete, then focus <input/> field
+					// upon toggling the select component.
+					if (autocomplete)
+					{
+						if (is_now_expanded)
+						{
+							// Focus the input after the select is expanded
+							this.autocomplete.focus()
+						}
+						else if (focusUponSelection)
+						{
+							// Focus the toggler after the select is collapsed
+							this.selected.focus()
+						}
+					}
+					else
+					{
+						// For some reason Firefox loses focus
+						// upon select expansion via a click,
+						// so this extra `.focus()` works around that issue.
+						this.selected.focus()
+					}
+				}
+
+				this.scroll_into_view_timeout = setTimeout(() =>
+				{
+					this.scroll_into_view_timeout = undefined
+
+					const is_still_expanded = this.state.expanded
+
+					if (is_still_expanded && this.list && scrollIntoView)
+					{
+						const element = ReactDOM.findDOMNode(this.list)
+
+						// https://developer.mozilla.org/ru/docs/Web/API/Element/scrollIntoViewIfNeeded
+						if (element.scrollIntoViewIfNeeded)
+						{
+							element.scrollIntoViewIfNeeded(false)
+						}
+						else
+						{
+							// https://github.com/stipsan/scroll-into-view-if-needed
+							scrollIntoViewIfNeeded(element, false, { duration: 800 })
+						}
+					}
+				},
+				expandAnimationDuration)
 			})
 
 			if (!expanded && options)
@@ -1081,40 +1170,6 @@ export default class Select extends PureComponent
 				this.scroll_to(focused_option_value)
 			}
 
-			// If it's autocomplete, then focus <input/> field
-			// upon toggling the select component.
-			if (!toggle_options.dont_focus_after_toggle)
-			{
-				if (autocomplete)
-				{
-					if (!expanded || (expanded && focusUponSelection))
-					{
-						this.focus_timeout = setTimeout(() =>
-						{
-							this.focus_timeout = undefined
-
-							// Focus the toggler
-							if (expanded)
-							{
-								this.selected.focus()
-							}
-							else
-							{
-								this.autocomplete.focus()
-							}
-						},
-						0)
-					}
-				}
-				else
-				{
-					// For some reason Firefox loses focus
-					// upon select expansion via a click,
-					// so this extra `.focus()` works around that issue.
-					this.selected.focus()
-				}
-			}
-
 			if (onToggle)
 			{
 				onToggle(!expanded)
@@ -1128,7 +1183,7 @@ export default class Select extends PureComponent
 		0)
 	}
 
-	item_clicked(value, event)
+	item_clicked = (value, event) =>
 	{
 		if (event)
 		{
@@ -1259,9 +1314,9 @@ export default class Select extends PureComponent
 						this.toggle()
 
 						// Restore focus when the list is collapsed
-						this.focus_timeout = setTimeout(() =>
+						this.restore_focus_on_collapse_timeout = setTimeout(() =>
 						{
-							this.focus_timeout = undefined
+							this.restore_focus_on_collapse_timeout = undefined
 
 							this.selected.focus()
 						},
@@ -1286,8 +1341,6 @@ export default class Select extends PureComponent
 						{
 							// Choose the focused item
 							this.item_clicked(focused_option_value)
-							// And collapse the select
-							this.toggle()
 						}
 					}
 					// Else it should have just submitted the form on Enter,
@@ -1320,7 +1373,6 @@ export default class Select extends PureComponent
 							// we're explicitly not handling autocomplete here
 							// it is valid to select any options including the default ones.
 							this.item_clicked(focused_option_value)
-							this.toggle()
 						}
 					}
 					// Otherwise, the spacebar keydown event on a `<button/>`
