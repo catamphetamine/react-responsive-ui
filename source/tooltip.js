@@ -70,6 +70,18 @@ export default class Tooltip extends PureComponent
 	{
 		// Won't throw an exception
 		this.tooltip.parentNode.removeChild(this.tooltip)
+
+		if (this.hide_timeout)
+		{
+			clearTimeout(this.hide_timeout)
+			this.hide_timeout = undefined
+		}
+
+		if (this.show_timeout)
+		{
+			clearTimeout(this.show_timeout)
+			this.show_timeout = undefined
+		}
 	}
 
 	container()
@@ -138,6 +150,8 @@ export default class Tooltip extends PureComponent
 
 	hide()
 	{
+		const { hidingAnimationDuration } = this.props
+
 		// If already hiding, or if already hidden, then do nothing.
 		if (this.hide_timeout || this.tooltip.style.display === 'none')
 		{
@@ -157,7 +171,7 @@ export default class Tooltip extends PureComponent
 			this.tooltip.classList.remove('rrui__tooltip--before-hide')
 			this.tooltip.classList.remove('rrui__tooltip--after-show')
 		},
-		this.props.hidingAnimationDuration)
+		hidingAnimationDuration)
 	}
 
 	on_mouse_enter()

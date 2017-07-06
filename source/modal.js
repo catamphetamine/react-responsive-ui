@@ -156,6 +156,12 @@ export default class Modal extends PureComponent
 		{
 			this.on_after_close()
 		}
+
+		if (this.could_not_close_because_busy_animation_timeout)
+		{
+			clearTimeout(this.could_not_close_because_busy_animation_timeout)
+			this.could_not_close_because_busy_animation_timeout = undefined
+		}
 	}
 
 	render()
@@ -274,8 +280,9 @@ export default class Modal extends PureComponent
 
 		if (!could_not_close_because_busy)
 		{
-			setTimeout(() =>
+			this.could_not_close_because_busy_animation_timeout = setTimeout(() =>
 			{
+				this.could_not_close_because_busy_animation_timeout = undefined
 				this.setState({ could_not_close_because_busy: false })
 			},
 			// Give it a bit of extra time to finish the CSS animation

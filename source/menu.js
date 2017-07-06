@@ -76,6 +76,7 @@ export default class Menu extends PureComponent
 	// 	// On menu toggle
 	// 	if (this.state.show !== previous_state.show)
 	// 	{
+	// 		// Requires a corresponding `clearTimeout()`` in `componentWillUnmount()``
 	// 		setTimeout(() =>
 	// 		{
 	// 			this.setState({ page_moved_aside: this.state.show })

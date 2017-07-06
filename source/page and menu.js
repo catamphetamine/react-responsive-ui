@@ -72,6 +72,7 @@ export default class Page_and_menu extends Component
 	//
 	// 	this.setState({ show_menu: !this.state.show_menu }, () =>
 	// 	{
+	// 		// Requires a corresponding `clearTimeout()`` in `componentWillUnmount()``
 	// 		setTimeout(() =>
 	// 		{
 	// 			this.setState({ page_moved_aside: this.state.show_menu })

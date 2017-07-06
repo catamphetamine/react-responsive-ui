@@ -289,6 +289,18 @@ export default class Select extends PureComponent
 		{
 			window.removeEventListener('resize', this.resize_native_expanded_select)
 		}
+
+		if (this.toggle_timeout)
+		{
+			clearTimeout(this.toggle_timeout)
+			this.toggle_timeout = undefined
+		}
+
+		if (this.focus_timeout)
+		{
+			clearTimeout(this.focus_timeout)
+			this.focus_timeout = undefined
+		}
 	}
 
 	render()
@@ -1047,8 +1059,10 @@ export default class Select extends PureComponent
 		// because document.onClick should finish first,
 		// otherwise `event.target` may be detached from the DOM
 		// and it would immediately toggle back to collapsed state.
-		setTimeout(() =>
+		this.toggle_timeout = setTimeout(() =>
 		{
+			this.toggle_timeout = undefined
+
 			this.setState
 			({
 				expanded: !expanded
@@ -1075,8 +1089,10 @@ export default class Select extends PureComponent
 				{
 					if (!expanded || (expanded && focusUponSelection))
 					{
-						setTimeout(() =>
+						this.focus_timeout = setTimeout(() =>
 						{
+							this.focus_timeout = undefined
+
 							// Focus the toggler
 							if (expanded)
 							{
@@ -1243,9 +1259,10 @@ export default class Select extends PureComponent
 						this.toggle()
 
 						// Restore focus when the list is collapsed
-						setTimeout
-						(() =>
+						this.focus_timeout = setTimeout(() =>
 						{
+							this.focus_timeout = undefined
+
 							this.selected.focus()
 						},
 						0)
