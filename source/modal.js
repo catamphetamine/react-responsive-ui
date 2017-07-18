@@ -385,12 +385,10 @@ export default class Modal extends PureComponent
 		// Such elements must not be `width: 100%`
 		// but rather `width: auto` or `left: 0; right: 0;`.
 		//
-		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
-		full_width_elements.push(document.body)
-
-		// Adjust the width of all "full-width" elements
+		// Adjusts the width of all "full-width" elements
 		// so that they don't expand by the width of the (now absent) scrollbar
-		for (const element of full_width_elements)
+		//
+		for (const element of get_full_width_elements())
 		{
 			element.style.marginRight = width_adjustment + 'px'
 		}
@@ -436,12 +434,16 @@ export default class Modal extends PureComponent
 		// and all `position: fixed` elements
 		// which should be marked with this special CSS class.
 		// (`Array.from` is transpiled by Babel)
-		const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
-		full_width_elements.push(document.body)
-
-		// Adjust the width of all "full-width" elements back to their original value
+		//
+		// Make sure to add `.rrui__fixed-full-width` CSS class
+		// to all full-width `position: fixed` elements.
+		// Such elements must not be `width: 100%`
+		// but rather `width: auto` or `left: 0; right: 0;`.
+		//
+		// Adjusts the width of all "full-width" elements back to their original value
 		// now that the main (body) scrollbar is being restored.
-		for (const element of full_width_elements)
+		//
+		for (const element of get_full_width_elements())
 		{
 			element.style.marginRight = 0
 		}
@@ -552,4 +554,21 @@ const react_modal_style =
 		// Will show a scrollbar in case of modal content overflowing viewport height
 		overflow : 'auto'
 	}
+}
+
+// "full-width" elements include `document.body`
+// and all `position: fixed` elements
+// which should be marked with this special CSS class.
+//
+// Make sure to add `.rrui__fixed-full-width` CSS class
+// to all full-width `position: fixed` elements.
+// Such elements must not be `width: 100%`
+// but rather `width: auto` or `left: 0; right: 0;`.
+//
+function get_full_width_elements()
+{
+	// (`Array.from` is transpiled by Babel)
+	const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+	full_width_elements.push(document.body)
+	return full_width_elements
 }

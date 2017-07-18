@@ -6,7 +6,13 @@ const env = process.env.WEBPACK_ENV
 const library_name = 'react-responsive-ui'
 let output_file
 
-const plugins = []
+const plugins =
+[
+	// Webpack v3 feature.
+	// https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b
+	// Removes Webpack-specific wrappers around modules.
+	new webpack.optimize.ModuleConcatenationPlugin()
+]
 
 if (env === 'build')
 {

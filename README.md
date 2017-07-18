@@ -4,7 +4,7 @@
 
 Slick and accurate React UI components. Work both on client side and server side, with javascript enabled and with javascript disabled (e.g. DarkNet).
 
-[See Demo](https://halt-hammerzeit.github.io/react-responsive-ui/)
+[See Demo](https://catamphetamine.github.io/react-responsive-ui/)
 
 ## Installation
 
@@ -14,7 +14,7 @@ npm install react-responsive-ui --save
 
 ## Usage
 
-See the [demo page](https://halt-hammerzeit.github.io/react-responsive-ui/) source code.
+See the [demo page](https://catamphetamine.github.io/react-responsive-ui/) source code.
 
 ```js
 import

@@ -71,7 +71,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/halt-hammerzeit/react-responsive-ui.git"
+    "url": "git+https://github.com/catamphetamine/react-responsive-ui.git"
   },
   "keywords": [
     "react",
@@ -84,7 +84,7 @@
   "author": "Halt Hammerzeit <halt.hammerzeit.at@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/halt-hammerzeit/react-responsive-ui/issues"
+    "url": "https://github.com/catamphetamine/react-responsive-ui/issues"
   },
-  "homepage": "https://github.com/halt-hammerzeit/react-responsive-ui#readme"
+  "homepage": "https://github.com/catamphetamine/react-responsive-ui#readme"
 }
