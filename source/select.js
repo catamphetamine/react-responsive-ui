@@ -776,6 +776,7 @@ export default class Select extends PureComponent
 			toggler,
 			fallback,
 			nativeExpanded,
+			tabIndex,
 			children
 		}
 		= this.props
@@ -805,6 +806,7 @@ export default class Select extends PureComponent
 				value={ value_is_empty(value) ? Empty_value_option_value : value }
 				disabled={ disabled }
 				onChange={ this.native_select_on_change }
+				tabIndex={ tabIndex }
 				className={ classNames('rrui__input', 'rrui__select__native',
 				{
 					'rrui__select__native-expanded' : nativeExpanded,
