@@ -507,7 +507,8 @@
 	text-align : left;
 }
 
-.rrui__select__selected:focus
+.rrui__select__selected:focus,
+.rrui__select__native-expanded:focus + .rrui__select__selected
 {
 	border-bottom-color: #03B2CB;
 }
@@ -590,11 +591,6 @@
 	z-index  : 1;
 	opacity  : 0;
 	cursor   : pointer;
-}
-
-.rrui__select__native-expanded:focus + .rrui__select__selected
-{
-	border-bottom-color: #03B2CB;
 }
 
 /*===========================================================
