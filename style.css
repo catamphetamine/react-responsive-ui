@@ -592,6 +592,11 @@
 	cursor   : pointer;
 }
 
+.rrui__select__native-expanded:focus + .rrui__select__selected
+{
+	border-bottom-color: #03B2CB;
+}
+
 /*===========================================================
 = Checkbox                                                  =
 ===========================================================*/
