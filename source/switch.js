@@ -106,13 +106,7 @@ export default class Switch extends PureComponent
 				}
 
 				{/* The switch */}
-				<div
-					className={ classNames('rrui__switch__switch',
-					{
-						// CSS selector performance optimization
-						'rrui__switch__switch--label' : children
-					}) }>
-
+				<div className="rrui__switch__switch">
 					<input
 						type="checkbox"
 						value={ value }

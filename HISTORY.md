@@ -1,3 +1,8 @@
+0.8.22 / 27.07.2017
+===================
+
+  * (CSS breaking change) `<Switch/>` CSS classes got refactored but it shouldn't break anyone's apps.
+
 0.8.0 / 03.05.2017
 ===================
 

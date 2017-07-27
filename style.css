@@ -750,9 +750,10 @@
 
 .rrui__switch
 {
-	display  : inline-block;
-	cursor   : pointer;
+	display     : inline-flex;
+	align-items : center;
 
+	cursor      : pointer;
 	user-select : none;
 
 	-webkit-tap-highlight-color : transparent;
@@ -772,12 +773,18 @@
 
 .rrui__switch__switch
 {
-	position : relative;
+	position    : relative;
+	line-height : 0;
 }
 
-.rrui__switch__switch--label
+.rrui__switch__label--left
 {
 	margin-left : calc(0.3rem * 2);
+}
+
+.rrui__switch__label--right
+{
+	margin-right : calc(0.3rem * 2);
 }
 
 .rrui__switch__groove
