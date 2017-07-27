@@ -779,12 +779,12 @@
 
 .rrui__switch__label--left
 {
-	margin-left : calc(0.3rem * 2);
+	margin-right : calc(0.3rem * 2);
 }
 
 .rrui__switch__label--right
 {
-	margin-right : calc(0.3rem * 2);
+	margin-left : calc(0.3rem * 2);
 }
 
 .rrui__switch__groove
