@@ -28,7 +28,13 @@ export default class Switch extends PureComponent
 		// when javascript is disabled (e.g. Tor)
 		fallback  : PropTypes.bool.isRequired,
 
-		// A label
+		// The label to the left of the switch
+		leftLabel : PropTypes.string,
+
+		// The label to the right of the switch
+		rightLabel : PropTypes.string,
+
+		// A label (analogous to `leftLabel`)
 		children  : PropTypes.node,
 
 		// CSS style object
@@ -73,6 +79,8 @@ export default class Switch extends PureComponent
 			error,
 			style,
 			className,
+			leftLabel,
+			rightLabel,
 			children
 		}
 		= this.props
@@ -90,8 +98,14 @@ export default class Switch extends PureComponent
 				className) }
 				style={ style }>
 
-				{ children }
+				{/* Left label */}
+				{ (leftLabel || children) &&
+					<div className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
+						{ leftLabel || children }
+					</div>
+				}
 
+				{/* The switch */}
 				<div
 					className={ classNames('rrui__switch__switch',
 					{
@@ -119,6 +133,13 @@ export default class Switch extends PureComponent
 							'rrui__switch__knob--on' : value
 						}) }/>
 				</div>
+
+				{/* Right label */}
+				{ rightLabel &&
+					<div className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
+						{ rightLabel }
+					</div>
+				}
 			</label>
 		)
 
