@@ -175,5 +175,8 @@ export default class Switch extends PureComponent
 const input_style =
 {
 	position : 'absolute',
-	opacity  : 0
+	opacity  : 0,
+	margin   : 0,
+	width    : '100%',
+	height   : '100%'
 }
