@@ -254,7 +254,7 @@ export default class DatePicker extends PureComponent
 		const { format, onChange } = this.props
 
 		// https://github.com/gpbl/react-day-picker/issues/473
-		selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
+		selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth() + 1, selected_day.getDate())
 
 		// `onChange` fires but the `value`
 		// hasn't neccessarily been updated yet
