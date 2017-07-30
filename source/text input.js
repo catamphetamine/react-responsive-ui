@@ -78,6 +78,9 @@ export default class Text_input extends PureComponent
 		// Is called when the input is focused
 		onFocus          : PropTypes.func,
 
+		// `onKeyDown` event handler
+		onKeyDown        : PropTypes.func,
+
 		// Is called when the input is blurred
 		onBlur           : PropTypes.func,
 
@@ -410,6 +413,8 @@ export default class Text_input extends PureComponent
 
 	on_key_down = (event) =>
 	{
+		const { onKeyDown } = this.props
+
 		// Submit the form on Cmd + Enter (or Ctrl + Enter)
 		if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
 		{
@@ -417,6 +422,11 @@ export default class Text_input extends PureComponent
 			{
 				event.preventDefault()
 			}
+		}
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
 		}
 	}
 
