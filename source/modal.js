@@ -158,6 +158,7 @@ export default class Modal extends PureComponent
 			else if (isOpen && !nextProps.isOpen)
 			{
 				this.on_after_close()
+				this.reset_content_scroll()
 			}
 		}
 	}
@@ -362,6 +363,13 @@ export default class Modal extends PureComponent
 		}
 	}
 
+	// If the user scrolled on a previously shown react-modal,
+	// then reset that previously scrolled position.
+	reset_content_scroll()
+	{
+		document.querySelector('.ReactModal__Overlay').scrollTop = 0
+	}
+
 	// Hides the main (body) scrollbar upon showing a modal
 	// and also adjusts the width of all "full-width" elements
 	// so that they don't expand no that the scrollbar is absent.
@@ -417,9 +425,7 @@ export default class Modal extends PureComponent
 			element.style.marginRight = width_adjustment + 'px'
 		}
 
-		// If the user scrolled on a previously shown react-modal,
-		// then reset that previously scrolled position.
-		document.querySelector('.ReactModal__Overlay').scrollTop = 0
+		this.reset_content_scroll()
 	}
 
 	on_after_open = () =>
