@@ -76,6 +76,10 @@ export default class Modal extends PureComponent
 		// i.e. `closeButton` will be wrapped with a `<button/>`.
 		closeButton      : PropTypes.node,
 
+		// If set to `false` will prevent modal contents
+		// from being unmounted when the modal is closed.
+		unmount          : PropTypes.bool.isRequired,
+
 		// Internal property
 		could_not_close_because_busy_animation_duration : PropTypes.number.isRequired,
 
@@ -104,6 +108,9 @@ export default class Modal extends PureComponent
 		closeTimeout : 150, // ms
 
 		contentLabel : 'Popup',
+
+		// Modal contents are unmounted when the modal is closed by default
+		unmount : true,
 
 		// When changing this also change
 		// `.rrui__modal--could-not-close-because-busy`
@@ -136,6 +143,23 @@ export default class Modal extends PureComponent
 		}
 
 		return context
+	}
+
+	componentWillReceiveProps(nextProps)
+	{
+		const { unmount, isOpen } = this.props
+
+		if (!unmount)
+		{
+			if (!isOpen && nextProps.isOpen)
+			{
+				this.on_after_open()
+			}
+			else if (isOpen && !nextProps.isOpen)
+			{
+				this.on_after_close()
+			}
+		}
 	}
 
 	// A modal itself umounts only when the user leaves a page,
@@ -177,6 +201,7 @@ export default class Modal extends PureComponent
 			closeLabel,
 			closeButton,
 			actions,
+			unmount,
 			style,
 			className,
 			overlayClassName,
@@ -194,8 +219,8 @@ export default class Modal extends PureComponent
 		const markup =
 		(
 			<React_modal
-				isOpen={ isOpen }
-				onAfterOpen={ this.on_after_open }
+				isOpen={ unmount ? isOpen : true }
+				onAfterOpen={ unmount ? this.on_after_open : undefined }
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
@@ -203,7 +228,8 @@ export default class Modal extends PureComponent
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
 					'rrui__modal__overlay--busy'       : busy,
-					'rrui__modal__overlay--fullscreen' : fullscreen
+					'rrui__modal__overlay--fullscreen' : fullscreen,
+					'rrui__modal__overlay--hidden'     : !unmount && !isOpen
 				},
 				overlayClassName) }
 				className={ classNames('rrui__modal__container',
@@ -344,10 +370,8 @@ export default class Modal extends PureComponent
 	// but since my body is always `overflow: visible` (a good practice)
 	// there's no difference and it should work in any scenario.
 	//
-	on_after_open = () =>
+	adjust_scrollbar_after_open()
 	{
-		const { afterOpen } = this.props
-
 		// A dummy `<div/>` to measure
 		// the difference in width
 		// needed for the "full-width" elements
@@ -396,6 +420,13 @@ export default class Modal extends PureComponent
 		// If the user scrolled on a previously shown react-modal,
 		// then reset that previously scrolled position.
 		document.querySelector('.ReactModal__Overlay').scrollTop = 0
+	}
+
+	on_after_open = () =>
+	{
+		const { afterOpen } = this.props
+
+		this.adjust_scrollbar_after_open()
 
 		if (afterOpen)
 		{
@@ -403,28 +434,15 @@ export default class Modal extends PureComponent
 		}
 	}
 
-	// Restore original `document` scrollbar
-	// and reset the modal content (e.g. a form)
-	on_after_close = () =>
+	// Restores original `document` scrollbar.
+	adjust_scrollbar_after_close()
 	{
 		const
 		{
 			bodyOverflowX,
-			bodyOverflowY,
-			afterClose,
-			reset
+			bodyOverflowY
 		}
 		= this.props
-
-		if (reset)
-		{
-			reset()
-		}
-
-		if (afterClose)
-		{
-			afterClose()
-		}
 
 		// All "full-width" elements will need their
 		// width to be restored back to the original value
@@ -451,6 +469,30 @@ export default class Modal extends PureComponent
 		// Restore the main (body) scrollbar.
 		document.body.style.overflowX = bodyOverflowX
 		document.body.style.overflowY = bodyOverflowY
+	}
+
+	// Restores original `document` scrollbar
+	// and resets the modal content (e.g. a form)
+	on_after_close = () =>
+	{
+		const
+		{
+			afterClose,
+			reset
+		}
+		= this.props
+
+		if (reset)
+		{
+			reset()
+		}
+
+		if (afterClose)
+		{
+			afterClose()
+		}
+
+		this.adjust_scrollbar_after_close()
 	}
 }
 
