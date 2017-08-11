@@ -29,6 +29,9 @@ export default class Modal extends PureComponent
 		// Closes the modal (must set the `isOpen` flag to `false`)
 		close            : PropTypes.func.isRequired,
 
+		// Hide vs close if true hide the model rather than close it
+		hide       			 : PropTypes.bool,
+
 		// A time required for CSS hiding animation to complete
 		// (150 milliseconds by default)
 		closeTimeout     : PropTypes.number.isRequired,
@@ -92,6 +95,8 @@ export default class Modal extends PureComponent
 	static defaultProps =
 	{
 		isOpen : false,
+
+		hide : false,
 
 		bodyOverflowX : 'auto',
 		// Prevents document width from jumping due to the
@@ -171,6 +176,7 @@ export default class Modal extends PureComponent
 			busy,
 			fullscreen,
 			isOpen,
+			hide,
 			closeTimeout,
 			contentLabel,
 			title,
@@ -191,10 +197,14 @@ export default class Modal extends PureComponent
 		}
 		= this.state
 
+		const hideStyle = {
+			hide: !isOpen
+		};
+
 		const markup =
 		(
 			<React_modal
-				isOpen={ isOpen }
+				isOpen={ !hide ? isOpen : true }
 				onAfterOpen={ this.on_after_open }
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
@@ -203,8 +213,9 @@ export default class Modal extends PureComponent
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
 					'rrui__modal__overlay--busy'       : busy,
-					'rrui__modal__overlay--fullscreen' : fullscreen
+					'rrui__modal__overlay--fullscreen' : fullscreen,
 				},
+				hide ? hideStyle : null,
 				overlayClassName) }
 				className={ classNames('rrui__modal__container',
 				{
