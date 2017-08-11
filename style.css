@@ -1026,6 +1026,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	background-color : white;
 }
 
+.rrui__modal__overlay--hidden
+{
+	display : none;
+}
+
 .rrui__modal__overlay--busy
 {
 	cursor : wait;
