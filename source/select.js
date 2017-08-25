@@ -113,7 +113,9 @@ export default class Select extends PureComponent
 		// matching options instead of just `maxItems`.
 		autocompleteShowAll : PropTypes.bool,
 
-		// Custom `<input/>` component may be supplied for autocomplete mode
+		// Custom `<input/>` component may be supplied for autocomplete mode.
+		// Can be either a string or a React component class.
+		// Cannot be a React "stateless" (function) component.
 		autocompleteInputComponent : PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
 
 		// Options list alignment ("left", "right")
