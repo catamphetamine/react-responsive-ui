@@ -113,6 +113,9 @@ export default class Select extends PureComponent
 		// matching options instead of just `maxItems`.
 		autocompleteShowAll : PropTypes.bool,
 
+		// Custom `<input/>` component may be supplied for autocomplete mode
+		autocompleteInputComponent : PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+
 		// Options list alignment ("left", "right")
 		alignment  : PropTypes.oneOf(['left', 'right']),
 
@@ -182,6 +185,9 @@ export default class Select extends PureComponent
 
 		// Set to `true` to mark the field as required
 		required : false,
+
+		// Render basic `<input/>` component by default for autocomplete mode
+		autocompleteInputComponent : 'input',
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -650,6 +656,7 @@ export default class Select extends PureComponent
 			tabIndex,
 			onFocus,
 			title,
+			autocompleteInputComponent,
 			inputClassName
 		}
 		= this.props
@@ -681,31 +688,27 @@ export default class Select extends PureComponent
 		{
 			// style = { ...style, width: autocomplete_width + 'px' }
 
-			const markup =
-			(
-				<input
-					type="text"
-					ref={ ref => this.autocomplete = ref }
-					placeholder={ selected_text }
-					value={ autocomplete_input_value }
-					onChange={ this.on_autocomplete_input_change }
-					onKeyDown={ this.on_key_down }
-					onFocus={ onFocus }
-					tabIndex={ tabIndex }
-					title={ title }
-					className={ classNames
-					(
-						selected_style_classes,
-						'rrui__select__selected--autocomplete',
-						inputClassName
-					) }/>
-			)
-
-			return markup
+			return React.createElement(autocompleteInputComponent,
+			{
+				type: 'text',
+				ref: ref => this.autocomplete = ref,
+				placeholder: selected_text,
+				value: autocomplete_input_value,
+				onChange: this.on_autocomplete_input_change,
+				onKeyDown: this.on_key_down,
+				onFocus,
+				tabIndex,
+				title,
+				className: classNames
+				(
+					selected_style_classes,
+					'rrui__select__selected--autocomplete',
+					inputClassName
+				)
+			})
 		}
 
-		const markup =
-		(
+		return (
 			<button
 				ref={ ref => this.selected = ref }
 				type="button"
@@ -742,8 +745,6 @@ export default class Select extends PureComponent
 				</div>
 			</button>
 		)
-
-		return markup
 	}
 
 	render_toggler()
