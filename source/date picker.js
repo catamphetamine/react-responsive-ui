@@ -114,9 +114,14 @@ export default class DatePicker extends PureComponent
 		document.removeEventListener('click', this.document_clicked)
 	}
 
-	on_input_focus = () =>
+	on_input_focus = (event) =>
 	{
-		const { value, format, onToggle } = this.props
+		const { value, format, onToggle, onFocus } = this.props
+
+		if (onFocus)
+		{
+			onFocus(event)
+		}
 
 		this.setState
 		({
@@ -380,7 +385,6 @@ export default class DatePicker extends PureComponent
 			label,
 			placeholder,
 			closeButtonLabel,
-			onFocus,
 			className,
 			style
 		}
@@ -430,7 +434,6 @@ export default class DatePicker extends PureComponent
 						value={ text_value !== undefined ? text_value : format_date(value, format) }
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
-						onFocus={ onFocus }
 						onFocus={ this.on_input_focus }
 						className={ classNames('rrui__input-field', 'rrui__date-picker__input',
 						{
