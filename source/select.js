@@ -160,7 +160,11 @@ export default class Select extends PureComponent
 
 		onTabOut : PropTypes.func,
 
-		onToggle : PropTypes.func
+		onToggle : PropTypes.func,
+
+		// The "x" button that closes the `<Select/>`
+		// in fullscreen mode on mobile devices.
+		closeButton : PropTypes.node.isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -182,6 +186,21 @@ export default class Select extends PureComponent
 
 		// Set to `true` to mark the field as required
 		required : false,
+
+		// The "x" button that closes the `<Select/>`
+		// in fullscreen mode on mobile devices.
+		closeButton : (
+			<svg viewBox="0 0 22 21">
+				<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+					<g transform="translate(-1367.000000, -40.000000)" stroke="#000000" stroke-width="5">
+						<g transform="translate(1368.000000, 41.000000)">
+							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882"></path>
+							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882" transform="translate(10.000000, 9.500000) scale(-1, 1) translate(-10.000000, -9.500000) "></path>
+						</g>
+					</g>
+				</g>
+			</svg>
+		)
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -345,6 +364,7 @@ export default class Select extends PureComponent
 			label,
 			value,
 			error,
+			closeButton,
 			style,
 			className
 		}
@@ -399,6 +419,8 @@ export default class Select extends PureComponent
 
 		const selected = this.get_selected_option()
 
+		const show_options_list = !native && !nativeExpanded && list_items.length > 0
+
 		const markup =
 		(
 			<div
@@ -451,8 +473,7 @@ export default class Select extends PureComponent
 					{ menu && this.render_toggler() }
 
 					{/* The list of selectable options */}
-					{/* Math.max(this.state.height, this.props.max_height) */}
-					{ !native && !nativeExpanded && list_items.length > 0 &&
+					{ show_options_list &&
 						<ul
 							ref={ ref => this.list = ref }
 							style={ list_style }
@@ -477,6 +498,17 @@ export default class Select extends PureComponent
 							) }>
 							{ list_items }
 						</ul>
+					}
+
+					{/* The "x" button to hide the list of options
+					    for fullscreen `<Select/>` on mobile devices */}
+					{ show_options_list && expanded &&
+						<button
+							type="button"
+							onClick={ this.toggle }
+							className="rrui__select__close">
+							{ closeButton }
+						</button>
 					}
 
 					{/* Fallback in case javascript is disabled */}

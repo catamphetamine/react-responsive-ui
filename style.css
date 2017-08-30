@@ -605,6 +605,30 @@
 	cursor   : pointer;
 }
 
+.rrui__select__close
+{
+	/*
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	display      : block;
+	*/
+	display      : none;
+	position     : fixed;
+	top          : calc(0.3rem * 2);
+	right        : calc(0.3rem * 2);
+	width        : calc(0.3rem * 5);
+	height       : calc(0.3rem * 5);
+	z-index      : 1;
+
+	padding            : 0;
+	-webkit-appearance : none;
+	-moz-appearance    : none;
+	appearance         : none;
+	outline            : none;
+	border             : none;
+	background         : transparent;
+	cursor             : pointer;
+}
+
 /*===========================================================
 = Checkbox                                                  =
 ===========================================================*/
@@ -1624,8 +1648,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	margin-left  : auto;
 	margin-right : auto;
 	margin-top   : calc(0.3rem * 4);
-	padding      : 0;
 
+	padding            : 0;
 	-webkit-appearance : none;
 	-moz-appearance    : none;
 	appearance         : none;

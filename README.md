@@ -205,14 +205,16 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
 @media (max-width: 320px) {
   /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
   .rrui__select__options,
-  .rrui__date-picker__collapsible
-    position: fixed
-    top: 0
-    bottom: 0
-    right: 0
-    left: 0
-    z-index: var(--expandable-controls-fullscreen-z-index)
-    margin: 0
+  .rrui__date-picker__collapsible {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: var(--expandable-z-index);
+    margin: 0;
+    max-height: none !important;
+  }
 
   /*
   Displays a click-intercepting overlay
@@ -230,6 +232,12 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
     font-weight: lighter;
     font-size: 14px;
     color: var(--accent-color);
+  }
+
+  /* Show "Close" button for full-screen `<Select/>`s */
+  .rrui__select__close {
+    display: block;
+    z-index: var(--expandable-z-index);
   }
 
   /* `<Modal/>` goes full-screen wide and high */
@@ -275,19 +283,17 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
   }
 
   /* Makes all dropdowns inside modals not go into fullscreen */
-  .rrui__modal__content {
-    .rrui__select__options {
-      position: absolute;
-      left: 0;
-      top: auto;
-      right: auto;
-      bottom: auto;
-      /*
-      Disables `.rrui__select__options { font-size: 24px }`
-      defined in the above rule since it's not fullscreen again.
-      */
-      font-size: inherit;
-    }
+  .rrui__modal__content .rrui__select__options {
+    position: absolute;
+    left: 0;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    /*
+    Disables `.rrui__select__options { font-size: 24px }`
+    defined in the above rule since it's not fullscreen again.
+    */
+    font-size: inherit;
   }
 }
 ```
