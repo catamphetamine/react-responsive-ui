@@ -308,12 +308,9 @@ export default class DatePicker extends PureComponent
 
 	document_clicked = (event) =>
 	{
-		const input = ReactDOM.findDOMNode(this.input)
-		const expandable = ReactDOM.findDOMNode(this.expandable)
+		const container = ReactDOM.findDOMNode(this.container)
 
-		// Don't close the dropdown if the click is inside input
-		// or the expanded calendar area.
-		if (input.contains(event.target) || expandable.contains(event.target))
+		if (container.contains(event.target))
 		{
 			return
 		}
@@ -416,6 +413,7 @@ export default class DatePicker extends PureComponent
 
 		return (
 			<div
+				ref={ ref => this.container = ref }
 				onKeyDown={ this.on_key_down_in_container }
 				onBlur={ this.on_blur }
 				className={ classNames('rrui__date-picker', className,
@@ -425,6 +423,14 @@ export default class DatePicker extends PureComponent
 				style={ style }>
 
 				<div className="rrui__input">
+					{/* This layer can intercept taps on mobile devices
+					    to prevent the keyboard from showing
+					    when the date picker is in fullscreen mode */}
+					<div
+						onClick={ this.on_input_focus }
+						className="rrui__date-picker__input-overlay"/>
+
+					{/* Date input */}
 					<input
 						id={ id }
 						type="text"
@@ -457,7 +463,6 @@ export default class DatePicker extends PureComponent
 
 					{/* <DayPicker/> doesn't support `style` property */}
 					<div
-						ref={ ref => this.expandable = ref }
 						className={ classNames
 						(
 							'rrui__expandable',

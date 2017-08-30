@@ -1601,6 +1601,19 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	text-decoration : none;
 }
 
+.rrui__date-picker__input-overlay
+{
+	/*
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	This works around the mobile keyboard appearing from the bottom.
+	display  : block;
+	*/
+	display  : none;
+	position : absolute;
+	width    : 100%;
+	height   : 100%;
+}
+
 .rrui__date-picker__close
 {
 	/*
