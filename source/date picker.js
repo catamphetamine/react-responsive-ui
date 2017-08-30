@@ -73,6 +73,9 @@ export default class DatePicker extends PureComponent
 		// How much years forward can a user navigate using the year `<select/>`
 		selectYearsIntoFuture : PropTypes.number,
 
+		// "Close" button title for fullscreen mode on mobile devices
+		closeButtonLabel : PropTypes.string.isRequired,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -89,7 +92,10 @@ export default class DatePicker extends PureComponent
 		firstDayOfWeek : 0,
 
 		// Set to `true` to mark the field as required
-		required : false
+		required : false,
+
+		// "Close" button title for fullscreen mode on mobile devices
+		closeButtonLabel : 'Close'
 	}
 
 	state =
@@ -187,7 +193,7 @@ export default class DatePicker extends PureComponent
 	}
 
 	// Hides the day picker calendar and cancels textual date editing
-	date_chosen()
+	date_chosen = () =>
 	{
 		const { onToggle } = this.props
 
@@ -372,6 +378,7 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
+			closeButtonLabel,
 			onFocus,
 			className,
 			style
@@ -456,24 +463,34 @@ export default class DatePicker extends PureComponent
 								'rrui__expandable--expanded' : expanded
 							}
 						) }>
-						<DayPicker
-							ref={ ref => this.daypicker = ref }
-							month={ month }
-							firstDayOfWeek={ firstDayOfWeek }
-							onDayClick={ this.on_day_click }
-							onKeyDown={ this.on_calendar_key_down }
-							selectedDays={ normalize_value(value) }
-							captionElement={ captionElement }
-							tabIndex={ -1 }
+						<div
 							className={ classNames
 							(
 								'rrui__expandable__content',
-								'rrui__date-picker__calendar',
 								{
 									// CSS selector performance optimization
 									'rrui__expandable__content--expanded'   : expanded
 								}
-							) }/>
+							) }>
+							<DayPicker
+								ref={ ref => this.daypicker = ref }
+								month={ month }
+								firstDayOfWeek={ firstDayOfWeek }
+								onDayClick={ this.on_day_click }
+								onKeyDown={ this.on_calendar_key_down }
+								selectedDays={ normalize_value(value) }
+								captionElement={ captionElement }
+								tabIndex={ -1 }
+								className="rrui__date-picker__calendar" />
+
+							{/* "Close" button for fullscreen mode on mobile devices */}
+							<button
+								type="button"
+								onClick={ this.date_chosen }
+								className="rrui__date-picker__close">
+								{ closeButtonLabel }
+							</button>
+						</div>
 					</div>
 				</div>
 
