@@ -197,6 +197,101 @@ class FileDropArea extends Component {
 
 Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
 
+## Responsive
+
+The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on mobile phones:
+
+```css
+@media (max-width: 320px) {
+  /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
+  .rrui__select__options,
+  .rrui__date-picker__collapsible
+    position: fixed
+    top: 0
+    bottom: 0
+    right: 0
+    left: 0
+    z-index: var(--expandable-controls-fullscreen-z-index)
+    margin: 0
+
+  /*
+  Displays a click-intercepting overlay
+  over `<DatePicker/>`'s `<input/>`
+  so that the keyboard doesn't slide from bottom
+  pushing the expanded `<DatePicker/>` from the screen.
+  */
+  .rrui__date-picker__input-overlay {
+    display: block;
+  }
+
+  /* Show "Close" button for full-screen `<DatePicker/>`s */
+  .rrui__date-picker__close {
+    display: block;
+    font-weight: lighter;
+    font-size: 14px;
+    color: var(--accent-color);
+  }
+
+  /* `<Modal/>` goes full-screen wide and high */
+  .rrui__modal__overlay {
+    display: block;
+  }
+
+  /* CSS selector specificity fix for the above rule */
+  .rrui__modal__overlay--hidden {
+    display: none;
+  }
+
+  /* Centers `<Modal/>` content (body) horizontally and vertically */
+  .rrui__modal__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* `<Modal/>` goes full-screen wide and high */
+  .rrui__modal__vertical-margin {
+    display: none;
+  }
+
+  /* `<Modal/>` goes full-screen wide and high */
+  .rrui__modal__content {
+    border-radius: 0;
+  }
+
+  /* `<Modal/>` content goes full-screen wide and high */
+  .rrui__modal__content-body {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: calc(var(--unit) * 2);
+    margin-bottom: calc(var(--unit) * 2);
+    padding-left: var(--column-padding);
+    padding-right: var(--column-padding);
+  }
+
+  /* Bigger font size for full-screen `<Select/>` options */
+  .rrui__select__options {
+    font-size: 24px;
+  }
+
+  /* Makes all dropdowns inside modals not go into fullscreen */
+  .rrui__modal__content {
+    .rrui__select__options {
+      position: absolute;
+      left: 0;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      /*
+      Disables `.rrui__select__options { font-size: 24px }`
+      defined in the above rule since it's not fullscreen again.
+      */
+      font-size: inherit;
+    }
+  }
+}
+```
+
 ## Contributing
 
 After cloning this repo, ensure dependencies are installed by running:
