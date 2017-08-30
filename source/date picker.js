@@ -304,10 +304,11 @@ export default class DatePicker extends PureComponent
 	document_clicked = (event) =>
 	{
 		const input = ReactDOM.findDOMNode(this.input)
-		const calendar = ReactDOM.findDOMNode(this.daypicker)
+		const expandable = ReactDOM.findDOMNode(this.expandable)
 
-		// Don't close the dropdown if the click is inside input or calendar
-		if (input.contains(event.target) || calendar.contains(event.target))
+		// Don't close the dropdown if the click is inside input
+		// or the expanded calendar area.
+		if (input.contains(event.target) || expandable.contains(event.target))
 		{
 			return
 		}
@@ -453,6 +454,7 @@ export default class DatePicker extends PureComponent
 
 					{/* <DayPicker/> doesn't support `style` property */}
 					<div
+						ref={ ref => this.expandable = ref }
 						className={ classNames
 						(
 							'rrui__expandable',
