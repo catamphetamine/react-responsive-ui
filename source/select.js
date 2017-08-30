@@ -191,8 +191,8 @@ export default class Select extends PureComponent
 		// in fullscreen mode on mobile devices.
 		closeButton : (
 			<svg viewBox="0 0 22 21">
-				<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
-					<g transform="translate(-1367.000000, -40.000000)" stroke="#000000" stroke-width="5">
+				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round">
+					<g transform="translate(-1367.000000, -40.000000)" stroke="#000000" strokeWidth="1">
 						<g transform="translate(1368.000000, 41.000000)">
 							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882"></path>
 							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882" transform="translate(10.000000, 9.500000) scale(-1, 1) translate(-10.000000, -9.500000) "></path>
@@ -502,7 +502,7 @@ export default class Select extends PureComponent
 
 					{/* The "x" button to hide the list of options
 					    for fullscreen `<Select/>` on mobile devices */}
-					{ show_options_list && expanded &&
+					{ show_options_list && expanded && !menu &&
 						<button
 							type="button"
 							onClick={ this.toggle }
