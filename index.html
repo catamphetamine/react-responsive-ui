@@ -154,9 +154,9 @@
 		}
 
 		/* Responsive */
-		@media (max-width: 500px) {
+		@media (max-width: 720px) {
 		  /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-		  .rrui__select__options,
+		  .rrui__select__options:not(.rrui__select__options--autocomplete),
 		  .rrui__date-picker__collapsible {
 		    position: fixed;
 		    top: 0;
@@ -184,6 +184,12 @@
 		    font-weight: lighter;
 		    font-size: 14px;
 		    color: #03B2CB;
+		  }
+
+		  /* Show "Close" button for full-screen `<Select/>`s */
+		  .rrui__select__close:not(.rrui__select__close--autocomplete) {
+		    display: block;
+		    z-index: 100;
 		  }
 
 		  /* `<Modal/>` goes full-screen wide and high */
@@ -224,8 +230,8 @@
 		  }
 
 		  /* Bigger font size for full-screen `<Select/>` options */
-		  .rrui__select__options {
-		    font-size: 24px;
+		  .rrui__select__options:not(.rrui__select__options--autocomplete) {
+		    font-size: 22px;
 		  }
 
 		  /* Makes all dropdowns inside modals not go into fullscreen */
@@ -242,10 +248,12 @@
 		      font-size: inherit;
 		  }
 
-		  /* Show "Close" button for full-screen `<Select/>`s */
-		  .rrui__select__close {
-		    display: block;
-		    z-index: 100;
+		  /*
+		  Don't show the "x" close button for `<Select/>`s inside modals
+		  since they're not fullscreen.
+		  */
+		  .rrui__modal__content .rrui__select__close {
+		    display: none;
 		  }
 		}
 	</style>
