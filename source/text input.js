@@ -121,13 +121,12 @@ export default class Text_input extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		const { multiline, fallback } = this.props
+		const { fallback } = this.props
 
-		if (multiline)
-		{
-			// Measure `<textarea/>` inner height and borders
-			this.setState({ autoresize: this.measure() })
-		}
+		// Not doing `this.measure()` here because
+		// that resulted in weird `<textarea/>` height mismatch.
+		// Measuring the height of `<textarea/>` during
+		// the first `this.measurements()` call instead.
 
 		if (fallback)
 		{
@@ -454,10 +453,11 @@ export default class Text_input extends PureComponent
 	{
 		let measurements = this.state.autoresize
 
-		// If the textarea was initially hidden
+		// If it's the first time accessing measurements,
+		// or if the textarea was initially hidden
 		// (like `display: none` for a mobile-oriented responsive design)
 		// then make the initial measurements now.
-		if (!measurements.initial_height)
+		if (!measurements || !measurements.initial_height)
 		{
 			measurements = this.measure()
 
