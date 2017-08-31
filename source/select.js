@@ -164,7 +164,7 @@ export default class Select extends PureComponent
 
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : PropTypes.node.isRequired
+		closeButton : PropTypes.oneOfType([PropTypes.node, PropTypes.anyOf([false])]).isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -432,11 +432,12 @@ export default class Select extends PureComponent
 				(
 					'rrui__select',
 					{
-						'rrui__rich'              : fallback,
-						'rrui__select--upward'    : upward,
-						'rrui__select--expanded'  : expanded,
-						'rrui__select--collapsed' : !expanded,
-						'rrui__select--disabled'  : disabled
+						'rrui__rich'                 : fallback,
+						'rrui__select--upward'       : upward,
+						'rrui__select--expanded'     : expanded,
+						'rrui__select--collapsed'    : !expanded,
+						'rrui__select--disabled'     : disabled,
+						'rrui__select--autocomplete' : autocomplete
 					},
 					className
 				) }>
@@ -502,7 +503,7 @@ export default class Select extends PureComponent
 
 					{/* The "x" button to hide the list of options
 					    for fullscreen `<Select/>` on mobile devices */}
-					{ show_options_list && expanded && !menu &&
+					{ show_options_list && expanded && closeButton &&
 						<button
 							type="button"
 							onClick={ this.toggle }

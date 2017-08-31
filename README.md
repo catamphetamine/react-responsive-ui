@@ -295,6 +295,14 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
     */
     font-size: inherit;
   }
+
+  /*
+  Don't show the "x" close button for `<Select/>`s inside modals
+  since they're not fullscreen.
+  */
+  .rrui__modal__content .rrui__select__close {
+    display: none;
+  }
 }
 ```
 
