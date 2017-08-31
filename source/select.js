@@ -763,17 +763,12 @@ export default class Select extends PureComponent
 				<div className="rrui__select__selected-content">
 
 					{/* Selected option label (or icon) */}
-					<div className="rrui__select__selected-label-container">
-						{ show_selected_as_an_icon && React.cloneElement(selected.icon, { title: selected_label }) }
-						{ !show_selected_as_an_icon &&
-							<div
-								className={ classNames('rrui__select__selected-label',
-								{
-									'rrui__select__selected-label--required' : !label_is_shown && required && value_is_empty(value)
-								}) }>
-								{ selected_text }
-							</div>
-						}
+					<div
+						className={ classNames('rrui__select__selected-label',
+						{
+							'rrui__select__selected-label--required' : !label_is_shown && required && value_is_empty(value)
+						}) }>
+						{ show_selected_as_an_icon ? React.cloneElement(selected.icon, { title: selected_label }) : selected_text }
 					</div>
 
 					{/* An arrow */}
