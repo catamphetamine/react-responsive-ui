@@ -663,19 +663,12 @@
 	        align-items : center;
 }
 
-.rrui__select__selected-label-container
+.rrui__select__selected-label
 {
 	-webkit-box-flex          : 1;
 	-webkit-flex          : 1 1 auto;
 	    -ms-flex          : 1 1 auto;
 	        flex          : 1 1 auto;
-	overflow      : hidden;
-}
-
-.rrui__select__selected-label
-{
-	display       : inline-block;
-	max-width     : 100%;
 	overflow      : hidden;
 	text-overflow : ellipsis;
 }
