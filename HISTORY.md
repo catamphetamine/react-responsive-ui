@@ -1,3 +1,8 @@
+0.9.0 / 31.08.2017
+===================
+
+  * (CSS breaking change) `.rrui__select__selected-label` CSS class renamed to `.rrui__select__selected-label-container` but it shouldn't break anyone's apps.
+
 0.8.22 / 27.07.2017
 ===================
 

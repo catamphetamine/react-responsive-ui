@@ -202,9 +202,9 @@ Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/t
 The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on mobile phones:
 
 ```css
-@media (max-width: 320px) {
+@media (max-width: 720px) {
   /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-  .rrui__select__options,
+  .rrui__select__options:not(.rrui__select__options--autocomplete),
   .rrui__date-picker__collapsible {
     position: fixed;
     top: 0;
@@ -235,7 +235,7 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
   }
 
   /* Show "Close" button for full-screen `<Select/>`s */
-  .rrui__select__close {
+  .rrui__select__close:not(.rrui__select__close--autocomplete) {
     display: block;
     z-index: var(--expandable-z-index);
   }
@@ -278,8 +278,8 @@ The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in f
   }
 
   /* Bigger font size for full-screen `<Select/>` options */
-  .rrui__select__options {
-    font-size: 24px;
+  .rrui__select__options:not(.rrui__select__options--autocomplete) {
+    font-size: 22px;
   }
 
   /* Makes all dropdowns inside modals not go into fullscreen */

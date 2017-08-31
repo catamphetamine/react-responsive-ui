@@ -164,7 +164,7 @@ export default class Select extends PureComponent
 
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : PropTypes.oneOfType([PropTypes.node, PropTypes.anyOf([false])]).isRequired
+		closeButton : PropTypes.oneOfType([PropTypes.node, PropTypes.oneOf([false])]).isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -420,6 +420,7 @@ export default class Select extends PureComponent
 		const selected = this.get_selected_option()
 
 		const show_options_list = !native && !nativeExpanded && list_items.length > 0
+		const show_label = label && (this.get_selected_option() || placeholder)
 
 		const markup =
 		(
@@ -432,12 +433,11 @@ export default class Select extends PureComponent
 				(
 					'rrui__select',
 					{
-						'rrui__rich'                 : fallback,
-						'rrui__select--upward'       : upward,
-						'rrui__select--expanded'     : expanded,
-						'rrui__select--collapsed'    : !expanded,
-						'rrui__select--disabled'     : disabled,
-						'rrui__select--autocomplete' : autocomplete
+						'rrui__rich'              : fallback,
+						'rrui__select--upward'    : upward,
+						'rrui__select--expanded'  : expanded,
+						'rrui__select--collapsed' : !expanded,
+						'rrui__select--disabled'  : disabled
 					},
 					className
 				) }>
@@ -449,7 +449,7 @@ export default class Select extends PureComponent
 					}) }>
 
 					{/* Currently selected item */}
-					{ !menu && !native && this.render_selected_item() }
+					{ !menu && !native && this.render_selected_item(show_label) }
 
 					{/* Label */}
 					{/* (this label is placed after the "selected" button
@@ -458,7 +458,7 @@ export default class Select extends PureComponent
 					    but `label` was and no option is currently selected
 					    then the `label` becomes the `placeholder`
 					    until something is selected */}
-					{ label && (this.get_selected_option() || placeholder) &&
+					{ show_label &&
 						<label
 							htmlFor={ id }
 							className={ classNames('rrui__input-label',
@@ -485,6 +485,7 @@ export default class Select extends PureComponent
 								'rrui__select__options',
 								'rrui__shadow',
 								{
+									'rrui__select__options--autocomplete'  : autocomplete,
 									'rrui__select__options--menu'          : menu,
 									'rrui__expandable--expanded'           : expanded,
 									'rrui__select__options--expanded'      : expanded,
@@ -507,7 +508,10 @@ export default class Select extends PureComponent
 						<button
 							type="button"
 							onClick={ this.toggle }
-							className="rrui__select__close">
+							className={ classNames('rrui__select__close',
+							{
+								'rrui__select__close--autocomplete' : autocomplete
+							}) }>
 							{ closeButton }
 						</button>
 					}
@@ -644,7 +648,7 @@ export default class Select extends PureComponent
 	// so that the native `<select/>` expands upon click
 	// on the selected option
 	// (in case of `nativeExpanded` setting).
-	render_selected_item()
+	render_selected_item(label_is_shown)
 	{
 		const { nativeExpanded, toggler } = this.props
 
@@ -653,7 +657,7 @@ export default class Select extends PureComponent
 			return this.render_toggler()
 		}
 
-		const selected = this.render_selected_item_only()
+		const selected = this.render_selected_item_only(label_is_shown)
 
 		if (nativeExpanded)
 		{
@@ -668,7 +672,7 @@ export default class Select extends PureComponent
 		return selected
 	}
 
-	render_selected_item_only()
+	render_selected_item_only(label_is_shown)
 	{
 		const
 		{
@@ -677,6 +681,7 @@ export default class Select extends PureComponent
 			placeholder,
 			label,
 			disabled,
+			required,
 			autocomplete,
 			concise,
 			nativeExpanded,
@@ -734,6 +739,8 @@ export default class Select extends PureComponent
 			)
 		}
 
+		const show_selected_as_an_icon = concise && selected && selected.icon
+
 		return (
 			<button
 				ref={ ref => this.selected = ref }
@@ -756,8 +763,17 @@ export default class Select extends PureComponent
 				<div className="rrui__select__selected-content">
 
 					{/* Selected option label (or icon) */}
-					<div className="rrui__select__selected-label">
-						{ (concise && selected && selected.icon) ? React.cloneElement(selected.icon, { title: selected_label }) : selected_text }
+					<div className="rrui__select__selected-label-container">
+						{ show_selected_as_an_icon && React.cloneElement(selected.icon, { title: selected_label }) }
+						{ !show_selected_as_an_icon &&
+							<div
+								className={ classNames('rrui__select__selected-label',
+								{
+									'rrui__select__selected-label--required' : !label_is_shown && required && value_is_empty(value)
+								}) }>
+								{ selected_text }
+							</div>
+						}
 					</div>
 
 					{/* An arrow */}
