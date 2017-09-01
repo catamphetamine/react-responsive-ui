@@ -299,7 +299,7 @@
 				{
 					marginTop    : '1em',
 					marginBottom : '1em',
-					width        : '20rem'
+					maxWidth     : '20rem'
 				},
 
 				label:
@@ -424,12 +424,12 @@
 							</CollapsibleMenu>
 
 							<Page>
-								<div>
+								<div style={{ position: 'relative' }}>
 									<MenuButton
-										style={{ display: 'inline-block', verticalAlign: 'top',     marginLeft: '-0.6em' }}
+										style={{ position: 'absolute', marginLeft: '-0.6em' }}
 										title="Show menu"/>
 
-									<div style={{ display: 'inline-block', padding: '0.2em', marginLeft: '0.6em' }}>
+									<div style={{ padding: '0.2em', marginLeft: '2.6em' }}>
 										<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
 
 										<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
