@@ -2,7 +2,7 @@ import React, { PureComponent, createElement } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
-// import { throttle } from 'lodash-es'
+import throttle from 'lodash/throttle'
 
 import { submit_parent_form } from './misc/dom'
 
@@ -121,16 +121,31 @@ export default class Text_input extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		const { fallback } = this.props
+		const { multiline, fallback } = this.props
 
 		// Not doing `this.measure()` here because
 		// that resulted in weird `<textarea/>` height mismatch.
 		// Measuring the height of `<textarea/>` during
 		// the first `this.measurements()` call instead.
 
+		if (multiline)
+		{
+			window.addEventListener('resize', this.on_window_resize)
+		}
+
 		if (fallback)
 		{
 			this.setState({ javascript: true })
+		}
+	}
+
+	componentWillUnmount()
+	{
+		const { multiline } = this.props
+
+		if (multiline)
+		{
+			window.removeEventListener('resize', this.on_window_resize)
 		}
 	}
 
@@ -384,6 +399,11 @@ export default class Text_input extends PureComponent
 		// it doesn't jump due to textarea resize.
 		window.scroll(window.pageXOffset, current_scroll_position)
 	}
+
+	on_window_resize = throttle((event) =>
+	{
+		this.autoresize()
+	}, 100)
 
 	// The underlying `input` component
 	// can pass both `event`s and `value`s
