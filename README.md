@@ -197,6 +197,67 @@ class FileDropArea extends Component {
 
 Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
 
+## Grid
+
+When using modular grid element sizes are multiples of a modular grid unit
+
+```css
+// Sets `react-responsive-ui` controls' height
+.rrui__input,
+.rrui__input-label
+  height: calc(var(--unit) * 5)
+
+// Resets the above rule for multiline `<TextInput/>`s
+// (because they have variable height depending on content)
+.rrui__input--multiline
+  height: auto
+
+// Multiline `<TextInput/>`'s vertical padding
+.rrui__text-input__input--multiline
+  padding-top: var(--textarea-padding)
+  padding-bottom: var(--textarea-padding)
+
+// Multiline `<TextInput/>`'s label positioning
+.rrui__text-input__label--multiline
+  top: var(--textarea-padding)
+
+// `<Button/>`s are sized to match the height of all other controls.
+.rrui__button__button
+  height: 100%
+
+// Styling `<Button/>`s
+.rrui__button
+  font-family: ...
+  font-size: ...
+  border: 2px solid black
+  border-radius: 5px
+
+// `<Button/>`s' side padding
+// (only when not sizing buttons as grid columns)
+.rrui__button__button
+  padding-left: 4em
+  padding-right: 4em
+
+// `<Button/>`'s busy indicator styling
+.rrui__button__activity-indicator
+  left: calc(50% - 1em)
+  top: calc(50% - 1em)
+  width: 2em
+  height: 2em
+
+// `<Select/>`'s options expand to full (grid) column width.
+.rrui__select__options:not(.rrui__select__options--menu)
+  width: 100%
+
+// `<Select/>`'s options are aligned with the `<Select/>` itself.
+.rrui__select__options--left-aligned
+  left: 0
+
+// `<Select/>`'s options are aligned with the `<Select/>` itself.
+.rrui__select__options--right-aligned
+  right: 0
+```
+
 ## Responsive
 
 The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on mobile phones:
