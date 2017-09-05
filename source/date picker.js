@@ -265,6 +265,14 @@ export default class DatePicker extends PureComponent
 		const { format, onChange } = this.props
 
 		// https://github.com/gpbl/react-day-picker/issues/473
+		// Remove any hours/minutes/seconds/milliseconds from the selected date.
+		// By default it's set to `12:00` for some strange reason.
+		// Perhaps because if such a selected date, when converted to a number
+		// and then back to a `Date` object, will still yield the same day
+		// in the calendar regardless of time zone differences
+		// between the place of serialization and the place of deserialization.
+		// I'm using PostgreSQL's `timezone with timestamp` instead
+		// so dates are always serialized and deserialized with the same time zone.
 		selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
 
 		// `onChange` fires but the `value`
