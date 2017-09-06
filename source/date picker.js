@@ -43,7 +43,8 @@ export default class DatePicker extends PureComponent
 		// The Date `value`
 		value : PropTypes.instanceOf(Date),
 
-		// Writes new `value`
+		// Writes new `value`.
+		// The `value` is in the user's time zone and the time is `00:00`.
 		onChange : PropTypes.func.isRequired,
 
 		// Is called when the date picker is either collapsed or expanded
@@ -524,7 +525,8 @@ export default class DatePicker extends PureComponent
 	}
 }
 
-// Parses a text value into a `Date` provided a `format`
+// Parses a text value into a `Date` provided a `format`.
+// The date returned is in the user's time zone and the time is `00:00`.
 function parse_date(text_value, format)
 {
 	if (!text_value)
@@ -575,6 +577,8 @@ function format_date(date, format)
 	// return moment(date).format(format)
 }
 
+// Parses a text value into a `Date` provided a `format`.
+// The date returned is in the user's time zone and the time is `00:00`.
 function parse_date_custom(string, format)
 {
 	if (!string)
@@ -590,6 +594,7 @@ function parse_date_custom(string, format)
 
 		if (year !== undefined)
 		{
+			// Current year in the user's time zone.
 			const current_year = new Date().getFullYear()
 			const current_year_century = current_year - current_year % 100
 			year += current_year_century
@@ -604,6 +609,7 @@ function parse_date_custom(string, format)
 		return console.error(`Couldn't parse date. Most likely an invalid date entered (manually). Otherwise it could be an unsupported date format: ${format} (only DD, MM, YY and YYYY literals are supported).`)
 	}
 
+	// The date created is in the user's time zone and the time is `00:00`.
 	const date = new Date
 	(
 		year,
@@ -748,9 +754,10 @@ function pad_with_zeroes(string, target_length)
 //   return dateFormatters[key]
 // }
 
+// Converts `null` to `undefined`
+// (specially for `knex.js`)
 function normalize_value(value)
 {
-	// Specially for `knex.js`
 	if (value === null)
 	{
 		return undefined
@@ -790,6 +797,7 @@ function trim_invalid_part(value, format)
 // Component will receive date, locale and localeUtils props
 function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture, selectedDay })
 {
+	// The current year in the user's time zone.
 	const current_year = new Date().getFullYear()
 
 	let from_year = selectYearsIntoPast   ? current_year - selectYearsIntoPast   : current_year
@@ -827,6 +835,8 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 		const month = event.target.parentNode.firstChild.value
 		const year  = event.target.parentNode.lastChild.value
 
+		// The date created is in the user's time zone and the time is `00:00`.
+		// The `day` is `undefined` which means the first one of the `month`.
 		onChange(new Date(year, month))
 	}
 
