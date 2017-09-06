@@ -348,6 +348,7 @@ export default class Select extends PureComponent
 		{
 			id,
 			upward,
+			concise,
 			scroll,
 			children,
 			menu,
@@ -437,7 +438,8 @@ export default class Select extends PureComponent
 						'rrui__select--upward'    : upward,
 						'rrui__select--expanded'  : expanded,
 						'rrui__select--collapsed' : !expanded,
-						'rrui__select--disabled'  : disabled
+						'rrui__select--disabled'  : disabled,
+						'rrui__select--compact'   : concise
 					},
 					className
 				) }>

@@ -630,6 +630,16 @@
 	cursor             : pointer;
 }
 
+.rrui__select--compact .rrui__input
+{
+	display : inline-block;
+}
+
+.rrui__select--compact .rrui__select__options
+{
+	width : auto;
+}
+
 /*===========================================================
 = Checkbox                                                  =
 ===========================================================*/
