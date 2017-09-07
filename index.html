@@ -670,6 +670,17 @@
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
+									<h2 style={style.label}>Date picker (with month and year selectors)</h2>
+
+									<DatePicker
+										style={style.input}
+										label="date"
+										selectYearsIntoPast={118}
+										value={this.state.selectedDay}
+										onChange={selectedDay => this.setState({ selectedDay })}/>
+
+									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
+
 									<h2 style={style.label}>File upload</h2>
 
 									<FileUploadArea/>
