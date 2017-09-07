@@ -266,18 +266,31 @@ export default class DatePicker extends PureComponent
 		const { format, onChange } = this.props
 
 		// https://github.com/gpbl/react-day-picker/issues/473
-		// Remove any hours/minutes/seconds/milliseconds from the selected date.
-		// By default it's set to `12:00` of the current time zone for some strange reason.
+		// By default the `selected_day` has time
+		// set to `12:00` of the current time zone.
+		// These extra 12 hours do make sense and
+		// do help make things less weird.
+		//
+		// These extra 12 hours are a hack to make things
+		// a little bit less weird when rendering parsed dates.
+		// E.g. if a date `Jan 1st, 2017` gets parsed as
+		// `Jan 1st, 2017, 00:00 UTC+0` (England) then when displayed in the US
+		// it would show up as `Dec 31st, 2016, 19:00 UTC-05` (Austin, Texas).
+		// That would be weird for a website user.
+		// Therefore this extra 12-hour padding is added
+		// to compensate for the most weird cases like this
+		// for adjacent countries / neighbours / same continent countries.
 		//
 		// So `selected_day` is in the user's time zone and the time is `12:00`.
-		// Here I strip those 12 hours from the `selected_day`
-		// so the time becomes `00:00` in the user's time zone.
-		//
-		// (`selected_day` is the date in the user's time zone)
-		// (`selected_day.getDate()` returns the day in the user's time zone)
-		// (`new Date(year, month, day)` creates a date in the user's time zone)
-		//
-		selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
+
+		// // Here I strip those 12 hours from the `selected_day`
+		// // so the time becomes `00:00` in the user's time zone.
+		// //
+		// // (`selected_day` is the date in the user's time zone)
+		// // (`selected_day.getDate()` returns the day in the user's time zone)
+		// // (`new Date(year, month, day)` creates a date in the user's time zone)
+		// //
+		// selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
 
 		// `onChange` fires but the `value`
 		// hasn't neccessarily been updated yet
