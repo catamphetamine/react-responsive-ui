@@ -74,6 +74,14 @@ export default class DatePicker extends PureComponent
 		// How much years forward can a user navigate using the year `<select/>`
 		selectYearsIntoFuture : PropTypes.number,
 
+		// Whether dates being selected should be in UTC+0 timezone.
+		// (is `false` by default)
+		utc : PropTypes.bool.isRequired,
+
+		// Whether to set time to 12:00 for dates being selected.
+		// (is `true` by default)
+		noon : PropTypes.bool.isRequired,
+
 		// "Close" button title for fullscreen mode on mobile devices
 		closeButtonLabel : PropTypes.string.isRequired,
 
@@ -94,6 +102,12 @@ export default class DatePicker extends PureComponent
 
 		// Set to `true` to mark the field as required
 		required : false,
+
+		// Whether dates being selected should be in UTC+0 timezone
+		utc : false,
+
+		// Whether to set time to 12:00 for dates being selected
+		noon : true,
 
 		// "Close" button title for fullscreen mode on mobile devices
 		closeButtonLabel : 'Close'
@@ -263,7 +277,14 @@ export default class DatePicker extends PureComponent
 
 	on_day_click = (selected_day) =>
 	{
-		const { format, onChange } = this.props
+		const
+		{
+			format,
+			onChange,
+			noon,
+			utc
+		}
+		= this.props
 
 		// https://github.com/gpbl/react-day-picker/issues/473
 		// By default the `selected_day` has time
@@ -283,14 +304,28 @@ export default class DatePicker extends PureComponent
 		//
 		// So `selected_day` is in the user's time zone and the time is `12:00`.
 
-		// // Here I strip those 12 hours from the `selected_day`
-		// // so the time becomes `00:00` in the user's time zone.
-		// //
-		// // (`selected_day` is the date in the user's time zone)
-		// // (`selected_day.getDate()` returns the day in the user's time zone)
-		// // (`new Date(year, month, day)` creates a date in the user's time zone)
-		// //
-		// selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
+		if (!noon)
+		{
+			// Here I strip those 12 hours from the `selected_day`
+			// so the time becomes `00:00` in the user's time zone.
+			//
+			// (`selected_day` is the date in the user's time zone)
+			// (`selected_day.getDate()` returns the day in the user's time zone)
+			// (`new Date(year, month, day)` creates a date in the user's time zone)
+			//
+			selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
+		}
+
+		if (utc)
+		{
+			// Doesn't account for leap seconds but I guess that's ok
+			// given that javascript's own `Date()` does not either.
+			// https://www.timeanddate.com/time/leap-seconds-background.html
+			//
+			// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+			//
+			selected_day = new Date(selected_day.getTime() - selected_day.getTimezoneOffset() * 60 * 1000)
+		}
 
 		// `onChange` fires but the `value`
 		// hasn't neccessarily been updated yet
