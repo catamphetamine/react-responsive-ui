@@ -630,6 +630,12 @@
 	cursor             : pointer;
 }
 
+/* Reverts `width: 100%` set at the top of this file */
+.rrui__select--compact
+{
+	width : auto;
+}
+
 .rrui__select--compact .rrui__input
 {
 	display : inline-block;
