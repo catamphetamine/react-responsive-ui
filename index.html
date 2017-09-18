@@ -613,7 +613,9 @@
 										onChange={ selected_with_icon => this.setState({ selected_with_icon }) }
 										className="rrui__select--compact"/>
 
-									You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
+									<div>
+										You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
+									</div>
 
 									<h2 style={style.label}>Checkbox</h2>
 
