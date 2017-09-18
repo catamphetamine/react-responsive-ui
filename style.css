@@ -8,7 +8,7 @@
 .rrui__text-input__input,
 .rrui__select,
 .rrui__select__selected,
-.rrui__select__options:not(.rrui__select__options--menu),
+.rrui__select__options,
 .rrui__date-picker__input
 {
 	width: 100%;
@@ -388,6 +388,12 @@
 	box-sizing       : border-box;
 }
 
+.rrui__select--menu .rrui__select__options
+{
+	/* Overrides the `width: 100%` rule at the top of this file */
+	width : auto;
+}
+
 .rrui__expandable--left-aligned
 {
 	left : 0;
@@ -408,7 +414,7 @@
 	right : calc(0.3rem * 4 * -1);
 }
 
-.rrui__select__options:not(.rrui__select__options--menu)
+.rrui__select__options
 {
 	width : calc(100% + 0.3rem * 4 * 2);
 }
@@ -630,14 +636,11 @@
 	cursor             : pointer;
 }
 
-/* Reverts `width: 100%` set at the top of this file */
 .rrui__select--compact
 {
+	/* Reverts `width: 100%` set at the top of this file */
 	width : auto;
-}
-
-.rrui__select--compact .rrui__input
-{
+	/* If it's `compact` then it's most likely inlined */
 	display : inline-block;
 }
 
@@ -652,7 +655,7 @@
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 
-.rrui__checkbox .rrui__input:not(.rrui__input--multiline)
+.rrui__checkbox .rrui__input
 {
 	display     : flex;
 	align-items : center;
@@ -660,7 +663,6 @@
 
 .rrui__checkbox .rrui__input--multiline
 {
-	display     : flex;
 	align-items : flex-start;
 }
 

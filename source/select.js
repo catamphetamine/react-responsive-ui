@@ -102,6 +102,13 @@ export default class Select extends PureComponent
 		// as icon only, without the label.
 		concise    : PropTypes.bool,
 
+		// If this flag is set to `true`,
+		// then it makes `<Select/>` not stretch itself
+		// to 100% width by making it `inline-block`.
+		// Is set to `true` when `concise` is `true`
+		// because it makes sense.
+		compact    : PropTypes.bool,
+
 		// HTML `tabindex` attribute
 		tabIndex   : PropTypes.number,
 
@@ -349,6 +356,7 @@ export default class Select extends PureComponent
 			id,
 			upward,
 			concise,
+			compact,
 			scroll,
 			children,
 			menu,
@@ -435,11 +443,12 @@ export default class Select extends PureComponent
 					'rrui__select',
 					{
 						'rrui__rich'              : fallback,
+						'rrui__select--menu'      : menu,
 						'rrui__select--upward'    : upward,
 						'rrui__select--expanded'  : expanded,
 						'rrui__select--collapsed' : !expanded,
 						'rrui__select--disabled'  : disabled,
-						'rrui__select--compact'   : concise
+						'rrui__select--compact'   : compact || (concise && !autocomplete)
 					},
 					className
 				) }>

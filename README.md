@@ -210,7 +210,7 @@ When using modular grid element sizes are multiples of a modular grid unit
 // Resets the above rule for multiline `<TextInput/>`s
 // (because they have variable height depending on content)
 .rrui__input--multiline
-  height: auto
+  height: calc(var(--unit) * 15)
 
 // Multiline `<TextInput/>`'s vertical padding
 .rrui__text-input__input--multiline

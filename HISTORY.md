@@ -1,3 +1,10 @@
+0.8.55 / 18.09.2017
+===================
+
+  * Added `<Select compact/>` property which makes the `<Select/>` not stretch to 100% width by making it `inline-block`.
+  * (CSS breaking change) `<Select concise/>` are now `inline-block` too (but I guess perhaps no one even used that property since it's `concise` which means "inline" to me).
+  * Added `.rrui__select--menu` CSS class so `.rrui__select__options:not(.rrui__select__options--menu)` becomes just `.rrui__select__options` which simplifies the stylesheet.
+
 0.8.22 / 27.07.2017
 ===================
 
