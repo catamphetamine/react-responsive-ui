@@ -1,3 +1,18 @@
+0.9.1 / 20.09.2017
+===================
+
+(CSS breaking change) Refactored `<Select/>` CSS class names:
+
+  * `.rrui__select__selected--autocomplete` -> `.rrui__select__autocomplete`
+
+  * `.rrui__select__selected` -> `.rrui__select__button`
+
+  * `.rrui__select__selected--nothing` -> `.rrui__select__button--empty`
+
+  * `.rrui__select__selected--expanded` -> `.rrui__select__button--expanded`
+
+  * `.rrui__select__selected--disabled` -> `.rrui__select__button--disabled`
+
 0.8.55 / 18.09.2017
 ===================
 

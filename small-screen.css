@@ -8,7 +8,14 @@
 	right: 0;
 	left: 0;
 	margin: 0;
+	z-index: 100;
 	max-height: none !important;
+}
+
+/* "Close" button for full-screen `<Select/>`s */
+.rrui__select__close
+{
+	z-index: 100;
 }
 
 /*
@@ -71,6 +78,10 @@ pushing the expanded `<DatePicker/>` from the screen.
 {
 	margin-left: 0;
 	margin-right: 0;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 /* Makes all dropdowns inside modals not go into fullscreen */

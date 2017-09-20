@@ -264,7 +264,7 @@ The included [`react-responsive-ui/small-screen.css`](https://github.com/catamph
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 
 ```css
-@import url(~react-responsive-ui/small-screen.css) all and (max-width: 720px)
+@import url(~react-responsive-ui/small-screen.css) (max-width: 720px)
 ```
 
 SASS `@import` example:
@@ -287,12 +287,6 @@ And then some refinements:
     color: var(--accent-color);
   }
 
-  /* Fullscreen `<Select/>` "Close" button */
-  .rrui__select__close
-  {
-    z-index: var(--expandable-z-index);
-  }
-
   /* Fullscreen `<Select/>` options */
   .rrui__select__options:not(.rrui__select__options--autocomplete)
   {
@@ -302,6 +296,12 @@ And then some refinements:
   /* Fullscreen `<Select/>`s and `<DatePicker/>`s `z-index`es */
   .rrui__select__options:not(.rrui__select__options--autocomplete),
   .rrui__date-picker__collapsible
+  {
+    z-index: var(--expandable-z-index);
+  }
+
+  /* Fullscreen `<Select/>` "Close" button */
+  .rrui__select__close
   {
     z-index: var(--expandable-z-index);
   }

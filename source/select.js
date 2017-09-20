@@ -169,6 +169,9 @@ export default class Select extends PureComponent
 
 		onToggle : PropTypes.func,
 
+		// `aria-label` for the `<Select/>`'s `<button/>`
+		ariaLabel : PropTypes.string.isRequired,
+
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
 		closeLabel : PropTypes.string.isRequired,
@@ -197,6 +200,9 @@ export default class Select extends PureComponent
 
 		// Set to `true` to mark the field as required
 		required : false,
+
+		// `aria-label` for the `<Select/>`'s `<button/>`
+		ariaLabel : 'Select country',
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
@@ -710,6 +716,7 @@ export default class Select extends PureComponent
 			tabIndex,
 			onFocus,
 			title,
+			ariaLabel,
 			inputClassName
 		}
 		= this.props
@@ -729,11 +736,7 @@ export default class Select extends PureComponent
 
 		const selected_style_classes =
 		{
-			'rrui__input-field'                : true,
-			'rrui__select__selected'           : true,
-			'rrui__select__selected--nothing'  : !selected_label,
 			// CSS selector performance optimization
-			'rrui__select__selected--expanded' : expanded,
 			'rrui__select__selected--disabled' : disabled
 		}
 
@@ -755,7 +758,9 @@ export default class Select extends PureComponent
 					className={ classNames
 					(
 						selected_style_classes,
-						'rrui__select__selected--autocomplete',
+						'rrui__input-field',
+						'rrui__text-input__input',
+						'rrui__select__autocomplete',
 						inputClassName
 					) }/>
 			)
@@ -773,12 +778,14 @@ export default class Select extends PureComponent
 				onFocus={ onFocus }
 				tabIndex={ nativeExpanded ? -1 : tabIndex }
 				title={ title }
-				aria-label={ selected_text }
+				aria-label={ ariaLabel }
 				className={ classNames
 				(
 					selected_style_classes,
+					'rrui__select__button',
 					{
-						'rrui__input-field--invalid' : this.should_indicate_invalid()
+						'rrui__select__button--empty' : !selected_label,
+						'rrui__input-field--invalid'  : this.should_indicate_invalid()
 					}
 				) }>
 

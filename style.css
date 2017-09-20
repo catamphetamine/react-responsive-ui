@@ -7,7 +7,8 @@
 .rrui__text-input,
 .rrui__text-input__input,
 .rrui__select,
-.rrui__select__selected,
+.rrui__select__button,
+.rrui__select__autocomplete,
 .rrui__select__options,
 .rrui__date-picker__input
 {
@@ -112,7 +113,7 @@
 
 /* Focused input label */
 .rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
-.rrui__select__selected:focus   + .rrui__input-label,
+.rrui__select__button:focus     + .rrui__input-label,
 .rrui__date-picker__input:focus + .rrui__input-label
 {
 	color: #03B2CB;
@@ -198,8 +199,10 @@
 
 /* Reset the default `<button/>` styles */
 .rrui__button__button,
-.rrui__select__selected,
+.rrui__select__button,
 .rrui__select__option,
+.rrui__select__close,
+.rrui__date-picker__close,
 .rrui__segmented-control__option
 {
 	margin      : 0;
@@ -458,7 +461,7 @@
 	background-color : #FBFDFD;
 }
 
-.rrui__select__selected--disabled,
+.rrui__select__button--disabled,
 .rrui__select__option--disabled
 {
 	cursor : default;
@@ -511,13 +514,14 @@
 }
 
 .rrui__select__toggler,
-.rrui__select__selected
+.rrui__select__button,
+.rrui__select__autocomplete
 {
 	height     : 100%;
 	box-sizing : border-box;
 }
 
-.rrui__select__selected
+.rrui__select__button
 {
 	border-bottom : 1px solid #C5D2E0;
 	transition    : border 0.1s;
@@ -526,29 +530,29 @@
 	text-align : left;
 }
 
-.rrui__select__selected:focus,
-.rrui__select__native-expanded:focus + .rrui__select__selected
+.rrui__select__button:focus,
+.rrui__select__native-expanded:focus + .rrui__select__button
 {
 	border-bottom-color: #03B2CB;
 }
 
-.rrui__select__selected:active
+.rrui__select__button:active
+{
+	color: #03B2CB;
+}
+
+.rrui__select__button--expanded
 {
 	color: #3678D1;
 }
 
-.rrui__select__selected--expanded
-{
-	color: #3678D1;
-}
-
-.rrui__select__selected,
+.rrui__select__button,
 .rrui__select__option
 {
 	color : inherit;
 }
 
-.rrui__select__selected--nothing:not(.rrui__select__selected--autocomplete)
+.rrui__select__button--empty
 {
 	color: #888C91;
 }
@@ -556,10 +560,9 @@
 /* Not introducing an animation on `.rrui__select__option`
    because it would introduce a little clutter due to
    focused option animation in autocomplete mode */
-.rrui__select__selected
+.rrui__select__button
 {
-	transition         : background-color 30ms ease-out, color 30ms ease-out;
-	-webkit-transition : background-color 30ms ease-out, color 30ms ease-out;
+	transition : background-color 30ms ease-out, color 30ms ease-out;
 }
 
 .rrui__select__selected-content
@@ -625,15 +628,6 @@
 	width        : calc(0.3rem * 5);
 	height       : calc(0.3rem * 5);
 	z-index      : 1;
-
-	padding            : 0;
-	-webkit-appearance : none;
-	-moz-appearance    : none;
-	appearance         : none;
-	outline            : none;
-	border             : none;
-	background         : transparent;
-	cursor             : pointer;
 }
 
 .rrui__select--compact
@@ -1664,11 +1658,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .DayPicker-MonthSelect,
 .DayPicker-YearSelect
 {
-	-webkit-appearance : none;
-	-moz-appearance    : none;
-	appearance         : none;
-	outline            : none;
-	border             : none;
+	appearance : none;
+	outline    : none;
+	border     : none;
 
 	margin-top : -0.4em;
 
@@ -1740,13 +1732,4 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	margin-left  : auto;
 	margin-right : auto;
 	margin-top   : calc(0.3rem * 4);
-
-	padding            : 0;
-	-webkit-appearance : none;
-	-moz-appearance    : none;
-	appearance         : none;
-	outline            : none;
-	border             : none;
-	background         : transparent;
-	cursor             : pointer;
 }
