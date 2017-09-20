@@ -15,6 +15,25 @@
 
   * `.rrui__select__selected--invalid` -> `.rrui__select__button--invalid`
 
+(CSS breaking change) Focused input label CSS selector changed. From this:
+
+```css
+/* Focused input label */
+.rrui__text-input__input:focus    + .rrui__input-label:not(.rrui__text-input__label--placeholder),
+.rrui__select__button:focus       + .rrui__input-label,
+.rrui__select__autocomplete:focus + .rrui__input-label,
+.rrui__date-picker__input:focus   + .rrui__input-label
+```
+
+To this:
+
+```css
+/* Focused input label */
+.rrui__input-element:focus + .rrui__input-label:not(.rrui__text-input__label--placeholder)
+```
+
+(CSS breaking change) `<Select/>`'s autocomplete `<input/>` is now `.rrui__text-input__input`
+
 0.8.55 / 18.09.2017
 ===================
 

@@ -264,7 +264,7 @@ export default class Text_input extends PureComponent
 			onFocus,
 			onBlur,
 			disabled,
-			className   : classNames('rrui__input-field', 'rrui__text-input__input',
+			className   : classNames('rrui__input-element', 'rrui__input-field', 'rrui__text-input__input',
 			{
 				'rrui__input-field--invalid'         : this.should_indicate_invalid(),
 				// CSS selector performance optimization

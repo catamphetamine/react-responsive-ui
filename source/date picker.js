@@ -501,7 +501,7 @@ export default class DatePicker extends PureComponent
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
 						onFocus={ this.on_input_focus }
-						className={ classNames('rrui__input-field', 'rrui__date-picker__input',
+						className={ classNames('rrui__input-element', 'rrui__input-field', 'rrui__date-picker__input',
 						{
 							'rrui__input-field--invalid' : this.should_indicate_invalid()
 						}) }/>
