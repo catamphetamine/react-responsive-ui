@@ -145,6 +145,10 @@ Each form component receives two validation-specific properties
 
 When both of these properties are set the form component appends `--invalid` postfixes to its CSS `className`s.
 
+## Customization
+
+See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
+
 ## CSS
 
 The CSS for this library must be included on a page too.
@@ -166,36 +170,6 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
   <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
 </head>
 ```
-
-## API
-
-See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
-
-## Drag'n'drop
-
-Drag'n'drop is implemented internally using [`react-dnd`](https://github.com/gaearon/react-dnd) providing a much simpler-to-use API. Currently only file upload is supported but new features could be added upon request.
-
-```js
-import { DragAndDrop, CanDrop, FILE, FILES } from 'react-responsive-ui'
-
-@DragAndDrop()
-class Application extends Component {
-  render() {
-    const { isDragging, children } = this.props
-    return <div>{ children }</div>
-  }
-}
-
-@CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
-class FileDropArea extends Component {
-  render() {
-    const { dropTarget, draggedOver, canDrop } = this.props
-    return dropTarget(<div>Drop a file here</div>)
-  }
-}
-```
-
-Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
 
 ## Grid
 
@@ -322,6 +296,32 @@ And then some refinements:
   }
 }
 ```
+
+## Drag'n'drop
+
+Drag'n'drop is implemented internally using [`react-dnd`](https://github.com/gaearon/react-dnd) providing a much simpler-to-use API. Currently only file upload is supported but new features could be added upon request.
+
+```js
+import { DragAndDrop, CanDrop, FILE, FILES } from 'react-responsive-ui'
+
+@DragAndDrop()
+class Application extends Component {
+  render() {
+    const { isDragging, children } = this.props
+    return <div>{ children }</div>
+  }
+}
+
+@CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
+class FileDropArea extends Component {
+  render() {
+    const { dropTarget, draggedOver, canDrop } = this.props
+    return dropTarget(<div>Drop a file here</div>)
+  }
+}
+```
+
+Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
 
 ## Contributing
 
