@@ -112,7 +112,7 @@
 }
 
 /* Focused input label */
-.rrui__input-element:focus + .rrui__input-label:not(.rrui__text-input__label--placeholder)
+.rrui__input-element:focus + .rrui__input-label
 {
 	color: #03B2CB;
 }
@@ -1279,15 +1279,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	border-color: #EB2010;
 }
 
-.rrui__text-input__label--placeholder
+.rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
 {
 	color     : #888C91;
 	transform : translateY(0) scale(1);
-}
-
-.rrui__text-input__input--empty:focus + .rrui__input-label--floating
-{
-	color: #888C91;
 }
 
 .rrui__text-input__input--disabled

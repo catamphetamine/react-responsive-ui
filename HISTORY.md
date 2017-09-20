@@ -29,8 +29,10 @@ To this:
 
 ```css
 /* Focused input label */
-.rrui__input-element:focus + .rrui__input-label:not(.rrui__text-input__label--placeholder)
+.rrui__input-element:focus + .rrui__input-label
 ```
+
+And the floating label now floats to top always when the input is focused regardless of whether it's empty or not.
 
 (CSS breaking change) `<Select/>`'s autocomplete `<input/>` is now `.rrui__text-input__input`
 

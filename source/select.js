@@ -736,7 +736,7 @@ export default class Select extends PureComponent
 
 		const selected_style_classes =
 		{
-			'rrui__input-element',
+			'rrui__input-element' : true,
 			// CSS selector performance optimization
 			'rrui__select__selected--disabled' : disabled
 		}
