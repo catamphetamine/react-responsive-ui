@@ -202,34 +202,34 @@ Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/t
 When using modular grid element sizes are multiples of a modular grid unit
 
 ```css
-// Sets `react-responsive-ui` controls' height
+/* Sets `react-responsive-ui` controls' height */
 .rrui__input,
 .rrui__input-label {
   height: calc(var(--unit) * 5);
 }
 
-// Set the default height of multiline `<TextInput/>`s
+/* Set the default height of multiline `<TextInput/>`s */
 .rrui__input--multiline {
   height: calc(var(--unit) * 15);
 }
 
-// Multiline `<TextInput/>`'s vertical padding
+/* Multiline `<TextInput/>`'s vertical padding */
 .rrui__text-input__input--multiline {
   padding-top: var(--textarea-padding);
   padding-bottom: var(--textarea-padding);
 }
 
-// Multiline `<TextInput/>`'s label positioning
+/* Multiline `<TextInput/>`'s label positioning */
 .rrui__text-input__label--multiline {
   top: var(--textarea-padding);
 }
 
-// `<Button/>`s are sized to match the height of all other controls.
+/* `<Button/>`s are sized to match the height of all other controls. */
 .rrui__button__button {
   height: 100%;
 }
 
-// Styling `<Button/>`s
+/* Styling `<Button/>`s */
 .rrui__button {
   font-family: ...
   font-size: ...
@@ -237,14 +237,14 @@ When using modular grid element sizes are multiples of a modular grid unit
   border-radius: 5px;
 }
 
-// `<Button/>`s' side padding
-// (only when not sizing buttons as grid columns)
+/* `<Button/>`s' side padding */
+/* (only when not sizing buttons as grid columns) */
 .rrui__button__button {
   padding-left: 4em;
   padding-right: 4em;
 }
 
-// `<Button/>`'s busy indicator styling
+/* `<Button/>`'s busy indicator styling */
 .rrui__button__activity-indicator {
   left: calc(50% - 1em);
   top: calc(50% - 1em);
@@ -252,17 +252,17 @@ When using modular grid element sizes are multiples of a modular grid unit
   height: 2em;
 }
 
-// `<Select/>`'s options expand to full (grid) column width.
+/* `<Select/>`'s options expand to full (grid) column width. */
 .rrui__select__options:not(.rrui__select__options--menu) {
   width: 100%;
 }
 
-// `<Select/>`'s options are aligned with the `<Select/>` itself.
+/* `<Select/>`'s options are aligned with the `<Select/>` itself. */
 .rrui__select__options--left-aligned {
   left: 0;
 }
 
-// `<Select/>`'s options are aligned with the `<Select/>` itself.
+/* `<Select/>`'s options are aligned with the `<Select/>` itself. */
 .rrui__select__options--right-aligned {
   right: 0;
 }
