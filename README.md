@@ -204,57 +204,68 @@ When using modular grid element sizes are multiples of a modular grid unit
 ```css
 // Sets `react-responsive-ui` controls' height
 .rrui__input,
-.rrui__input-label
-  height: calc(var(--unit) * 5)
+.rrui__input-label {
+  height: calc(var(--unit) * 5);
+}
 
 // Set the default height of multiline `<TextInput/>`s
-.rrui__input--multiline
-  height: calc(var(--unit) * 15)
+.rrui__input--multiline {
+  height: calc(var(--unit) * 15);
+}
 
 // Multiline `<TextInput/>`'s vertical padding
-.rrui__text-input__input--multiline
-  padding-top: var(--textarea-padding)
-  padding-bottom: var(--textarea-padding)
+.rrui__text-input__input--multiline {
+  padding-top: var(--textarea-padding);
+  padding-bottom: var(--textarea-padding);
+}
 
 // Multiline `<TextInput/>`'s label positioning
-.rrui__text-input__label--multiline
-  top: var(--textarea-padding)
+.rrui__text-input__label--multiline {
+  top: var(--textarea-padding);
+}
 
 // `<Button/>`s are sized to match the height of all other controls.
-.rrui__button__button
-  height: 100%
+.rrui__button__button {
+  height: 100%;
+}
 
 // Styling `<Button/>`s
-.rrui__button
+.rrui__button {
   font-family: ...
   font-size: ...
-  border: 2px solid black
-  border-radius: 5px
+  border: 2px solid black;
+  border-radius: 5px;
+}
 
 // `<Button/>`s' side padding
 // (only when not sizing buttons as grid columns)
-.rrui__button__button
-  padding-left: 4em
-  padding-right: 4em
+.rrui__button__button {
+  padding-left: 4em;
+  padding-right: 4em;
+}
 
 // `<Button/>`'s busy indicator styling
-.rrui__button__activity-indicator
-  left: calc(50% - 1em)
-  top: calc(50% - 1em)
-  width: 2em
-  height: 2em
+.rrui__button__activity-indicator {
+  left: calc(50% - 1em);
+  top: calc(50% - 1em);
+  width: 2em;
+  height: 2em;
+}
 
 // `<Select/>`'s options expand to full (grid) column width.
-.rrui__select__options:not(.rrui__select__options--menu)
-  width: 100%
+.rrui__select__options:not(.rrui__select__options--menu) {
+  width: 100%;
+}
 
 // `<Select/>`'s options are aligned with the `<Select/>` itself.
-.rrui__select__options--left-aligned
-  left: 0
+.rrui__select__options--left-aligned {
+  left: 0;
+}
 
 // `<Select/>`'s options are aligned with the `<Select/>` itself.
-.rrui__select__options--right-aligned
-  right: 0
+.rrui__select__options--right-aligned {
+  right: 0;
+}
 ```
 
 ## Responsive
@@ -280,35 +291,30 @@ And then some refinements:
 ```css
 @media (max-width: 720px) {
   /* Fullscreen `<DatePicker/>` "Close" button */
-  .rrui__date-picker__close
-  {
+  .rrui__date-picker__close {
     font-size: 14px;
     font-weight: lighter;
     color: var(--accent-color);
   }
 
   /* Fullscreen `<Select/>` options */
-  .rrui__select__options:not(.rrui__select__options--autocomplete)
-  {
+  .rrui__select__options:not(.rrui__select__options--autocomplete) {
     font-size: 22px;
   }
 
   /* Fullscreen `<Select/>`s and `<DatePicker/>`s `z-index`es */
   .rrui__select__options:not(.rrui__select__options--autocomplete),
-  .rrui__date-picker__collapsible
-  {
+  .rrui__date-picker__collapsible {
     z-index: var(--expandable-z-index);
   }
 
   /* Fullscreen `<Select/>` "Close" button */
-  .rrui__select__close
-  {
+  .rrui__select__close {
     z-index: var(--expandable-z-index);
   }
 
   /* Fullscreen `<Modal/>` content padding */
-  .rrui__modal__content-body
-  {
+  .rrui__modal__content-body {
     margin-top: calc(var(--unit) * 2);
     margin-bottom: calc(var(--unit) * 2);
     padding-left: var(--column-padding);
