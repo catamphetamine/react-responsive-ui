@@ -112,9 +112,10 @@
 }
 
 /* Focused input label */
-.rrui__text-input__input:focus  + .rrui__input-label:not(.rrui__text-input__label--placeholder),
-.rrui__select__button:focus     + .rrui__input-label,
-.rrui__date-picker__input:focus + .rrui__input-label
+.rrui__text-input__input:focus    + .rrui__input-label:not(.rrui__text-input__label--placeholder),
+.rrui__select__button:focus       + .rrui__input-label,
+.rrui__select__autocomplete:focus + .rrui__input-label,
+.rrui__date-picker__input:focus   + .rrui__input-label
 {
 	color: #03B2CB;
 }
