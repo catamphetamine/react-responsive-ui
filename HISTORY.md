@@ -34,6 +34,20 @@ To this:
 
 And the floating label now floats to top always when the input is focused regardless of whether it's empty or not.
 
+So this:
+
+```css
+.rrui__text-input__label--placeholder
+  transform: ...
+```
+
+Changes into this:
+
+```css
+.rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
+  transform: ...
+```
+
 (CSS breaking change) `<Select/>`'s autocomplete `<input/>` is now `.rrui__text-input__input`
 
 0.8.55 / 18.09.2017

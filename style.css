@@ -108,7 +108,7 @@
 
 	transform        : scale(0.8) translateY(-60%);
 	transform-origin : left top;
-	transition       : color 0.1s ease-out, transform 0.1s ease-out;
+	transition       : color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* Focused input label */
