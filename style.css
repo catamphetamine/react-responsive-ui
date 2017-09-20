@@ -558,6 +558,11 @@
 	color: #888C91;
 }
 
+.rrui__select__button--invalid
+{
+	border-bottom-color: #D30F00;
+}
+
 /* Not introducing an animation on `.rrui__select__option`
    because it would introduce a little clutter due to
    focused option animation in autocomplete mode */

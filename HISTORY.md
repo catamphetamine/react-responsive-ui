@@ -13,6 +13,8 @@
 
   * `.rrui__select__selected--disabled` -> `.rrui__select__button--disabled`
 
+  * `.rrui__select__selected--invalid` -> `.rrui__select__button--invalid`
+
 0.8.55 / 18.09.2017
 ===================
 
