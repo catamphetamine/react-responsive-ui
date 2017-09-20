@@ -1,0 +1,99 @@
+/* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
+.rrui__select__options:not(.rrui__select__options--autocomplete),
+.rrui__date-picker__collapsible
+{
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: 0;
+	max-height: none !important;
+}
+
+/*
+Displays a click-intercepting overlay
+over `<DatePicker/>`'s `<input/>`
+so that the keyboard doesn't slide from bottom
+pushing the expanded `<DatePicker/>` from the screen.
+*/
+.rrui__date-picker__input-overlay
+{
+	display: block;
+}
+
+/* Show "Close" button for full-screen `<DatePicker/>`s */
+.rrui__date-picker__close
+{
+	display: block;
+}
+
+/* Show "Close" button for full-screen `<Select/>`s */
+.rrui__select__close:not(.rrui__select__close--autocomplete)
+{
+	display: block;
+}
+
+/* `<Modal/>` goes full-screen wide and high */
+.rrui__modal__overlay
+{
+	display: block;
+}
+
+/* CSS selector specificity fix for the above rule */
+.rrui__modal__overlay--hidden
+{
+	display: none;
+}
+
+/* Centers `<Modal/>` content (body) horizontally and vertically */
+.rrui__modal__container
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* `<Modal/>` goes full-screen wide and high */
+.rrui__modal__vertical-margin
+{
+	display: none;
+}
+
+/* `<Modal/>` goes full-screen wide and high */
+.rrui__modal__content
+{
+	border-radius: 0;
+}
+
+/* `<Modal/>` content goes full-screen wide and high */
+.rrui__modal__content-body
+{
+	margin-left: 0;
+	margin-right: 0;
+}
+
+/* Makes all dropdowns inside modals not go into fullscreen */
+.rrui__modal__content .rrui__select__options
+{
+	position: absolute;
+	left: 0;
+	top: auto;
+	right: auto;
+	bottom: auto;
+	/*
+	Disables `.rrui__select__options { ... font styles ... }`
+	defined in some CSS rule since it's not fullscreen again.
+	*/
+	font-size: inherit;
+	font-weight: inherit;
+}
+
+/*
+Don't show the "x" close button for `<Select/>`s inside modals
+since they're not fullscreen.
+*/
+.rrui__modal__content .rrui__select__close
+{
+	display: none;
+}

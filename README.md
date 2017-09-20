@@ -207,8 +207,7 @@ When using modular grid element sizes are multiples of a modular grid unit
 .rrui__input-label
   height: calc(var(--unit) * 5)
 
-// Resets the above rule for multiline `<TextInput/>`s
-// (because they have variable height depending on content)
+// Set the default height of multiline `<TextInput/>`s
 .rrui__input--multiline
   height: calc(var(--unit) * 15)
 
@@ -260,109 +259,60 @@ When using modular grid element sizes are multiples of a modular grid unit
 
 ## Responsive
 
-The following CSS makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on mobile phones:
+The included [`react-responsive-ui/small-screen.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/small-screen.css) stylesheet makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on small screens (mobile devices).
+
+Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
+
+```css
+@import url(~react-responsive-ui/small-screen.css) all and (max-width: 720px)
+```
+
+SASS `@import` example:
 
 ```css
 @media (max-width: 720px) {
-  /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-  .rrui__select__options:not(.rrui__select__options--autocomplete),
-  .rrui__date-picker__collapsible {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: var(--expandable-z-index);
-    margin: 0;
-    max-height: none !important;
-  }
+  @import "~react-responsive-ui/small-screen.css"
+}
+```
 
-  /*
-  Displays a click-intercepting overlay
-  over `<DatePicker/>`'s `<input/>`
-  so that the keyboard doesn't slide from bottom
-  pushing the expanded `<DatePicker/>` from the screen.
-  */
-  .rrui__date-picker__input-overlay {
-    display: block;
-  }
+And then some refinements:
 
-  /* Show "Close" button for full-screen `<DatePicker/>`s */
-  .rrui__date-picker__close {
-    display: block;
-    font-weight: lighter;
+```css
+@media (max-width: 720px) {
+  /* Fullscreen `<DatePicker/>` "Close" button */
+  .rrui__date-picker__close
+  {
     font-size: 14px;
+    font-weight: lighter;
     color: var(--accent-color);
   }
 
-  /* Show "Close" button for full-screen `<Select/>`s */
-  .rrui__select__close:not(.rrui__select__close--autocomplete) {
-    display: block;
+  /* Fullscreen `<Select/>` "Close" button */
+  .rrui__select__close
+  {
     z-index: var(--expandable-z-index);
   }
 
-  /* `<Modal/>` goes full-screen wide and high */
-  .rrui__modal__overlay {
-    display: block;
+  /* Fullscreen `<Select/>` options */
+  .rrui__select__options:not(.rrui__select__options--autocomplete)
+  {
+    font-size: 22px;
   }
 
-  /* CSS selector specificity fix for the above rule */
-  .rrui__modal__overlay--hidden {
-    display: none;
+  /* Fullscreen `<Select/>`s and `<DatePicker/>`s `z-index`es */
+  .rrui__select__options:not(.rrui__select__options--autocomplete),
+  .rrui__date-picker__collapsible
+  {
+    z-index: var(--expandable-z-index);
   }
 
-  /* Centers `<Modal/>` content (body) horizontally and vertically */
-  .rrui__modal__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* `<Modal/>` goes full-screen wide and high */
-  .rrui__modal__vertical-margin {
-    display: none;
-  }
-
-  /* `<Modal/>` goes full-screen wide and high */
-  .rrui__modal__content {
-    border-radius: 0;
-  }
-
-  /* `<Modal/>` content goes full-screen wide and high */
-  .rrui__modal__content-body {
-    margin-left: 0;
-    margin-right: 0;
+  /* Fullscreen `<Modal/>` content padding */
+  .rrui__modal__content-body
+  {
     margin-top: calc(var(--unit) * 2);
     margin-bottom: calc(var(--unit) * 2);
     padding-left: var(--column-padding);
     padding-right: var(--column-padding);
-  }
-
-  /* Bigger font size for full-screen `<Select/>` options */
-  .rrui__select__options:not(.rrui__select__options--autocomplete) {
-    font-size: 22px;
-  }
-
-  /* Makes all dropdowns inside modals not go into fullscreen */
-  .rrui__modal__content .rrui__select__options {
-    position: absolute;
-    left: 0;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    /*
-    Disables `.rrui__select__options { font-size: 24px }`
-    defined in the above rule since it's not fullscreen again.
-    */
-    font-size: inherit;
-  }
-
-  /*
-  Don't show the "x" close button for `<Select/>`s inside modals
-  since they're not fullscreen.
-  */
-  .rrui__modal__content .rrui__select__close {
-    display: none;
   }
 }
 ```
