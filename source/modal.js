@@ -567,17 +567,24 @@ class Modal_content extends PureComponent
 
 	render_close_button()
 	{
-		const { closeButton, close, busy } = this.props
+		const
+		{
+			closeLabel,
+			closeButton,
+			close,
+			busy
+		}
+		= this.props
 
 		if (!closeButton)
 		{
 			return
 		}
 
-		const markup =
-		(
+		return (
 			<button
 				onClick={ close }
+				aria-label={ closeLabel }
 				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
 					'rrui__modal__close--busy' : busy
@@ -585,8 +592,6 @@ class Modal_content extends PureComponent
 				{ closeButton }
 			</button>
 		)
-
-		return markup
 	}
 }
 

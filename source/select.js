@@ -169,6 +169,10 @@ export default class Select extends PureComponent
 
 		onToggle : PropTypes.func,
 
+		// `aria-label` for the "Close" button
+		// (which is an "x" visible in fullscreen mode).
+		closeLabel : PropTypes.string.isRequired,
+
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
 		closeButton : PropTypes.oneOfType([PropTypes.node, PropTypes.oneOf([false])]).isRequired
@@ -193,6 +197,10 @@ export default class Select extends PureComponent
 
 		// Set to `true` to mark the field as required
 		required : false,
+
+		// `aria-label` for the "Close" button
+		// (which is an "x" visible in fullscreen mode).
+		closeLabel : 'Close',
 
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
@@ -374,6 +382,7 @@ export default class Select extends PureComponent
 			value,
 			error,
 			closeButton,
+			closeLabel,
 			style,
 			className
 		}
@@ -519,6 +528,7 @@ export default class Select extends PureComponent
 						<button
 							type="button"
 							onClick={ this.toggle }
+							aria-label={ closeLabel }
 							className={ classNames('rrui__select__close',
 							{
 								'rrui__select__close--autocomplete' : autocomplete
@@ -616,6 +626,7 @@ export default class Select extends PureComponent
 				onClick={ event => this.item_clicked(value, event) }
 				disabled={ disabled }
 				tabIndex="-1"
+				aria-label={ label }
 				className={ classNames
 				(
 					'rrui__select__option',
@@ -762,6 +773,7 @@ export default class Select extends PureComponent
 				onFocus={ onFocus }
 				tabIndex={ nativeExpanded ? -1 : tabIndex }
 				title={ title }
+				aria-label={ selected_text }
 				className={ classNames
 				(
 					selected_style_classes,
