@@ -15,8 +15,6 @@
 /* "Close" button for full-screen `<Select/>`s */
 .rrui__select__close
 {
-	top: 0;
-	right: 0;
 	z-index: 100;
 }
 
