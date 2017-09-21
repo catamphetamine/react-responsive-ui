@@ -214,16 +214,22 @@ When using modular grid element sizes are multiples of a modular grid unit
 /* `<Button/>`s' side padding */
 /* (only when not sizing buttons as grid columns) */
 .rrui__button__button {
-  padding-left: 4em;
-  padding-right: 4em;
+  padding-left: calc(var(--unit) * 4);
+  padding-right: calc(var(--unit) * 4);
 }
 
 /* `<Button/>`'s busy indicator styling */
 .rrui__button__activity-indicator {
-  left: calc(50% - 1em);
-  top: calc(50% - 1em);
-  width: 2em;
-  height: 2em;
+  left: calc(50% - var(--unit));
+  top: calc(50% - var(--unit));
+  width: calc(var(--unit) * 2);
+  height: calc(var(--unit) * 2);
+}
+
+/* `<Select/>`'s options vertical padding. */
+.rrui__select__options {
+  padding-top: var(--unit);
+  padding-bottom: var(--unit);
 }
 
 /* `<Select/>`'s options expand to full (grid) column width. */
