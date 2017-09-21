@@ -213,7 +213,7 @@ export default class Select extends PureComponent
 		closeButton : (
 			<svg viewBox="0 0 22 21" className="rrui__select__close-icon">
 				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round">
-					<g transform="translate(-1367.000000, -40.000000)" stroke="#000000" strokeWidth="1">
+					<g className="rrui__select__close-icon-path" transform="translate(-1367.000000, -40.000000)" strokeWidth="1">
 						<g transform="translate(1368.000000, 41.000000)">
 							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882"></path>
 							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882" transform="translate(10.000000, 9.500000) scale(-1, 1) translate(-10.000000, -9.500000) "></path>
