@@ -48,7 +48,9 @@ Changes into this:
   transform: ...
 ```
 
-(CSS breaking change) `<Select/>`'s autocomplete `<input/>` is now `.rrui__text-input__input`
+(CSS breaking change) `<Select/>`'s autocomplete `<input/>` is now `.rrui__text-input__input`.
+
+(CSS breaking change) `<Select/>`'s `<option/>`s have now `height` set.
 
 0.8.55 / 18.09.2017
 ===================
