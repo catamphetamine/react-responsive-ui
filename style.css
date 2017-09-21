@@ -535,12 +535,10 @@
 {
 	display : block;
 	width   : 100%;
+	height : calc(0.3rem * 7);
 
 	padding-left  : calc(0.3rem * 4);
 	padding-right : calc(0.3rem * 4);
-
-	padding-top    : calc(0.3rem * 1);
-	padding-bottom : calc(0.3rem * 1);
 
 	-webkit-box-sizing  : border-box;
 
@@ -738,10 +736,12 @@
 
 .rrui__select__close-icon
 {
-	margin-top   : calc(0.3rem * 2 + 4px);
-	margin-right : calc(0.3rem * 2 + 4px);
-	width        : calc(0.3rem * 5);
-	height       : calc(0.3rem * 5);
+	width        : calc(0.3rem * 4);
+	height       : calc(0.3rem * 4);
+	margin-top   : calc(0.3rem * 1.5);
+	margin-right : calc(0.3rem * 1.5);
+	padding      : calc(0.3rem * 2);
+	box-sizing   : content-box;
 }
 
 .rrui__select--compact
