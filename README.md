@@ -252,11 +252,11 @@ Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) examp
 @import url(~react-responsive-ui/small-screen.css) (max-width: 720px)
 ```
 
-SCSS `@import` example (doesn't work due to a [bug](https://github.com/webpack-contrib/sass-loader/issues/494)):
+SCSS `@import` example:
 
 ```css
 @media (max-width: 720px) {
-  @import "~react-responsive-ui/small-screen.css";
+  @import "~react-responsive-ui/small-screen";
 }
 ```
 
