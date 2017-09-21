@@ -744,6 +744,16 @@
 	box-sizing   : content-box;
 }
 
+.rrui__select__close-icon-path
+{
+	stroke : black;
+}
+
+.rrui__select__close-icon:active .rrui__select__close-icon-path
+{
+	stroke : #03B2CB;
+}
+
 .rrui__select--compact
 {
 	/* Reverts `width: 100%` set at the top of this file */
