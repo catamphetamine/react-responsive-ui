@@ -275,6 +275,11 @@
 	font-family : inherit;
 	font-weight : inherit;
 	font-style  : inherit;
+
+-webkit-user-select : none;
+   -moz-user-select : none;
+    -ms-user-select : none;
+        user-select : none;
 }
 
 .rrui__button
@@ -1599,6 +1604,16 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
 	transition: opacity 120ms ease-out, transform 120ms ease-out;
 	transition: opacity 120ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out;
+}
+
+/* Prevents entering text selection mode
+   on mobile devices when tapping down and holding */
+.rrui__tooltip__target
+{
+-webkit-user-select : none;
+   -moz-user-select : none;
+    -ms-user-select : none;
+        user-select : none;
 }
 
 /*===========================================================
