@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
+import classNames from 'classnames'
 
 // https://github.com/Dogfalo/materialize/blob/master/js/tooltip.js
 export default class Tooltip extends PureComponent
@@ -252,7 +253,7 @@ export default class Tooltip extends PureComponent
 				onTouchEnd={ this.hide }
 				onTouchCancel={ this.hide }
 				style={ style ? { ...hovered_element_wrapper_style, ...style } : hovered_element_wrapper_style }
-				className={ className }>
+				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
 			</div>
 		)

@@ -215,6 +215,7 @@
 	font-family : inherit;
 	font-weight : inherit;
 	font-style  : inherit;
+	user-select : none;
 }
 
 .rrui__button
@@ -1340,6 +1341,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__tooltip--before-hide
 {
 	transition: opacity 120ms ease-out, transform 120ms ease-out;
+}
+
+/* Prevents entering text selection mode
+   on mobile devices when tapping down and holding */
+.rrui__tooltip__target
+{
+	user-select: none;
 }
 
 /*===========================================================
