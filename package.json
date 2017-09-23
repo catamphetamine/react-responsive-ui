@@ -1,9 +1,9 @@
 {
   "name": "react-responsive-ui",
-  "version": "0.9.12",
+  "version": "0.9.13",
   "description": "Slick and accurate React UI components",
   "main": "index.common.js",
-  "module": "index.es6.js",
+  "module": "index.js",
   "peerDependencies": {
     "react": ">=0.14.0",
     "react-dom": ">=0.14.0"
@@ -45,25 +45,25 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --colors --bail --reporter spec test/ --recursive",
-    "test-coverage": "istanbul cover -x \"build/**\" node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive",
-    "test-travis": "istanbul cover -x \"build/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --colors --reporter spec test/ --recursive",
-    "browser-build": "npm run build-es6-modules && WEBPACK_ENV=build webpack",
-    "browser-build-dev": "npm run build-es6-modules && WEBPACK_ENV=dev webpack --progress --colors --watch",
-    "clean-for-build": "rimraf ./build/**/* ./es6/**/*",
+    "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive",
+    "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --colors --reporter spec test/ --recursive",
+    "browser-build": "npm run build-modules && WEBPACK_ENV=build webpack",
+    "browser-build-dev": "npm run build-modules && WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "clean-for-build": "rimraf ./commonjs/**/* ./modules/**/*",
     "build-commonjs-modules": "better-npm-run build-commonjs-modules",
-    "build-es6-modules": "better-npm-run build-es6-modules",
-    "build": "npm-run-all clean-for-build build-commonjs-modules build-es6-modules",
+    "build-modules": "better-npm-run build-modules",
+    "build": "npm-run-all clean-for-build build-commonjs-modules build-modules",
     "prepublish": "npm-run-all build test browser-build"
   },
   "betterScripts": {
     "build-commonjs-modules": {
-      "command": "babel ./source --out-dir ./build --source-maps",
+      "command": "babel ./source --out-dir ./commonjs --source-maps",
       "env": {
         "BABEL_ENV": "commonjs"
       }
     },
-    "build-es6-modules": {
-      "command": "babel ./source --out-dir ./es6 --source-maps",
+    "build-modules": {
+      "command": "babel ./source --out-dir ./modules --source-maps",
       "env": {
         "BABEL_ENV": "es6"
       }

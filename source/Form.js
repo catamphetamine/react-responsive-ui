@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import Button from './button'
+import Button from './Button'
 
 // Prevents `<form/> submission when `busy` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.

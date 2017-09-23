@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import React_modal from 'react-modal'
 
-import Button from './button'
-import Form from './form'
+import Button from './Button'
+import Form from './Form'
 
 // Make sure to add `.rrui__fixed-full-width` CSS class
 // to all full-width `position: fixed` elements.

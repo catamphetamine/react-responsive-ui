@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import Page_and_menu from './page and menu'
+import PageAndMenu from './PageAndMenu'
 
 // A slideout menu
 export default class Menu extends PureComponent
@@ -20,7 +20,7 @@ export default class Menu extends PureComponent
 	static contextTypes =
 	{
 		router : PropTypes.object, // .isRequired, // `react-router` may not be used at all
-		...Page_and_menu.childContextTypes
+		...PageAndMenu.childContextTypes
 	}
 
 	state =

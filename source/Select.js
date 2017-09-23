@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
-import { submit_parent_form, get_scrollbar_width } from './misc/dom'
+import { submit_parent_form, get_scrollbar_width } from './utility/dom'
 
 // Possible enhancements:
 //

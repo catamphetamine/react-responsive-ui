@@ -24,7 +24,7 @@ import
 	Files,
 	FILES
 }
-from '../index.es6'
+from '../index'
 
 import { expect } from 'chai'
 

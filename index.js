@@ -2,103 +2,103 @@ export
 {
 	default as PageAndMenu
 }
-from './es6/page and menu'
+from './modules/PageAndMenu'
 
 export
 {
 	default as Page
 }
-from './es6/page'
+from './modules/Page'
 
 export
 {
 	default as CollapsibleMenu
 }
-from './es6/menu'
+from './modules/Menu'
 
 export
 {
 	default as MenuButton
 }
-from './es6/menu button'
+from './modules/MenuButton'
 
 export
 {
 	default as Form
 }
-from './es6/form'
+from './modules/Form'
 
 export
 {
 	default as Snackbar
 }
-from './es6/snackbar'
+from './modules/Snackbar'
 
 export
 {
 	default as Tooltip
 }
-from './es6/tooltip'
+from './modules/Tooltip'
 
 export
 {
 	default as ActivityIndicator
 }
-from './es6/activity indicator'
+from './modules/ActivityIndicator'
 
 export
 {
 	default as TextInput
 }
-from './es6/text input'
+from './modules/TextInput'
 
 export
 {
 	default as Select
 }
-from './es6/select'
+from './modules/Select'
 
 export
 {
 	default as Button
 }
-from './es6/button'
+from './modules/Button'
 
 export
 {
 	default as Switch
 }
-from './es6/switch'
+from './modules/Switch'
 
 export
 {
 	default as Checkbox
 }
-from './es6/checkbox'
+from './modules/Checkbox'
 
 export
 {
 	default as SegmentedControl
 }
-from './es6/segmented control'
+from './modules/SegmentedControl'
 
 export
 {
 	default as DatePicker
 }
-from './es6/date picker'
+from './modules/DatePicker'
 
 export
 {
 	default as FileUpload
 }
-from './es6/file upload'
+from './modules/FileUpload'
 
 export
 {
 	default as Modal
 }
-from './es6/modal'
+from './modules/Modal'
 
 // Drag'n'drop
 export
@@ -110,4 +110,4 @@ export
 	Files,
 	Files as FILES
 }
-from './es6/drag-n-drop'
+from './modules/DragAndDrop'

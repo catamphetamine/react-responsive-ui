@@ -2,30 +2,30 @@
 
 exports = module.exports = {}
 
-exports.PageAndMenu = require('./build/page and menu').default
-exports.Page = require('./build/page').default
-exports.CollapsibleMenu = require('./build/menu').default
-exports.MenuButton = require('./build/menu button').default
-exports.Form = require('./build/form').default
-exports.Snackbar = require('./build/snackbar').default
-exports.Tooltip = require('./build/tooltip').default
-exports.ActivityIndicator = require('./build/activity indicator').default
-exports.TextInput = require('./build/text input').default
-exports.Select = require('./build/select').default
-exports.Button = require('./build/button').default
-exports.Switch = require('./build/switch').default
-exports.Checkbox = require('./build/checkbox').default
-exports.SegmentedControl = require('./build/segmented control').default
-exports.DatePicker = require('./build/date picker').default
-exports.FileUpload = require('./build/file upload').default
-exports.Modal = require('./build/modal').default
+exports.PageAndMenu = require('./commonjs/PageAndMenu').default
+exports.Page = require('./commonjs/Page').default
+exports.CollapsibleMenu = require('./commonjs/Menu').default
+exports.MenuButton = require('./commonjs/MenuButton').default
+exports.Form = require('./commonjs/Form').default
+exports.Snackbar = require('./commonjs/Snackbar').default
+exports.Tooltip = require('./commonjs/Tooltip').default
+exports.ActivityIndicator = require('./commonjs/ActivityIndicator').default
+exports.TextInput = require('./commonjs/TextInput').default
+exports.Select = require('./commonjs/Select').default
+exports.Button = require('./commonjs/Button').default
+exports.Switch = require('./commonjs/Switch').default
+exports.Checkbox = require('./commonjs/Checkbox').default
+exports.SegmentedControl = require('./commonjs/SegmentedControl').default
+exports.DatePicker = require('./commonjs/DatePicker').default
+exports.FileUpload = require('./commonjs/FileUpload').default
+exports.Modal = require('./commonjs/Modal').default
 
 // Drag'n'drop
-exports.DragAndDrop = require('./build/drag-n-drop').DragAndDrop
-exports.CanDrop = require('./build/drag-n-drop').CanDrop
-exports.File = require('./build/drag-n-drop').File
+exports.DragAndDrop = require('./commonjs/DragAndDrop').DragAndDrop
+exports.CanDrop = require('./commonjs/DragAndDrop').CanDrop
+exports.File = require('./commonjs/DragAndDrop').File
 exports.FILE = exports.File
-exports.Files = require('./build/drag-n-drop').Files
+exports.Files = require('./commonjs/DragAndDrop').Files
 exports.FILES = exports.Files
 
 // exports['default'] = ...

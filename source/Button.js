@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import Activity_indicator from './activity indicator'
+import ActivityIndicator from './ActivityIndicator'
 
 export default class Button extends PureComponent
 {
@@ -84,7 +84,7 @@ export default class Button extends PureComponent
 				className) }
 				style={ style }>
 
-				<Activity_indicator
+				<ActivityIndicator
 					className={ classNames('rrui__button__activity-indicator',
 					{
 						// CSS selector performance optimization

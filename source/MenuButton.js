@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import Page_and_menu from './page and menu'
+import PageAndMenu from './PageAndMenu'
 
 export default class Menu_button extends PureComponent
 {
@@ -30,7 +30,7 @@ export default class Menu_button extends PureComponent
 		link : '#'
 	}
 
-	static contextTypes = Page_and_menu.childContextTypes
+	static contextTypes = PageAndMenu.childContextTypes
 
 	constructor()
 	{

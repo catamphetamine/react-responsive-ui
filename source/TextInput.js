@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import throttle from 'lodash/throttle'
 
-import { submit_parent_form } from './misc/dom'
+import { submit_parent_form } from './utility/dom'
 
 export default class Text_input extends PureComponent
 {
