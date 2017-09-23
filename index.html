@@ -22,12 +22,19 @@
 
 		body
 		{
+			margin: 0;
 			padding: 40px;
 		}
 
 		body > form
 		{
 			margin-top: 2.4em;
+		}
+
+		h2
+		{
+			margin-top: 60px;
+			margin-bottom: 30px;
 		}
 
 		a
@@ -51,6 +58,19 @@
 		{
 			margin-top: 10px;
 			margin-bottom: 40px;
+		}
+
+		.header
+		{
+			padding-top: 0.2em;
+			margin-left: 2.8em;
+		}
+
+		.country-icon
+		{
+			width  : 1em;
+			height : 0.75em;
+			border : 1px solid #5f5f5f;
 		}
 
 		/* Base styles */
@@ -152,21 +172,79 @@
 		{
 			color: #BBD9FA;
 		}
+
+		.file-upload
+		{
+			display: inline-block;
+			padding: 10px;
+			border: 1px dashed #afafaf;
+			border-radius: 5px;
+			background-color: #fbfbfb;
+			cursor: pointer;
+			text-align: center;
+			line-height: 1.5em;
+		}
+
+		.file-upload--dragged-over
+		{
+			background-color : #3678D1;
+			color : white;
+		}
+
+		.rrui__form
+		{
+			margin-top: 2em;
+		}
+
+		/* Responsive */
+		@media (max-width: 720px)
+		{
+			body
+			{
+				margin: 0;
+				padding: calc(0.3rem * 4);
+			}
+
+			h2
+			{
+				margin-top: 40px;
+				margin-bottom: 15px;
+			}
+
+			body, h2, a.main
+			{
+				font-size: 20px;
+			}
+
+			.submit-form
+			{
+				margin-top: calc(0.3rem * 5);
+			}
+
+			.header
+			{
+				padding-top: 0.6em;
+				margin-left: 2.0em;
+			}
+		}
 	</style>
 
 	<style>
 		@import url("./small-screen.css") (max-width: 720px);
 
 		/* Responsive */
-		@media (max-width: 720px) {
+		@media (max-width: 720px)
+		{
 		  /* Show "Close" button for full-screen `<DatePicker/>`s */
-		  .rrui__date-picker__close {
+		  .rrui__date-picker__close
+		  {
 		    font-size: 14px;
 		    color: #03B2CB;
 		  }
 
 		  /* Bigger font size for full-screen `<Select/>` options */
-		  .rrui__select__options:not(.rrui__select__options--autocomplete) {
+		  .rrui__select__options:not(.rrui__select__options--autocomplete)
+		  {
 		    font-size: 22px;
 		  }
 		}
@@ -202,90 +280,10 @@
 			const CanDrop           = library.CanDrop
 			const File              = library.File
 
-			const style =
+			const input_style =
 			{
-				form:
-				{
-					marginTop : '2em'
-				},
-
-				input:
-				{
-					marginTop    : '1em',
-					marginBottom : '1em',
-					maxWidth     : '20rem'
-				},
-
-				label:
-				{
-					display      : 'block',
-					marginTop    : '3em',
-					marginBottom : '0.8em',
-					fontSize     : '1.4em'
-				},
-
-
-				switch_container:
-				{
-					marginBottom : '1em'
-				},
-
-				switch_label:
-				{
-					display      : 'inline-block',
-					marginBottom : '0.14em'
-				},
-
-				phone:
-				{
-					display    : 'inline-block',
-					marginLeft : '0.3em'
-				},
-
-				dropdown_icon_style:
-				{
-					width        : '1em',
-					height       : '0.75em',
-					border       : '1px solid #5f5f5f'
-				},
-
-				file_upload:
-				{
-					display: 'inline-block',
-					padding: '10px',
-					border: '1px dashed #afafaf',
-					borderRadius: '5px',
-					backgroundColor: '#fbfbfb',
-					cursor: 'pointer',
-					textAlign: 'center',
-					lineHeight: '1.5em'
-				}
-			}
-
-			style.file_upload_dragged_over =
-			{
-				...style.file_upload,
-				backgroundColor : '#3678D1',
-				color           : 'white'
-			}
-
-			const modal_style =
-			{
-				container:
-				{
-					margin    : '2em',
-					textAlign : 'center'
-				},
-
-				modal:
-				{
-					maxWidth : '40em'
-				},
-
-				title:
-				{
-					marginTop : 0
-				}
+				marginBottom : '1em',
+				maxWidth     : '20rem'
 			}
 
 			var FileUploadArea = React.createClass
@@ -296,7 +294,9 @@
 
 					return dropTarget(
 						<div style={ { display: 'inline-block' } }>
-							<FileUpload action={file => alert('File chosen: ' + file.name)} style={ draggedOver ? style.file_upload_dragged_over : style.file_upload }>
+							<FileUpload
+								action={file => alert('File chosen: ' + file.name)}
+								className={`file-upload ${draggedOver ? 'file-upload--dragged-over' : ''}`}>
 								Click here to choose a file
 								<br/>
 								or drop a file here
@@ -342,7 +342,7 @@
 										style={{ position: 'absolute', marginLeft: '-0.6em' }}
 										title="Show menu"/>
 
-									<div style={{ padding: '0.2em', marginLeft: '2.6em' }}>
+									<div className="header">
 										<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
 
 										<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
@@ -359,14 +359,13 @@
 											this.setState({ busy: false })
 										},
 										3000)
-									}}
-									style={style.form}>
+									}}>
 
-									<h2 style={style.label}>{'Text input field (with placeholder)'}</h2>
+									<h2>Text input field (with placeholder)</h2>
 
 									<TextInput
 										focus={true}
-										style={style.input}
+										style={input_style}
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
@@ -374,10 +373,10 @@
 
 									You entered: {this.state.text_value}
 
-									<h2 style={style.label}>{'Text input field (with floating label)'}</h2>
+									<h2>Text input field (with floating label)</h2>
 
 									<TextInput
-										style={style.input}
+										style={input_style}
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
@@ -385,10 +384,10 @@
 
 									You entered: {this.state.text_value}
 
-									<h2 style={style.label}>{'Text input field (with both placeholder and floating label)'}</h2>
+									<h2>Text input field (with both placeholder and floating label)</h2>
 
 									<TextInput
-										style={style.input}
+										style={input_style}
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
@@ -397,34 +396,34 @@
 
 									You entered: {this.state.text_value}
 
-									<h2 style={style.label}>{'Textarea (with placeholder)'}</h2>
+									<h2>Textarea (with placeholder)</h2>
 
 									<TextInput
 										multiline={true}
 										name="description"
-										style={style.input}
+										style={input_style}
 										value={this.state.textarea_value}
 										onChange={value => this.setState({ textarea_value: value })}
 										placeholder="Enter text"/>
 
 									You entered: {this.state.textarea_value}
 
-									<h2 style={style.label}>{'Textarea (with floating label)'}</h2>
+									<h2>Textarea (with floating label)</h2>
 
 									<TextInput
 										multiline={true}
 										name="description"
-										style={style.input}
+										style={input_style}
 										value={this.state.textarea_value}
 										onChange={value => this.setState({ textarea_value: value })}
 										label="Enter text"/>
 
 									You entered: {this.state.textarea_value}
 
-									<h2 style={style.label}>Select</h2>
+									<h2>Select</h2>
 
 									<Select
-										style={style.input}
+										style={input_style}
 										name="dropdown"
 										label="Fruit"
 										value={this.state.selected}
@@ -461,10 +460,10 @@
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
-									<h2 style={style.label}>Select (autocomplete)</h2>
+									<h2>Select (autocomplete)</h2>
 
 									<Select
-										style={style.input}
+										style={input_style}
 										autocomplete
 										name="dropdown"
 										value={this.state.selected}
@@ -501,27 +500,27 @@
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
-									<h2 style={style.label}>Select (icons)</h2>
+									<h2>Select (icons)</h2>
 
 									<Select
-										style={style.input}
+										style={input_style}
 										concise
 										name="dropdown"
 										value={this.state.selected_with_icon}
 										options={[{
 											value: 'A',
 											label: 'Afghanistan',
-											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
 										},
 										{
 											value: 'B',
 											label: 'Barbados',
-											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
 										},
 										{
 											value: 'C',
 											label: 'Canada',
-											icon: <img style={style.dropdown_icon_style} src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
 										}]}
 										placeholder="Choose"
 										onChange={ selected_with_icon => this.setState({ selected_with_icon }) }
@@ -531,10 +530,10 @@
 										You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
 									</div>
 
-									<h2 style={style.label}>Checkbox</h2>
+									<h2>Checkbox</h2>
 
 									<Checkbox
-										style={style.input}
+										style={input_style}
 										name="checkbox"
 										value={this.state.checked}
 										onChange={ checked => this.setState({ checked: checked }) }>
@@ -542,7 +541,7 @@
 									</Checkbox>
 
 									<Checkbox
-										style={style.input}
+										style={input_style}
 										name="checkbox"
 										multiline
 										value={this.state.checked}
@@ -552,9 +551,9 @@
 
 									You checked: {this.state.checked ? 'checked' : 'unchecked'}
 
-									<h2 style={style.label}>Switch</h2>
+									<h2>Switch</h2>
 
-									<div style={style.switch_container}>
+									<div style={{ marginBottom: '1em' }}>
 										<Switch
 											name="switch"
 											value={this.state.switched}
@@ -565,10 +564,10 @@
 
 									You switched: {this.state.switched ? 'on' : 'off'}
 
-									<h2 style={style.label}>Segmented Control</h2>
+									<h2>Segmented Control</h2>
 
 									<SegmentedControl
-										style={style.input}
+										style={input_style}
 										name="button_group"
 										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
 										value={this.state.button_group}
@@ -576,20 +575,20 @@
 
 									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
 
-									<h2 style={style.label}>Date picker</h2>
+									<h2>Date picker</h2>
 
 									<DatePicker
-										style={style.input}
+										style={input_style}
 										label="date"
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}/>
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
-									<h2 style={style.label}>Date picker (with month and year selectors)</h2>
+									<h2>Date picker (with month and year selectors)</h2>
 
 									<DatePicker
-										style={style.input}
+										style={input_style}
 										label="date"
 										selectYearsIntoPast={118}
 										value={this.state.selectedDay}
@@ -597,29 +596,41 @@
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
-									<h2 style={style.label}>File upload</h2>
+									<h2>File upload</h2>
 
 									<FileUploadArea/>
 
-									<h2 style={style.label}>Activity Indicator</h2>
-									<ActivityIndicator style={style.spinner}/>
+									<h2>Activity Indicator</h2>
 
-									<h2 style={style.label}>International phone number input</h2>
+									<ActivityIndicator />
 
-									See <a href="https://github.com/catamphetamine/react-phone-number-input"><code>react-phone-number-input</code></a>
+									<h2>International phone number input</h2>
 
-									<h2 style={style.label}>Tooltip</h2>
+									See <a href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
+
+									<h2>Tooltip</h2>
 
 									<Tooltip text="Testing testing" container={() => document.querySelector('.content')}>
 										Hover this element (or touch down on mobile devices)
 									</Tooltip>
 
-									<h2 style={style.label}>Snackbar</h2>
+									<h2>Snackbar</h2>
 
-									<Button action={() => this.setState({ snack: `Current time — ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}` })}>Show a snack</Button>
+									<Button action={() => {
+										const hours   = new Date().getHours()
+										const minutes = new Date().getMinutes()
+										const seconds = new Date().getSeconds()
+
+										const pad = number => number < 10 ? '0' + number : number
+
+										this.setState({ snack: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` })
+									}}>
+										Show a snack
+									</Button>
+
 									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
 
-									<div style={{ marginTop: '3.5rem' }}>
+									<div className="submit-form">
 										<Button
 											submit
 											busy={this.state.busy}
@@ -629,16 +640,19 @@
 									</div>
 								</Form>
 
-								<h2 style={style.label}>Modal</h2>
+								<h2>Modal</h2>
 
-								<Button action={() => this.setState({ show_modal: true })}>Show</Button>
+								<Button
+									action={() => this.setState({ show_modal: true })}>
+									Show
+								</Button>
 
 								<Modal
 									isOpen={this.state.show_modal}
 									close={() => this.setState({ show_modal: false })}
-									style={modal_style.modal}>
+									style={{ maxWidth : '40em' }}>
 
-									<h2 style={modal_style.title}>
+									<h2 style={{ marginTop: 0 }}>
 										Dialog
 									</h2>
 
