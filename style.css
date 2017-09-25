@@ -987,7 +987,7 @@ also change `default_close_timeout` in ./modal.js accordingly
    while having its opacity animated at the same time as the Content being scaled */
 .ReactModal__Overlay
 {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: transparent;
 	/* "auto" introduces a vertical scrollbar when "bouncing" (animation) */
 	/* overflow: auto; */
 	overflow: hidden;
@@ -1001,7 +1001,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 /* This rule is required for closing animation */
 .ReactModal__Overlay--before-close
 {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: transparent;
 }
 
 .ReactModal__Overlay--after-open
@@ -1019,10 +1019,11 @@ also change `default_close_timeout` in ./modal.js accordingly
 	outline: none;
 }
 
-.ReactModal__Content .rrui__modal__content
+.rrui__modal__content
 {
-	opacity: 0;
-	transform: scale(1.07);
+	opacity    : 0;
+	transform  : scale(1.07);
+	transition : transform 120ms ease-out, opacity 130ms ease-out;
 }
 
 .ReactModal__Content--after-open .rrui__modal__content
@@ -1038,10 +1039,25 @@ also change `default_close_timeout` in ./modal.js accordingly
 	transform: scale(0.94);
 }
 
-.ReactModal__Content--after-open .rrui__modal__content,
-.ReactModal__Content--before-close .rrui__modal__content
+/*
+The extra opacity animation on `<Modal/>` contents
+is used to prevent clutter on background while the modal fades in/out.
+*/
+.rrui__modal__content-body
 {
-	transition: transform 120ms ease-out, opacity 130ms ease-out;
+	opacity: 0;
+}
+
+.ReactModal__Content--after-open .rrui__modal__content-body
+{
+	opacity: 1;
+	transition: opacity 120ms ease-out 30ms;
+}
+
+.ReactModal__Content--before-close .rrui__modal__content-body
+{
+	opacity: 0;
+	transition: opacity 60ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
