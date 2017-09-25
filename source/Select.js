@@ -1409,7 +1409,7 @@ export default class Select extends PureComponent
 						event.preventDefault()
 
 						// If an item is focused
-						// (which may not be a case
+						// (which may not be the case
 						//  when autocomplete is matching no items)
 						// (still for non-autocomplete select
 						//  it is valid to have a default option)

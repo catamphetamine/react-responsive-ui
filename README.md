@@ -297,8 +297,8 @@ And then some refinements:
   .rrui__modal__content-body {
     margin-top: calc(var(--unit) * 2);
     margin-bottom: calc(var(--unit) * 2);
-    padding-left: var(--column-padding);
-    padding-right: var(--column-padding);
+    margin-left: var(--column-padding);
+    margin-right: var(--column-padding);
   }
 }
 ```
