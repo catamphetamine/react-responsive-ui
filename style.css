@@ -1019,27 +1019,27 @@ also change `default_close_timeout` in ./modal.js accordingly
 	outline: none;
 }
 
-.ReactModal__Content
+.ReactModal__Content .rrui__modal__content
 {
 	opacity: 0;
 	transform: scale(1.07);
 }
 
-.ReactModal__Content--after-open
+.ReactModal__Content--after-open .rrui__modal__content
 {
 	opacity: 1;
 	transform: none;
 }
 
 /* This rule is required for closing animation */
-.ReactModal__Content--before-close
+.ReactModal__Content--before-close .rrui__modal__content
 {
 	opacity: 0;
 	transform: scale(0.94);
 }
 
-.ReactModal__Content--after-open,
-.ReactModal__Content--before-close
+.ReactModal__Content--after-open .rrui__modal__content,
+.ReactModal__Content--before-close .rrui__modal__content
 {
 	transition: transform 120ms ease-out, opacity 130ms ease-out;
 }
