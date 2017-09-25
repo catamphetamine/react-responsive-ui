@@ -1138,7 +1138,7 @@ also change `default_close_timeout` in ./modal.js accordingly
    while having its opacity animated at the same time as the Content being scaled */
 .ReactModal__Overlay
 {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: transparent;
 	/* "auto" introduces a vertical scrollbar when "bouncing" (animation) */
 	/* overflow: auto; */
 	overflow: hidden;
@@ -1152,7 +1152,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 /* This rule is required for closing animation */
 .ReactModal__Overlay--before-close
 {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: transparent;
 }
 
 .ReactModal__Overlay--after-open
@@ -1172,14 +1172,14 @@ also change `default_close_timeout` in ./modal.js accordingly
 	outline: none;
 }
 
-.ReactModal__Content
+.rrui__modal__content
 {
 	opacity: 0;
 	-webkit-transform: scale(1.07);
 	        transform: scale(1.07);
 }
 
-.ReactModal__Content--after-open
+.ReactModal__Content--after-open .rrui__modal__content
 {
 	opacity: 1;
 	-webkit-transform: none;
@@ -1187,14 +1187,14 @@ also change `default_close_timeout` in ./modal.js accordingly
 }
 
 /* This rule is required for closing animation */
-.ReactModal__Content--before-close
+.ReactModal__Content--before-close .rrui__modal__content
 {
 	opacity: 0;
 	-webkit-transform: scale(0.94);
 	        transform: scale(0.94);
 }
 
-.ReactModal__Content--after-open
+.rrui__modal__content
 {
 	-webkit-transition: opacity 130ms ease-out, -webkit-transform 120ms ease-out;
 	transition: opacity 130ms ease-out, -webkit-transform 120ms ease-out;
@@ -1202,12 +1202,23 @@ also change `default_close_timeout` in ./modal.js accordingly
 	transition: transform 120ms ease-out, opacity 130ms ease-out, -webkit-transform 120ms ease-out;
 }
 
-.ReactModal__Content--before-close
+.rrui__modal__content-body
 {
-	-webkit-transition: opacity 130ms ease-out, -webkit-transform 120ms ease-out;
-	transition: opacity 130ms ease-out, -webkit-transform 120ms ease-out;
-	transition: transform 120ms ease-out, opacity 130ms ease-out;
-	transition: transform 120ms ease-out, opacity 130ms ease-out, -webkit-transform 120ms ease-out;
+	opacity: 0;
+}
+
+.ReactModal__Content--after-open .rrui__modal__content-body
+{
+	opacity: 1;
+	-webkit-transition: opacity 120ms ease-out 30ms;
+	transition: opacity 120ms ease-out 30ms;
+}
+
+.ReactModal__Content--before-close .rrui__modal__content-body
+{
+	opacity: 0;
+	-webkit-transition: opacity 60ms ease-out;
+	transition: opacity 60ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */

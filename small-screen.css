@@ -117,3 +117,22 @@ since they're not fullscreen.
 {
 	display: none;
 }
+
+/* Don't dim the screen when showing `<Modal/>`s */
+.ReactModal__Overlay--after-open
+{
+	background-color: transparent;
+}
+
+.rrui__modal__content
+{
+	-webkit-transform: scale(1.02);
+	        transform: scale(1.02);
+}
+
+/* This rule is required for closing animation */
+.ReactModal__Content--before-close .rrui__modal__content
+{
+	-webkit-transform: scale(0.98);
+	        transform: scale(0.98);
+}
