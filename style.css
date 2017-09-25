@@ -995,7 +995,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 
 .ReactModal__Overlay--after-open
 {
-	background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.25);
 }
 
 /* This rule is required for closing animation */
@@ -1004,7 +1004,11 @@ also change `default_close_timeout` in ./modal.js accordingly
 	background-color: rgba(0, 0, 0, 0);
 }
 
-.ReactModal__Overlay--after-open,
+.ReactModal__Overlay--after-open
+{
+	transition: background-color 300ms ease-out;
+}
+
 .ReactModal__Overlay--before-close
 {
 	transition: background-color 100ms ease-out;
@@ -1018,7 +1022,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 .ReactModal__Content
 {
 	opacity: 0;
-	transform: scale(0.8);
+	transform: scale(1.07);
 }
 
 .ReactModal__Content--after-open
@@ -1031,13 +1035,13 @@ also change `default_close_timeout` in ./modal.js accordingly
 .ReactModal__Content--before-close
 {
 	opacity: 0;
-	transform: scale(0.8);
+	transform: scale(0.94);
 }
 
 .ReactModal__Content--after-open,
 .ReactModal__Content--before-close
 {
-	transition: transform 120ms ease-out, opacity 100ms ease-out;
+	transition: transform 120ms ease-out, opacity 130ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
