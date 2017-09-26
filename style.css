@@ -1022,7 +1022,16 @@ also change `default_close_timeout` in ./modal.js accordingly
 .rrui__modal__content
 {
 	opacity    : 0;
+	/*
+	Scaling `<Modal/>` down on appear looks cool
+	but it also can cause scrollbars to appear
+	due to overflow which is a weird `scale()` behaviour.
+	Those scrollbars alter window width resulting in
+	`<Modal/>` positioning glitches (while centering itself).
+	Therefore not using `scale()`s above `1`, only downscaling.
 	transform  : scale(1.07);
+	*/
+	transform  : scale(0.95);
 	transition : transform 120ms ease-out, opacity 130ms ease-out;
 }
 

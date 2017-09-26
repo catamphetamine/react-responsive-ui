@@ -119,11 +119,38 @@ sinse they're fullscreen.
 /* Reduce `<Modal/>` scaling motion on smaller screens */
 .rrui__modal__content
 {
-	transform: scale(1.02);
+	/*
+	Scaling `<Modal/>` down on appear looks cool
+	but it also can cause scrollbars to appear
+	due to overflow which is a weird `scale()` behaviour.
+	Those scrollbars alter window width resulting in
+	`<Modal/>` positioning glitches (while centering itself).
+	Therefore not using `scale()`s above `1`, only downscaling.
+	transform: scale(1.07);
+	*/
+	transform : scale(0.99);
 }
 
 /* This rule is required for closing animation */
 .ReactModal__Content--before-close .rrui__modal__content
 {
-	transform: scale(0.98);
+	transform : scale(0.99);
+}
+
+/* Shortening `<Modal/>` animation duration */
+.rrui__modal__content
+{
+	transition: transform 100ms ease-out, opacity 70ms ease-out;
+}
+
+/* Shortening `<Modal/>` animation duration */
+.ReactModal__Content--after-open .rrui__modal__content-body
+{
+	transition : opacity 70ms ease-out 30ms;
+}
+
+/* Shortening `<Modal/>` animation duration */
+.ReactModal__Content--before-close .rrui__modal__content-body
+{
+	transition : opacity 70ms ease-out;
 }
