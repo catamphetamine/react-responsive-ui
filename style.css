@@ -1060,7 +1060,7 @@ is used to prevent clutter on background while the modal fades in/out.
 .ReactModal__Content--after-open .rrui__modal__content-body
 {
 	opacity: 1;
-	transition: opacity 100ms ease-out 20ms;
+	transition: opacity 100ms ease-out;
 }
 
 .ReactModal__Content--before-close .rrui__modal__content-body
