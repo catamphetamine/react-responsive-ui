@@ -1032,7 +1032,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 	transform  : scale(1.07);
 	*/
 	transform  : scale(0.95);
-	transition : transform 120ms ease-out, opacity 130ms ease-out;
+	transition : transform 100ms ease-out, opacity 100ms ease-out;
 }
 
 .ReactModal__Content--after-open .rrui__modal__content
@@ -1045,7 +1045,7 @@ also change `default_close_timeout` in ./modal.js accordingly
 .ReactModal__Content--before-close .rrui__modal__content
 {
 	opacity: 0;
-	transform: scale(0.94);
+	transform: scale(0.95);
 }
 
 /*
@@ -1060,13 +1060,13 @@ is used to prevent clutter on background while the modal fades in/out.
 .ReactModal__Content--after-open .rrui__modal__content-body
 {
 	opacity: 1;
-	transition: opacity 120ms ease-out 30ms;
+	transition: opacity 100ms ease-out 20ms;
 }
 
 .ReactModal__Content--before-close .rrui__modal__content-body
 {
 	opacity: 0;
-	transition: opacity 60ms ease-out;
+	transition: opacity 80ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
