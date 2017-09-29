@@ -122,6 +122,16 @@ export default class DatePicker extends PureComponent
 	componentDidMount()
 	{
 		document.addEventListener('click', this.document_clicked)
+
+		// Set "previous" and "next" buttons untabbable
+		// so that a Tab out of the `<input/>` field
+		// moves cursor not inside to these buttons
+		// but rather to the next form input.
+		const calendar = ReactDOM.findDOMNode(this.calendar)
+		for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
+		{
+			button.removeAttribute('tabindex')
+		}
 	}
 
 	componentWillUnmount()
@@ -131,11 +141,24 @@ export default class DatePicker extends PureComponent
 
 	on_input_focus = (event) =>
 	{
-		const { value, format, onToggle, onFocus } = this.props
+		const { onFocus } = this.props
 
 		if (onFocus)
 		{
 			onFocus(event)
+		}
+
+		this.expand()
+	}
+
+	expand = () =>
+	{
+		const { expanded } = this.state
+		const { value, format, onToggle } = this.props
+
+		if (expanded)
+		{
+			return
 		}
 
 		this.setState
@@ -155,6 +178,13 @@ export default class DatePicker extends PureComponent
 				expanded   : true,
 				month      : value ? normalize_value(value) : new Date()
 			})
+
+			// Could also focus on the calendar controls upon expansion
+			// but it's configured to collapse on Tab event.
+			// , () =>
+			// {
+			// 	ReactDOM.findDOMNode(this.calendar).focus()
+			// })
 		})
 	}
 
@@ -178,11 +208,14 @@ export default class DatePicker extends PureComponent
 
 		switch (event.keyCode)
 		{
-			// Toggle on Tab out
+			// Collapse on Escape or on Tab out
+			case 27:
+				event.preventDefault()
+				this.input.focus()
 			case 9:
 				if (expanded)
 				{
-					this.date_chosen()
+					this.collapse()
 				}
 				return
 		}
@@ -199,21 +232,53 @@ export default class DatePicker extends PureComponent
 
 		switch (event.keyCode)
 		{
-			// Collapse on Escape
+			// Collapse on Escape and on Enter
 			case 27:
+				event.preventDefault()
+			case 13:
 				if (expanded)
 				{
-					this.date_chosen()
-					// Since this `event` originated in the `<input/>`
-					// mobile web browsers will allow `.blur()`ring it.
-					this.input.blur()
+					this.collapse()
+				}
+				return
+
+			// Toggle the calendar on Spacebar
+			case 32:
+				event.preventDefault()
+
+				if (expanded)
+				{
+					this.collapse()
+				}
+				else
+				{
+					this.expand()
+				}
+
+				return
+
+			// Collapse the calendar (if expanded) on Up arrow
+			case 38:
+				if (expanded)
+				{
+					event.preventDefault()
+					this.collapse()
+				}
+				return
+
+			// Expand the calendar (if collapsed) on Down arrow
+			case 40:
+				if (!expanded)
+				{
+					event.preventDefault()
+					this.expand()
 				}
 				return
 		}
 	}
 
 	// Hides the day picker calendar and cancels textual date editing
-	date_chosen = () =>
+	collapse = () =>
 	{
 		const { onToggle } = this.props
 
@@ -246,7 +311,7 @@ export default class DatePicker extends PureComponent
 	on_input_change = (event) =>
 	{
 		let { value } = event.target
-		const { onChange, format } = this.props
+		const { onChange, format, noon } = this.props
 
 		value = value.trim()
 
@@ -259,7 +324,7 @@ export default class DatePicker extends PureComponent
 
 		value = trim_invalid_part(value, format)
 
-		const selected_day = parse_date(value, format)
+		const selected_day = parse_date(value, format, noon)
 
 		if (!selected_day)
 		{
@@ -272,7 +337,7 @@ export default class DatePicker extends PureComponent
 		({
 			text_value: value
 		},
-		() => this.daypicker.showMonth(selected_day))
+		() => this.calendar.showMonth(selected_day))
 	}
 
 	on_day_click = (selected_day) =>
@@ -343,7 +408,10 @@ export default class DatePicker extends PureComponent
 		// this.input.blur()
 
 		// Hide the calendar
-		this.date_chosen()
+		this.collapse()
+
+		// Focus the `<input/>`
+		this.input.focus()
 	}
 
 	on_calendar_key_down = (event) =>
@@ -375,7 +443,7 @@ export default class DatePicker extends PureComponent
 			return
 		}
 
-		this.date_chosen()
+		this.collapse()
 	}
 
 	on_month_selected = (month) =>
@@ -487,7 +555,7 @@ export default class DatePicker extends PureComponent
 					    to prevent the keyboard from showing
 					    when the date picker is in fullscreen mode */}
 					<div
-						onClick={ this.on_input_focus }
+						onClick={ this.expand }
 						className="rrui__date-picker__input-overlay"/>
 
 					{/* Date input */}
@@ -501,6 +569,7 @@ export default class DatePicker extends PureComponent
 						onKeyDown={ this.on_input_key_down }
 						onChange={ this.on_input_change }
 						onFocus={ this.on_input_focus }
+						onClick={ this.expand }
 						className={ classNames('rrui__input-element', 'rrui__input-field', 'rrui__date-picker__input',
 						{
 							'rrui__input-field--invalid' : this.should_indicate_invalid()
@@ -543,7 +612,7 @@ export default class DatePicker extends PureComponent
 								}
 							) }>
 							<DayPicker
-								ref={ ref => this.daypicker = ref }
+								ref={ ref => this.calendar = ref }
 								month={ month }
 								firstDayOfWeek={ firstDayOfWeek }
 								onDayClick={ this.on_day_click }
@@ -556,7 +625,7 @@ export default class DatePicker extends PureComponent
 							{/* "Close" button for fullscreen mode on mobile devices */}
 							<button
 								type="button"
-								onClick={ this.date_chosen }
+								onClick={ this.collapse }
 								className="rrui__date-picker__close">
 								{ closeButtonLabel }
 							</button>
@@ -574,8 +643,8 @@ export default class DatePicker extends PureComponent
 }
 
 // Parses a text value into a `Date` provided a `format`.
-// The date returned is in the user's time zone and the time is `00:00`.
-function parse_date(text_value, format)
+// The date returned is in the user's time zone and the time is `12:00`.
+function parse_date(text_value, format, noon)
 {
 	if (!text_value)
 	{
@@ -583,7 +652,7 @@ function parse_date(text_value, format)
 	}
 
 	// Custom
-	return parse_date_custom(text_value, format)
+	return parse_date_custom(text_value, format, noon)
 
 	// // Using `date-fns`
 	// const date = parse_date_date_fns(text_value)
@@ -627,7 +696,7 @@ function format_date(date, format)
 
 // Parses a text value into a `Date` provided a `format`.
 // The date returned is in the user's time zone and the time is `00:00`.
-function parse_date_custom(string, format)
+function parse_date_custom(string, format, noon)
 {
 	if (!string)
 	{
@@ -662,7 +731,8 @@ function parse_date_custom(string, format)
 	(
 		year,
 		month - 1,
-		day
+		day,
+		noon ? 12 : undefined
 	)
 
 	// If `new Date()` returns "Invalid Date"
