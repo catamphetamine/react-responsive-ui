@@ -310,8 +310,16 @@ export default class DatePicker extends PureComponent
 
 	on_input_change = (event) =>
 	{
+		const
+		{
+			onChange,
+			format,
+			noon,
+			utc
+		}
+		= this.props
+
 		let { value } = event.target
-		const { onChange, format, noon } = this.props
 
 		value = value.trim()
 
@@ -324,7 +332,7 @@ export default class DatePicker extends PureComponent
 
 		value = trim_invalid_part(value, format)
 
-		const selected_day = parse_date(value, format, noon)
+		const selected_day = parse_date(value, format, noon, utc)
 
 		if (!selected_day)
 		{
@@ -383,13 +391,8 @@ export default class DatePicker extends PureComponent
 
 		if (utc)
 		{
-			// Doesn't account for leap seconds but I guess that's ok
-			// given that javascript's own `Date()` does not either.
-			// https://www.timeanddate.com/time/leap-seconds-background.html
-			//
-			// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-			//
-			selected_day = new Date(selected_day.getTime() - selected_day.getTimezoneOffset() * 60 * 1000)
+			// Converts timezone to UTC while preserving the same time
+			selected_day = convert_to_utc_timezone(selected_day)
 		}
 
 		// `onChange` fires but the `value`
@@ -644,7 +647,7 @@ export default class DatePicker extends PureComponent
 
 // Parses a text value into a `Date` provided a `format`.
 // The date returned is in the user's time zone and the time is `12:00`.
-function parse_date(text_value, format, noon)
+function parse_date(text_value, format, noon, utc)
 {
 	if (!text_value)
 	{
@@ -652,7 +655,7 @@ function parse_date(text_value, format, noon)
 	}
 
 	// Custom
-	return parse_date_custom(text_value, format, noon)
+	return parse_date_custom(text_value, format, noon, utc)
 
 	// // Using `date-fns`
 	// const date = parse_date_date_fns(text_value)
@@ -696,7 +699,7 @@ function format_date(date, format)
 
 // Parses a text value into a `Date` provided a `format`.
 // The date returned is in the user's time zone and the time is `00:00`.
-function parse_date_custom(string, format, noon)
+function parse_date_custom(string, format, noon, utc)
 {
 	if (!string)
 	{
@@ -727,13 +730,19 @@ function parse_date_custom(string, format, noon)
 	}
 
 	// The date created is in the user's time zone and the time is `00:00`.
-	const date = new Date
+	let date = new Date
 	(
 		year,
 		month - 1,
 		day,
 		noon ? 12 : undefined
 	)
+
+	if (utc)
+	{
+		// Converts timezone to UTC while preserving the same time
+		date = convert_to_utc_timezone(date)
+	}
 
 	// If `new Date()` returns "Invalid Date"
 	// (sometimes it does)
@@ -992,4 +1001,16 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 	)
 
 	return markup
+}
+
+// Converts timezone to UTC while preserving the same time
+function convert_to_utc_timezone(date)
+{
+	// Doesn't account for leap seconds but I guess that's ok
+	// given that javascript's own `Date()` does not either.
+	// https://www.timeanddate.com/time/leap-seconds-background.html
+	//
+	// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+	//
+	return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
 }
