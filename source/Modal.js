@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
-import React_modal from 'react-modal'
+import ReactModal from 'react-modal'
 
 import Button from './Button'
 import Form from './Form'
@@ -219,7 +219,7 @@ export default class Modal extends PureComponent
 
 		const markup =
 		(
-			<React_modal
+			<ReactModal
 				isOpen={ unmount ? isOpen : true }
 				onAfterOpen={ unmount ? this.on_after_open : undefined }
 				onRequestClose={ this.on_request_close }
@@ -272,7 +272,7 @@ export default class Modal extends PureComponent
 						'rrui__modal__vertical-margin--fullscreen' : fullscreen
 					}) }
 					onClick={ this.on_request_close }/>
-			</React_modal>
+			</ReactModal>
 		)
 
 		return markup
