@@ -1260,6 +1260,24 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	margin-bottom : 0;
 }
 
+/* Fullscreen `<Modal/>` animation tweaking */
+
+.rrui__modal__overlay--fullscreen:not(.ReactModal__Overlay--after-open),
+.rrui__modal__overlay--fullscreen.ReactModal__Overlay--before-close
+{
+	background-color : transparent;
+}
+
+.rrui__modal__overlay--fullscreen
+{
+	transition : background-color 100ms ease-out;
+}
+
+.rrui__modal__overlay--fullscreen .rrui__modal__content
+{
+	background-color : transparent;
+}
+
 /*===========================================================
 = Form                                                      =
 ===========================================================*/
