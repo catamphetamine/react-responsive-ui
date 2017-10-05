@@ -22,7 +22,9 @@ import
 	File,
 	FILE,
 	Files,
-	FILES
+	FILES,
+	set_modular_grid_unit,
+	setModularGridUnit
 }
 from '../index'
 
@@ -57,6 +59,9 @@ describe('React Responsive UI', function()
 		expect(FILE).to.be.a('string')
 		expect(Files).to.be.a('string')
 		expect(FILES).to.be.a('string')
+
+		expect(set_modular_grid_unit).to.be.a('function')
+		expect(setModularGridUnit).to.be.a('function')
 	})
 
 	it('should export CommonJS', function()
@@ -88,5 +93,8 @@ describe('React Responsive UI', function()
 		expect(_.FILE).to.be.a('string')
 		expect(_.Files).to.be.a('string')
 		expect(_.FILES).to.be.a('string')
+
+		expect(_.set_modular_grid_unit).to.be.a('function')
+		expect(_.setModularGridUnit).to.be.a('function')
 	})
 })

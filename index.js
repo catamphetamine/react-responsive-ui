@@ -111,3 +111,10 @@ export
 	Files as FILES
 }
 from './modules/DragAndDrop'
+
+export
+{
+	set_modular_grid_unit,
+	set_modular_grid_unit as setModularGridUnit
+}
+from './modules/utility/grid'

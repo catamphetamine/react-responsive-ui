@@ -63,6 +63,7 @@
 .rrui__text-input__input--multiline
 {
 	height : auto;
+	resize : none;
 }
 
 /*===========================================================

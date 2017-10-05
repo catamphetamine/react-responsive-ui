@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import throttle from 'lodash/throttle'
 
 import { submit_parent_form } from './utility/dom'
+import { get_modular_grid_unit } from './utility/grid'
 
 export default class Text_input extends PureComponent
 {
@@ -55,6 +56,10 @@ export default class Text_input extends PureComponent
 		// A manually specified `type` attribute
 		type             : PropTypes.string.isRequired,
 
+		// Whether `<textarea/>` should autoresize itself
+		// (is `true` by default)
+		autoresize       : PropTypes.bool.isRequired,
+
 		// Autofocuses the input field
 		focus            : PropTypes.bool,
 
@@ -62,7 +67,7 @@ export default class Text_input extends PureComponent
 		tabIndex         : PropTypes.number,
 
 		// `<textarea/>` `rows` attribute (row count, i.e. height)
-		rows             : PropTypes.number.isRequired,
+		rows             : PropTypes.number,
 
 		// `<textarea/>` `cols` attribute (column count, i.e. width)
 		cols             : PropTypes.number,
@@ -99,11 +104,11 @@ export default class Text_input extends PureComponent
 
 	static defaultProps =
 	{
-		// `<textarea/>` row count
-		rows : 2,
-
 		// HTML input `type` attribute
 		type : 'text',
+
+		// `<textarea/>` should autoresize itself
+		autoresize : true,
 
 		// Set to `false` to prevent the `<label/>` from floating
 		floatingLabel : true,
@@ -381,23 +386,29 @@ export default class Text_input extends PureComponent
 
 	autoresize = (event) =>
 	{
+		const { autoresize } = this.props
+
+		if (!autoresize)
+		{
+			return
+		}
+
 		const measurements = this.measurements()
 		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
 
-		// Keep the current vertical scroll position so that
-		// it doesn't jump due to textarea resize.
-		const current_scroll_position = window.pageYOffset
-
 		element.style.height = 0
 
+		// `element.scrollHeight` is always an integer
+		// so it doesn't need rounding (e.g. `em`s).
 		let height = element.scrollHeight + measurements.extra_height
 		height = Math.max(height, measurements.initial_height)
 
-		element.style.height = height + 'px'
+		if (get_modular_grid_unit() && height % get_modular_grid_unit())
+		{
+			height = Math.ceil(height / get_modular_grid_unit()) * get_modular_grid_unit()
+		}
 
-		// Restore vertical scroll position so that
-		// it doesn't jump due to textarea resize.
-		window.scroll(window.pageXOffset, current_scroll_position)
+		element.style.height = height + 'px'
 	}
 
 	on_window_resize = throttle((event) =>
