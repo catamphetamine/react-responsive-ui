@@ -126,12 +126,20 @@ export default class Text_input extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		const { multiline, fallback } = this.props
+		const { multiline, fallback, value, autoresize } = this.props
 
-		// Not doing `this.measure()` here because
-		// that resulted in weird `<textarea/>` height mismatch.
-		// Measuring the height of `<textarea/>` during
-		// the first `this.measurements()` call instead.
+		// Doing `this.measure()` here now
+		// because `<textarea/>` should autoresize
+		// in case its `value` is set up front.
+		// // Not doing `this.measure()` here because
+		// // that resulted in weird `<textarea/>` height mismatch.
+		// // Measuring the height of `<textarea/>` during
+		// // the first `this.measurements()` call instead.
+
+		if (value && autoresize)
+		{
+			this.autoresize()
+		}
 
 		if (multiline)
 		{
