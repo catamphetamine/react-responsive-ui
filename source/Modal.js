@@ -394,6 +394,8 @@ export default class Modal extends PureComponent
 		// before the main (body) scrollbar is deliberately hidden.
 		const width_before = div.clientWidth
 
+		document.body.removeChild(div)
+
 		// Hide the main (body) scrollbar
 		// so that when a user scrolls in an open modal
 		// this `scroll` event doesn't go through
