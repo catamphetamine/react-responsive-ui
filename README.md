@@ -188,7 +188,7 @@ When using modular grid element sizes are multiples of a modular grid unit
 }
 
 /* Multiline `<TextInput/>`'s vertical padding */
-.rrui__text-input__input--multiline {
+.rrui__input-field--multiline {
   padding-top: var(--textarea-padding);
   padding-bottom: var(--textarea-padding);
 }

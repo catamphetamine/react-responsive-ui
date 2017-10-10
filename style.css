@@ -31,13 +31,10 @@
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
-.rrui__text-input,
-.rrui__text-input__input,
-.rrui__select,
+.rrui__input-field,
 .rrui__select__button,
 .rrui__select__autocomplete,
-.rrui__select__options,
-.rrui__date-picker__input
+.rrui__select__options
 {
 	width: 100%;
 }
@@ -93,8 +90,7 @@
 	color      : #D30F00;
 }
 
-.rrui__text-input__input,
-.rrui__date-picker__input
+.rrui__input-field
 {
 	height     : 100%;
 	font-size  : inherit;
@@ -102,7 +98,7 @@
 }
 
 /* Resets height back to 100% for multiline text input */
-.rrui__text-input__input--multiline
+.rrui__input-field--multiline
 {
 	height : auto;
 	resize : none;
@@ -1343,7 +1339,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	color: #D30F00;
 }
 
-.rrui__text-input__input--invalid
+.rrui__input-field--invalid
 {
 	border-color: #EB2010;
 }
@@ -1354,7 +1350,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	transform : translateY(0) scale(1);
 }
 
-.rrui__text-input__input--disabled
+.rrui__input-field--disabled
 {
 	cursor: default;
 }

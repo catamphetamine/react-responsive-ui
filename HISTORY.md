@@ -1,3 +1,10 @@
+0.10.0 / 10.10.2017
+===================
+
+  * (CSS breaking change) `.rrui__text-input__input` -> `.rrui__input-field`
+
+  * (CSS breaking change) `.rrui__text-input__input--multiline` -> `.rrui__input-field--multiline`
+
 0.9.1 / 20.09.2017
 ===================
 

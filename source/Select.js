@@ -760,7 +760,6 @@ export default class Select extends PureComponent
 					(
 						selected_style_classes,
 						'rrui__input-field',
-						'rrui__text-input__input',
 						'rrui__select__autocomplete',
 						inputClassName
 					) }/>
