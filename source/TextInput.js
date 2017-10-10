@@ -253,6 +253,7 @@ export default class Text_input extends PureComponent
 			rows,
 			cols,
 			tabIndex,
+			autoresize,
 
 			// A custom input component
 			// (e.g. for an `input-format` text input, like a phone number)
@@ -264,6 +265,17 @@ export default class Text_input extends PureComponent
 			onBlur
 		}
 		= this.props
+
+		let input_style = inputStyle
+
+		if (multiline && autoresize)
+		{
+			input_style =
+			{
+				resize : 'none',
+				...inputStyle
+			}
+		}
 
 		const properties =
 		{
@@ -286,7 +298,7 @@ export default class Text_input extends PureComponent
 				'rrui__text-input__input--disabled'  : disabled,
 				'rrui__text-input__input--multiline' : multiline
 			}),
-			style       : inputStyle,
+			style       : input_style,
 			autoFocus   : focus,
 			tabIndex
 		}

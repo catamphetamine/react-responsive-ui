@@ -1,4 +1,31 @@
 /*===========================================================
+= Buttons                                                   =
+===========================================================*/
+
+/* Reset the default `<button/>` styles */
+.rrui__button__button,
+.rrui__select__button,
+.rrui__select__option,
+.rrui__select__close,
+.rrui__date-picker__close,
+.rrui__segmented-control__option
+{
+	margin      : 0;
+	padding     : 0;
+	white-space : nowrap;
+	outline     : none;
+	appearance  : none;
+	border      : none;
+	background  : none;
+	cursor      : pointer;
+	font-size   : inherit;
+	font-family : inherit;
+	font-weight : inherit;
+	font-style  : inherit;
+	user-select : none;
+}
+
+/*===========================================================
 = Inputs                                                    =
 ===========================================================*/
 
@@ -13,6 +40,21 @@
 .rrui__date-picker__input
 {
 	width: 100%;
+}
+
+.rrui__input-field,
+.rrui__select__button
+{
+	border        : none;
+	border-bottom : 1px solid #C5D2E0;
+	transition    : border 0.1s;
+}
+
+.rrui__input-field:focus,
+.rrui__select__button:focus,
+.rrui__select__native-expanded:focus + .rrui__select__button
+{
+	border-bottom-color: #03B2CB;
 }
 
 /*===========================================================
@@ -193,31 +235,8 @@
 }
 
 /*===========================================================
-= Buttons                                                   =
+= Button                                                    =
 ===========================================================*/
-
-/* Reset the default `<button/>` styles */
-.rrui__button__button,
-.rrui__select__button,
-.rrui__select__option,
-.rrui__select__close,
-.rrui__date-picker__close,
-.rrui__segmented-control__option
-{
-	margin      : 0;
-	padding     : 0;
-	white-space : nowrap;
-	outline     : none;
-	appearance  : none;
-	border      : none;
-	background  : none;
-	cursor      : pointer;
-	font-size   : inherit;
-	font-family : inherit;
-	font-weight : inherit;
-	font-style  : inherit;
-	user-select : none;
-}
 
 .rrui__button
 {
@@ -521,17 +540,8 @@
 
 .rrui__select__button
 {
-	border-bottom : 1px solid #C5D2E0;
-	transition    : border 0.1s;
-
 	/* Because Chrome adds `text-align: center` for all buttons */
 	text-align : left;
-}
-
-.rrui__select__button:focus,
-.rrui__select__native-expanded:focus + .rrui__select__button
-{
-	border-bottom-color: #03B2CB;
 }
 
 .rrui__select__button:active
@@ -565,7 +575,7 @@
    focused option animation in autocomplete mode */
 .rrui__select__button
 {
-	transition : background-color 30ms ease-out, color 30ms ease-out;
+	transition : color 30ms ease-out;
 }
 
 .rrui__select__selected-content
