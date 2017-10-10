@@ -126,13 +126,37 @@ since they're not fullscreen.
 
 .rrui__modal__content
 {
-	-webkit-transform: scale(1.02);
-	        transform: scale(1.02);
+	-webkit-transform: scale(0.99);
+	        transform: scale(0.99);
 }
 
 /* This rule is required for closing animation */
 .ReactModal__Content--before-close .rrui__modal__content
 {
-	-webkit-transform: scale(0.98);
-	        transform: scale(0.98);
+	-webkit-transform: scale(0.99);
+	        transform: scale(0.99);
+}
+
+
+/* Shortening `<Modal/>` animation duration */
+.rrui__modal__content
+{
+	-webkit-transition: opacity 70ms ease-out, -webkit-transform 100ms ease-out;
+	transition: opacity 70ms ease-out, -webkit-transform 100ms ease-out;
+	transition: transform 100ms ease-out, opacity 70ms ease-out;
+	transition: transform 100ms ease-out, opacity 70ms ease-out, -webkit-transform 100ms ease-out;
+}
+
+.ReactModal__Content--after-open .rrui__modal__content-body
+{
+	opacity: 1;
+	-webkit-transition: opacity 70ms ease-out 30ms;
+	transition: opacity 70ms ease-out 30ms;
+}
+
+.ReactModal__Content--before-close .rrui__modal__content-body
+{
+	opacity: 0;
+	-webkit-transition: opacity 70ms ease-out;
+	transition: opacity 70ms ease-out;
 }

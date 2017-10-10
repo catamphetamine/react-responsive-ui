@@ -81,45 +81,6 @@
 			font-size   : 20px;
 		}
 
-		input[type="text"],
-		input[type="tel"],
-		input[type="number"],
-		input[type="email"],
-		input[type="password"],
-		textarea
-		{
-			display : block;
-			margin  : 0;
-			padding : 0;
-
-			outline    : none;
-			appearance : none;
-
-			border        : none;
-			border-bottom : 1px solid #C5D2E0;
-			transition    : border 0.1s;
-		}
-
-		input[type="text"]:focus,
-		input[type="tel"]:focus,
-		input[type="number"]:focus,
-		input[type="email"]:focus,
-		input[type="password"]:focus,
-		textarea:focus
-		{
-			border-bottom-color: #03B2CB;
-		}
-
-		input[type="text"][disabled],
-		input[type="tel"][disabled],
-		input[type="number"][disabled],
-		input[type="email"][disabled],
-		input[type="password"][disabled],
-		textarea[disabled]
-		{
-			background-color : white;
-		}
-
 		.rrui__text-input__input--multiline
 		{
 			padding-top    : 0.3rem;
@@ -404,7 +365,7 @@
 									<h2>Textarea (with placeholder)</h2>
 
 									<TextInput
-										multiline={true}
+										multiline
 										name="description"
 										style={input_style}
 										value={this.state.textarea_value}
@@ -416,7 +377,7 @@
 									<h2>Textarea (with floating label)</h2>
 
 									<TextInput
-										multiline={true}
+										multiline
 										name="description"
 										style={input_style}
 										value={this.state.textarea_value}
