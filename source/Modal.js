@@ -394,8 +394,6 @@ export default class Modal extends PureComponent
 		// before the main (body) scrollbar is deliberately hidden.
 		const width_before = div.clientWidth
 
-		document.body.removeChild(div)
-
 		// Hide the main (body) scrollbar
 		// so that when a user scrolls in an open modal
 		// this `scroll` event doesn't go through
@@ -409,6 +407,8 @@ export default class Modal extends PureComponent
 		// Calculate the width of the dummy `<div/>`
 		// after the main (body) scrollbar is deliberately hidden.
 		const width_adjustment = div.clientWidth - width_before
+
+		document.body.removeChild(div)
 
 		// "full-width" elements include `document.body`
 		// and all `position: fixed` elements
