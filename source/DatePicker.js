@@ -554,6 +554,8 @@ export default class DatePicker extends PureComponent
 				style={ style }>
 
 				<div className="rrui__input">
+					<div className="rrui__date-picker__icon" />
+
 					{/* This layer can intercept taps on mobile devices
 					    to prevent the keyboard from showing
 					    when the date picker is in fullscreen mode */}

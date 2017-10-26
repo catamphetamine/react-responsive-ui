@@ -104,6 +104,15 @@
 	resize : none;
 }
 
+/*
+For some reason web browsers size `<input/>`s to be wider
+than 100% of the parent if the parent is small enough.
+*/
+.rrui__input-element
+{
+	max-width : 100%;
+}
+
 /*===========================================================
 = Input field                                               =
 ===========================================================*/
@@ -1809,4 +1818,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	margin-left  : auto;
 	margin-right : auto;
 	margin-top   : calc(0.3rem * 4);
+}
+
+.rrui__date-picker__icon
+{
+	position : absolute;
+	top      : 0;
+	right    : 0;
 }
