@@ -1822,7 +1822,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__date-picker__icon
 {
-	position : absolute;
-	top      : 0;
-	right    : 0;
+	position       : absolute;
+	top            : 0;
+	right          : 0;
+	pointer-events : none;
 }
