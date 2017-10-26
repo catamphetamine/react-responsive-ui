@@ -33,17 +33,9 @@
 /* Because everyone uses CSS grids today. */
 .rrui__input-field,
 .rrui__select__button,
-.rrui__select__autocomplete,
-.rrui__select__options
+.rrui__select__autocomplete
 {
 	width : 100%;
-}
-
-/* `<Select/>` options text should be at least fully visible */
-.rrui__select__options
-{
-	width     : auto;
-	min-width : 100%;
 }
 
 .rrui__input-field,
@@ -433,12 +425,6 @@ than 100% of the parent if the parent is small enough.
 	box-sizing       : border-box;
 }
 
-.rrui__select--menu .rrui__select__options
-{
-	/* Overrides the `width: 100%` rule at the top of this file */
-	width : auto;
-}
-
 .rrui__expandable--left-aligned
 {
 	left : 0;
@@ -461,7 +447,18 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__select__options
 {
-	width : calc(100% + 0.3rem * 4 * 2);
+	/*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+	min-width : calc(100% + 0.3rem * 4 * 2);
+}
+
+.rrui__select--menu .rrui__select__options
+{
+	/* Overrides the `min-width` rule above for menus */
+	min-width : 0;
 }
 
 .rrui__select__options--downward
