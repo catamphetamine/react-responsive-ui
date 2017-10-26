@@ -36,7 +36,14 @@
 .rrui__select__autocomplete,
 .rrui__select__options
 {
-	width: 100%;
+	width : 100%;
+}
+
+/* `<Select/>` options text should be at least fully visible */
+.rrui__select__options
+{
+	width     : auto;
+	min-width : 100%;
 }
 
 .rrui__input-field,
