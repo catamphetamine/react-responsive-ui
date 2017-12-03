@@ -761,7 +761,10 @@ export default class Select extends PureComponent
 						selected_style_classes,
 						'rrui__input-field',
 						'rrui__select__autocomplete',
-						inputClassName
+						inputClassName,
+						// CSS selector performance optimization
+						// (should it even be optimized).
+						'rrui__input-field--disabled' : disabled
 					) }/>
 			)
 		}
@@ -786,7 +789,10 @@ export default class Select extends PureComponent
 					{
 						'rrui__select__button--empty'   : !selected_label,
 						'rrui__select__button--invalid' : this.should_indicate_invalid(),
-						'rrui__input-element--invalid'  : this.should_indicate_invalid()
+						'rrui__input-element--invalid'  : this.should_indicate_invalid(),
+						// CSS selector performance optimization
+						// (should it even be optimized).
+						'rrui__select__button--disabled' : disabled
 					}
 				) }>
 
