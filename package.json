@@ -47,8 +47,8 @@
     "test": "mocha --compilers js:babel-core/register --colors --bail --reporter spec test/ --recursive",
     "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive",
     "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --colors --reporter spec test/ --recursive",
-    "browser-build": "npm run build-modules && WEBPACK_ENV=build webpack",
-    "browser-build-dev": "npm run build-modules && WEBPACK_ENV=dev webpack --progress --colors --watch",
+    "browser-build": "npm run build-modules && better-npm-run browser-build-webpack",
+    "browser-build-dev": "npm run build-modules && better-npm-run browser-build-dev-webpack",
     "clean-for-build": "rimraf ./commonjs/**/* ./modules/**/*",
     "build-commonjs-modules": "better-npm-run build-commonjs-modules",
     "build-modules": "better-npm-run build-modules",
@@ -56,6 +56,18 @@
     "prepublish": "npm-run-all build test browser-build"
   },
   "betterScripts": {
+    "browser-build-webpack": {
+      "command": "webpack",
+      "env": {
+        "WEBPACK_ENV": "build"
+      }
+    },
+    "browser-build-dev-webpack": {
+      "command": "webpack --progress --colors --watch",
+      "env": {
+        "WEBPACK_ENV": "dev"
+      }
+    },
     "build-commonjs-modules": {
       "command": "babel ./source --out-dir ./commonjs --source-maps",
       "env": {
