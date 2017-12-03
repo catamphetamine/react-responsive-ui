@@ -263,7 +263,9 @@ than 100% of the parent if the parent is small enough.
 }
 
 .rrui__button--busy,
-.rrui__button--disabled
+.rrui__button--disabled,
+.rrui__select__button--disabled,
+.rrui__select__option--disabled
 {
 	/* "pointer-events" prevents "cursor: wait" from working */
 	pointer-events : none;
@@ -496,12 +498,6 @@ than 100% of the parent if the parent is small enough.
 .rrui__select__option:hover
 {
 	background-color : #FBFDFD;
-}
-
-.rrui__select__button--disabled,
-.rrui__select__option--disabled
-{
-	cursor : default;
 }
 
 .rrui__select__option-icon
