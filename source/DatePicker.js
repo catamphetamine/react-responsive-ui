@@ -313,6 +313,7 @@ export default class DatePicker extends PureComponent
 		const
 		{
 			onChange,
+			value: previous_value,
 			format,
 			noon,
 			utc
@@ -326,7 +327,12 @@ export default class DatePicker extends PureComponent
 		// When the date is erased, reset it.
 		if (!value)
 		{
-			onChange(undefined)
+			// Call `onChange` only if `value` did actually change
+			if (previous_value)
+			{
+				onChange(undefined)
+			}
+
 			return this.setState({ text_value: '' })
 		}
 
@@ -339,7 +345,11 @@ export default class DatePicker extends PureComponent
 			return this.setState({ text_value: value })
 		}
 
-		onChange(selected_day)
+		// Call `onChange` only if `value` did actually change
+		if (!previous_value || previous_value.getTime() !== selected_day.getTime())
+		{
+			onChange(selected_day)
+		}
 
 		this.setState
 		({
@@ -354,6 +364,7 @@ export default class DatePicker extends PureComponent
 		{
 			format,
 			onChange,
+			value: previous_value,
 			noon,
 			utc
 		}
@@ -396,8 +407,14 @@ export default class DatePicker extends PureComponent
 		}
 
 		// `onChange` fires but the `value`
-		// hasn't neccessarily been updated yet
-		onChange(selected_day)
+		// hasn't neccessarily been updated yet.
+		//
+		// Call `onChange` only if `value` did actually change.
+		//
+		if (!previous_value || previous_value.getTime() !== selected_day.getTime())
+		{
+			onChange(selected_day)
+		}
 
 		// this.setState
 		// ({
@@ -964,7 +981,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 
 	const months = localeUtils.getMonths()
 
-	function handleChange(event)
+	function on_change(event)
 	{
 		const month = event.target.parentNode.firstChild.value
 		const year  = event.target.parentNode.lastChild.value
@@ -979,7 +996,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 		<div className="DayPicker-Caption">
 			<div className="DayPicker-CaptionSelects">
 				<select
-					onChange={ handleChange }
+					onChange={ on_change }
 					value={ date.getMonth() }
 					tabIndex={ -1 }
 					className="DayPicker-MonthSelect">
@@ -992,7 +1009,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 				</select>
 
 				<select
-					onChange={ handleChange }
+					onChange={ on_change }
 					value={ date.getFullYear() }
 					tabIndex={ -1 }
 					className="DayPicker-YearSelect">

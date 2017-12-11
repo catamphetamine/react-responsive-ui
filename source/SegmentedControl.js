@@ -191,16 +191,20 @@ export default class Segmented_control extends PureComponent
 
 	chooser(value)
 	{
-		return event =>
+		return (event) =>
 		{
-			const { disabled, onChange } = this.props
+			const { disabled, onChange, value: previous_value } = this.props
 
 			if (disabled)
 			{
 				return
 			}
 
-			onChange(value)
+			// Call `onChange` only if `value` did actually change
+			if (value !== previous_value)
+			{
+				onChange(value)
+			}
 		}
 	}
 

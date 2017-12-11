@@ -973,7 +973,7 @@ export default class Select extends PureComponent
 
 	native_select_on_change = (event) =>
 	{
-		const { onChange } = this.props
+		const { onChange, value: previous_value } = this.props
 
 		let value = event.target.value
 
@@ -984,7 +984,11 @@ export default class Select extends PureComponent
 			value = undefined
 		}
 
-		onChange(value)
+		// Call `onChange` only if `value` did actually change
+		if (value !== previous_value)
+		{
+			onChange(value)
+		}
 	}
 
 	resize_native_expanded_select = () =>
@@ -1269,9 +1273,19 @@ export default class Select extends PureComponent
 			event.preventDefault()
 		}
 
-		const { onChange } = this.props
+		const { onChange, value: previous_value } = this.props
 
-		this.toggle(undefined, { callback: () => onChange(value) })
+		this.toggle(undefined,
+		{
+			callback()
+			{
+				// Call `onChange` only if `value` did actually change
+				if (value !== previous_value)
+				{
+					onChange(value)
+				}
+			}
+		})
 	}
 
 	document_clicked = (event) =>

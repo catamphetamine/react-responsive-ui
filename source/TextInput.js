@@ -458,9 +458,13 @@ export default class Text_input extends PureComponent
 		// with the `value` as an argument
 		// (for convenience)
 
-		const { onChange } = this.props
+		const { onChange, value: previous_value } = this.props
 
-		onChange(value)
+		// Call `onChange` only if `value` did actually change
+		if (value !== previous_value)
+		{
+			onChange(value)
+		}
 	}
 
 	on_key_down = (event) =>
