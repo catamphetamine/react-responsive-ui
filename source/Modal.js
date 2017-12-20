@@ -225,6 +225,7 @@ export default class Modal extends PureComponent
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
+				ariaHideApp={ false }
 				style={ react_modal_style }
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
