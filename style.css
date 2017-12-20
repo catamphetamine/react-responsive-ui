@@ -132,12 +132,13 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field--invalid,
 .rrui__input-field--invalid:focus
 {
-	border-color: #EB2010;
+	border-color : #EB2010;
 }
 
 .rrui__input-field--disabled
 {
-	cursor: default;
+	cursor           : default;
+	background-color : transparent;
 }
 
 /*===========================================================
