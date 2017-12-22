@@ -13,12 +13,9 @@ const svg_canvas_dimensions = `0 0 ${svg_circe_center * 2} ${svg_circe_center * 
 // https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-miterlimit
 const svg_stroke_miter_limit = radius / 2
 
-export default function Activity_indicator(props)
+export default function ActivityIndicator({ className, style })
 {
-	const { className, style } = props
-
-	const markup =
-	(
+	return (
 		<div
 			{ ...props }
 			style={ style }
@@ -37,11 +34,9 @@ export default function Activity_indicator(props)
 			</svg>
 		</div>
 	)
-
-	return markup
 }
 
-Activity_indicator.propTypes =
+ActivityIndicator.propTypes =
 {
 	// CSS class
 	className : PropTypes.string,
