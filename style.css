@@ -205,7 +205,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__activity-indicator-circle-container
 {
-	animation: spinner-rotate 2s linear infinite;
+	animation: rrui-spinner-rotate 2s linear infinite;
 	transform-origin: center center;
 }
 
@@ -217,11 +217,11 @@ than 100% of the parent if the parent is small enough.
 	/* to show an indicator in IE but the aethetics is better othewise so screw IE. */
 	stroke-dasharray  : 1,200;
 	stroke-dashoffset : 0;
-	animation         : spinner-extent 1.5s ease-in-out infinite;
+	animation         : rrui-spinner-extent 1.5s ease-in-out infinite;
 	stroke-linecap    : round;
 }
 
-@keyframes spinner-rotate
+@keyframes rrui-spinner-rotate
 {
 	100%
 	{
@@ -229,7 +229,7 @@ than 100% of the parent if the parent is small enough.
 	}
 }
 
-@keyframes spinner-extent
+@keyframes rrui-spinner-extent
 {
 	0%
 	{
