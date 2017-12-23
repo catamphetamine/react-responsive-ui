@@ -323,7 +323,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__button .rrui__activity-indicator-circle
 {
-	stroke-width: 0.2em;
+	stroke-width: 0.1em;
 }
 
 .rrui__button__activity-indicator--busy
