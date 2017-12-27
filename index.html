@@ -162,6 +162,15 @@
 			margin-top: calc(0.3rem * 8);
 		}
 
+		pre
+		{
+			padding: 1em;
+			line-height: 1.7em;
+			background: rgba(0, 0, 0, 0.02);
+			border-radius: 0.2em;
+			border: 1px solid rgba(0, 0, 0, 0.1);
+		}
+
 		/* Responsive */
 		@media (max-width: 720px)
 		{
@@ -315,6 +324,19 @@
 									</div>
 								</div>
 
+<pre>
+{`<PageAndMenu>
+  <CollapsibleMenu>
+    <div>Item 1</div>
+    <div>Item 2</div>
+  </CollapsibleMenu>
+  <Page>
+    <MenuButton />
+    Page content
+  </Page>
+</PageAndMenu>`}
+</pre>
+
 								<Form
 									busy={this.state.busy}
 									submit={() => {
@@ -339,6 +361,14 @@
 
 									You entered: {this.state.text_value}
 
+<pre>
+{`<TextInput
+  focus
+  placeholder="Enter some text"
+  value={...}
+  onChange={...} />`}
+</pre>
+
 									<h2>Text input field (with floating label)</h2>
 
 									<TextInput
@@ -349,6 +379,13 @@
 										label="Text"/>
 
 									You entered: {this.state.text_value}
+
+<pre>
+{`<TextInput
+  label="Text"
+  value={...}
+  onChange={...} />`}
+</pre>
 
 									<h2>Text input field (with both placeholder and floating label)</h2>
 
@@ -362,6 +399,14 @@
 
 									You entered: {this.state.text_value}
 
+<pre>
+{`<TextInput
+  label="Text"
+  placeholder="Enter something"
+  value={...}
+  onChange={...} />`}
+</pre>
+
 									<h2>Textarea (with placeholder)</h2>
 
 									<TextInput
@@ -374,6 +419,14 @@
 
 									You entered: {this.state.textarea_value}
 
+<pre>
+{`<TextInput
+  multiline
+  placeholder="Enter text"
+  value={...}
+  onChange={...} />`}
+</pre>
+
 									<h2>Textarea (with floating label)</h2>
 
 									<TextInput
@@ -385,6 +438,14 @@
 										label="Enter text"/>
 
 									You entered: {this.state.textarea_value}
+
+<pre>
+{`<TextInput
+  multiline
+  label="Enter text"
+  value={...}
+  onChange={...} />`}
+</pre>
 
 									<h2>Select</h2>
 
@@ -426,6 +487,15 @@
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
+<pre>
+{`<Select
+  label="Fruit"
+  placeholder="Choose"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
+</pre>
+
 									<h2>Select (autocomplete)</h2>
 
 									<Select
@@ -466,6 +536,15 @@
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
+<pre>
+{`<Select
+  autocomplete
+  placeholder="Choose"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
+</pre>
+
 									<h2>Select (icons)</h2>
 
 									<Select
@@ -496,6 +575,15 @@
 										You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
 									</div>
 
+<pre>
+{`<Select
+  concise
+  placeholder="Choose"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />`}
+</pre>
+
 									<h2>Checkbox</h2>
 
 									<Checkbox
@@ -517,6 +605,21 @@
 
 									You checked: {this.state.checked ? 'checked' : 'unchecked'}
 
+<pre>
+{`<Checkbox
+  value={...}
+  onChange={...}>
+  Accept the <a href="...">User Agreement</a>
+</Checkbox>
+
+<Checkbox
+  multiline
+  value={...}
+  onChange={...}>
+  Postmodernism describes a broad movement that developed ...
+</Checkbox>`}
+</pre>
+
 									<h2>Switch</h2>
 
 									<div style={{ marginBottom: '1em' }}>
@@ -530,6 +633,14 @@
 
 									You switched: {this.state.switched ? 'on' : 'off'}
 
+<pre>
+{`<Switch
+  value={...}
+  onChange={...}>
+  iOS style switch
+</Switch>`}
+</pre>
+
 									<h2>Segmented Control</h2>
 
 									<SegmentedControl
@@ -541,6 +652,13 @@
 
 									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
 
+<pre>
+{`<SegmentedControl
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
+</pre>
+
 									<h2>Date picker</h2>
 
 									<DatePicker
@@ -551,24 +669,66 @@
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
+<pre>
+{`<DatePicker
+  label="Date"
+  value={...}
+  onChange={...} />`}
+</pre>
+
 									<h2>Date picker (with month and year selectors)</h2>
 
 									<DatePicker
 										style={input_style}
 										label="Date"
 										selectYearsIntoPast={118}
+                    selectYearsIntoFuture={10}
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}/>
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
+<pre>
+{`<DatePicker
+  label="Date"
+  selectYearsIntoPast={118}
+  selectYearsIntoFuture={10}
+  value={...}
+  onChange={...} />`}
+</pre>
+
 									<h2>File upload</h2>
 
 									<FileUploadArea/>
 
+<pre>
+{`@CanDrop(File, (props, file) => alert(\u0060File dropped: \${file.name}\u0060))
+export default class FileUploadArea extends Component {
+  render() {
+    const { dropTarget, draggedOver } = this.props
+    return dropTarget(
+      <FileUpload
+        action={(file) => alert(\u0060File chosen: \${file.name}\u0060)}
+        className={\u0060file-upload \${draggedOver ? 'file-upload--dragged-over' : ''}\u0060}>
+        Click here to choose a file
+        or drop a file here
+      </FileUpload>
+    )
+  }
+}
+
+...
+
+<FileUploadArea/>`}
+</pre>
+
 									<h2>Activity Indicator</h2>
 
 									<ActivityIndicator />
+
+<pre>
+{`<ActivityIndicator className="..." />`}
+</pre>
 
 									<h2>International phone number input</h2>
 
@@ -576,9 +736,19 @@
 
 									<h2>Tooltip</h2>
 
-									<Tooltip text="Testing testing" container={() => document.querySelector('.content')}>
+									<Tooltip text="Testing testing">
 										Hover this element (or touch down on mobile devices)
 									</Tooltip>
+
+<pre>
+{`<Tooltip text="Testing testing">
+  Hover this element (or touch down on mobile devices)
+</Tooltip>
+
+// \u0060container: () => DOMElement\u0060 property is optional
+// and is gonna be the parent DOM Element for the tooltip itself
+// (\u0060document.body\u0060 by default)`}
+</pre>
 
 									<h2>Snackbar</h2>
 
@@ -596,6 +766,16 @@
 
 									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
 
+<pre>
+{`<Button action={() => this.setState({ snack: "..." })}>
+  Show a snack
+</Button>
+
+<Snackbar
+  value={this.state.snack}
+  reset={() => this.setState({ snack: undefined })} />`}
+</pre>
+
 									<div className="submit-form">
 										<Button
 											submit
@@ -604,6 +784,28 @@
 											Submit form
 										</Button>
 									</div>
+
+<pre>
+{`<Form
+  busy={this.state.busy}
+  submit={() => {
+    alert('Submitting form...')
+    this.setState({ busy: true })
+    setTimeout(() => {
+      alert('Form submitted.')
+      this.setState({ busy: false })
+    },
+    3000)
+  }}>
+  ...
+  <Button
+    submit
+    busy={this.state.busy}>
+    Submit form
+  </Button>
+</Form>`}
+</pre>
+
 								</Form>
 
 								<h2>Modal</h2>
@@ -649,6 +851,23 @@
 										</Button>
 									</div>
 								</Modal>
+
+<pre>
+{`
+<Button action={() => this.setState({ showModal: true })}>
+  Show
+</Button>
+
+<Modal
+  isOpen={this.state.showModal}
+  close={() => this.setState({ showModal: false })}>
+  <p> ... </p>
+  <p> ... </p>
+  <Button action={() => this.setState({ showModal: false })}>
+    Hide
+  </Button>
+</Modal>`}
+</pre>
 							</Page>
 						</PageAndMenu>
 					)
