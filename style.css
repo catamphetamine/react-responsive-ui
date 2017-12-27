@@ -814,7 +814,7 @@ than 100% of the parent if the parent is small enough.
 .rrui__checkbox__checkmark path
 {
 	stroke       : #3678D1;
-	stroke-width : 1em;
+	stroke-width : 0.45em;
 }
 
 .rrui__checkbox__box

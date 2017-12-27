@@ -14,127 +14,7 @@ npm install react-responsive-ui --save
 
 ## Usage
 
-See the [demo page](https://catamphetamine.github.io/react-responsive-ui/) source code.
-
-```js
-import
-{
-  PageAndMenu,
-  Page,
-  CollapsibleMenu,
-  MenuButton,
-  Form,
-  Snackbar,
-  Tooltip,
-  ActivityIndicator,
-  TextInput,
-  Select,
-  Button,
-  Switch,
-  Checkbox,
-  SegmentedControl,
-  DatePicker,
-  FileUpload,
-  Modal
-}
-from 'react-responsive-ui'
-
-<PageAndMenu>
-  <CollapsibleMenu>
-    <ul>
-      <li>
-        <Link to="/first">First</Link>
-      </li>
-      <li>
-        <Link to="/second">Second</Link>
-      </li>
-    </ul>
-  </CollapsibleMenu>
-
-  <Page>
-    <MenuButton title="Show menu"/>
-
-    <Snackbar
-      value={ this.state.snack }
-      reset={ () => this.setState({ snack: undefined }) }/>
-
-    <Button
-      action={ () => this.setState({ snack: Math.random() }) }>
-      Show a snack notification
-    </Button>
-
-    <Tooltip text="A tooltip">Hover this for a tooltip</Tooltip>
-
-    <ActivityIndicator/>
-
-    <Form action={() => alert('Form submitted')}>
-      <TextInput
-        label="Enter something"
-        value={this.state.text}
-        onChange={text => this.setState({ text })}/>
-
-      <TextInput
-        multiline
-        label="Enter description"
-        value={this.state.description}
-        onChange={description => this.setState({ description })}/>
-
-      <Select
-        placeholder="Select one"
-        value={this.state.fruit}
-        onChange={fruit => this.setState({ fruit })}
-        options=
-        {[
-          { value: 'A', label: 'Apples' },
-          { value: 'O', label: 'Oranges' }
-        ]}/>
-
-      <SegmentedControl
-        value={this.state.fruit}
-        onChange={fruit => this.setState({ fruit })}
-        options=
-        {[
-          { value: 'A', label: 'Apples' },
-          { value: 'O', label: 'Oranges' }
-        ]}/>
-
-      <Switch
-        value={this.state.switch}
-        onChange={switch => this.setState({ switch })}>
-        IOS style
-      </Switch>
-
-      <Checkbox
-        value={this.state.checkbox}
-        onChange={checkbox => this.setState({ checkbox })}>
-        Tickable
-      </Checkbox>
-
-      <DatePicker
-        value={this.state.selectedDay}
-        onChange={selectedDay => this.setState({ selectedDay })}/>
-
-      <FileUpload
-        onChange={file => alert(file.name)}>
-        Click here to choose file for upload
-      </FileUpload>
-
-      <Button>Button</Button>
-
-      <Button submit className="rrui__button--border">Submit</Button>
-    </Form>
-
-    <Modal
-      isOpen={this.state.showModal}
-      close={() => this.setState({ showModal: false })>
-      This is a modal
-      <Button action={() => this.setState({ showModal: false })>Hide</Button>
-    </Modal>
-
-    <Button action={() => this.setState({ showModal: true })>Show modal</Button>
-  </Page>
-</PageWithMenu>
-```
+See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
 
 ## Validation
 
@@ -159,11 +39,11 @@ The CSS for this library must be included on a page too.
 import rrui from 'react-responsive-ui/style.css'
 ```
 
-And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 7`, `Android >= 4`).
+And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 4 versions`, `iOS >= 7`, `Android >= 4`).
 
 #### When not using Webpack
 
-Get the `style.css` file from this package, process it with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 2 versions`, `iOS >= 7`, `Android >= 4`), and then include it on a page.
+Get the `style.css` file from this package, process it with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 4 versions`, `iOS >= 7`, `Android >= 4`), and then include it on a page.
 
 ```html
 <head>

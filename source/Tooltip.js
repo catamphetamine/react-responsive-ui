@@ -21,7 +21,9 @@ export default class Tooltip extends PureComponent
 		// Is `120` by default.
 		hidingAnimationDuration : PropTypes.number.isRequired,
 
-		// `container` property is optional (it's `document.body` by default)
+		// `container: () => DOMElement` property is optional
+		// and is gonna be the parent DOM Element for the tooltip itself
+		// (`document.body` by default).
 		container : PropTypes.func
 	}
 
