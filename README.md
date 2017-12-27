@@ -25,10 +25,6 @@ Each form component receives two validation-specific properties
 
 When both of these properties are set the form component appends `--invalid` postfixes to its CSS `className`s.
 
-## Customization
-
-See `propTypes` in the source code for the possible `props` — they are well documented and self-explanatory.
-
 ## CSS
 
 The CSS for this library must be included on a page too.
