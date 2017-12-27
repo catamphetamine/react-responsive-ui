@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/react-responsive-ui.svg?style=flat-square)](https://www.npmjs.com/package/react-responsive-ui)
 
-Slick and accurate React UI components. Work both on client side and server side, with javascript enabled and with javascript disabled (e.g. DarkNet).
+Responsive React UI components. Work both on client side and server side, with javascript enabled and with javascript disabled (e.g. DarkNet).
 
 [See Demo](https://catamphetamine.github.io/react-responsive-ui/)
 
