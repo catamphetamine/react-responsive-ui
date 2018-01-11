@@ -9,7 +9,7 @@ export default class Tooltip extends PureComponent
 	static propTypes =
 	{
 		// Tooltip text
-		text : PropTypes.string.isRequired,
+		text : PropTypes.string,
 
 		// The delay before the tooltip is shown (in milliseconds)
 		delay : PropTypes.number.isRequired,
@@ -30,11 +30,14 @@ export default class Tooltip extends PureComponent
 	static defaultProps =
 	{
 		delay : 200, // in milliseconds
-		hidingAnimationDuration : 120 // in milliseconds
+		hidingAnimationDuration : 120, // in milliseconds
+		container : () => document.body
 	}
 
 	componentWillMount()
 	{
+		const { text } = this.props
+
 		// Don't render tooltip on server side
 		if (typeof document === 'undefined')
 		{
@@ -43,16 +46,23 @@ export default class Tooltip extends PureComponent
 
 		this.tooltip = document.createElement('div')
 
-		this.tooltip.style.display = 'none'
+		this.tooltip.style.display  = 'none'
 		this.tooltip.style.position = 'absolute'
 		this.tooltip.style.left = 0
-		this.tooltip.style.top = 0
+		this.tooltip.style.top  = 0
 
 		this.tooltip.classList.add('rrui__tooltip')
 
-		this.tooltip.textContent = this.props.text
+		this.tooltip.textContent = text
 
 		this.container().appendChild(this.tooltip)
+	}
+
+	componentWillReceiveProps(props)
+	{
+		const { text } = this.props
+
+		this.tooltip.textContent = text
 	}
 
 	componentWillUnmount()
@@ -75,7 +85,8 @@ export default class Tooltip extends PureComponent
 
 	container()
 	{
-		return (this.props.container && this.props.container()) || document.body
+		const { container } = this.props
+		return container()
 	}
 
 	calculate_coordinates()
@@ -165,9 +176,17 @@ export default class Tooltip extends PureComponent
 
 	on_mouse_enter = () =>
 	{
+		const { text } = this.props
+
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
 		if (this.mobile)
+		{
+			return
+		}
+
+		// If the tooltip has no text then don't show it.
+		if (!text)
 		{
 			return
 		}
@@ -217,8 +236,16 @@ export default class Tooltip extends PureComponent
 
 	on_touch_start = () =>
 	{
+		const { text } = this.props
+
 		// mouse enter events won't be processed from now on
 		this.mobile = true
+
+		// If the tooltip has no text then don't show it.
+		if (!text)
+		{
+			return
+		}
 
 		this.show()
 	}
@@ -230,8 +257,7 @@ export default class Tooltip extends PureComponent
 
 		const { style, className, children } = this.props
 
-		const markup =
-		(
+		return (
 			<div
 				ref={ ref => this.origin = ref }
 				onMouseEnter={ this.on_mouse_enter }
@@ -245,8 +271,6 @@ export default class Tooltip extends PureComponent
 				{ children }
 			</div>
 		)
-
-		return markup
 	}
 }
 
