@@ -58,10 +58,8 @@ export default class Tooltip extends PureComponent
 		this.container().appendChild(this.tooltip)
 	}
 
-	componentWillReceiveProps(props)
+	componentWillReceiveProps({ text })
 	{
-		const { text } = this.props
-
 		this.tooltip.textContent = text
 	}
 
