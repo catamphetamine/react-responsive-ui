@@ -653,7 +653,7 @@ export default class DatePicker extends PureComponent
 							<button
 								type="button"
 								onClick={ this.collapse }
-								className="rrui__date-picker__close">
+								className={ classNames('rrui__button-reset', 'rrui__date-picker__close') }>
 								{ closeButtonLabel }
 							</button>
 						</div>

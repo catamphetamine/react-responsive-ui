@@ -1,0 +1,87 @@
+.rrui__button
+{
+	display    : inline-block;
+	position   : relative;
+	box-sizing : border-box;
+	cursor     : pointer;
+	transition : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+}
+
+.rrui__button--busy,
+.rrui__button--disabled
+{
+	/* "pointer-events" prevents "cursor: wait" from working */
+	pointer-events : none;
+}
+
+.rrui__button--stretch
+{
+	display : block;
+}
+
+.rrui__button__button
+{
+	height      : 100%;
+	width       : 100%;
+	user-select : none;
+	cursor      : inherit;
+	color       : inherit;
+}
+
+.rrui__button__button--link
+{
+	/* <button/> tends to vertially align its contents by itself */
+	/* (I guess that's a <button/>'s natural behaviour) */
+	/* but <a/> needs special treatment in this sense. */
+	display         : flex;
+	align-items     : center;
+	text-decoration : none;
+}
+
+.rrui__button__contents
+{
+	transition : opacity 150ms ease-out 100ms;
+}
+
+.rrui__button__contents--busy
+{
+	opacity    : 0;
+	transition : opacity 200ms ease-out 300ms;
+}
+
+.rrui__button__activity-indicator
+{
+	position : absolute;
+	/* (if z-index = -1 then it disappears) */
+	z-index  : 0;
+	left   : calc(50% - 0.5em);
+	top    : calc(50% - 0.5em);
+	width  : 1em;
+	height : 1em;
+	opacity : 0;
+	transition : opacity 200ms ease-out;
+	pointer-events : none;
+}
+
+.rrui__button .rrui__activity-indicator-circle
+{
+	stroke-width: 0.1em;
+}
+
+.rrui__button__activity-indicator--busy
+{
+	opacity          : 1;
+	transition-delay : 350ms;
+}
+
+/* Button colors */
+
+.rrui__button
+{
+	color: #3678D1;
+}
+
+.rrui__button:active
+{
+	color: #4F9BFF;
+}

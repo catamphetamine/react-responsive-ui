@@ -49,3 +49,6 @@ npm-debug.log
 
 # browser builds
 /bundle/
+
+# SASS sources
+*.sass

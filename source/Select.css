@@ -1,0 +1,296 @@
+.rrui__select
+{
+	/* This is for `.rrui__select__options` to be positioned
+	   correctly relative to the `<Select/>` itself. */
+	position : relative;
+
+	user-select : none;
+}
+
+.rrui__select__options
+{
+	margin           : 0;
+	padding-left     : 0;
+	padding-top      : calc(2 * 0.3rem);
+	padding-bottom   : calc(2 * 0.3rem);
+	overflow-y       : auto;
+	background-color : white;
+	list-style-type  : none;
+	overflow-x       : hidden;
+	box-sizing       : border-box;
+}
+
+.rrui__select__options--left-aligned
+{
+	left : calc(0.3rem * 4 * -1);
+}
+
+.rrui__select__options--right-aligned
+{
+	right : calc(0.3rem * 4 * -1);
+}
+
+.rrui__select__options
+{
+	/*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+	min-width : calc(100% + 0.3rem * 4 * 2);
+}
+
+.rrui__select--menu .rrui__select__options
+{
+	/* Overrides the `min-width` rule above for menus */
+	min-width : 0;
+}
+
+.rrui__select__options--downward
+{
+	/* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+	margin-bottom : 1em;
+}
+
+.rrui__select__options--upward
+{
+	bottom : 100%;
+
+	/* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+	margin-top : 1em;
+}
+
+.rrui__select__option
+{
+	display : block;
+	width   : 100%;
+	height  : calc(0.3rem * 7);
+
+	padding-left  : calc(0.3rem * 4);
+	padding-right : calc(0.3rem * 4);
+
+	box-sizing  : border-box;
+	text-align  : left;
+	white-space : nowrap;
+}
+
+.rrui__select__option:hover
+{
+	background-color : #FBFDFD;
+}
+
+.rrui__select__option-icon
+{
+	margin-right : calc(0.3rem * 3);
+}
+
+.rrui__select__separator
+{
+	height           : 1pt;
+	padding          : 0;
+	line-height      : 0;
+	font-size        : 0;
+	background-color : #B8BDC4;
+}
+
+.rrui__select__separator-option
+{
+	padding-top      : calc(0.3rem * 2);
+	padding-bottom   : calc(0.3rem * 2);
+}
+
+.rrui__select__options--upward
+{
+	transform-origin: 50% bottom 0px;
+}
+
+.rrui__select__option--focused
+{
+	background-color: #ECF1F6;
+}
+
+.rrui__select__option--focused:hover
+{
+	background-color: #EFF3F8;
+}
+
+.rrui__select__option:active
+{
+	background-color : #3678D1;
+	color            : white;
+}
+
+.rrui__select__option-icon
+{
+	margin-right: 0.5em
+}
+
+.rrui__select__toggler,
+.rrui__select__button,
+.rrui__select__autocomplete
+{
+	height     : 100%;
+	box-sizing : border-box;
+}
+
+.rrui__select__button
+{
+	/* Because Chrome adds `text-align: center` for all buttons */
+	text-align : left;
+}
+
+.rrui__select__button:active
+{
+	color: #03B2CB;
+}
+
+.rrui__select__button--expanded
+{
+	color: #3678D1;
+}
+
+.rrui__select__button,
+.rrui__select__option
+{
+	color : inherit;
+}
+
+.rrui__select__button--empty
+{
+	color: #888C91;
+}
+
+.rrui__select__button--invalid
+{
+	border-bottom-color: #D30F00;
+}
+
+/* Not introducing an animation on `.rrui__select__option`
+   because it would introduce a little clutter due to
+   focused option animation in autocomplete mode */
+.rrui__select__button
+{
+	transition : color 30ms ease-out;
+}
+
+.rrui__select__selected-content
+{
+	display     : flex;
+	align-items : center;
+}
+
+.rrui__select__selected-label
+{
+	flex          : 1 1 auto;
+	overflow      : hidden;
+	text-overflow : ellipsis;
+}
+
+.rrui__select__arrow
+{
+	width  : 0;
+	height : 0;
+
+	margin-left   : 0.35em;
+	margin-top    : 0.1em;
+	margin-bottom : 0.1em;
+
+	opacity: 0.7;
+
+	transition: opacity 100ms ease-out;
+
+	/* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
+	border-width : 0.35em 0.2em 0 0.2em;
+
+	border-style       : solid;
+	border-left-color  : transparent;
+	border-right-color : transparent;
+
+	color: #B8BDC4;
+}
+
+.rrui__select__arrow--expanded
+{
+	opacity: 0.3;
+}
+
+.rrui__select__native-expanded
+{
+	position : absolute;
+	left     : 0;
+	z-index  : 1;
+	opacity  : 0;
+	cursor   : pointer;
+}
+
+.rrui__select__close
+{
+	/*
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	display      : block;
+	*/
+	display      : none;
+	position     : fixed;
+	top          : 0;
+	right        : 0;
+	z-index      : 1;
+}
+
+.rrui__select__close-icon
+{
+	width        : calc(0.3rem * 4);
+	height       : calc(0.3rem * 4);
+	margin-top   : calc(0.3rem * 1.5);
+	margin-right : calc(0.3rem * 1.5);
+	padding      : calc(0.3rem * 2);
+	box-sizing   : content-box;
+}
+
+.rrui__select__close-icon-path
+{
+	stroke : black;
+}
+
+.rrui__select__close-icon:active .rrui__select__close-icon-path
+{
+	stroke : #03B2CB;
+}
+
+.rrui__select--compact
+{
+	/* Reverts `width: 100%` set at the top of this file */
+	width : auto;
+	/* If it's `compact` then it's most likely inlined */
+	display : inline-block;
+}
+
+.rrui__select--compact .rrui__select__options
+{
+	width : auto;
+}
+
+.rrui__select__button--disabled,
+.rrui__select__option--disabled
+{
+	/* "pointer-events" prevents "cursor: wait" from working */
+	pointer-events : none;
+}
+
+/* Stretches the inputs to full column width by default. */
+/* Because everyone uses CSS grids today. */
+.rrui__select__button,
+.rrui__select__autocomplete
+{
+	width : 100%;
+}
+
+/* For native `<select/>` in Safari. */
+/* (in case this feature being used) */
+.rrui__select__native
+{
+	min-height : 100%;
+}

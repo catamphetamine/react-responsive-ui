@@ -1,0 +1,10 @@
+.rrui__text-input__label--invalid
+{
+	color: #D30F00;
+}
+
+.rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
+{
+	color     : #888C91;
+	transform : translateY(0) scale(1);
+}

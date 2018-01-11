@@ -1,0 +1,8 @@
+/*
+For some reason web browsers size `<input/>`s to be wider
+than 100% of the parent if the parent is small enough.
+*/
+.rrui__input-element
+{
+	max-width : 100%;
+}

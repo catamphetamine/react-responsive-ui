@@ -1,0 +1,9 @@
+.rrui__file-upload
+{
+	cursor : pointer;
+}
+
+.rrui__file-upload--disabled
+{
+	cursor : default;
+}

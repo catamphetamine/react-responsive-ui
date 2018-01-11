@@ -1,0 +1,77 @@
+.rrui__switch
+{
+	display     : inline-flex;
+	align-items : center;
+
+	cursor      : pointer;
+	user-select : none;
+
+	-webkit-tap-highlight-color : transparent;
+	tap-highlight-color         : transparent;
+}
+
+.rrui__switch--disabled
+{
+	cursor : default;
+}
+
+.rrui__switch--label
+{
+	display     : inline-flex;
+	align-items : center;
+}
+
+.rrui__switch__switch
+{
+	position    : relative;
+	line-height : 0;
+}
+
+.rrui__switch__label--left
+{
+	margin-right : calc(0.3rem * 2);
+}
+
+.rrui__switch__label--right
+{
+	margin-left : calc(0.3rem * 2);
+}
+
+.rrui__switch__groove
+{
+	position : relative;
+	display  : inline-block;
+
+	width  : 1.65em;
+	height : 1em;
+
+	background    : white;
+	box-shadow    : inset 0 0 0 0.0625em #d7d7d7;
+	border-radius : 0.5em;
+	transition    : all 0.40s cubic-bezier(.17,.67,.43,.98);
+
+	color : #4cd964;
+}
+
+.rrui__switch__groove--on
+{
+	box-shadow : inset 0 0 0 0.73em currentColor;
+}
+
+.rrui__switch__knob
+{
+	position      : absolute;
+	width         : 0.875em;
+	height        : 0.875em;
+	border-radius : 0.4375em;
+	top           : 0.0625em;
+	left          : 0.0625em;
+	background    : white;
+	box-shadow    : inset 0 0 0 0.03em rgba(0,0,0,0.3), 0 0 0.05em rgba(0,0,0,0.05), 0 0.1em 0.2em rgba(0,0,0,0.2);
+	transition    : all 0.25s ease-out;
+}
+
+.rrui__switch__knob--on
+{
+	left : 0.7125em;
+}

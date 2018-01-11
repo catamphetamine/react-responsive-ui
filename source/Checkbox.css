@@ -1,0 +1,145 @@
+/* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
+
+.rrui__checkbox .rrui__input
+{
+	display     : flex;
+	align-items : center;
+}
+
+.rrui__checkbox .rrui__input--multiline
+{
+	align-items : flex-start;
+}
+
+.rrui__checkbox__label
+{
+	display        : inline-block;
+	padding-left   : 0.5em;
+	vertical-align : bottom;
+	color          : inherit;
+	user-select    : none;
+}
+
+.rrui__checkbox__label:not(.rrui__checkbox__label--multiline)
+{
+	white-space : nowrap;
+}
+
+.rrui__checkbox__label--multiline
+{
+	/* A fix for IE 11 to force it wrap `<label/>` text */
+	flex : 1 0 0;
+}
+
+.rrui__checkbox__label--fallback
+{
+	padding-left : 0;
+}
+
+.rrui__checkbox__input
+{
+	position       : absolute;
+	display        : inline-block;
+	margin         : 0;
+	vertical-align : bottom;
+	z-index        : 100;
+	opacity        : 0;
+}
+
+.rrui__checkbox__input,
+.rrui__checkbox__label
+{
+	cursor : pointer;
+}
+
+.rrui__checkbox--disabled .rrui__checkbox__input,
+.rrui__checkbox--disabled .rrui__checkbox__label
+{
+	cursor : default;
+}
+
+/* Checkbox label color */
+.rrui__checkbox__label:active
+{
+	color: #3678D1;
+}
+
+.rrui__checkbox__checkbox
+{
+	position    : relative;
+	flex-shrink : 0;
+}
+
+.rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline)
+{
+	margin-bottom : 0.1em;
+}
+
+.rrui__checkbox__checkbox--multiline
+{
+	margin-top  : 0.1em;
+	line-height : 0;
+}
+
+.rrui__checkbox__input,
+.rrui__checkbox__checkmark
+{
+	position : absolute;
+	left     : 0;
+	top      : 0;
+	width    : 100%;
+	height   : 100%;
+}
+
+.rrui__checkbox__box
+{
+	width  : 0.9em;
+	height : 0.9em;
+}
+
+.rrui__checkbox__box--no-label
+{
+	position : static;
+}
+
+.rrui__checkbox__checkmark
+{
+	width        : 0.75em;
+	height       : 0.75em;
+	margin-left  : 0.07em;
+	margin-top   : 0.05em;
+
+	pointer-events : none;
+	overflow       : visible;
+}
+
+/* Checkmark color */
+.rrui__checkbox__checkmark path
+{
+	stroke       : #3678D1;
+	stroke-width : 0.45em;
+}
+
+.rrui__checkbox__box
+{
+	border     : 1px solid #cfcfcf;
+	transition : opacity 0.3s;
+	box-sizing : border-box;
+}
+
+.rrui__checkbox--checked .rrui__checkbox__box
+{
+	border-color : #e7e7e7;
+}
+
+/* Checkbox border color */
+.rrui__checkbox__input:active + .rrui__checkbox__box
+{
+	border-color: #3678D1;
+}
+
+/* Invalid checkbox border color */
+.rrui__checkbox--invalid .rrui__checkbox__box
+{
+	border-color: #EB2010;
+}

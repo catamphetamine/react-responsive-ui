@@ -128,6 +128,7 @@ export default class Segmented_control extends PureComponent
 				onClick={ this.chooser(option.value) }
 				className={ classNames
 				(
+					'rrui__button-reset',
 					'rrui__segmented-control__option',
 					{
 						'rrui__segmented-control__option--selected' : selected,
@@ -172,7 +173,7 @@ export default class Segmented_control extends PureComponent
 		(
 			<span
 				key={ option.value }
-				className={ classNames('rrui__segmented-control__option',
+				className={ classNames('rrui__button-reset', 'rrui__segmented-control__option',
 				{
 					'rrui__segmented-control__option--first'  : first,
 					'rrui__segmented-control__option--last'   : last,

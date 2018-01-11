@@ -1,0 +1,43 @@
+.rrui__input-label
+{
+	position : absolute;
+	left     : 0;
+	top      : 0;
+
+	display     : flex;
+	align-items : center;
+
+	white-space : nowrap;
+	font-size   : inherit;
+	user-select : none;
+	pointer-events : none;
+
+	/*
+	When changing this label color
+	also change "input" and "textarea" placeholder color.
+	*/
+	color : #9FA8B3;
+
+	transform        : scale(0.8) translateY(-60%);
+	transform-origin : left top;
+	transition       : color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Focused input label */
+.rrui__input-element:focus + .rrui__input-label
+{
+	color: #03B2CB;
+}
+
+.rrui__input-label--required.rrui__text-input__label--placeholder:after
+{
+	margin-left : 0.3em;
+	font-size   : 0.8em;
+}
+
+.rrui__input-label--required:after,
+.rrui__select__selected-label--required:after
+{
+	content     : '*';
+	margin-left : 0.2em;
+}

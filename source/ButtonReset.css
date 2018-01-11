@@ -1,0 +1,17 @@
+/* Reset the default `<button/>` styles */
+.rrui__button-reset
+{
+	margin      : 0;
+	padding     : 0;
+	white-space : nowrap;
+	outline     : none;
+	appearance  : none;
+	border      : none;
+	background  : none;
+	cursor      : pointer;
+	font-size   : inherit;
+	font-family : inherit;
+	font-weight : inherit;
+	font-style  : inherit;
+	user-select : none;
+}

@@ -535,7 +535,7 @@ export default class Select extends PureComponent
 							type="button"
 							onClick={ this.toggle }
 							aria-label={ closeAriaLabel }
-							className={ classNames('rrui__select__close',
+							className={ classNames('rrui__button-reset', 'rrui__select__close',
 							{
 								'rrui__select__close--autocomplete' : autocomplete
 							}) }>
@@ -594,6 +594,7 @@ export default class Select extends PureComponent
 				style     : item_style ? { ...item_style, ...element.props.style } : element.props.style,
 				className : classNames
 				(
+					'rrui__button-reset',
 					'rrui__select__option',
 					{
 						'rrui__select__option--focused' : is_focused
@@ -635,6 +636,7 @@ export default class Select extends PureComponent
 				aria-label={ label }
 				className={ classNames
 				(
+					'rrui__button-reset',
 					'rrui__select__option',
 					{
 						'rrui__select__option--focused' : is_focused,
@@ -783,6 +785,7 @@ export default class Select extends PureComponent
 				className={ classNames
 				(
 					selected_style_classes,
+					'rrui__button-reset',
 					'rrui__select__button',
 					{
 						'rrui__select__button--empty'   : !selected_label,

@@ -1,0 +1,73 @@
+.rrui__segmented-control
+{
+	position : relative;
+	white-space : nowrap;
+}
+
+.rrui__segmented-control__option
+{
+	height         : 100%;
+	padding-left   : calc(0.3rem * 1.5);
+	padding-right  : calc(0.3rem * 1.5);
+
+	color            : black;
+	background-color : transparent;
+	border           : 1px solid #3678D1;
+	border-radius    : 0.2em;
+	outline          : none;
+
+	transition : all 50ms ease-out;
+}
+
+.rrui__segmented-control__option--first
+{
+	border-top-right-radius    : 0;
+	border-bottom-right-radius : 0;
+	border-right               : none;
+}
+
+.rrui__segmented-control__option--last
+{
+	border-top-left-radius    : 0;
+	border-bottom-left-radius : 0;
+}
+
+.rrui__segmented-control__option--middle
+{
+	border-radius : 0;
+	border-right  : none;
+}
+
+.rrui__segmented-control__option:active
+{
+	color            : white;
+	background-color : #4F9BFF;
+	transition       : none;
+}
+
+.rrui__rich__fallback .rrui__segmented-control__option:active
+{
+	color            : black;
+	background-color : transparent;
+}
+
+.rrui__rich__fallback .rrui__segmented-control__option input
+{
+	margin-left: 0;
+}
+
+.rrui__segmented-control__option--selected
+{
+	color            : white;
+	background-color : #3678D1;
+}
+
+.rrui__segmented-control__option
+{
+  cursor : pointer;
+}
+
+.rrui__segmented-control__option--disabled
+{
+  cursor : default;
+}

@@ -1,0 +1,40 @@
+.rrui__form
+{
+	/* Chrome adds margin-bottom for all <form/>s for some weird reason */
+	margin-bottom : 0;
+}
+
+.rrui__form__actions
+{
+	margin-top : calc(0.3rem * 4);
+
+	/* Right alignment */
+	display         : flex;
+	flex-direction  : row;
+	justify-content : flex-end;
+}
+
+.rrui__form__actions--left-right
+{
+	justify-content : space-between;
+}
+
+.rrui__form__actions .rrui__button
+{
+	margin-right : calc(4 * 0.3rem);
+}
+
+.rrui__form__actions .rrui__button:last-child
+{
+	margin-right : 0;
+}
+
+.rrui__form__field
+{
+	margin-bottom : calc(0.3rem * 2);
+}
+
+.rrui__form__error:empty
+{
+	display : none;
+}

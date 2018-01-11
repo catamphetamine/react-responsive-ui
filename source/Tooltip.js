@@ -33,20 +33,6 @@ export default class Tooltip extends PureComponent
 		hidingAnimationDuration : 120 // in milliseconds
 	}
 
-	constructor()
-	{
-		super()
-
-		this.show = this.show.bind(this)
-		this.hide = this.hide.bind(this)
-
-		this.on_mouse_enter = this.on_mouse_enter.bind(this)
-		this.on_mouse_leave = this.on_mouse_leave.bind(this)
-		this.on_touch_start = this.on_touch_start.bind(this)
-
-		this.mobile = false
-	}
-
 	componentWillMount()
 	{
 		// Don't render tooltip on server side
@@ -110,7 +96,7 @@ export default class Tooltip extends PureComponent
 		return reposition_within_screen(left, top, width, height)
 	}
 
-	show()
+	show = () =>
 	{
 		// Play tooltip showing animation
 		let animate = false
@@ -151,7 +137,7 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
-	hide()
+	hide = () =>
 	{
 		const { hidingAnimationDuration } = this.props
 
@@ -177,7 +163,7 @@ export default class Tooltip extends PureComponent
 		hidingAnimationDuration)
 	}
 
-	on_mouse_enter()
+	on_mouse_enter = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -207,7 +193,7 @@ export default class Tooltip extends PureComponent
 		delay)
 	}
 
-	on_mouse_leave()
+	on_mouse_leave = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -229,7 +215,7 @@ export default class Tooltip extends PureComponent
 		this.hide()
 	}
 
-	on_touch_start()
+	on_touch_start = () =>
 	{
 		// mouse enter events won't be processed from now on
 		this.mobile = true

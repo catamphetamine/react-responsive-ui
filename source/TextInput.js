@@ -430,6 +430,15 @@ export default class Text_input extends PureComponent
 			height = Math.ceil(height / get_modular_grid_unit()) * get_modular_grid_unit()
 		}
 
+		// For some reason Chrome on Windows 10
+		// requires an extra pixel been added
+		// to avoid showing vertical scrollbar.
+		// (Jan 11, 2018)
+		if (height > measurements.initial_height)
+		{
+			height += 1
+		}
+
 		element.style.height = height + 'px'
 	}
 

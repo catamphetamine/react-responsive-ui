@@ -113,7 +113,7 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		const className = classNames('rrui__button__button',
+		const className = classNames('rrui__button-reset', 'rrui__button__button',
 		{
 			'rrui__button__button--link'     : link,
 			// CSS selector performance optimization
