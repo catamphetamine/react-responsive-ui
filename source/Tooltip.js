@@ -253,7 +253,19 @@ export default class Tooltip extends PureComponent
 		// Shows tooltip on mouse over when on desktop.
 		// Shows tooltip on touch when on mobile.
 
-		const { style, className, children } = this.props
+		const
+		{
+			inline,
+			style,
+			className,
+			children
+		}
+		= this.props
+
+		if (inline)
+		{
+			style =
+		}
 
 		return (
 			<div
@@ -264,7 +276,7 @@ export default class Tooltip extends PureComponent
 				onTouchMove={ this.hide }
 				onTouchEnd={ this.hide }
 				onTouchCancel={ this.hide }
-				style={ style ? { ...hovered_element_wrapper_style, ...style } : hovered_element_wrapper_style }
+				style={ style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
 			</div>
@@ -309,9 +321,4 @@ function offset(element)
 	const left = rect.left + window.pageXOffset - client_left
 
 	return { top, left }
-}
-
-const hovered_element_wrapper_style =
-{
-	display: 'inline-block'
 }
