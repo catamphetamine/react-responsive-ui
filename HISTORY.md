@@ -1,3 +1,8 @@
+0.10.15 / 11.01.2018
+====================
+
+  * CSS has been split on per-component basis (not icluding `small-screen.css`) and is available in the `styles` folder of the package.
+
 0.10.0 / 10.10.2017
 ===================
 
