@@ -1253,5 +1253,4 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* Prevents entering text selection mode
    on mobile devices when tapping down and holding */
 .rrui__tooltip__target {
-  display: inline-block;
   user-select: none; }
