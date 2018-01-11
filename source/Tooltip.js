@@ -255,17 +255,11 @@ export default class Tooltip extends PureComponent
 
 		const
 		{
-			inline,
 			style,
 			className,
 			children
 		}
 		= this.props
-
-		if (inline)
-		{
-			style =
-		}
 
 		return (
 			<div
