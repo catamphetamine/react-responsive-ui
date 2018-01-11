@@ -28,6 +28,8 @@ export default class Tooltip extends PureComponent
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself
 		// (`document.body` by default).
+		// (in which case make sure that `document.body` has no `margin`
+		//  otherwise tooltip `left` and `top` positions will be slightly off).
 		container : PropTypes.func,
 
 		// CSS style object
