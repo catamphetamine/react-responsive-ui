@@ -42,6 +42,5 @@
    on mobile devices when tapping down and holding */
 .rrui__tooltip__target
 {
-	display     : inline-block;
 	user-select : none;
 }

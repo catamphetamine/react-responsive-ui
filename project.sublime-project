@@ -4,6 +4,7 @@
 		{
 			"follow_symlinks": true,
 			"path": ".",
+			"file_exclude_patterns": ["react-responsive-ui/style.css"],
 			"folder_exclude_patterns": ["react-responsive-ui/node_modules", "react-responsive-ui/styles", "react-responsive-ui/coverage", "react-responsive-ui/bundle", "react-responsive-ui/commonjs", "react-responsive-ui/modules", "react-responsive-ui/lib", "project.sublime-workspace"]
 		}
 	],

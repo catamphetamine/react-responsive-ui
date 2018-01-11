@@ -11,6 +11,10 @@ export default class Tooltip extends PureComponent
 		// Tooltip text
 		text : PropTypes.string,
 
+		// Whether this element should be displayed as `inline-block`.
+		// (is `true` by default)
+		inline : PropTypes.bool.isRequired,
+
 		// The delay before the tooltip is shown (in milliseconds)
 		delay : PropTypes.number.isRequired,
 
@@ -38,6 +42,7 @@ export default class Tooltip extends PureComponent
 
 	static defaultProps =
 	{
+		inline : true,
 		delay : 200, // in milliseconds
 		hidingAnimationDuration : 120, // in milliseconds
 		container : () => document.body
@@ -269,14 +274,26 @@ export default class Tooltip extends PureComponent
 
 		const
 		{
+			inline,
 			style,
 			className,
-			children
+			children,
+
+			// These properties are here just for `...rest`
+			text,
+			delay,
+			hidingAnimationDuration,
+			container,
+			tooltipClassName,
+
+			// Pass through all other properties
+			...rest
 		}
 		= this.props
 
 		return (
 			<div
+				{...rest}
 				ref={ ref => this.origin = ref }
 				onMouseEnter={ this.on_mouse_enter }
 				onMouseLeave={ this.on_mouse_leave }
@@ -284,7 +301,7 @@ export default class Tooltip extends PureComponent
 				onTouchMove={ this.hide }
 				onTouchEnd={ this.hide }
 				onTouchCancel={ this.hide }
-				style={ style }
+				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
 			</div>
@@ -329,4 +346,9 @@ function offset(element)
 	const left = rect.left + window.pageXOffset - client_left
 
 	return { top, left }
+}
+
+const inline_style =
+{
+	display : 'inline-block'
 }
