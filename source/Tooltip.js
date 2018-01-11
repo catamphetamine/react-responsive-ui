@@ -24,7 +24,16 @@ export default class Tooltip extends PureComponent
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself
 		// (`document.body` by default).
-		container : PropTypes.func
+		container : PropTypes.func,
+
+		// CSS style object
+		style : PropTypes.object,
+
+		// CSS class name
+		className : PropTypes.string,
+
+		// Tooltip CSS class name
+		tooltipClassName : PropTypes.string
 	}
 
 	static defaultProps =
@@ -36,7 +45,7 @@ export default class Tooltip extends PureComponent
 
 	componentWillMount()
 	{
-		const { text } = this.props
+		const { text, tooltipClassName } = this.props
 
 		// Don't render tooltip on server side
 		if (typeof document === 'undefined')
@@ -52,6 +61,11 @@ export default class Tooltip extends PureComponent
 		this.tooltip.style.top  = 0
 
 		this.tooltip.classList.add('rrui__tooltip')
+
+		if (tooltipClassName)
+		{
+			this.tooltip.classList.add(tooltipClassName)
+		}
 
 		this.tooltip.textContent = text
 
