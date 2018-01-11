@@ -51,4 +51,4 @@ npm-debug.log
 /bundle/
 
 # SASS sources
-*.sass
+*.scss
