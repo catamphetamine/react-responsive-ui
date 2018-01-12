@@ -50,19 +50,33 @@ export default class Tooltip extends PureComponent
 		container : () => document.body
 	}
 
-	componentWillMount()
+	componentWillReceiveProps({ text })
+	{
+		// Update tooltip text
+		if (this.tooltip && text !== this.props.text)
+		{
+			this.tooltip.textContent = text
+		}
+	}
+
+	componentWillUnmount()
+	{
+		clearTimeout(this.show_timeout)
+		this.show_timeout = undefined
+
+		clearTimeout(this.hide_timeout)
+		this.hide_timeout = undefined
+
+		this.destroy_tooltip()
+	}
+
+	create_tooltip()
 	{
 		const { text, tooltipClassName } = this.props
 
-		// Don't render tooltip on server side
-		if (typeof document === 'undefined')
-		{
-			return
-		}
-
 		this.tooltip = document.createElement('div')
 
-		this.tooltip.style.display  = 'none'
+		// this.tooltip.style.display  = 'none'
 		this.tooltip.style.position = 'absolute'
 		this.tooltip.style.left = 0
 		this.tooltip.style.top  = 0
@@ -79,26 +93,13 @@ export default class Tooltip extends PureComponent
 		this.container().appendChild(this.tooltip)
 	}
 
-	componentWillReceiveProps({ text })
+	destroy_tooltip()
 	{
-		this.tooltip.textContent = text
-	}
-
-	componentWillUnmount()
-	{
-		// Won't throw an exception
-		this.tooltip.parentNode.removeChild(this.tooltip)
-
-		if (this.hide_timeout)
+		if (this.tooltip)
 		{
-			clearTimeout(this.hide_timeout)
-			this.hide_timeout = undefined
-		}
-
-		if (this.show_timeout)
-		{
-			clearTimeout(this.show_timeout)
-			this.show_timeout = undefined
+			// Won't throw an exception
+			this.tooltip.parentNode.removeChild(this.tooltip)
+			this.tooltip = undefined
 		}
 	}
 
@@ -146,17 +147,21 @@ export default class Tooltip extends PureComponent
 		// Otherwise, the tooltip is hidden (or never been shown)
 		else
 		{
-			this.tooltip.style.display = 'block'
+			if (!this.tooltip)
+			{
+				this.create_tooltip()
+			}
+
+			// this.tooltip.style.display = 'block'
 
 			// Play tooltip showing animation
 			animate = true
 		}
 
-		const coordinates = this.calculate_coordinates()
-		// console.log(coordinates)
+		const { x, y } = this.calculate_coordinates()
 
-		this.tooltip.style.left = coordinates.x + 'px'
-		this.tooltip.style.top  = coordinates.y + 'px'
+		this.tooltip.style.left = `${x}px`
+		this.tooltip.style.top  = `${y}px`
 
 		// Play tooltip showing animation
 		// (doing it after setting position because
@@ -172,7 +177,8 @@ export default class Tooltip extends PureComponent
 		const { hidingAnimationDuration } = this.props
 
 		// If already hiding, or if already hidden, then do nothing.
-		if (this.hide_timeout || this.tooltip.style.display === 'none')
+		// if (this.hide_timeout || this.tooltip.style.display === 'none')
+		if (this.hide_timeout || !this.tooltip)
 		{
 			return
 		}
@@ -185,10 +191,10 @@ export default class Tooltip extends PureComponent
 		this.hide_timeout = setTimeout(() =>
 		{
 			this.hide_timeout = undefined
-			this.tooltip.style.display = 'none'
-
-			this.tooltip.classList.remove('rrui__tooltip--before-hide')
-			this.tooltip.classList.remove('rrui__tooltip--after-show')
+			this.destroy_tooltip()
+			// this.tooltip.style.display = 'none'
+			// this.tooltip.classList.remove('rrui__tooltip--before-hide')
+			// this.tooltip.classList.remove('rrui__tooltip--after-show')
 		},
 		hidingAnimationDuration)
 	}
