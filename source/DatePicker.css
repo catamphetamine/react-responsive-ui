@@ -256,6 +256,11 @@
 	background-color: #72B2FC;
 }
 
+.DayPicker-Day--disabled
+{
+  background-color: transparent;
+}
+
 .rrui__date-picker
 {
 	position: relative;

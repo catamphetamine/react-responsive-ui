@@ -4,7 +4,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import DayPicker, { DateUtils } from 'react-day-picker'
+import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
 // // Moment.js takes 161 KB of space (minified) which is too much
@@ -325,7 +325,8 @@ export default class DatePicker extends PureComponent
 			value: previous_value,
 			format,
 			noon,
-			utc
+			utc,
+			disabledDays
 		}
 		= this.props
 
@@ -349,7 +350,11 @@ export default class DatePicker extends PureComponent
 
 		const selected_day = parse_date(value, format, noon, utc)
 
-		if (!selected_day)
+		// If the date input is unparseable,
+		// or if it's one of the disabled days,
+		// then don't change the selected date.
+		if (!selected_day ||
+			disabledDays && ModifiersUtils.dayMatchesModifier(selected_day, disabledDays))
 		{
 			return this.setState({ text_value: value })
 		}
@@ -367,7 +372,7 @@ export default class DatePicker extends PureComponent
 		() => this.calendar.showMonth(selected_day))
 	}
 
-	on_day_click = (selected_day) =>
+	on_day_click = (selected_day, { disabled }) =>
 	{
 		const
 		{
@@ -378,6 +383,12 @@ export default class DatePicker extends PureComponent
 			utc
 		}
 		= this.props
+
+		// If the day clicked is disabled then do nothing.
+		if (disabled)
+		{
+			return
+		}
 
 		// https://github.com/gpbl/react-day-picker/issues/473
 		// By default the `selected_day` has time
