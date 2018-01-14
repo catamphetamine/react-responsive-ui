@@ -68,6 +68,15 @@ export default class DatePicker extends PureComponent
 		// HTML `<input/>` `name` attribute
 		name : PropTypes.string,
 
+		// `react-day-picker`'s `disabledDays`.
+		// http://react-day-picker.js.org/examples/disabled
+		disabledDays : PropTypes.oneOfType
+		([
+			PropTypes.object,
+			PropTypes.func,
+			PropTypes.array
+		]),
+
 		// How much years back can a user navigate using the year `<select/>`
 		selectYearsIntoPast : PropTypes.number,
 
@@ -522,6 +531,7 @@ export default class DatePicker extends PureComponent
 			format,
 			value,
 			error,
+			disabledDays,
 			selectYearsIntoPast,
 			selectYearsIntoFuture,
 			firstDayOfWeek,
@@ -645,6 +655,7 @@ export default class DatePicker extends PureComponent
 								onDayClick={ this.on_day_click }
 								onKeyDown={ this.on_calendar_key_down }
 								selectedDays={ normalize_value(value) }
+								disabledDays={ disabledDays }
 								captionElement={ captionElement }
 								tabIndex={ -1 }
 								className="rrui__date-picker__calendar" />

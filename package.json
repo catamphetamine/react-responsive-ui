@@ -1,6 +1,6 @@
 {
   "name": "react-responsive-ui",
-  "version": "0.10.21",
+  "version": "0.10.22",
   "description": "Responsive React UI components",
   "main": "index.common.js",
   "module": "index.js",
@@ -16,7 +16,7 @@
     "lodash": "^4.17.4",
     "lodash.assign": "^4.2.0",
     "prop-types": "^15.5.6",
-    "react-day-picker": "^6.1.0",
+    "react-day-picker": "^7.0.7",
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-modal": "^3.0.0",
