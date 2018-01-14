@@ -6,8 +6,11 @@
   line-height: 0; }
 
 .rrui__activity-indicator-circle-container {
-  animation: rrui-spinner-rotate 2s linear infinite;
-  transform-origin: center center; }
+  -webkit-animation: rrui-spinner-rotate 2s linear infinite;
+          animation: rrui-spinner-rotate 2s linear infinite;
+  -webkit-transform-origin: center center;
+      -ms-transform-origin: center center;
+          transform-origin: center center; }
 
 .rrui__activity-indicator-circle {
   /* IE can not animate SVG. */
@@ -16,12 +19,30 @@
   /* to show an indicator in IE but the aethetics is better othewise so screw IE. */
   stroke-dasharray: 1,200;
   stroke-dashoffset: 0;
-  animation: rrui-spinner-extent 1.5s ease-in-out infinite;
+  -webkit-animation: rrui-spinner-extent 1.5s ease-in-out infinite;
+          animation: rrui-spinner-extent 1.5s ease-in-out infinite;
   stroke-linecap: round; }
+
+@-webkit-keyframes rrui-spinner-rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
 
 @keyframes rrui-spinner-rotate {
   100% {
-    transform: rotate(360deg); } }
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@-webkit-keyframes rrui-spinner-extent {
+  0% {
+    stroke-dasharray: 1,200;
+    stroke-dashoffset: 0; }
+  50% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -35; }
+  100% {
+    stroke-dasharray: 89,200;
+    stroke-dashoffset: -124; } }
 
 @keyframes rrui-spinner-extent {
   0% {
@@ -37,8 +58,11 @@
 .rrui__button {
   display: inline-block;
   position: relative;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   cursor: pointer;
+  -webkit-transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+  -o-transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
   transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out; }
 
 .rrui__button--busy,
@@ -52,7 +76,10 @@
 .rrui__button__button {
   height: 100%;
   width: 100%;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   cursor: inherit;
   color: inherit; }
 
@@ -60,15 +87,25 @@
   /* <button/> tends to vertially align its contents by itself */
   /* (I guess that's a <button/>'s natural behaviour) */
   /* but <a/> needs special treatment in this sense. */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   text-decoration: none; }
 
 .rrui__button__contents {
+  -webkit-transition: opacity 150ms ease-out 100ms;
+  -o-transition: opacity 150ms ease-out 100ms;
   transition: opacity 150ms ease-out 100ms; }
 
 .rrui__button__contents--busy {
   opacity: 0;
+  -webkit-transition: opacity 200ms ease-out 300ms;
+  -o-transition: opacity 200ms ease-out 300ms;
   transition: opacity 200ms ease-out 300ms; }
 
 .rrui__button__activity-indicator {
@@ -80,6 +117,8 @@
   width: 1em;
   height: 1em;
   opacity: 0;
+  -webkit-transition: opacity 200ms ease-out;
+  -o-transition: opacity 200ms ease-out;
   transition: opacity 200ms ease-out;
   pointer-events: none; }
 
@@ -88,7 +127,9 @@
 
 .rrui__button__activity-indicator--busy {
   opacity: 1;
-  transition-delay: 350ms; }
+  -webkit-transition-delay: 350ms;
+       -o-transition-delay: 350ms;
+          transition-delay: 350ms; }
 
 /* Button colors */
 .rrui__button {
@@ -103,7 +144,9 @@
   padding: 0;
   white-space: nowrap;
   outline: none;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   border: none;
   background: none;
   cursor: pointer;
@@ -111,29 +154,47 @@
   font-family: inherit;
   font-weight: inherit;
   font-style: inherit;
-  user-select: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 .rrui__checkbox .rrui__input {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center; }
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .rrui__checkbox .rrui__input--multiline {
-  align-items: flex-start; }
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
 
 .rrui__checkbox__label {
   display: inline-block;
   padding-left: 0.5em;
   vertical-align: bottom;
   color: inherit;
-  user-select: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 .rrui__checkbox__label:not(.rrui__checkbox__label--multiline) {
   white-space: nowrap; }
 
 .rrui__checkbox__label--multiline {
   /* A fix for IE 11 to force it wrap `<label/>` text */
-  flex: 1 0 0; }
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 0;
+      -ms-flex: 1 0 0px;
+          flex: 1 0 0; }
 
 .rrui__checkbox__label--fallback {
   padding-left: 0; }
@@ -160,7 +221,9 @@
 
 .rrui__checkbox__checkbox {
   position: relative;
-  flex-shrink: 0; }
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
 
 .rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline) {
   margin-bottom: 0.1em; }
@@ -199,8 +262,11 @@
 
 .rrui__checkbox__box {
   border: 1px solid #cfcfcf;
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
   transition: opacity 0.3s;
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .rrui__checkbox--checked .rrui__checkbox__box {
   border-color: #e7e7e7; }
@@ -221,12 +287,15 @@
 .DayPicker-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-justify-content: center;
+          justify-content: center;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -235,7 +304,8 @@
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
-  flex-direction: row;
+  -webkit-flex-direction: row;
+          flex-direction: row;
   padding: 1rem 0; }
 
 .DayPicker-Month {
@@ -387,9 +457,18 @@
   top: -0.2rem; }
 
 .DayPicker-CaptionSelects {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 100%; }
 
 .DayPicker-MonthSelect {
@@ -397,7 +476,9 @@
 
 .DayPicker-MonthSelect,
 .DayPicker-YearSelect {
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   outline: none;
   border: none;
   margin-top: -0.4em;
@@ -418,6 +499,9 @@
   color: #FFF;
   background-color: #72B2FC; }
 
+.DayPicker-Day--disabled {
+  background-color: transparent; }
+
 .rrui__date-picker {
   position: relative; }
 
@@ -434,10 +518,10 @@
 
 .rrui__date-picker__input-overlay {
   /*
-	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	This works around the mobile keyboard appearing from the bottom.
-	display  : block;
-	*/
+  Set `display` to `block` for fullscreen `.rrui__expandable` design.
+  This works around the mobile keyboard appearing from the bottom.
+  display  : block;
+  */
   display: none;
   position: absolute;
   width: 100%;
@@ -445,9 +529,9 @@
 
 .rrui__date-picker__close {
   /*
-	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	display      : block;
-	*/
+  Set `display` to `block` for fullscreen `.rrui__expandable` design.
+  display      : block;
+  */
   display: none;
   margin-left: auto;
   margin-right: auto;
@@ -462,9 +546,15 @@
 .rrui__expandable {
   opacity: 0;
   pointer-events: none;
-  transform: scaleY(0);
-  transform-origin: 50% top 0px;
+  -webkit-transform: scaleY(0);
+      -ms-transform: scaleY(0);
+          transform: scaleY(0);
+  -webkit-transform-origin: 50% top 0px;
+      -ms-transform-origin: 50% top 0px;
+          transform-origin: 50% top 0px;
   /* 250ms - too slow for short lists */
+  -webkit-transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
+  -o-transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
   transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
   /* prevent white background showing through the transparent border */
   /* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
@@ -474,8 +564,14 @@
 .rrui__expandable--expanded {
   opacity: 1;
   pointer-events: auto;
-  transform: scaleY(1);
-  transform-origin: 50% top 0px;
+  -webkit-transform: scaleY(1);
+      -ms-transform: scaleY(1);
+          transform: scaleY(1);
+  -webkit-transform-origin: 50% top 0px;
+      -ms-transform-origin: 50% top 0px;
+          transform-origin: 50% top 0px;
+  -webkit-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  -o-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
   transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
 
 .rrui__expandable--overlay {
@@ -484,13 +580,15 @@
 
 .rrui__expandable__content {
   /*
-	The inner block's `opacity` is animated too
-	(it fades in and out by itself too).
-	This is done to fade out the inner block when the dropdown is collapsed
-	therefore hiding an otherwise bizarre and unwanted visual clutter
-	*/
+  The inner block's `opacity` is animated too
+  (it fades in and out by itself too).
+  This is done to fade out the inner block when the dropdown is collapsed
+  therefore hiding an otherwise bizarre and unwanted visual clutter
+  */
   opacity: 0;
   /* Mitigates inner content overlapping with itself creating a feeling of a mess */
+  -webkit-transition: opacity 150ms ease-out;
+  -o-transition: opacity 150ms ease-out;
   transition: opacity 150ms ease-out; }
 
 .rrui__expandable__content--expanded {
@@ -515,12 +613,25 @@
 .rrui__form__actions {
   margin-top: calc(0.3rem * 4);
   /* Right alignment */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end; }
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 .rrui__form__actions--left-right {
-  justify-content: space-between; }
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 .rrui__form__actions .rrui__button {
   margin-right: calc(4 * 0.3rem); }
@@ -564,7 +675,9 @@ than 100% of the parent if the parent is small enough.
   border-radius: 0;
   /* Some web browsers add <input/> padding by default */
   padding: 0;
-  appearance: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -589,6 +702,8 @@ than 100% of the parent if the parent is small enough.
 .rrui__select__button {
   border: none;
   border-bottom: 1px solid #C5D2E0;
+  -webkit-transition: border 0.1s;
+  -o-transition: border 0.1s;
   transition: border 0.1s; }
 
 .rrui__input-field:focus,
@@ -599,7 +714,8 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field {
   height: 100%;
   font-size: inherit;
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 /* Resets height back to 100% for multiline text input */
 .rrui__input-field--multiline {
@@ -610,20 +726,37 @@ than 100% of the parent if the parent is small enough.
   position: absolute;
   left: 0;
   top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   white-space: nowrap;
   font-size: inherit;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   pointer-events: none;
   /*
-	When changing this label color
-	also change "input" and "textarea" placeholder color.
-	*/
+  When changing this label color
+  also change "input" and "textarea" placeholder color.
+  */
   color: #9FA8B3;
-  transform: scale(0.8) translateY(-60%);
-  transform-origin: left top;
-  transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1); }
+  -webkit-transform: scale(0.8) translateY(-60%);
+      -ms-transform: scale(0.8) translateY(-60%);
+          transform: scale(0.8) translateY(-60%);
+  -webkit-transform-origin: left top;
+      -ms-transform-origin: left top;
+          transform-origin: left top;
+  -webkit-transition: color 0.1s ease-out, -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 0.1s ease-out, -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  -o-transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1); }
 
 /* Focused input label */
 .rrui__input-element:focus + .rrui__input-label {
@@ -648,12 +781,19 @@ than 100% of the parent if the parent is small enough.
   overflow-y: auto;
   opacity: 0.9;
   background-color: black;
-  transform: translate3d(-100%, 0, 0);
-  transition: transform 120ms ease-out; }
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0);
+  -webkit-transition: -webkit-transform 120ms ease-out;
+  transition: -webkit-transform 120ms ease-out;
+  -o-transition: transform 120ms ease-out;
+  transition: transform 120ms ease-out;
+  transition: transform 120ms ease-out, -webkit-transform 120ms ease-out; }
 
 .rrui__slideout-menu--shown {
-  transform: translate3d(0, 0, 0);
-  box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4); }
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4); }
 
 .rrui__slideout-menu-button {
   display: inline-block;
@@ -695,9 +835,13 @@ also change `default_close_timeout` in ./Modal.js accordingly
   background-color: transparent; }
 
 .ReactModal__Overlay--after-open {
+  -webkit-transition: background-color 300ms ease-out;
+  -o-transition: background-color 300ms ease-out;
   transition: background-color 300ms ease-out; }
 
 .ReactModal__Overlay--before-close {
+  -webkit-transition: background-color 100ms ease-out;
+  -o-transition: background-color 100ms ease-out;
   transition: background-color 100ms ease-out; }
 
 .ReactModal__Content {
@@ -706,25 +850,35 @@ also change `default_close_timeout` in ./Modal.js accordingly
 .rrui__modal__content {
   opacity: 0;
   /*
-	Scaling `<Modal/>` down on appear looks cool
-	but it also can cause scrollbars to appear
-	due to overflow which is a weird `scale()` behaviour.
-	Those scrollbars alter window width resulting in
-	`<Modal/>` positioning glitches (while centering itself).
-	Therefore not using `scale()`s above `1`, only downscaling.
-	transform  : scale(1.07);
-	*/
-  transform: scale(0.95);
-  transition: transform 100ms ease-out, opacity 100ms ease-out; }
+  Scaling `<Modal/>` down on appear looks cool
+  but it also can cause scrollbars to appear
+  due to overflow which is a weird `scale()` behaviour.
+  Those scrollbars alter window width resulting in
+  `<Modal/>` positioning glitches (while centering itself).
+  Therefore not using `scale()`s above `1`, only downscaling.
+  transform  : scale(1.07);
+  */
+  -webkit-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+          transform: scale(0.95);
+  -webkit-transition: opacity 100ms ease-out, -webkit-transform 100ms ease-out;
+  transition: opacity 100ms ease-out, -webkit-transform 100ms ease-out;
+  -o-transition: transform 100ms ease-out, opacity 100ms ease-out;
+  transition: transform 100ms ease-out, opacity 100ms ease-out;
+  transition: transform 100ms ease-out, opacity 100ms ease-out, -webkit-transform 100ms ease-out; }
 
 .ReactModal__Content--after-open .rrui__modal__content {
   opacity: 1;
-  transform: none; }
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none; }
 
 /* This rule is required for closing animation */
 .ReactModal__Content--before-close .rrui__modal__content {
   opacity: 0;
-  transform: scale(0.95); }
+  -webkit-transform: scale(0.95);
+      -ms-transform: scale(0.95);
+          transform: scale(0.95); }
 
 /*
 The extra opacity animation on `<Modal/>` contents
@@ -735,10 +889,14 @@ is used to prevent clutter on background while the modal fades in/out.
 
 .ReactModal__Content--after-open .rrui__modal__content-body {
   opacity: 1;
+  -webkit-transition: opacity 100ms ease-out;
+  -o-transition: opacity 100ms ease-out;
   transition: opacity 100ms ease-out; }
 
 .ReactModal__Content--before-close .rrui__modal__content-body {
   opacity: 0;
+  -webkit-transition: opacity 80ms ease-out;
+  -o-transition: opacity 80ms ease-out;
   transition: opacity 80ms ease-out; }
 
 /* Hides `react-modal` scrollbar when closing the modal */
@@ -750,8 +908,8 @@ While this would disable page scrolling when modal is presented,
 it would introduce page width jumps.
 .ReactModal__Body--open
 {
-	height: 100%;
-	overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 */
 /*==========================================================
@@ -772,12 +930,18 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__overlay {
   /* Horizontal centering */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center; }
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 .rrui__modal__overlay--fullscreen {
   /* `display: flex` results in a weird content clipping bug in fullscreen mode
-	   because of `justify-content: center` on the container */
+     because of `justify-content: center` on the container */
   display: block;
   background-color: white; }
 
@@ -791,14 +955,30 @@ but rather `width: auto` or `left: 0; right: 0;`.
   /* Centers everything vertically */
   min-height: 100%;
   /* Using `inline-flex` here so that it doesn't
-	   stretch to the whole overlay width */
+     stretch to the whole overlay width */
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  flex-direction: column; }
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
 
 .rrui__modal__container--fullscreen {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center; }
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 .rrui__modal__close {
   float: right;
@@ -813,13 +993,20 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__content {
   /* So that modal content won't neccessarily
-	   stretch horizontally to the full width of the screen */
+     stretch horizontally to the full width of the screen */
   display: inline-block;
   /* Modal content shouldn't stretch vertically */
-  flex-grow: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   /* Modal content will contract vertically */
-  flex-shrink: 1;
-  flex-basis: auto;
+  -webkit-flex-shrink: 1;
+      -ms-flex-negative: 1;
+          flex-shrink: 1;
+  -webkit-flex-basis: auto;
+      -ms-flex-preferred-size: auto;
+          flex-basis: auto;
   border-radius: 0.2rem;
   background-color: white; }
 
@@ -834,37 +1021,74 @@ but rather `width: auto` or `left: 0; right: 0;`.
   /* Perhaps "width : 100%" was needed for it to work properly */
   width: 100%;
   /* Vertical padding won't ever shrink below the minimum size */
-  flex-shrink: 0;
-  flex-basis: 3%; }
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  -webkit-flex-basis: 3%;
+      -ms-flex-preferred-size: 3%;
+          flex-basis: 3%; }
 
 .rrui__modal__vertical-margin--top {
-  flex-grow: 2; }
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2; }
 
 .rrui__modal__vertical-margin--bottom {
-  flex-grow: 5; }
+  -webkit-box-flex: 5;
+  -webkit-flex-grow: 5;
+      -ms-flex-positive: 5;
+          flex-grow: 5; }
 
 .rrui__modal__vertical-margin--fullscreen {
   display: none; }
 
 .rrui__modal--could-not-close-because-busy {
-  animation: bounce_z 0.6s;
-  transform: translate3d(0, 0, 0); }
+  -webkit-animation: bounce_z 0.6s;
+          animation: bounce_z 0.6s;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0); }
 
 /* https://daneden.github.io/animate.css/ */
 /* https://github.com/daneden/animate.css/blob/master/source/bouncing_entrances/bounceIn.css */
+@-webkit-keyframes bounce_z {
+  from, 25%, 47%, 72%, to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); }
+  25% {
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+            transform: scale3d(0.97, 0.97, 0.97); }
+  47% {
+    -webkit-transform: scale3d(1.025, 1.025, 1.025);
+            transform: scale3d(1.025, 1.025, 1.025); }
+  72% {
+    -webkit-transform: scale3d(0.99, 0.99, 0.99);
+            transform: scale3d(0.99, 0.99, 0.99); }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); } }
 @keyframes bounce_z {
   from, 25%, 47%, 72%, to {
-    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
   0% {
-    transform: scale3d(1, 1, 1); }
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); }
   25% {
-    transform: scale3d(0.97, 0.97, 0.97); }
+    -webkit-transform: scale3d(0.97, 0.97, 0.97);
+            transform: scale3d(0.97, 0.97, 0.97); }
   47% {
-    transform: scale3d(1.025, 1.025, 1.025); }
+    -webkit-transform: scale3d(1.025, 1.025, 1.025);
+            transform: scale3d(1.025, 1.025, 1.025); }
   72% {
-    transform: scale3d(0.99, 0.99, 0.99); }
+    -webkit-transform: scale3d(0.99, 0.99, 0.99);
+            transform: scale3d(0.99, 0.99, 0.99); }
   to {
-    transform: scale3d(1, 1, 1); } }
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1); } }
 
 .rrui__modal__content .rrui__form__error {
   margin-bottom: 0; }
@@ -875,6 +1099,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   background-color: transparent; }
 
 .rrui__modal__overlay--fullscreen {
+  -webkit-transition: background-color 100ms ease-out;
+  -o-transition: background-color 100ms ease-out;
   transition: background-color 100ms ease-out; }
 
 .rrui__modal__overlay--fullscreen .rrui__modal__content {
@@ -893,6 +1119,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   border: 1px solid #3678D1;
   border-radius: 0.2em;
   outline: none;
+  -webkit-transition: all 50ms ease-out;
+  -o-transition: all 50ms ease-out;
   transition: all 50ms ease-out; }
 
 .rrui__segmented-control__option--first {
@@ -911,6 +1139,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__segmented-control__option:active {
   color: white;
   background-color: #4F9BFF;
+  -webkit-transition: none;
+  -o-transition: none;
   transition: none; }
 
 .rrui__rich__fallback .rrui__segmented-control__option:active {
@@ -932,9 +1162,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select {
   /* This is for `.rrui__select__options` to be positioned
-	   correctly relative to the `<Select/>` itself. */
+     correctly relative to the `<Select/>` itself. */
   position: relative;
-  user-select: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 .rrui__select__options {
   margin: 0;
@@ -945,7 +1178,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   background-color: white;
   list-style-type: none;
   overflow-x: hidden;
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .rrui__select__options--left-aligned {
   left: calc(0.3rem * 4 * -1); }
@@ -955,10 +1189,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__options {
   /*
-	`<Select/>` options text should be at least fully visible.
-	At the same time `<Select/>` options should stretch themselves
-	horizontally to the width of the containing column (when using grid layout).
-	*/
+  `<Select/>` options text should be at least fully visible.
+  At the same time `<Select/>` options should stretch themselves
+  horizontally to the width of the containing column (when using grid layout).
+  */
   min-width: calc(100% + 0.3rem * 4 * 2); }
 
 .rrui__select--menu .rrui__select__options {
@@ -967,15 +1201,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__options--downward {
   /* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
+     then this bottom margin helps to see that
+     there's no more options left out being clipped or something */
   margin-bottom: 1em; }
 
 .rrui__select__options--upward {
   bottom: 100%;
   /* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
+     then this bottom margin helps to see that
+     there's no more options left out being clipped or something */
   margin-top: 1em; }
 
 .rrui__select__option {
@@ -984,7 +1218,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   height: calc(0.3rem * 7);
   padding-left: calc(0.3rem * 4);
   padding-right: calc(0.3rem * 4);
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   text-align: left;
   white-space: nowrap; }
 
@@ -1006,7 +1241,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
   padding-bottom: calc(0.3rem * 2); }
 
 .rrui__select__options--upward {
-  transform-origin: 50% bottom 0px; }
+  -webkit-transform-origin: 50% bottom 0px;
+      -ms-transform-origin: 50% bottom 0px;
+          transform-origin: 50% bottom 0px; }
 
 .rrui__select__option--focused {
   background-color: #ECF1F6; }
@@ -1025,7 +1262,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__button,
 .rrui__select__autocomplete {
   height: 100%;
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 .rrui__select__button {
   /* Because Chrome adds `text-align: center` for all buttons */
@@ -1051,16 +1289,28 @@ but rather `width: auto` or `left: 0; right: 0;`.
    because it would introduce a little clutter due to
    focused option animation in autocomplete mode */
 .rrui__select__button {
+  -webkit-transition: color 30ms ease-out;
+  -o-transition: color 30ms ease-out;
   transition: color 30ms ease-out; }
 
 .rrui__select__selected-content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center; }
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .rrui__select__selected-label {
-  flex: 1 1 auto;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
   overflow: hidden;
-  text-overflow: ellipsis; }
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis; }
 
 .rrui__select__arrow {
   width: 0;
@@ -1069,6 +1319,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   margin-top: 0.1em;
   margin-bottom: 0.1em;
   opacity: 0.7;
+  -webkit-transition: opacity 100ms ease-out;
+  -o-transition: opacity 100ms ease-out;
   transition: opacity 100ms ease-out;
   /* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
   border-width: 0.35em 0.2em 0 0.2em;
@@ -1089,9 +1341,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__close {
   /*
-	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	display      : block;
-	*/
+  Set `display` to `block` for fullscreen `.rrui__expandable` design.
+  display      : block;
+  */
   display: none;
   position: fixed;
   top: 0;
@@ -1104,7 +1356,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   margin-top: calc(0.3rem * 1.5);
   margin-right: calc(0.3rem * 1.5);
   padding: calc(0.3rem * 2);
-  box-sizing: content-box; }
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box; }
 
 .rrui__select__close-icon-path {
   stroke: black; }
@@ -1138,9 +1391,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
   min-height: 100%; }
 
 .rrui__shadow {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
 
 .rrui__snackbar__container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   position: fixed;
   left: 0;
@@ -1150,7 +1407,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
   z-index: 1; }
 
 .rrui__snackbar {
-  flex-grow: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
   margin: auto;
   pointer-events: auto;
   background: black;
@@ -1163,10 +1423,19 @@ but rather `width: auto` or `left: 0; right: 0;`.
   padding-bottom: calc(0.3rem * 2); }
 
 .rrui__switch {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   cursor: pointer;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   -webkit-tap-highlight-color: transparent;
   tap-highlight-color: transparent; }
 
@@ -1174,8 +1443,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
   cursor: default; }
 
 .rrui__switch--label {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
   display: inline-flex;
-  align-items: center; }
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .rrui__switch__switch {
   position: relative;
@@ -1193,13 +1468,17 @@ but rather `width: auto` or `left: 0; right: 0;`.
   width: 1.65em;
   height: 1em;
   background: white;
-  box-shadow: inset 0 0 0 0.0625em #d7d7d7;
+  -webkit-box-shadow: inset 0 0 0 0.0625em #d7d7d7;
+          box-shadow: inset 0 0 0 0.0625em #d7d7d7;
   border-radius: 0.5em;
+  -webkit-transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98);
+  -o-transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98);
   transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98);
   color: #4cd964; }
 
 .rrui__switch__groove--on {
-  box-shadow: inset 0 0 0 0.73em currentColor; }
+  -webkit-box-shadow: inset 0 0 0 0.73em currentColor;
+          box-shadow: inset 0 0 0 0.73em currentColor; }
 
 .rrui__switch__knob {
   position: absolute;
@@ -1209,7 +1488,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
   top: 0.0625em;
   left: 0.0625em;
   background: white;
-  box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+  -webkit-transition: all 0.25s ease-out;
+  -o-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out; }
 
 .rrui__switch__knob--on {
@@ -1220,7 +1502,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder {
   color: #888C91;
-  transform: translateY(0) scale(1); }
+  -webkit-transform: translateY(0) scale(1);
+      -ms-transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1); }
 
 .rrui__tooltip {
   color: white;
@@ -1233,24 +1517,37 @@ but rather `width: auto` or `left: 0; right: 0;`.
   margin-top: -0.3em;
   opacity: 0;
   /* transform  : scale(0.8); */
-  transform: translateY(0.5em);
+  -webkit-transform: translateY(0.5em);
+      -ms-transform: translateY(0.5em);
+          transform: translateY(0.5em);
   cursor: default; }
 
 .rrui__tooltip--after-show {
   opacity: 1;
   /* transform : scale(1); */
-  transform: translateY(0); }
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0); }
 
 .rrui__tooltip--before-hide {
   opacity: 0;
   /* transform : scale(0.8); */
-  transform: translateY(0.5em); }
+  -webkit-transform: translateY(0.5em);
+      -ms-transform: translateY(0.5em);
+          transform: translateY(0.5em); }
 
 .rrui__tooltip--after-show,
 .rrui__tooltip--before-hide {
-  transition: opacity 120ms ease-out, transform 120ms ease-out; }
+  -webkit-transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
+  transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
+  -o-transition: opacity 120ms ease-out, transform 120ms ease-out;
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+  transition: opacity 120ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out; }
 
 /* Prevents entering text selection mode
    on mobile devices when tapping down and holding */
 .rrui__tooltip__target {
-  user-select: none; }
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
