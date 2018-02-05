@@ -126,7 +126,7 @@ export default class Text_input extends PureComponent
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		const { multiline, fallback, value, autoresize } = this.props
+		const { multiline, autoresize, fallback, value } = this.props
 
 		// Doing `this.measure()` here now
 		// because `<textarea/>` should autoresize
@@ -136,12 +136,12 @@ export default class Text_input extends PureComponent
 		// // Measuring the height of `<textarea/>` during
 		// // the first `this.measurements()` call instead.
 
-		if (value && autoresize)
+		if (multiline && autoresize && value)
 		{
 			this.autoresize()
 		}
 
-		if (multiline)
+		if (multiline && autoresize)
 		{
 			window.addEventListener('resize', this.on_window_resize)
 		}
@@ -154,9 +154,9 @@ export default class Text_input extends PureComponent
 
 	componentWillUnmount()
 	{
-		const { multiline } = this.props
+		const { multiline, autoresize } = this.props
 
-		if (multiline)
+		if (multiline && autoresize)
 		{
 			window.removeEventListener('resize', this.on_window_resize)
 		}
@@ -310,12 +310,14 @@ export default class Text_input extends PureComponent
 		if (multiline)
 		{
 			// "keyup" is required for IE to properly reset height when deleting text
-			return <textarea
-				rows={ rows }
-				cols={ cols }
-				onInput={ this.autoresize }
-				onKeyUp={ this.autoresize }
-				{ ...properties }/>
+			return (
+				<textarea
+					rows={ rows }
+					cols={ cols }
+					onInput={ autoresize ? this.autoresize : undefined }
+					onKeyUp={ autoresize ? this.autoresize : undefined }
+					{ ...properties }/>
+			)
 		}
 
 		// Add `<input/>` `type` to properties
@@ -330,7 +332,11 @@ export default class Text_input extends PureComponent
 	{
 		const { error } = this.props
 
-		return <div className="rrui__input-error">{ error }</div>
+		return (
+			<div className="rrui__input-error">
+				{ error }
+			</div>
+		)
 	}
 
 	// Fallback in case javascript is disabled (no animated <label/>)
@@ -408,13 +414,6 @@ export default class Text_input extends PureComponent
 
 	autoresize = (event) =>
 	{
-		const { autoresize } = this.props
-
-		if (!autoresize)
-		{
-			return
-		}
-
 		const measurements = this.measurements()
 		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
 
@@ -442,10 +441,7 @@ export default class Text_input extends PureComponent
 		element.style.height = height + 'px'
 	}
 
-	on_window_resize = throttle((event) =>
-	{
-		this.autoresize()
-	}, 100)
+	on_window_resize = throttle((event) => this.autoresize(), 100)
 
 	// The underlying `input` component
 	// can pass both `event`s and `value`s
