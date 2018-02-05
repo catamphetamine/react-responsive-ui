@@ -94,6 +94,9 @@ export default class DatePicker extends PureComponent
 		// "Close" button title for fullscreen mode on mobile devices
 		closeButtonLabel : PropTypes.string.isRequired,
 
+		// The calendar icon
+		icon : PropTypes.node,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -551,6 +554,7 @@ export default class DatePicker extends PureComponent
 			label,
 			placeholder,
 			closeButtonLabel,
+			icon,
 			className,
 			style
 		}
@@ -592,7 +596,9 @@ export default class DatePicker extends PureComponent
 				style={ style }>
 
 				<div className="rrui__input">
-					<div className="rrui__date-picker__icon" />
+					<div className="rrui__date-picker__icon">
+						{ icon }
+					</div>
 
 					{/* This layer can intercept taps on mobile devices
 					    to prevent the keyboard from showing
