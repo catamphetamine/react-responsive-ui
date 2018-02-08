@@ -764,7 +764,9 @@ export default class Select extends PureComponent
 						inputClassName,
 						// CSS selector performance optimization
 						// (should it even be optimized).
-						'rrui__input-field--disabled' : disabled
+						{
+							'rrui__input-field--disabled' : disabled
+						}
 					) }/>
 			)
 		}
@@ -875,8 +877,7 @@ export default class Select extends PureComponent
 			return markup
 		}
 
-		const markup =
-		(
+		return (
 			<select
 				ref={ ref => this.native = ref }
 				id={ id }
@@ -917,8 +918,6 @@ export default class Select extends PureComponent
 				}
 			</select>
 		)
-
-		return markup
 	}
 
 	render_native_select_options(options, empty_option_is_selected)
