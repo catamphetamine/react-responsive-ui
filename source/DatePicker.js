@@ -734,11 +734,6 @@ function parse_date(text_value, format, noon, utc)
 // Formats a `Date` into a text value provided a `format`
 function format_date(date, format)
 {
-	if (!date)
-	{
-		return ''
-	}
-
 	// Custom
 	return format_date_custom(date, format)
 
@@ -873,9 +868,17 @@ function corresponds_to_template(string, template)
 
 function format_date_custom(date, format)
 {
+	// Someone may accidentally pass a timestamp, or a string.
+	// Or `date` could be `undefined`.
 	if (!(date instanceof Date))
 	{
-		return
+		return ''
+	}
+
+	// Check if `date` is "Invalid Date".
+	if (isNaN(date.getTime()))
+	{
+		return ''
 	}
 
 	const day   = date.getDate()
@@ -939,7 +942,13 @@ function normalize_value(value)
 {
 	if (value === null)
 	{
-		return undefined
+		return
+	}
+
+	// Check if `value` is "Invalid Date".
+	if (value instanceof Date && isNaN(value.getTime()))
+	{
+		return
 	}
 
 	return value
