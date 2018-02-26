@@ -1223,7 +1223,9 @@ export default class Select extends PureComponent
 
 					const is_still_expanded = this.state.expanded
 
-					if (is_still_expanded && this.list && scrollIntoView)
+					// For some reason in IE 11 "scroll into view" scrolls
+					// to the top of the page, therefore turn it off for IE.
+					if (is_still_expanded && this.list && scrollIntoView && !is_internet_explorer())
 					{
 						const element = ReactDOM.findDOMNode(this.list)
 
@@ -1775,4 +1777,12 @@ function get_option_key(value)
 function value_is_empty(value)
 {
 	return value === null || value === undefined
+}
+
+// Detects Internet Explorer.
+// https://stackoverflow.com/questions/19999388/check-if-user-is-using-ie-with-jquery
+function is_internet_explorer()
+{
+	return window.navigator.userAgent.indexOf('MSIE ') > 0 ||
+		window.navigator.userAgent.indexOf('Trident/') > 0
 }
