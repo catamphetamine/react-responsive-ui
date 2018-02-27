@@ -134,8 +134,6 @@ export default class Select extends PureComponent
 		// then `toggler` is the dropdown menu button.
 		// E.g. `toggler={<DropDownMenuButton/>}`.
 		// `toggler` must accept `onClick` and `onKeyDown` properties.
-		// `toggler` must also be a `React.Component`, not a function,
-		// because `ref` is used for `.focus()`ing it programmatically.
 		toggler    : PropTypes.element,
 
 		// If `scroll` is `false`, then options list
@@ -1100,11 +1098,11 @@ export default class Select extends PureComponent
 	{
 		if (this.autocomplete)
 		{
-			this.autocomplete.focus()
+			focus(this.autocomplete)
 		}
 		else
 		{
-			this.selected.focus()
+			focus(this.selected)
 		}
 	}
 
@@ -1204,12 +1202,12 @@ export default class Select extends PureComponent
 						if (is_now_expanded)
 						{
 							// Focus the input after the select is expanded
-							this.autocomplete.focus()
+							focus(this.autocomplete)
 						}
 						else if (focusUponSelection)
 						{
 							// Focus the toggler after the select is collapsed
-							this.selected.focus()
+							focus(this.selected)
 						}
 					}
 					else
@@ -1217,7 +1215,7 @@ export default class Select extends PureComponent
 						// For some reason Firefox loses focus
 						// upon select expansion via a click,
 						// so this extra `.focus()` works around that issue.
-						this.selected.focus()
+						focus(this.selected)
 					}
 				}
 
@@ -1418,8 +1416,7 @@ export default class Select extends PureComponent
 						this.restore_focus_on_collapse_timeout = setTimeout(() =>
 						{
 							this.restore_focus_on_collapse_timeout = undefined
-
-							this.selected.focus()
+							focus(this.selected)
 						},
 						0)
 					}
@@ -1789,4 +1786,27 @@ function is_internet_explorer()
 {
 	return window.navigator.userAgent.indexOf('MSIE ') > 0 ||
 		window.navigator.userAgent.indexOf('Trident/') > 0
+}
+
+/**
+ * Focuses on a React component (if any).
+ * @param  {?object} component
+ */
+function focus(component)
+{
+	if (!component)
+	{
+		return
+	}
+
+	if (typeof component.focus === 'function')
+	{
+		return component.focus()
+	}
+
+	const node = ReactDOM.findDOMNode(component)
+	if (node)
+	{
+		return node.focus()
+	}
 }
