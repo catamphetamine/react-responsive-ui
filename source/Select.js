@@ -134,6 +134,8 @@ export default class Select extends PureComponent
 		// then `toggler` is the dropdown menu button.
 		// E.g. `toggler={<DropDownMenuButton/>}`.
 		// `toggler` must accept `onClick` and `onKeyDown` properties.
+		// `toggler` must also be a `React.Component`, not a function,
+		// because `ref` is used for `.focus()`ing it programmatically.
 		toggler    : PropTypes.element,
 
 		// If `scroll` is `false`, then options list
