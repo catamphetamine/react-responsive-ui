@@ -132,6 +132,8 @@ export default class Select extends PureComponent
 
 		// If `menu` flag is set to `true`
 		// then `toggler` is the dropdown menu button.
+		// E.g. `toggler={<DropDownMenuButton/>}`.
+		// `toggler` must accept `onClick` and `onKeyDown` properties.
 		toggler    : PropTypes.element,
 
 		// If `scroll` is `false`, then options list
