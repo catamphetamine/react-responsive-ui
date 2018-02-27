@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
@@ -11,7 +11,7 @@ import Form from './Form'
 // to all full-width `position: fixed` elements.
 // Such elements must not be `width: 100%`
 // but rather `width: auto` or `left: 0; right: 0;`.
-export default class Modal extends PureComponent
+export default class Modal extends Component
 {
 	state =
 	{
@@ -250,7 +250,7 @@ export default class Modal extends PureComponent
 
 				{/* Modal window content */}
 
-				<Modal_content
+				<ModalContent
 					ref={ ref => this.content = ref }
 					closeLabel={ closeLabel }
 					closeButton={ closeButton }
@@ -263,7 +263,7 @@ export default class Modal extends PureComponent
 					busy={ busy }
 					reset={ this.on_after_close }>
 					{ children }
-				</Modal_content>
+				</ModalContent>
 
 				{/* Bottom margin, grows more than top margin */}
 				<div
@@ -505,7 +505,7 @@ export default class Modal extends PureComponent
 	}
 }
 
-class Modal_content extends PureComponent
+class ModalContent extends Component
 {
 	componentWillUnmount()
 	{
