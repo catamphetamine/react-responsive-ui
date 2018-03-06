@@ -17,14 +17,11 @@ export default function Page(props)
 
 	// style={style.page}
 
-	const markup =
-	(
+	return (
 		<div { ...rest }>
 			{ children }
 		</div>
 	)
-
-	return markup
 }
 
 // const style =

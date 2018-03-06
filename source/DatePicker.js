@@ -1028,8 +1028,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 		onChange(new Date(year, month))
 	}
 
-	const markup =
-	(
+	return (
 		<div className="DayPicker-Caption">
 			<div className="DayPicker-CaptionSelects">
 				<select
@@ -1060,8 +1059,6 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 			</div>
 		</div>
 	)
-
-	return markup
 }
 
 // Converts timezone to UTC while preserving the same time

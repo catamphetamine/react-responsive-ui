@@ -33,8 +33,7 @@ export default class Page_and_menu extends Component
 	{
 		const { children, ...rest } = this.props
 
-		const markup =
-		(
+		return (
 			<div
 				onTouchStart={ this.hide_menu_on_mouse_down }
 				onMouseDown={ this.hide_menu_on_mouse_down }
@@ -42,8 +41,6 @@ export default class Page_and_menu extends Component
 				{ children }
 			</div>
 		)
-
-		return markup
 	}
 
 	hide_menu_on_mouse_down(event)

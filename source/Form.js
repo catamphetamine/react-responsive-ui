@@ -58,8 +58,7 @@ export default class Form extends Component
 	{
 		const { post, error, className, style } = this.props
 
-		const markup =
-		(
+		return (
 			<form
 				onSubmit={ this.submit }
 				onKeyDown={ this.on_key_down }
@@ -72,8 +71,6 @@ export default class Form extends Component
 				{ this.render_children(error) }
 			</form>
 		)
-
-		return markup
 	}
 
 	// Adds `error` element to the form

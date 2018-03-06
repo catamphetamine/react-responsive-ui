@@ -79,8 +79,7 @@ export default class Menu_button extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<a
 				ref={ ref => this.button = ref }
 				href={ link }
@@ -99,8 +98,6 @@ export default class Menu_button extends PureComponent
 				</svg>
 			</a>
 		)
-
-		return markup
 	}
 }
 

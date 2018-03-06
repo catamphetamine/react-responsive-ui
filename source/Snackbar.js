@@ -222,8 +222,7 @@ export default class Snackbar extends PureComponent
 			overflow   : 'hidden'
 		}
 
-		const markup =
-		(
+		return (
 			<div
 				style={ container_style }
 				className="rrui__snackbar__container">
@@ -240,7 +239,5 @@ export default class Snackbar extends PureComponent
 				</div>
 			</div>
 		)
-
-		return markup
 	}
 }

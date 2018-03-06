@@ -107,8 +107,7 @@ export default class Checkbox extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<div
 				className={ classNames('rrui__checkbox',
 				{
@@ -172,8 +171,6 @@ export default class Checkbox extends PureComponent
 				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
-
-		return markup
 	}
 
 	render_checkmark()
@@ -200,8 +197,7 @@ export default class Checkbox extends PureComponent
 	{
 		const { name, value, focus, disabled, children } = this.props
 
-		const markup =
-		(
+		return (
 			<div className="rrui__rich__fallback">
 				{/* This checkbox will be sent as either "on" or `undefined` */}
 				<input
@@ -216,8 +212,6 @@ export default class Checkbox extends PureComponent
 				</label>
 			</div>
 		)
-
-		return markup
 	}
 
 	draw_checkmark()

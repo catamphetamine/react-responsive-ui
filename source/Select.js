@@ -448,8 +448,7 @@ export default class Select extends PureComponent
 		const show_options_list = !native && !nativeExpanded && list_items.length > 0
 		const show_label = label && (this.get_selected_option() || placeholder)
 
-		const markup =
-		(
+		return (
 			<div
 				ref={ ref => this.select = ref }
 				onKeyDown={ this.on_key_down_in_container }
@@ -555,8 +554,6 @@ export default class Select extends PureComponent
 				}
 			</div>
 		)
-
-		return markup
 	}
 
 	render_list_item({ index, element, value, label, icon, overflow }) // , first, last
@@ -630,30 +627,31 @@ export default class Select extends PureComponent
 		// then transform those options to <buttons/>
 		else
 		{
-			button = <button
-				type="button"
-				onClick={ event => this.item_clicked(value, event) }
-				disabled={ disabled }
-				tabIndex="-1"
-				aria-label={ label }
-				className={ classNames
-				(
-					'rrui__button-reset',
-					'rrui__select__option',
-					{
-						'rrui__select__option--focused' : is_focused,
-						// CSS selector performance optimization
-						'rrui__select__option--disabled' : disabled
-					}
-				) }
-				style={ item_style }>
-				{ icon && React.cloneElement(icon, { className: classNames(icon.props.className, 'rrui__select__option-icon') }) }
-				{ label }
-			</button>
+			button = (
+				<button
+					type="button"
+					onClick={ event => this.item_clicked(value, event) }
+					disabled={ disabled }
+					tabIndex="-1"
+					aria-label={ label }
+					className={ classNames
+					(
+						'rrui__button-reset',
+						'rrui__select__option',
+						{
+							'rrui__select__option--focused' : is_focused,
+							// CSS selector performance optimization
+							'rrui__select__option--disabled' : disabled
+						}
+					) }
+					style={ item_style }>
+					{ icon && React.cloneElement(icon, { className: classNames(icon.props.className, 'rrui__select__option-icon') }) }
+					{ label }
+				</button>
+			)
 		}
 
-		const markup =
-		(
+		return (
 			<li
 				key={ get_option_key(value) }
 				ref={ ref => this.options[get_option_key(value)] = ref }
@@ -671,8 +669,6 @@ export default class Select extends PureComponent
 				{ button }
 			</li>
 		)
-
-		return markup
 	}
 
 	// Renders the selected option
@@ -865,8 +861,7 @@ export default class Select extends PureComponent
 
 		if (menu)
 		{
-			const markup =
-			(
+			return (
 				<div
 					className={ classNames
 					({
@@ -875,8 +870,6 @@ export default class Select extends PureComponent
 					{toggler}
 				</div>
 			)
-
-			return markup
 		}
 
 		return (
@@ -905,8 +898,7 @@ export default class Select extends PureComponent
 							return
 						}
 
-						const markup =
-						(
+						return (
 							<option
 								className="rrui__select__native-option"
 								key={ child.props.value }
@@ -914,8 +906,6 @@ export default class Select extends PureComponent
 								{ child.props.label }
 							</option>
 						)
-
-						return markup
 					})
 				}
 			</select>
@@ -938,8 +928,7 @@ export default class Select extends PureComponent
 				value = Empty_value_option_value
 			}
 
-			const markup =
-			(
+			return (
 				<option
 					className="rrui__select__native-option"
 					key={ get_option_key(value) }
@@ -947,8 +936,6 @@ export default class Select extends PureComponent
 					{ label }
 				</option>
 			)
-
-			return markup
 		})
 
 		if (empty_option_is_selected && !empty_option_present)

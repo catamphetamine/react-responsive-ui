@@ -72,8 +72,7 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<div
 				className={ classNames('rrui__input', 'rrui__button',
 				{
@@ -94,8 +93,6 @@ export default class Button extends PureComponent
 				{ this.render_button() }
 			</div>
 		)
-
-		return markup
 	}
 
 	render_button()
@@ -140,8 +137,7 @@ export default class Button extends PureComponent
 
 		if (link)
 		{
-			const markup =
-			(
+			return (
 				<a
 					href={ link }
 					download={ linkDownload }
@@ -151,12 +147,9 @@ export default class Button extends PureComponent
 					{ contents }
 				</a>
 			)
-
-			return markup
 		}
 
-		const markup =
-		(
+		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
 				disabled={ busy || disabled }
@@ -166,8 +159,6 @@ export default class Button extends PureComponent
 				{ contents }
 			</button>
 		)
-
-		return markup
 	}
 
 	focus()

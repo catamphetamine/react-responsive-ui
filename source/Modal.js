@@ -217,8 +217,7 @@ export default class Modal extends Component
 		}
 		= this.state
 
-		const markup =
-		(
+		return (
 			<ReactModal
 				isOpen={ unmount ? isOpen : true }
 				onAfterOpen={ unmount ? this.on_after_open : undefined }
@@ -275,8 +274,6 @@ export default class Modal extends Component
 					onClick={ this.on_request_close }/>
 			</ReactModal>
 		)
-
-		return markup
 	}
 
 	register_form = () =>
@@ -532,8 +529,7 @@ class ModalContent extends Component
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<div
 				className={ classNames('rrui__modal__content',
 				{
@@ -564,8 +560,6 @@ class ModalContent extends Component
 				</div>
 			</div>
 		)
-
-		return markup
 	}
 
 	render_close_button()

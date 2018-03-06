@@ -95,8 +95,7 @@ export default class File_upload extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<div
 				style={ style }
 				className={ classNames('rrui__file-upload', className,
@@ -116,8 +115,6 @@ export default class File_upload extends PureComponent
 				{ children }
 			</div>
 		)
-
-		return markup
 	}
 }
 

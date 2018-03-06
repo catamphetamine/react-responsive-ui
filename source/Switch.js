@@ -85,8 +85,7 @@ export default class Switch extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<label
 				className={ classNames('rrui__switch',
 				{
@@ -136,8 +135,6 @@ export default class Switch extends PureComponent
 				}
 			</label>
 		)
-
-		return markup
 	}
 
 	// supports disabled javascript
@@ -145,8 +142,7 @@ export default class Switch extends PureComponent
 	{
 		const { name, disabled, value } = this.props
 
-		const markup =
-		(
+		return (
 			<div className="rrui__rich__fallback">
 				<input
 					type="checkbox"
@@ -155,8 +151,6 @@ export default class Switch extends PureComponent
 					value={ value }/>
 			</div>
 		)
-
-		return markup
 	}
 
 	toggle(event)

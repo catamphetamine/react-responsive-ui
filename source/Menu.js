@@ -109,8 +109,7 @@ export default class Menu extends PureComponent
 		const { className, style, children } = this.props
 		const { show } = this.state
 
-		const markup =
-		(
+		return (
 			<div
 				ref={ ref => this.menu = ref }
 				className={ classNames('rrui__slideout-menu',
@@ -122,8 +121,6 @@ export default class Menu extends PureComponent
 				{ children }
 			</div>
 		)
-
-		return markup
 	}
 
 	// calculate_width()

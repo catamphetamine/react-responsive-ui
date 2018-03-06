@@ -184,8 +184,7 @@ export default class Text_input extends PureComponent
 
 		const label_floats = placeholder === undefined && floatingLabel
 
-		const markup =
-		(
+		return (
 			<div
 				style={ style }
 				className={ classNames
@@ -234,8 +233,6 @@ export default class Text_input extends PureComponent
 				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
-
-		return markup
 	}
 
 	render_input(options = {})
@@ -344,8 +341,7 @@ export default class Text_input extends PureComponent
 	{
 		const { label } = this.props
 
-		const markup =
-		(
+		return (
 			<div className="rrui__rich__fallback">
 				{/* <input/> */}
 				{ this.render_input({ placeholder: label, ref: false }) }
@@ -354,8 +350,6 @@ export default class Text_input extends PureComponent
 				{ this.should_indicate_invalid() && this.render_error_message() }
 			</div>
 		)
-
-		return markup
 	}
 
 	// "text", "email", "password", etc

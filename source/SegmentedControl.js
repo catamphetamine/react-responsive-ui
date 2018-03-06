@@ -83,8 +83,7 @@ export default class Segmented_control extends PureComponent
 		}
 		= this.props
 
-		const markup =
-		(
+		return (
 			<div
 				onKeyDown={ this.on_key_down }
 				className={ classNames('rrui__segmented-control',
@@ -104,8 +103,6 @@ export default class Segmented_control extends PureComponent
 				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
 			</div>
 		)
-
-		return markup
 	}
 
 	render_button(option, index)
@@ -117,8 +114,7 @@ export default class Segmented_control extends PureComponent
 		const first = index === 0
 		const last  = index === options.length - 1
 
-		const markup =
-		(
+		return (
 			<button
 				key={ option.value }
 				ref={ ref => this[`button_${index}`] = ref }
@@ -143,8 +139,6 @@ export default class Segmented_control extends PureComponent
 				{ option.label }
 			</button>
 		)
-
-		return markup
 	}
 
 	// supports disabled javascript
@@ -152,14 +146,11 @@ export default class Segmented_control extends PureComponent
 	{
 		const { options } = this.props
 
-		const markup =
-		(
+		return (
 			<div className="rrui__rich__fallback">
 				{ options.map((option, index) => this.render_static_option(option, index)) }
 			</div>
 		)
-
-		return markup
 	}
 
 	render_static_option(option, index)
@@ -169,8 +160,7 @@ export default class Segmented_control extends PureComponent
 		const first = index === 0
 		const last  = index === options.length - 1
 
-		const markup =
-		(
+		return (
 			<span
 				key={ option.value }
 				className={ classNames('rrui__button-reset', 'rrui__segmented-control__option',
@@ -186,8 +176,6 @@ export default class Segmented_control extends PureComponent
 				{ option.label }
 			</span>
 		)
-
-		return markup
 	}
 
 	chooser(value)
