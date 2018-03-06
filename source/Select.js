@@ -93,6 +93,9 @@ export default class Select extends PureComponent
 		// Autocomplete `<input/>` CSS class
 		inputClassName : PropTypes.string,
 
+		// `<button/>` toggler CSS class
+		togglerClassName : PropTypes.string,
+
 		// CSS style object
 		style      : PropTypes.object,
 
@@ -707,7 +710,8 @@ export default class Select extends PureComponent
 			onFocus,
 			title,
 			ariaLabel,
-			inputClassName
+			inputClassName,
+			togglerClassName
 		}
 		= this.props
 
@@ -777,6 +781,7 @@ export default class Select extends PureComponent
 					selected_style_classes,
 					'rrui__button-reset',
 					'rrui__select__button',
+					togglerClassName,
 					{
 						'rrui__select__button--empty'   : !selected_label,
 						'rrui__select__button--invalid' : this.should_indicate_invalid(),
