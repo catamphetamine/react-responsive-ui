@@ -182,11 +182,8 @@ export default class Modal extends Component
 			this.on_after_close()
 		}
 
-		if (this.could_not_close_because_busy_animation_timeout)
-		{
-			clearTimeout(this.could_not_close_because_busy_animation_timeout)
-			this.could_not_close_because_busy_animation_timeout = undefined
-		}
+		clearTimeout(this.could_not_close_because_busy_animation_timeout)
+		this.could_not_close_because_busy_animation_timeout = undefined
 	}
 
 	render()

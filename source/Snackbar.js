@@ -47,23 +47,13 @@ export default class Snackbar extends PureComponent
 
 	componentWillUnmount()
 	{
-		if (this.auto_hide_timer)
-		{
-			clearTimeout(this.auto_hide_timer)
-			this.auto_hide_timer = undefined
-		}
+		clearTimeout(this.auto_hide_timer)
+		clearTimeout(this.show_next_snack_timeout)
+		clearTimeout(this.show_snack_timeout)
 
-		if (this.show_next_snack_timeout)
-		{
-			clearTimeout(this.show_next_snack_timeout)
-			this.show_next_snack_timeout = undefined
-		}
-
-		if (this.show_snack_timeout)
-		{
-			clearTimeout(this.show_snack_timeout)
-			this.show_snack_timeout = undefined
-		}
+		this.auto_hide_timer = undefined
+		this.show_next_snack_timeout = undefined
+		this.show_snack_timeout = undefined
 	}
 
 	componentWillReceiveProps(new_props)

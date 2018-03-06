@@ -62,9 +62,9 @@ export default class Tooltip extends PureComponent
 	componentWillUnmount()
 	{
 		clearTimeout(this.show_timeout)
-		this.show_timeout = undefined
-
 		clearTimeout(this.hide_timeout)
+
+		this.show_timeout = undefined
 		this.hide_timeout = undefined
 
 		this.destroy_tooltip()

@@ -346,23 +346,13 @@ export default class Select extends PureComponent
 			window.removeEventListener('resize', this.resize_native_expanded_select)
 		}
 
-		if (this.toggle_timeout)
-		{
-			clearTimeout(this.toggle_timeout)
-			this.toggle_timeout = undefined
-		}
+		clearTimeout(this.toggle_timeout)
+		clearTimeout(this.scroll_into_view_timeout)
+		clearTimeout(this.restore_focus_on_collapse_timeout)
 
-		if (this.scroll_into_view_timeout)
-		{
-			clearTimeout(this.scroll_into_view_timeout)
-			this.scroll_into_view_timeout = undefined
-		}
-
-		if (this.restore_focus_on_collapse_timeout)
-		{
-			clearTimeout(this.restore_focus_on_collapse_timeout)
-			this.restore_focus_on_collapse_timeout = undefined
-		}
+		this.toggle_timeout = undefined
+		this.scroll_into_view_timeout = undefined
+		this.restore_focus_on_collapse_timeout = undefined
 	}
 
 	render()
@@ -1132,17 +1122,13 @@ export default class Select extends PureComponent
 			return
 		}
 
-		if (this.toggle_timeout)
-		{
-			clearTimeout(this.toggle_timeout)
-			this.toggle_timeout = undefined
-		}
+		clearTimeout(this.toggle_timeout)
+		clearTimeout(this.scroll_into_view_timeout)
+		clearTimeout(this.restore_focus_on_collapse_timeout)
 
-		if (this.scroll_into_view_timeout)
-		{
-			clearTimeout(this.scroll_into_view_timeout)
-			this.scroll_into_view_timeout = undefined
-		}
+		this.toggle_timeout = undefined
+		this.scroll_into_view_timeout = undefined
+		this.restore_focus_on_collapse_timeout = undefined
 
 		const { expanded } = this.state
 
