@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-export default class Page_and_menu extends Component
+export default class PageAndMenu extends Component
 {
 	static childContextTypes =
 	{

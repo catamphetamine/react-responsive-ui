@@ -94,7 +94,7 @@ export default class Select extends PureComponent
 		inputClassName : PropTypes.string,
 
 		// `<button/>` toggler CSS class
-		togglerClassName : PropTypes.string,
+		toggleClassName : PropTypes.string,
 
 		// CSS style object
 		style      : PropTypes.object,
@@ -711,7 +711,7 @@ export default class Select extends PureComponent
 			title,
 			ariaLabel,
 			inputClassName,
-			togglerClassName
+			toggleClassName
 		}
 		= this.props
 
@@ -781,7 +781,7 @@ export default class Select extends PureComponent
 					selected_style_classes,
 					'rrui__button-reset',
 					'rrui__select__button',
-					togglerClassName,
+					toggleClassName,
 					{
 						'rrui__select__button--empty'   : !selected_label,
 						'rrui__select__button--invalid' : this.should_indicate_invalid(),
