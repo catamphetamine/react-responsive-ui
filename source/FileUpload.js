@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-export default class File_upload extends PureComponent
+export default class FileUpload extends PureComponent
 {
 	static propTypes =
 	{

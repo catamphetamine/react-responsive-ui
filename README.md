@@ -184,7 +184,7 @@ And then some refinements:
 Drag'n'drop is implemented internally using [`react-dnd`](https://github.com/gaearon/react-dnd) providing a much simpler-to-use API. Currently only file upload is supported but new features could be added upon request.
 
 ```js
-import { DragAndDrop, CanDrop, FILE, FILES } from 'react-responsive-ui'
+import { DragAndDrop } from 'react-responsive-ui'
 
 @DragAndDrop()
 class Application extends Component {
@@ -194,11 +194,52 @@ class Application extends Component {
   }
 }
 
-@CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
-class FileDropArea extends Component {
+...
+
+import { CanDrop, FILE, FILES, FileUpload } from 'react-responsive-ui'
+
+class FileUploadPage extends Component {
+  onUpload = (file, action) => {
+    alert(`File ${action}: ${file.name}`)
+  }
+
   render() {
-    const { dropTarget, draggedOver, canDrop } = this.props
-    return dropTarget(<div>Drop a file here</div>)
+    return (
+      <div>
+        <h1> File upload </h1>
+
+        <FileUploadArea
+          onUpload={ this.onUpload }
+          className="file-upload"/>
+      </div>
+    )
+  }
+}
+
+// `FILE` is for single-file upload.
+// `FILES` is for multiple files upload.
+@CanDrop(FILE, (props, file) => {
+  props.onUpload(file, 'dropped')
+})
+class FileUploadArea extends Component {
+  render() {
+    const {
+      dropTarget,
+      draggedOver,
+      onUpload,
+      className
+    } = this.props
+
+    return dropTarget(
+      <div>
+        <FileUpload
+          action={(file) => onUpload(file, 'chosen')}
+          className={`${className} ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
+          Click here to choose a file
+          or drop a file here
+        </FileUpload>
+      </div>
+    )
   }
 }
 ```
