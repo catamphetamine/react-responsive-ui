@@ -9,7 +9,6 @@
 		<link rel="stylesheet" href="./style.css"/>
 
 		<!--
-		.
 		This makes the page not scale down on mobile devices
 		and instead adapt to the screen width using `@media` queries.
 		-->
@@ -147,7 +146,7 @@
 			color: #BBD9FA;
 		}
 
-		.file-upload
+		.rrui__file-upload
 		{
 			display: inline-block;
 			padding: 10px;
@@ -159,7 +158,7 @@
 			line-height: 1.5em;
 		}
 
-		.file-upload--dragged-over
+		.rrui__file-upload--dragged-over
 		{
 			background-color : #3678D1;
 			color : white;
@@ -284,7 +283,7 @@
 						<div style={ { display: 'inline-block' } }>
 							<FileUpload
 								action={file => alert('File chosen: ' + file.name)}
-								className={`file-upload ${draggedOver ? 'file-upload--dragged-over' : ''}`}>
+								className={`file-upload ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
 								Click here to choose a file
 								<br/>
 								or drop a file here
@@ -743,26 +742,10 @@
 
 									<FileUploadArea/>
 
-<pre>
-{`@CanDrop(File, (props, file) => alert(\u0060File dropped: \${file.name}\u0060))
-export default class FileUploadArea extends Component {
-  render() {
-    const { dropTarget, draggedOver } = this.props
-    return dropTarget(
-      <FileUpload
-        action={(file) => alert(\u0060File chosen: \${file.name}\u0060)}
-        className={\u0060file-upload \${draggedOver ? 'file-upload--dragged-over' : ''}\u0060}>
-        Click here to choose a file
-        or drop a file here
-      </FileUpload>
-    )
-  }
-}
+									<br/>
+									<br/>
 
-...
-
-<FileUploadArea/>`}
-</pre>
+									See the <a href="https://github.com/catamphetamine/react-responsive-ui#dragndrop" target="_blank">code sample</a>.
 
 									<a name="activity-indicator" href="#activity-indicator" className="title-anchor">
 										<h2>Activity Indicator</h2>
