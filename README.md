@@ -193,9 +193,9 @@ class Application extends Component {
     return <div>{ children }</div>
   }
 }
+```
 
-...
-
+```js
 import { CanDrop, FILE, FILES, FileUpload } from 'react-responsive-ui'
 
 class FileUploadPage extends Component {
