@@ -38,7 +38,11 @@ export default class Select extends PureComponent
 				// Option label (may be `undefined`)
 				label : PropTypes.string,
 				// Option icon
-				icon  : PropTypes.node
+				icon  : PropTypes.oneOfType
+				([
+					PropTypes.node,
+					PropTypes.func
+				])
 			})
 		),
 
@@ -620,6 +624,10 @@ export default class Select extends PureComponent
 		// then transform those options to <buttons/>
 		else
 		{
+			if (icon) {
+				icon = render_icon(icon)
+			}
+
 			button = (
 				<button
 					type="button"
@@ -638,7 +646,12 @@ export default class Select extends PureComponent
 						}
 					) }
 					style={ item_style }>
-					{ icon && React.cloneElement(icon, { className: classNames(icon.props.className, 'rrui__select__option-icon') }) }
+					{ icon &&
+						React.cloneElement(icon,
+						{
+							className: classNames(icon.props.className, 'rrui__select__option-icon')
+						})
+					}
 					{ label }
 				</button>
 			)
@@ -801,7 +814,7 @@ export default class Select extends PureComponent
 						{
 							'rrui__select__selected-label--required' : !label_is_shown && required && value_is_empty(value)
 						}) }>
-						{ show_selected_as_an_icon ? React.cloneElement(selected.icon, { title: selected_label }) : selected_text }
+						{ show_selected_as_an_icon ? React.cloneElement(render_icon(selected.icon), { title: selected_label }) : selected_text }
 					</div>
 
 					{/* An arrow */}
@@ -1787,4 +1800,9 @@ function focus(component)
 	{
 		return node.focus()
 	}
+}
+
+function render_icon(icon)
+{
+	return typeof icon === 'function' ? icon() : icon
 }
