@@ -89,7 +89,7 @@ export default class Form extends Component
 			// Show form error above form actions,
 			// so that the error will be visible and won't be overlooked.
 			let index = 0
-			for (let child of form_elements)
+			for (const child of form_elements)
 			{
 				if (child.type === Form.Error)
 				{

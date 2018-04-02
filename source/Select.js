@@ -1720,33 +1720,6 @@ export default class Select extends PureComponent
 			focused_option_value: matching_options.length > 0 ? matching_options[0].value : undefined
 		})
 	}
-
-	// // https://github.com/daviferreira/react-sanfona/blob/master/src/AccordionItem/index.jsx#L54
-	// // Wait for images to load before calculating maxHeight
-	// preload_images(node, images)
-	// {
-	// 	let images_loaded = 0
-	//
-	// 	const image_loaded = () =>
-	// 	{
-	// 		images_loaded++
-	//
-	// 		if (images_loaded === images.length)
-	// 		{
-	// 			this.setState
-	// 			({
-	// 				height: this.props.expanded ? node.scrollHeight : 0
-	// 			})
-	// 		}
-	// 	}
-	//
-	// 	for (let i = 0; i < images.length; i += 1)
-	// 	{
-	// 		const image = new Image()
-	// 		image.src = images[i].src
-	// 		image.onload = image.onerror = image_loaded
-	// 	}
-	// }
 }
 
 Select.Separator = function(props)

@@ -140,7 +140,9 @@ export default class DatePicker extends PureComponent
 		// moves cursor not inside to these buttons
 		// but rather to the next form input.
 		const calendar = ReactDOM.findDOMNode(this.calendar)
-		for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
+		// Requires ES6 Symbol.Iterator polyfill.
+		// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
+		for (const button of [].slice.call(calendar.querySelectorAll('.DayPicker-NavButton')))
 		{
 			button.removeAttribute('tabindex')
 		}

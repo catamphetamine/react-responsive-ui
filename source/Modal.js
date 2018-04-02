@@ -454,7 +454,6 @@ export default class Modal extends Component
 		// "full-width" elements include `document.body`
 		// and all `position: fixed` elements
 		// which should be marked with this special CSS class.
-		// (`Array.from` is transpiled by Babel)
 		//
 		// Make sure to add `.rrui__fixed-full-width` CSS class
 		// to all full-width `position: fixed` elements.
@@ -614,8 +613,9 @@ const react_modal_style =
 //
 function get_full_width_elements()
 {
-	// (`Array.from` is transpiled by Babel)
-	const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+	// `Array.from` requires ES6 polyfill.
+	// const full_width_elements = Array.from(document.querySelectorAll('.rrui__fixed-full-width'))
+	const full_width_elements = [].slice.call(document.querySelectorAll('.rrui__fixed-full-width'))
 	full_width_elements.push(document.body)
 	return full_width_elements
 }
