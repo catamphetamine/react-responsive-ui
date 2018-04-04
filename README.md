@@ -16,6 +16,24 @@ npm install react-responsive-ui --save
 
 See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
 
+## Reducing footprint
+
+Webpack 4 still can't "tree-shake" simple cases like
+
+```js
+import { Modal, Button, TextInput } from 'react-responsive-ui'
+```
+
+So if one's using only a small subset of this library it could be imported like so
+
+```js
+import Modal     from 'react-responsive-ui/commonjs/Modal'
+import Button    from 'react-responsive-ui/commonjs/Button'
+import TextInput from 'react-responsive-ui/commonjs/TextInput'
+```
+
+Which results in a much smaller bundle size.
+
 ## Validation
 
 Each form component receives two validation-specific properties
