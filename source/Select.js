@@ -405,7 +405,7 @@ export default class Select extends PureComponent
 		let list_style
 
 		// Makes the options list scrollable (only when not in `autocomplete` mode).
-		if (this.is_scrollable() && this.state.list_height !== undefined)
+		if (this.is_scrollable() && list_height !== undefined)
 		{
 			list_style = { maxHeight: `${list_height}px` }
 		}
@@ -1074,12 +1074,12 @@ export default class Select extends PureComponent
 		return options.length > maxItems
 	}
 
-	scrollable_list_height(state = this.state)
+	scrollable_list_height(height, vertical_padding)
 	{
 		const { maxItems } = this.props
 
 		// (Adding vertical padding so that it shows these `maxItems` options fully)
-		return (state.height - 2 * state.vertical_padding) * (maxItems / this.get_options().length) + state.vertical_padding
+		return (height - 2 * vertical_padding) * (maxItems / this.get_options().length) + vertical_padding
 	}
 
 	should_animate()
@@ -1117,6 +1117,7 @@ export default class Select extends PureComponent
 
 		const
 		{
+			menu,
 			toggler,
 			disabled,
 			autocomplete,
@@ -1136,6 +1137,11 @@ export default class Select extends PureComponent
 		}
 
 		if (disabled)
+		{
+			return
+		}
+
+		if (!menu && options.length === 0)
 		{
 			return
 		}
@@ -1645,9 +1651,8 @@ export default class Select extends PureComponent
 		const { options } = this.props
 
 		const list_dom_node = ReactDOM.findDOMNode(this.list)
-		const border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth)
+		// const border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth)
 		const height = list_dom_node.scrollHeight
-
 		const vertical_padding = parseInt(window.getComputedStyle(list_dom_node).paddingTop)
 
 		// For things like "accordeon".
@@ -1659,11 +1664,13 @@ export default class Select extends PureComponent
 		// 	return this.preload_images(list_dom_node, images)
 		// }
 
-		const state = { height, vertical_padding, border }
+		const state = { height, vertical_padding }
 
+		// If it's a regular `<select/>` with `<option/>`s
+		// then calculate its height.
 		if (this.is_scrollable() && options && this.overflown())
 		{
-			state.list_height = this.scrollable_list_height(state)
+			state.list_height = this.scrollable_list_height(height, vertical_padding)
 		}
 
 		this.setState(state)
