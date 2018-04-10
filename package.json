@@ -43,8 +43,8 @@
   },
   "scripts": {
     "test": "mocha --require babel-core/register --colors --bail --reporter spec test/ --recursive",
-    "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive",
-    "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --colors --reporter spec test/ --recursive",
+    "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --require babel-core/register --colors --reporter dot test/ --recursive",
+    "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --require babel-core/register --colors --reporter spec test/ --recursive",
     "browser-build": "npm run build-modules && npm run build-styles && better-npm-run browser-build-webpack",
     "browser-build-dev": "npm run build-modules && better-npm-run browser-build-dev-webpack",
     "clean-for-build": "rimraf ./commonjs/**/* ./modules/**/*",
