@@ -32,7 +32,7 @@
     "chai": "^3.5.0",
     "copyfiles": "^1.2.0",
     "istanbul": "^1.0.0-alpha.2",
-    "mocha": "^2.4.5",
+    "mocha": "^5.0.5",
     "node-sass": "^4.7.2",
     "npm-run-all": "^1.4.0",
     "react": "^15.4.1",
@@ -42,7 +42,7 @@
     "webpack": "^3.5.5"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --colors --bail --reporter spec test/ --recursive",
+    "test": "mocha --require babel-core/register --colors --bail --reporter spec test/ --recursive",
     "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --colors --reporter dot test/ --recursive",
     "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --colors --reporter spec test/ --recursive",
     "browser-build": "npm run build-modules && npm run build-styles && better-npm-run browser-build-webpack",
