@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { submitFormOnCtrlEnter } from './utility/dom'
+
 // http://wd.dizaina.net/en/experiments/ios7-style-switch/
 
 // An iOS-style switch
@@ -68,6 +70,23 @@ export default class Switch extends PureComponent
 		}
 	}
 
+	onKeyDown = (event) =>
+	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input))
+		{
+			return
+		}
+	}
+
+	storeInputComponent = _ => this.input = _
+
 	render()
 	{
 		const
@@ -107,8 +126,10 @@ export default class Switch extends PureComponent
 				{/* The switch */}
 				<div className="rrui__switch__switch">
 					<input
+						ref={ this.storeInputComponent }
 						type="checkbox"
 						value={ value }
+						onKeyDown={ this.onKeyDown }
 						onChange={ this.toggle }
 						style={ input_style }/>
 

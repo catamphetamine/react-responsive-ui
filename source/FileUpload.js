@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { submitFormOnCtrlEnter } from './utility/dom'
+
 export default class FileUpload extends PureComponent
 {
 	static propTypes =
@@ -28,27 +30,17 @@ export default class FileUpload extends PureComponent
 		style     : PropTypes.object
 	}
 
-	constructor()
-	{
-		super()
-
-		this.on_file_selected = this.on_file_selected.bind(this)
-		this.on_click         = this.on_click.bind(this)
-		this.on_input_click   = this.on_input_click.bind(this)
-		this.on_input_change  = this.on_input_change.bind(this)
-	}
-
-	on_input_click(event)
+	on_input_click = (event) =>
 	{
 		event.stopPropagation()
 	}
 
-	on_input_change(event)
+	on_input_change = (event) =>
 	{
 		this.on_file_selected(event)
 	}
 
-	on_file_selected(event)
+	on_file_selected = (event) =>
 	{
 		const { action, multiple } = this.props
 
@@ -67,7 +59,7 @@ export default class FileUpload extends PureComponent
 		event.target.value = null
 	}
 
-	on_click(event)
+	on_click = (event) =>
 	{
 		const { disabled, onClick } = this.props
 
@@ -83,6 +75,25 @@ export default class FileUpload extends PureComponent
 
 		this.file_upload.click()
 	}
+
+	// Not working for some reason.
+	// (doesn't get called)
+	onKeyDown = (event) =>
+	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.file_upload))
+		{
+			return
+		}
+	}
+
+	storeInputComponent = _ => this.file_upload = _
 
 	render()
 	{
@@ -102,11 +113,12 @@ export default class FileUpload extends PureComponent
 				{
 					'rrui__file-upload--disabled' : disabled
 				}) }
+				onKeyDown={ this.onKeyDown }
 				onClick={ this.on_click }>
 
 				<input
 					type="file"
-					ref={ ref => this.file_upload = ref }
+					ref={ this.storeInputComponent }
 					key="file_input"
 					style={ input_style }
 					onClick={ this.on_click }

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
-import { submit_parent_form, get_scrollbar_width } from './utility/dom'
+import { submitFormOnCtrlEnter, submitContainingForm, getScrollbarWidth } from './utility/dom'
 
 // Possible enhancements:
 //
@@ -576,7 +576,7 @@ export default class Select extends PureComponent
 		// a hack to restore padding-right taken up by a vertical scrollbar
 		if (overflow && scrollbarPadding)
 		{
-			item_style = { marginRight: get_scrollbar_width() + 'px' }
+			item_style = { marginRight: getScrollbarWidth() + 'px' }
 		}
 
 		let button
@@ -1356,6 +1356,18 @@ export default class Select extends PureComponent
 
 	on_key_down = (event) =>
 	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.autocomplete || this.selected))
+		{
+			return
+		}
+
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
 			return
@@ -1444,7 +1456,7 @@ export default class Select extends PureComponent
 					// So submit the enclosing form manually.
 					else
 					{
-						if (submit_parent_form(ReactDOM.findDOMNode(this.select)))
+						if (submitContainingForm(ReactDOM.findDOMNode(this.select)))
 						{
 							event.preventDefault()
 						}

@@ -1,4 +1,19 @@
-export function submit_parent_form(node)
+import ReactDOM from 'react-dom'
+
+// Submits the form on `Ctrl` + `Enter` (or `Cmd` + `Enter`).
+export function submitFormOnCtrlEnter(event, component)
+{
+	if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
+	{
+		if (submitContainingForm(ReactDOM.findDOMNode(component)))
+		{
+			event.preventDefault()
+			return true
+		}
+	}
+}
+
+export function submitContainingForm(node)
 {
 	while (node.parentElement)
 	{
@@ -17,7 +32,7 @@ export function submit_parent_form(node)
 	}
 }
 
-export function get_scrollbar_width()
+export function getScrollbarWidth()
 {
 	// // `window.innerWidth` has a bug:
 	// // it's decreases as the page scale is increased.

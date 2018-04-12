@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
+import { submitFormOnCtrlEnter } from './utility/dom'
+
 // http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
 
 export default class Checkbox extends PureComponent
@@ -91,6 +93,21 @@ export default class Checkbox extends PureComponent
 		}
 	}
 
+	onKeyDown = (event) =>
+	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.checkbox))
+		{
+			return
+		}
+	}
+
 	render()
 	{
 		const
@@ -136,6 +153,7 @@ export default class Checkbox extends PureComponent
 							type="checkbox"
 							checked={ value }
 							disabled={ disabled }
+							onKeyDown={ this.onKeyDown }
 							onChange={ this.toggle }
 							onFocus={ this.on_focus }
 							onBlur={ this.on_blur }
@@ -180,16 +198,20 @@ export default class Checkbox extends PureComponent
 		// For a web browser
 		if (typeof window !== 'undefined')
 		{
-			return <path
-				ref={ ref => this.path = ref }
-				d={ checkmark_svg_path }
-				style={ path_style || checkmark_svg_path_style }/>
+			return (
+				<path
+					ref={ ref => this.path = ref }
+					d={ checkmark_svg_path }
+					style={ path_style || checkmark_svg_path_style }/>
+			)
 		}
 
 		// For Node.js
-		return <path
-			d={ checkmark_svg_path }
-			style={ checkmark_svg_path_style }/>
+		return (
+			<path
+				d={ checkmark_svg_path }
+				style={ checkmark_svg_path_style }/>
+		)
 	}
 
 	// supports disabled javascript

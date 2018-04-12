@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
+import { submitFormOnCtrlEnter } from './utility/dom'
+
 export default class Segmented_control extends PureComponent
 {
 	state = {}
@@ -51,13 +53,6 @@ export default class Segmented_control extends PureComponent
 		fallback : false
 	}
 
-	constructor()
-	{
-		super()
-
-		this.on_key_down = this.on_key_down.bind(this)
-	}
-
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
@@ -85,7 +80,8 @@ export default class Segmented_control extends PureComponent
 
 		return (
 			<div
-				onKeyDown={ this.on_key_down }
+				ref={ this.storeContainerComponent }
+				onKeyDown={ this.onKeyDown }
 				className={ classNames('rrui__segmented-control',
 				{
 					'rrui__rich'                        : fallback,
@@ -202,8 +198,22 @@ export default class Segmented_control extends PureComponent
 		ReactDOM.findDOMNode(this.button_0).focus()
 	}
 
-	on_key_down(event)
+	storeContainerComponent = _ => this.container = _
+
+	onKeyDown = (event) =>
 	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.container))
+		{
+			return
+		}
+
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
 			return

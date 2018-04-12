@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
+import { submitFormOnCtrlEnter } from './utility/dom'
+
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
 
@@ -237,6 +239,18 @@ export default class DatePicker extends PureComponent
 
 	on_input_key_down = (event) =>
 	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown)
+		{
+			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input))
+		{
+			return
+		}
+
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
 			return

@@ -4,10 +4,10 @@ import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import throttle from 'lodash/throttle'
 
-import { submit_parent_form } from './utility/dom'
+import { submitFormOnCtrlEnter } from './utility/dom'
 import { get_modular_grid_unit } from './utility/grid'
 
-export default class Text_input extends PureComponent
+export default class TextInput extends PureComponent
 {
 	state = {}
 
@@ -282,7 +282,7 @@ export default class Text_input extends PureComponent
 			value       : (value === undefined || value === null) ? '' : value,
 			placeholder : placeholder || this.props.placeholder,
 			onChange    : this.on_change,
-			onKeyDown   : this.on_key_down,
+			onKeyDown   : this.onKeyDown,
 			onFocus,
 			onBlur,
 			disabled,
@@ -466,22 +466,18 @@ export default class Text_input extends PureComponent
 		}
 	}
 
-	on_key_down = (event) =>
+	onKeyDown = (event) =>
 	{
 		const { onKeyDown } = this.props
-
-		// Submit the form on Cmd + Enter (or Ctrl + Enter)
-		if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
-		{
-			if (submit_parent_form(ReactDOM.findDOMNode(this.input)))
-			{
-				event.preventDefault()
-			}
-		}
 
 		if (onKeyDown)
 		{
 			onKeyDown(event)
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input))
+		{
+			return
 		}
 	}
 
