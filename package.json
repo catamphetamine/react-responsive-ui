@@ -44,6 +44,9 @@
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14"
   },
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "test": "mocha --require babel-core/register --colors --bail --reporter spec test/ --recursive",
     "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --require babel-core/register --colors --reporter dot test/ --recursive",
