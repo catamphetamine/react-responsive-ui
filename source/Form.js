@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import Button from './Button'
+import { ModalContext } from './Modal'
 
 // Prevents `<form/> submission when `busy` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.
@@ -44,14 +45,6 @@ export default class Form extends Component
 	static defaultProps =
 	{
 		busy : false
-	}
-
-	constructor()
-	{
-		super()
-
-		this.submit      = this.submit.bind(this)
-		this.on_key_down = this.on_key_down.bind(this)
 	}
 
 	render()
@@ -117,7 +110,7 @@ export default class Form extends Component
 		return form_elements
 	}
 
-	submit(event)
+	submit = (event) =>
 	{
 		if (event)
 		{
@@ -140,7 +133,7 @@ export default class Form extends Component
 		}
 	}
 
-	on_key_down(event)
+	on_key_down = (event) =>
 	{
 		// Cancel editing on "Escape" key
 		if (event.keyCode === 27)
@@ -166,52 +159,63 @@ Form.Error = function({ children })
 	)
 }
 
-// Using `Component` here instead of `PureComponent`
-// because it depends on `context` and therefore should be
-// rerendered even if the `props` haven't changed.
-Form.Actions = class Actions extends Component
+Form.Actions = function({ children })
+{
+	return (
+		<ModalContext.Consumer>
+			{context => (
+				<Actions context={ context }>
+					{ children }
+				</Actions>
+			)}
+		</ModalContext.Consumer>
+	)
+}
+
+class Actions extends Component
 {
 	componentWillMount()
 	{
-		const { rrui__modal } = this.context
+		const { context } = this.props
 
-		if (rrui__modal)
+		if (context)
 		{
-			rrui__modal.register_form()
+			context.register_form()
 		}
 	}
 
 	componentWillUnmount()
 	{
-		const { rrui__modal } = this.context
+		const { context } = this.props
 
-		if (rrui__modal)
+		if (context)
 		{
-			rrui__modal.unregister_form()
+			context.unregister_form()
 		}
 	}
 
 	render()
 	{
-		const { children, className, style } = this.props
-		const { rrui__modal } = this.context
+		const
+		{
+			context,
+			children,
+			className,
+			style
+		}
+		= this.props
 
 		return (
 			<div
 				className={ classNames('rrui__form__actions', className) }
 				style={ style }>
-				{ rrui__modal &&
-					<Button action={ rrui__modal.close_if_not_busy }>
-						{ rrui__modal.closeLabel }
+				{ context &&
+					<Button action={ context.close_if_not_busy }>
+						{ context.closeLabel }
 					</Button>
 				}
 				{ children }
 			</div>
 		)
 	}
-}
-
-Form.Actions.contextTypes =
-{
-	rrui__modal : PropTypes.object
 }

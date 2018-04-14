@@ -3,9 +3,12 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import ReactModal from 'react-modal'
+import createReactContext from 'create-react-context'
 
 import Button from './Button'
 import Form from './Form'
+
+export const ModalContext = createReactContext()
 
 // Make sure to add `.rrui__fixed-full-width` CSS class
 // to all full-width `position: fixed` elements.
@@ -118,12 +121,7 @@ export default class Modal extends Component
 		could_not_close_because_busy_animation_duration: 600 // ms
 	}
 
-	static childContextTypes =
-	{
-		rrui__modal : PropTypes.object
-	}
-
-	getChildContext()
+	getContext()
 	{
 		const
 		{
@@ -131,18 +129,12 @@ export default class Modal extends Component
 		}
 		= this.props
 
-		const context =
-		{
-			rrui__modal:
-			{
-				closeLabel,
-				close_if_not_busy : this.close_if_not_busy,
-				register_form     : this.register_form,
-				unregister_form   : this.unregister_form
-			}
+		return {
+			closeLabel,
+			close_if_not_busy : this.close_if_not_busy,
+			register_form     : this.register_form,
+			unregister_form   : this.unregister_form
 		}
-
-		return context
 	}
 
 	componentWillReceiveProps(nextProps)
@@ -248,6 +240,7 @@ export default class Modal extends Component
 
 				<ModalContent
 					ref={ ref => this.content = ref }
+					context={ this.getContext() }
 					closeLabel={ closeLabel }
 					closeButton={ closeButton }
 					close={ this.close_if_not_busy }
@@ -514,6 +507,7 @@ class ModalContent extends Component
 	{
 		const
 		{
+			context,
 			closeLabel,
 			close,
 			fullscreen,
@@ -542,7 +536,11 @@ class ModalContent extends Component
 
 					{ this.render_close_button() }
 
-					{ children }
+					<ModalContext.Provider value={ context }>
+						<div>
+							{ children }
+						</div>
+					</ModalContext.Provider>
 
 					{ closeLabel && !form &&
 						<div className="rrui__form__actions">
