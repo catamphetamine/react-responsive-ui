@@ -48,6 +48,12 @@ from './modules/ActivityIndicator'
 
 export
 {
+	default as Ellipsis
+}
+from './modules/Ellipsis'
+
+export
+{
 	default as TextInput
 }
 from './modules/TextInput'

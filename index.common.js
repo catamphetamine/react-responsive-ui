@@ -10,6 +10,7 @@ exports.Form = require('./commonjs/Form').default
 exports.Snackbar = require('./commonjs/Snackbar').default
 exports.Tooltip = require('./commonjs/Tooltip').default
 exports.ActivityIndicator = require('./commonjs/ActivityIndicator').default
+exports.Ellipsis = require('./commonjs/Ellipsis').default
 exports.TextInput = require('./commonjs/TextInput').default
 exports.Select = require('./commonjs/Select').default
 exports.Button = require('./commonjs/Button').default

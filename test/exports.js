@@ -8,6 +8,7 @@ import
 	Snackbar,
 	Tooltip,
 	ActivityIndicator,
+	Ellipsis,
 	TextInput,
 	Select,
 	Button,
@@ -42,6 +43,7 @@ describe('React Responsive UI', function()
 		expect(Snackbar).to.be.a('function')
 		expect(Tooltip).to.be.a('function')
 		expect(ActivityIndicator).to.be.a('function')
+		expect(Ellipsis).to.be.a('function')
 		expect(TextInput).to.be.a('function')
 		expect(Select).to.be.a('function')
 		expect(Button).to.be.a('function')
@@ -76,6 +78,7 @@ describe('React Responsive UI', function()
 		expect(_.Snackbar).to.be.a('function')
 		expect(_.Tooltip).to.be.a('function')
 		expect(_.ActivityIndicator).to.be.a('function')
+		expect(_.Ellipsis).to.be.a('function')
 		expect(_.TextInput).to.be.a('function')
 		expect(_.Select).to.be.a('function')
 		expect(_.Button).to.be.a('function')
