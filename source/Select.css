@@ -234,10 +234,6 @@
 	display      : block;
 	*/
 	display      : none;
-	position     : fixed;
-	top          : 0;
-	right        : 0;
-	z-index      : 1;
 }
 
 .rrui__select__close-icon

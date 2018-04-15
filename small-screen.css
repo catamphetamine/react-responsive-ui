@@ -13,7 +13,8 @@
 }
 
 /* "Close" button for full-screen `<Select/>`s */
-.rrui__select__close
+.rrui__select__close,
+.rrui__date-picker__close
 {
 	z-index: 100;
 }

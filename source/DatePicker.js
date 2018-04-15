@@ -9,6 +9,8 @@ import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 
+import Close from './Close'
+
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
 
@@ -93,11 +95,16 @@ export default class DatePicker extends PureComponent
 		// (is `true` by default)
 		noon : PropTypes.bool.isRequired,
 
-		// "Close" button title for fullscreen mode on mobile devices
-		closeButtonLabel : PropTypes.string.isRequired,
-
 		// The calendar icon
 		icon : PropTypes.node,
+
+		// `aria-label` for the "Close" button
+		// (which is an "x" visible in fullscreen mode).
+		closeLabel : PropTypes.string,
+
+		// The "x" button that closes the `<Select/>`
+		// in fullscreen mode on mobile devices.
+		closeButton : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
 
 		// CSS class
 		className : PropTypes.string,
@@ -123,8 +130,9 @@ export default class DatePicker extends PureComponent
 		// Whether to set time to 12:00 for dates being selected
 		noon : true,
 
-		// "Close" button title for fullscreen mode on mobile devices
-		closeButtonLabel : 'Close'
+		// The "x" button that closes the `<DatePicker/>`
+		// in fullscreen mode on mobile devices.
+		closeButton : Close
 	}
 
 	state =
@@ -569,7 +577,8 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
-			closeButtonLabel,
+			closeLabel,
+			closeButton : CloseButton,
 			icon,
 			className,
 			style
@@ -694,12 +703,12 @@ export default class DatePicker extends PureComponent
 								className="rrui__date-picker__calendar" />
 
 							{/* "Close" button for fullscreen mode on mobile devices */}
-							<button
-								type="button"
-								onClick={ this.collapse }
-								className={ classNames('rrui__button-reset', 'rrui__date-picker__close') }>
-								{ closeButtonLabel }
-							</button>
+							{ CloseButton &&
+								<CloseButton
+									action={ this.collapse }
+									closeLabel={ closeLabel }
+									className="rrui__close--bottom-right rrui__date-picker__close"/>
+							}
 						</div>
 					</div>
 				</div>

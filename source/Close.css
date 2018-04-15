@@ -1,0 +1,39 @@
+.rrui__close--top-right
+{
+	position : fixed;
+	top      : 0;
+	right    : 0;
+	z-index  : 1;
+
+	margin-top   : calc(0.3rem * 1.5);
+	margin-right : calc(0.3rem * 1.5);
+}
+
+.rrui__close--bottom-right
+{
+	position : fixed;
+	bottom   : 0;
+	right    : 0;
+	z-index  : 1;
+
+	margin-bottom : calc(0.3rem * 1.5);
+	margin-right  : calc(0.3rem * 1.5);
+}
+
+.rrui__close__icon
+{
+	width        : calc(0.3rem * 4);
+	height       : calc(0.3rem * 4);
+	padding      : calc(0.3rem * 2);
+	box-sizing   : content-box;
+}
+
+.rrui__close__icon:active .rrui__close__icon-path
+{
+	stroke : #03B2CB;
+}
+
+.rrui__close__icon-path
+{
+	stroke : black;
+}

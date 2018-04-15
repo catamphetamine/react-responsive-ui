@@ -6,6 +6,8 @@ import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
 import { submitFormOnCtrlEnter, submitContainingForm, getScrollbarWidth } from './utility/dom'
 
+import Close from './Close'
+
 // Possible enhancements:
 //
 //  * If the menu is close to a screen edge,
@@ -183,11 +185,11 @@ export default class Select extends PureComponent
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
-		closeAriaLabel : PropTypes.string.isRequired,
+		closeLabel : PropTypes.string,
 
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : PropTypes.oneOfType([PropTypes.node, PropTypes.oneOf([false])]).isRequired
+		closeButton : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -213,24 +215,9 @@ export default class Select extends PureComponent
 		// `aria-label` for the `<Select/>`'s `<button/>`
 		ariaLabel : 'Select country',
 
-		// `aria-label` for the "Close" button
-		// (which is an "x" visible in fullscreen mode).
-		closeAriaLabel : 'Close',
-
 		// The "x" button that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : (
-			<svg viewBox="0 0 22 21" className="rrui__select__close-icon">
-				<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round">
-					<g className="rrui__select__close-icon-path" transform="translate(-1367.000000, -40.000000)" strokeWidth="1">
-						<g transform="translate(1368.000000, 41.000000)">
-							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882"></path>
-							<path d="M0.807611845,0.307611845 L19.1923882,18.6923882" transform="translate(10.000000, 9.500000) scale(-1, 1) translate(-10.000000, -9.500000) "></path>
-						</g>
-					</g>
-				</g>
-			</svg>
-		)
+		closeButton : Close
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -386,8 +373,8 @@ export default class Select extends PureComponent
 			label,
 			value,
 			error,
-			closeButton,
-			closeAriaLabel,
+			closeButton : CloseButton,
+			closeLabel,
 			style,
 			className
 		}
@@ -528,17 +515,14 @@ export default class Select extends PureComponent
 
 					{/* The "x" button to hide the list of options
 					    for fullscreen `<Select/>` on mobile devices */}
-					{ show_options_list && expanded && closeButton &&
-						<button
-							type="button"
-							onClick={ this.toggle }
-							aria-label={ closeAriaLabel }
-							className={ classNames('rrui__button-reset', 'rrui__select__close',
+					{ show_options_list && expanded && CloseButton &&
+						<CloseButton
+							action={ this.toggle }
+							closeLabel={ closeLabel }
+							className={ classNames('rrui__close--top-right', 'rrui__select__close',
 							{
 								'rrui__select__close--autocomplete' : autocomplete
-							}) }>
-							{ closeButton }
-						</button>
+							}) }/>
 					}
 
 					{/* Fallback in case javascript is disabled */}
