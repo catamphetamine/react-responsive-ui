@@ -66,9 +66,10 @@
 
 .rrui__select__option
 {
-	display : block;
-	width   : 100%;
-	height  : calc(0.3rem * 7);
+	display     : block;
+	width       : 100%;
+	height      : calc(0.3rem * 7);
+	line-height : calc(0.3rem * 7);
 
 	padding-left  : calc(0.3rem * 4);
 	padding-right : calc(0.3rem * 4);
@@ -80,7 +81,7 @@
 
 .rrui__select__option:hover
 {
-	background-color : #FBFDFD;
+	background-color : #f7f7f7;
 }
 
 .rrui__select__option-icon
@@ -129,7 +130,6 @@
 	margin-right: 0.5em
 }
 
-.rrui__select__toggler,
 .rrui__select__button,
 .rrui__select__autocomplete
 {
