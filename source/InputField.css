@@ -1,4 +1,3 @@
-
 .rrui__input-field
 {
 	outline       : none;
@@ -10,18 +9,6 @@
 	font-family   : inherit;
 	font-weight   : inherit;
 	font-style    : inherit;
-}
-
-.rrui__input-field--invalid,
-.rrui__input-field--invalid:focus
-{
-	border-color : #EB2010;
-}
-
-.rrui__input-field--disabled
-{
-	cursor           : default;
-	background-color : transparent;
 }
 
 /* Stretches the inputs to full column width by default. */
@@ -60,4 +47,16 @@
 {
 	height : auto;
 	resize : none;
+}
+
+.rrui__input-field--invalid,
+.rrui__input-field--invalid:focus
+{
+	border-color : #EB2010;
+}
+
+.rrui__input-field--disabled
+{
+	cursor           : default;
+	background-color : transparent;
 }
