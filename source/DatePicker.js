@@ -705,7 +705,7 @@ export default class DatePicker extends PureComponent
 							{/* "Close" button for fullscreen mode on mobile devices */}
 							{ CloseButton &&
 								<CloseButton
-									action={ this.collapse }
+									onClick={ this.collapse }
 									closeLabel={ closeLabel }
 									className="rrui__close--bottom-right rrui__date-picker__close"/>
 							}

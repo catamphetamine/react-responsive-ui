@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-export default function Close({ action, closeLabel, className })
+export default function Close({ onClick, closeLabel, className })
 {
 	return (
 		<button
 			type="button"
-			onClick={ action }
+			onClick={ onClick }
 			aria-label={ closeLabel }
 			className={ classNames('rrui__button-reset', 'rrui__close', className) }>
 			<CloseIcon/>
@@ -17,8 +17,14 @@ export default function Close({ action, closeLabel, className })
 
 Close.propTypes =
 {
-	closeLabel : 'Close',
+	onClick : PropTypes.func.isRequired,
+	closeLabel : PropTypes.string.isRequired,
 	className : PropTypes.string
+}
+
+Close.defaultProps =
+{
+	closeLabel : 'Close'
 }
 
 export function CloseIcon()
