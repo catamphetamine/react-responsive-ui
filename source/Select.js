@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
@@ -29,12 +29,12 @@ const value_prop_type = PropTypes.oneOfType
 ])
 
 @reactLifecyclesCompat
-export default class Select extends PureComponent
+export default class Select extends Component
 {
 	static propTypes =
 	{
 		// A list of selectable options
-		options    : PropTypes.arrayOf
+		options : PropTypes.arrayOf
 		(
 			PropTypes.shape
 			({
@@ -265,8 +265,15 @@ export default class Select extends PureComponent
 		optionsCounter : 0,
 		matchesCounter : 0,
 
-		// Will be re-fetched on component creation.
-		options : []
+		// Will be re-fetched in `componentDidMount()`.
+		options : this.props.options || [],
+
+		// `prevProps` for `getDerivedStateFromProps()`.
+		props:
+		{
+			value   : this.props.value,
+			options : this.props.options
+		}
 	}
 
 	// Latest async `getOptions()` invocation timestamp (for throttling).
@@ -336,27 +343,30 @@ export default class Select extends PureComponent
 		}
 	}
 
-	static getDerivedStateFromProps({ autocomplete, value, options, getOptions }, state)
+	static getDerivedStateFromProps({ autocomplete, value, options }, state)
 	{
 		const newState =
 		{
-			// Is only used for comparing new value and old value.
-			value
+			// `prevProps`.
+			props:
+			{
+				value,
+				options
+			}
 		}
 
-		options = _getOptions(options, getOptions, state.autocomplete_input_value)
-
-		// Not re-fetching async options here (for simplicity).
+		// Not re-fetching async options here.
 		if (Array.isArray(options))
 		{
-			newState.options = options
-		}
+			newState.options = _getOptions(options, null, state.autocomplete_input_value)
 
-		if (autocomplete && newState.options)
-		{
-			if (state.options !== newState.options || state.value !== newState.value)
+			if (autocomplete)
 			{
-				newState.selectedOptionLabel = getSelectedOptionLabel(newState.value, newState.options)
+				if (newState.props.options !== state.props.options
+					|| newState.props.value !== state.props.value)
+				{
+					newState.selectedOptionLabel = getSelectedOptionLabel(value, options)
+				}
 			}
 		}
 
@@ -1238,6 +1248,9 @@ export default class Select extends PureComponent
 			return
 		}
 
+		// If clicked on the toggler the second time
+		// while options are already being fetched
+		// then wait for the fetch to finish first.
 		if (isFetchingOptions && !expanded)
 		{
 			return
@@ -1668,7 +1681,7 @@ export default class Select extends PureComponent
 		return options.slice(0, maxItems)
 	}
 
-	throttleFetchOptionsCall(callback, input_value)
+	throttleFetchOptionsCall(callback)
 	{
 		let
 		{
@@ -1677,9 +1690,11 @@ export default class Select extends PureComponent
 		}
 		= this.props
 
+		const { autocomplete_input_value } = this.state
+
 		const wait = throttle - (Date.now() - this.latestFetchOptionsCallTimestamp)
 
-		if (input_value.length >= minCharactersToStartThrottling && wait > 0)
+		if (autocomplete_input_value.length >= minCharactersToStartThrottling && wait > 0)
 		{
 			if (!this.nextFetchOptionsCallTimeout)
 			{
@@ -1707,22 +1722,22 @@ export default class Select extends PureComponent
 		}
 		= this.props
 
-		const { autocomplete_input_value } = this.state
-
-		if (menu)
+		const
 		{
+			async,
+			autocomplete_input_value
+		}
+		= this.state
+
+		if (menu) {
 			return callback()
 		}
 
 		// If throttled then schedule a future invocation.
-		// The first invocation happens inside `constructor()`
+		// The first invocation happens inside `componentDidMount()`
 		// and that's where `this.async` flag is set.
-		if (this.async)
-		{
-			if (this.throttleFetchOptionsCall(callback, autocomplete_input_value))
-			{
-				return
-			}
+		if (async && this.throttleFetchOptionsCall(callback)) {
+			return
 		}
 
 		this.latestFetchOptionsCallTimestamp = Date.now()
@@ -1755,12 +1770,11 @@ export default class Select extends PureComponent
 
 		if (typeof options.then === 'function')
 		{
-			this.async = true
-
 			const counter = this.counter.getNextCounter()
 
 			this.setState
 			({
+				async : true,
 				isFetchingOptions : true,
 				fetchingOptionsCounter : counter
 			},
