@@ -91,11 +91,12 @@
 
 .rrui__select__separator
 {
-	height           : 1pt;
+	height           : 1px;
+	margin-bottom    : -1px;
 	padding          : 0;
 	line-height      : 0;
 	font-size        : 0;
-	background-color : #B8BDC4;
+	background-color : rgba(0,0,0,.16);
 }
 
 .rrui__select__separator-option
