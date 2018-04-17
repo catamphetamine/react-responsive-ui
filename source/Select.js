@@ -58,6 +58,12 @@ export default class Select extends PureComponent
 		// Can return a `Promise`.
 		getOptions : PropTypes.func,
 
+		// Throttle `async getOptions()` invocations.
+		throttle : PropTypes.number.isRequired,
+
+		// Throttle `async getOptions()` invocations.
+		minCharactersToStartThrottling : PropTypes.number.isRequired,
+
 		// HTML form input `name` attribute
 		name       : PropTypes.string,
 
@@ -228,6 +234,12 @@ export default class Select extends PureComponent
 		// Set to `true` to display the loading indicator
 		loading : false,
 
+		// `async getOptions()` throttle period.
+		throttle : 200,
+
+		// `async getOptions()` throttle threshold (in characters).
+		minCharactersToStartThrottling : 4,
+
 		// `aria-label` for the `<Select/>`'s `<button/>`
 		ariaLabel : 'Select country',
 
@@ -256,6 +268,9 @@ export default class Select extends PureComponent
 		// Will be re-fetched on component creation.
 		options : []
 	}
+
+	// Latest async `getOptions()` invocation timestamp (for throttling).
+	latestFetchOptionsCallTimestamp = 0
 
 	// Older options can only be overwritten with newer ones.
 	// (in case of `autocomplete` and `async getOptions()`).
@@ -368,7 +383,7 @@ export default class Select extends PureComponent
 
 		// If some initial `value` is set then
 		// the `options` are required to display that `value`.
-		this.fetchOptions(() => {})
+		this.fetchOptions()
 	}
 
 	componentDidUpdate(previous_props, previous_state)
@@ -408,6 +423,7 @@ export default class Select extends PureComponent
 		clearTimeout(this.toggle_timeout)
 		clearTimeout(this.scroll_into_view_timeout)
 		clearTimeout(this.restore_focus_on_collapse_timeout)
+		clearTimeout(this.nextFetchOptionsCallTimeout)
 	}
 
 	render()
@@ -1652,7 +1668,35 @@ export default class Select extends PureComponent
 		return options.slice(0, maxItems)
 	}
 
-	fetchOptions(callback)
+	throttleFetchOptionsCall(callback, input_value)
+	{
+		let
+		{
+			throttle,
+			minCharactersToStartThrottling
+		}
+		= this.props
+
+		const wait = throttle - (Date.now() - this.latestFetchOptionsCallTimestamp)
+
+		if (input_value.length >= minCharactersToStartThrottling && wait > 0)
+		{
+			if (!this.nextFetchOptionsCallTimeout)
+			{
+				this.nextFetchOptionsCallTimeout = setTimeout(() =>
+				{
+					this.nextFetchOptionsCallTimeout = undefined
+					this.latestFetchOptionsCall()
+				},
+				wait)
+			}
+
+			this.latestFetchOptionsCall = () => this.fetchOptions(callback)
+			return true
+		}
+	}
+
+	fetchOptions(callback = () => {})
 	{
 		let
 		{
@@ -1663,12 +1707,25 @@ export default class Select extends PureComponent
 		}
 		= this.props
 
+		const { autocomplete_input_value } = this.state
+
 		if (menu)
 		{
 			return callback()
 		}
 
-		const { autocomplete_input_value } = this.state
+		// If throttled then schedule a future invocation.
+		// The first invocation happens inside `constructor()`
+		// and that's where `this.async` flag is set.
+		if (this.async)
+		{
+			if (this.throttleFetchOptionsCall(callback, autocomplete_input_value))
+			{
+				return
+			}
+		}
+
+		this.latestFetchOptionsCallTimestamp = Date.now()
 
 		options = _getOptions(options, getOptions, autocomplete_input_value)
 
@@ -1698,6 +1755,8 @@ export default class Select extends PureComponent
 
 		if (typeof options.then === 'function')
 		{
+			this.async = true
+
 			const counter = this.counter.getNextCounter()
 
 			this.setState
