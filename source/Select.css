@@ -196,7 +196,8 @@
 	height : 0;
 
 	margin-left   : 0.35em;
-	margin-top    : 0.1em;
+	margin-right  : 0.4em;
+	margin-top    : 0.2em;
 	margin-bottom : 0.1em;
 
 	opacity: 0.7;
@@ -204,7 +205,7 @@
 	transition: opacity 100ms ease-out;
 
 	/* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
-	border-width : 0.35em 0.2em 0 0.2em;
+	border-width : 0.35em 0.22em 0 0.22em;
 
 	border-style       : solid;
 	border-left-color  : transparent;
@@ -231,29 +232,9 @@
 {
 	/*
 	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	display      : block;
+	display : block;
 	*/
-	display      : none;
-}
-
-.rrui__select__close-icon
-{
-	width        : calc(0.3rem * 4);
-	height       : calc(0.3rem * 4);
-	margin-top   : calc(0.3rem * 1.5);
-	margin-right : calc(0.3rem * 1.5);
-	padding      : calc(0.3rem * 2);
-	box-sizing   : content-box;
-}
-
-.rrui__select__close-icon-path
-{
-	stroke : black;
-}
-
-.rrui__select__close-icon:active .rrui__select__close-icon-path
-{
-	stroke : #03B2CB;
+	display : none;
 }
 
 .rrui__select--compact
@@ -289,4 +270,18 @@
 .rrui__select__native
 {
 	min-height : 100%;
+}
+
+.rrui__select .rrui__ellipsis
+{
+	position : absolute;
+	right    : 0.4em;
+	top      : calc(50% - 0.2em / 2);
+
+	pointer-events : none;
+}
+
+.rrui__select__autocomplete--loading
+{
+	padding-right : 1.7em;
 }
