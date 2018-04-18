@@ -115,11 +115,7 @@ export default class Checkbox extends Component
 						'rrui__input--multiline' : multiline
 					}) }>
 
-					<div
-						className={ classNames('rrui__checkbox__checkbox',
-						{
-							'rrui__checkbox__checkbox--checked' : value
-						}) }>
+					<div className="rrui__checkbox__checkbox">
 						<input
 							ref={ ref => this.checkbox = ref }
 							type="checkbox"
@@ -132,7 +128,10 @@ export default class Checkbox extends Component
 							className="rrui__checkbox__input"/>
 
 						<svg
-							className="rrui__checkbox__box"
+							className={ classNames('rrui__checkbox__box',
+							{
+								'rrui__checkbox__box--checked' : value
+							}) }
 							focusable="false"
 							viewBox="0 0 24 24"
 							aria-hidden="true">
