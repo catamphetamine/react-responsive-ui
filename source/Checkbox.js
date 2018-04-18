@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
@@ -7,10 +7,8 @@ import { submitFormOnCtrlEnter } from './utility/dom'
 
 // http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
 
-export default class Checkbox extends PureComponent
+export default class Checkbox extends Component
 {
-	state = {}
-
 	static propTypes =
 	{
 		// HTML form field "name"
@@ -55,41 +53,16 @@ export default class Checkbox extends PureComponent
 		focus     : false
 	}
 
+	state = {}
+
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
 		const { value, fallback } = this.props
 
-		if (value)
-		{
-			this.draw_checkmark()
-		}
-
 		if (fallback)
 		{
 			this.setState({ javascript: true })
-		}
-	}
-
-	componentWillReceiveProps(next_props)
-	{
-		if (this.props.value !== next_props.value)
-		{
-			// Allows checkmark animation from now on
-			this.was_toggled = true
-		}
-
-		if (this.props.value && !next_props.value)
-		{
-			this.setState({ path_style: undefined })
-		}
-	}
-
-	componentDidUpdate(previous_props, previous_state)
-	{
-		if (this.props.value && !previous_props.value)
-		{
-			this.draw_checkmark()
 		}
 	}
 
@@ -142,12 +115,7 @@ export default class Checkbox extends PureComponent
 						'rrui__input--multiline' : multiline
 					}) }>
 
-					<div
-						className={ classNames('rrui__checkbox__checkbox',
-						{
-							'rrui__checkbox__checkbox--multiline' : multiline
-						}) }>
-
+					<div className="rrui__checkbox__checkbox">
 						<input
 							ref={ ref => this.checkbox = ref }
 							type="checkbox"
@@ -159,16 +127,16 @@ export default class Checkbox extends PureComponent
 							onBlur={ this.on_blur }
 							className="rrui__checkbox__input"/>
 
-						<div
+						<svg
 							className={ classNames('rrui__checkbox__box',
 							{
-								'rrui__checkbox__box--no-label' : !children
-							}) }/>
-
-						<svg
-							viewBox={ checkmark_svg_canvas_dimensions }
-							className="rrui__checkbox__checkmark">
-							{ value ? this.render_checkmark() : null }
+								'rrui__checkbox__box--checked' : value
+							}) }
+							focusable="false"
+							viewBox="0 0 24 24"
+							aria-hidden="true">
+							<path d={ value ? CHECKBOX_CHECKED_PATH : CHECKBOX_OUTLINE_PATH }/> }
+							<path className="rrui__checkbox__box-outline" d={ CHECKBOX_OUTLINE_PATH }/>
 						</svg>
 					</div>
 
@@ -184,33 +152,14 @@ export default class Checkbox extends PureComponent
 					}
 				</div>
 
-				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
+				{ indicateInvalid && error &&
+					<div className="rrui__input-error">
+						{ error }
+					</div>
+				}
 
 				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
-		)
-	}
-
-	render_checkmark()
-	{
-		const { path_style } = this.state
-
-		// For a web browser
-		if (typeof window !== 'undefined')
-		{
-			return (
-				<path
-					ref={ ref => this.path = ref }
-					d={ checkmark_svg_path }
-					style={ path_style || checkmark_svg_path_style }/>
-			)
-		}
-
-		// For Node.js
-		return (
-			<path
-				d={ checkmark_svg_path }
-				style={ checkmark_svg_path_style }/>
 		)
 	}
 
@@ -234,41 +183,6 @@ export default class Checkbox extends PureComponent
 				</label>
 			</div>
 		)
-	}
-
-	draw_checkmark()
-	{
-		const i = 0
-
-		const path_element = ReactDOM.findDOMNode(this.path)
-
-		const animation = { speed : .1, easing : 'ease-in-out' }
-
-		const path_style = {}
-
-		const length = path_element.getTotalLength() // in pixels
-		path_style.strokeDasharray = `${length} ${length}`
-
-		path_element.style.strokeDashoffset = Math.floor(length) - 1
-
-		// Trigger a layout so styles are calculated & the browser
-		// picks up the starting position before animating
-		path_element.getBoundingClientRect()
-
-		// Define our transition
-		// (skips the animation on the initial page render on the client side)
-		if (this.was_toggled)
-		{
-			path_style.transition =
-			path_element.style.WebkitTransition =
-			path_element.style.MozTransition =
-				`stroke-dashoffset ${animation.speed}s ${animation.easing} ${i * animation.speed}s`
-		}
-
-		// Go
-		path_style.strokeDashoffset = 0
-
-		this.setState({ path_style: { ...path_style, ...svg_path_style } })
 	}
 
 	focus()
@@ -303,19 +217,5 @@ export default class Checkbox extends PureComponent
 	}
 }
 
-const checkmark_svg_canvas_dimensions = '0 0 100 100'
-const checkmark_svg_path = ['M16.667,62.167c3.109,5.55,7.217,10.591,10.926,15.75 c2.614,3.636,5.149,7.519,8.161,10.853c-0.046-0.051,1.959,2.414,2.692,2.343c0.895-0.088,6.958-8.511,6.014-7.3 c5.997-7.695,11.68-15.463,16.931-23.696c6.393-10.025,12.235-20.373,18.104-30.707C82.004,24.988,84.802,20.601,87,16']
-
-const checkmark_svg_path_style =
-{
-	fill           : 'transparent',
-	strokeLinecap  : 'round',
-	strokeLinejoin : 'round'
-}
-
-const svg_path_style =
-{
-	strokeLinecap  : 'round',
-	strokeLinejoin : 'round',
-	fill           : 'none'
-}
+const CHECKBOX_CHECKED_PATH = "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+const CHECKBOX_OUTLINE_PATH = "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
