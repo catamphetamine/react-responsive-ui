@@ -102,7 +102,7 @@ export default class Checkbox extends Component
 				className={ classNames('rrui__checkbox',
 				{
 					'rrui__rich'               : fallback,
-					'rrui__checkbox--checked'  : value,
+					// 'rrui__checkbox--checked'  : value,
 					'rrui__checkbox--invalid'  : indicateInvalid && error,
 					'rrui__checkbox--disabled' : disabled
 				},
@@ -115,7 +115,11 @@ export default class Checkbox extends Component
 						'rrui__input--multiline' : multiline
 					}) }>
 
-					<div className="rrui__checkbox__checkbox">
+					<div
+						className={ classNames('rrui__checkbox__checkbox',
+						{
+							'rrui__checkbox__checkbox--checked' : value
+						}) }>
 						<input
 							ref={ ref => this.checkbox = ref }
 							type="checkbox"
@@ -128,15 +132,11 @@ export default class Checkbox extends Component
 							className="rrui__checkbox__input"/>
 
 						<svg
-							className={ classNames('rrui__checkbox__box',
-							{
-								'rrui__checkbox__box--checked' : value
-							}) }
+							className="rrui__checkbox__box"
 							focusable="false"
 							viewBox="0 0 24 24"
 							aria-hidden="true">
-							<path d={ value ? CHECKBOX_CHECKED_PATH : CHECKBOX_OUTLINE_PATH }/> }
-							<path className="rrui__checkbox__box-outline" d={ CHECKBOX_OUTLINE_PATH }/>
+							<path d={ value ? CHECKBOX_CHECKED_PATH : CHECKBOX_UNCHECKED_PATH }/> }
 						</svg>
 					</div>
 
@@ -217,5 +217,5 @@ export default class Checkbox extends Component
 	}
 }
 
-const CHECKBOX_CHECKED_PATH = "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-const CHECKBOX_OUTLINE_PATH = "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+const CHECKBOX_CHECKED_PATH   = "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+const CHECKBOX_UNCHECKED_PATH = "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"

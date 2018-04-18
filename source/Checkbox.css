@@ -80,47 +80,27 @@
 	width          : 100%;
 	height         : 100%;
 	fill           : currentColor;
-	color          : black;
 	user-select    : none;
 	pointer-events : none;
 }
 
-.rrui__checkbox__box--checked
+/* Checkbox color (:checked) */
+.rrui__checkbox__checkbox--checked,
+/* Checkbox border color (:focus) */
+.rrui__checkbox__input:focus + .rrui__checkbox__box
 {
 	color : #0093C4;
 }
 
-.rrui__checkbox__box-outline
-{
-	opacity : 0;
-	fill    : black;
-}
-
-/* Checkbox border color (:focus) */
-.rrui__checkbox__input:focus + .rrui__checkbox__box .rrui__checkbox__box-outline
-{
-	opacity : 1;
-	fill    : #0093C4;
-}
-
-/* Checkbox border color (:active) */
-.rrui__checkbox:active .rrui__checkbox__box-outline,
-.rrui__checkbox__input:active + .rrui__checkbox__box .rrui__checkbox__box-outline
-{
-	opacity : 1;
-	fill : #5CD6FF;
-}
-
-/* Checkbox border color (:active when checked) */
-.rrui__checkbox:active .rrui__checkbox__box--checked,
-.rrui__checkbox__input:active + .rrui__checkbox__box--checked
+/* Checkbox color (:checked and :active) */
+.rrui__checkbox:active .rrui__checkbox__checkbox,
+.rrui__checkbox__input:active + .rrui__checkbox__box
 {
 	color : #5CD6FF;
 }
 
 /* Checkbox border color (invalid) */
-.rrui__checkbox--invalid .rrui__checkbox__box-outline
+.rrui__checkbox--invalid .rrui__checkbox__checkbox
 {
-	opacity : 1;
-	fill    : #EB2010;
+	color : #EB2010;
 }
