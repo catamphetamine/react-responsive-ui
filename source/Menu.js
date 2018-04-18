@@ -19,7 +19,6 @@ export default class Menu extends PureComponent
 
 	static contextTypes =
 	{
-		router : PropTypes.object, // .isRequired, // `react-router` may not be used at all
 		...PageAndMenu.childContextTypes
 	}
 
@@ -32,7 +31,6 @@ export default class Menu extends PureComponent
 	{
 		const
 		{
-			router,
 			react_responsive_ui_menu:
 			{
 				register,
@@ -48,25 +46,16 @@ export default class Menu extends PureComponent
 		// 	return
 		// }
 
-		// If `react-router` is being used
-		if (router)
-		{
-			// Hide slideout menu on navigation
-			this.unlisten_history = router.listen((location) =>
-			{
-				if (this.state.show)
-				{
-					toggle()
-				}
-			})
-		}
-
 		this.unregister = register
 		({
 			hide    : () => this.setState({ show: false }),
 			toggle  : () => this.setState(state => ({ show: !state.show })),
 			element : () => ReactDOM.findDOMNode(this.menu)
 		})
+
+		// Listen to `pushstate` and `popstate` events (navigation).
+		window.addEventListener('pushstate', this.hide)
+		window.addEventListener('popstate', this.hide)
 
 		// this.calculate_width()
 	}
@@ -98,9 +87,26 @@ export default class Menu extends PureComponent
 
 		this.unregister()
 
-		if (this.unlisten_history)
+		// Listen to `pushstate` and `popstate` events (navigation).
+		window.removeEventListener('pushstate', this.hide)
+		window.removeEventListener('popstate', this.hide)
+	}
+
+	hide = () =>
+	{
+		const
 		{
-			this.unlisten_history()
+			react_responsive_ui_menu:
+			{
+				toggle
+			}
+		}
+		= this.context
+
+		const { show } = this.state
+
+		if (show) {
+			toggle()
 		}
 	}
 
