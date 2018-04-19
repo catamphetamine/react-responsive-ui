@@ -3,12 +3,24 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import PageAndMenu from './PageAndMenu'
+import { Context } from './PageAndMenu'
 
-export default class Menu_button extends PureComponent
+const _MenuButton = (props) => (
+	<Context.Consumer>
+		{context => <MenuButton {...props} {...context}/>}
+	</Context.Consumer>
+)
+
+export default _MenuButton
+
+class MenuButton extends PureComponent
 {
 	static propTypes =
 	{
+		// Context.
+		registerMenuButton : PropTypes.func.isRequired,
+		toggleMenu : PropTypes.func.isRequired,
+
 		// A URL of the "Menu" page:
 		// if a web browser has javascript disabled (e.g. Tor),
 		// then the menu button will redirect to this Menu page URL.
@@ -30,18 +42,11 @@ export default class Menu_button extends PureComponent
 		link : '#'
 	}
 
-	static contextTypes = PageAndMenu.childContextTypes
-
-	constructor()
-	{
-		super()
-
-		this.on_click = this.on_click.bind(this)
-	}
-
 	componentDidMount()
 	{
-		this.unregister = this.context.react_responsive_ui_menu.register_menu_button
+		const { registerMenuButton } = this.props
+
+		this.unregister = registerMenuButton
 		({
 			element : () => ReactDOM.findDOMNode(this.button)
 		})
@@ -52,21 +57,16 @@ export default class Menu_button extends PureComponent
 		this.unregister()
 	}
 
-	on_click(event)
+	onClick = (event) =>
 	{
 		event.preventDefault()
 
-		const
-		{
-			react_responsive_ui_menu:
-			{
-				toggle
-			}
-		}
-		= this.context
+		const { toggleMenu } = this.props
 
-		toggle()
+		toggleMenu()
 	}
+
+	storeInstance = (ref) => this.button = ref
 
 	render()
 	{
@@ -81,9 +81,9 @@ export default class Menu_button extends PureComponent
 
 		return (
 			<a
-				ref={ ref => this.button = ref }
+				ref={ this.storeInstance }
 				href={ link }
-				onClick={ this.on_click }
+				onClick={ this.onClick }
 				title={ title }
 				className={ classNames('rrui__slideout-menu-button', className) }
 				style={ style }>

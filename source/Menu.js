@@ -3,13 +3,28 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import PageAndMenu from './PageAndMenu'
+import { Context } from './PageAndMenu'
 
-// A slideout menu
-export default class Menu extends PureComponent
+const _Menu = (props) => (
+	<Context.Consumer>
+		{context => <Menu {...props} {...context}/>}
+	</Context.Consumer>
+)
+
+export default _Menu
+
+// Swipeable feature example source code:
+// https://github.com/mui-org/material-ui/blob/v1-beta/packages/material-ui/src/SwipeableDrawer/SwipeableDrawer.js
+
+// A slideout menu.
+class Menu extends PureComponent
 {
 	static propTypes =
 	{
+		// Context.
+		registerMenu : PropTypes.func.isRequired,
+		toggleMenu : PropTypes.func.isRequired,
+
 		// CSS style object
 		style : PropTypes.object,
 
@@ -17,28 +32,11 @@ export default class Menu extends PureComponent
 		className : PropTypes.string
 	}
 
-	static contextTypes =
-	{
-		...PageAndMenu.childContextTypes
-	}
-
-	state =
-	{
-		show: false
-	}
+	state = { show: false }
 
 	componentDidMount()
 	{
-		const
-		{
-			react_responsive_ui_menu:
-			{
-				register,
-				toggle
-			}
-		}
-		= this.context
-
+		const { registerMenu } = this.props
 		const { show } = this.state
 
 		// if (!slideout)
@@ -46,10 +44,11 @@ export default class Menu extends PureComponent
 		// 	return
 		// }
 
-		this.unregister = register
+		this.unregister = registerMenu
 		({
 			hide    : () => this.setState({ show: false }),
 			toggle  : () => this.setState(state => ({ show: !state.show })),
+			isShown : () => this.state.show,
 			element : () => ReactDOM.findDOMNode(this.menu)
 		})
 
@@ -94,21 +93,15 @@ export default class Menu extends PureComponent
 
 	hide = () =>
 	{
-		const
-		{
-			react_responsive_ui_menu:
-			{
-				toggle
-			}
-		}
-		= this.context
-
+		const { toggleMenu } = this.props
 		const { show } = this.state
 
 		if (show) {
-			toggle()
+			toggleMenu()
 		}
 	}
+
+	storeInstance = (ref) => this.menu = ref
 
 	render()
 	{
@@ -117,10 +110,10 @@ export default class Menu extends PureComponent
 
 		return (
 			<div
-				ref={ ref => this.menu = ref }
+				ref={ this.storeInstance }
 				className={ classNames('rrui__slideout-menu',
 				{
-					'rrui__slideout-menu--shown': show
+					'rrui__slideout-menu--expanded': show
 				},
 				className) }
 				style={ style }>

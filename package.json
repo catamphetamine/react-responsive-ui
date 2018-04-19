@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "create-react-context": "^0.2.1",
+    "create-react-context": "^0.2.2",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.6",
     "react-day-picker": "^7.0.7",

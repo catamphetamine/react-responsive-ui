@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import createContext from 'create-react-context'
+
+export const Context = createContext()
+
+// export const contextPropTypes =
+// {
+// 	toggleMenu         : PropTypes.func.isRequired,
+// 	isMenuExpanded     : PropTypes.func.isRequired,
+// 	registerMenu       : PropTypes.func.isRequired,
+// 	registerMenuButton : PropTypes.func.isRequired
+// }
 
 export default class PageAndMenu extends Component
 {
-	static childContextTypes =
-	{
-		react_responsive_ui_menu : PropTypes.shape
-		({
-			toggle   : PropTypes.func.isRequired,
-			register : PropTypes.func.isRequired
-		})
-		.isRequired
-	}
-
 	// state =
 	// {
 	// 	show_menu  : false,
@@ -20,39 +21,32 @@ export default class PageAndMenu extends Component
 	// 	page_moved_aside : false
 	// }
 
-	constructor()
-	{
-		super()
-
-		this.hide_menu_on_mouse_down = this.hide_menu_on_mouse_down.bind(this)
-		// this.toggle_menu        = this.toggle_menu.bind(this)
-		// this.update_menu_width  = this.update_menu_width.bind(this)
-	}
-
 	render()
 	{
 		const { children, ...rest } = this.props
 
 		return (
-			<div
-				onTouchStart={ this.hide_menu_on_mouse_down }
-				onMouseDown={ this.hide_menu_on_mouse_down }
-				{ ...rest }>
-				{ children }
-			</div>
+			<Context.Provider value={ this.getContext() }>
+				<div
+					onTouchStart={ this.hide_menu_on_mouse_down }
+					onMouseDown={ this.hide_menu_on_mouse_down }
+					{ ...rest }>
+					{ children }
+				</div>
+			</Context.Provider>
 		)
 	}
 
-	hide_menu_on_mouse_down(event)
+	hide_menu_on_mouse_down = (event) =>
 	{
-		if (!this.menu || !this.menu_button)
+		if (!this.menu || !this.menuButton)
 		{
 			return
 		}
 
 		// Hide the menu only if clicked outside
 		if (this.menu.element().contains(event.target)
-			|| this.menu_button.element().contains(event.target))
+		|| this.menuButton.element().contains(event.target))
 		{
 			return
 		}
@@ -83,40 +77,37 @@ export default class PageAndMenu extends Component
 	// 	this.setState({ menu_width: width })
 	// }
 
-	getChildContext()
+	// The functions are bound to the React component instance.
+	getContext()
 	{
-		const context =
-		{
-			react_responsive_ui_menu:
+		return {
+			toggleMenu: () => this.menu.toggle(),
+
+			isMenuExpanded: () => this.menu && this.menu.isShown(),
+
+			registerMenu: (menu) =>
 			{
-				toggle : () => this.menu.toggle(),
-
-				register: (menu) =>
-				{
-					if (this.menu)
-					{
-						throw new Error('There already is a menu registered for this page')
-					}
-
-					this.menu = menu
-
-					return () => this.menu = undefined
-				},
-
-				register_menu_button: (menu_button) =>
-				{
-					if (this.menu_button)
-					{
-						throw new Error('There already is a menu button registered for this page')
-					}
-
-					this.menu_button = menu_button
-
-					return () => this.menu_button = undefined
+				if (this.menu) {
+					throw new Error('[react-responsive-ui] There already is a menu registered for this page.')
 				}
+
+				this.menu = menu
+
+				// Return `.unregister()`.
+				return () => this.menu = undefined
+			},
+
+			registerMenuButton: (menuButton) =>
+			{
+				if (this.menuButton) {
+					throw new Error('[react-responsive-ui] There already is a menu button registered for this page.')
+				}
+
+				this.menuButton = menuButton
+
+				// Return `.unregister()`.
+				return () => this.menuButton = undefined
 			}
 		}
-
-		return context
 	}
 }

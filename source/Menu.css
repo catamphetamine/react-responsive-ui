@@ -14,7 +14,7 @@
 	transition : transform 120ms ease-out;
 }
 
-.rrui__slideout-menu--shown
+.rrui__slideout-menu--expanded
 {
 	transform  : translate3d(0, 0, 0);
 	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);

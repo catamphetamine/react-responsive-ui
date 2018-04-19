@@ -1,27 +1,59 @@
-import React from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import classNames from 'classnames'
+
+import { Context } from './PageAndMenu'
+
+const _Page = (props) => (
+	<Context.Consumer>
+		{context => <Page {...props} isMenuExpanded={context.isMenuExpanded}/>}
+	</Context.Consumer>
+)
+
+export default _Page
 
 // // when adjusting this transition time also adjust it in styles/xs-m.scss
 // const menu_transition_duration = 0 // 210 // milliseconds
 
-export default function Page(props)
+class Page extends Component
 {
-	const { children, ...rest } = props
+	static propTypes =
+	{
+		isMenuExpanded : PropTypes.func.isRequired
+	}
 
-	// Slideout menu pushes the page to the right
-	// const page_style_with_menu_expanded = { transform: `translate3d(${this.state.menu_width}px, 0px, 0px)` }
-	//
-	// style={ this.state.show_menu ? { ...style.page, ...page_style_with_menu_expanded } : style.page }
-	//
-	// `translate3d` animation won't work:
-	// http://stackoverflow.com/questions/14732403/position-fixed-not-working-for-header/14732712#14732712
+	render()
+	{
+		const
+		{
+			isMenuExpanded,
+			children,
+			className,
+			...rest
+		}
+		= this.props
 
-	// style={style.page}
+		// Slideout menu pushes the page to the right
+		// const page_style_with_menu_expanded = { transform: `translate3d(${this.state.menu_width}px, 0px, 0px)` }
+		//
+		// style={ this.state.show_menu ? { ...style.page, ...page_style_with_menu_expanded } : style.page }
+		//
+		// `translate3d` animation won't work:
+		// http://stackoverflow.com/questions/14732403/position-fixed-not-working-for-header/14732712#14732712
 
-	return (
-		<div { ...rest }>
-			{ children }
-		</div>
-	)
+		// style={style.page}
+
+		return (
+			<div
+				{ ...rest }
+				className={ classNames(className,
+				{
+					'rrui__page--menu-overlay' : isMenuExpanded()
+				}) }>
+				{ children }
+			</div>
+		)
+	}
 }
 
 // const style =
