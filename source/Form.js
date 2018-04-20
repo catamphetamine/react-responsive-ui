@@ -180,7 +180,7 @@ class Actions extends Component
 
 		if (context)
 		{
-			context.register_form()
+			context.registerForm()
 		}
 	}
 
@@ -190,7 +190,7 @@ class Actions extends Component
 
 		if (context)
 		{
-			context.unregister_form()
+			context.unregisterForm()
 		}
 	}
 
@@ -210,7 +210,7 @@ class Actions extends Component
 				className={ classNames('rrui__form__actions', className) }
 				style={ style }>
 				{ context &&
-					<Button action={ context.close_if_not_busy }>
+					<Button action={ context.closeIfNotBusy }>
 						{ context.closeLabel }
 					</Button>
 				}

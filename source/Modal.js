@@ -131,9 +131,9 @@ export default class Modal extends Component
 
 		return {
 			closeLabel,
-			close_if_not_busy : this.close_if_not_busy,
-			register_form     : this.register_form,
-			unregister_form   : this.unregister_form
+			closeIfNotBusy : this.closeIfNotBusy,
+			registerForm   : this.registerForm,
+			unregisterForm : this.unregisterForm
 		}
 	}
 
@@ -247,7 +247,7 @@ export default class Modal extends Component
 					context={ this.getContext() }
 					closeLabel={ closeLabel }
 					closeButton={ closeButton }
-					close={ this.close_if_not_busy }
+					close={ this.closeIfNotBusy }
 					style={ style }
 					className={ className }
 					fullscreen={ fullscreen }
@@ -270,7 +270,7 @@ export default class Modal extends Component
 		)
 	}
 
-	register_form = () =>
+	registerForm = () =>
 	{
 		// Using a counter instead of a boolean here
 		// because a new form may be mounted before the old one is unmounted.
@@ -278,7 +278,7 @@ export default class Modal extends Component
 		this.setState(({ form }) => ({ form: form + 1 }))
 	}
 
-	unregister_form = () =>
+	unregisterForm = () =>
 	{
 		if (this.unmounted)
 		{
@@ -326,10 +326,10 @@ export default class Modal extends Component
 			return ReactDOM.findDOMNode(this.content).parentNode.focus()
 		}
 
-		this.close_if_not_busy()
+		this.closeIfNotBusy()
 	}
 
-	close_if_not_busy = () =>
+	closeIfNotBusy = () =>
 	{
 		const { busy, close, closeTimeout } = this.props
 

@@ -261,17 +261,17 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 	25%
 	{
-		transform: scale3d(.97, .97, .97);
+		transform: scale3d(.99, .99, .99);
 	}
 
 	47%
 	{
-		transform: scale3d(1.025, 1.025, 1.025);
+		transform: scale3d(1.01, 1.01, 1.01);
 	}
 
 	72%
 	{
-		transform: scale3d(0.99, 0.99, 0.99);
+		transform: scale3d(0.995, 0.995, 0.995);
 	}
 
 	to
