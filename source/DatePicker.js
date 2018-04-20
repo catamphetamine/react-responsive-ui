@@ -143,7 +143,7 @@ export default class DatePicker extends PureComponent
 
 	componentDidMount()
 	{
-		document.addEventListener('click', this.document_clicked)
+		document.addEventListener('click', this.onDocumentClick)
 
 		// Set "previous" and "next" buttons untabbable
 		// so that a Tab out of the `<input/>` field
@@ -160,7 +160,7 @@ export default class DatePicker extends PureComponent
 
 	componentWillUnmount()
 	{
-		document.removeEventListener('click', this.document_clicked)
+		document.removeEventListener('click', this.onDocumentClick)
 	}
 
 	on_input_focus = (event) =>
@@ -501,9 +501,16 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	document_clicked = (event) =>
+	onDocumentClick = (event) =>
 	{
 		const container = ReactDOM.findDOMNode(this.container)
+
+		// For some strange reason sometimes
+		// `container` is `undefined` or `null` here.
+		if (!container)
+		{
+			return
+		}
 
 		if (container.contains(event.target))
 		{
