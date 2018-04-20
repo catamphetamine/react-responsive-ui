@@ -174,7 +174,7 @@ Form.Actions = function({ children })
 
 class Actions extends Component
 {
-	componentWillMount()
+	componentDidMount()
 	{
 		const { context } = this.props
 
