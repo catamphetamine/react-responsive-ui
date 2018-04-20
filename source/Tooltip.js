@@ -50,10 +50,12 @@ export default class Tooltip extends PureComponent
 		container : () => document.body
 	}
 
-	componentWillReceiveProps({ text })
+	componentDidUpdate(prevProps)
 	{
+		const { text } = this.props
+
 		// Update tooltip text
-		if (this.tooltip && text !== this.props.text)
+		if (this.tooltip && text !== prevProps.text)
 		{
 			this.tooltip.textContent = text
 		}
