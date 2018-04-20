@@ -52,9 +52,9 @@ export default class Snackbar extends PureComponent
 		clearTimeout(this.show_snack_timeout)
 	}
 
-	componentWillReceiveProps(new_props)
+	receiveNewValue()
 	{
-		let { value, reset } = new_props
+		let { value, reset } = this.props
 
 		// Redux has an optimization built in:
 		// it won't rerender a `@connect`ed component
@@ -143,6 +143,11 @@ export default class Snackbar extends PureComponent
 	componentDidUpdate()
 	{
 		let { height, value } = this.state
+
+		// If `value` got updated, then push it
+		// to the list of `values` and reset
+		// the `value` property.
+		this.receiveNewValue()
 
 		// The notification DOM element has just been rendered
 		// which means its dimensions are set by now.
