@@ -507,6 +507,7 @@ export default class DatePicker extends PureComponent
 
 		// For some strange reason sometimes
 		// `container` is `undefined` or `null` here.
+		// All reported cases are currently for Microsoft Edge.
 		if (!container)
 		{
 			return
