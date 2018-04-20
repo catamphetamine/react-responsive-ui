@@ -16,14 +16,6 @@ export const ModalContext = createReactContext()
 // but rather `width: auto` or `left: 0; right: 0;`.
 export default class Modal extends Component
 {
-	state =
-	{
-		// Using a counter instead of a boolean here
-		// because a new form may be mounted before the old one is unmounted.
-		// (React reconciliation algorythm implementation details)
-		form : 0
-	}
-
 	static propTypes =
 	{
 		// If `true` then the modal is shown
@@ -121,6 +113,14 @@ export default class Modal extends Component
 		could_not_close_because_busy_animation_duration: 600 // ms
 	}
 
+	state =
+	{
+		// Using a counter instead of a boolean here
+		// because a new form may be mounted before the old one is unmounted.
+		// (React reconciliation algorythm implementation details)
+		form : 0
+	}
+
 	getContext()
 	{
 		const
@@ -137,17 +137,21 @@ export default class Modal extends Component
 		}
 	}
 
-	componentWillReceiveProps(nextProps)
+	componentDidUpdate(prevProps, prevState)
 	{
 		const { unmount, isOpen } = this.props
 
+		// If prevent `<Modal/>` contents
+		// from being unmounted upon close.
 		if (!unmount)
 		{
-			if (!isOpen && nextProps.isOpen)
+			// If has been opened.
+			if (!prevProps.isOpen && isOpen)
 			{
 				this.on_after_open()
 			}
-			else if (isOpen && !nextProps.isOpen)
+			// If has been closed.
+			else if (prevProps.isOpen && !isOpen)
 			{
 				this.on_after_close()
 				this.reset_content_scroll()
