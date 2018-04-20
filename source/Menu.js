@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import { Context } from './PageAndMenu'
+import { Context, contextPropTypes } from './PageAndMenu'
 
 const _Menu = (props) => (
 	<Context.Consumer>
@@ -22,8 +22,7 @@ class Menu extends PureComponent
 	static propTypes =
 	{
 		// Context.
-		registerMenu : PropTypes.func.isRequired,
-		toggleMenu : PropTypes.func.isRequired,
+		...contextPropTypes,
 
 		// CSS style object
 		style : PropTypes.object,
@@ -47,7 +46,7 @@ class Menu extends PureComponent
 		this.unregister = registerMenu
 		({
 			hide    : () => this.setState({ show: false }),
-			toggle  : () => this.setState(state => ({ show: !state.show })),
+			toggle  : (callback) => this.setState(state => ({ show: !state.show }), callback),
 			isShown : () => this.state.show,
 			element : () => ReactDOM.findDOMNode(this.menu)
 		})

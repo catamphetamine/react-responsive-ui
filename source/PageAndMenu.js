@@ -4,13 +4,13 @@ import createContext from 'create-react-context'
 
 export const Context = createContext()
 
-// export const contextPropTypes =
-// {
-// 	toggleMenu         : PropTypes.func.isRequired,
-// 	isMenuExpanded     : PropTypes.func.isRequired,
-// 	registerMenu       : PropTypes.func.isRequired,
-// 	registerMenuButton : PropTypes.func.isRequired
-// }
+export const contextPropTypes =
+{
+	menuIsExpanded     : PropTypes.bool.isRequired,
+	toggleMenu         : PropTypes.func.isRequired,
+	registerMenu       : PropTypes.func.isRequired,
+	registerMenuButton : PropTypes.func.isRequired
+}
 
 export default class PageAndMenu extends Component
 {
@@ -23,18 +23,57 @@ export default class PageAndMenu extends Component
 
 	render()
 	{
-		const { children, ...rest } = this.props
-
 		return (
-			<Context.Provider value={ this.getContext() }>
+			<Context.Provider value={ this.state }>
 				<div
 					onTouchStart={ this.hide_menu_on_mouse_down }
 					onMouseDown={ this.hide_menu_on_mouse_down }
-					{ ...rest }>
-					{ children }
-				</div>
+					{ ...this.props }/>
 			</Context.Provider>
 		)
+	}
+
+	toggleMenu = () =>
+	{
+		this.menu.toggle(() =>
+		{
+			this.setState({
+				menuIsExpanded : this.menu.isShown()
+			})
+		})
+	}
+
+	registerMenu = (menu) =>
+	{
+		if (this.menu) {
+			throw new Error('[react-responsive-ui] There already is a menu registered for this page.')
+		}
+
+		this.menu = menu
+
+		// Return `.unregister()`.
+		return () => this.menu = undefined
+	}
+
+	registerMenuButton = (menuButton) =>
+	{
+		if (this.menuButton) {
+			throw new Error('[react-responsive-ui] There already is a menu button registered for this page.')
+		}
+
+		this.menuButton = menuButton
+
+		// Return `.unregister()`.
+		return () => this.menuButton = undefined
+	}
+
+	// `state` is placed below all methods because it references them.
+	state =
+	{
+		menuIsExpanded     : false,
+		toggleMenu         : this.toggleMenu,
+		registerMenu       : this.registerMenu,
+		registerMenuButton : this.registerMenuButton
 	}
 
 	hide_menu_on_mouse_down = (event) =>
@@ -51,63 +90,8 @@ export default class PageAndMenu extends Component
 			return
 		}
 
-		this.menu.hide()
-	}
-
-	// toggle_menu()
-	// {
-	// 	if (!this.state.show_menu)
-	// 	{
-	// 		return this.setState({ show_menu: !this.state.show_menu, page_moved_aside: !this.state.page_moved_aside })
-	// 	}
-	//
-	// 	this.setState({ show_menu: !this.state.show_menu }, () =>
-	// 	{
-	// 		// Requires a corresponding `clearTimeout()`` in `componentWillUnmount()``
-	// 		setTimeout(() =>
-	// 		{
-	// 			this.setState({ page_moved_aside: this.state.show_menu })
-	// 		},
-	// 		menu_transition_duration)
-	// 	})
-	// }
-
-	// update_menu_width(width)
-	// {
-	// 	this.setState({ menu_width: width })
-	// }
-
-	// The functions are bound to the React component instance.
-	getContext()
-	{
-		return {
-			toggleMenu: () => this.menu.toggle(),
-
-			isMenuExpanded: () => this.menu && this.menu.isShown(),
-
-			registerMenu: (menu) =>
-			{
-				if (this.menu) {
-					throw new Error('[react-responsive-ui] There already is a menu registered for this page.')
-				}
-
-				this.menu = menu
-
-				// Return `.unregister()`.
-				return () => this.menu = undefined
-			},
-
-			registerMenuButton: (menuButton) =>
-			{
-				if (this.menuButton) {
-					throw new Error('[react-responsive-ui] There already is a menu button registered for this page.')
-				}
-
-				this.menuButton = menuButton
-
-				// Return `.unregister()`.
-				return () => this.menuButton = undefined
-			}
+		if (this.menu.isShown()) {
+			this.toggleMenu()
 		}
 	}
 }

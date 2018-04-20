@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Context } from './PageAndMenu'
+import { Context, contextPropTypes } from './PageAndMenu'
 
 const _Page = (props) => (
 	<Context.Consumer>
-		{context => <Page {...props} isMenuExpanded={context.isMenuExpanded}/>}
+		{context => <Page {...props} menuIsExpanded={context.menuIsExpanded}/>}
 	</Context.Consumer>
 )
 
@@ -19,19 +19,24 @@ class Page extends Component
 {
 	static propTypes =
 	{
-		isMenuExpanded : PropTypes.func.isRequired
+		...contextPropTypes
 	}
 
 	render()
 	{
 		const
 		{
-			isMenuExpanded,
-			children,
-			className,
+			menuIsExpanded,
+			// children,
+			// className,
 			...rest
 		}
 		= this.props
+
+		// className={ classNames(className,
+		// {
+		// 	'rrui__page--menu-overlay' : menuIsExpanded
+		// }) }>
 
 		// Slideout menu pushes the page to the right
 		// const page_style_with_menu_expanded = { transform: `translate3d(${this.state.menu_width}px, 0px, 0px)` }
@@ -44,14 +49,7 @@ class Page extends Component
 		// style={style.page}
 
 		return (
-			<div
-				{ ...rest }
-				className={ classNames(className,
-				{
-					'rrui__page--menu-overlay' : isMenuExpanded()
-				}) }>
-				{ children }
-			</div>
+			<div { ...rest }/>
 		)
 	}
 }

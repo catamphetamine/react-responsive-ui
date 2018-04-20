@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
-import { Context } from './PageAndMenu'
+import { Context, contextPropTypes } from './PageAndMenu'
 
 const _MenuButton = (props) => (
 	<Context.Consumer>
@@ -18,8 +18,7 @@ class MenuButton extends PureComponent
 	static propTypes =
 	{
 		// Context.
-		registerMenuButton : PropTypes.func.isRequired,
-		toggleMenu : PropTypes.func.isRequired,
+		...contextPropTypes,
 
 		// A URL of the "Menu" page:
 		// if a web browser has javascript disabled (e.g. Tor),
