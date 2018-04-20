@@ -50,10 +50,6 @@ export default class Snackbar extends PureComponent
 		clearTimeout(this.auto_hide_timer)
 		clearTimeout(this.show_next_snack_timeout)
 		clearTimeout(this.show_snack_timeout)
-
-		this.auto_hide_timer = undefined
-		this.show_next_snack_timeout = undefined
-		this.show_snack_timeout = undefined
 	}
 
 	componentWillReceiveProps(new_props)
@@ -131,21 +127,13 @@ export default class Snackbar extends PureComponent
 		// Hide the notification after it expires
 		this.auto_hide_timer = setTimeout(() =>
 		{
-			// Clearing memory
-			this.auto_hide_timer = undefined
-
 			// Start the hiding animation for the notification
 			this.setState({ show: false, hiding: true })
 
 			// Display the next notification
 			// after the currently being hidden one
 			// finishes its hiding animation.
-			this.show_next_snack_timeout = setTimeout(() =>
-			{
-				this.show_next_snack_timeout = undefined
-				this.next()
-			},
-			hideAnimationDuration)
+			this.show_next_snack_timeout = setTimeout(this.next, hideAnimationDuration)
 		},
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
@@ -167,12 +155,7 @@ export default class Snackbar extends PureComponent
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
 			this.setState({ height }, () =>
 			{
-				this.show_snack_timeout = setTimeout(() =>
-				{
-					this.show_snack_timeout = undefined
-					this.setState({ show: true })
-				},
-				anti_lag_timeout)
+				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
 			})
 		}
 	}
