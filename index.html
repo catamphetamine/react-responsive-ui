@@ -135,8 +135,6 @@
 		{
 			padding-top    : calc(0.3rem * 4);
 			padding-bottom : calc(0.3rem * 4);
-			padding-left   : calc(0.3rem * 2);
-			padding-right  : calc(0.3rem * 2);
 		}
 
 		.rrui__slideout-menu__item
@@ -144,8 +142,8 @@
 			display        : block;
 			padding-top    : calc(0.3rem * 2);
 			padding-bottom : calc(0.3rem * 2);
-			padding-left   : calc(0.3rem * 3);
-			padding-right  : calc(0.3rem * 3);
+			padding-left   : calc(0.3rem * 5);
+			padding-right  : calc(0.3rem * 5);
 			color          : #ECF1F6;
 		}
 
@@ -759,7 +757,7 @@
 										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
 									</Checkbox>
 
-									You checked: {this.state.checked ? 'checked' : 'unchecked'}
+									You checked: {this.state.checked ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span>}
 
 <Highlight lang="jsx">{`
 <Checkbox
