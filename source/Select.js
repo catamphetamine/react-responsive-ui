@@ -507,9 +507,16 @@ export default class Select extends Component
 		{
 			const overflow = scroll && this.overflown()
 
-			list_items = options.map(({ value, label, icon }, index) =>
+			list_items = this.trimOptions(options).map(({ value, label, icon }, index) =>
 			{
-				return this.render_list_item({ index, value, label, icon: !saveOnIcons && icon, overflow })
+				return this.render_list_item
+				({
+					index,
+					value,
+					label,
+					icon: !saveOnIcons && icon,
+					overflow
+				})
 			})
 		}
 
@@ -1757,7 +1764,7 @@ export default class Select extends Component
 			return this.setState
 			({
 				matches : true,
-				options : this.trimOptions(options)
+				options // : this.trimOptions(options)
 			},
 			() =>
 			{
@@ -1820,7 +1827,7 @@ export default class Select extends Component
 				// Autocomplete should always display some options.
 				if (options.length > 0)
 				{
-					newState.options = this.trimOptions(options)
+					newState.options = options // this.trimOptions(options)
 					newState.optionsCounter = counter
 				}
 			}
@@ -1868,8 +1875,10 @@ export default class Select extends Component
 	// Get the next option (relative to the currently focused option)
 	next_focusable_option()
 	{
-		const { options } = this.state
+		let { options } = this.state
 		const { focused_option_value } = this.state
+
+		options = this.trimOptions(options)
 
 		let i = 0
 		while (i < options.length)
