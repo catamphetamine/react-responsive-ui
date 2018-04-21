@@ -215,69 +215,73 @@
 .rrui__checkbox--disabled .rrui__checkbox__label {
   cursor: default; }
 
-/* Checkbox label color */
-.rrui__checkbox__label:active {
-  color: #3678D1; }
-
 .rrui__checkbox__checkbox {
   position: relative;
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
-          flex-shrink: 0; }
+          flex-shrink: 0;
+  width: 1.15em;
+  height: 1.15em; }
 
-.rrui__checkbox__checkbox:not(.rrui__checkbox__checkbox--multiline) {
-  margin-bottom: 0.1em; }
-
-.rrui__checkbox__checkbox--multiline {
-  margin-top: 0.1em;
-  line-height: 0; }
-
-.rrui__checkbox__input,
-.rrui__checkbox__checkmark {
+.rrui__checkbox__input {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: -40%;
+  top: -40%;
+  width: 180%;
+  height: 180%; }
+
+.rrui__checkbox__box {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  fill: currentColor;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  pointer-events: none; }
 
-.rrui__checkbox__box {
-  width: 0.9em;
-  height: 0.9em; }
+/* Checkbox color (:checked) */
+.rrui__checkbox__box--checked,
+.rrui__checkbox__input:focus + .rrui__checkbox__box {
+  color: #0093C4; }
 
-.rrui__checkbox__box--no-label {
-  position: static; }
-
-.rrui__checkbox__checkmark {
-  width: 0.75em;
-  height: 0.75em;
-  margin-left: 0.07em;
-  margin-top: 0.05em;
-  pointer-events: none;
-  overflow: visible; }
-
-/* Checkmark color */
-.rrui__checkbox__checkmark path {
-  stroke: #3678D1;
-  stroke-width: 0.45em; }
-
-.rrui__checkbox__box {
-  border: 1px solid #cfcfcf;
-  -webkit-transition: opacity 0.3s;
-  -o-transition: opacity 0.3s;
-  transition: opacity 0.3s;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
-
-.rrui__checkbox--checked .rrui__checkbox__box {
-  border-color: #e7e7e7; }
-
-/* Checkbox border color */
+/* Checkbox color (:checked / :active) */
+.rrui__checkbox:active .rrui__checkbox__box,
 .rrui__checkbox__input:active + .rrui__checkbox__box {
-  border-color: #3678D1; }
+  color: #5CD6FF; }
 
-/* Invalid checkbox border color */
+/* Checkbox border color (invalid) */
 .rrui__checkbox--invalid .rrui__checkbox__box {
-  border-color: #EB2010; }
+  color: #EB2010; }
+
+.rrui__close--top-right {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  margin-top: calc(0.3rem * 1.5);
+  margin-right: calc(0.3rem * 1.5); }
+
+.rrui__close--bottom-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  margin-bottom: calc(0.3rem * 1.5);
+  margin-right: calc(0.3rem * 1.5); }
+
+.rrui__close__icon {
+  width: calc(0.3rem * 4);
+  height: calc(0.3rem * 4);
+  padding: calc(0.3rem * 2);
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box; }
+
+.rrui__close__icon:active .rrui__close__icon-path {
+  stroke: #03B2CB; }
+
+.rrui__close__icon-path {
+  stroke: black; }
 
 /* https://unpkg.com/react-day-picker@latest/lib/style.css */
 /* DayPicker styles */
@@ -532,10 +536,7 @@
   Set `display` to `block` for fullscreen `.rrui__expandable` design.
   display      : block;
   */
-  display: none;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: calc(0.3rem * 4); }
+  display: none; }
 
 .rrui__date-picker__icon {
   position: absolute;
@@ -723,14 +724,6 @@ than 100% of the parent if the parent is small enough.
   font-weight: inherit;
   font-style: inherit; }
 
-.rrui__input-field--invalid,
-.rrui__input-field--invalid:focus {
-  border-color: #EB2010; }
-
-.rrui__input-field--disabled {
-  cursor: default;
-  background-color: transparent; }
-
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
 .rrui__input-field,
@@ -761,6 +754,14 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field--multiline {
   height: auto;
   resize: none; }
+
+.rrui__input-field--invalid,
+.rrui__input-field--invalid:focus {
+  border-color: #EB2010; }
+
+.rrui__input-field--disabled {
+  cursor: default;
+  background-color: transparent; }
 
 .rrui__input-label {
   position: absolute;
@@ -829,7 +830,7 @@ than 100% of the parent if the parent is small enough.
   transition: transform 120ms ease-out;
   transition: transform 120ms ease-out, -webkit-transform 120ms ease-out; }
 
-.rrui__slideout-menu--shown {
+.rrui__slideout-menu--expanded {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
   -webkit-box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4);
@@ -1099,14 +1100,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
     -webkit-transform: scale3d(1, 1, 1);
             transform: scale3d(1, 1, 1); }
   25% {
-    -webkit-transform: scale3d(0.97, 0.97, 0.97);
-            transform: scale3d(0.97, 0.97, 0.97); }
-  47% {
-    -webkit-transform: scale3d(1.025, 1.025, 1.025);
-            transform: scale3d(1.025, 1.025, 1.025); }
-  72% {
     -webkit-transform: scale3d(0.99, 0.99, 0.99);
             transform: scale3d(0.99, 0.99, 0.99); }
+  47% {
+    -webkit-transform: scale3d(1.01, 1.01, 1.01);
+            transform: scale3d(1.01, 1.01, 1.01); }
+  72% {
+    -webkit-transform: scale3d(0.995, 0.995, 0.995);
+            transform: scale3d(0.995, 0.995, 0.995); }
   to {
     -webkit-transform: scale3d(1, 1, 1);
             transform: scale3d(1, 1, 1); } }
@@ -1118,14 +1119,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
     -webkit-transform: scale3d(1, 1, 1);
             transform: scale3d(1, 1, 1); }
   25% {
-    -webkit-transform: scale3d(0.97, 0.97, 0.97);
-            transform: scale3d(0.97, 0.97, 0.97); }
-  47% {
-    -webkit-transform: scale3d(1.025, 1.025, 1.025);
-            transform: scale3d(1.025, 1.025, 1.025); }
-  72% {
     -webkit-transform: scale3d(0.99, 0.99, 0.99);
             transform: scale3d(0.99, 0.99, 0.99); }
+  47% {
+    -webkit-transform: scale3d(1.01, 1.01, 1.01);
+            transform: scale3d(1.01, 1.01, 1.01); }
+  72% {
+    -webkit-transform: scale3d(0.995, 0.995, 0.995);
+            transform: scale3d(0.995, 0.995, 0.995); }
   to {
     -webkit-transform: scale3d(1, 1, 1);
             transform: scale3d(1, 1, 1); } }
@@ -1256,6 +1257,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   display: block;
   width: 100%;
   height: calc(0.3rem * 7);
+  line-height: calc(0.3rem * 7);
   padding-left: calc(0.3rem * 4);
   padding-right: calc(0.3rem * 4);
   -webkit-box-sizing: border-box;
@@ -1264,17 +1266,18 @@ but rather `width: auto` or `left: 0; right: 0;`.
   white-space: nowrap; }
 
 .rrui__select__option:hover {
-  background-color: #FBFDFD; }
+  background-color: #f7f7f7; }
 
 .rrui__select__option-icon {
   margin-right: calc(0.3rem * 3); }
 
 .rrui__select__separator {
-  height: 1pt;
+  height: 1px;
+  margin-bottom: -1px;
   padding: 0;
   line-height: 0;
   font-size: 0;
-  background-color: #B8BDC4; }
+  background-color: rgba(0, 0, 0, 0.16); }
 
 .rrui__select__separator-option {
   padding-top: calc(0.3rem * 2);
@@ -1298,7 +1301,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__option-icon {
   margin-right: 0.5em; }
 
-.rrui__select__toggler,
 .rrui__select__button,
 .rrui__select__autocomplete {
   height: 100%;
@@ -1356,14 +1358,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
   width: 0;
   height: 0;
   margin-left: 0.35em;
-  margin-top: 0.1em;
+  margin-right: 0.4em;
+  margin-top: 0.2em;
   margin-bottom: 0.1em;
   opacity: 0.7;
   -webkit-transition: opacity 100ms ease-out;
   -o-transition: opacity 100ms ease-out;
   transition: opacity 100ms ease-out;
   /* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
-  border-width: 0.35em 0.2em 0 0.2em;
+  border-width: 0.35em 0.22em 0 0.22em;
   border-style: solid;
   border-left-color: transparent;
   border-right-color: transparent;
@@ -1382,28 +1385,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__close {
   /*
   Set `display` to `block` for fullscreen `.rrui__expandable` design.
-  display      : block;
+  display : block;
   */
-  display: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 1; }
-
-.rrui__select__close-icon {
-  width: calc(0.3rem * 4);
-  height: calc(0.3rem * 4);
-  margin-top: calc(0.3rem * 1.5);
-  margin-right: calc(0.3rem * 1.5);
-  padding: calc(0.3rem * 2);
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box; }
-
-.rrui__select__close-icon-path {
-  stroke: black; }
-
-.rrui__select__close-icon:active .rrui__select__close-icon-path {
-  stroke: #03B2CB; }
+  display: none; }
 
 .rrui__select--compact {
   /* Reverts `width: 100%` set at the top of this file */
@@ -1429,6 +1413,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* (in case this feature being used) */
 .rrui__select__native {
   min-height: 100%; }
+
+.rrui__select .rrui__ellipsis {
+  position: absolute;
+  right: 0.4em;
+  top: calc(50% - 0.2em / 2);
+  pointer-events: none; }
+
+.rrui__select__autocomplete--loading {
+  padding-right: 1.7em; }
 
 .rrui__shadow {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);

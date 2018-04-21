@@ -2,9 +2,15 @@
 	<head>
 		<title>React Responsive UI</title>
 
-		<script src="https://unpkg.com/react@15.3.1/dist/react.js"></script>
-		<script src="https://unpkg.com/react-dom@15.3.1/dist/react-dom.js"></script>
-		<script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+		<!-- React 15.3.1 -->
+		<script src="./lib/react.js"></script>
+		<script src="./lib/react-dom.js"></script>
+		<!-- Babel 5.8 -->
+		<script src="./lib/babel.js"></script>
+
+		<!-- PrismJS -->
+		<link href="./lib/prism.css" rel="stylesheet" />
+		<script src="./lib/prism.js"></script>
 
 		<link rel="stylesheet" href="./style.css"/>
 
@@ -127,15 +133,17 @@
 
 		.rrui__slideout-menu
 		{
-			padding-top    : 0.3rem;
-			padding-bottom : 0.3rem;
+			padding-top    : calc(0.3rem * 4);
+			padding-bottom : calc(0.3rem * 4);
+			padding-left   : calc(0.3rem * 2);
+			padding-right  : calc(0.3rem * 2);
 		}
 
 		.rrui__slideout-menu__item
 		{
 			display        : block;
-			padding-top    : 0.3rem;
-			padding-bottom : 0.3rem;
+			padding-top    : calc(0.3rem * 2);
+			padding-bottom : calc(0.3rem * 2);
 			padding-left   : calc(0.3rem * 3);
 			padding-right  : calc(0.3rem * 3);
 			color          : #ECF1F6;
@@ -296,6 +304,15 @@
 
 			FileUploadArea = CanDrop(File, (props, file) => alert('File dropped: ' + file.name))(FileUploadArea)
 
+			function Highlight({ lang, style, children })
+			{
+				return (
+					<pre style={style || { marginTop: '20px' }} className={`language-${lang}`}>
+						<code dangerouslySetInnerHTML={{__html: Prism.highlight(children.trim(), Prism.languages[lang], lang)}}/>
+					</pre>
+				)
+			}
+
 			var Content = React.createClass
 			({
 				getInitialState: function()
@@ -316,11 +333,14 @@
 					return (
 						<PageAndMenu>
 							<CollapsibleMenu>
-								<a href="http://google.com" className="rrui__slideout-menu__item">
+								<a target="_blank" href="https://google.com" className="rrui__slideout-menu__item">
 									Google.com
 								</a>
-								<a href="http://yandex.ru" className="rrui__slideout-menu__item">
+								<a target="_blank" href="https://yandex.ru" className="rrui__slideout-menu__item">
 									Yandex.ru
+								</a>
+								<a target="_blank" href="https://www.baidu.com" className="rrui__slideout-menu__item">
+									Baidu.com
 								</a>
 							</CollapsibleMenu>
 
@@ -337,18 +357,19 @@
 									</div>
 								</div>
 
-<pre>
-{`<PageAndMenu>
+<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
+<PageAndMenu>
   <CollapsibleMenu>
     <div>Item 1</div>
     <div>Item 2</div>
+    <div>Item 3</div>
   </CollapsibleMenu>
   <Page>
     <MenuButton />
     Page content
   </Page>
-</PageAndMenu>`}
-</pre>
+</PageAndMenu>
+`}</Highlight>
 
 								<Form
 									busy={this.state.busy}
@@ -367,7 +388,7 @@
 									</a>
 
 									<TextInput
-										focus={true}
+										focus={false}
 										style={input_style}
 										name="text_input"
 										value={this.state.text_value}
@@ -376,13 +397,27 @@
 
 									You entered: {this.state.text_value}
 
-<pre>
-{`<TextInput
-  focus
+<Highlight lang="jsx">{`
+<TextInput
   placeholder="Enter some text"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__input {
+  height : 40px;
+}
+.rrui__input--multiline {
+  height : auto;
+}
+.rrui__input-field {
+  border-bottom : 1px solid blue;
+}
+.rrui__input-field--invalid {
+  border-color : red;
+}
+`}</Highlight>
 
 									<a name="text-input-floating-label" href="#text-input-floating-label" className="title-anchor">
 										<h2>Text input field (with floating label)</h2>
@@ -397,12 +432,12 @@
 
 									You entered: {this.state.text_value}
 
-<pre>
-{`<TextInput
+<Highlight lang="jsx">{`
+<TextInput
   label="Text"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="text-input-placeholder-and-floating-label" href="#text-input-placeholder-and-floating-label" className="title-anchor">
 										<h2>Text input field (with both placeholder and floating label)</h2>
@@ -418,13 +453,13 @@
 
 									You entered: {this.state.text_value}
 
-<pre>
-{`<TextInput
+<Highlight lang="jsx">{`
+<TextInput
   label="Text"
   placeholder="Enter something"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="textarea-placeholder" href="#textarea-placeholder" className="title-anchor">
 										<h2>Textarea (with placeholder)</h2>
@@ -440,13 +475,13 @@
 
 									You entered: {this.state.textarea_value}
 
-<pre>
-{`<TextInput
+<Highlight lang="jsx">{`
+<TextInput
   multiline
   placeholder="Enter text"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="textarea-floating-label" href="#textarea-floating-label" className="title-anchor">
 										<h2>Textarea (with floating label)</h2>
@@ -462,13 +497,13 @@
 
 									You entered: {this.state.textarea_value}
 
-<pre>
-{`<TextInput
+<Highlight lang="jsx">{`
+<TextInput
   multiline
   label="Enter text"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="select" href="#select" className="title-anchor">
 										<h2>Select</h2>
@@ -512,14 +547,27 @@
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
-<pre>
-{`<Select
+<Highlight lang="jsx">{`
+<Select
   label="Fruit"
   placeholder="Choose"
   value={...}
   onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
-</pre>
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__select__option--focused {
+	background-color : cyan;
+}
+.rrui__select__option:hover {
+	background-color : gray;
+}
+.rrui__select__option:active {
+	background-color : blue;
+	color : white;
+}
+`}</Highlight>
 
 									<a name="select-autocomplete" href="#select-autocomplete" className="title-anchor">
 										<h2>Select (autocomplete)</h2>
@@ -559,18 +607,72 @@
 											label: 'Garlic'
 										}]}
 										placeholder="Choose"
+										notFound="Not found"
 										onChange={ selected => this.setState({ selected }) }/>
 
 									You selected: {this.state.selected ? this.state.selected : 'nothing'}
 
-<pre>
-{`<Select
+<Highlight lang="jsx">{`
+<Select
   autocomplete
   placeholder="Choose"
+  notFound="Not found"
   value={...}
   onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
-</pre>
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+									<a name="select-asynchronous-autocomplete" href="#select-asynchronous-autocomplete" className="title-anchor">
+										<h2>Select (asynchronous autocomplete)</h2>
+									</a>
+
+									<Select
+										style={input_style}
+										autocomplete
+										name="dropdown"
+										value={this.state.selected}
+										getOptions={(query) => {
+											return new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200)).then(() => {
+												return [{
+													value: 'A',
+													label: 'Apple'
+												}, {
+													value: 'B',
+													label: 'Banana'
+												}, {
+													value: 'C',
+													label: 'Cranberry'
+												}, {
+													value: 'D',
+													label: 'Date'
+												}, {
+													value: 'E',
+													label: 'Elderberry'
+												}, {
+													value: 'F',
+													label: 'Fig'
+												}, {
+													value: 'G',
+													label: 'Garlic'
+												}]
+												.filter(({ label }) => label.toLowerCase().indexOf(query.toLowerCase()) >= 0)
+											})
+										}}
+										placeholder="Choose"
+										notFound="Not found"
+										onChange={ selected => this.setState({ selected }) }/>
+
+									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+
+<Highlight lang="jsx">{`
+<Select
+  autocomplete
+  placeholder="Choose"
+  notFound="Not found"
+  value={...}
+  onChange={...}
+  getOptions={async (query) => await httpClient.get(\u0060/search?query=\${query}\u0060)}/>
+`}</Highlight>
 
 									<a name="select-icons" href="#select-icons" className="title-anchor">
 										<h2>Select (icons)</h2>
@@ -604,14 +706,37 @@
 										You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
 									</div>
 
-<pre>
-{`<Select
+<Highlight lang="jsx">{`
+<Select
   concise
   placeholder="Choose"
   value={...}
   onChange={...}
-  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />`}
-</pre>
+  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />
+`}</Highlight>
+
+									<a name="select-menu" href="#select-menu" className="title-anchor">
+										<h2>Select (menu)</h2>
+									</a>
+
+									<Select
+										menu
+										toggler={<button type="button">Toggle</button>}
+										style={input_style}>
+										<div onClick={() => alert('Google')}> Google </div>
+										<div onClick={() => alert('Yandex')}> Yandex </div>
+										<Select.Separator/>
+										<div onClick={() => alert('Other')}> Other </div>
+									</Select>
+
+<Highlight lang="jsx">{`
+<Select menu toggler={<button>Toggle</button>}>
+  <div onClick={() => alert('Google')}> Google </div>
+  <div onClick={() => alert('Yandex')}> Yandex </div>
+  <Select.Separator/>
+  <div onClick={() => alert('Other')}> Other </div>
+</Select>
+`}</Highlight>
 
 									<a name="checkbox" href="#checkbox" className="title-anchor">
 										<h2>Checkbox</h2>
@@ -631,13 +756,13 @@
 										multiline
 										value={this.state.checked}
 										onChange={ checked => this.setState({ checked: checked }) }>
-										(<code>multiline={'{'}true{'}'}</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
+										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
 									</Checkbox>
 
 									You checked: {this.state.checked ? 'checked' : 'unchecked'}
 
-<pre>
-{`<Checkbox
+<Highlight lang="jsx">{`
+<Checkbox
   value={...}
   onChange={...}>
   Accept the <a href="...">User Agreement</a>
@@ -648,8 +773,30 @@
   value={...}
   onChange={...}>
   Postmodernism describes a broad movement that developed ...
-</Checkbox>`}
-</pre>
+</Checkbox>
+`}</Highlight>
+
+<Highlight lang="css">{`
+/* Checkbox inactive color */
+.rrui__checkbox__box {
+  color : black;
+}
+/* Checkbox color (:checked) */
+/* Checkbox color (:focus) */
+.rrui__checkbox__box--checked,
+.rrui__checkbox__input:focus + .rrui__checkbox__box {
+  color : blue;
+}
+/* Checkbox color (:checked / :active) */
+.rrui__checkbox:active .rrui__checkbox__box,
+.rrui__checkbox__input:active + .rrui__checkbox__box {
+  color : cyan;
+}
+/* Checkbox color (:invalid) */
+.rrui__checkbox--invalid .rrui__checkbox__box {
+  color : red;
+}
+`}</Highlight>
 
 									<a name="switch" href="#switch" className="title-anchor">
 										<h2>Switch</h2>
@@ -666,13 +813,20 @@
 
 									You switched: {this.state.switched ? 'on' : 'off'}
 
-<pre>
-{`<Switch
+<Highlight lang="jsx">{`
+<Switch
   value={...}
   onChange={...}>
   iOS style switch
-</Switch>`}
-</pre>
+</Switch>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__switch__groove {
+  background-color : green;
+  color : white;
+}
+`}</Highlight>
 
 									<a name="segmented-control" href="#segmented-control" className="title-anchor">
 										<h2>Segmented Control</h2>
@@ -687,12 +841,26 @@
 
 									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
 
-<pre>
-{`<SegmentedControl
+<Highlight lang="jsx">{`
+<SegmentedControl
   value={...}
   onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />`}
-</pre>
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__segmented-control__option {
+  background-color : white;
+  color : black;
+}
+.rrui__segmented-control__option:active {
+  background-color : cyan;
+}
+.rrui__segmented-control__option--selected {
+  background-color : blue;
+  color : white;
+}
+`}</Highlight>
 
 									<a name="date-picker" href="#date-picker" className="title-anchor">
 										<h2>Date picker</h2>
@@ -707,12 +875,12 @@
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
-<pre>
-{`<DatePicker
+<Highlight lang="jsx">{`
+<DatePicker
   label="Date"
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="date-picker-with-month-and-year" href="#date-picker-with-month-and-year" className="title-anchor">
 										<h2>Date picker (with month and year selectors)</h2>
@@ -728,14 +896,14 @@
 
 									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
 
-<pre>
-{`<DatePicker
+<Highlight lang="jsx">{`
+<DatePicker
   label="Date"
   selectYearsIntoPast={118}
   selectYearsIntoFuture={10}
   value={...}
-  onChange={...} />`}
-</pre>
+  onChange={...} />
+`}</Highlight>
 
 									<a name="file-upload" href="#file-upload" className="title-anchor">
 										<h2>File upload</h2>
@@ -754,16 +922,16 @@
 
 									<ActivityIndicator />
 
-<pre>
-{`<ActivityIndicator className="..." />`}
-</pre>
+<Highlight lang="jsx">{`
+<ActivityIndicator className="..." />
+`}</Highlight>
 
-<pre>
-{`.rrui__activity-indicator {
-  color     : red;
+<Highlight lang="css">{`
+.rrui__activity-indicator {
+  color     : black;
   font-size : 30px;
-}`}
-</pre>
+}
+`}</Highlight>
 
 									<a name="ellipsis" href="#ellipsis" className="title-anchor">
 										<h2>Ellipsis</h2>
@@ -771,17 +939,17 @@
 
 									<Ellipsis />
 
-<pre>
-{`<Ellipsis className="..." />`}
-</pre>
+<Highlight lang="jsx">{`
+<Ellipsis className="..." />
+`}</Highlight>
 
-<pre>
-{`.rrui__ellipsis {
-  color     : red;
-  font-size : 30px;
+<Highlight lang="css">{`
+.rrui__ellipsis {
+  color     : black;
+  font-size : 20px;
   opacity   : 0.7;
-}`}
-</pre>
+}
+`}</Highlight>
 
 									<a name="phone" href="#phone" className="title-anchor">
 										<h2>International phone number input</h2>
@@ -797,8 +965,8 @@
 										Hover this element (or touch down on mobile devices)
 									</Tooltip>
 
-<pre>
-{`<Tooltip text="Testing testing">
+<Highlight lang="jsx">{`
+<Tooltip text="Testing testing">
   Hover this element (or touch down on mobile devices)
 </Tooltip>
 
@@ -806,8 +974,15 @@
 // and is gonna be the parent DOM Element for the tooltip itself
 // (\u0060document.body\u0060 by default)
 // (in which case make sure that \u0060document.body\u0060 has no \u0060margin\u0060
-//  otherwise tooltip \u0060left\u0060 and \u0060top\u0060 positions will be slightly off).`}
-</pre>
+//  otherwise tooltip \u0060left\u0060 and \u0060top\u0060 positions will be slightly off).
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__tooltip {
+  background-color : black;
+  color : white;
+}
+`}</Highlight>
 
 									<a name="snackbar" href="#snackbar" className="title-anchor">
 										<h2>Snackbar</h2>
@@ -827,15 +1002,22 @@
 
 									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
 
-<pre>
-{`<Button action={() => this.setState({ snack: "..." })}>
+<Highlight lang="jsx">{`
+<Button action={() => this.setState({ snack: "..." })}>
   Show a snack
 </Button>
 
 <Snackbar
   value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />`}
-</pre>
+  reset={() => this.setState({ snack: undefined })} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__snackbar {
+  background-color : black;
+  color : white;
+}
+`}</Highlight>
 
 									<div className="submit-form">
 										<Button
@@ -846,8 +1028,8 @@
 										</Button>
 									</div>
 
-<pre>
-{`<Form
+<Highlight lang="jsx">{`
+<Form
   busy={this.state.busy}
   submit={() => {
     alert('Submitting form...')
@@ -864,8 +1046,8 @@
     busy={this.state.busy}>
     Submit form
   </Button>
-</Form>`}
-</pre>
+</Form>
+`}</Highlight>
 
 								</Form>
 
@@ -915,8 +1097,7 @@
 									</div>
 								</Modal>
 
-<pre>
-{`
+<Highlight lang="jsx">{`
 <Button action={() => this.setState({ showModal: true })}>
   Show
 </Button>
@@ -929,8 +1110,17 @@
   <Button action={() => this.setState({ showModal: false })}>
     Hide
   </Button>
-</Modal>`}
-</pre>
+</Modal>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__modal__content {
+  background-color : white;
+}
+.rrui__modal__content-body {
+  margin : 20px;
+}
+`}</Highlight>
 							</Page>
 						</PageAndMenu>
 					)
