@@ -3,17 +3,19 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import ReactModal from 'react-modal'
-import createReactContext from 'create-react-context'
+import createContext from 'create-react-context'
+import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 
 import Button from './Button'
 import Form from './Form'
 
-export const ModalContext = createReactContext()
+export const ModalContext = createContext()
 
 // Make sure to add `.rrui__fixed-full-width` CSS class
 // to all full-width `position: fixed` elements.
 // Such elements must not be `width: 100%`
 // but rather `width: auto` or `left: 0; right: 0;`.
+@reactLifecyclesCompat
 export default class Modal extends Component
 {
 	static propTypes =
@@ -113,27 +115,24 @@ export default class Modal extends Component
 		could_not_close_because_busy_animation_duration: 600 // ms
 	}
 
-	state =
+	constructor(props)
 	{
-		// Using a counter instead of a boolean here
-		// because a new form may be mounted before the old one is unmounted.
-		// (React reconciliation algorythm implementation details)
-		form : 0
-	}
+		super(props)
 
-	getContext()
-	{
-		const
+		this.state =
 		{
-			closeLabel
-		}
-		= this.props
+			// Using a counter instead of a boolean here
+			// because a new form may be mounted before the old one is unmounted.
+			// (React reconciliation algorythm implementation details)
+			form : 0,
 
-		return {
-			closeLabel,
-			closeIfNotBusy : this.closeIfNotBusy,
-			registerForm   : this.registerForm,
-			unregisterForm : this.unregisterForm
+			context:
+			{
+				closeLabel     : this.props.closeLabel,
+				closeIfNotBusy : this.closeIfNotBusy,
+				registerForm   : this.registerForm,
+				unregisterForm : this.unregisterForm
+			}
 		}
 	}
 
@@ -242,21 +241,22 @@ export default class Modal extends Component
 
 				{/* Modal window content */}
 
-				<ModalContent
-					ref={ ref => this.content = ref }
-					context={ this.getContext() }
-					closeLabel={ closeLabel }
-					closeButton={ closeButton }
-					close={ this.closeIfNotBusy }
-					style={ style }
-					className={ className }
-					fullscreen={ fullscreen }
-					could_not_close_because_busy={ could_not_close_because_busy }
-					form={ form }
-					busy={ busy }
-					reset={ this.on_after_close }>
-					{ children }
-				</ModalContent>
+				<ModalContext.Provider value={ this.state.context }>
+					<ModalContent
+						ref={ ref => this.content = ref }
+						closeLabel={ closeLabel }
+						closeButton={ closeButton }
+						close={ this.closeIfNotBusy }
+						style={ style }
+						className={ className }
+						fullscreen={ fullscreen }
+						could_not_close_because_busy={ could_not_close_because_busy }
+						form={ form }
+						busy={ busy }
+						reset={ this.on_after_close }>
+						{ children }
+					</ModalContent>
+				</ModalContext.Provider>
 
 				{/* Bottom margin, grows more than top margin */}
 				<div
@@ -323,6 +323,7 @@ export default class Modal extends Component
 		if (closeLabel && form && event && event.type !== 'keydown')
 		{
 			this.indicate_cannot_close()
+			// Focus on `<ReactModal/>` element.
 			return ReactDOM.findDOMNode(this.content).parentNode.focus()
 		}
 
@@ -493,6 +494,23 @@ export default class Modal extends Component
 
 		this.adjust_scrollbar_after_close()
 	}
+
+	static getDerivedStateFromProps(props, state)
+	{
+		if (props.closeLabel !== state.context.closeLabel)
+		{
+			return {
+				...state,
+				context:
+				{
+					...state.context,
+					closeLabel : props.closeLabel
+				}
+			}
+		}
+
+		return null
+	}
 }
 
 class ModalContent extends Component
@@ -501,8 +519,7 @@ class ModalContent extends Component
 	{
 		const { reset } = this.props
 
-		if (reset)
-		{
+		if (reset) {
 			reset()
 		}
 	}
@@ -511,7 +528,6 @@ class ModalContent extends Component
 	{
 		const
 		{
-			context,
 			closeLabel,
 			close,
 			fullscreen,
@@ -540,11 +556,7 @@ class ModalContent extends Component
 
 					{ this.render_close_button() }
 
-					<ModalContext.Provider value={ context }>
-						<div>
-							{ children }
-						</div>
-					</ModalContext.Provider>
+					{ children }
 
 					{ closeLabel && !form &&
 						<div className="rrui__form__actions">

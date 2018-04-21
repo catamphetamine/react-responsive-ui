@@ -21,6 +21,20 @@ export default class PageAndMenu extends Component
 	// 	page_moved_aside : false
 	// }
 
+	constructor()
+	{
+		super()
+
+		// `state` is placed below all methods because it references them.
+		this.state =
+		{
+			menuIsExpanded     : false,
+			toggleMenu         : this.toggleMenu,
+			registerMenu       : this.registerMenu,
+			registerMenuButton : this.registerMenuButton
+		}
+	}
+
 	render()
 	{
 		return (
@@ -65,15 +79,6 @@ export default class PageAndMenu extends Component
 
 		// Return `.unregister()`.
 		return () => this.menuButton = undefined
-	}
-
-	// `state` is placed below all methods because it references them.
-	state =
-	{
-		menuIsExpanded     : false,
-		toggleMenu         : this.toggleMenu,
-		registerMenu       : this.registerMenu,
-		registerMenuButton : this.registerMenuButton
 	}
 
 	hide_menu_on_mouse_down = (event) =>
