@@ -206,6 +206,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__content-body
 {
+	/* Using `margin` instead of `padding` here
+		to leverage the "margin collapse" CSS feature. */
 	margin : calc(4 * 0.3rem);
 }
 

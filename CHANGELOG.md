@@ -1,3 +1,20 @@
+0.11.0 / 18.04.2018
+====================
+
+* Migrated to new React 17 lifecycles (`componentWillReceiveProps` -> `getDerivedStateFromProps`) and new React 17 Context API. Still compatible with older versions of React.
+
+* Refactored `<Select/>` and implemented `async getOptions()` for asynchronous autocomplete.
+
+* (breaking change) `<Select/>`. Arrow CSS styles tweaked: `margin-top: 0.2em; margin-right: 0.4em; border-width: 0.35em 0.22em 0 0.22em;` (inside `style.css`). The `closeButton` property is now a `React.Component` (not `React.Element`). `closeAriaLabel` property renamed to `closeLabel`. `rrui__select__toggler` `height: 100%` removed. Added `line-height` rule to `.rrui__select__option` CSS class. `.rrui__select__option:hover` `background-color` tweaked from `#fbfdfd` to `#f7f7f7`.
+
+* (breaking change) `<DatePicker/>` `closeButtonLabel` property removed and replaced the "Close" button with a cross icon with `position: fixed` (changed the styles inside `style.css` and `small-screen.css`). The new property is `closeButton` and is a `React.Component` (not `React.Element`).
+
+* (breaking change) Changed `<Checkbox/>` design.
+
+* (breaking change) `<Menu/>` now doesn't take `router` property from context. Instead, `<Menu/>` now listens directly to `history` transitions. `<Menu/>`'s `.rrui__slideout-menu--shown` CSS class renamed to `.rrui__slideout-menu--expanded`. `<Page/>` now has `.rrui__page--menu-overlay` CSS class added on menu expanded which adds a semi-transparent overlay.
+
+* (pending breaking change) (will be released soon) `<Snackbar/>` CSS styles changed and it is now positioned in the left bottom corner of the screen (with some margin) instead of being in the middle on the bottom (without margin).
+
 0.10.28 / 26.02.2018
 ====================
 
