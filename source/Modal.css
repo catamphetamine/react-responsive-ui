@@ -44,7 +44,7 @@ also change `default_close_timeout` in ./Modal.js accordingly
 	outline: none;
 }
 
-.rrui__modal__content
+.rrui__modal__contents
 {
 	opacity    : 0;
 	/*
@@ -60,38 +60,38 @@ also change `default_close_timeout` in ./Modal.js accordingly
 	transition : transform 100ms ease-out, opacity 100ms ease-out;
 }
 
-.ReactModal__Content--after-open .rrui__modal__content
+.ReactModal__Content--after-open .rrui__modal__contents
 {
-	opacity: 1;
-	transform: none;
+	opacity   : 1;
+	transform : none;
 }
 
 /* This rule is required for closing animation */
-.ReactModal__Content--before-close .rrui__modal__content
+.ReactModal__Content--before-close .rrui__modal__contents
 {
-	opacity: 0;
-	transform: scale(0.95);
+	opacity   : 0;
+	transform : scale(0.95);
 }
 
 /*
 The extra opacity animation on `<Modal/>` contents
 is used to prevent clutter on background while the modal fades in/out.
 */
-.rrui__modal__content-body
+.rrui__modal__contents-body
 {
-	opacity: 0;
+	opacity : 0;
 }
 
-.ReactModal__Content--after-open .rrui__modal__content-body
+.ReactModal__Content--after-open .rrui__modal__contents-body
 {
-	opacity: 1;
-	transition: opacity 100ms ease-out;
+	opacity    : 1;
+	transition : opacity 100ms ease-out;
 }
 
-.ReactModal__Content--before-close .rrui__modal__content-body
+.ReactModal__Content--before-close .rrui__modal__contents-body
 {
-	opacity: 0;
-	transition: opacity 80ms ease-out;
+	opacity    : 0;
+	transition : opacity 80ms ease-out;
 }
 
 /* Hides `react-modal` scrollbar when closing the modal */
@@ -179,7 +179,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   background : none;
   outline    : none;
   border     : none;
-  padding    : 0;
   cursor     : pointer;
 }
 
@@ -188,7 +187,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	cursor : wait;
 }
 
-.rrui__modal__content
+.rrui__modal__contents
 {
 	/* So that modal content won't neccessarily
 	   stretch horizontally to the full width of the screen */
@@ -204,14 +203,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	background-color : white;
 }
 
-.rrui__modal__content-body
-{
-	/* Using `margin` instead of `padding` here
-		to leverage the "margin collapse" CSS feature. */
-	margin : calc(4 * 0.3rem);
-}
-
-.rrui__modal__content--fullscreen
+.rrui__modal__contents--fullscreen
 {
 	/* Completely cover the screen */
 	border-radius : 0;
@@ -300,7 +292,31 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	transition : background-color 100ms ease-out;
 }
 
-.rrui__modal__overlay--fullscreen .rrui__modal__content
+.rrui__modal__overlay--fullscreen .rrui__modal__contents
 {
 	background-color : transparent;
+}
+
+.rrui__modal__actions
+{
+	display         : flex;
+	justify-content : flex-end;
+}
+
+.rrui__modal__title,
+.rrui__modal__actions,
+.rrui__modal__content
+{
+  /* Using `margin` instead of `padding` here
+    to leverage the "margin collapse" CSS feature. */
+  margin-top    : calc(5 * 0.3rem);
+  margin-bottom : calc(5 * 0.3rem);
+  margin-left   : calc(5 * 0.3rem);
+  margin-right  : calc(5 * 0.3rem);
+}
+
+.rrui__modal__actions
+{
+  margin-top    : calc(3 * 0.3rem);
+  margin-bottom : calc(3 * 0.3rem);
 }

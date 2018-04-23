@@ -6,8 +6,9 @@ import ReactModal from 'react-modal'
 import createContext from 'create-react-context'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 
-import Button from './Button'
 import Form from './Form'
+import Button from './Button'
+import Close, { CloseIcon } from './Close'
 
 export const ModalContext = createContext()
 
@@ -15,8 +16,7 @@ export const ModalContext = createContext()
 // to all full-width `position: fixed` elements.
 // Such elements must not be `width: 100%`
 // but rather `width: auto` or `left: 0; right: 0;`.
-@reactLifecyclesCompat
-export default class Modal extends Component
+class Modal extends Component
 {
 	static propTypes =
 	{
@@ -67,11 +67,9 @@ export default class Modal extends Component
 		// (is "Popup" by default)
 		contentLabel     : PropTypes.string.isRequired,
 
-		// An optional close button (like a cross).
-		// This is not actually a "button"
-		// but instead "button contents",
-		// i.e. `closeButton` will be wrapped with a `<button/>`.
-		closeButton      : PropTypes.node,
+		// An optional close button icon (like a cross).
+		// Set to `true` to show the default "cross" icon.
+		closeButtonIcon  : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([true])]),
 
 		// If set to `false` will prevent modal contents
 		// from being unmounted when the modal is closed.
@@ -192,7 +190,7 @@ export default class Modal extends Component
 			contentLabel,
 			title,
 			closeLabel,
-			closeButton,
+			closeButtonIcon,
 			actions,
 			unmount,
 			style,
@@ -245,7 +243,7 @@ export default class Modal extends Component
 					<ModalContent
 						ref={ ref => this.content = ref }
 						closeLabel={ closeLabel }
-						closeButton={ closeButton }
+						closeButtonIcon={ closeButtonIcon }
 						close={ this.closeIfNotBusy }
 						style={ style }
 						className={ className }
@@ -529,6 +527,7 @@ class ModalContent extends Component
 		const
 		{
 			closeLabel,
+			closeButtonIcon,
 			close,
 			fullscreen,
 			children,
@@ -539,12 +538,40 @@ class ModalContent extends Component
 		}
 		= this.props
 
+		// let closeButtonAdded = false
+		// React.Children.forEach(children, (element) =>
+		// {
+		// 	if (!closeButtonAdded && element.props.className)
+		// 	{
+		// 		if (element.props.className.indexOf('.rrui__modal__title') === 0
+		// 			|| element.props.className.indexOf('.rrui__modal__content') === 0)
+		// 		{
+		// 			element.props.closeButton = this.render_close_button()
+		// 			closeButtonAdded = true
+		// 		}
+		// 	}
+
+		// 	if (closeLabel && !form && element.props.className && element.props.className.indexOf('.rrui__modal__actions') === 0)
+		// 	{
+		// 		element.props.children = (
+		// 			<div>
+		// 				<Button
+		// 					className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
+		// 					action={ close }>
+		// 					{ closeLabel }
+		// 				</Button>
+		// 				{element.props.children}
+		// 			</div>
+		// 		)
+		// 	}
+		// })
+
 		return (
 			<div
-				className={ classNames('rrui__modal__content',
+				className={ classNames('rrui__modal__contents',
 				{
 					// CSS selector performance optimization
-					'rrui__modal__content--fullscreen' : fullscreen,
+					'rrui__modal__contents--fullscreen' : fullscreen,
 
 					// Strictly speaking it's not `.rrui__modal` but this CSS class name will do
 					'rrui__modal--could-not-close-because-busy': could_not_close_because_busy
@@ -552,22 +579,7 @@ class ModalContent extends Component
 				className) }
 				style={ style }>
 
-				<div className="rrui__modal__content-body">
-
-					{ this.render_close_button() }
-
-					{ children }
-
-					{ closeLabel && !form &&
-						<div className="rrui__form__actions">
-							<Button
-								className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
-								action={ close }>
-								{ closeLabel }
-							</Button>
-						</div>
-					}
-				</div>
+				{ children }
 			</div>
 		)
 	}
@@ -577,27 +589,27 @@ class ModalContent extends Component
 		const
 		{
 			closeLabel,
-			closeButton,
+			closeButtonIcon : CloseButtonIcon,
 			close,
 			busy
 		}
 		= this.props
 
-		if (!closeButton)
+		if (!CloseButtonIcon)
 		{
-			return
+			return null
 		}
 
 		return (
-			<button
+			<Close
 				onClick={ close }
-				aria-label={ closeLabel }
+				closeLabel={ closeLabel }
 				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
 					'rrui__modal__close--busy' : busy
 				}) }>
-				{ closeButton }
-			</button>
+				<CloseButtonIcon/>
+			</Close>
 		)
 	}
 }
@@ -633,3 +645,31 @@ function get_full_width_elements()
 	full_width_elements.push(document.body)
 	return full_width_elements
 }
+
+const Title = ({ closeButton, children }) => (
+	<h2 className="rrui__modal__title">
+		{closeButton}
+		{children}
+	</h2>
+)
+
+const Content = ({ closeButton, children }) => (
+	<div className="rrui__modal__content">
+		{closeButton}
+		{children}
+	</div>
+)
+
+const Actions = ({ children }) => (
+	<div className="rrui__modal__actions">
+		{children}
+	</div>
+)
+
+Modal = reactLifecyclesCompat(Modal)
+
+Modal.Title = Title
+Modal.Content = Content
+Modal.Actions = Actions
+
+export default Modal
