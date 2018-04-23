@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
 import Ellipsis from './Ellipsis'
-import Close from './Close'
+import Close, { CloseIcon } from './Close'
 
 import { submitFormOnCtrlEnter, submitContainingForm, getScrollbarWidth } from './utility/dom'
 
@@ -206,9 +206,9 @@ export default class Select extends Component
 		// (which is an "x" visible in fullscreen mode).
 		closeLabel : PropTypes.string,
 
-		// The "x" button that closes the `<Select/>`
+		// The "x" button icon that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired
+		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired
 
 		// transition_item_count_min : PropTypes.number,
 		// transition_duration_min : PropTypes.number,
@@ -243,9 +243,9 @@ export default class Select extends Component
 		// `aria-label` for the `<Select/>`'s `<button/>`
 		ariaLabel : 'Select country',
 
-		// The "x" button that closes the `<Select/>`
+		// The "x" button icon that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButton : Close
+		closeButtonIcon : CloseIcon
 
 		// transition_item_count_min : 1,
 		// transition_duration_min : 60, // milliseconds
@@ -460,7 +460,7 @@ export default class Select extends Component
 			label,
 			value,
 			error,
-			closeButton : CloseButton,
+			closeButtonIcon : CloseButtonIcon,
 			closeLabel,
 			loading,
 			style,
@@ -612,14 +612,16 @@ export default class Select extends Component
 
 					{/* The "x" button to hide the list of options
 					    for fullscreen `<Select/>` on mobile devices */}
-					{ show_options_list && expanded && CloseButton &&
-						<CloseButton
+					{ show_options_list && expanded && CloseButtonIcon &&
+						<Close
 							onClick={ this.onToggle }
 							closeLabel={ closeLabel }
-							className={ classNames('rrui__close--top-right', 'rrui__select__close',
+							className={ classNames('rrui__close--bottom-right', 'rrui__select__close',
 							{
 								'rrui__select__close--autocomplete' : autocomplete
-							}) }/>
+							}) }>
+							<CloseButtonIcon/>
+						</Close>
 					}
 
 					{/* Fallback in case javascript is disabled */}
@@ -1446,21 +1448,15 @@ export default class Select extends Component
 
 	onDocumentClick = (event) =>
 	{
-		const autocomplete = ReactDOM.findDOMNode(this.autocomplete)
-		const selected_option = ReactDOM.findDOMNode(this.selected)
-		const options_list = ReactDOM.findDOMNode(this.list)
+		const container = ReactDOM.findDOMNode(this.select)
 
 		// Don't close the select if its expander button has been clicked,
 		// or if autocomplete has been clicked,
 		// or if an option was selected from the list.
-		if (options_list && options_list.contains(event.target)
-			|| (autocomplete && autocomplete.contains(event.target))
-			|| (selected_option && selected_option.contains(event.target)))
+		if (!container.contains(event.target))
 		{
-			return
+			this.toggle({ expanded: true, focus: false })
 		}
-
-		this.toggle({ expanded: true, focus: false })
 	}
 
 	// Would have used `onBlur={...}` event handler here

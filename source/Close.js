@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-export default function Close({ onClick, closeLabel, className })
+export default function Close({ onClick, closeLabel, className, children })
 {
 	return (
 		<button
@@ -19,7 +19,8 @@ Close.propTypes =
 {
 	onClick : PropTypes.func.isRequired,
 	closeLabel : PropTypes.string.isRequired,
-	className : PropTypes.string
+	className : PropTypes.string,
+	children : PropTypes.node.isRequired
 }
 
 Close.defaultProps =
