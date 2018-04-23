@@ -249,7 +249,7 @@ class Modal extends Component
 						className={ className }
 						fullscreen={ fullscreen }
 						could_not_close_because_busy={ could_not_close_because_busy }
-						form={ form }
+						containsForm={ form > 0 }
 						busy={ busy }
 						reset={ this.on_after_close }>
 						{ children }
@@ -522,49 +522,61 @@ class ModalContent extends Component
 		}
 	}
 
-	render()
+	transformChildren()
 	{
 		const
 		{
 			closeLabel,
 			closeButtonIcon,
 			close,
-			fullscreen,
-			children,
-			className,
-			style,
-			form,
-			could_not_close_because_busy
+			containsForm,
+			children
 		}
 		= this.props
 
-		// let closeButtonAdded = false
-		// React.Children.forEach(children, (element) =>
-		// {
-		// 	if (!closeButtonAdded && element.props.className)
-		// 	{
-		// 		if (element.props.className.indexOf('.rrui__modal__title') === 0
-		// 			|| element.props.className.indexOf('.rrui__modal__content') === 0)
-		// 		{
-		// 			element.props.closeButton = this.render_close_button()
-		// 			closeButtonAdded = true
-		// 		}
-		// 	}
+		let closeButtonAdded = false
+		return React.Children.map(children, (element) =>
+		{
+			if (closeButtonIcon && !closeButtonAdded)
+			{
+				if (element.type === Modal.Title || element.type === Modal.Content)
+				{
+					closeButtonAdded = true
+					return React.cloneElement(element,
+					{
+						closeButton : this.render_close_button()
+					})
+				}
+			}
 
-		// 	if (closeLabel && !form && element.props.className && element.props.className.indexOf('.rrui__modal__actions') === 0)
-		// 	{
-		// 		element.props.children = (
-		// 			<div>
-		// 				<Button
-		// 					className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
-		// 					action={ close }>
-		// 					{ closeLabel }
-		// 				</Button>
-		// 				{element.props.children}
-		// 			</div>
-		// 		)
-		// 	}
-		// })
+			if (!closeButtonIcon && closeLabel && !containsForm && element.type === Modal.Actions)
+			{
+				return React.cloneElement(element,
+				{
+					closeButton: (
+						<Button
+							className={ classNames('rrui__modal__close', 'rrui__modal__close--bottom') }
+							action={ close }>
+							{ closeLabel }
+						</Button>
+					)
+				})
+			}
+
+			return element
+		})
+	}
+
+	render()
+	{
+		const
+		{
+			fullscreen,
+			className,
+			style,
+			could_not_close_because_busy
+		}
+		= this.props
 
 		return (
 			<div
@@ -579,7 +591,7 @@ class ModalContent extends Component
 				className) }
 				style={ style }>
 
-				{ children }
+				{ this.transformChildren() }
 			</div>
 		)
 	}
@@ -589,11 +601,13 @@ class ModalContent extends Component
 		const
 		{
 			closeLabel,
-			closeButtonIcon : CloseButtonIcon,
+			closeButtonIcon,
 			close,
 			busy
 		}
 		= this.props
+
+		const CloseButtonIcon = closeButtonIcon === true ? CloseIcon : closeButtonIcon;
 
 		if (!CloseButtonIcon)
 		{
@@ -660,8 +674,9 @@ const Content = ({ closeButton, children }) => (
 	</div>
 )
 
-const Actions = ({ children }) => (
+const Actions = ({ closeButton, children }) => (
 	<div className="rrui__modal__actions">
+		{closeButton}
 		{children}
 	</div>
 )
