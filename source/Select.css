@@ -41,7 +41,7 @@
 	right : calc(0.3rem * 3 * -1);
 }
 
-.rrui__select__options
+.rrui__select__options:not(.rrui__select__options--menu)
 {
 	/*
 	`<Select/>` options text should be at least fully visible.

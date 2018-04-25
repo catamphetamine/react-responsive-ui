@@ -2,14 +2,38 @@
 .rrui__select__options:not(.rrui__select__options--autocomplete),
 .rrui__date-picker__collapsible
 {
-	position   : fixed;
-	top        : 0;
-	bottom     : 0;
-	right      : 0;
-	left       : 0;
-	margin     : 0;
-	z-index    : 100;
-	max-height : none !important;
+	position : fixed;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	margin   : 0;
+	z-index  : 100;
+
+	transform-origin : center center;
+	transform        : scale(0.95);
+	opacity          : 0;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	max-height       : none !important;
+}
+
+/* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
+.rrui__select__options--expanded,
+.rrui__date-picker__collapsible.rrui__expandable--expanded
+{
+	transform : scale(1);
+	opacity   : 1;
+}
+
+.rrui__select__options:not(.rrui__select__options--menu)
+{
+	min-width : 0;
+}
+
+/* `<Select/>` options no top margin. */
+.rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
+{
+	margin-top: 0;
 }
 
 /* `<Select autocomplete/>` goes fullscreen when expanded */
