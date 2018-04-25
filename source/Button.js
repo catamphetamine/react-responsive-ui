@@ -25,9 +25,6 @@ export default class Button extends PureComponent
 		// If `link` is set, then the button is gonna be an <a/> tag.
 		link            : PropTypes.string,
 
-		// `<a download="..."/>` HTML attribute
-		linkDownload    : PropTypes.string,
-
 		// HTML `title` attribute
 		title           : PropTypes.string,
 
@@ -38,10 +35,7 @@ export default class Button extends PureComponent
 		className       : PropTypes.string,
 
 		// CSS style object for the button container
-		style           : PropTypes.object,
-
-		// CSS style object for the button itself
-		buttonStyle     : PropTypes.object
+		style           : PropTypes.object
 	}
 
 	static defaultProps =
@@ -50,101 +44,70 @@ export default class Button extends PureComponent
 		stretch : false
 	}
 
-	constructor()
+	state =
 	{
-		super()
+		showBusy : this.props.busy
+	}
 
-		this.link_on_click   = this.link_on_click.bind(this)
-		this.button_on_click = this.button_on_click.bind(this)
+	componentDidUpdate(prevProps)
+	{
+		if (!prevProps.busy && this.props.busy)
+		{
+			clearTimeout(this.no_longer_busy_timeout)
+			this.setState({ showBusy : true })
+		}
+		else if (prevProps.busy && !this.props.busy)
+		{
+			// Gives some time to CSS opacity transition to finish.
+			this.no_longer_busy_timeout = setTimeout(() => this.setState({ showBusy : false }), 300)
+		}
 	}
 
 	render()
 	{
 		const
 		{
-			disabled,
-			busy,
-			submit,
+			link,
 			title,
+			busy,
+			disabled,
+			action,
+			submit,
 			stretch,
 			style,
-			className
+			className,
+			children,
+			...rest
 		}
 		= this.props
 
-		return (
-			<div
-				className={ classNames('rrui__input', 'rrui__button',
-				{
-					'rrui__button--busy'     : busy,
-					'rrui__button--disabled' : disabled,
-					'rrui__button--stretch'  : stretch
-				},
-				className) }
-				style={ style }>
-
-				<ActivityIndicator
-					className={ classNames('rrui__button__activity-indicator',
-					{
-						// CSS selector performance optimization
-						'rrui__button__activity-indicator--busy'   : busy
-					}) }/>
-
-				{ this.render_button() }
-			</div>
-		)
-	}
-
-	render_button()
-	{
-		const
-		{
-			link,
-			linkDownload,
-			title,
-			busy,
-			disabled,
-			submit,
-			buttonStyle,
-			children
-		}
-		= this.props
-
-		const className = classNames('rrui__button-reset', 'rrui__button__button',
-		{
-			'rrui__button__button--link'     : link,
-			// CSS selector performance optimization
-			'rrui__button__button--busy'     : busy,
-			'rrui__button__button--disabled' : disabled
-		})
+		const { showBusy } = this.state
 
 		const properties =
 		{
-			ref: ref => this.button = ref,
+			...rest,
+			ref : this.storeInstance,
 			title,
-			className,
-			style: buttonStyle
-		}
-
-		const contents = <div
-			className={ classNames('rrui__button__contents',
+			style,
+			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
 			{
-				// CSS selector performance optimization
-				'rrui__button__contents--busy' : busy
-			}) }>
-			{ children }
-		</div>
+				'rrui__button--busy'     : busy,
+				'rrui__button--disabled' : disabled,
+				'rrui__button--stretch'  : stretch,
+				'rrui__button--link'     : link
+			},
+			className)
+		}
 
 		if (link)
 		{
 			return (
 				<a
 					href={ link }
-					download={ linkDownload }
 					onClick={ this.link_on_click }
 					{ ...properties }>
 
-					{ contents }
+					{ children }
 				</a>
 			)
 		}
@@ -156,17 +119,26 @@ export default class Button extends PureComponent
 				onClick={ this.button_on_click }
 				{ ...properties }>
 
-				{ contents }
+				{ (busy || showBusy) &&
+					<div
+						className={ classNames('rrui__button__busy',
+						{
+							'rrui__button__busy--after-show' : busy && showBusy
+						}) }/>
+				}
+				{ children }
 			</button>
 		)
 	}
+
+	storeInstance = (ref) => this.button = ref
 
 	focus()
 	{
 		ReactDOM.findDOMNode(this.button).focus()
 	}
 
-	link_on_click(event)
+	link_on_click = (event) =>
 	{
 		const
 		{
@@ -177,7 +149,7 @@ export default class Button extends PureComponent
 		= this.props
 
 		// Only handle left mouse button clicks
-		// ignoring those ones with a modifier key pressed
+		// ignoring those ones with a modifier key pressed.
 		if (event.button !== 0
 			|| event.shiftKey
 			|| event.altKey
@@ -206,11 +178,12 @@ export default class Button extends PureComponent
 		}
 	}
 
-	button_on_click(event)
+	button_on_click = (event) =>
 	{
 		const { action } = this.props
 
-		// Could be just a "submit" button
+		// Could be just a `<button type="submit"/>`
+		// without any `action` supplied.
 		if (action)
 		{
 			action()

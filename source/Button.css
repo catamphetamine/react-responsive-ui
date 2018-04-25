@@ -1,10 +1,14 @@
 .rrui__button
 {
-	display    : inline-block;
-	position   : relative;
-	box-sizing : border-box;
-	cursor     : pointer;
-	transition : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+	display       : inline-flex;
+	align-items   : center;
+	position      : relative;
+	height        : calc(0.3rem * 8);
+	padding-left  : calc(0.3rem * 2.5);
+	padding-right : calc(0.3rem * 2.5);
+	box-sizing    : border-box;
+	transition    : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+	cursor        : pointer;
 }
 
 .rrui__button--busy,
@@ -16,72 +20,62 @@
 
 .rrui__button--stretch
 {
-	display : block;
+	display : flex;
 }
 
-.rrui__button__button
+.rrui__button__busy
 {
-	height      : 100%;
-	width       : 100%;
-	user-select : none;
-	cursor      : inherit;
-	color       : inherit;
-}
-
-.rrui__button__button--link
-{
-	/* <button/> tends to vertially align its contents by itself */
-	/* (I guess that's a <button/>'s natural behaviour) */
-	/* but <a/> needs special treatment in this sense. */
-	display         : flex;
-	align-items     : center;
-	text-decoration : none;
-}
-
-.rrui__button__contents
-{
-	transition : opacity 150ms ease-out 100ms;
-}
-
-.rrui__button__contents--busy
-{
+	position   : absolute;
+	left       : calc(0.3rem * 2.5);
+	bottom     : calc((100% - 1.2em) / 2);
+	width      : calc(100% - 2 * 0.3rem * 2.5);
+	height     : 0.1em;
+	overflow   : hidden;
 	opacity    : 0;
-	transition : opacity 200ms ease-out 300ms;
+	transition : opacity 300ms ease-out 0ms;
 }
 
-.rrui__button__activity-indicator
+.rrui__button__busy--after-show
 {
-	position : absolute;
-	/* (if z-index = -1 then it disappears) */
-	z-index  : 0;
-	left   : calc(50% - 0.5em);
-	top    : calc(50% - 0.5em);
-	width  : 1em;
-	height : 1em;
-	opacity : 0;
-	transition : opacity 200ms ease-out;
-	pointer-events : none;
+  opacity    : 1;
+  transition : opacity 700ms ease-out 200ms;
 }
 
-.rrui__button .rrui__activity-indicator-circle
+.rrui__button__busy:before
 {
-	stroke-width: 0.1em;
+	display          : block;
+	position         : absolute;
+	content          : "";
+	left             : -40%;
+	width            : 40%;
+	height           : 100%;
+	background-color : currentColor;
+	animation        : rrui__button__busy 2s ease-in infinite;
 }
 
-.rrui__button__activity-indicator--busy
+@keyframes rrui__button__busy
 {
-	opacity          : 1;
-	transition-delay : 350ms;
+	from { left : -40%; width : 40%;  }
+	50%  {              width : 70%;  }
+	70%  {              width : 85%; }
+	80%  { left : 30%;  width : 100%; }
+	95%  { left : 120%; }
+	to   { left : 100%; }
 }
 
 /* Button colors */
 
 .rrui__button
 {
-	color: #3678D1;
+	color : #3678D1;
 }
 
 .rrui__button:active
 {
-	color: #4F9BFF;
+	color : #4F9BFF;
+}
+
+.rrui__button--link:hover
+{
+	text-decoration : none;
 }
