@@ -1,14 +1,15 @@
 .rrui__button
 {
-	display       : inline-flex;
-	align-items   : center;
-	position      : relative;
-	height        : calc(0.3rem * 8);
-	padding-left  : calc(0.3rem * 2.5);
-	padding-right : calc(0.3rem * 2.5);
-	box-sizing    : border-box;
-	transition    : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
-	cursor        : pointer;
+	display         : inline-flex;
+	align-items     : center;
+	justify-content : center;
+	position        : relative;
+	height          : calc(0.3rem * 8);
+	padding-left    : calc(0.3rem * 2.5);
+	padding-right   : calc(0.3rem * 2.5);
+	box-sizing      : border-box;
+	transition      : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+	cursor          : pointer;
 }
 
 .rrui__button--busy,
@@ -21,6 +22,7 @@
 .rrui__button--stretch
 {
 	display : flex;
+	width   : 100%;
 }
 
 .rrui__button__busy
