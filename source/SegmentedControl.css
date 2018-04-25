@@ -4,8 +4,14 @@
 	white-space : nowrap;
 }
 
+.rrui__segmented-control .rrui__input
+{
+	display : flex;
+}
+
 .rrui__segmented-control__option
 {
+	flex           : 1;
 	height         : 100%;
 	padding-left   : calc(0.3rem * 1.5);
 	padding-right  : calc(0.3rem * 1.5);

@@ -96,7 +96,11 @@ export default class Segmented_control extends PureComponent
 
 				{ fallback && !this.state.javascript && this.render_static() }
 
-				{ indicateInvalid && error && <div className="rrui__input-error">{ error }</div> }
+				{ indicateInvalid && error &&
+					<div className="rrui__input-error">
+						{ error }
+					</div>
+				}
 			</div>
 		)
 	}
