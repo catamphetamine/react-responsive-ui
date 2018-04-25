@@ -3,14 +3,14 @@
 	color            : white;
 	background-color : black;
 
-	border-radius : 3pt;
+	border-radius : 0.1em;
 
-	padding-left   : calc(0.3rem * 2);
-	padding-right  : calc(0.3rem * 2);
-	padding-top    : calc(0.3rem * 1);
-	padding-bottom : calc(0.3rem * 1);
+	padding-left  : calc(0.3rem * 2);
+	padding-right : calc(0.3rem * 2);
+	height        : calc(0.3rem * 7);
+	line-height   : calc(0.3rem * 7);
+	margin-top    : -0.3rem;
 
-	margin-top : -0.3em;
 	opacity    : 0;
 	transform  : translateY(0.3em) scale(0.95);
 
