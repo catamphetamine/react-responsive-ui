@@ -23,8 +23,20 @@
 
 .rrui__switch__switch
 {
-	position    : relative;
-	line-height : 0;
+	display         : flex;
+	align-items     : center;
+	justify-content : center;
+	position        : relative;
+	line-height     : 0;
+}
+
+.rrui__switch__input
+{
+	left   : -30%;
+	right  : -30%;
+	width  : 160%;
+	height : 180%;
+	cursor : pointer;
 }
 
 .rrui__switch__label--left

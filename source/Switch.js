@@ -131,7 +131,8 @@ export default class Switch extends PureComponent
 						value={ value }
 						onKeyDown={ this.onKeyDown }
 						onChange={ this.toggle }
-						style={ input_style }/>
+						className="rrui__switch__input"
+						style={ inputStyle }/>
 
 					<div
 						className={ classNames('rrui__switch__groove',
@@ -187,11 +188,9 @@ export default class Switch extends PureComponent
 	}
 }
 
-const input_style =
+const inputStyle =
 {
 	position : 'absolute',
 	opacity  : 0,
-	margin   : 0,
-	width    : '100%',
-	height   : '100%'
+	margin   : 0
 }
