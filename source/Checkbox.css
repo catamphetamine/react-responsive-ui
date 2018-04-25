@@ -14,7 +14,7 @@
 .rrui__checkbox__label
 {
 	display        : inline-block;
-	padding-left   : 0.5em;
+	padding-left   : calc(0.3rem * 2);
 	vertical-align : bottom;
 	color          : inherit;
 	user-select    : none;
@@ -62,8 +62,8 @@
 {
 	position    : relative;
 	flex-shrink : 0;
-	width       : 1.15em;
-	height      : 1.15em;
+	width       : calc(0.3rem * 4);
+	height      : calc(0.3rem * 4);
 }
 
 .rrui__checkbox__input

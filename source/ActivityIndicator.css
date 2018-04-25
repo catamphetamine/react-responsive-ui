@@ -1,17 +1,15 @@
 .rrui__activity-indicator
 {
-	width  : 2em;
-	height : 2em;
-
+	width  : calc(0.3rem * 7);
+	height : calc(0.3rem * 7);
 	stroke : currentColor;
-
 	line-height : 0;
 }
 
 .rrui__activity-indicator-circle-container
 {
-	animation: rrui-spinner-rotate 2s linear infinite;
-	transform-origin: center center;
+	animation        : rrui-spinner-rotate 2s linear infinite;
+	transform-origin : center center;
 }
 
 .rrui__activity-indicator-circle
