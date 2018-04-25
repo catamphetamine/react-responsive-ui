@@ -55,6 +55,8 @@
 	animation        : rrui__button__busy 2s ease-in infinite;
 }
 
+/* Based on "CSS indeterminate progress" example. */
+/* https://codepen.io/brunjo/pen/XJmbNz */
 @keyframes rrui__button__busy
 {
 	from { left : -40%; width : 40%;  }
