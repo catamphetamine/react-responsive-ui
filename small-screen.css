@@ -13,26 +13,35 @@
 }
 
 /* `<Select autocomplete/>` goes fullscreen when expanded */
-.rrui__select--autocomplete.rrui__select--expanded
+.rrui__select--expanded .rrui__select__autocomplete
 {
 	position         : fixed;
 	top              : 0;
 	left             : 0;
-	right            : 0;
-	bottom           : 0;
 	width            : 100%;
-	height           : 100%;
-	box-sizing       : border-box;
-	padding-left     : 0.9rem;
-	padding-right    : 0.9rem;
-	padding-top      : 0.6rem;
-	z-index          : 100;
+	height           : calc(0.3rem * 8);
+	padding-left     : calc(0.3rem * 3);
+	padding-right    : calc(0.3rem * 8);
+	z-index          : 101;
 	background-color : white;
 }
 
-/* `<Select autocomplete/>` goes fullscreen when expanded */
-.rrui__select--autocomplete.rrui__select--expanded .rrui__select__options
+/* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
+.rrui__select--autocomplete.rrui__select--expanded .rrui__ellipsis
 {
+	position    : fixed;
+	right       : calc(0.3rem * 3);
+	top         : 0;
+	z-index     : 102;
+	height      : calc(0.3rem * 8);
+	display     : flex;
+	align-items : center;
+}
+
+/* `<Select autocomplete/>` options when fullscreen-expanded */
+.rrui__select__options--autocomplete
+{
+	top : calc(0.3rem * 8);
 	box-shadow : none;
 }
 
