@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import classNames from 'classnames'
 import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
@@ -1086,7 +1085,7 @@ export default class Select extends Component
 	{
 		// For some strange reason 1px on the right side of the `<select/>`
 		// still falls through to the underlying selected option label.
-		ReactDOM.findDOMNode(this.native).style.width = (ReactDOM.findDOMNode(this.selected).offsetWidth + 1) + 'px'
+		this.native.style.width = (this.selected.offsetWidth + 1) + 'px'
 	}
 
 	refreshSelectedOptionLabel(value = this.props.value, options = this.state.options)
@@ -1389,17 +1388,15 @@ export default class Select extends Component
 
 	scrollIntoView()
 	{
-		const element = ReactDOM.findDOMNode(this.list)
-
 		// https://developer.mozilla.org/ru/docs/Web/API/Element/scrollIntoViewIfNeeded
-		if (element.scrollIntoViewIfNeeded)
+		if (this.list.scrollIntoViewIfNeeded)
 		{
-			element.scrollIntoViewIfNeeded(false)
+			this.list.scrollIntoViewIfNeeded(false)
 		}
 		else
 		{
 			// https://github.com/stipsan/scroll-into-view-if-needed
-			scrollIntoViewIfNeeded(element, false, { duration: 800 })
+			scrollIntoViewIfNeeded(this.list, false, { duration: 800 })
 		}
 	}
 
@@ -1449,12 +1446,10 @@ export default class Select extends Component
 
 	onDocumentClick = (event) =>
 	{
-		const container = ReactDOM.findDOMNode(this.select)
-
 		// Don't close the select if its expander button has been clicked,
 		// or if autocomplete has been clicked,
 		// or if an option was selected from the list.
-		if (!container.contains(event.target))
+		if (!this.select.contains(event.target))
 		{
 			this.toggle({ expanded: true, focus: false })
 		}
@@ -1595,7 +1590,7 @@ export default class Select extends Component
 					// So submit the enclosing form manually.
 					else
 					{
-						if (submitContainingForm(ReactDOM.findDOMNode(this.select)))
+						if (submitContainingForm(this.select))
 						{
 							event.preventDefault()
 						}
@@ -1896,8 +1891,7 @@ export default class Select extends Component
 	{
 		const { vertical_padding } = this.state
 
-		const option_element = ReactDOM.findDOMNode(this.options_refs[get_option_key(value)])
-		const list = ReactDOM.findDOMNode(this.list)
+		const option_element = this.options_refs[get_option_key(value)]
 
 		// If this option isn't even shown
 		// (e.g. autocomplete)
@@ -1909,7 +1903,7 @@ export default class Select extends Component
 
 		let offset_top = option_element.offsetTop
 
-		const is_first_option = list.firstChild === option_element
+		const is_first_option = this.list.firstChild === option_element
 
 		// If it's the first one - then scroll to list top
 		if (is_first_option)
@@ -1917,7 +1911,7 @@ export default class Select extends Component
 			offset_top -= vertical_padding
 		}
 
-		list.scrollTop = offset_top
+		this.list.scrollTop = offset_top
 	}
 
 	// Fully shows an option having the `value` (scrolls to it if neccessary)
@@ -1925,11 +1919,10 @@ export default class Select extends Component
 	{
 		const { vertical_padding } = this.state
 
-		const option_element = ReactDOM.findDOMNode(this.options_refs[get_option_key(value)])
-		const list = ReactDOM.findDOMNode(this.list)
+		const option_element = this.options_refs[get_option_key(value)]
 
-		const is_first_option = list.firstChild === option_element
-		const is_last_option  = list.lastChild === option_element
+		const is_first_option = this.list.firstChild === option_element
+		const is_last_option  = this.list.lastChild === option_element
 
 		switch (gravity)
 		{
@@ -1941,9 +1934,9 @@ export default class Select extends Component
 					top_line -= vertical_padding
 				}
 
-				if (top_line < list.scrollTop)
+				if (top_line < this.list.scrollTop)
 				{
-					list.scrollTop = top_line
+					this.list.scrollTop = top_line
 				}
 
 				return
@@ -1956,9 +1949,9 @@ export default class Select extends Component
 					bottom_line += vertical_padding
 				}
 
-				if (bottom_line > list.scrollTop + list.offsetHeight)
+				if (bottom_line > this.list.scrollTop + this.list.offsetHeight)
 				{
-					list.scrollTop = bottom_line - list.offsetHeight
+					this.list.scrollTop = bottom_line - this.list.offsetHeight
 				}
 
 				return
@@ -1970,18 +1963,17 @@ export default class Select extends Component
 	{
 		const { options } = this.state
 
-		const list_dom_node = ReactDOM.findDOMNode(this.list)
-		// const border = parseInt(window.getComputedStyle(list_dom_node).borderTopWidth)
-		const height = list_dom_node.scrollHeight
-		const vertical_padding = parseInt(window.getComputedStyle(list_dom_node).paddingTop)
+		// const border = parseInt(window.getComputedStyle(this.list).borderTopWidth)
+		const height = this.list.scrollHeight
+		const vertical_padding = parseInt(window.getComputedStyle(this.list).paddingTop)
 
 		// For things like "accordeon".
 		//
-		// const images = list_dom_node.querySelectorAll('img')
+		// const images = this.list.querySelectorAll('img')
 		//
 		// if (images.length > 0)
 		// {
-		// 	return this.preload_images(list_dom_node, images)
+		// 	return this.preload_images(this.list, images)
 		// }
 
 		const state = { height, vertical_padding }
@@ -2015,7 +2007,7 @@ export default class Select extends Component
 	// get_widest_label_width()
 	// {
 	// 	// <ul/> -> <li/> -> <button/>
-	// 	const label = ReactDOM.findDOMNode(this.list).firstChild.firstChild
+	// 	const label = this.list.firstChild.firstChild
 	//
 	// 	const style = getComputedStyle(label)
 	//
@@ -2082,11 +2074,6 @@ function focus(component)
 
 	if (typeof component.focus === 'function') {
 		return component.focus()
-	}
-
-	const node = ReactDOM.findDOMNode(component)
-	if (node) {
-		return node.focus()
 	}
 }
 

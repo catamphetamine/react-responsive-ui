@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import ReactModal from 'react-modal'
 import createContext from 'create-react-context'
@@ -179,6 +178,8 @@ class Modal extends Component
 		this.could_not_close_because_busy_animation_timeout = undefined
 	}
 
+	storeContentInstance = (ref) => this.content = ref
+
 	render()
 	{
 		const
@@ -241,7 +242,7 @@ class Modal extends Component
 
 				<ModalContext.Provider value={ this.state.context }>
 					<ModalContent
-						ref={ ref => this.content = ref }
+						ref={ this.storeContentInstance }
 						closeLabel={ closeLabel }
 						closeButtonIcon={ closeButtonIcon }
 						close={ this.closeIfNotBusy }
@@ -322,7 +323,7 @@ class Modal extends Component
 		{
 			this.indicate_cannot_close()
 			// Focus on `<ReactModal/>` element.
-			return ReactDOM.findDOMNode(this.content).parentNode.focus()
+			return this.content.focus()
 		}
 
 		this.closeIfNotBusy()
@@ -513,6 +514,11 @@ class Modal extends Component
 
 class ModalContent extends Component
 {
+	focus()
+	{
+		this.node.focus()
+	}
+
 	componentWillUnmount()
 	{
 		const { reset } = this.props
@@ -567,6 +573,8 @@ class ModalContent extends Component
 		})
 	}
 
+	storeNode = (ref) => this.node = ref
+
 	render()
 	{
 		const
@@ -580,6 +588,7 @@ class ModalContent extends Component
 
 		return (
 			<div
+				ref={ this.storeNode }
 				className={ classNames('rrui__modal__contents',
 				{
 					// CSS selector performance optimization

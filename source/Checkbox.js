@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
@@ -81,6 +80,8 @@ export default class Checkbox extends Component
 		}
 	}
 
+	storeInstance = (ref) => this.checkbox = ref
+
 	render()
 	{
 		const
@@ -117,7 +118,7 @@ export default class Checkbox extends Component
 
 					<div className="rrui__checkbox__checkbox">
 						<input
-							ref={ ref => this.checkbox = ref }
+							ref={ this.storeInstance }
 							type="checkbox"
 							checked={ value }
 							disabled={ disabled }
@@ -186,7 +187,7 @@ export default class Checkbox extends Component
 
 	focus()
 	{
-		ReactDOM.findDOMNode(this.checkbox).focus()
+		this.checkbox.focus()
 	}
 
 	toggle = (event) =>

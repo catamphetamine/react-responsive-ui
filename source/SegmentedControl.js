@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
@@ -199,7 +198,7 @@ export default class Segmented_control extends PureComponent
 
 	focus()
 	{
-		ReactDOM.findDOMNode(this.button_0).focus()
+		this.button_0.focus()
 	}
 
 	storeContainerComponent = _ => this.container = _

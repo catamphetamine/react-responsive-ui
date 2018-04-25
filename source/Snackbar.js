@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 // Sits at the bottom of a page and displays notifications
@@ -156,7 +155,7 @@ export default class Snackbar extends PureComponent
 		// its target Y-position for the CSS `translate` transform.
 		if (height === undefined && value)
 		{
-			height = ReactDOM.findDOMNode(this.snackbar).offsetHeight
+			height = this.snackbar.offsetHeight
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
 			this.setState({ height }, () =>
 			{

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import { Context, contextPropTypes } from './PageAndMenu'
@@ -47,7 +46,7 @@ class MenuButton extends PureComponent
 
 		this.unregister = registerMenuButton
 		({
-			element : () => ReactDOM.findDOMNode(this.button)
+			element : () => this.button
 		})
 	}
 

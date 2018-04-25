@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import { Context, contextPropTypes } from './PageAndMenu'
@@ -48,7 +47,7 @@ class Menu extends PureComponent
 			hide    : () => this.setState({ show: false }),
 			toggle  : (callback) => this.setState(state => ({ show: !state.show }), callback),
 			isShown : () => this.state.show,
-			element : () => ReactDOM.findDOMNode(this.menu)
+			element : () => this.menu
 		})
 
 		// Listen to `pushstate` and `popstate` events (navigation).
@@ -123,7 +122,6 @@ class Menu extends PureComponent
 
 	// calculate_width()
 	// {
-	// 	const dom_node = ReactDOM.findDOMNode(this.menu)
-	// 	this.props.updateWidth(dom_node.offsetWidth)
+	// 	this.props.updateWidth(this.menu.offsetWidth)
 	// }
 }

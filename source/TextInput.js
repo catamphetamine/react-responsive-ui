@@ -1,6 +1,5 @@
 import React, { PureComponent, createElement } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import throttle from 'lodash/throttle'
 
@@ -72,9 +71,6 @@ export default class TextInput extends PureComponent
 		// `<textarea/>` `cols` attribute (column count, i.e. width)
 		cols             : PropTypes.number,
 
-		// A custom `input` component can be passed
-		input            : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-
 		// (exotic use case)
 		// Falls back to a plain HTML input
 		// when javascript is disabled (e.g. Tor)
@@ -117,10 +113,7 @@ export default class TextInput extends PureComponent
 		fallback : false,
 
 		// Set to `true` to mark the field as required
-		required : false,
-
-		// Render an `<input/>` by default
-		input: 'input'
+		required : false
 	}
 
 	// Client side rendering, javascript is enabled
@@ -252,10 +245,6 @@ export default class TextInput extends PureComponent
 			tabIndex,
 			autoresize,
 
-			// A custom input component
-			// (e.g. for an `input-format` text input, like a phone number)
-			input,
-
 			// Passthrough properties
 			id,
 			onFocus,
@@ -320,9 +309,7 @@ export default class TextInput extends PureComponent
 		// Add `<input/>` `type` to properties
 		properties.type = this.get_input_type()
 
-		// If a custom `input` component was passed then use it.
-		// Otherwise use a simple `<input/>`.
-		return createElement(input, properties)
+		return <input {...properties}/>
 	}
 
 	render_error_message()
@@ -409,7 +396,7 @@ export default class TextInput extends PureComponent
 	autoresize = (event) =>
 	{
 		const measurements = this.measurements()
-		const element = event ? event.target : ReactDOM.findDOMNode(this.input)
+		const element = event ? event.target : this.input
 
 		element.style.height = 0
 
@@ -483,22 +470,12 @@ export default class TextInput extends PureComponent
 
 	focus()
 	{
-		const { input } = this.props
-
-		// For simple DOM nodes like `<input/>`
-		// just focus on them.
-		if (typeof input === 'string') {
-			return ReactDOM.findDOMNode(this.input).focus()
-		}
-
-		// For custom components call `.focus()` on them
-		// (if available)
-		return this.input.focus && this.input.focus()
+		return this.input.focus()
 	}
 
 	measure()
 	{
-		return autoresize_measure(ReactDOM.findDOMNode(this.input))
+		return autoresize_measure(this.input)
 	}
 
 	measurements()

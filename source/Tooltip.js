@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 // https://github.com/Dogfalo/materialize/blob/master/js/tooltip.js
@@ -116,7 +115,7 @@ export default class Tooltip extends PureComponent
 		const width  = this.tooltip.offsetWidth
 		const height = this.tooltip.offsetHeight
 
-		const origin = ReactDOM.findDOMNode(this.origin)
+		const origin = this.origin
 
 		const origin_width  = origin.offsetWidth
 		// const origin_height = origin.offsetHeight
@@ -277,6 +276,8 @@ export default class Tooltip extends PureComponent
 		this.show()
 	}
 
+	storeOriginNode = (ref) => this.origin = ref
+
 	render()
 	{
 		// Shows tooltip on mouse over when on desktop.
@@ -304,7 +305,7 @@ export default class Tooltip extends PureComponent
 		return (
 			<div
 				{...rest}
-				ref={ ref => this.origin = ref }
+				ref={ this.storeOriginNode }
 				onMouseEnter={ this.on_mouse_enter }
 				onMouseLeave={ this.on_mouse_leave }
 				onTouchStart={ this.on_touch_start }

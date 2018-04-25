@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 
 import ActivityIndicator from './ActivityIndicator'
@@ -135,7 +134,7 @@ export default class Button extends PureComponent
 
 	focus()
 	{
-		ReactDOM.findDOMNode(this.button).focus()
+		this.button.focus()
 	}
 
 	link_on_click = (event) =>

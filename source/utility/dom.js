@@ -1,11 +1,9 @@
-import ReactDOM from 'react-dom'
-
 // Submits the form on `Ctrl` + `Enter` (or `Cmd` + `Enter`).
 export function submitFormOnCtrlEnter(event, component)
 {
 	if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
 	{
-		if (submitContainingForm(ReactDOM.findDOMNode(component)))
+		if (submitContainingForm(component))
 		{
 			event.preventDefault()
 			return true

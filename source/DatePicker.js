@@ -3,7 +3,6 @@
 
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
@@ -149,10 +148,12 @@ export default class DatePicker extends PureComponent
 		// so that a Tab out of the `<input/>` field
 		// moves cursor not inside to these buttons
 		// but rather to the next form input.
-		const calendar = ReactDOM.findDOMNode(this.calendar)
+		//
+		// (rewritten)
 		// Requires ES6 Symbol.Iterator polyfill.
 		// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
-		for (const button of [].slice.call(calendar.querySelectorAll('.DayPicker-NavButton')))
+		//
+		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton')))
 		{
 			button.removeAttribute('tabindex')
 		}
@@ -503,17 +504,15 @@ export default class DatePicker extends PureComponent
 
 	onDocumentClick = (event) =>
 	{
-		const container = ReactDOM.findDOMNode(this.container)
-
 		// For some strange reason sometimes
 		// `container` is `undefined` or `null` here.
 		// All reported cases are currently for Microsoft Edge.
-		if (!container)
+		if (!this.container)
 		{
 			return
 		}
 
-		if (container.contains(event.target))
+		if (this.container.contains(event.target))
 		{
 			return
 		}
@@ -569,6 +568,8 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
+	storeContainerInstance = (ref) => this.container = ref
+
 	render()
 	{
 		const
@@ -619,7 +620,7 @@ export default class DatePicker extends PureComponent
 
 		return (
 			<div
-				ref={ ref => this.container = ref }
+				ref={ this.storeContainerInstance }
 				onKeyDown={ this.on_key_down_in_container }
 				onBlur={ this.on_blur }
 				className={ classNames('rrui__date-picker', className,
