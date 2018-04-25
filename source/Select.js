@@ -537,13 +537,14 @@ export default class Select extends Component
 				(
 					'rrui__select',
 					{
-						'rrui__rich'              : fallback,
-						'rrui__select--menu'      : menu,
-						'rrui__select--upward'    : upward,
-						'rrui__select--expanded'  : expanded,
-						'rrui__select--collapsed' : !expanded,
-						'rrui__select--disabled'  : disabled,
-						'rrui__select--compact'   : compact || (concise && !autocomplete)
+						'rrui__rich'                 : fallback,
+						'rrui__select--autocomplete' : autocomplete,
+						'rrui__select--menu'         : menu,
+						'rrui__select--upward'       : upward,
+						'rrui__select--expanded'     : expanded,
+						'rrui__select--collapsed'    : !expanded,
+						'rrui__select--disabled'     : disabled,
+						'rrui__select--compact'      : compact || (concise && !autocomplete)
 					},
 					className
 				) }>
