@@ -357,15 +357,23 @@ export default class Select extends Component
 		// Not re-fetching async options here.
 		if (Array.isArray(options))
 		{
-			newState.options = _getOptions(options, null, state.autocomplete_input_value)
+			const _options = _getOptions(options, null, state.autocomplete_input_value)
 
+			// `<Select autocomplete/>`'s selected option label
+			// is stored in a special `selectedOptionLabel` variable in `this.state`.
 			if (autocomplete)
 			{
 				if (newState.props.options !== state.props.options
 					|| newState.props.value !== state.props.value)
 				{
-					newState.selectedOptionLabel = getSelectedOptionLabel(value, options)
+					newState.selectedOptionLabel = getSelectedOptionLabel(value, _options)
 				}
+			}
+			// Regular `<Select/>`'s selected option label
+			// is calculated in `.render()` from `this.state.options`.
+			else
+			{
+				newState.options = _options
 			}
 		}
 
@@ -434,6 +442,8 @@ export default class Select extends Component
 		clearTimeout(this.restore_focus_on_collapse_timeout)
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 	}
+
+	storeListNode = (ref) => this.list = ref
 
 	render()
 	{
@@ -584,7 +594,7 @@ export default class Select extends Component
 					{/* The list of selectable options */}
 					{ show_options_list &&
 						<ul
-							ref={ ref => this.list = ref }
+							ref={ this.storeListNode }
 							style={ list_style }
 							className={ classNames
 							(
