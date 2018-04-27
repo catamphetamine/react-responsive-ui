@@ -45,28 +45,73 @@
 
 * (breaking change) `<TextInput/>` no longer takes an `input` property.
 
+<!--
 
+icon:
 
+<svg class="j54" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><g><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path></g></svg>
 
+position: absolute;
+top: 50%;
+right: ...;
+transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
+hidden: translateY(-50%) rotate(0deg)
+shown: translateY(-50%) rotate(180deg)
 
-изменить положение и анимацию <Snackbar/>-а.
+ExpansionPanel
 
-проверить мобильный дизайн
+shown:
 
-на мобильных делать меньше отступ снекбара.
+margin-bottom: 16px 0;
 
+hidden:
 
+margin-bottom: 0;
 
+(border)
 
+box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+
+&:before {
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  content: "";
+  opacity: 1;
+  position: absolute;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+ExpansionPanel.Summary:
+
+shown:
+
+margin: 20px 0;
+
+hidden:
+
+margin: 12px 0;
+
+ExpansionPanel.Details:
+
+hidden:
+
+height: 0;
+transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+shown:
+
+height: auto;
+transition-duration: 207ms;
 
 проверить на webpack-...-example, что postcss заменяет переменные
 
 обновляя rrui в phone-number-input компилировать стили с переменными.
 
-
-
-
+-->
 
 0.11.0 / 20.04.2018
 ===================
