@@ -50,7 +50,8 @@ The CSS for this library must be included on a page too.
 #### When using Webpack
 
 ```js
-import rrui from 'react-responsive-ui/style.css'
+require('react-responsive-ui/variables.css')
+require('react-responsive-ui/style.css')
 ```
 
 And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers (e.g. `last 4 versions`, `iOS >= 7`, `Android >= 4`).
@@ -61,90 +62,38 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ```html
 <head>
+  <link rel="stylesheet" href="/css/react-responsive-ui/variables.css"/>
   <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
 </head>
 ```
 
-## Grid
+## Variables
 
-When using modular grid element sizes are multiples of a modular grid unit
+This library uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden in a separate `react-responsive-ui-variables.css` file (analogous to the original `variables.css` file).
 
-```css
-/* Sets `react-responsive-ui` controls' height */
-.rrui__input,
-.rrui__input-label {
-  height: calc(var(--unit) * 5);
-}
+#### When using Webpack
 
-/* Set the default height of multiline `<TextInput/>`s */
-.rrui__input--multiline {
-  height: calc(var(--unit) * 15);
-}
+```js
+// React Responsive UI.
+require('react-responsive-ui/style.css')
+// Custom variable values.
+require('./src/styles/react-responsive-ui-variables.css')
+```
 
-/* Multiline `<TextInput/>`'s vertical padding */
-.rrui__input-field--multiline {
-  padding-top: var(--textarea-padding);
-  padding-bottom: var(--textarea-padding);
-}
+#### When not using Webpack
 
-/* Multiline `<TextInput/>`'s label positioning */
-.rrui__text-input__label--multiline {
-  top: var(--textarea-padding);
-}
-
-/* `<Button/>`s are sized to match the height of all other controls. */
-.rrui__button__button {
-  height: 100%;
-}
-
-/* Styling `<Button/>`s */
-.rrui__button {
-  font-family: ...
-  font-size: ...
-  border: 2px solid black;
-  border-radius: 5px;
-}
-
-/* `<Button/>`s' side padding */
-/* (only when not sizing buttons as grid columns) */
-.rrui__button__button {
-  padding-left: calc(var(--unit) * 4);
-  padding-right: calc(var(--unit) * 4);
-}
-
-/* `<Button/>`'s busy indicator styling */
-.rrui__button__activity-indicator {
-  left: calc(50% - var(--unit));
-  top: calc(50% - var(--unit));
-  width: calc(var(--unit) * 2);
-  height: calc(var(--unit) * 2);
-}
-
-/* `<Select/>`'s options vertical padding. */
-.rrui__select__options {
-  padding-top: var(--unit);
-  padding-bottom: var(--unit);
-}
-
-/* `<Select/>`'s options expand to full (grid) column width. */
-.rrui__select__options:not(.rrui__select__options--menu) {
-  width: 100%;
-}
-
-/* `<Select/>`'s options are aligned with the `<Select/>` itself. */
-.rrui__select__options--left-aligned {
-  left: 0;
-}
-
-/* `<Select/>`'s options are aligned with the `<Select/>` itself. */
-.rrui__select__options--right-aligned {
-  right: 0;
-}
+```html
+<head>
+  <!-- React Responsive UI -->
+  <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
+  <!-- Custom variable values -->
+  <link rel="stylesheet" href="/css/react-responsive-ui-variables.css"/>
+</head>
 ```
 
 ## Responsive
 
-The included [`react-responsive-ui/small-screen.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/small-screen.css) stylesheet makes `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen on small screens (mobile devices).
+The included [`react-responsive-ui/small-screen.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/small-screen.css) stylesheet adapts all components for "small screens" ("mobile devices"). E.g. `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen.
 
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 
@@ -160,42 +109,7 @@ SCSS `@import` example:
 }
 ```
 
-And then some refinements:
-
-```css
-@media (max-width: 720px) {
-  /* Fullscreen `<DatePicker/>` "Close" button */
-  .rrui__date-picker__close {
-    font-size: 14px;
-    font-weight: lighter;
-    color: var(--accent-color);
-  }
-
-  /* Fullscreen `<Select/>` options */
-  .rrui__select__options:not(.rrui__select__options--autocomplete) {
-    font-size: 22px;
-  }
-
-  /* Fullscreen `<Select/>`s and `<DatePicker/>`s `z-index`es */
-  .rrui__select__options:not(.rrui__select__options--autocomplete),
-  .rrui__date-picker__collapsible {
-    z-index: var(--expandable-z-index);
-  }
-
-  /* Fullscreen `<Select/>` "Close" button */
-  .rrui__select__close {
-    z-index: var(--expandable-z-index);
-  }
-
-  /* Fullscreen `<Modal/>` content padding */
-  .rrui__modal__content-body {
-    margin-top: calc(var(--unit) * 2);
-    margin-bottom: calc(var(--unit) * 2);
-    margin-left: var(--column-padding);
-    margin-right: var(--column-padding);
-  }
-}
-```
+The `small-screen.css` file must not be included before `variables.css` because it uses those variables (the values of which can be overridden as shown in the previous section).
 
 ## Drag'n'drop
 
@@ -259,6 +173,25 @@ class FileUploadArea extends Component {
       </div>
     )
   }
+}
+```
+
+```css
+.rrui__file-upload
+{
+  display          : inline-block;
+  padding          : 20px;
+  border           : 1px dashed #afafaf;
+  border-radius    : 5px;
+  background-color : #fbfbfb;
+  cursor           : pointer;
+  text-align       : center;
+}
+
+.rrui__file-upload--dragged-over
+{
+  background-color : #3678D1;
+  color            : white;
 }
 ```
 

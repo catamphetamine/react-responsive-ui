@@ -19,7 +19,7 @@ class Page extends Component
 {
 	static propTypes =
 	{
-		...contextPropTypes
+		menuIsExpanded : PropTypes.bool.isRequired
 	}
 
 	render()

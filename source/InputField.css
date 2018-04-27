@@ -24,7 +24,7 @@
 .rrui__select__button
 {
 	border        : none;
-	border-bottom : 1px solid #C5D2E0;
+	border-bottom : 1px solid var(--rrui-gray-color-light);
 	transition    : border 0.1s;
 }
 
@@ -32,7 +32,7 @@
 .rrui__select__button:focus,
 .rrui__select__native-expanded:focus + .rrui__select__button
 {
-	border-bottom-color: #03B2CB;
+	border-bottom-color: var(--rrui-accent-color);
 }
 
 .rrui__input-field
@@ -52,7 +52,7 @@
 .rrui__input-field--invalid,
 .rrui__input-field--invalid:focus
 {
-	border-color : #EB2010;
+	border-color : var(--rrui-error-color);
 }
 
 .rrui__input-field--disabled

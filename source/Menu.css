@@ -1,17 +1,25 @@
 .rrui__slideout-menu
 {
-	position : fixed;
-	left     : 0;
-	top      : 0;
-	bottom   : 0;
-	z-index  : 1;
-	min-height : 100%;
-	overflow-y : auto;
-	opacity    : 0.9;
-	background-color : black;
+	position         : fixed;
+	left             : 0;
+	top              : 0;
+	bottom           : 0;
+	z-index          : var(--rrui-z-index-overlay);
+	min-height       : 100%;
+	padding-top      : var(--rrui-list-vertical-padding);
+	padding-bottom   : var(--rrui-list-vertical-padding);
+	overflow-y       : auto;
+	opacity          : 0.9;
+	background-color : var(--rrui-black-color);
+	transform        : translate3d(-100%, 0, 0);
+	transition       : transform 120ms ease-out;
+}
 
-	transform  : translate3d(-100%, 0, 0);
-	transition : transform 120ms ease-out;
+.rrui__slideout-menu__item
+{
+	display       : block;
+	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
+	padding-right : var(--rrui-collapsible-menu-item-side-padding);
 }
 
 .rrui__slideout-menu--expanded

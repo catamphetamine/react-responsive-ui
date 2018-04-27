@@ -1,7 +1,7 @@
 .rrui__activity-indicator
 {
-	width  : calc(0.3rem * 7);
-	height : calc(0.3rem * 7);
+	width  : var(--rrui-input-height);
+	height : var(--rrui-input-height);
 	stroke : currentColor;
 	line-height : 0;
 }

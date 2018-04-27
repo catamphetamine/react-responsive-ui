@@ -8,7 +8,7 @@
 	right    : 0;
 	left     : 0;
 	margin   : 0;
-	z-index  : 100;
+	z-index  : var(--rrui-z-index-overlay);
 
 	transform-origin : center center;
 	transform        : scale(0.95);
@@ -43,21 +43,21 @@
 	top              : 0;
 	left             : 0;
 	width            : 100%;
-	height           : calc(0.3rem * 8);
-	padding-left     : calc(0.3rem * 3);
-	padding-right    : calc(0.3rem * 8);
-	z-index          : 101;
-	background-color : white;
+	height           : var(--rrui-fullscreen-input-height);
+	padding-left     : var(--rrui-list-item-side-padding);
+	padding-right    : calc(var(--rrui-unit) * 2 + var(--rrui-unit) * 3 + var(--rrui-list-item-side-padding));
+	z-index          : var(--rrui-z-index-overlay);
+	background-color : var(--rrui-white-color);
 }
 
 /* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
 .rrui__select--autocomplete.rrui__select--expanded .rrui__ellipsis
 {
 	position    : fixed;
-	right       : calc(0.3rem * 3);
+	right       : var(--rrui-list-item-side-padding);
 	top         : 0;
-	z-index     : 102;
-	height      : calc(0.3rem * 8);
+	z-index     : var(--rrui-z-index-above-overlay);
+	height      : var(--rrui-fullscreen-input-height);
 	display     : flex;
 	align-items : center;
 }
@@ -65,7 +65,7 @@
 /* `<Select autocomplete/>` options when fullscreen-expanded */
 .rrui__select__options--autocomplete
 {
-	top : calc(0.3rem * 8);
+	top : var(--rrui-fullscreen-input-height);
 	box-shadow : none;
 }
 
@@ -73,7 +73,7 @@
 .rrui__select__close,
 .rrui__date-picker__close
 {
-	z-index: 100;
+	z-index : var(--rrui-z-index-overlay);
 }
 
 /*
@@ -84,51 +84,47 @@ pushing the expanded `<DatePicker/>` from the screen.
 */
 .rrui__date-picker__input-overlay
 {
-	display: block;
+	display : block;
 }
 
 /* Show "Close" button for full-screen `<DatePicker/>`s */
-.rrui__date-picker__close
-{
-	display: block;
-}
-
 /* Show "Close" button for full-screen `<Select/>`s */
+.rrui__date-picker__close,
 .rrui__select__close
 {
-	display: block;
+	display : block;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
 .rrui__modal__overlay
 {
-	display: block;
+	display : block;
 }
 
 /* CSS selector specificity fix for the above rule */
 .rrui__modal__overlay--hidden
 {
-	display: none;
+	display : none;
 }
 
 /* Centers `<Modal/>` content (body) horizontally and vertically */
 .rrui__modal__container
 {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display         : flex;
+	align-items     : center;
+	justify-content : center;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
 .rrui__modal__vertical-margin
 {
-	display: none;
+	display : none;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
 .rrui__modal__contents
 {
-	border-radius: 0;
+	border-radius : 0;
 }
 
 /* `<Modal/>` content goes full-screen wide and high */
@@ -138,17 +134,14 @@ pushing the expanded `<DatePicker/>` from the screen.
 {
   /* Using `margin` instead of `padding` here
     to leverage the "margin collapse" CSS feature. */
-  margin-top    : calc(3 * 0.3rem);
-  margin-bottom : calc(3 * 0.3rem);
-  margin-left   : calc(3 * 0.3rem);
-  margin-right  : calc(3 * 0.3rem);
+  margin : calc(3 * var(--rrui-unit));
 }
 
 /* `<Modal/>` content goes full-screen wide and high */
 .rrui__modal__actions
 {
-  margin-top    : calc(2 * 0.3rem);
-  margin-bottom : calc(2 * 0.3rem);
+  margin-top    : calc(2 * var(--rrui-unit));
+  margin-bottom : calc(2 * var(--rrui-unit));
 }
 
 /*

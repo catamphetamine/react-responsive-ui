@@ -1,5 +1,5 @@
 .rrui__input-error
 {
-	margin-top : calc(0.3rem);
-	color      : #D30F00;
+	margin-top : var(--rrui-unit);
+	color      : var(--rrui-error-color);
 }

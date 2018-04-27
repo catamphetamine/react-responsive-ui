@@ -1,24 +1,25 @@
 .rrui__slideout-menu-button
 {
 	display     : inline-block;
-	padding     : calc(0.3rem * 1.5);
-	margin      : calc(0.3rem * -1.5);
+	padding     : calc(var(--rrui-unit) * 1.5);
+	margin      : calc(var(--rrui-unit) * -1.5);
 	line-height : 0;
+	color       : var(--rrui-black-color);
+}
+
+.rrui__slideout-menu-button:active
+{
+	color : var(--rrui-accent-color);
 }
 
 .rrui__slideout-menu-button__icon
 {
 	display : block;
-	width   : calc(0.3rem * 5);
-	height  : calc(0.3rem * 5);
+	width   : var(--rrui-input-height);
+	height  : var(--rrui-input-height);
 }
 
 .rrui__slideout-menu-button__icon-path
 {
-	fill: black;
-}
-
-.rrui__slideout-menu-button:active .rrui__slideout-menu-button__icon-path
-{
-	fill: #018395;
+	fill : currentColor;
 }

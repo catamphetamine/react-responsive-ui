@@ -4,12 +4,18 @@
 	align-items     : center;
 	justify-content : center;
 	position        : relative;
-	height          : calc(0.3rem * 8);
-	padding-left    : calc(0.3rem * 2.5);
-	padding-right   : calc(0.3rem * 2.5);
+	height          : var(--rrui-input-height);
+	padding-left    : var(--rrui-button-side-padding);
+	padding-right   : var(--rrui-button-side-padding);
 	box-sizing      : border-box;
 	transition      : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
 	cursor          : pointer;
+	color           : var(--rrui-accent-color);
+}
+
+.rrui__button:active
+{
+	color : var(--rrui-accent-color-light);
 }
 
 .rrui__button--busy,
@@ -28,9 +34,9 @@
 .rrui__button__busy
 {
 	position   : absolute;
-	left       : calc(0.3rem * 2.5);
-	bottom     : calc((100% - 1.2em) / 2);
-	width      : calc(100% - 2 * 0.3rem * 2.5);
+	left       : var(--rrui-button-side-padding);
+	bottom     : calc(50% - 0.7em);
+	width      : calc(100% - 2 * var(--rrui-button-side-padding));
 	height     : 0.1em;
 	overflow   : hidden;
 	opacity    : 0;
@@ -71,12 +77,12 @@
 
 .rrui__button
 {
-	color : #3678D1;
+	color : var(--rrui-accent-color);
 }
 
 .rrui__button:active
 {
-	color : #4F9BFF;
+	color : var(--rrui-accent-color-light);
 }
 
 .rrui__button--link:hover

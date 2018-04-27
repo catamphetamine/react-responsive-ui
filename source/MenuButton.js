@@ -71,9 +71,14 @@ class MenuButton extends PureComponent
 		const
 		{
 			link,
-			title,
-			style,
-			className
+			className,
+
+			// Getting "rest" properties.
+			menuIsExpanded,
+			toggleMenu,
+			registerMenu,
+			registerMenuButton,
+			...rest
 		}
 		= this.props
 
@@ -82,9 +87,8 @@ class MenuButton extends PureComponent
 				ref={ this.storeInstance }
 				href={ link }
 				onClick={ this.onClick }
-				title={ title }
 				className={ classNames('rrui__slideout-menu-button', className) }
-				style={ style }>
+				{ ...rest }>
 
 				<svg
 					className="rrui__slideout-menu-button__icon"

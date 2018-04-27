@@ -11,10 +11,10 @@
 {
 	margin           : 0;
 	padding-left     : 0;
-	padding-top      : calc(2 * 0.3rem);
-	padding-bottom   : calc(2 * 0.3rem);
+	padding-top      : var(--rrui-list-vertical-padding);
+	padding-bottom   : var(--rrui-list-vertical-padding);
 	overflow-y       : auto;
-	background-color : white;
+	background-color : var(--rrui-white-color);
 	list-style-type  : none;
 	overflow-x       : hidden;
 	box-sizing       : border-box;
@@ -28,17 +28,17 @@
 	- `.rrui__input` `height`.
 	- half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
 	*/
-	margin-top : calc(-1 * (2 * 0.3rem + 6 * 0.3rem + (7 - 6) * 0.3rem / 2));
+	margin-top : calc(-1 * (var(--rrui-list-vertical-padding) + var(--rrui-input-height) + (var(--rrui-list-item-height) - var(--rrui-input-height)) / 2));
 }
 
 .rrui__select__options--left-aligned
 {
-	left : calc(0.3rem * 3 * -1);
+	left : calc(var(--rrui-list-item-side-padding) * -1);
 }
 
 .rrui__select__options--right-aligned
 {
-	right : calc(0.3rem * 3 * -1);
+	right : calc(var(--rrui-list-item-side-padding) * -1);
 }
 
 .rrui__select__options:not(.rrui__select__options--menu)
@@ -48,7 +48,7 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-	min-width : calc(100% + 0.3rem * 3 * 2);
+	min-width : calc(100% + var(--rrui-list-item-side-padding) * 2);
 }
 
 .rrui__select--menu .rrui__select__options
@@ -65,8 +65,8 @@
 
 .rrui__select--menu .rrui__select__option
 {
-	padding-left  : calc(0.3rem * 5);
-	padding-right : calc(0.3rem * 5);
+	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
+	padding-right : var(--rrui-collapsible-menu-item-side-padding);
 }
 
 .rrui__select__options--downward
@@ -91,8 +91,8 @@
 {
 	display     : block;
 	width       : 100%;
-	height      : calc(0.3rem * 7);
-	line-height : calc(0.3rem * 7);
+	height      : var(--rrui-list-item-height);
+	line-height : var(--rrui-list-item-height);
 
 	/*
 	This side padding is also connected to
@@ -100,8 +100,8 @@
 	`.rrui__select__options--right-aligned`'s `right`
 	and `.rrui__select__options`'s `min-width`.
 	*/
-	padding-left  : calc(0.3rem * 3);
-	padding-right : calc(0.3rem * 3);
+	padding-left  : var(--rrui-list-item-side-padding);
+	padding-right : var(--rrui-list-item-side-padding);
 
 	box-sizing  : border-box;
 	text-align  : left;
@@ -110,12 +110,12 @@
 
 .rrui__select__option:hover
 {
-	background-color : #f7f7f7;
+	background-color : var(--rrui-gray-color-lightest);
 }
 
 .rrui__select__option-icon
 {
-	margin-right : calc(0.3rem * 3);
+	margin-right : var(--rrui-list-icon-margin);
 }
 
 .rrui__select__separator
@@ -130,8 +130,8 @@
 
 .rrui__select__separator-option
 {
-	padding-top      : calc(0.3rem * 2);
-	padding-bottom   : calc(0.3rem * 2);
+	padding-top    : var(--rrui-list-vertical-padding);
+	padding-bottom : var(--rrui-list-vertical-padding);
 }
 
 .rrui__select__options--upward
@@ -141,23 +141,13 @@
 
 .rrui__select__option--focused
 {
-	background-color: #ECF1F6;
-}
-
-.rrui__select__option--focused:hover
-{
-	background-color: #EFF3F8;
+	background-color: var(--rrui-gray-color-lightest);
 }
 
 .rrui__select__option:active
 {
-	background-color : #3678D1;
-	color            : white;
-}
-
-.rrui__select__option-icon
-{
-	margin-right: 0.5em
+	background-color : var(--rrui-accent-color);
+	color            : var(--rrui-white-color);
 }
 
 .rrui__select__button,
@@ -173,14 +163,15 @@
 	text-align : left;
 }
 
-.rrui__select__button:active
+.rrui__select__button:active .rrui__select__selected-label,
+.rrui__select__button:active .rrui__select__arrow
 {
-	color: #03B2CB;
+	color : var(--rrui-accent-color);
 }
 
 .rrui__select__button--expanded
 {
-	color: #3678D1;
+	color : var(--rrui-accent-color);
 }
 
 .rrui__select__button,
@@ -189,14 +180,14 @@
 	color : inherit;
 }
 
-.rrui__select__button--empty
+.rrui__select__button--empty .rrui__select__selected-label
 {
-	color: #888C91;
+	color: var(--rrui-gray-color);
 }
 
 .rrui__select__button--invalid
 {
-	border-bottom-color: #D30F00;
+	border-bottom-color : var(--rrui-error-color);
 }
 
 /* Not introducing an animation on `.rrui__select__option`
@@ -225,14 +216,14 @@
 	width  : 0;
 	height : 0;
 
-	margin-left   : 0.35em;
-	margin-right  : 0.4em;
-	margin-top    : 0.2em;
-	margin-bottom : 0.1em;
+	margin-left   : var(--rrui-unit);
+	margin-right  : calc(var(--rrui-unit) * 1.5);
+	margin-top    : 0.1em;
 
-	opacity: 0.7;
+	opacity : 0.6;
+	color   : var(--rrui-gray-color);
 
-	transition: opacity 100ms ease-out;
+	/*transition : opacity 100ms ease-out;*/
 
 	/* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
 	border-width : 0.35em 0.22em 0 0.22em;
@@ -240,14 +231,12 @@
 	border-style       : solid;
 	border-left-color  : transparent;
 	border-right-color : transparent;
-
-	color: #B8BDC4;
 }
 
-.rrui__select__arrow--expanded
+/*.rrui__select__arrow--expanded
 {
 	opacity: 0.3;
-}
+}*/
 
 .rrui__select__native-expanded
 {
@@ -305,15 +294,15 @@
 .rrui__select .rrui__ellipsis
 {
 	position : absolute;
-	right    : 0.4em;
-	top      : calc(50% - 0.2em / 2);
+	right    : var(--rrui-unit);
+	top      : calc(50% - var(--rrui-unit) / 2);
 
 	pointer-events : none;
 }
 
 .rrui__select__autocomplete--loading
 {
-	padding-right : 1.7em;
+	padding-right : calc(var(--rrui-unit) * 6);
 }
 
 .rrui__select__toggler

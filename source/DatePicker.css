@@ -208,20 +208,20 @@
 
 .DayPicker-NavBar
 {
-	top : -0.2rem;
+	top : -0.2em;
 }
 
 .DayPicker-CaptionSelects
 {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+  height          : 100%;
 }
 
 .DayPicker-MonthSelect
 {
-	margin-right: 0.6em;
+	margin-right : 0.6em;
 }
 
 .DayPicker-MonthSelect,
@@ -241,6 +241,8 @@
 	background-position : 0 center;
 	background-repeat   : no-repeat;
 	background-size     : auto 65%;
+
+  cursor : pointer;
 }
 
 .DayPicker-wrapper,
@@ -252,14 +254,32 @@
 
 .DayPicker-Day:active:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
 {
-	color: #FFF;
-	background-color: #72B2FC;
+  color : var(--rrui-white-color);
+  background-color : var(--rrui-accent-color-light);
 }
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
+{
+  color : var(--rrui-white-color);
+  background-color : var(--rrui-accent-color);
+}
+
+/* https://github.com/gpbl/react-day-picker/issues/708 */
+/*
+.DayPicker-NavButton:active
+{
+  color : var(--rrui-accent-color-light);
+}
+*/
 
 .DayPicker-Day--disabled
 {
   background-color: transparent;
 }
+
+/* ----------------------------------------------------- */
+/* -                  `<DatePicker/>`                  - */
+/* ----------------------------------------------------- */
 
 .rrui__date-picker
 {
@@ -269,13 +289,13 @@
 .rrui__date-picker__collapsible
 {
 	min-width : 100%;
-	background-color : white;
+	background-color : var(--rrui-white-color);
 }
 
 .rrui__date-picker__collapsible
 {
-	padding-top    : calc(0.3rem * 6);
-	padding-bottom : calc(0.3rem * 6);
+	padding-top    : calc(var(--rrui-unit) * 6);
+	padding-bottom : calc(var(--rrui-unit) * 6);
 }
 
 .rrui__date-picker__calendar abbr

@@ -7,7 +7,7 @@
 .rrui__input,
 .rrui__input-label
 {
-	height : calc(0.3rem * 6);
+	height : var(--rrui-input-height);
 }
 
 /* `.rrui__input:not(.rrui__input--multiline)`

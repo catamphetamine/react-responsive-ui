@@ -13,13 +13,12 @@
 {
 	flex           : 1;
 	height         : 100%;
-	padding-left   : calc(0.3rem * 1.5);
-	padding-right  : calc(0.3rem * 1.5);
+	padding-left   : calc(var(--rrui-unit) * 1.5);
+	padding-right  : calc(var(--rrui-unit) * 1.5);
 
-	color            : black;
 	background-color : transparent;
-	border           : 1px solid #3678D1;
-	border-radius    : 0.2em;
+	border           : 1px solid var(--rrui-accent-color);
+	border-radius    : var(--rrui-border-radius-big);
 	outline          : none;
 
 	transition : all 50ms ease-out;
@@ -46,14 +45,14 @@
 
 .rrui__segmented-control__option:active
 {
-	color            : white;
-	background-color : #4F9BFF;
+	color            : var(--rrui-white-color);
+	background-color : var(--rrui-accent-color-light);
 	transition       : none;
 }
 
 .rrui__rich__fallback .rrui__segmented-control__option:active
 {
-	color            : black;
+	color            : var(--rrui-black-color);
 	background-color : transparent;
 }
 
@@ -64,8 +63,8 @@
 
 .rrui__segmented-control__option--selected
 {
-	color            : white;
-	background-color : #3678D1;
+	color            : var(--rrui-white-color);
+	background-color : var(--rrui-accent-color);
 }
 
 .rrui__segmented-control__option

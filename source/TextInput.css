@@ -1,10 +1,15 @@
 .rrui__text-input__label--invalid
 {
-	color: #D30F00;
+	color : var(--rrui-error-color);
 }
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
 {
-	color     : #888C91;
 	transform : translateY(0) scale(1);
+}
+
+/* Set the default height of multiline `<TextInput/>`s. */
+.rrui__input-field--multiline
+{
+	height : var(--rrui-multiline-text-height);
 }

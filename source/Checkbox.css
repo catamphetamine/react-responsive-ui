@@ -14,7 +14,7 @@
 .rrui__checkbox__label
 {
 	display        : inline-block;
-	padding-left   : calc(0.3rem * 2);
+	padding-left   : var(--rrui-control-label-margin);
 	vertical-align : bottom;
 	color          : inherit;
 	user-select    : none;
@@ -36,16 +36,6 @@
 	padding-left : 0;
 }
 
-.rrui__checkbox__input
-{
-	position       : absolute;
-	display        : inline-block;
-	margin         : 0;
-	vertical-align : bottom;
-	z-index        : 100;
-	opacity        : 0;
-}
-
 .rrui__checkbox__input,
 .rrui__checkbox__label
 {
@@ -62,8 +52,8 @@
 {
 	position    : relative;
 	flex-shrink : 0;
-	width       : calc(0.3rem * 4);
-	height      : calc(0.3rem * 4);
+	width       : calc(var(--rrui-unit) * 4);
+	height      : calc(var(--rrui-unit) * 4);
 }
 
 .rrui__checkbox__input
@@ -73,6 +63,8 @@
 	top      : -40%;
 	width    : 180%;
 	height   : 180%;
+	margin   : 0;
+	opacity  : 0;
 }
 
 .rrui__checkbox__box
@@ -89,18 +81,18 @@
 /* Checkbox color (:focus) */
 .rrui__checkbox__input:focus + .rrui__checkbox__box
 {
-	color : #0093C4;
+	color : var(--rrui-accent-color);
 }
 
 /* Checkbox color (:checked / :active) */
 .rrui__checkbox:active .rrui__checkbox__box,
 .rrui__checkbox__input:active + .rrui__checkbox__box
 {
-	color : #5CD6FF;
+	color : var(--rrui-accent-color-light);
 }
 
 /* Checkbox color (:invalid) */
 .rrui__checkbox--invalid .rrui__checkbox__box
 {
-	color : #EB2010;
+	color : var(--rrui-error-color);
 }

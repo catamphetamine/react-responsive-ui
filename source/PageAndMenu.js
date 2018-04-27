@@ -25,7 +25,8 @@ export default class PageAndMenu extends Component
 	{
 		super()
 
-		// `state` is placed below all methods because it references them.
+		// `state` is placed here to so that it's initialized
+		// after all instance methods because it references them.
 		this.state =
 		{
 			menuIsExpanded     : false,

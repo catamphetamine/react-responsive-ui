@@ -6,7 +6,7 @@
 
 .rrui__form__actions
 {
-	margin-top : calc(0.3rem * 4);
+	margin-top : calc(var(--rrui-unit) * 4);
 
 	/* Right alignment */
 	display         : flex;
@@ -21,7 +21,7 @@
 
 .rrui__form__actions .rrui__button
 {
-	margin-right : calc(4 * 0.3rem);
+	margin-right : calc(4 * var(--rrui-unit));
 }
 
 .rrui__form__actions .rrui__button:last-child
@@ -31,7 +31,7 @@
 
 .rrui__form__field
 {
-	margin-bottom : calc(0.3rem * 2);
+	margin-bottom : calc(var(--rrui-unit) * 2);
 }
 
 .rrui__form__error:empty

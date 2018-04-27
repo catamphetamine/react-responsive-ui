@@ -1,39 +1,41 @@
+/*
 .rrui__close--top-right
 {
 	position : fixed;
-	top      : calc(0.3rem * 2);
-	right    : calc(0.3rem * 2);
+	top      : var(--rrui-close-margin);
+	right    : var(--rrui-close-margin);
 	z-index  : 1;
 }
+*/
 
 .rrui__close--bottom-right
 {
 	position : fixed;
-	bottom   : calc(0.3rem * 2);
-	right    : calc(0.3rem * 2);
+	bottom   : var(--rrui-close-margin);
+	right    : var(--rrui-close-margin);
 	z-index  : 1;
 }
 
 .rrui__close__icon
 {
-	width        : calc(0.3rem * 4);
-	height       : calc(0.3rem * 4);
-	box-sizing   : content-box;
+	width      : var(--rrui-close-size);
+	height     : var(--rrui-close-size);
+	box-sizing : content-box;
 }
 
 .rrui__close__icon:active .rrui__close__icon-path
 {
-	color : #03B2CB;
+	color : var(--rrui-accent-color);
 }
 
 .rrui__close__icon-path
 {
-	color  : black;
+	color  : var(--rrui-black-color);
 	stroke : currentColor;
 }
 
 .rrui__close
 {
-	padding : calc(0.3rem * 2);
-	margin  : calc(0.3rem * -2);
+	padding : calc(var(--rrui-close-size) / 2);
+	margin  : calc(var(--rrui-close-size) * -1 / 2);
 }

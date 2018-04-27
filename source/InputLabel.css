@@ -14,9 +14,11 @@
 
 	/*
 	When changing this label color
-	also change "input" and "textarea" placeholder color.
+	one could also change "input" and "textarea" placeholder color
+	if using `placeholder` property.
+	Changing `:placeholder` color is not widely supported though.
 	*/
-	color : #9FA8B3;
+	color : var(--rrui-gray-color);
 
 	transform        : scale(0.8) translateY(-60%);
 	transform-origin : left top;
@@ -26,15 +28,11 @@
 /* Focused input label */
 .rrui__input-element:focus + .rrui__input-label
 {
-	color: #03B2CB;
+	color : var(--rrui-accent-color);
 }
 
-.rrui__input-label--required.rrui__text-input__label--placeholder:after
-{
-	margin-left : 0.3em;
-	font-size   : 0.8em;
-}
-
+/* (when the `value` is empty) */
+/* Required input field label asterisk. */
 .rrui__input-label--required:after,
 .rrui__select__selected-label--required:after
 {
