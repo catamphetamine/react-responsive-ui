@@ -124,8 +124,6 @@ SCSS `@import` example:
 }
 ```
 
-The `small-screen.css` file must not be included before `variables.css` because it uses those variables (the values of which can be overridden as shown in the previous section).
-
 ## Validation
 
 Each form component receives two validation-specific properties
