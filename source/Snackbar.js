@@ -13,8 +13,32 @@ export default class Snackbar extends PureComponent
 			PropTypes.string,
 			PropTypes.shape
 			({
-				content  : PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-				type     : PropTypes.string,
+				// Notification content.
+				content : PropTypes.oneOfType
+				([
+					PropTypes.string,
+					PropTypes.node
+				]),
+
+				// Instead of `content` property one may supply `component` property
+				// which must be a React component which receives all "rest" `value` properties
+				// and also `hide`property (a function that hides the notification).
+				component : PropTypes.func,
+
+				// `props` are passed to `component`.
+				props : PropTypes.object,
+
+				// If `content` is a `string` then its `length` is calculated automatically.
+				// Otherwise one may pass `length` manually.
+				// It's used for calculating notification `duration`.
+				length : PropTypes.number,
+
+				// `type` is appended as a BEM modifier to `.rrui__snackbar` CSS class.
+				// E.g. `.rrui__snackbar--error` for `{ type: "error" }`.
+				type : PropTypes.string,
+
+				// How long does the notification stay.
+				// Pass `-1` for it to stay until it's closed manually.
 				duration : PropTypes.number
 			})
 		]),
@@ -22,8 +46,12 @@ export default class Snackbar extends PureComponent
 		// Must reset the `value`.
 		reset : PropTypes.func.isRequired,
 
+		// // "Snack" showing CSS animation duration.
+		// // Is 225 milliseconds by default.
+		// showAnimationDuration : PropTypes.number.isRequired,
+
 		// "Snack" hiding CSS animation duration.
-		// Is 400 milliseconds by default.
+		// Is 195 milliseconds by default.
 		hideAnimationDuration : PropTypes.number.isRequired,
 
 		// The total display duration (in milliseconds) of a snack
@@ -34,8 +62,9 @@ export default class Snackbar extends PureComponent
 
 	static defaultProps =
 	{
-		hideAnimationDuration : 400,
-		minTime          : 1200,
+		// showAnimationDuration : 225,
+		hideAnimationDuration : 195,
+		minTime : 1200,
 		lengthTimeFactor : 60
 	}
 
@@ -65,7 +94,7 @@ export default class Snackbar extends PureComponent
 		{
 			// Normalize value (make it a plain javascript object)
 			// if it's a string or a react element.
-			if (!(typeof value === 'object' && !value.props))
+			if (!(typeof value === 'object' && !React.isValidElement(value)))
 			{
 				value = { content: value }
 			}
@@ -100,7 +129,6 @@ export default class Snackbar extends PureComponent
 
 		const
 		{
-			hideAnimationDuration,
 			minTime,
 			lengthTimeFactor
 		}
@@ -123,20 +151,31 @@ export default class Snackbar extends PureComponent
 		// when the height of the element is measured
 		// (which is after it renders)
 
-		// Hide the notification after it expires
-		this.auto_hide_timer = setTimeout(() =>
+		if (value.duration === -1)
 		{
-			// Start the hiding animation for the notification
-			this.setState({ show: false, hiding: true })
+			return
+		}
 
-			// Display the next notification
-			// after the currently being hidden one
-			// finishes its hiding animation.
-			this.show_next_snack_timeout = setTimeout(this.next, hideAnimationDuration)
-		},
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
-		value.duration || (minTime + (typeof value.content === 'string' ? value.content.length * lengthTimeFactor : 0)))
+		const length = typeof value.content === 'string' ? value.content.length : value.length || 0
+		const duration = value.duration || (minTime + length * lengthTimeFactor)
+
+		// Hide the notification after it expires
+		this.auto_hide_timer = setTimeout(this.hide, duration)
+	}
+
+	hide = () =>
+	{
+		const { hideAnimationDuration } = this.props
+
+		// Start the hiding animation for the notification
+		this.setState({ show: false, hiding: true })
+
+		// Display the next notification
+		// after the currently being hidden one
+		// finishes its hiding animation.
+		this.show_next_snack_timeout = setTimeout(this.next, hideAnimationDuration)
 	}
 
 	componentDidUpdate()
@@ -156,62 +195,63 @@ export default class Snackbar extends PureComponent
 		if (height === undefined && value)
 		{
 			height = this.snackbar.offsetHeight
+			const marginBottom = parseInt(getComputedStyle(this.container).marginBottom)
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
-			this.setState({ height }, () =>
+			this.setState({ height, marginBottom }, () =>
 			{
 				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
 			})
 		}
 	}
 
+	storeContainerNode = (node) => this.container = node
+	storeSnackbarNode  = (node) => this.snackbar = node
+
+	renderContent(value)
+	{
+		return value.component({ ...value.props, hide: this.hide })
+	}
+
 	render()
 	{
-		const { hideAnimationDuration, type } = this.props
-		const { show, value, height, hiding } = this.state
+		const { type } = this.props
+		const { show, value, height, marginBottom, hiding } = this.state
 
-		let y = 0
+		const container_style = {}
 
-		// If no snack is being shown,
-		// or if a snack is about to be shown,
-		// then shift it under the screen's bottom border
-		// to show the slide-from-bottom animation at the next step.
-		if (!show && height !== undefined)
+		if (!show)
 		{
-			y = `${height}px`
-		}
+			// If no snack is being shown,
+			// or if a snack is about to be shown,
+			// then shift it under the screen's bottom border
+			// to show the slide-from-bottom animation at the next step.
+			if (height !== undefined)
+			{
+				container_style.transform = `translateY(${height + marginBottom}px)`
+			}
 
-		const container_style =
-		{
-			visibility : show ? 'visible' : 'hidden',
-			transform  : `translateY(${y})`,
-			transition : `transform ${hideAnimationDuration}ms ease-out, visibility ${hideAnimationDuration}ms ease-out`
-		}
-
-		if (!show && !hiding)
-		{
-			container_style.transition = 'none'
-		}
-
-		const snackbar_text_style =
-		{
-			opacity    : show ? 1 : 0,
-			transition : `opacity ${hideAnimationDuration}ms cubic-bezier(0.23, 1, 0.32, 1) 0ms`,
-			overflow   : 'hidden'
+			if (!hiding)
+			{
+				container_style.transition = 'none'
+			}
 		}
 
 		return (
 			<div
+				ref={ this.storeContainerNode }
 				style={ container_style }
-				className="rrui__snackbar__container">
+				className={ classNames('rrui__snackbar__container',
+				{
+					'rrui__snackbar__container--hidden' : !show
+				}) }>
 
 				<div
-					ref={ ref => this.snackbar = ref }
+					ref={ this.storeSnackbarNode }
 					className={ classNames('rrui__snackbar', value && value.type && `rrui__snackbar--${value.type}`) }>
 
 					<div
-						style={ snackbar_text_style }
 						className="rrui__snackbar__text">
-						{ value && value.content }
+						{ value && (value.content !== undefined ? value.content : this.renderContent(value)) }
 					</div>
 				</div>
 			</div>

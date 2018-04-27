@@ -7,22 +7,36 @@
 	bottom         : 0;
 	pointer-events : none;
 	z-index        : 1;
+	margin-bottom  : var(--rrui-snackbar-margin);
+	margin-left    : var(--rrui-snackbar-margin);
+	transition     : all 225ms cubic-bezier(0, 0, 0.2, 1);
+	transform      : translateY(0);
+	visibility     : visible;
+}
+
+.rrui__snackbar__container--hidden
+{
+	transition : all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+	visibility : hidden;
 }
 
 .rrui__snackbar
 {
 	flex-grow      : 0;
-	margin         : auto;
 	pointer-events : auto;
 
-	background : black;
-	color      : white;
+	background : var(--rrui-black-color);
+	color      : var(--rrui-white-color);
 
-	border-top-left-radius  : 3pt;
-	border-top-right-radius : 3pt;
+	border-radius : var(--rrui-border-radius-small);
 
-	padding-left  : calc(0.3rem * 3);
-	padding-right : calc(0.3rem * 3);
-	height        : calc(0.3rem * 7);
-	line-height   : calc(0.3rem * 7);
+	padding-left  : var(--rrui-snackbar-side-padding);
+	padding-right : var(--rrui-snackbar-side-padding);
+	height        : var(--rrui-snackbar-height);
+	line-height   : var(--rrui-snackbar-height);
+}
+
+.rrui__snackbar__text
+{
+	overflow : 'hidden';
 }
