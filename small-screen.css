@@ -6,7 +6,7 @@
 	top      : 0;
 	/* Could use `bottom: 0;` here but it's buggy (jittery) when iOS keyboard slides in. */
 	/* Hence using `height: 100%;` instead. */
-	height   : 100%;
+	/*height   : 100%;*/
 	right    : 0;
 	left     : 0;
 	margin   : 0;
