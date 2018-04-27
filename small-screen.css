@@ -92,7 +92,7 @@
 .rrui__select__options--autocomplete
 {
 	top : var(--rrui-fullscreen-input-height);
-	height   : calc(100% - var(--rrui-fullscreen-input-height));
+	/*height   : calc(100% - var(--rrui-fullscreen-input-height));*/
 	-webkit-box-shadow : none;
 	        box-shadow : none;
 }
