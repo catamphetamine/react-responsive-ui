@@ -4,7 +4,9 @@
 {
 	position : fixed;
 	top      : 0;
-	bottom   : 0;
+	/* Could use `bottom: 0;` here but it's buggy (jittery) when iOS keyboard slides in. */
+	/* Hence using `height: 100%;` instead. */
+	height   : 100%;
 	right    : 0;
 	left     : 0;
 	margin   : 0;
@@ -90,6 +92,7 @@
 .rrui__select__options--autocomplete
 {
 	top : var(--rrui-fullscreen-input-height);
+	height   : calc(100% - var(--rrui-fullscreen-input-height));
 	-webkit-box-shadow : none;
 	        box-shadow : none;
 }
