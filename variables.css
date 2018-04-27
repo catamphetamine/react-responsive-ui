@@ -1,43 +1,43 @@
 :root
 {
   /* Base */
-  --rrui-unit : 0.3rem;
+  --rrui-unit : 0.6rem;
 
   /* Everything */
-  --rrui-input-height            : calc(var(--rrui-unit) * 6);
-  --rrui-fullscreen-input-height : calc(var(--rrui-unit) * 8);
+  --rrui-input-height            : calc(var(--rrui-unit) * 3);
+  --rrui-fullscreen-input-height : calc(var(--rrui-unit) * 4);
 
   /* `<TextInput multiline/>` */
-  --rrui-multiline-text-height                 : calc(var(--rrui-unit) * 15);
+  --rrui-multiline-text-height                 : calc(var(--rrui-unit) * 7);
   --rrui-multiline-text-input-vertical-padding : var(--rrui-unit);
 
   /* `<Button/>` */
   --rrui-button-side-padding : 0rem;
 
   /* `<Select/>` */
-  --rrui-list-vertical-padding  : calc(var(--rrui-unit) * 2);
-  --rrui-list-item-side-padding : calc(var(--rrui-unit) * 3);
-  --rrui-list-item-height       : calc(var(--rrui-unit) * 7);
-  --rrui-list-icon-margin       : calc(var(--rrui-unit) * 3);
+  --rrui-list-vertical-padding  : var(--rrui-unit);
+  --rrui-list-item-side-padding : calc(var(--rrui-unit) * 1.5);
+  --rrui-list-item-height       : calc(var(--rrui-unit) * 4);
+  --rrui-list-icon-margin       : var(--rrui-unit);
 
   /* `<Select menu/>` */
-  --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 5);
+  --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 2.5);
 
   /* `<Snackbar/>` */
-  --rrui-snackbar-height       : calc(var(--rrui-unit) * 8);
-  --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 3);
-  --rrui-snackbar-margin       : calc(var(--rrui-unit) * 3);
+  --rrui-snackbar-height       : calc(var(--rrui-unit) * 4);
+  --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 1.5);
+  --rrui-snackbar-margin       : calc(var(--rrui-unit) * 2);
 
   /* `<Tooltip/>` */
-  --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 2);
-  --rrui-tooltip-height       : calc(var(--rrui-unit) * 7);
+  --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 1.5);
+  --rrui-tooltip-height       : calc(var(--rrui-unit) * 4);
 
   /* `<Switch/>` and `<Checkbox/>` */
-  --rrui-control-label-margin : calc(var(--rrui-unit) * 2);
+  --rrui-control-label-margin : var(--rrui-unit);
 
   /* Close icon */
   --rrui-close-margin : calc(var(--rrui-unit) * 2);
-  --rrui-close-size   : calc(var(--rrui-unit) * 4);
+  --rrui-close-size   : calc(var(--rrui-unit) * 2);
 
   /* Border radius */
   --rrui-border-radius-big   : 0.2rem;

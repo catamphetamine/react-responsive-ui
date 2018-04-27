@@ -14,6 +14,7 @@
 .rrui__checkbox__label
 {
 	display        : inline-block;
+	/* Using padding instead of margin here to make the gap clickable. */
 	padding-left   : var(--rrui-control-label-margin);
 	vertical-align : bottom;
 	color          : inherit;
@@ -52,8 +53,8 @@
 {
 	position    : relative;
 	flex-shrink : 0;
-	width       : calc(var(--rrui-unit) * 4);
-	height      : calc(var(--rrui-unit) * 4);
+	width       : calc(var(--rrui-unit) * 2);
+	height      : calc(var(--rrui-unit) * 2);
 }
 
 .rrui__checkbox__input

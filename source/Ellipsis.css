@@ -1,6 +1,6 @@
 .rrui__ellipsis
 {
-	width    : calc(var(--rrui-unit) * 3);
+	width    : calc(var(--rrui-unit) * 1.5);
 	opacity  : 0.7;
 }
 

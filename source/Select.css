@@ -89,10 +89,10 @@
 
 .rrui__select__option
 {
-	display     : block;
+	display     : flex;
+	align-items : center;
 	width       : 100%;
 	height      : var(--rrui-list-item-height);
-	line-height : var(--rrui-list-item-height);
 
 	/*
 	This side padding is also connected to
@@ -216,8 +216,8 @@
 	width  : 0;
 	height : 0;
 
-	margin-left   : var(--rrui-unit);
-	margin-right  : calc(var(--rrui-unit) * 1.5);
+	margin-left   : calc(var(--rrui-unit) * 2 / 3);
+	margin-right  : calc(var(--rrui-unit) * 2 / 3);
 	margin-top    : 0.1em;
 
 	opacity : 0.6;
@@ -294,15 +294,15 @@
 .rrui__select .rrui__ellipsis
 {
 	position : absolute;
-	right    : var(--rrui-unit);
-	top      : calc(50% - var(--rrui-unit) / 2);
+	right    : calc(var(--rrui-unit) / 3);
+	top      : calc(50% - var(--rrui-unit) / 6);
 
 	pointer-events : none;
 }
 
-.rrui__select__autocomplete--loading
+.rrui__select__autocomplete
 {
-	padding-right : calc(var(--rrui-unit) * 6);
+	padding-right : calc(var(--rrui-unit) * 2.5);
 }
 
 .rrui__select__toggler

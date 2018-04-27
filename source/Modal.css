@@ -309,13 +309,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
 {
   /* Using `margin` instead of `padding` here
     to leverage the "margin collapse" CSS feature. */
-  margin : calc(5 * var(--rrui-unit));
+  margin : calc(var(--rrui-unit) * 3);
 }
 
 .rrui__modal__actions
 {
-  margin-top    : calc(3 * var(--rrui-unit));
-  margin-bottom : calc(3 * var(--rrui-unit));
+  margin-top    : calc(var(--rrui-unit) * 2);
+  margin-bottom : calc(var(--rrui-unit) * 2);
 }
 
 .rrui__modal__close

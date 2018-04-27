@@ -294,8 +294,8 @@
 
 .rrui__date-picker__collapsible
 {
-	padding-top    : calc(var(--rrui-unit) * 6);
-	padding-bottom : calc(var(--rrui-unit) * 6);
+	padding-top    : calc(var(--rrui-unit) * 3);
+	padding-bottom : calc(var(--rrui-unit) * 3);
 }
 
 .rrui__date-picker__calendar abbr

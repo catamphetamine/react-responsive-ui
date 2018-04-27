@@ -1,8 +1,8 @@
 .rrui__slideout-menu-button
 {
 	display     : inline-block;
-	padding     : calc(var(--rrui-unit) * 1.5);
-	margin      : calc(var(--rrui-unit) * -1.5);
+	padding     : calc(var(--rrui-unit) / 2);
+	margin      : calc(-1 * var(--rrui-unit) / 2);
 	line-height : 0;
 	color       : var(--rrui-black-color);
 }

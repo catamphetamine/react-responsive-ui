@@ -1,15 +1,17 @@
 .rrui__tooltip
 {
-	color            : var(--rrui-white-color);
-	background-color : var(--rrui-black-color);
-
-	border-radius : var(--rrui-border-radius-small);
+	display     : flex;
+	align-items : center;
 
 	padding-left  : var(--rrui-tooltip-side-padding);
 	padding-right : var(--rrui-tooltip-side-padding);
 	height        : var(--rrui-tooltip-height);
-	line-height   : var(--rrui-tooltip-height);
 	margin-top    : calc(var(--rrui-unit) * -1);
+
+	color            : var(--rrui-white-color);
+	background-color : var(--rrui-black-color);
+
+	border-radius : var(--rrui-border-radius-small);
 
 	opacity    : 0;
 	transform  : translateY(0.3em) scale(0.95);

@@ -22,6 +22,9 @@
 
 .rrui__snackbar
 {
+	display     : flex;
+	align-items : center;
+
 	flex-grow      : 0;
 	pointer-events : auto;
 
@@ -33,7 +36,6 @@
 	padding-left  : var(--rrui-snackbar-side-padding);
 	padding-right : var(--rrui-snackbar-side-padding);
 	height        : var(--rrui-snackbar-height);
-	line-height   : var(--rrui-snackbar-height);
 }
 
 .rrui__snackbar__text

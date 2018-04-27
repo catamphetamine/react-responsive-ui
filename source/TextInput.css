@@ -11,5 +11,14 @@
 /* Set the default height of multiline `<TextInput/>`s. */
 .rrui__input-field--multiline
 {
-	height : var(--rrui-multiline-text-height);
+	height         : var(--rrui-multiline-text-height);
+	padding-top    : calc(var(--rrui-unit) / 2);
+	padding-bottom : calc(var(--rrui-unit) / 2);
+}
+
+/* Multiline `<TextInput/>`'s label positioning. */
+/* Must be same as `padding-top`/`padding-bottom`. */
+.rrui__text-input__label--multiline
+{
+	top : calc(var(--rrui-unit) / 2);
 }
