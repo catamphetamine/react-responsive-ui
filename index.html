@@ -804,6 +804,8 @@ const ExampleSelectIcons = React.createClass
 	}
 })
 
+const MenuToggler = (props) => <button type="button" {...props}> Menu </button>
+
 const ExampleSelectMenu = React.createClass
 ({
 	getInitialState() { return {} },
@@ -815,7 +817,7 @@ const ExampleSelectMenu = React.createClass
 
 									<Select
 										menu
-										toggler={<button type="button">Toggle</button>}
+										toggler={MenuToggler}
 										className="column-width"
 										style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
 
@@ -826,7 +828,9 @@ const ExampleSelectMenu = React.createClass
 									</Select>
 
 <Highlight lang="jsx">{`
-<Select menu toggler={<button>Toggle</button>}>
+const MenuToggler = (props) => <button type="button" {...props}> Menu </button>
+
+<Select menu toggler={MenuToggler}>
   <div onClick={() => alert('Google')}> Google </div>
   <div onClick={() => alert('Yandex')}> Yandex </div>
   <Select.Separator/>

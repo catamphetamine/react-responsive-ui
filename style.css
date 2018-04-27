@@ -1438,7 +1438,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   text-align: left;
   white-space: nowrap; }
 
-.rrui__select__option:hover {
+.rrui__select__option:hover:not(:active) {
   background-color: var(--rrui-gray-color-lightest); }
 
 .rrui__select__option-icon {
