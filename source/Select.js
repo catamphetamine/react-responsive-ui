@@ -606,7 +606,7 @@ export default class Select extends Component
 									'rrui__select__options--autocomplete'  : autocomplete,
 									'rrui__select__options--menu'          : menu,
 									'rrui__expandable--expanded'           : expanded,
-									'rrui__select__options--expanded'      : expanded,
+									// 'rrui__select__options--expanded'      : expanded,
 									'rrui__expandable--left-aligned'       : alignment === 'left',
 									'rrui__expandable--right-aligned'      : alignment === 'right',
 									'rrui__select__options--left-aligned'  : !children && alignment === 'left',

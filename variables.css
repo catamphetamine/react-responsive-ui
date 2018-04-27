@@ -24,7 +24,7 @@
   --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 5);
 
   /* `<Snackbar/>` */
-  --rrui-snackbar-height       : calc(var(--rrui-unit) * 7);
+  --rrui-snackbar-height       : calc(var(--rrui-unit) * 8);
   --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 3);
   --rrui-snackbar-margin       : calc(var(--rrui-unit) * 3);
 

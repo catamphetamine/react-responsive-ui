@@ -1,5 +1,5 @@
 /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-.rrui__select__options:not(.rrui__select__options--autocomplete),
+.rrui__select__options,
 .rrui__date-picker__collapsible
 {
 	position : fixed;
@@ -18,7 +18,7 @@
 }
 
 /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-.rrui__select__options--expanded,
+.rrui__select__options.rrui__expandable--expanded,
 .rrui__date-picker__collapsible.rrui__expandable--expanded
 {
 	transform : scale(1);
@@ -184,4 +184,18 @@ sinse they're fullscreen.
 .rrui__modal__contents
 {
 	transition : transform 100ms ease-out;
+}
+
+/* Center `<Snackbar/>` on screen. */
+.rrui__snackbar__container
+{
+	margin : 0;
+	justify-content : center;
+}
+
+/* `<Snackbar/>` border radius. */
+.rrui__snackbar
+{
+	border-bottom-left-radius  : 0;
+	border-bottom-right-radius : 0;
 }
