@@ -24,6 +24,14 @@
 	</head>
 
 	<style>
+		/* Base styles */
+
+		html, body, button, input, textarea, select
+		{
+			font-family : Arial, Helvetica;
+			font-size   : 20px;
+		}
+
 		/* Page style */
 
 		body
@@ -37,11 +45,22 @@
 			margin-top: 2.4em;
 		}
 
-		h2
+		h2.heading
 		{
 			margin-top: 30px;
 			padding-top: 30px;
 			margin-bottom: 30px;
+		}
+
+		ul.list li
+		{
+			margin-top: 0.3rem;
+			margin-bottom: 0.3rem;
+		}
+
+		code.colored
+		{
+			color : #c92c2c;
 		}
 
 		a
@@ -67,12 +86,6 @@
 			margin-bottom: 40px;
 		}
 
-		.header
-		{
-			padding-top: 0.2em;
-			margin-left: 2.8em;
-		}
-
 		.country-icon
 		{
 			width  : 1em;
@@ -91,93 +104,14 @@
 			text-decoration: none;
 		}
 
-		/* Base styles */
-
-		html, body, button, input, textarea, select
+		.column-width
 		{
-			font-family : Arial, Helvetica;
-			font-size   : 20px;
-		}
-
-		.rrui__input-field--multiline
-		{
-			padding-top    : 0.3rem;
-			padding-bottom : 0.3rem;
-		}
-
-		.button--border
-		{
-			height        : calc(0.3rem * 8);
-			color         : #03B2CB;
-			border        : 0.1em solid #03B2CB;
-			border-radius : 0.3em;
-		}
-
-		.button--border .rrui__button__button
-		{
-			height        : 100%;
-			padding-left  : calc(0.3rem * 2.5);
-			padding-right : calc(0.3rem * 2.5);
-		}
-
-		.button--border:active
-		{
-			color        : #2BD7F0;
-			border-color : #2BD7F0;
-		}
-
-		.rrui__select__options
-		{
-			width : calc(100% + 0.3rem * 8);
-		}
-
-		.rrui__slideout-menu
-		{
-			padding-top    : calc(0.3rem * 4);
-			padding-bottom : calc(0.3rem * 4);
-		}
-
-		.rrui__slideout-menu__item
-		{
-			display        : block;
-			padding-top    : calc(0.3rem * 2);
-			padding-bottom : calc(0.3rem * 2);
-			padding-left   : calc(0.3rem * 5);
-			padding-right  : calc(0.3rem * 5);
-			color          : #ECF1F6;
-		}
-
-		.rrui__slideout-menu__item:active
-		{
-			color: #BBD9FA;
-		}
-
-		.rrui__file-upload
-		{
-			display: inline-block;
-			padding: 10px;
-			border: 1px dashed #afafaf;
-			border-radius: 5px;
-			background-color: #fbfbfb;
-			cursor: pointer;
-			text-align: center;
-			line-height: 1.5em;
-		}
-
-		.rrui__file-upload--dragged-over
-		{
-			background-color : #3678D1;
-			color : white;
-		}
-
-		.rrui__form
-		{
-			margin-top: 2em;
+			width : 20rem;
 		}
 
 		.submit-form
 		{
-			margin-top: calc(0.3rem * 8);
+			margin-top: calc(0.3rem * 3);
 		}
 
 		pre
@@ -185,6 +119,65 @@
 			border: 1px solid rgba(0, 0, 0, 0.03);
 		}
 
+		.table-of-contents
+		{
+			margin-top: calc(0.3rem * 9);
+			margin-bottom: calc(0.3rem * 9);
+		}
+
+		.sidenote
+		{
+			line-height: 1.7em;
+			/*color : #7f7f7f;*/
+		}
+
+		.new-message-notification
+		{
+			height        : 100%;
+			display       : flex;
+			align-items   : center;
+			padding-left  : calc(0.3rem * 3);
+			padding-right : calc(0.3rem * 3);
+		}
+
+		.new-message-notification__user-picture
+		{
+			width         : calc(0.3rem * 14);
+			height        : calc(0.3rem * 14);
+			border-radius : 50%;
+			border        : 1px solid rgba(255,255,255,0.5);
+		}
+
+		.new-message-notification__text
+		{
+			flex          : 1;
+			padding-left  : calc(0.3rem * 4);
+			padding-right : calc(0.3rem * 3);
+		}
+
+		.new-message-notification__close
+		{
+			background : none;
+			border     : none;
+			color      : white;
+			cursor     : pointer;
+			outline    : none;
+		}
+
+		.new-message-notification__close:active
+		{
+			color : #2bd7f0;
+		}
+
+		.rrui__snackbar--new-message-notification
+		{
+			height  : calc(0.3rem * 20);
+			padding : 0;
+			line-height : 1.35em;
+		}
+	</style>
+
+	<style>
 		/* Responsive */
 		@media (max-width: 720px)
 		{
@@ -218,25 +211,83 @@
 		}
 	</style>
 
+	<!-- RRUI customization -->
 	<style>
-		@import url("./small-screen.css") (max-width: 720px);
-
-		/* Responsive */
-		@media (max-width: 720px)
+		.rrui__input-field--multiline
 		{
-		  /* Show "Close" button for full-screen `<DatePicker/>`s */
-		  .rrui__date-picker__close
-		  {
-		    font-size: 14px;
-		    color: #03B2CB;
-		  }
-
-		  /* Bigger font size for full-screen `<Select/>` options */
-		  .rrui__select__options:not(.rrui__select__options--autocomplete)
-		  {
-		    font-size: 22px;
-		  }
+			padding-top    : 0.3rem;
+			padding-bottom : 0.3rem;
 		}
+
+		/* Multiline `<TextInput/>`'s label positioning. */
+		/* Must be same as `padding-top`/`padding-bottom`. */
+		.rrui__text-input__label--multiline
+		{
+			top : 0.3rem;
+		}
+
+		.rrui__button--border
+		{
+			padding-left     : calc(0.3rem * 2.5);
+			padding-right    : calc(0.3rem * 2.5);
+			border        : 0.1em solid #03B2CB;
+			border-radius : 0.3em;
+		}
+
+		.rrui__button--border .rrui__button__busy
+		{
+			left : calc(0.3rem * 2.5);
+			bottom: calc(50% - 0.6em);
+			width : calc(100% - 2 * 0.3rem * 2.5);
+		}
+
+		.rrui__slideout-menu
+		{
+			padding-top    : calc(0.3rem * 4);
+			padding-bottom : calc(0.3rem * 4);
+		}
+
+		.rrui__slideout-menu__item
+		{
+			padding-top    : calc(0.3rem * 2);
+			padding-bottom : calc(0.3rem * 2);
+			padding-left   : calc(0.3rem * 5);
+			padding-right  : calc(0.3rem * 5);
+			color          : #ECF1F6;
+		}
+
+		.rrui__slideout-menu__item:active
+		{
+			color : #BBD9FA;
+		}
+
+		.rrui__file-upload
+		{
+			display          : inline-block;
+			padding          : 10px;
+			border           : 1px dashed #afafaf;
+			border-radius    : 5px;
+			background-color : #fbfbfb;
+			cursor           : pointer;
+			text-align       : center;
+			line-height      : 1.5em;
+		}
+
+		.rrui__file-upload--dragged-over
+		{
+			background-color : #3678D1;
+			color            : white;
+		}
+
+		.rrui__form
+		{
+			margin-top: 2em;
+		}
+	</style>
+
+	<style>
+		/* Responsive RRUI */
+		@import url("./small-screen.css") (max-width: 720px);
 	</style>
 
 	<body>
@@ -272,8 +323,7 @@
 
 			const input_style =
 			{
-				marginBottom : '1em',
-				maxWidth     : '20rem'
+				marginBottom : '1em'
 			}
 
 			var FileUploadArea = React.createClass
@@ -307,6 +357,14 @@
 				)
 			}
 
+			const NewMessageNotification = ({ from, hide }) => (
+				<div className="new-message-notification">
+					<img src={from.picture} className="new-message-notification__user-picture"/>
+					<div className="new-message-notification__text"> New message from {from.name} </div>
+					<button type="button" onClick={hide} className="new-message-notification__close"> ✕ </button>
+				</div>
+			)
+
 			var Content = React.createClass
 			({
 				getInitialState: function()
@@ -315,7 +373,6 @@
 						phone          : '',
 						text_value     : '',
 						select_value   : 'B',
-						textarea_value : '',
 						checked        : true,
 						// selected: 'A',
 						// switched: true,
@@ -339,17 +396,47 @@
 							</CollapsibleMenu>
 
 							<Page>
-								<div style={{ position: 'relative' }}>
-									<MenuButton
-										style={{ position: 'absolute', marginLeft: '-0.6em' }}
-										title="Show menu"/>
+								<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
 
-									<div className="header">
-										<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
+								<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
 
-										<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
-									</div>
+								<ul className="list table-of-contents">
+									<li><a href="#collapsible-menu">Collapsible Menu</a></li>
+									<li><a href="#text-input-placeholder">Text input field (with placeholder)</a></li>
+									<li><a href="#text-input-floating-label">Text input field (with floating label)</a></li>
+									<li><a href="#text-input-placeholder-and-floating-label">Text input field (with both placeholder and floating label)</a></li>
+									<li><a href="#multiline-text-input-placeholder">Multiline Text Input (with placeholder)</a></li>
+									<li><a href="#multiline-text-input-floating-label">Multiline Text Input (with floating label)</a></li>
+									<li><a href="#select">Select</a></li>
+									<li><a href="#select-autocomplete">Select (autocomplete)</a></li>
+									<li><a href="#select-asynchronous-autocomplete">Select (asynchronous autocomplete)</a></li>
+									<li><a href="#select-icons">Select (icons)</a></li>
+									<li><a href="#select-menu">Select (menu)</a></li>
+									<li><a href="#checkbox">Checkbox</a></li>
+									<li><a href="#switch">Switch</a></li>
+									<li><a href="#segmented-control">Segmented Control</a></li>
+									<li><a href="#date-picker">Date picker</a></li>
+									<li><a href="#date-picker-with-month-and-year">Date picker (with month and year selectors)</a></li>
+									<li><a href="#file-upload">File upload</a></li>
+									<li><a href="#activity-indicator">Activity Indicator</a></li>
+									<li><a href="#ellipsis">Ellipsis</a></li>
+									<li><a href="#phone">Phone</a></li>
+									<li><a href="#tooltip">Tooltip</a></li>
+									<li><a href="#snackbar">Snackbar</a></li>
+									<li><a href="#form-and-buttons">Form and Buttons</a></li>
+									<li><a href="#modal">Modal</a></li>
+								</ul>
+
+								<div className="sidenote">
+									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>.
 								</div>
+
+								<a name="collapsible-menu" href="#collapsible-menu" className="title-anchor">
+									<h2 className="heading">Collapsible Menu</h2>
+								</a>
+
+								<MenuButton
+									title="Show menu"/>
 
 <Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
 <PageAndMenu>
@@ -365,31 +452,50 @@
 </PageAndMenu>
 `}</Highlight>
 
+<Highlight lang="css">{`
+.rrui__slideout-menu {
+  padding-top    : calc(0.3rem * 4);
+  padding-bottom : calc(0.3rem * 4);
+}
+
+.rrui__slideout-menu__item {
+  height        : calc(0.3rem * 7);
+  padding-left  : calc(0.3rem * 5);
+  padding-right : calc(0.3rem * 5);
+  color         : white;
+}
+
+.rrui__slideout-menu__item:active {
+  color : yellow;
+}
+`}</Highlight>
+
 								<Form
 									busy={this.state.busy}
 									submit={() => {
-										alert('Submitting form...')
+										console.log('Submitting form...')
 										this.setState({ busy: true })
 										setTimeout(() => {
-											alert('Form submitted.')
+											console.log('Form submitted.')
 											this.setState({ busy: false })
 										},
-										3000)
+										3500)
 									}}>
 
 									<a name="text-input-placeholder" href="#text-input-placeholder" className="title-anchor">
-										<h2>Text input field (with placeholder)</h2>
+										<h2 className="heading">Text input field (with placeholder)</h2>
 									</a>
 
 									<TextInput
 										focus={false}
 										style={input_style}
+										className="column-width"
 										name="text_input"
 										value={this.state.text_value}
 										onChange={value => this.setState({ text_value: value })}
 										placeholder="Enter some text"/>
 
-									You entered: {this.state.text_value}
+									Value:  {this.state.text_value}
 
 <Highlight lang="jsx">{`
 <TextInput
@@ -414,17 +520,18 @@
 `}</Highlight>
 
 									<a name="text-input-floating-label" href="#text-input-floating-label" className="title-anchor">
-										<h2>Text input field (with floating label)</h2>
+										<h2 className="heading">Text input field (with floating label)</h2>
 									</a>
 
 									<TextInput
 										style={input_style}
+										className="column-width"
 										name="text_input"
-										value={this.state.text_value}
-										onChange={value => this.setState({ text_value: value })}
+										value={this.state.text_value2}
+										onChange={value => this.setState({ text_value2: value })}
 										label="Text"/>
 
-									You entered: {this.state.text_value}
+									Value:  {this.state.text_value2}
 
 <Highlight lang="jsx">{`
 <TextInput
@@ -434,40 +541,44 @@
 `}</Highlight>
 
 									<a name="text-input-placeholder-and-floating-label" href="#text-input-placeholder-and-floating-label" className="title-anchor">
-										<h2>Text input field (with both placeholder and floating label)</h2>
+										<h2 className="heading">Text input field (with both placeholder and floating label, and also required)</h2>
 									</a>
 
 									<TextInput
+										required
 										style={input_style}
+										className="column-width"
 										name="text_input"
-										value={this.state.text_value}
-										onChange={value => this.setState({ text_value: value })}
+										value={this.state.text_value_required}
+										onChange={value => this.setState({ text_value_required: value })}
 										label="Text"
 										placeholder="Enter something"/>
 
-									You entered: {this.state.text_value}
+									Value:  {this.state.text_value_required}
 
 <Highlight lang="jsx">{`
 <TextInput
+  required
   label="Text"
   placeholder="Enter something"
   value={...}
   onChange={...} />
 `}</Highlight>
 
-									<a name="textarea-placeholder" href="#textarea-placeholder" className="title-anchor">
-										<h2>Textarea (with placeholder)</h2>
+									<a name="multiline-text-input-placeholder" href="#multiline-text-input-placeholder" className="title-anchor">
+										<h2 className="heading">Multiline Text Input (with placeholder)</h2>
 									</a>
 
 									<TextInput
 										multiline
 										name="description"
 										style={input_style}
-										value={this.state.textarea_value}
-										onChange={value => this.setState({ textarea_value: value })}
+										className="column-width"
+										value={this.state.multiline_text_input_value}
+										onChange={value => this.setState({ multiline_text_input_value: value })}
 										placeholder="Enter text"/>
 
-									You entered: {this.state.textarea_value}
+									Value:  {this.state.multiline_text_input_value}
 
 <Highlight lang="jsx">{`
 <TextInput
@@ -477,19 +588,24 @@
   onChange={...} />
 `}</Highlight>
 
-									<a name="textarea-floating-label" href="#textarea-floating-label" className="title-anchor">
-										<h2>Textarea (with floating label)</h2>
+<Highlight lang="css">{`
+/* See \`variables.css\` for height/padding customization. */
+`}</Highlight>
+
+									<a name="multiline-text-input-floating-label" href="#multiline-text-input-floating-label" className="title-anchor">
+										<h2 className="heading">Multiline Text Input (with floating label)</h2>
 									</a>
 
 									<TextInput
 										multiline
 										name="description"
 										style={input_style}
-										value={this.state.textarea_value}
-										onChange={value => this.setState({ textarea_value: value })}
+										className="column-width"
+										value={this.state.multiline_text_input_value2}
+										onChange={value => this.setState({ multiline_text_input_value2: value })}
 										label="Enter text"/>
 
-									You entered: {this.state.textarea_value}
+									Value:  {this.state.multiline_text_input_value2}
 
 <Highlight lang="jsx">{`
 <TextInput
@@ -499,12 +615,14 @@
   onChange={...} />
 `}</Highlight>
 
+
 									<a name="select" href="#select" className="title-anchor">
-										<h2>Select</h2>
+										<h2 className="heading">Select</h2>
 									</a>
 
 									<Select
 										style={input_style}
+										className="column-width"
 										name="dropdown"
 										label="Fruit"
 										value={this.state.selected}
@@ -539,7 +657,7 @@
 										placeholder="Choose"
 										onChange={ selected => this.setState({ selected }) }/>
 
-									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+									Value: {this.state.selected ? this.state.selected : '(empty)'}
 
 <Highlight lang="jsx">{`
 <Select
@@ -564,11 +682,12 @@
 `}</Highlight>
 
 									<a name="select-autocomplete" href="#select-autocomplete" className="title-anchor">
-										<h2>Select (autocomplete)</h2>
+										<h2 className="heading">Select (autocomplete)</h2>
 									</a>
 
 									<Select
 										style={input_style}
+										className="column-width"
 										autocomplete
 										name="dropdown"
 										value={this.state.selected}
@@ -604,7 +723,7 @@
 										notFound="Not found"
 										onChange={ selected => this.setState({ selected }) }/>
 
-									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+									Value: {this.state.selected ? this.state.selected : '(empty)'}
 
 <Highlight lang="jsx">{`
 <Select
@@ -617,11 +736,12 @@
 `}</Highlight>
 
 									<a name="select-asynchronous-autocomplete" href="#select-asynchronous-autocomplete" className="title-anchor">
-										<h2>Select (asynchronous autocomplete)</h2>
+										<h2 className="heading">Select (asynchronous autocomplete)</h2>
 									</a>
 
 									<Select
 										style={input_style}
+										className="column-width"
 										autocomplete
 										name="dropdown"
 										value={this.state.selected}
@@ -656,7 +776,7 @@
 										notFound="Not found"
 										onChange={ selected => this.setState({ selected }) }/>
 
-									You selected: {this.state.selected ? this.state.selected : 'nothing'}
+									Value: {this.state.selected ? this.state.selected : '(empty)'}
 
 <Highlight lang="jsx">{`
 <Select
@@ -669,11 +789,12 @@
 `}</Highlight>
 
 									<a name="select-icons" href="#select-icons" className="title-anchor">
-										<h2>Select (icons)</h2>
+										<h2 className="heading">Select (icons)</h2>
 									</a>
 
 									<Select
 										style={input_style}
+										className="column-width"
 										concise
 										name="dropdown"
 										value={this.state.selected_with_icon}
@@ -697,7 +818,7 @@
 										className="rrui__select--compact"/>
 
 									<div>
-										You selected: {this.state.selected_with_icon ? this.state.selected_with_icon : 'nothing'}
+										Value: {this.state.selected_with_icon ? this.state.selected_with_icon : '(empty)'}
 									</div>
 
 <Highlight lang="jsx">{`
@@ -710,13 +831,15 @@
 `}</Highlight>
 
 									<a name="select-menu" href="#select-menu" className="title-anchor">
-										<h2>Select (menu)</h2>
+										<h2 className="heading">Select (menu)</h2>
 									</a>
 
 									<Select
 										menu
 										toggler={<button type="button">Toggle</button>}
-										style={input_style}>
+										className="column-width"
+										style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
+
 										<div onClick={() => alert('Google')}> Google </div>
 										<div onClick={() => alert('Yandex')}> Yandex </div>
 										<Select.Separator/>
@@ -733,11 +856,12 @@
 `}</Highlight>
 
 									<a name="checkbox" href="#checkbox" className="title-anchor">
-										<h2>Checkbox</h2>
+										<h2 className="heading">Checkbox</h2>
 									</a>
 
 									<Checkbox
 										style={input_style}
+										className="column-width"
 										name="checkbox"
 										value={this.state.checked}
 										onChange={ checked => this.setState({ checked: checked }) }>
@@ -746,6 +870,7 @@
 
 									<Checkbox
 										style={input_style}
+										className="column-width"
 										name="checkbox"
 										multiline
 										value={this.state.checked}
@@ -753,7 +878,8 @@
 										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
 									</Checkbox>
 
-									You checked: {this.state.checked ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span>}
+									Value: {this.state.checked ? 'true' : 'false'}
+									{/*  ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span> */}
 
 <Highlight lang="jsx">{`
 <Checkbox
@@ -793,7 +919,7 @@
 `}</Highlight>
 
 									<a name="switch" href="#switch" className="title-anchor">
-										<h2>Switch</h2>
+										<h2 className="heading">Switch</h2>
 									</a>
 
 									<div style={{ marginBottom: '1em' }}>
@@ -805,7 +931,7 @@
 										</Switch>
 									</div>
 
-									You switched: {this.state.switched ? 'on' : 'off'}
+									Value: {this.state.switched ? 'true' : 'false'}
 
 <Highlight lang="jsx">{`
 <Switch
@@ -823,17 +949,18 @@
 `}</Highlight>
 
 									<a name="segmented-control" href="#segmented-control" className="title-anchor">
-										<h2>Segmented Control</h2>
+										<h2 className="heading">Segmented Control</h2>
 									</a>
 
 									<SegmentedControl
 										style={input_style}
+										className="column-width"
 										name="button_group"
 										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
 										value={this.state.button_group}
 										onChange={ value => this.setState({ button_group: value }) }/>
 
-									You selected: {this.state.button_group ? this.state.button_group : 'nothing'}
+									Value: {this.state.button_group ? this.state.button_group : '(empty)'}
 
 <Highlight lang="jsx">{`
 <SegmentedControl
@@ -857,17 +984,18 @@
 `}</Highlight>
 
 									<a name="date-picker" href="#date-picker" className="title-anchor">
-										<h2>Date picker</h2>
+										<h2 className="heading">Date picker</h2>
 									</a>
 
 									<DatePicker
 										style={input_style}
+										className="column-width"
 										label="Date"
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}
 										disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)}/>
 
-									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
+									Value: {this.state.selectedDay ? this.state.selectedDay.toString() : '(empty)'}
 
 <Highlight lang="jsx">{`
 <DatePicker
@@ -877,18 +1005,19 @@
 `}</Highlight>
 
 									<a name="date-picker-with-month-and-year" href="#date-picker-with-month-and-year" className="title-anchor">
-										<h2>Date picker (with month and year selectors)</h2>
+										<h2 className="heading">Date picker (with month and year selectors)</h2>
 									</a>
 
 									<DatePicker
 										style={input_style}
+										className="column-width"
 										label="Date"
 										selectYearsIntoPast={118}
-                    selectYearsIntoFuture={10}
+										selectYearsIntoFuture={10}
 										value={this.state.selectedDay}
 										onChange={selectedDay => this.setState({ selectedDay })}/>
 
-									You selected: {this.state.selectedDay ? this.state.selectedDay.toString() : 'nothing'}
+									Value: {this.state.selectedDay ? this.state.selectedDay.toString() : '(empty)'}
 
 <Highlight lang="jsx">{`
 <DatePicker
@@ -900,7 +1029,7 @@
 `}</Highlight>
 
 									<a name="file-upload" href="#file-upload" className="title-anchor">
-										<h2>File upload</h2>
+										<h2 className="heading">File upload</h2>
 									</a>
 
 									<FileUploadArea/>
@@ -911,7 +1040,7 @@
 									See the <a href="https://github.com/catamphetamine/react-responsive-ui#dragndrop" target="_blank">code sample</a>.
 
 									<a name="activity-indicator" href="#activity-indicator" className="title-anchor">
-										<h2>Activity Indicator</h2>
+										<h2 className="heading">Activity Indicator</h2>
 									</a>
 
 									<ActivityIndicator />
@@ -928,7 +1057,7 @@
 `}</Highlight>
 
 									<a name="ellipsis" href="#ellipsis" className="title-anchor">
-										<h2>Ellipsis</h2>
+										<h2 className="heading">Ellipsis</h2>
 									</a>
 
 									<Ellipsis />
@@ -939,20 +1068,20 @@
 
 <Highlight lang="css">{`
 .rrui__ellipsis {
-  color     : black;
-  font-size : 20px;
-  opacity   : 0.7;
+  width   : 20px;
+  color   : black;
+  opacity : 0.7;
 }
 `}</Highlight>
 
 									<a name="phone" href="#phone" className="title-anchor">
-										<h2>International phone number input</h2>
+										<h2 className="heading">Phone number input</h2>
 									</a>
 
-									See <a href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
+									See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
 
 									<a name="tooltip" href="#tooltip" className="title-anchor">
-										<h2>Tooltip</h2>
+										<h2 className="heading">Tooltip</h2>
 									</a>
 
 									<Tooltip text="Testing testing">
@@ -979,7 +1108,7 @@
 `}</Highlight>
 
 									<a name="snackbar" href="#snackbar" className="title-anchor">
-										<h2>Snackbar</h2>
+										<h2 className="heading">Snackbar</h2>
 									</a>
 
 									<Button action={() => {
@@ -1013,40 +1142,183 @@
 }
 `}</Highlight>
 
+<div>
+<code className="colored">value</code> can also be not just a string but an object of shape:
+</div>
+
+<ul className="list">
+	<li><code className="colored">content</code> — A string or a React element.</li>
+	<li><code className="colored">component</code> — (optional) Instead of <code className="colored">content</code> property one may supply <code className="colored">component</code> property which must be a React component which receives all <code className="colored">value.props</code> properties and also <code className="colored">hide</code> property (a function that hides the notification).</li>
+	<li><code className="colored">length</code> — (optional) Content length. Is used when calculating <code className="colored">duration</code> automatically. Is calculated automatically for string content.</li>
+	<li><code className="colored">type</code> — (optional) Is appended as a BEM modifier to <code className="colored">.rrui__snackbar</code> CSS class. E.g. <code className="colored">.rrui__snackbar--error</code> for <code className="colored">{'{ type: "error" }'}</code>.</li>
+	<li><code className="colored">duration</code> — (optional) How long will the notification stay. <code className="colored">-1</code> means "until manually closed". If not specified will be calculated automatically based on <code className="colored">length</code>.</li>
+</ul>
+
+{/* new-message-notification */}
+
+<Button action={() => this.setState({
+	snack: {
+		type: 'new-message-notification',
+		component : NewMessageNotification,
+		props : {
+			from : {
+				picture : 'https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg',
+				name : 'Pavel Durov'
+			}
+		},
+		duration: -1
+	}
+})}>
+  Show new message notification
+</Button>
+
+<Highlight lang="jsx">{`
+<Snackbar
+  value={this.state.snack}
+  reset={() => this.setState({ snack: undefined })} />
+
+const NewMessageNotification = ({ from, hide }) => (
+  <div>
+    <img src={from.picture}/>
+    <div> New message from {from.name} </div>
+    <button type="button" onClick={hide}> ✕ </button>
+  </div>
+)
+
+const newMessageReceived = (message) => {
+  this.setState({
+    snack: {
+      type: 'new-message-notification',
+      component: NewMessageNotification,
+      props: message,
+      duration: -1
+    }
+  })
+}
+
+newMessageReceived({
+  from: {
+    picture: 'https://...',
+    name: 'Pavel Durov'
+  }
+})
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__snackbar--new-message-notification {
+  height : 200px;
+  padding : 0;
+  line-height : 1.35em;
+}
+`}</Highlight>
+
+									<a name="form" href="#form-and-buttons" className="title-anchor">
+										<h2 className="heading">Form and Buttons</h2>
+									</a>
+
+									<div className="submit-form">
+										<Button action={() => {}}>
+											Borderless
+										</Button>
+									</div>
+
+									<div className="submit-form">
+										<Button action={() => {}} style={{ textTransform: 'uppercase' }}>
+											Uppercase
+										</Button>
+									</div>
+
+									<div className="submit-form">
+										<Button action={() => console.log('test')} className="rrui__button--border">
+											Bordered
+										</Button>
+									</div>
+
+									<div className="submit-form">
+										<Button link="https://google.com" target="_blank" className="rrui__button--border">
+											Hyperlink
+										</Button>
+									</div>
+
 									<div className="submit-form">
 										<Button
 											submit
 											busy={this.state.busy}
-											className="button--border">
-											Submit form
+											className="rrui__button--border">
+											Submit Form
 										</Button>
 									</div>
 
+									<div className="submit-form">
+										<Button
+											submit
+											busy={this.state.busy}>
+											SUBMIT
+										</Button>
+									</div>
+
+									<div className="submit-form">
+										Submitting: {this.state.busy ? 'true' : 'false'}
+									</div>
+
 <Highlight lang="jsx">{`
+const submit = () => {
+  console.log('Submitting form...')
+  this.setState({ busy: true })
+  setTimeout(() => {
+    console.log('Form submitted.')
+    this.setState({ busy: false })
+  }, 3500)
+}
+
 <Form
   busy={this.state.busy}
-  submit={() => {
-    alert('Submitting form...')
-    this.setState({ busy: true })
-    setTimeout(() => {
-      alert('Form submitted.')
-      this.setState({ busy: false })
-    },
-    3000)
-  }}>
+  submit={submit}>
   ...
+
+  <Button action={() => {}}>
+    Borderless
+  </Button>
+
+  <Button
+    link="https://google.com"
+    target="_blank"
+    className="rrui__button--border">
+    Hyperlink
+  </Button>
+
+  <Button
+    action={() => console.log('test')}
+    className="rrui__button--border">
+    Bordered
+  </Button>
+
   <Button
     submit
-    busy={this.state.busy}>
-    Submit form
+    busy={this.state.busy}
+    className="rrui__button--border">
+    Submit Form
   </Button>
 </Form>
 `}</Highlight>
 
+<Highlight lang="css">{`
+.rrui__button--border {
+  padding-left  : 20px;
+  padding-right : 20px;
+  border        : 2px solid blue;
+  border-radius : 5px;
+}
+.rrui__button--border .rrui__button__busy {
+  left   : 20px;
+  width  : calc(100% - 2 * 20px);
+  bottom : 8px;
+}
+`}</Highlight>
 								</Form>
 
 								<a name="modal" href="#modal" className="title-anchor">
-									<h2>Modal</h2>
+									<h2 className="heading">Modal</h2>
 								</a>
 
 								<Button
@@ -1054,41 +1326,47 @@
 									Show
 								</Button>
 
+{/*
+	closeButtonIcon={true}
+	closeLabel="x"
+*/}
 								<Modal
 									isOpen={this.state.show_modal}
 									close={() => this.setState({ show_modal: false })}
 									style={{ maxWidth : '40em' }}>
 
-									<h2 style={{ marginTop: 0 }}>
-										Dialog
-									</h2>
+									<Modal.Title>
+										An example modal
+									</Modal.Title>
 
-									<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
-										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-									</p>
+									<Modal.Content>
+										<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
 
-									<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-									</p>
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
 
-									<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-									</p>
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
 
-									<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-									</p>
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
 
-									<p style={{ marginTop: '1.35em', marginBottom: 0 }}>
-										На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-									</p>
+										<p style={{ marginTop: '1.35em', marginBottom: 0 }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+									</Modal.Content>
 
-									<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+									<Modal.Actions>
 										<Button
 											action={ () => this.setState({ show_modal: false }) }>
 											Hide
 										</Button>
-									</div>
+									</Modal.Actions>
 								</Modal>
 
 <Highlight lang="jsx">{`
@@ -1099,11 +1377,20 @@
 <Modal
   isOpen={this.state.showModal}
   close={() => this.setState({ showModal: false })}>
-  <p> ... </p>
-  <p> ... </p>
-  <Button action={() => this.setState({ showModal: false })}>
-    Hide
-  </Button>
+
+  <Modal.Title>
+    An example modal
+  <Modal.Title>
+
+  <Modal.Content>
+    ...
+  </Modal.Content>
+
+  <Modal.Actions>
+    <Button action={() => this.setState({ showModal: false })}>
+      Hide
+    </Button>
+  </Modal.Actions>
 </Modal>
 `}</Highlight>
 
@@ -1115,6 +1402,15 @@
   margin : 20px;
 }
 `}</Highlight>
+
+<code className="colored">{'<Modal/>'}</code> also takes optional properties:
+
+<ul className="list">
+	<li><code className="colored">closeButtonIcon</code> property which can either be <code className="colored">true</code> for a default "cross" icon or a custom <code className="colored">React.Component</code>.</li>
+
+	<li><code className="colored">closeLabel</code> property in which case a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
+</ul>
+
 							</Page>
 						</PageAndMenu>
 					)

@@ -1,22 +1,98 @@
 /* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
-.rrui__select__options:not(.rrui__select__options--autocomplete),
+.rrui__select__options,
 .rrui__date-picker__collapsible
 {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	margin: 0;
-	z-index: 100;
-	max-height: none !important;
+	position : fixed;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	margin   : 0;
+	z-index  : var(--rrui-z-index-overlay);
+
+	-webkit-transform-origin : center center;
+
+	    -ms-transform-origin : center center;
+
+	        transform-origin : center center;
+	-webkit-transform        : scale(0.95);
+	    -ms-transform        : scale(0.95);
+	        transform        : scale(0.95);
+	opacity          : 0;
+	-webkit-transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	-o-transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	max-height       : none !important;
+}
+
+/* `<Select/>`s and `<DatePicker/>`s go fullscreen when expanded */
+.rrui__select__options.rrui__expandable--expanded,
+.rrui__date-picker__collapsible.rrui__expandable--expanded
+{
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
+	opacity   : 1;
+}
+
+.rrui__select__options:not(.rrui__select__options--menu)
+{
+	min-width : 0;
+}
+
+/* `<Select/>` options no top margin. */
+.rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
+{
+	margin-top: 0;
+}
+
+/* `<Select autocomplete/>` goes fullscreen when expanded */
+.rrui__select--expanded .rrui__select__autocomplete
+{
+	position         : fixed;
+	top              : 0;
+	left             : 0;
+	width            : 100%;
+	height           : var(--rrui-fullscreen-input-height);
+	padding-left     : var(--rrui-list-item-side-padding);
+	padding-right    : calc(var(--rrui-unit) * 2 + var(--rrui-unit) * 3 + var(--rrui-list-item-side-padding));
+	z-index          : var(--rrui-z-index-overlay);
+	background-color : var(--rrui-white-color);
+}
+
+/* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
+.rrui__select--autocomplete.rrui__select--expanded .rrui__ellipsis
+{
+	position    : fixed;
+	right       : var(--rrui-list-item-side-padding);
+	top         : 0;
+	z-index     : var(--rrui-z-index-above-overlay);
+	height      : var(--rrui-fullscreen-input-height);
+	display     : -webkit-box;
+	display     : -webkit-flex;
+	display     : -ms-flexbox;
+	display     : flex;
+	-webkit-box-align : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
+}
+
+/* `<Select autocomplete/>` options when fullscreen-expanded */
+.rrui__select__options--autocomplete
+{
+	top : var(--rrui-fullscreen-input-height);
+	-webkit-box-shadow : none;
+	        box-shadow : none;
 }
 
 /* "Close" button for full-screen `<Select/>`s */
 .rrui__select__close,
 .rrui__date-picker__close
 {
-	z-index: 100;
+	z-index : var(--rrui-z-index-overlay);
 }
 
 /*
@@ -27,85 +103,73 @@ pushing the expanded `<DatePicker/>` from the screen.
 */
 .rrui__date-picker__input-overlay
 {
-	display: block;
+	display : block;
 }
 
 /* Show "Close" button for full-screen `<DatePicker/>`s */
-.rrui__date-picker__close
-{
-	display: block;
-}
-
 /* Show "Close" button for full-screen `<Select/>`s */
-.rrui__select__close:not(.rrui__select__close--autocomplete)
+.rrui__date-picker__close,
+.rrui__select__close
 {
-	display: block;
+	display : block;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
 .rrui__modal__overlay
 {
-	display: block;
+	display : block;
 }
 
 /* CSS selector specificity fix for the above rule */
 .rrui__modal__overlay--hidden
 {
-	display: none;
+	display : none;
 }
 
 /* Centers `<Modal/>` content (body) horizontally and vertically */
 .rrui__modal__container
 {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	display         : -webkit-box;
+	display         : -webkit-flex;
+	display         : -ms-flexbox;
+	display         : flex;
+	-webkit-box-align     : center;
+	-webkit-align-items     : center;
+	    -ms-flex-align     : center;
+	        align-items     : center;
+	-webkit-box-pack : center;
+	-webkit-justify-content : center;
+	    -ms-flex-pack : center;
+	        justify-content : center;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
 .rrui__modal__vertical-margin
 {
-	display: none;
+	display : none;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
-.rrui__modal__content
+.rrui__modal__contents
 {
-	border-radius: 0;
+	border-radius : 0;
 }
 
 /* `<Modal/>` content goes full-screen wide and high */
-.rrui__modal__content-body
+.rrui__modal__title,
+.rrui__modal__actions,
+.rrui__modal__content
 {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	margin-left: 1rem;
-	margin-right: 1rem;
+  /* Using `margin` instead of `padding` here
+    to leverage the "margin collapse" CSS feature. */
+  margin : calc(3 * var(--rrui-unit));
 }
 
-/* Makes all dropdowns inside modals not go into fullscreen */
-.rrui__modal__content .rrui__select__options
+/* `<Modal/>` content goes full-screen wide and high */
+.rrui__modal__actions
 {
-	position: absolute;
-	left: 0;
-	top: auto;
-	right: auto;
-	bottom: auto;
-	/*
-	Disables `.rrui__select__options { ... font styles ... }`
-	defined in some CSS rule since it's not fullscreen again.
-	*/
-	font-size: inherit;
-	font-weight: inherit;
-}
-
-/*
-Don't show the "x" close button for `<Select/>`s inside modals
-since they're not fullscreen.
-*/
-.rrui__modal__content .rrui__select__close
-{
-	display: none;
+  margin-top    : calc(2 * var(--rrui-unit));
+  margin-bottom : calc(2 * var(--rrui-unit));
 }
 
 /*
@@ -114,11 +178,11 @@ sinse they're fullscreen.
 */
 .ReactModal__Overlay--after-open
 {
-	background-color: transparent;
+	background-color : transparent;
 }
 
 /* Reduce `<Modal/>` scaling motion on smaller screens */
-.rrui__modal__content
+.rrui__modal__contents
 {
 	/*
 	Scaling `<Modal/>` down on appear looks cool
@@ -129,29 +193,50 @@ sinse they're fullscreen.
 	Therefore not using `scale()`s above `1`, only downscaling.
 	transform: scale(1.07);
 	*/
-	transform : scale(0.99);
+	-webkit-transform : scale(0.995);
+	    -ms-transform : scale(0.995);
+	        transform : scale(0.995);
 }
 
 /* This rule is required for closing animation */
-.ReactModal__Content--before-close .rrui__modal__content
+.ReactModal__Content--before-close .rrui__modal__contents
 {
-	transform : scale(0.99);
+	-webkit-transform : scale(0.995);
+	    -ms-transform : scale(0.995);
+	        transform : scale(0.995);
+}
+
+/* The styles for an open `<Modal/>` */
+.ReactModal__Content--after-open .rrui__modal__contents
+{
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
 }
 
 /* Shortening `<Modal/>` animation duration */
-.rrui__modal__content
+.rrui__modal__contents
 {
-	transition: transform 100ms ease-out, opacity 70ms ease-out;
+	-webkit-transition : -webkit-transform 100ms ease-out;
+	transition : -webkit-transform 100ms ease-out;
+	-o-transition : transform 100ms ease-out;
+	transition : transform 100ms ease-out;
+	transition : transform 100ms ease-out, -webkit-transform 100ms ease-out;
 }
 
-/* Shortening `<Modal/>` animation duration */
-.ReactModal__Content--after-open .rrui__modal__content-body
+/* Center `<Snackbar/>` on screen. */
+.rrui__snackbar__container
 {
-	transition : opacity 70ms ease-out 30ms;
+	margin : 0;
+	-webkit-box-pack : center;
+	-webkit-justify-content : center;
+	    -ms-flex-pack : center;
+	        justify-content : center;
 }
 
-/* Shortening `<Modal/>` animation duration */
-.ReactModal__Content--before-close .rrui__modal__content-body
+/* `<Snackbar/>` border radius. */
+.rrui__snackbar
 {
-	transition : opacity 70ms ease-out;
+	border-bottom-left-radius  : 0;
+	border-bottom-right-radius : 0;
 }
