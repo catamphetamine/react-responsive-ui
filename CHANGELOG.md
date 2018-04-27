@@ -85,6 +85,9 @@ box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.
   background-color: rgba(0, 0, 0, 0.12);
 }
 
+hidden : opacity: 1;
+shown : opacity: 0;
+
 ExpansionPanel.Summary:
 
 shown:
