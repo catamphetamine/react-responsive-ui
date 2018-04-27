@@ -1,5 +1,75 @@
-0.11.0 / 18.04.2018
-====================
+0.12.0 / 23.04.2018
+===================
+
+* (breaking change) Introduced CSS variables which must be set before including the CSS files on a page (see the updated README).
+
+* (breaking change) `<Button/>` now comes with default `margin-left` and `margin-right` (previously had no margins). And the `busy` indicator changed from a spinner to an underline.
+
+* (breaking change) `<MenuButton/>` now comes with negative `margin`.
+
+* (breaking change) On small screens (see `small-screen.css`) the "Close" cross for fullscreen `<Select/>` is now on the bottom-right (not on the top-right).
+
+* (breaking change) On small screens (see `small-screen.css`) `<Select/>`s and `<DatePicker/>`s now expand themselves to fullscreen even if inside `<Modal/>`s, and the expand animation changed from "dropdown" to "fade-in/scale".
+
+* (breaking change) Changed `<Modal/>` CSS styles (including `small-screen.css`): `.rrui__modal__content` class (which defines all CSS styles and animations for opening/closing) was renamed to `.rrui__modal__contents` (along with `rrui__modal__content--fullscreen` and `.rrui__modal__content-body`). `<Modal/>` now provides three child components: `<Modal.Content/>`, `<Modal.Title/>` and `<Modal.Actions/>`. Before `.rrui__modal__content-body` had `margin` — now that margin has been moved to these three new child components. Tweaked `<Modal/>` opening/closing animation on small screens (see `small-screen.css`).
+
+* (breaking change) `<Modal/>`'s `closeButton` property removed and replaced with `closeButtonIcon` property (which is for the icon, not for the button). `closeButtonIcon` is now either a `Component` (not `Element`) or `true` (which renders a default cross icon).
+
+* (breaking change) `<Select/>`'s `closeButton` property removed and replaced with `closeButtonIcon` property (which is for the icon, not for the button).
+
+* (breaking change) `<DatePicker/>`'s `closeButton` property removed and replaced with `closeButtonIcon` property (which is for the icon, not for the button).
+
+* (breaking change) If someone was overriding `.rrui__close__icon` CSS styles: its `padding` was moved to `.rrui__close`.
+
+* (breaking change) `<Snackbar/>` CSS styles changed and it is now positioned in the left bottom corner of the screen (with some margin) instead of being in the middle on the bottom (without margin).
+
+* (breaking change) `<Select/>`'s list of options (except `autocomplete`) has been moved up to cover the toggler button: added `margin-top` to `.rrui__select__options`.
+
+* (breaking change) `<Select/>`'s `.rrui__select__option` side padding reduced a bit: changed `.rrui__select__option`'s `padding-left`/`padding-right` and `min-width`, `.rrui__select__options--left-aligned`'s `left`, `.rrui__select__options--right-aligned`'s `right` and `.rrui__select__options`'s `min-width`.
+
+* (breaking change) `<Select menu/>`'s `.rrui__select__option` side padding changed a bit.
+
+* (breaking change) `.rrui__select--menu` is now `display: inline-block` by default.
+
+* (breaking change) `<Switch/>` layout and styling changed a bit, added `.rrui__switch__box`.
+
+* (breaking change) `<Tooltip/>` sizes changed.
+
+* (breaking change) `<Button/>` was rewritten (the `<button/>` is no longer wrapped in a `<div/>`). `<Button/>` now has default `height`. `linkDownload` property removed (pass `download` property directly instead).
+
+* (breaking change) `<SegmentedControl/>` now stretched to full width by default.
+
+* (breaking change) `<Snackbar/>` CSS changed: it now resides in the lower bottom corner. Hide animation time changed from `400` to `195`. `content` can now also be a React component taking `hide` property (a function that hides the notification).
+
+* (breaking change) `<Select autocomplete/>` now goes fullscreen.
+
+* (breaking change) `<TextInput/>` no longer takes an `input` property.
+
+
+
+
+
+
+изменить положение и анимацию <Snackbar/>-а.
+
+проверить мобильный дизайн
+
+на мобильных делать меньше отступ снекбара.
+
+
+
+
+
+проверить на webpack-...-example, что postcss заменяет переменные
+
+обновляя rrui в phone-number-input компилировать стили с переменными.
+
+
+
+
+
+0.11.0 / 20.04.2018
+===================
 
 * Migrated to new React 17 lifecycles (`componentWillReceiveProps` -> `getDerivedStateFromProps`) and new React 17 Context API. Still compatible with older versions of React.
 
@@ -12,8 +82,6 @@
 * (breaking change) Changed `<Checkbox/>` design.
 
 * (breaking change) `<Menu/>` now doesn't take `router` property from context. Instead, `<Menu/>` now listens directly to `history` transitions. `<Menu/>`'s `.rrui__slideout-menu--shown` CSS class renamed to `.rrui__slideout-menu--expanded`. `<Page/>` now has `.rrui__page--menu-overlay` CSS class added on menu expanded which adds a semi-transparent overlay.
-
-* (pending breaking change) (will be released soon) `<Snackbar/>` CSS styles changed and it is now positioned in the left bottom corner of the screen (with some margin) instead of being in the middle on the bottom (without margin).
 
 0.10.28 / 26.02.2018
 ====================
