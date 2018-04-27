@@ -166,9 +166,15 @@ export default class Select extends Component
 
 		// If `menu` flag is set to `true`
 		// then `toggler` is the dropdown menu button.
-		// E.g. `toggler={<DropDownMenuButton/>}`.
-		// `toggler` must accept `onClick` and `onKeyDown` properties.
-		toggler    : PropTypes.element,
+		// Can be either a React element or a React component.
+		// If `toggler` is a React component then it must
+		// accept `onClick` and `onKeyDown` properties.
+		// E.g.: `(props) => <button type="button" {...props}> Menu </button>`.
+		toggler    : PropTypes.oneOfType
+		([
+			PropTypes.element,
+			PropTypes.func
+		]),
 
 		// If `scroll` is `false`, then options list
 		// is not limited in height.
@@ -450,7 +456,10 @@ export default class Select extends Component
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 	}
 
-	storeListNode = (ref) => this.list = ref
+	storeContainer = (node) => this.select = node
+	storeListNode = (node) => this.list = node
+	storeSelectedOption = (ref) => this.selected = ref
+	storeAutocompleteInput = (node) => this.autocomplete = node
 
 	render()
 	{
@@ -545,7 +554,7 @@ export default class Select extends Component
 
 		return (
 			<div
-				ref={ ref => this.select = ref }
+				ref={ this.storeContainer }
 				onKeyDown={ this.on_key_down_in_container }
 				onBlur={ this.on_blur }
 				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
@@ -862,11 +871,11 @@ export default class Select extends Component
 			return (
 				<input
 					type="text"
-					ref={ ref => this.autocomplete = ref }
+					ref={ this.storeAutocompleteInput }
 					placeholder={ selected_label }
 					value={ autocomplete_input_value }
 					onChange={ this.on_autocomplete_input_change }
-					onKeyDown={ this.on_key_down }
+					onKeyDown={ this.onKeyDown }
 					onFocus={ onFocus }
 					tabIndex={ tabIndex }
 					title={ title }
@@ -891,11 +900,11 @@ export default class Select extends Component
 
 		return (
 			<button
-				ref={ ref => this.selected = ref }
+				ref={ this.storeSelectedOption }
 				type="button"
 				disabled={ disabled }
 				onClick={ this.onToggle }
-				onKeyDown={ this.on_key_down }
+				onKeyDown={ this.onKeyDown }
 				onFocus={ onFocus }
 				tabIndex={ nativeExpanded ? -1 : tabIndex }
 				title={ title }
@@ -947,14 +956,16 @@ export default class Select extends Component
 	{
 		const { toggler } = this.props
 
+		const properties =
+		{
+			ref       : this.storeSelectedOption,
+			onClick   : this.onToggle,
+			onKeyDown : this.onKeyDown
+		}
+
 		return (
 			<div className="rrui__select__toggler">
-				{ React.cloneElement(toggler,
-				{
-					ref       : ref => this.selected = ref,
-					onClick   : this.onToggle,
-					onKeyDown : this.on_key_down
-				}) }
+				{ typeof toggler === 'function' ? React.createElement(toggler, properties) : React.cloneElement(toggler, properties) }
 			</div>
 		)
 	}
@@ -1495,7 +1506,7 @@ export default class Select extends Component
 		}
 	}
 
-	on_key_down = (event) =>
+	onKeyDown = (event) =>
 	{
 		const { onKeyDown, value, autocomplete } = this.props
 		const { options, expanded, focused_option_value } = this.state
