@@ -162,14 +162,14 @@ pushing the expanded `<DatePicker/>` from the screen.
 {
   /* Using `margin` instead of `padding` here
     to leverage the "margin collapse" CSS feature. */
-  margin : calc(3 * var(--rrui-unit));
+  margin : calc(var(--rrui-unit) * 2);
 }
 
 /* `<Modal/>` content goes full-screen wide and high */
 .rrui__modal__actions
 {
-  margin-top    : calc(2 * var(--rrui-unit));
-  margin-bottom : calc(2 * var(--rrui-unit));
+  margin-top    : var(--rrui-unit);
+  margin-bottom : var(--rrui-unit);
 }
 
 /*

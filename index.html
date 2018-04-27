@@ -213,19 +213,6 @@
 
 	<!-- RRUI customization -->
 	<style>
-		.rrui__input-field--multiline
-		{
-			padding-top    : 0.3rem;
-			padding-bottom : 0.3rem;
-		}
-
-		/* Multiline `<TextInput/>`'s label positioning. */
-		/* Must be same as `padding-top`/`padding-bottom`. */
-		.rrui__text-input__label--multiline
-		{
-			top : 0.3rem;
-		}
-
 		.rrui__button--border
 		{
 			padding-left     : calc(0.3rem * 2.5);
@@ -236,24 +223,14 @@
 
 		.rrui__button--border .rrui__button__busy
 		{
-			left : calc(0.3rem * 2.5);
-			bottom: calc(50% - 0.6em);
-			width : calc(100% - 2 * 0.3rem * 2.5);
-		}
-
-		.rrui__slideout-menu
-		{
-			padding-top    : calc(0.3rem * 4);
-			padding-bottom : calc(0.3rem * 4);
+			left   : calc(0.3rem * 2.5);
+			bottom : calc(50% - 0.6em);
+			width  : calc(100% - 2 * 0.3rem * 2.5);
 		}
 
 		.rrui__slideout-menu__item
 		{
-			padding-top    : calc(0.3rem * 2);
-			padding-bottom : calc(0.3rem * 2);
-			padding-left   : calc(0.3rem * 5);
-			padding-right  : calc(0.3rem * 5);
-			color          : #ECF1F6;
+			color : #ECF1F6;
 		}
 
 		.rrui__slideout-menu__item:active
@@ -277,11 +254,6 @@
 		{
 			background-color : #3678D1;
 			color            : white;
-		}
-
-		.rrui__form
-		{
-			margin-top: 2em;
 		}
 	</style>
 
@@ -365,7 +337,1108 @@
 				</div>
 			)
 
-			var Content = React.createClass
+			const Example = ({ name, title, children }) => (
+				<div>
+					<a name={name} href={`#${name}`} className="title-anchor">
+						<h2 className="heading">{title}</h2>
+					</a>
+					{children}
+				</div>
+			)
+
+			const ExampleMenuButton = React.createClass
+			({
+				getInitialState() { return {} },
+
+				render()
+				{
+					return (
+						<Example name="collapsible-menu" title="Collapsible Menu">
+
+							<MenuButton
+								title="Show menu"/>
+
+<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
+<PageAndMenu>
+  <CollapsibleMenu>
+    <div>Item 1</div>
+    <div>Item 2</div>
+    <div>Item 3</div>
+  </CollapsibleMenu>
+  <Page>
+    <MenuButton />
+    Page content
+  </Page>
+</PageAndMenu>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__slideout-menu {
+  padding-top    : calc(0.3rem * 4);
+  padding-bottom : calc(0.3rem * 4);
+}
+
+.rrui__slideout-menu__item {
+  height        : calc(0.3rem * 7);
+  padding-left  : calc(0.3rem * 5);
+  padding-right : calc(0.3rem * 5);
+  color         : white;
+}
+
+.rrui__slideout-menu__item:active {
+  color : yellow;
+}
+`}</Highlight>
+
+						</Example>
+					)
+				}
+			})
+
+			const ExampleTextInput = React.createClass
+			({
+				getInitialState() { return {} },
+
+				render()
+				{
+					return (
+						<Example name="text-input-placeholder" title="Text input field (with placeholder)">
+
+							<TextInput
+								focus={false}
+								style={input_style}
+								className="column-width"
+								name="text_input"
+								value={this.state.value}
+								onChange={value => this.setState({ value })}
+								placeholder="Enter some text"/>
+
+							Value:  {this.state.value}
+
+<Highlight lang="jsx">{`
+<TextInput
+  placeholder="Enter some text"
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+/* See \`variables.css\` for height customization. */
+.rrui__input-field {
+  border-bottom : 1px solid blue;
+}
+.rrui__input-field--invalid {
+  border-color : red;
+}
+`}</Highlight>
+						</Example>
+					)
+				}
+			})
+
+const ExampleTextInputFloatingLabel = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="text-input-floating-label" title="Text input field (with floating label)">
+
+				<TextInput
+					style={input_style}
+					className="column-width"
+					name="text_input"
+					value={this.state.value}
+					onChange={value => this.setState({ value })}
+					label="Text"/>
+
+				Value:  {this.state.value}
+
+<Highlight lang="jsx">{`
+<TextInput
+  label="Text"
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleTextInputPlaceholderAndFloatingLabel = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="text-input-placeholder-and-floating-label" title="Text input field (with both placeholder and floating label, and also required)">
+
+				<TextInput
+					required
+					style={input_style}
+					className="column-width"
+					name="text_input"
+					value={this.state.value}
+					onChange={value => this.setState({ value })}
+					label="Text"
+					placeholder="Enter something"/>
+
+				Value:  {this.state.value}
+
+<Highlight lang="jsx">{`
+<TextInput
+  required
+  label="Text"
+  placeholder="Enter something"
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleMultilineTextInputLabel = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="multiline-text-input-floating-label" title="Multiline Text Input">
+
+					<TextInput
+						multiline
+						name="description"
+						style={input_style}
+						className="column-width"
+						value={this.state.value}
+						onChange={value => this.setState({ value })}
+						label="Enter text"/>
+
+					Value:  {this.state.value}
+
+<Highlight lang="jsx">{`
+<TextInput
+  multiline
+  label="Enter text"
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+/* See \`variables.css\` for height/padding customization. */
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSelect = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="select" title="Select">
+
+									<Select
+										style={input_style}
+										className="column-width"
+										name="dropdown"
+										label="Fruit"
+										value={this.state.value}
+										options={[{
+											value: 'A',
+											label: 'Apple'
+										},
+										{
+											value: 'B',
+											label: 'Banana'
+										},
+										{
+											value: 'C',
+											label: 'Cranberry'
+										},
+										{
+											value: 'D',
+											label: 'Date'
+										},
+										{
+											value: 'E',
+											label: 'Elderberry'
+										},
+										{
+											value: 'F',
+											label: 'Fig'
+										},
+										{
+											value: 'G',
+											label: 'Garlic'
+										}]}
+										placeholder="Choose"
+										onChange={ value => this.setState({ value }) }/>
+
+									Value: {this.state.value ? this.state.value : '(empty)'}
+
+<Highlight lang="jsx">{`
+<Select
+  label="Fruit"
+  placeholder="Choose"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__select__option--focused {
+	background-color : cyan;
+}
+.rrui__select__option:hover {
+	background-color : gray;
+}
+.rrui__select__option:active {
+	background-color : blue;
+	color : white;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSelectAutocomplete = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="select-autocomplete" title="Select (autocomplete)">
+
+									<Select
+										style={input_style}
+										className="column-width"
+										autocomplete
+										name="dropdown"
+										value={this.state.value}
+										options={[{
+											value: 'A',
+											label: 'Apple'
+										},
+										{
+											value: 'B',
+											label: 'Banana'
+										},
+										{
+											value: 'C',
+											label: 'Cranberry'
+										},
+										{
+											value: 'D',
+											label: 'Date'
+										},
+										{
+											value: 'E',
+											label: 'Elderberry'
+										},
+										{
+											value: 'F',
+											label: 'Fig'
+										},
+										{
+											value: 'G',
+											label: 'Garlic'
+										}]}
+										placeholder="Choose"
+										notFound="Not found"
+										onChange={ value => this.setState({ value }) }/>
+
+									Value: {this.state.value ? this.state.value : '(empty)'}
+
+<Highlight lang="jsx">{`
+<Select
+  autocomplete
+  placeholder="Choose"
+  notFound="Not found"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSelectAutocompleteAsync = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="select-asynchronous-autocomplete" title="Select (asynchronous autocomplete)">
+
+									<Select
+										style={input_style}
+										className="column-width"
+										autocomplete
+										name="dropdown"
+										value={this.state.value}
+										getOptions={(query) => {
+											return new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200)).then(() => {
+												return [{
+													value: 'A',
+													label: 'Apple'
+												}, {
+													value: 'B',
+													label: 'Banana'
+												}, {
+													value: 'C',
+													label: 'Cranberry'
+												}, {
+													value: 'D',
+													label: 'Date'
+												}, {
+													value: 'E',
+													label: 'Elderberry'
+												}, {
+													value: 'F',
+													label: 'Fig'
+												}, {
+													value: 'G',
+													label: 'Garlic'
+												}]
+												.filter(({ label }) => label.toLowerCase().indexOf(query.toLowerCase()) >= 0)
+											})
+										}}
+										placeholder="Choose"
+										notFound="Not found"
+										onChange={ value => this.setState({ value }) }/>
+
+									Value: {this.state.value ? this.state.value : '(empty)'}
+
+<Highlight lang="jsx">{`
+<Select
+  autocomplete
+  placeholder="Choose"
+  notFound="Not found"
+  value={...}
+  onChange={...}
+  getOptions={async (query) => await httpClient.get(\u0060/search?query=\${query}\u0060)}/>
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSelectIcons = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="select-icons" title="Select (icons)">
+
+									<Select
+										style={input_style}
+										className="column-width"
+										concise
+										name="dropdown"
+										value={this.state.value}
+										options={[{
+											value: 'A',
+											label: 'Afghanistan',
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
+										},
+										{
+											value: 'B',
+											label: 'Barbados',
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
+										},
+										{
+											value: 'C',
+											label: 'Canada',
+											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
+										}]}
+										placeholder="Choose"
+										onChange={ value => this.setState({ value }) }
+										className="rrui__select--compact"/>
+
+									<div>
+										Value: {this.state.value ? this.state.value : '(empty)'}
+									</div>
+
+<Highlight lang="jsx">{`
+<Select
+  concise
+  placeholder="Choose"
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSelectMenu = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="select-menu" title="Select (menu)">
+
+									<Select
+										menu
+										toggler={<button type="button">Toggle</button>}
+										className="column-width"
+										style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
+
+										<div onClick={() => alert('Google')}> Google </div>
+										<div onClick={() => alert('Yandex')}> Yandex </div>
+										<Select.Separator/>
+										<div onClick={() => alert('Other')}> Other </div>
+									</Select>
+
+<Highlight lang="jsx">{`
+<Select menu toggler={<button>Toggle</button>}>
+  <div onClick={() => alert('Google')}> Google </div>
+  <div onClick={() => alert('Yandex')}> Yandex </div>
+  <Select.Separator/>
+  <div onClick={() => alert('Other')}> Other </div>
+</Select>
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleCheckbox = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="checkbox" title="Checkbox">
+
+									<Checkbox
+										style={input_style}
+										className="column-width"
+										name="checkbox"
+										value={this.state.value}
+										onChange={ value => this.setState({ value }) }>
+										Accept the <a target="_blank" href="https://google.ru">User Agreement</a>
+									</Checkbox>
+
+									<Checkbox
+										style={input_style}
+										className="column-width"
+										name="checkbox"
+										multiline
+										value={this.state.value}
+										onChange={ value => this.setState({ value }) }>
+										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
+									</Checkbox>
+
+									Value: {this.state.value ? 'true' : 'false'}
+									{/*  ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span> */}
+
+<Highlight lang="jsx">{`
+<Checkbox
+  value={...}
+  onChange={...}>
+  Accept the <a href="...">User Agreement</a>
+</Checkbox>
+
+<Checkbox
+  multiline
+  value={...}
+  onChange={...}>
+  Postmodernism describes a broad movement that developed ...
+</Checkbox>
+`}</Highlight>
+
+<Highlight lang="css">{`
+/* Checkbox inactive color */
+.rrui__checkbox__box {
+  color : black;
+}
+/* Checkbox color (:checked) */
+/* Checkbox color (:focus) */
+.rrui__checkbox__box--checked,
+.rrui__checkbox__input:focus + .rrui__checkbox__box {
+  color : blue;
+}
+/* Checkbox color (:checked / :active) */
+.rrui__checkbox:active .rrui__checkbox__box,
+.rrui__checkbox__input:active + .rrui__checkbox__box {
+  color : cyan;
+}
+/* Checkbox color (:invalid) */
+.rrui__checkbox--invalid .rrui__checkbox__box {
+  color : red;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSwitch = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="switch" title="Switch">
+
+									<div style={{ marginBottom: '1em' }}>
+										<Switch
+											name="switch"
+											value={this.state.value}
+											onChange={ value => this.setState({ value }) }>
+											iOS style switch
+										</Switch>
+									</div>
+
+									Value: {this.state.value ? 'true' : 'false'}
+
+<Highlight lang="jsx">{`
+<Switch
+  value={...}
+  onChange={...}>
+  iOS style switch
+</Switch>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__switch__groove {
+  background-color : green;
+  color : white;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSegmentedControl = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="segmented-control" title="Segmented Control">
+
+									<SegmentedControl
+										style={input_style}
+										className="column-width"
+										name="button_group"
+										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
+										value={this.state.value}
+										onChange={ value => this.setState({ value }) }/>
+
+									Value: {this.state.value ? this.state.value : '(empty)'}
+
+<Highlight lang="jsx">{`
+<SegmentedControl
+  value={...}
+  onChange={...}
+  options={[{ value: 'A', label: 'Apple' }, ...]} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__segmented-control__option {
+  background-color : white;
+  color : black;
+}
+.rrui__segmented-control__option:active {
+  background-color : cyan;
+}
+.rrui__segmented-control__option--selected {
+  background-color : blue;
+  color : white;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleDatePicker = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="date-picker" title="Date Picker">
+
+									<DatePicker
+										style={input_style}
+										className="column-width"
+										label="Date"
+										value={this.state.value}
+										onChange={value => this.setState({ value })}
+										disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)}/>
+
+									Value: {this.state.value ? this.state.value.toString() : '(empty)'}
+
+<Highlight lang="jsx">{`
+<DatePicker
+  label="Date"
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleDatePickerMonthYear = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="date-picker-with-month-and-year" title="Date Picker (with month and year selectors)">
+
+									<DatePicker
+										style={input_style}
+										className="column-width"
+										label="Date"
+										selectYearsIntoPast={118}
+										selectYearsIntoFuture={10}
+										value={this.state.value}
+										onChange={value => this.setState({ value })}/>
+
+									Value: {this.state.value ? this.state.value.toString() : '(empty)'}
+
+<Highlight lang="jsx">{`
+<DatePicker
+  label="Date"
+  selectYearsIntoPast={118}
+  selectYearsIntoFuture={10}
+  value={...}
+  onChange={...} />
+`}</Highlight>
+
+
+			</Example>
+		)
+	}
+})
+
+const ExampleTooltip = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="tooltip" title="Tooltip">
+
+									<Tooltip text="Testing testing">
+										Hover this element (or touch down on mobile devices)
+									</Tooltip>
+
+<Highlight lang="jsx">{`
+<Tooltip text="Testing testing">
+  Hover this element (or touch down on mobile devices)
+</Tooltip>
+
+// \u0060container: () => DOMElement\u0060 property is optional
+// and is gonna be the parent DOM Element for the tooltip itself
+// (\u0060document.body\u0060 by default)
+// (in which case make sure that \u0060document.body\u0060 has no \u0060margin\u0060
+//  otherwise tooltip \u0060left\u0060 and \u0060top\u0060 positions will be slightly off).
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__tooltip {
+  background-color : black;
+  color : white;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleSnackbar = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="snackbar" title="Snackbar">
+
+				<Button action={() => {
+					const hours   = new Date().getHours()
+					const minutes = new Date().getMinutes()
+					const seconds = new Date().getSeconds()
+
+					const pad = number => number < 10 ? '0' + number : number
+
+					this.setState({ snack: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` })
+				}}>
+					Show a snack
+				</Button>
+
+				<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
+
+<Highlight lang="jsx">{`
+<Button action={() => this.setState({ snack: "..." })}>
+  Show a snack
+</Button>
+
+<Snackbar
+  value={this.state.snack}
+  reset={() => this.setState({ snack: undefined })} />
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__snackbar {
+  background-color : black;
+  color : white;
+}
+`}</Highlight>
+
+<div>
+<code className="colored">value</code> can also be not just a string but an object of shape:
+</div>
+
+<ul className="list">
+	<li><code className="colored">content</code> — A string or a React element.</li>
+	<li><code className="colored">component</code> — (optional) Instead of <code className="colored">content</code> property one may supply <code className="colored">component</code> property which must be a React component which receives all <code className="colored">value.props</code> properties and also <code className="colored">hide</code> property (a function that hides the notification).</li>
+	<li><code className="colored">length</code> — (optional) Content length. Is used when calculating <code className="colored">duration</code> automatically. Is calculated automatically for string content.</li>
+	<li><code className="colored">type</code> — (optional) Is appended as a BEM modifier to <code className="colored">.rrui__snackbar</code> CSS class. E.g. <code className="colored">.rrui__snackbar--error</code> for <code className="colored">{'{ type: "error" }'}</code>.</li>
+	<li><code className="colored">duration</code> — (optional) How long will the notification stay. <code className="colored">-1</code> means "until manually closed". If not specified will be calculated automatically based on <code className="colored">length</code>.</li>
+</ul>
+
+<br/>
+
+<Button action={() => this.setState({
+	snack: {
+		type: 'new-message-notification',
+		component : NewMessageNotification,
+		props : {
+			from : {
+				picture : 'https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg',
+				name : 'Pavel Durov'
+			}
+		},
+		duration: -1
+	}
+})}>
+  Show new message notification
+</Button>
+
+<Highlight lang="jsx">{`
+<Snackbar
+  value={this.state.snack}
+  reset={() => this.setState({ snack: undefined })} />
+
+const NewMessageNotification = ({ from, hide }) => (
+  <div>
+    <img src={from.picture}/>
+    <div> New message from {from.name} </div>
+    <button type="button" onClick={hide}> ✕ </button>
+  </div>
+)
+
+const newMessageReceived = (message) => {
+  this.setState({
+    snack: {
+      type: 'new-message-notification',
+      component: NewMessageNotification,
+      props: message,
+      duration: -1
+    }
+  })
+}
+
+newMessageReceived({
+  from: {
+    picture: 'https://...',
+    name: 'Pavel Durov'
+  }
+})
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__snackbar--new-message-notification {
+  height : 200px;
+  padding : 0;
+  line-height : 1.35em;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleButtons = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="form-and-buttons" title="Form and Buttons">
+
+				<div className="submit-form">
+					<Button action={() => {}}>
+						Borderless
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					<Button action={() => {}} style={{ textTransform: 'uppercase' }}>
+						Uppercase
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					<Button action={() => console.log('test')} className="rrui__button--border">
+						Bordered
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					<Button link="https://google.com" target="_blank" className="rrui__button--border">
+						Hyperlink
+					</Button>
+				</div>
+
+			<Form
+				busy={this.state.busy}
+				submit={() => {
+					console.log('Submitting form...')
+					this.setState({ busy: true })
+					setTimeout(() => {
+						console.log('Form submitted.')
+						this.setState({ busy: false })
+					},
+					3500)
+				}}>
+				<div className="submit-form">
+					<Button
+						submit
+						busy={this.state.busy}
+						className="rrui__button--border">
+						Submit Form
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					<Button
+						submit
+						busy={this.state.busy}>
+						SUBMIT
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					Submitting: {this.state.busy ? 'true' : 'false'}
+				</div>
+			</Form>
+
+<Highlight lang="jsx">{`
+const submit = () => {
+  console.log('Submitting form...')
+  this.setState({ busy: true })
+  setTimeout(() => {
+    console.log('Form submitted.')
+    this.setState({ busy: false })
+  }, 3500)
+}
+
+<Form
+  busy={this.state.busy}
+  submit={submit}>
+  ...
+
+  <Button action={() => {}}>
+    Borderless
+  </Button>
+
+  <Button
+    link="https://google.com"
+    target="_blank"
+    className="rrui__button--border">
+    Hyperlink
+  </Button>
+
+  <Button
+    action={() => console.log('test')}
+    className="rrui__button--border">
+    Bordered
+  </Button>
+
+  <Button
+    submit
+    busy={this.state.busy}
+    className="rrui__button--border">
+    Submit Form
+  </Button>
+</Form>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__button--border {
+  padding-left  : 20px;
+  padding-right : 20px;
+  border        : 2px solid blue;
+  border-radius : 5px;
+}
+.rrui__button--border .rrui__button__busy {
+  left   : 20px;
+  width  : calc(100% - 2 * 20px);
+  bottom : 8px;
+}
+`}</Highlight>
+
+			</Example>
+		)
+	}
+})
+
+const ExampleModal = React.createClass
+({
+	getInitialState() { return {} },
+
+	render()
+	{
+		return (
+			<Example name="modal" title="Modal">
+
+								<Button
+									action={() => this.setState({ show_modal: true })}>
+									Show
+								</Button>
+
+{/*
+	closeButtonIcon={true}
+	closeLabel="x"
+*/}
+								<Modal
+									isOpen={this.state.show_modal}
+									close={() => this.setState({ show_modal: false })}
+									style={{ maxWidth : '40em' }}>
+
+									<Modal.Title>
+										An example modal
+									</Modal.Title>
+
+									<Modal.Content>
+										<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+
+										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+
+										<p style={{ marginTop: '1.35em', marginBottom: 0 }}>
+											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
+										</p>
+									</Modal.Content>
+
+									<Modal.Actions>
+										<Button
+											action={ () => this.setState({ show_modal: false }) }>
+											Hide
+										</Button>
+									</Modal.Actions>
+								</Modal>
+
+<Highlight lang="jsx">{`
+<Button action={() => this.setState({ showModal: true })}>
+  Show
+</Button>
+
+<Modal
+  isOpen={this.state.showModal}
+  close={() => this.setState({ showModal: false })}>
+
+  <Modal.Title>
+    An example modal
+  <Modal.Title>
+
+  <Modal.Content>
+    ...
+  </Modal.Content>
+
+  <Modal.Actions>
+    <Button action={() => this.setState({ showModal: false })}>
+      Hide
+    </Button>
+  </Modal.Actions>
+</Modal>
+`}</Highlight>
+
+<Highlight lang="css">{`
+.rrui__modal__content {
+  background-color : white;
+}
+.rrui__modal__content-body {
+  margin : 20px;
+}
+`}</Highlight>
+
+<code className="colored">{'<Modal/>'}</code> also takes optional properties:
+
+<ul className="list">
+	<li><code className="colored">closeButtonIcon</code> property which can either be <code className="colored">true</code> for a default "cross" icon or a custom <code className="colored">React.Component</code>.</li>
+
+	<li><code className="colored">closeLabel</code> property in which case a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
+</ul>
+
+			</Example>
+		)
+	}
+})
+
+
+
+
+
+			let Content = React.createClass
 			({
 				getInitialState: function()
 				{
@@ -431,602 +1504,27 @@
 									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>.
 								</div>
 
-								<a name="collapsible-menu" href="#collapsible-menu" className="title-anchor">
-									<h2 className="heading">Collapsible Menu</h2>
-								</a>
-
-								<MenuButton
-									title="Show menu"/>
-
-<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
-<PageAndMenu>
-  <CollapsibleMenu>
-    <div>Item 1</div>
-    <div>Item 2</div>
-    <div>Item 3</div>
-  </CollapsibleMenu>
-  <Page>
-    <MenuButton />
-    Page content
-  </Page>
-</PageAndMenu>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__slideout-menu {
-  padding-top    : calc(0.3rem * 4);
-  padding-bottom : calc(0.3rem * 4);
-}
-
-.rrui__slideout-menu__item {
-  height        : calc(0.3rem * 7);
-  padding-left  : calc(0.3rem * 5);
-  padding-right : calc(0.3rem * 5);
-  color         : white;
-}
-
-.rrui__slideout-menu__item:active {
-  color : yellow;
-}
-`}</Highlight>
-
-								<Form
-									busy={this.state.busy}
-									submit={() => {
-										console.log('Submitting form...')
-										this.setState({ busy: true })
-										setTimeout(() => {
-											console.log('Form submitted.')
-											this.setState({ busy: false })
-										},
-										3500)
-									}}>
-
-									<a name="text-input-placeholder" href="#text-input-placeholder" className="title-anchor">
-										<h2 className="heading">Text input field (with placeholder)</h2>
-									</a>
-
-									<TextInput
-										focus={false}
-										style={input_style}
-										className="column-width"
-										name="text_input"
-										value={this.state.text_value}
-										onChange={value => this.setState({ text_value: value })}
-										placeholder="Enter some text"/>
-
-									Value:  {this.state.text_value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  placeholder="Enter some text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__input {
-  height : 40px;
-}
-.rrui__input--multiline {
-  height : auto;
-}
-.rrui__input-field {
-  border-bottom : 1px solid blue;
-}
-.rrui__input-field--invalid {
-  border-color : red;
-}
-`}</Highlight>
-
-									<a name="text-input-floating-label" href="#text-input-floating-label" className="title-anchor">
-										<h2 className="heading">Text input field (with floating label)</h2>
-									</a>
-
-									<TextInput
-										style={input_style}
-										className="column-width"
-										name="text_input"
-										value={this.state.text_value2}
-										onChange={value => this.setState({ text_value2: value })}
-										label="Text"/>
-
-									Value:  {this.state.text_value2}
-
-<Highlight lang="jsx">{`
-<TextInput
-  label="Text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-									<a name="text-input-placeholder-and-floating-label" href="#text-input-placeholder-and-floating-label" className="title-anchor">
-										<h2 className="heading">Text input field (with both placeholder and floating label, and also required)</h2>
-									</a>
-
-									<TextInput
-										required
-										style={input_style}
-										className="column-width"
-										name="text_input"
-										value={this.state.text_value_required}
-										onChange={value => this.setState({ text_value_required: value })}
-										label="Text"
-										placeholder="Enter something"/>
-
-									Value:  {this.state.text_value_required}
-
-<Highlight lang="jsx">{`
-<TextInput
-  required
-  label="Text"
-  placeholder="Enter something"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-									<a name="multiline-text-input-placeholder" href="#multiline-text-input-placeholder" className="title-anchor">
-										<h2 className="heading">Multiline Text Input (with placeholder)</h2>
-									</a>
-
-									<TextInput
-										multiline
-										name="description"
-										style={input_style}
-										className="column-width"
-										value={this.state.multiline_text_input_value}
-										onChange={value => this.setState({ multiline_text_input_value: value })}
-										placeholder="Enter text"/>
-
-									Value:  {this.state.multiline_text_input_value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  multiline
-  placeholder="Enter text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-/* See \`variables.css\` for height/padding customization. */
-`}</Highlight>
-
-									<a name="multiline-text-input-floating-label" href="#multiline-text-input-floating-label" className="title-anchor">
-										<h2 className="heading">Multiline Text Input (with floating label)</h2>
-									</a>
-
-									<TextInput
-										multiline
-										name="description"
-										style={input_style}
-										className="column-width"
-										value={this.state.multiline_text_input_value2}
-										onChange={value => this.setState({ multiline_text_input_value2: value })}
-										label="Enter text"/>
-
-									Value:  {this.state.multiline_text_input_value2}
-
-<Highlight lang="jsx">{`
-<TextInput
-  multiline
-  label="Enter text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-
-									<a name="select" href="#select" className="title-anchor">
-										<h2 className="heading">Select</h2>
-									</a>
-
-									<Select
-										style={input_style}
-										className="column-width"
-										name="dropdown"
-										label="Fruit"
-										value={this.state.selected}
-										options={[{
-											value: 'A',
-											label: 'Apple'
-										},
-										{
-											value: 'B',
-											label: 'Banana'
-										},
-										{
-											value: 'C',
-											label: 'Cranberry'
-										},
-										{
-											value: 'D',
-											label: 'Date'
-										},
-										{
-											value: 'E',
-											label: 'Elderberry'
-										},
-										{
-											value: 'F',
-											label: 'Fig'
-										},
-										{
-											value: 'G',
-											label: 'Garlic'
-										}]}
-										placeholder="Choose"
-										onChange={ selected => this.setState({ selected }) }/>
-
-									Value: {this.state.selected ? this.state.selected : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  label="Fruit"
-  placeholder="Choose"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__select__option--focused {
-	background-color : cyan;
-}
-.rrui__select__option:hover {
-	background-color : gray;
-}
-.rrui__select__option:active {
-	background-color : blue;
-	color : white;
-}
-`}</Highlight>
-
-									<a name="select-autocomplete" href="#select-autocomplete" className="title-anchor">
-										<h2 className="heading">Select (autocomplete)</h2>
-									</a>
-
-									<Select
-										style={input_style}
-										className="column-width"
-										autocomplete
-										name="dropdown"
-										value={this.state.selected}
-										options={[{
-											value: 'A',
-											label: 'Apple'
-										},
-										{
-											value: 'B',
-											label: 'Banana'
-										},
-										{
-											value: 'C',
-											label: 'Cranberry'
-										},
-										{
-											value: 'D',
-											label: 'Date'
-										},
-										{
-											value: 'E',
-											label: 'Elderberry'
-										},
-										{
-											value: 'F',
-											label: 'Fig'
-										},
-										{
-											value: 'G',
-											label: 'Garlic'
-										}]}
-										placeholder="Choose"
-										notFound="Not found"
-										onChange={ selected => this.setState({ selected }) }/>
-
-									Value: {this.state.selected ? this.state.selected : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  autocomplete
-  placeholder="Choose"
-  notFound="Not found"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-									<a name="select-asynchronous-autocomplete" href="#select-asynchronous-autocomplete" className="title-anchor">
-										<h2 className="heading">Select (asynchronous autocomplete)</h2>
-									</a>
-
-									<Select
-										style={input_style}
-										className="column-width"
-										autocomplete
-										name="dropdown"
-										value={this.state.selected}
-										getOptions={(query) => {
-											return new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200)).then(() => {
-												return [{
-													value: 'A',
-													label: 'Apple'
-												}, {
-													value: 'B',
-													label: 'Banana'
-												}, {
-													value: 'C',
-													label: 'Cranberry'
-												}, {
-													value: 'D',
-													label: 'Date'
-												}, {
-													value: 'E',
-													label: 'Elderberry'
-												}, {
-													value: 'F',
-													label: 'Fig'
-												}, {
-													value: 'G',
-													label: 'Garlic'
-												}]
-												.filter(({ label }) => label.toLowerCase().indexOf(query.toLowerCase()) >= 0)
-											})
-										}}
-										placeholder="Choose"
-										notFound="Not found"
-										onChange={ selected => this.setState({ selected }) }/>
-
-									Value: {this.state.selected ? this.state.selected : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  autocomplete
-  placeholder="Choose"
-  notFound="Not found"
-  value={...}
-  onChange={...}
-  getOptions={async (query) => await httpClient.get(\u0060/search?query=\${query}\u0060)}/>
-`}</Highlight>
-
-									<a name="select-icons" href="#select-icons" className="title-anchor">
-										<h2 className="heading">Select (icons)</h2>
-									</a>
-
-									<Select
-										style={input_style}
-										className="column-width"
-										concise
-										name="dropdown"
-										value={this.state.selected_with_icon}
-										options={[{
-											value: 'A',
-											label: 'Afghanistan',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
-										},
-										{
-											value: 'B',
-											label: 'Barbados',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
-										},
-										{
-											value: 'C',
-											label: 'Canada',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
-										}]}
-										placeholder="Choose"
-										onChange={ selected_with_icon => this.setState({ selected_with_icon }) }
-										className="rrui__select--compact"/>
-
-									<div>
-										Value: {this.state.selected_with_icon ? this.state.selected_with_icon : '(empty)'}
-									</div>
-
-<Highlight lang="jsx">{`
-<Select
-  concise
-  placeholder="Choose"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />
-`}</Highlight>
-
-									<a name="select-menu" href="#select-menu" className="title-anchor">
-										<h2 className="heading">Select (menu)</h2>
-									</a>
-
-									<Select
-										menu
-										toggler={<button type="button">Toggle</button>}
-										className="column-width"
-										style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
-
-										<div onClick={() => alert('Google')}> Google </div>
-										<div onClick={() => alert('Yandex')}> Yandex </div>
-										<Select.Separator/>
-										<div onClick={() => alert('Other')}> Other </div>
-									</Select>
-
-<Highlight lang="jsx">{`
-<Select menu toggler={<button>Toggle</button>}>
-  <div onClick={() => alert('Google')}> Google </div>
-  <div onClick={() => alert('Yandex')}> Yandex </div>
-  <Select.Separator/>
-  <div onClick={() => alert('Other')}> Other </div>
-</Select>
-`}</Highlight>
-
-									<a name="checkbox" href="#checkbox" className="title-anchor">
-										<h2 className="heading">Checkbox</h2>
-									</a>
-
-									<Checkbox
-										style={input_style}
-										className="column-width"
-										name="checkbox"
-										value={this.state.checked}
-										onChange={ checked => this.setState({ checked: checked }) }>
-										Accept the <a target="_blank" href="https://google.ru">User Agreement</a>
-									</Checkbox>
-
-									<Checkbox
-										style={input_style}
-										className="column-width"
-										name="checkbox"
-										multiline
-										value={this.state.checked}
-										onChange={ checked => this.setState({ checked: checked }) }>
-										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
-									</Checkbox>
-
-									Value: {this.state.checked ? 'true' : 'false'}
-									{/*  ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span> */}
-
-<Highlight lang="jsx">{`
-<Checkbox
-  value={...}
-  onChange={...}>
-  Accept the <a href="...">User Agreement</a>
-</Checkbox>
-
-<Checkbox
-  multiline
-  value={...}
-  onChange={...}>
-  Postmodernism describes a broad movement that developed ...
-</Checkbox>
-`}</Highlight>
-
-<Highlight lang="css">{`
-/* Checkbox inactive color */
-.rrui__checkbox__box {
-  color : black;
-}
-/* Checkbox color (:checked) */
-/* Checkbox color (:focus) */
-.rrui__checkbox__box--checked,
-.rrui__checkbox__input:focus + .rrui__checkbox__box {
-  color : blue;
-}
-/* Checkbox color (:checked / :active) */
-.rrui__checkbox:active .rrui__checkbox__box,
-.rrui__checkbox__input:active + .rrui__checkbox__box {
-  color : cyan;
-}
-/* Checkbox color (:invalid) */
-.rrui__checkbox--invalid .rrui__checkbox__box {
-  color : red;
-}
-`}</Highlight>
-
-									<a name="switch" href="#switch" className="title-anchor">
-										<h2 className="heading">Switch</h2>
-									</a>
-
-									<div style={{ marginBottom: '1em' }}>
-										<Switch
-											name="switch"
-											value={this.state.switched}
-											onChange={ switched => this.setState({ switched: switched }) }>
-											iOS style switch
-										</Switch>
-									</div>
-
-									Value: {this.state.switched ? 'true' : 'false'}
-
-<Highlight lang="jsx">{`
-<Switch
-  value={...}
-  onChange={...}>
-  iOS style switch
-</Switch>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__switch__groove {
-  background-color : green;
-  color : white;
-}
-`}</Highlight>
-
-									<a name="segmented-control" href="#segmented-control" className="title-anchor">
-										<h2 className="heading">Segmented Control</h2>
-									</a>
-
-									<SegmentedControl
-										style={input_style}
-										className="column-width"
-										name="button_group"
-										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
-										value={this.state.button_group}
-										onChange={ value => this.setState({ button_group: value }) }/>
-
-									Value: {this.state.button_group ? this.state.button_group : '(empty)'}
-
-<Highlight lang="jsx">{`
-<SegmentedControl
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__segmented-control__option {
-  background-color : white;
-  color : black;
-}
-.rrui__segmented-control__option:active {
-  background-color : cyan;
-}
-.rrui__segmented-control__option--selected {
-  background-color : blue;
-  color : white;
-}
-`}</Highlight>
-
-									<a name="date-picker" href="#date-picker" className="title-anchor">
-										<h2 className="heading">Date picker</h2>
-									</a>
-
-									<DatePicker
-										style={input_style}
-										className="column-width"
-										label="Date"
-										value={this.state.selectedDay}
-										onChange={selectedDay => this.setState({ selectedDay })}
-										disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)}/>
-
-									Value: {this.state.selectedDay ? this.state.selectedDay.toString() : '(empty)'}
-
-<Highlight lang="jsx">{`
-<DatePicker
-  label="Date"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-									<a name="date-picker-with-month-and-year" href="#date-picker-with-month-and-year" className="title-anchor">
-										<h2 className="heading">Date picker (with month and year selectors)</h2>
-									</a>
-
-									<DatePicker
-										style={input_style}
-										className="column-width"
-										label="Date"
-										selectYearsIntoPast={118}
-										selectYearsIntoFuture={10}
-										value={this.state.selectedDay}
-										onChange={selectedDay => this.setState({ selectedDay })}/>
-
-									Value: {this.state.selectedDay ? this.state.selectedDay.toString() : '(empty)'}
-
-<Highlight lang="jsx">{`
-<DatePicker
-  label="Date"
-  selectYearsIntoPast={118}
-  selectYearsIntoFuture={10}
-  value={...}
-  onChange={...} />
-`}</Highlight>
+								<ExampleMenuButton/>
+
+								<div style={{ marginTop: '2em' }}/>
+
+									<ExampleTextInput/>
+									<ExampleTextInputFloatingLabel/>
+									<ExampleTextInputPlaceholderAndFloatingLabel/>
+									<ExampleMultilineTextInputLabel/>
+
+									<ExampleSelect/>
+									<ExampleSelectAutocomplete/>
+									<ExampleSelectAutocompleteAsync/>
+									<ExampleSelectIcons/>
+									<ExampleSelectMenu/>
+
+									<ExampleCheckbox/>
+									<ExampleSwitch/>
+									<ExampleSegmentedControl/>
+
+									<ExampleDatePicker/>
+									<ExampleDatePickerMonthYear/>
 
 									<a name="file-upload" href="#file-upload" className="title-anchor">
 										<h2 className="heading">File upload</h2>
@@ -1080,337 +1578,10 @@
 
 									See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
 
-									<a name="tooltip" href="#tooltip" className="title-anchor">
-										<h2 className="heading">Tooltip</h2>
-									</a>
-
-									<Tooltip text="Testing testing">
-										Hover this element (or touch down on mobile devices)
-									</Tooltip>
-
-<Highlight lang="jsx">{`
-<Tooltip text="Testing testing">
-  Hover this element (or touch down on mobile devices)
-</Tooltip>
-
-// \u0060container: () => DOMElement\u0060 property is optional
-// and is gonna be the parent DOM Element for the tooltip itself
-// (\u0060document.body\u0060 by default)
-// (in which case make sure that \u0060document.body\u0060 has no \u0060margin\u0060
-//  otherwise tooltip \u0060left\u0060 and \u0060top\u0060 positions will be slightly off).
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__tooltip {
-  background-color : black;
-  color : white;
-}
-`}</Highlight>
-
-									<a name="snackbar" href="#snackbar" className="title-anchor">
-										<h2 className="heading">Snackbar</h2>
-									</a>
-
-									<Button action={() => {
-										const hours   = new Date().getHours()
-										const minutes = new Date().getMinutes()
-										const seconds = new Date().getSeconds()
-
-										const pad = number => number < 10 ? '0' + number : number
-
-										this.setState({ snack: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` })
-									}}>
-										Show a snack
-									</Button>
-
-									<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
-
-<Highlight lang="jsx">{`
-<Button action={() => this.setState({ snack: "..." })}>
-  Show a snack
-</Button>
-
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__snackbar {
-  background-color : black;
-  color : white;
-}
-`}</Highlight>
-
-<div>
-<code className="colored">value</code> can also be not just a string but an object of shape:
-</div>
-
-<ul className="list">
-	<li><code className="colored">content</code> — A string or a React element.</li>
-	<li><code className="colored">component</code> — (optional) Instead of <code className="colored">content</code> property one may supply <code className="colored">component</code> property which must be a React component which receives all <code className="colored">value.props</code> properties and also <code className="colored">hide</code> property (a function that hides the notification).</li>
-	<li><code className="colored">length</code> — (optional) Content length. Is used when calculating <code className="colored">duration</code> automatically. Is calculated automatically for string content.</li>
-	<li><code className="colored">type</code> — (optional) Is appended as a BEM modifier to <code className="colored">.rrui__snackbar</code> CSS class. E.g. <code className="colored">.rrui__snackbar--error</code> for <code className="colored">{'{ type: "error" }'}</code>.</li>
-	<li><code className="colored">duration</code> — (optional) How long will the notification stay. <code className="colored">-1</code> means "until manually closed". If not specified will be calculated automatically based on <code className="colored">length</code>.</li>
-</ul>
-
-{/* new-message-notification */}
-
-<Button action={() => this.setState({
-	snack: {
-		type: 'new-message-notification',
-		component : NewMessageNotification,
-		props : {
-			from : {
-				picture : 'https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg',
-				name : 'Pavel Durov'
-			}
-		},
-		duration: -1
-	}
-})}>
-  Show new message notification
-</Button>
-
-<Highlight lang="jsx">{`
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
-
-const NewMessageNotification = ({ from, hide }) => (
-  <div>
-    <img src={from.picture}/>
-    <div> New message from {from.name} </div>
-    <button type="button" onClick={hide}> ✕ </button>
-  </div>
-)
-
-const newMessageReceived = (message) => {
-  this.setState({
-    snack: {
-      type: 'new-message-notification',
-      component: NewMessageNotification,
-      props: message,
-      duration: -1
-    }
-  })
-}
-
-newMessageReceived({
-  from: {
-    picture: 'https://...',
-    name: 'Pavel Durov'
-  }
-})
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__snackbar--new-message-notification {
-  height : 200px;
-  padding : 0;
-  line-height : 1.35em;
-}
-`}</Highlight>
-
-									<a name="form" href="#form-and-buttons" className="title-anchor">
-										<h2 className="heading">Form and Buttons</h2>
-									</a>
-
-									<div className="submit-form">
-										<Button action={() => {}}>
-											Borderless
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										<Button action={() => {}} style={{ textTransform: 'uppercase' }}>
-											Uppercase
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										<Button action={() => console.log('test')} className="rrui__button--border">
-											Bordered
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										<Button link="https://google.com" target="_blank" className="rrui__button--border">
-											Hyperlink
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										<Button
-											submit
-											busy={this.state.busy}
-											className="rrui__button--border">
-											Submit Form
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										<Button
-											submit
-											busy={this.state.busy}>
-											SUBMIT
-										</Button>
-									</div>
-
-									<div className="submit-form">
-										Submitting: {this.state.busy ? 'true' : 'false'}
-									</div>
-
-<Highlight lang="jsx">{`
-const submit = () => {
-  console.log('Submitting form...')
-  this.setState({ busy: true })
-  setTimeout(() => {
-    console.log('Form submitted.')
-    this.setState({ busy: false })
-  }, 3500)
-}
-
-<Form
-  busy={this.state.busy}
-  submit={submit}>
-  ...
-
-  <Button action={() => {}}>
-    Borderless
-  </Button>
-
-  <Button
-    link="https://google.com"
-    target="_blank"
-    className="rrui__button--border">
-    Hyperlink
-  </Button>
-
-  <Button
-    action={() => console.log('test')}
-    className="rrui__button--border">
-    Bordered
-  </Button>
-
-  <Button
-    submit
-    busy={this.state.busy}
-    className="rrui__button--border">
-    Submit Form
-  </Button>
-</Form>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__button--border {
-  padding-left  : 20px;
-  padding-right : 20px;
-  border        : 2px solid blue;
-  border-radius : 5px;
-}
-.rrui__button--border .rrui__button__busy {
-  left   : 20px;
-  width  : calc(100% - 2 * 20px);
-  bottom : 8px;
-}
-`}</Highlight>
-								</Form>
-
-								<a name="modal" href="#modal" className="title-anchor">
-									<h2 className="heading">Modal</h2>
-								</a>
-
-								<Button
-									action={() => this.setState({ show_modal: true })}>
-									Show
-								</Button>
-
-{/*
-	closeButtonIcon={true}
-	closeLabel="x"
-*/}
-								<Modal
-									isOpen={this.state.show_modal}
-									close={() => this.setState({ show_modal: false })}
-									style={{ maxWidth : '40em' }}>
-
-									<Modal.Title>
-										An example modal
-									</Modal.Title>
-
-									<Modal.Content>
-										<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: 0 }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-									</Modal.Content>
-
-									<Modal.Actions>
-										<Button
-											action={ () => this.setState({ show_modal: false }) }>
-											Hide
-										</Button>
-									</Modal.Actions>
-								</Modal>
-
-<Highlight lang="jsx">{`
-<Button action={() => this.setState({ showModal: true })}>
-  Show
-</Button>
-
-<Modal
-  isOpen={this.state.showModal}
-  close={() => this.setState({ showModal: false })}>
-
-  <Modal.Title>
-    An example modal
-  <Modal.Title>
-
-  <Modal.Content>
-    ...
-  </Modal.Content>
-
-  <Modal.Actions>
-    <Button action={() => this.setState({ showModal: false })}>
-      Hide
-    </Button>
-  </Modal.Actions>
-</Modal>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__modal__content {
-  background-color : white;
-}
-.rrui__modal__content-body {
-  margin : 20px;
-}
-`}</Highlight>
-
-<code className="colored">{'<Modal/>'}</code> also takes optional properties:
-
-<ul className="list">
-	<li><code className="colored">closeButtonIcon</code> property which can either be <code className="colored">true</code> for a default "cross" icon or a custom <code className="colored">React.Component</code>.</li>
-
-	<li><code className="colored">closeLabel</code> property in which case a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
-</ul>
-
+								<ExampleTooltip/>
+								<ExampleSnackbar/>
+								<ExampleButtons/>
+								<ExampleModal/>
 							</Page>
 						</PageAndMenu>
 					)
