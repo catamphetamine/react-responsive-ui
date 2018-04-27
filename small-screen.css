@@ -49,7 +49,7 @@
 }
 
 /* Disable `<Select/>` options `:hover` effect. */
-.rrui__select__option:hover
+.rrui__select__option:hover:not(:active)
 {
 	background-color : transparent;
 }
