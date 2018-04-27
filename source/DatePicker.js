@@ -6,9 +6,15 @@ import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
-import { submitFormOnCtrlEnter } from './utility/dom'
-
 import Close, { CloseIcon } from './Close'
+
+import
+{
+	submitFormOnCtrlEnter,
+	isInternetExplorer,
+	scrollIntoViewIfNeeded
+}
+from './utility/dom'
 
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
@@ -105,6 +111,17 @@ export default class DatePicker extends PureComponent
 		// in fullscreen mode on mobile devices.
 		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
 
+		// When the `<DatePicker/>` is expanded
+		// the calendar may not fit on the screen.
+		// If `scrollIntoView` is `true` (which is the default)
+		// then the browser will automatically scroll
+		// so that the expanded calendar fits on the screen.
+		scrollIntoView : PropTypes.bool.isRequired,
+
+		// If `scrollIntoView` is `true` (which is the default)
+		// then this is gonna be the delay after which it scrolls into view.
+		expandAnimationDuration : PropTypes.number.isRequired,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -131,7 +148,10 @@ export default class DatePicker extends PureComponent
 
 		// The "x" button icon that closes the `<DatePicker/>`
 		// in fullscreen mode on mobile devices.
-		closeButtonIcon : CloseIcon
+		closeButtonIcon : CloseIcon,
+
+		scrollIntoView : true,
+		expandAnimationDuration : 150
 	}
 
 	state =
@@ -162,6 +182,8 @@ export default class DatePicker extends PureComponent
 	componentWillUnmount()
 	{
 		document.removeEventListener('click', this.onDocumentClick)
+
+		clearTimeout(this.scroll_into_view_timeout)
 	}
 
 	on_input_focus = (event) =>
@@ -178,13 +200,24 @@ export default class DatePicker extends PureComponent
 
 	expand = () =>
 	{
+		const
+		{
+			value,
+			format,
+			onToggle,
+			scrollIntoView,
+			expandAnimationDuration
+		}
+		= this.props
+
 		const { expanded } = this.state
-		const { value, format, onToggle } = this.props
 
 		if (expanded)
 		{
 			return
 		}
+
+		clearTimeout(this.scroll_into_view_timeout)
 
 		this.setState
 		({
@@ -202,6 +235,23 @@ export default class DatePicker extends PureComponent
 				text_value : format_date(value, format),
 				expanded   : true,
 				month      : value ? normalize_value(value) : new Date()
+			},
+			() =>
+			{
+				// For some reason in IE 11 "scroll into view" scrolls
+				// to the top of the page, therefore turn it off for IE.
+				if (!isInternetExplorer() && scrollIntoView)
+				{
+					this.scroll_into_view_timeout = setTimeout(() =>
+					{
+						// If still expanded and is still mounted
+						// then scroll into view.
+						if (this.state.expanded && this.expandable) {
+							scrollIntoViewIfNeeded(this.expandable)
+						}
+					},
+					expandAnimationDuration * 1.1)
+				}
 			})
 
 			// Could also focus on the calendar controls upon expansion
@@ -323,6 +373,8 @@ export default class DatePicker extends PureComponent
 		{
 			onToggle(false)
 		}
+
+		clearTimeout(this.scroll_into_view_timeout)
 
 		this.setState
 		({
@@ -568,7 +620,9 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	storeContainerInstance = (ref) => this.container = ref
+	storeContainerNode = (node) => this.container = node
+	storeExpandableNode = (node) => this.expandable = node
+	storeCalendarComponent = (ref) => this.calendar = ref
 
 	render()
 	{
@@ -620,7 +674,7 @@ export default class DatePicker extends PureComponent
 
 		return (
 			<div
-				ref={ this.storeContainerInstance }
+				ref={ this.storeContainerNode }
 				onKeyDown={ this.on_key_down_in_container }
 				onBlur={ this.on_blur }
 				className={ classNames('rrui__date-picker', className,
@@ -691,6 +745,7 @@ export default class DatePicker extends PureComponent
 							}
 						) }>
 						<div
+							ref={ this.storeExpandableNode }
 							className={ classNames
 							(
 								'rrui__expandable__content',
@@ -700,7 +755,7 @@ export default class DatePicker extends PureComponent
 								}
 							) }>
 							<DayPicker
-								ref={ ref => this.calendar = ref }
+								ref={ this.storeCalendarComponent }
 								month={ month }
 								firstDayOfWeek={ firstDayOfWeek }
 								onDayClick={ this.on_day_click }

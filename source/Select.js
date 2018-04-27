@@ -2,12 +2,19 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import classNames from 'classnames'
-import scrollIntoViewIfNeeded from 'scroll-into-view-if-needed'
 
 import Ellipsis from './Ellipsis'
 import Close, { CloseIcon } from './Close'
 
-import { submitFormOnCtrlEnter, submitContainingForm, getScrollbarWidth } from './utility/dom'
+import
+{
+	submitFormOnCtrlEnter,
+	submitContainingForm,
+	getScrollbarWidth,
+	isInternetExplorer,
+	scrollIntoViewIfNeeded
+}
+from './utility/dom'
 
 // Possible enhancements:
 //
@@ -1382,31 +1389,17 @@ export default class Select extends Component
 
 		// For some reason in IE 11 "scroll into view" scrolls
 		// to the top of the page, therefore turn it off for IE.
-		if (!is_internet_explorer() && scrollIntoView)
+		if (!isInternetExplorer() && scrollIntoView)
 		{
 			this.scroll_into_view_timeout = setTimeout(() =>
 			{
 				// If still expanded and there are any options
 				// then scroll into view.
 				if (this.state.expanded && this.list) {
-					this.scrollIntoView()
+					scrollIntoViewIfNeeded(this.list)
 				}
 			},
 			expandAnimationDuration * 1.1)
-		}
-	}
-
-	scrollIntoView()
-	{
-		// https://developer.mozilla.org/ru/docs/Web/API/Element/scrollIntoViewIfNeeded
-		if (this.list.scrollIntoViewIfNeeded)
-		{
-			this.list.scrollIntoViewIfNeeded(false)
-		}
-		else
-		{
-			// https://github.com/stipsan/scroll-into-view-if-needed
-			scrollIntoViewIfNeeded(this.list, false, { duration: 800 })
 		}
 	}
 
@@ -2060,14 +2053,6 @@ function get_option_key(value)
 function value_is_empty(value)
 {
 	return value === null || value === undefined
-}
-
-// Detects Internet Explorer.
-// https://stackoverflow.com/questions/19999388/check-if-user-is-using-ie-with-jquery
-function is_internet_explorer()
-{
-	return window.navigator.userAgent.indexOf('MSIE ') > 0 ||
-		window.navigator.userAgent.indexOf('Trident/') > 0
 }
 
 /**
