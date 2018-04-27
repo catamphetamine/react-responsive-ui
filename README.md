@@ -34,15 +34,6 @@ import TextInput from 'react-responsive-ui/commonjs/TextInput'
 
 Which results in a much smaller bundle size.
 
-## Validation
-
-Each form component receives two validation-specific properties
-
-* `error : String` – error message
-* `indicateInvalid : boolean` – whether the field should be displayed as an invalid one (including showing the `error` message)
-
-When both of these properties are set the form component appends `--invalid` postfixes to its CSS `className`s.
-
 ## CSS
 
 The CSS for this library must be included on a page too.
@@ -71,15 +62,6 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 This library uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden in a separate `react-responsive-ui-variables.css` file (analogous to the original `variables.css` file).
 
-#### When using Webpack
-
-```js
-// React Responsive UI.
-require('react-responsive-ui/style.css')
-// Custom variable values.
-require('./src/styles/react-responsive-ui-variables.css')
-```
-
 #### When not using Webpack
 
 ```html
@@ -91,6 +73,36 @@ require('./src/styles/react-responsive-ui-variables.css')
 </head>
 ```
 
+#### When using Webpack
+
+```js
+// React Responsive UI.
+require('react-responsive-ui/style.css')
+// Custom variable values.
+require('./src/styles/react-responsive-ui-variables.css')
+```
+
+Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS preprocessor like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-css-variables`](https://github.com/MadLittleMods/postcss-css-variables). Check that it actually replaces `var()`s with the actual values in the output CSS.
+
+An example for Webpack and SCSS:
+
+```css
+@import "~react-responsive-ui/style";
+
+@media (max-width: 720px) {
+  @import "~react-responsive-ui/small-screen";
+}
+
+:root {
+  --rrui-unit               : 12px;
+  --rrui-white-color        : #f0f7ff;
+  --rrui-black-color        : #112233;
+  --rrui-accent-color       : #cc0000;
+  --rrui-accent-color-light : #ee0000;
+  --rrui-gray-color         : #7f7f7f;
+}
+```
+
 ## Responsive
 
 The included [`react-responsive-ui/small-screen.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/small-screen.css) stylesheet adapts all components for "small screens" ("mobile devices"). E.g. `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen.
@@ -98,18 +110,30 @@ The included [`react-responsive-ui/small-screen.css`](https://github.com/catamph
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 
 ```css
+@import url(~react-responsive-ui/style.css)
 @import url(~react-responsive-ui/small-screen.css) (max-width: 720px)
 ```
 
 SCSS `@import` example:
 
 ```css
+@import "~react-responsive-ui/style";
+
 @media (max-width: 720px) {
   @import "~react-responsive-ui/small-screen";
 }
 ```
 
 The `small-screen.css` file must not be included before `variables.css` because it uses those variables (the values of which can be overridden as shown in the previous section).
+
+## Validation
+
+Each form component receives two validation-specific properties
+
+* `error : String` – error message
+* `indicateInvalid : boolean` – whether the field should be displayed as an invalid one (including showing the `error` message)
+
+When both of these properties are set the form component appends `--invalid` postfixes to its CSS `className`s.
 
 ## Drag'n'drop
 
