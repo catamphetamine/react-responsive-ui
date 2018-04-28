@@ -3,6 +3,8 @@
 
 * (breaking change) `small-screen.css` file has been split into individual per-component files (see the updated README).
 
+* (breaking change) `<DatePicker/>` `icon` is now a React component instead of a React element, and there's a default one, and the `icon` is hidden by default via CSS (a developer must explicitly set `display: block` for `.rrui__date-picker__icon` in order for the `icon` to be visible), and also `.rrui__date-picker__icon` CSS class styling changed.
+
 * Fixed `<Select autocomplete/>` input focus upon expansion on mobile devices.
 
 * Fixed `<Select/>` too many options rendered when collapsed.

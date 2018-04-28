@@ -6,11 +6,12 @@ import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
+import TextInput from './TextInput'
 import Close, { CloseIcon } from './Close'
 
 import
 {
-	submitFormOnCtrlEnter,
+	// submitFormOnCtrlEnter,
 	isInternetExplorer,
 	scrollIntoViewIfNeeded
 }
@@ -25,6 +26,13 @@ from './utility/dom'
 // // https://github.com/date-fns/date-fns/issues/347
 // import parse_date_date_fns from 'date-fns/parse'
 // import format_date_date_fns from 'date-fns/format'
+
+const iconStyle =
+{
+	width  : '100%',
+	height : '100%',
+	fill   : 'currentColor'
+}
 
 export default class DatePicker extends PureComponent
 {
@@ -87,10 +95,10 @@ export default class DatePicker extends PureComponent
 		]),
 
 		// How much years back can a user navigate using the year `<select/>`
-		selectYearsIntoPast : PropTypes.number,
+		selectYearsIntoPast : PropTypes.number.isRequired,
 
 		// How much years forward can a user navigate using the year `<select/>`
-		selectYearsIntoFuture : PropTypes.number,
+		selectYearsIntoFuture : PropTypes.number.isRequired,
 
 		// Whether dates being selected should be in UTC+0 timezone.
 		// (is `false` by default)
@@ -100,8 +108,8 @@ export default class DatePicker extends PureComponent
 		// (is `true` by default)
 		noon : PropTypes.bool.isRequired,
 
-		// The calendar icon
-		icon : PropTypes.node,
+		// The calendar icon.
+		icon : PropTypes.func,
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
@@ -119,8 +127,9 @@ export default class DatePicker extends PureComponent
 		scrollIntoView : PropTypes.bool.isRequired,
 
 		// If `scrollIntoView` is `true` (which is the default)
-		// then this is gonna be the delay after which it scrolls into view.
+		// then these two are gonna define the delay after which it scrolls into view.
 		expandAnimationDuration : PropTypes.number.isRequired,
+		keyboardSlideAnimationDuration : PropTypes.number.isRequired,
 
 		// CSS class
 		className : PropTypes.string,
@@ -146,12 +155,32 @@ export default class DatePicker extends PureComponent
 		// Whether to set time to 12:00 for dates being selected
 		noon : true,
 
+		// A sensible default.
+		selectYearsIntoPast : 100,
+		selectYearsIntoFuture : 100,
+
+		// Default calendar icon
+		icon : () => (
+			<svg style={iconStyle} viewBox="0 0 32 32">
+				<path d=" M2 2 L10 2 L10 10 L2 10z M12 2 L20 2 L20 10 L12 10z M22 2 L30 2 L30 10 L22 10z M2 12 L10 12 L10 20 L2 20z M12 12 L20 12 L20 20 L12 20z M22 12 L30 12 L30 20 L22 20z M2 22 L10 22 L10 30 L2 30z M12 22 L20 22 L20 30 L12 30z M22 22 L30 22 L30 30 L22 30z "/>
+			</svg>
+		),
+
 		// The "x" button icon that closes the `<DatePicker/>`
 		// in fullscreen mode on mobile devices.
 		closeButtonIcon : CloseIcon,
 
+		// When the `<DatePicker/>` is expanded
+		// the calendar may not fit on the screen.
+		// If `scrollIntoView` is `true` (which is the default)
+		// then the browser will automatically scroll
+		// so that the expanded calendar fits on the screen.
 		scrollIntoView : true,
-		expandAnimationDuration : 150
+
+		// If `scrollIntoView` is `true` (which is the default)
+		// then these two are gonna define the delay after which it scrolls into view.
+		expandAnimationDuration : 150,
+		keyboardSlideAnimationDuration : 300
 	}
 
 	state =
@@ -206,7 +235,8 @@ export default class DatePicker extends PureComponent
 			format,
 			onToggle,
 			scrollIntoView,
-			expandAnimationDuration
+			expandAnimationDuration,
+			keyboardSlideAnimationDuration
 		}
 		= this.props
 
@@ -221,7 +251,12 @@ export default class DatePicker extends PureComponent
 
 		this.setState
 		({
-			month : undefined
+			// Reset month for some unknown reason.
+			month : undefined,
+
+			// Must re-calculate `text_value` on each "expand"
+			// because it's being reset on each "collapse".
+			text_value : format_date(value, format)
 		},
 		() =>
 		{
@@ -230,36 +265,42 @@ export default class DatePicker extends PureComponent
 				onToggle(true)
 			}
 
-			this.setState
-			({
-				text_value : format_date(value, format),
-				expanded   : true,
-				month      : value ? normalize_value(value) : new Date()
-			},
-			() =>
+			// Toggling the calendar in a timeout
+			// in order for iOS scroll not to get "janky"
+			// when `<DatePicker/>` gets focused.
+			// (for some unknown reason)
+			setTimeout(() =>
 			{
-				// For some reason in IE 11 "scroll into view" scrolls
-				// to the top of the page, therefore turn it off for IE.
-				if (!isInternetExplorer() && scrollIntoView)
+				this.setState
+				({
+					expanded : true,
+					month    : value ? normalize_value(value) : new Date()
+				},
+				() =>
 				{
-					this.scroll_into_view_timeout = setTimeout(() =>
+					// For some reason in IE 11 "scroll into view" scrolls
+					// to the top of the page, therefore turn it off for IE.
+					if (!isInternetExplorer() && scrollIntoView)
 					{
-						// If still expanded and is still mounted
-						// then scroll into view.
-						if (this.state.expanded && this.expandable) {
-							scrollIntoViewIfNeeded(this.expandable)
-						}
-					},
-					expandAnimationDuration * 1.1)
-				}
-			})
+						this.scroll_into_view_timeout = setTimeout(() =>
+						{
+							// If still expanded and is still mounted
+							// then scroll into view.
+							if (this.state.expanded && this.expandable) {
+								scrollIntoViewIfNeeded(this.expandable)
+							}
+						},
+						Math.max(expandAnimationDuration, keyboardSlideAnimationDuration) * 1.1)
+					}
+				})
 
-			// Could also focus on the calendar controls upon expansion
-			// but it's configured to collapse on Tab event.
-			// , () =>
-			// {
-			// 	ReactDOM.findDOMNode(this.calendar).focus()
-			// })
+				// Could also focus on the calendar controls upon expansion
+				// but it's configured to collapse on Tab event.
+				// , () =>
+				// {
+				// 	ReactDOM.findDOMNode(this.calendar).focus()
+				// })
+			}, 0)
 		})
 	}
 
@@ -305,10 +346,11 @@ export default class DatePicker extends PureComponent
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.input))
-		{
-			return
-		}
+		// `<TextInput/>` handles `Ctrl + Enter` by itself.
+		// if (submitFormOnCtrlEnter(event, this.input))
+		// {
+		// 	return
+		// }
 
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -385,16 +427,28 @@ export default class DatePicker extends PureComponent
 		// `onChange` fires on calendar day `click`
 		// but the `value` hasn't neccessarily been updated yet,
 		// therefore, say, if `value` was not set
-		// and a user select a day in the calendar
+		// and a user selects a day in the calendar
 		// then the `value` is technically still `undefined`
 		// so can't just set `state.text_value = format_date(value)` here.
 		//
 		// Analogous, `setState({ text_value })` has been called
-		// in calendar day `onClick` but `state.text_value`
+		// in calendar day `onClick` handler but `state.text_value`
 		// hasn't neccessarily been updated yet.
 		//
-		// Still must validate (recompute) `text_value` on `<input/>` blur
-		// in cases when a user manually typed in a date and then tabbed away.
+		// Still must validate (recompute) `text_value`
+		// upon expanding the `<DatePicker/>`, for example, on `<input/>` blur
+		// in cases when a user manually typed in an incomplete date and then tabbed away.
+	}
+
+	toggle = () =>
+	{
+		const { expanded } = this.state
+
+		if (expanded) {
+			this.collapse()
+		} else {
+			this.expand()
+		}
 	}
 
 	on_input_change = (event) =>
@@ -410,7 +464,16 @@ export default class DatePicker extends PureComponent
 		}
 		= this.props
 
-		let { value } = event.target
+		// Extract `value` from the argument
+		// of this `onChange` listener
+		// (for convenience)
+
+		let value = event
+
+		if (event.target !== undefined)
+		{
+			value = event.target.value
+		}
 
 		value = value.trim()
 
@@ -531,7 +594,10 @@ export default class DatePicker extends PureComponent
 		this.collapse()
 
 		// Focus the `<input/>`
-		this.input.focus()
+		if (getComputedStyle(this.inputOverlay).display === 'none')
+		{
+			this.input.focus()
+		}
 	}
 
 	on_calendar_key_down = (event) =>
@@ -577,14 +643,6 @@ export default class DatePicker extends PureComponent
 		this.setState({ month })
 	}
 
-	// Whether should indicate that the input value is invalid
-	should_indicate_invalid()
-	{
-		const { indicateInvalid, error } = this.props
-
-		return indicateInvalid && error
-	}
-
 	// This handler is a workaround for `redux-form`
 	on_blur = (event) =>
 	{
@@ -623,6 +681,8 @@ export default class DatePicker extends PureComponent
 	storeContainerNode = (node) => this.container = node
 	storeExpandableNode = (node) => this.expandable = node
 	storeCalendarComponent = (ref) => this.calendar = ref
+	storeInputOverlayNode = (node) => this.inputOverlay = node
+	storeInputComponent = (ref) => this.input = ref
 
 	render()
 	{
@@ -632,6 +692,7 @@ export default class DatePicker extends PureComponent
 			format,
 			value,
 			error,
+			indicateInvalid,
 			disabledDays,
 			selectYearsIntoPast,
 			selectYearsIntoFuture,
@@ -661,15 +722,20 @@ export default class DatePicker extends PureComponent
 		// and also date format is not customizable,
 		// therefore just using `<input type="text"/>` here
 
+		// "MM/DD/YYYY"
+		const formatHint = typeof format === 'string' ? format : undefined
+
 		let captionElement
 
 		if (selectYearsIntoPast || selectYearsIntoFuture)
 		{
-			captionElement = <YearMonthSelector
-				selectedDay={ value }
-				onChange={ this.on_month_selected }
-				selectYearsIntoPast={ selectYearsIntoPast }
-				selectYearsIntoFuture={ selectYearsIntoFuture } />
+			captionElement = (
+				<YearMonthSelector
+					selectedDay={ value }
+					onChange={ this.on_month_selected }
+					selectYearsIntoPast={ selectYearsIntoPast }
+					selectYearsIntoFuture={ selectYearsIntoFuture } />
+			)
 		}
 
 		return (
@@ -679,57 +745,42 @@ export default class DatePicker extends PureComponent
 				onBlur={ this.on_blur }
 				className={ classNames('rrui__date-picker', className,
 				{
+					'rrui__date-picker--expanded' : expanded,
 					'rrui__date-picker--disabled' : disabled
 				}) }
 				style={ style }>
 
-				<div className="rrui__input">
-					<div className="rrui__date-picker__icon">
-						{ icon }
-					</div>
+				{/* Date input */}
+				<TextInput
+					id={ id }
+					ref={ this.storeInputComponent }
+					required={ required }
+					error={ error }
+					indicateInvalid={ indicateInvalid }
+					label={ label }
+					placeholder={ label ? placeholder : placeholder || formatHint }
+					disabled={ disabled }
+					value={ text_value !== undefined ? text_value : format_date(value, format) }
+					onKeyDown={ this.on_input_key_down }
+					onChange={ this.on_input_change }
+					onFocus={ this.on_input_focus }
+					onClick={ this.expand }>
 
 					{/* This layer can intercept taps on mobile devices
 					    to prevent the keyboard from showing
 					    when the date picker is in fullscreen mode */}
 					<div
-						onClick={ this.expand }
+						ref={ this.storeInputOverlayNode }
+						onClick={ this.toggle }
 						className="rrui__date-picker__input-overlay"/>
 
-					{/* Date input */}
-					<input
-						id={ id }
-						type="text"
-						ref={ ref => this.input = ref }
-						placeholder={ placeholder || (typeof format === 'string' ? format : undefined) }
-						disabled={ disabled }
-						value={ text_value !== undefined ? text_value : format_date(value, format) }
-						onKeyDown={ this.on_input_key_down }
-						onChange={ this.on_input_change }
-						onFocus={ this.on_input_focus }
-						onClick={ this.expand }
-						className={ classNames
-						(
-							'rrui__input-element',
-							'rrui__input-field',
-							{
-								'rrui__input-field--invalid'  : this.should_indicate_invalid(),
-								'rrui__input-field--disabled' : disabled
-							}
-						) }/>
-
-					{/* Label */}
-					{/* (this label is placed after the `<input/>`
-					     to utilize the CSS `+` selector) */}
-					{ label &&
-						<label
-							htmlFor={ id }
-							className={ classNames('rrui__input-label',
-							{
-								'rrui__input-label--required' : required && !value,
-								'rrui__input-label--invalid'  : this.should_indicate_invalid()
-							}) }>
-							{ label }
-						</label>
+					{/* Calendar icon which toggles the calendar */}
+					{ icon &&
+						<div
+							onClick={ this.toggle }
+							className="rrui__date-picker__icon">
+							{ icon() }
+						</div>
 					}
 
 					{/* <DayPicker/> doesn't support `style` property */}
@@ -777,12 +828,7 @@ export default class DatePicker extends PureComponent
 							}
 						</div>
 					</div>
-				</div>
-
-				{/* Error message */}
-				{ this.should_indicate_invalid() &&
-					<div className="rrui__input-error">{ error }</div>
-				}
+				</TextInput>
 			</div>
 		)
 	}
@@ -837,6 +883,7 @@ function format_date(date, format)
 
 // Parses a text value into a `Date` provided a `format`.
 // The date returned is in the user's time zone and the time is `00:00`.
+// (only `DD`, `MM`, `YY` and `YYYY` literals are supported).
 function parse_date_custom(string, format, noon, utc)
 {
 	if (!string)
@@ -864,7 +911,7 @@ function parse_date_custom(string, format, noon, utc)
 
 	if (year === undefined || month === undefined || day === undefined)
 	{
-		return console.error(`Couldn't parse date. Most likely an invalid date entered (manually). Otherwise it could be an unsupported date format: ${format} (only DD, MM, YY and YYYY literals are supported).`)
+		return
 	}
 
 	// The date created is in the user's time zone and the time is `00:00`.

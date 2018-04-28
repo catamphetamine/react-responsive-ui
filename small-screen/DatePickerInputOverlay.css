@@ -1,0 +1,10 @@
+/*
+Displays a click-intercepting overlay
+over `<DatePicker/>`'s `<input/>`
+so that the keyboard doesn't slide from bottom
+pushing the expanded `<DatePicker/>` from the screen.
+*/
+.rrui__date-picker__input-overlay
+{
+	display : block;
+}

@@ -85,6 +85,9 @@ export default class TextInput extends PureComponent
 		// Is called when the input is blurred
 		onBlur           : PropTypes.func,
 
+		// Is called when the input is clicked
+		onClick           : PropTypes.func,
+
 		// CSS style object
 		style            : PropTypes.object,
 
@@ -171,7 +174,8 @@ export default class TextInput extends PureComponent
 			required,
 			floatingLabel,
 			style,
-			className
+			className,
+			children
 		}
 		= this.props
 
@@ -219,6 +223,8 @@ export default class TextInput extends PureComponent
 					}
 				</div>
 
+				{ children }
+
 				{/* Error message */}
 				{ this.should_indicate_invalid() && this.render_error_message() }
 
@@ -248,7 +254,8 @@ export default class TextInput extends PureComponent
 			// Passthrough properties
 			id,
 			onFocus,
-			onBlur
+			onBlur,
+			onClick
 		}
 		= this.props
 
@@ -274,6 +281,7 @@ export default class TextInput extends PureComponent
 			onKeyDown   : this.onKeyDown,
 			onFocus,
 			onBlur,
+			onClick,
 			disabled,
 			className   : classNames
 			(

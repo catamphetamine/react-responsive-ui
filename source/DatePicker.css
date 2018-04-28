@@ -312,8 +312,10 @@
 	*/
 	display  : none;
 	position : absolute;
+  top      : 0;
 	width    : 100%;
 	height   : 100%;
+  z-index  : 1;
 }
 
 .rrui__date-picker__close
@@ -325,10 +327,32 @@
 	display      : none;
 }
 
+.rrui__date-picker:focus
+{
+  display: none
+}
+
 .rrui__date-picker__icon
 {
-	position       : absolute;
-	top            : 0;
-	right          : 0;
-	pointer-events : none;
+  display  : none;
+  position : absolute;
+  top      : calc((var(--rrui-input-height) - var(--rrui-unit) * 1.5) / 2);
+  right    : calc(var(--rrui-unit) / 2);
+  width    : calc(var(--rrui-unit) * 1.5);
+  height   : calc(var(--rrui-unit) * 1.5);
+  z-index  : 1;
+  opacity  : 0.5;
+  color    : var(--rrui-black-color);
+}
+
+.rrui__date-picker--expanded .rrui__date-picker__icon
+{
+  opacity : 1;
+  color   : var(--rrui-accent-color);
+}
+
+.rrui__date-picker__icon:active
+{
+  opacity : 1;
+  color   : var(--rrui-accent-color-light);
 }

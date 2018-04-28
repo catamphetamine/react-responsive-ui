@@ -204,8 +204,9 @@ export default class Select extends Component
 		scrollIntoView : PropTypes.bool.isRequired,
 
 		// If `scrollIntoView` is `true` (which is the default)
-		// then this is gonna be the delay after which it scrolls into view.
+		// then these two are gonna define the delay after which it scrolls into view.
 		expandAnimationDuration : PropTypes.number.isRequired,
+		keyboardSlideAnimationDuration : PropTypes.number.isRequired,
 
 		onTabOut : PropTypes.func,
 
@@ -238,7 +239,11 @@ export default class Select extends Component
 		native             : false,
 		nativeExpanded     : false,
 		scrollIntoView     : true,
+
+		// If `scrollIntoView` is `true` (which is the default)
+		// then these two are gonna define the delay after which it scrolls into view.
 		expandAnimationDuration : 150,
+		keyboardSlideAnimationDuration : 300,
 
 		// Set to `true` to mark the field as required
 		required : false,
@@ -1366,7 +1371,11 @@ export default class Select extends Component
 		{
 			this.fetchOptions(() =>
 			{
-				this._toggle(true, options)
+				// Toggling the options list in a timeout
+				// in order for iOS scroll not to get "janky"
+				// when `<Select autocomplete/>` gets focused.
+				// (for some unknown reason)
+				setTimeout(() => this._toggle(true, options), 0)
 			})
 		}
 	}
@@ -1419,7 +1428,8 @@ export default class Select extends Component
 		const
 		{
 			scrollIntoView,
-			expandAnimationDuration
+			expandAnimationDuration,
+			keyboardSlideAnimationDuration
 		}
 		= this.props
 
@@ -1439,7 +1449,7 @@ export default class Select extends Component
 					scrollIntoViewIfNeeded(this.list)
 				}
 			},
-			expandAnimationDuration * 1.1)
+			Math.max(expandAnimationDuration, keyboardSlideAnimationDuration) * 1.1)
 		}
 	}
 
