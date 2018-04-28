@@ -117,6 +117,7 @@ An example for Webpack and SCSS:
 @media (max-width: 720px) {
   @import "~react-responsive-ui/small-screen/Modal";
   @import "~react-responsive-ui/small-screen/Snackbar";
+  @import "~react-responsive-ui/small-screen/DatePickerInputOverlay";
 }
 
 :root {
