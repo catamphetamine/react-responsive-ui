@@ -215,11 +215,9 @@
 
 			html, body, button, input, textarea, select
 			{
-				/* The font size should be 16px minimum */
-				/* so that mobile browsers don't zoom on input focus. */
-				/* https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
-				font-size   : 16px;
+				font-size   : 14px;
 			}
+
 			.submit-form
 			{
 				margin-top: calc(0.3rem * 5);
@@ -281,7 +279,10 @@
 
 	<style>
 		/* Responsive RRUI */
-		/*@import url("./small-screen.css") (max-width: 720px);*/
+		@import url("./small-screen/Modal.css") (max-width: 720px);
+		@import url("./small-screen/Snackbar.css") (max-width: 720px);
+		@import url("./small-screen/Select.css") (max-width: 720px);
+		@import url("./small-screen/DatePicker.css") (max-width: 720px);
 	</style>
 
 	<body>
@@ -361,7 +362,7 @@
 
 			const Example = ({ name, title, children }) => (
 				<div>
-					<a name={name} href={`#${name}`} className="title-anchor">
+					<a name={name} href={`#${name}`} className="title-anchor" tabIndex="-1">
 						<h2 className="heading">{title}</h2>
 					</a>
 					{children}
@@ -1526,7 +1527,7 @@ const ExampleModal = React.createClass
 								</ul>
 
 								<div className="sidenote">
-									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>. (testing)
+									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>.
 								</div>
 
 								<ExampleMenuButton/>
@@ -1551,7 +1552,7 @@ const ExampleModal = React.createClass
 									<ExampleDatePicker/>
 									<ExampleDatePickerMonthYear/>
 
-									<a name="file-upload" href="#file-upload" className="title-anchor">
+									<a name="file-upload" href="#file-upload" className="title-anchor" tabIndex="-1">
 										<h2 className="heading">File upload</h2>
 									</a>
 
@@ -1562,7 +1563,7 @@ const ExampleModal = React.createClass
 
 									See the <a href="https://github.com/catamphetamine/react-responsive-ui#dragndrop" target="_blank">code sample</a>.
 
-									<a name="activity-indicator" href="#activity-indicator" className="title-anchor">
+									<a name="activity-indicator" href="#activity-indicator" className="title-anchor" tabIndex="-1">
 										<h2 className="heading">Activity Indicator</h2>
 									</a>
 
@@ -1579,7 +1580,7 @@ const ExampleModal = React.createClass
 }
 `}</Highlight>
 
-									<a name="ellipsis" href="#ellipsis" className="title-anchor">
+									<a name="ellipsis" href="#ellipsis" className="title-anchor" tabIndex="-1">
 										<h2 className="heading">Ellipsis</h2>
 									</a>
 
@@ -1597,7 +1598,7 @@ const ExampleModal = React.createClass
 }
 `}</Highlight>
 
-									<a name="phone" href="#phone" className="title-anchor">
+									<a name="phone" href="#phone" className="title-anchor" tabIndex="-1">
 										<h2 className="heading">Phone number input</h2>
 									</a>
 

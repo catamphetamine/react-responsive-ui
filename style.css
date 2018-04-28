@@ -1366,6 +1366,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
 
+.rrui__select__options:not(.rrui__expandable--expanded)
+{
+  overflow: hidden;
+}
+
 .rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu) {
   /*
   `margin-top` is constituted by:
@@ -1387,11 +1392,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
   At the same time `<Select/>` options should stretch themselves
   horizontally to the width of the containing column (when using grid layout).
   */
-  min-width: calc(100% + var(--rrui-list-item-side-padding) * 2); }
+  width: calc(100% + var(--rrui-list-item-side-padding) * 2); }
 
-.rrui__select--menu .rrui__select__options {
-  /* Overrides the `min-width` rule above for menus */
-  min-width: 0; }
+.rrui__select__option-label
+{
+  overflow      : hidden;
+  text-overflow : ellipsis;
+}
 
 .rrui__select--menu {
   /* Usually menu toggler is not 100% wide, so it makes sense. */
@@ -1438,8 +1445,16 @@ but rather `width: auto` or `left: 0; right: 0;`.
   text-align: left;
   white-space: nowrap; }
 
-.rrui__select__option:hover:not(:active) {
-  background-color: var(--rrui-gray-color-lightest); }
+.rrui__select__options--expanded .rrui__select__option:hover
+{
+  background-color : var(--rrui-gray-color-lightest);
+}
+
+.rrui__select__options--expanded .rrui__select__option:active
+{
+  background-color : var(--rrui-accent-color);
+  color            : var(--rrui-white-color);
+}
 
 .rrui__select__option-icon {
   margin-right: var(--rrui-list-icon-margin); }
@@ -1464,9 +1479,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__option--focused {
   background-color: var(--rrui-gray-color-lightest); }
 
-.rrui__select__option:active {
-  background-color: var(--rrui-accent-color);
-  color: var(--rrui-white-color); }
+.rrui__select__autocomplete--hidden {
+  position: absolute;
+  z-index: -1;
+}
 
 .rrui__select__button,
 .rrui__select__autocomplete {
