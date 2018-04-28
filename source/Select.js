@@ -1317,12 +1317,14 @@ export default class Select extends Component
 		const
 		{
 			menu,
+			autocomplete,
 			disabled,
 			nativeExpanded,
-			onToggle,
-			isFetchingOptions
+			onToggle
 		}
 		= this.props
+
+		const { isFetchingOptions } = this.state
 
 		const expanded = options.expanded !== undefined ? options.expanded : this.state.expanded
 
@@ -1375,7 +1377,19 @@ export default class Select extends Component
 				// in order for iOS scroll not to get "janky"
 				// when `<Select autocomplete/>` gets focused.
 				// (for some unknown reason)
-				setTimeout(() => this._toggle(true, options), 0)
+				//
+				// Asynchronous `getOptions()` introduce a delay already
+				// so only adding a delay for synchronous autocomplete.
+				//
+				if (autocomplete && this.props.options)
+				{
+					setTimeout(() => this._toggle(true, options), 50)
+				}
+				else
+				{
+					// Asynchronous `getOptions()` introduce a delay already.
+					this._toggle(true, options)
+				}
 			})
 		}
 	}
