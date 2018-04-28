@@ -716,6 +716,7 @@ export default class Select extends Component
 			{
 				if (menu)
 				{
+					// Collapse the `<Select/>`.
 					this.onToggle(event)
 				}
 				else
@@ -1272,15 +1273,19 @@ export default class Select extends Component
 		}
 	}
 
-	onToggle = (event, options = {}) =>
+	onToggle = (event) =>
 	{
-		if (options.focus === undefined)
-		{
-			options.focus = true
-		}
+		const { autocomplete } = this.props
+		const { expanded } = this.state
 
 		// Don't navigate away when clicking links
 		event.preventDefault()
+
+		if (!expanded && autocomplete)
+		{
+			// Focus the input after the select is expanded.
+			this.autocomplete.focus()
+		}
 
 		// Not discarding the click event because
 		// other expanded selects may be listening to it.
@@ -1299,10 +1304,10 @@ export default class Select extends Component
 		// `this.onToggle(event)` should be called instead of
 		// directly `this.toggle()` on any toggling click.
 		clearTimeout(this.toggle_timeout)
-		this.toggle_timeout = setTimeout(() => this.toggle(options), 0)
+		this.toggle_timeout = setTimeout(() => this.toggle({ timeout: true }), 0)
 	}
 
-	toggle(options = {})
+	toggle = (options = {}) =>
 	{
 		const
 		{
@@ -1366,11 +1371,11 @@ export default class Select extends Component
 		}
 	}
 
-	_toggle(expand, { focus : refocus })
+	_toggle(expand, { timeout, refocus })
 	{
 		const { autocomplete, focusUponSelection } = this.props
 
-		if (expand && autocomplete)
+		if (expand && autocomplete && !timeout)
 		{
 			// Focus the input after the select is expanded.
 			this.autocomplete.focus()
@@ -1489,7 +1494,7 @@ export default class Select extends Component
 		// or if an option was selected from the list.
 		if (!this.select.contains(event.target))
 		{
-			this.toggle({ expanded: true, focus: false })
+			this.toggle({ expanded: true, refocus: false })
 		}
 	}
 
@@ -1597,7 +1602,7 @@ export default class Select extends Component
 					// Collapse the list if it's expanded
 					if (this.state.expanded)
 					{
-						this.toggle({ focus: true })
+						this.toggle()
 
 						// Restore focus when the list is collapsed.
 						clearTimeout(this.restore_focus_on_collapse_timeout)
@@ -2057,6 +2062,13 @@ export default class Select extends Component
 
 	on_autocomplete_input_change = (event) =>
 	{
+		const { expanded } = this.state
+
+		if (!expanded)
+		{
+			return event.preventDefault()
+		}
+
 		this.setState
 		({
 			autocomplete_input_value: event.target.value

@@ -320,6 +320,7 @@
 {
 	position : absolute;
 	z-index  : -1;
+	opacity  : 0;
 }
 
 .rrui__select__toggler
