@@ -22,6 +22,7 @@
 	line-height   : var(--rrui-list-item-height);
 	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
 	padding-right : var(--rrui-collapsible-menu-item-side-padding);
+	color         : var(--rrui-white-color);
 }
 
 .rrui__slideout-menu--expanded
