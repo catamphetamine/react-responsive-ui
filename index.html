@@ -14,6 +14,13 @@
 
 		<link rel="stylesheet" href="./style.css"/>
 
+		<style>
+			.ReactModal__Body--open
+			{
+				touch-action: none;
+			}
+		</style>
+
 		<!--
 		This makes the page not scale down on mobile devices
 		and instead adapt to the screen width using `@media` queries.
@@ -1374,7 +1381,7 @@ const ExampleModal = React.createClass
 	render()
 	{
 		return (
-			<Example name="modal" title="Modal">
+			<Example name="modal" title="Modal.">
 
 								<Button
 									action={() => this.setState({ show_modal: true })}>
