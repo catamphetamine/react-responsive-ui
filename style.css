@@ -1034,6 +1034,8 @@ also change `default_close_timeout` in ./Modal.js accordingly
 
 .rrui__modal__contents {
   opacity: 0;
+  /* Removes janky scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
   /*
   Scaling `<Modal/>` down on appear looks cool
   but it also can cause scrollbars to appear
