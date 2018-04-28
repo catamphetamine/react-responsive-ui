@@ -225,6 +225,10 @@ class FileUploadArea extends Component {
 
 Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/transform-decorators/) for decorators syntax support.
 
+## Known Issues
+
+An overflown `<Modal/>` scroll is janky on iOS because it tries to scroll `<body/>` instead of the `<Modal/>` contents. [That's how it is on iOS](https://codeandmortar.com/blog/fed-tips-1/).
+
 ## Contributing
 
 After cloning this repo, ensure dependencies are installed by running:
