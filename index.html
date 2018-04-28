@@ -215,7 +215,10 @@
 
 			html, body, button, input, textarea, select
 			{
-				font-size   : 14px;
+				/* The font size should be 16px minimum */
+				/* so that mobile browsers don't zoom on input focus. */
+				/* https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
+				font-size   : 16px;
 			}
 
 			.submit-form
