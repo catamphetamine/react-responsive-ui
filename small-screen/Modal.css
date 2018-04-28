@@ -19,5 +19,6 @@
 .rrui__modal__vertical-margin--top,
 .rrui__modal__vertical-margin--bottom
 {
-	flex-grow : 1;
+	flex-grow  : 1;
+	flex-basis : auto;
 }
