@@ -7,6 +7,8 @@
 	bottom   : 0;
 	right    : 0;
 	left     : 0;
+	/* Resets the `width` set in `Select.css` */
+	width    : 100%;
 	margin   : 0;
 	z-index  : var(--rrui-z-index-overlay);
 
@@ -25,11 +27,6 @@
 	opacity   : 1;
 }
 
-.rrui__select__options:not(.rrui__select__options--menu)
-{
-	min-width : 0;
-}
-
 /* `<Select/>` options no top margin. */
 .rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
 {
@@ -37,6 +34,10 @@
 }
 
 /* Disable `<Select/>` options `:hover` effect. */
+/* Added `:not(:active)` here for `small-screen.css` */
+/* which expands the list of options to full screen */
+/* upon a click on `<Select/>` and that would make */
+/* an option below the touch to become stuck in `:hover` state. */
 .rrui__select__option:hover:not(:active)
 {
 	background-color : transparent;

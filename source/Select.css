@@ -20,6 +20,11 @@
 	box-sizing       : border-box;
 }
 
+.rrui__select__options:not(.rrui__expandable--expanded)
+{
+	overflow : hidden;
+}
+
 .rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
 {
 	/*
@@ -48,13 +53,13 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-	min-width : calc(100% + var(--rrui-list-item-side-padding) * 2);
+	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
 }
 
-.rrui__select--menu .rrui__select__options
+.rrui__select__option-label
 {
-	/* Overrides the `min-width` rule above for menus */
-	min-width : 0;
+	overflow      : hidden;
+	text-overflow : ellipsis;
 }
 
 .rrui__select--menu
@@ -108,9 +113,19 @@
 	white-space : nowrap;
 }
 
-.rrui__select__option:hover:not(:active)
+/* Added `:not(:active)` here for `small-screen.css` */
+/* which expands the list of options to full screen */
+/* upon a click on `<Select/>` and that would make */
+/* an option below the touch to become stuck in `:hover` state. */
+.rrui__select__options--expanded .rrui__select__option:hover
 {
 	background-color : var(--rrui-gray-color-lightest);
+}
+
+.rrui__select__options--expanded .rrui__select__option:active
+{
+	background-color : var(--rrui-accent-color);
+	color            : var(--rrui-white-color);
 }
 
 .rrui__select__option-icon
@@ -142,12 +157,6 @@
 .rrui__select__option--focused
 {
 	background-color: var(--rrui-gray-color-lightest);
-}
-
-.rrui__select__option:active
-{
-	background-color : var(--rrui-accent-color);
-	color            : var(--rrui-white-color);
 }
 
 .rrui__select__button,

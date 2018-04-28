@@ -476,6 +476,7 @@ export default class Select extends Component
 			alignment,
 			autocomplete,
 			saveOnIcons,
+			maxItems,
 			fallback,
 			native,
 			nativeExpanded,
@@ -504,7 +505,8 @@ export default class Select extends Component
 
 		let list_style
 
-		// Makes the options list scrollable (only when not in `autocomplete` mode).
+		// Makes the options list scrollable.
+		// (only when not in `autocomplete` mode)
 		if (this.is_scrollable() && list_height !== undefined)
 		{
 			list_style = { maxHeight: `${list_height}px` }
@@ -532,7 +534,7 @@ export default class Select extends Component
 		{
 			const overflow = scroll && this.overflown()
 
-			list_items = this.trimOptions(options).map(({ value, label, icon }, index) =>
+			list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon }, index) =>
 			{
 				return this.render_list_item
 				({
@@ -622,7 +624,7 @@ export default class Select extends Component
 									'rrui__select__options--autocomplete'  : autocomplete,
 									'rrui__select__options--menu'          : menu,
 									'rrui__expandable--expanded'           : expanded,
-									// 'rrui__select__options--expanded'      : expanded,
+									'rrui__select__options--expanded'      : expanded,
 									'rrui__expandable--left-aligned'       : alignment === 'left',
 									'rrui__expandable--right-aligned'      : alignment === 'right',
 									'rrui__select__options--left-aligned'  : !children && alignment === 'left',
@@ -761,7 +763,9 @@ export default class Select extends Component
 							className: classNames(icon.props.className, 'rrui__select__option-icon')
 						})
 					}
-					{ label }
+					<span className="rrui__select__option-label">
+						{ label }
+					</span>
 				</button>
 			)
 		}
@@ -1208,13 +1212,27 @@ export default class Select extends Component
 		return options.length > maxItems
 	}
 
+	getCurrentlyDisplayedOptions()
+	{
+		const { maxItems } = this.props
+		let { options, expanded } = this.state
+
+		options = this.trimOptions(options)
+
+		if (!expanded)
+		{
+			options = options.slice(0, maxItems)
+		}
+
+		return options
+	}
+
 	scrollable_list_height(height, vertical_padding)
 	{
 		const { maxItems } = this.props
-		const { options } = this.state
 
 		// (Adding vertical padding so that it shows these `maxItems` options fully)
-		return (height - 2 * vertical_padding) * (maxItems / options.length) + vertical_padding
+		return (height - 2 * vertical_padding) * (maxItems / this.getCurrentlyDisplayedOptions().length) + vertical_padding
 	}
 
 	should_animate()
