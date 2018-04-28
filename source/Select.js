@@ -1377,13 +1377,14 @@ export default class Select extends Component
 				// in order for iOS scroll not to get "janky"
 				// when `<Select autocomplete/>` gets focused.
 				// (for some unknown reason)
+				// `100` ms is an imperical value.
 				//
 				// Asynchronous `getOptions()` introduce a delay already
 				// so only adding a delay for synchronous autocomplete.
 				//
 				if (autocomplete && this.props.options)
 				{
-					setTimeout(() => this._toggle(true, options), 50)
+					setTimeout(() => this._toggle(true, options), 100)
 				}
 				else
 				{
