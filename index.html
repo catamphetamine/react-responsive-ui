@@ -75,6 +75,7 @@
 		{
 			margin-top: 0.3rem;
 			margin-bottom: 0.3rem;
+			line-height: 1.4em;
 		}
 
 		code.colored
@@ -284,6 +285,7 @@
 		/* Responsive RRUI */
 		@import url("./small-screen/Modal.css") (max-width: 720px);
 		@import url("./small-screen/Snackbar.css") (max-width: 720px);
+		@import url("./small-screen/DatePickerInputOverlay.css") (max-width: 720px);
 		/*@import url("./small-screen/Select.css") (max-width: 720px);*/
 		/*@import url("./small-screen/DatePicker.css") (max-width: 720px);*/
 	</style>
@@ -1042,6 +1044,11 @@ const ExampleDatePicker = React.createClass
   onChange={...} />
 `}</Highlight>
 
+<code className="colored">{'<DatePicker/>'}</code> also takes optional properties:
+
+<ul className="list">
+	<li><code className="colored">selectYearsIntoPast</code> and <code className="colored">selectYearsIntoFuture</code> properties must be numbers. They determine the range of the "Year" select. They only affect the "Year" select and don't affect the "Prev"/"Next" navigation buttons. Both of them are set to <code className="colored">100</code> by default.</li>
+</ul>
 			</Example>
 		)
 	}
@@ -1518,7 +1525,6 @@ const ExampleModal = React.createClass
 									<li><a href="#switch">Switch</a></li>
 									<li><a href="#segmented-control">Segmented Control</a></li>
 									<li><a href="#date-picker">Date picker</a></li>
-									<li><a href="#date-picker-with-month-and-year">Date picker (with month and year selectors)</a></li>
 									<li><a href="#file-upload">File Upload</a></li>
 									<li><a href="#activity-indicator">Activity Indicator</a></li>
 									<li><a href="#ellipsis">Ellipsis</a></li>
@@ -1553,7 +1559,6 @@ const ExampleModal = React.createClass
 									<ExampleSegmentedControl/>
 
 									<ExampleDatePicker/>
-									<ExampleDatePickerMonthYear/>
 
 									<a name="file-upload" href="#file-upload" className="title-anchor" tabIndex="-1">
 										<h2 className="heading">File Upload</h2>
