@@ -461,7 +461,7 @@ export default class Select extends Component
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 	}
 
-	storeContainer = (node) => this.select = node
+	storeSelectInput = (node) => this.selectInput = node
 	storeListNode = (node) => this.list = node
 	storeSelectedOption = (ref) => this.selected = ref
 	storeAutocompleteInput = (node) => this.autocomplete = node
@@ -561,7 +561,6 @@ export default class Select extends Component
 
 		return (
 			<div
-				ref={ this.storeContainer }
 				onKeyDown={ this.on_key_down_in_container }
 				onBlur={ this.on_blur }
 				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
@@ -582,6 +581,7 @@ export default class Select extends Component
 				) }>
 
 				<div
+					ref={ this.storeSelectInput }
 					className={ classNames
 					({
 						'rrui__input': !toggler
@@ -1517,7 +1517,7 @@ export default class Select extends Component
 		// Don't close the select if its expander button has been clicked,
 		// or if autocomplete has been clicked,
 		// or if an option was selected from the list.
-		if (!this.select.contains(event.target))
+		if (!this.selectInput.contains(event.target))
 		{
 			this.toggle({ expanded: true, refocus: false })
 		}
@@ -1658,7 +1658,7 @@ export default class Select extends Component
 					// So submit the enclosing form manually.
 					else
 					{
-						if (submitContainingForm(this.select))
+						if (submitContainingForm(this.selectInput))
 						{
 							event.preventDefault()
 						}
