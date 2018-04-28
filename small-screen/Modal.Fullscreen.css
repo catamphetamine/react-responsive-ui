@@ -1,7 +1,7 @@
 /* `<Modal/>` goes full-screen wide and high. */
 
 /* Disable `<Modal/>` overlay fade in/out. */
-.rrui__modal__overlay
+.rrui__modal__overlay:not(.ReactModal__Overlay--before-close)
 {
 	background-color : var(--rrui-white-color);
 	transition : none;
