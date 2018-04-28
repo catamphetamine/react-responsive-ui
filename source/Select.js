@@ -804,6 +804,8 @@ export default class Select extends Component
 			return this.render_toggler()
 		}
 
+		// `selected` can be just a button in a simple case
+		// and an array of a button and an input in case of autocomplete.
 		const selected = this.render_selected_item_only(label_is_shown)
 
 		if (nativeExpanded)
@@ -819,6 +821,10 @@ export default class Select extends Component
 		return selected
 	}
 
+	// Returns either just a button or a button and an input in case of autocomplete.
+	// Always returns an array so that when `[input, button]` (collapsed)
+	// becomes `[input]` (expanded) React doesn't re-mount the input element.
+	// (won't focus the input upon expansion otherwise)
 	render_selected_item_only(label_is_shown)
 	{
 		const
@@ -868,42 +874,11 @@ export default class Select extends Component
 			'rrui__input-element' : true
 		}
 
-		if (autocomplete && expanded)
-		{
-			// style = { ...style, width: autocomplete_width + 'px' }
-
-			return (
-				<input
-					type="text"
-					ref={ this.storeAutocompleteInput }
-					placeholder={ selected_label }
-					value={ autocomplete_input_value }
-					onChange={ this.on_autocomplete_input_change }
-					onKeyDown={ this.onKeyDown }
-					onFocus={ onFocus }
-					tabIndex={ tabIndex }
-					title={ title }
-					className={ classNames
-					(
-						selected_style_classes,
-						'rrui__input-field',
-						'rrui__select__autocomplete',
-						inputClassName,
-						// CSS selector performance optimization
-						// (should it even be optimized).
-						{
-							'rrui__input-field--disabled' : disabled,
-							'rrui__input-field--invalid' : !matches,
-							'rrui__select__autocomplete--loading' : isFetchingOptions
-						}
-					) }/>
-			)
-		}
-
 		const show_selected_as_an_icon = concise && selected && selected.icon
 
-		return (
+		const button = (
 			<button
+				key="button"
 				ref={ this.storeSelectedOption }
 				type="button"
 				disabled={ disabled }
@@ -954,6 +929,49 @@ export default class Select extends Component
 				</div>
 			</button>
 		)
+
+		if (autocomplete)
+		{
+			// style = { ...style, width: autocomplete_width + 'px' }
+
+			const input = (
+				<input
+					key="input"
+					type="text"
+					ref={ this.storeAutocompleteInput }
+					placeholder={ selected_label }
+					value={ autocomplete_input_value }
+					onChange={ this.on_autocomplete_input_change }
+					onKeyDown={ this.onKeyDown }
+					onFocus={ onFocus }
+					tabIndex={ expanded ? tabIndex : -1 }
+					title={ title }
+					className={ classNames
+					(
+						selected_style_classes,
+						'rrui__input-field',
+						'rrui__select__autocomplete',
+						inputClassName,
+						// CSS selector performance optimization
+						// (should it even be optimized).
+						{
+							'rrui__input-field--disabled' : disabled,
+							'rrui__input-field--invalid' : !matches,
+							'rrui__select__autocomplete--hidden' : !expanded,
+							'rrui__select__autocomplete--loading' : isFetchingOptions
+						}
+					) }/>
+			)
+
+			if (expanded)
+			{
+				return [input]
+			}
+
+			return [input, button]
+		}
+
+		return [button]
 	}
 
 	render_toggler()
@@ -1348,8 +1366,16 @@ export default class Select extends Component
 		}
 	}
 
-	_toggle(expand, { focus })
+	_toggle(expand, { focus : refocus })
 	{
+		const { autocomplete, focusUponSelection } = this.props
+
+		if (expand && autocomplete)
+		{
+			// Focus the input after the select is expanded.
+			this.autocomplete.focus()
+		}
+
 		this.setState
 		({
 			expanded : expand,
@@ -1362,9 +1388,18 @@ export default class Select extends Component
 		},
 		() =>
 		{
-			if (focus !== false)
+			if (!(expand && autocomplete))
 			{
-				this.refocus()
+				if (focusUponSelection && refocus !== false)
+				{
+					// Focus the toggler after the select is collapsed.
+					// Can be a DOM Element or a custom React Component.
+					focus(this.selected)
+
+					// For some reason Firefox loses focus
+					// upon select expansion via a click,
+					// so this extra `focus()` works around that issue.
+				}
 			}
 
 			if (expand)
@@ -1372,35 +1407,6 @@ export default class Select extends Component
 				this.afterExpand()
 			}
 		})
-	}
-
-	refocus()
-	{
-		const { autocomplete, focusUponSelection } = this.props
-		const { expanded } = this.state
-
-		// If it's autocomplete, then focus <input/> field
-		// upon toggling the select component.
-		if (autocomplete)
-		{
-			if (expanded)
-			{
-				// Focus the input after the select is expanded.
-				focus(this.autocomplete)
-			}
-			else if (focusUponSelection)
-			{
-				// Focus the toggler after the select is collapsed.
-				focus(this.selected)
-			}
-		}
-		else
-		{
-			// For some reason Firefox loses focus
-			// upon select expansion via a click,
-			// so this extra `.focus()` works around that issue.
-			focus(this.selected)
-		}
 	}
 
 	afterExpand()

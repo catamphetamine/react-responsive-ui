@@ -314,6 +314,14 @@
 	padding-right : calc(var(--rrui-unit) * 2.5);
 }
 
+/* Hiding autocomplete input like this so that can */
+/* focus it programmatically when the expand button is clicked. */
+.rrui__select__autocomplete--hidden
+{
+	position : absolute;
+	z-index  : -1;
+}
+
 .rrui__select__toggler
 {
 	display : inline-block;
