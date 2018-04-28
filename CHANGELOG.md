@@ -1,3 +1,12 @@
+0.12.5 / 28.04.2018
+===================
+
+* (breaking change) `small-screen.css` file has been split into individual per-component files (see the updated README).
+
+* Fixed `<Select autocomplete/>` input focus upon expansion on mobile devices.
+
+* Fixed `<Select/>` too many options rendered when collapsed.
+
 0.12.0 / 23.04.2018
 ===================
 
