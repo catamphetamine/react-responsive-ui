@@ -1,0 +1,86 @@
+/* `<Select/>` goes fullscreen when expanded. */
+/* Same as for `<DatePicker/>`. */
+.rrui__select__options
+{
+	position : fixed;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	margin   : 0;
+	z-index  : var(--rrui-z-index-overlay);
+
+	transform-origin : center center;
+	transform        : scale(0.95);
+	opacity          : 0;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	max-height       : none !important;
+
+	/* Resets the `width` set in `Select.css` */
+	width    : 100%;
+}
+
+/* `<Select/>` goes fullscreen when expanded. */
+/* Same as for `<DatePicker/>`. */
+.rrui__select__options.rrui__expandable--expanded
+{
+	transform : scale(1);
+	opacity   : 1;
+}
+
+/* `<Select/>` options no top margin. */
+.rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
+{
+	margin-top: 0;
+}
+
+/* Disable `<Select/>` options `:hover` effect. */
+/* Added `:not(:active)` here for `small-screen.css` */
+/* which expands the list of options to full screen */
+/* upon a click on `<Select/>` and that would make */
+/* an option below the touch to become stuck in `:hover` state. */
+.rrui__select__options--expanded .rrui__select__option:hover
+{
+	background-color : transparent;
+}
+
+/* `<Select autocomplete/>` goes fullscreen when expanded */
+.rrui__select--expanded .rrui__select__autocomplete
+{
+	position         : fixed;
+	top              : 0;
+	left             : 0;
+	width            : 100%;
+	height           : var(--rrui-fullscreen-input-height);
+	padding-left     : var(--rrui-list-item-side-padding);
+	padding-right    : calc(var(--rrui-unit) * 2 + var(--rrui-unit) * 3 + var(--rrui-list-item-side-padding));
+	z-index          : var(--rrui-z-index-overlay);
+	background-color : var(--rrui-white-color);
+}
+
+/* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
+.rrui__select--autocomplete.rrui__select--expanded .rrui__ellipsis
+{
+	position    : fixed;
+	right       : var(--rrui-list-item-side-padding);
+	top         : 0;
+	z-index     : var(--rrui-z-index-above-overlay);
+	height      : var(--rrui-fullscreen-input-height);
+	display     : flex;
+	align-items : center;
+}
+
+/* `<Select autocomplete/>` options when fullscreen-expanded */
+.rrui__select__options--autocomplete
+{
+	top : var(--rrui-fullscreen-input-height);
+	box-shadow : none;
+}
+
+/* Show "Close" button for full-screen `<Select/>`. */
+/* Same as for `<DatePicker/>`. */
+.rrui__select__close
+{
+	display : block;
+	z-index : var(--rrui-z-index-overlay);
+}

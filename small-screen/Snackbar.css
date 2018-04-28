@@ -1,0 +1,13 @@
+/* Center `<Snackbar/>` on screen. */
+.rrui__snackbar__container
+{
+	margin : 0;
+	justify-content : center;
+}
+
+/* `<Snackbar/>` border radius. */
+.rrui__snackbar
+{
+	border-bottom-left-radius  : 0;
+	border-bottom-right-radius : 0;
+}

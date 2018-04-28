@@ -58,6 +58,29 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 </head>
 ```
 
+## Small Screen
+
+The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. E.g. `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s can open in fullscreen and `<Snackbar/>` can be centered rather than placed in the lower left corner.
+
+Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
+
+```css
+@import url(~react-responsive-ui/style.css)
+@import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 720px)
+@import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 720px)
+```
+
+SCSS `@import` example:
+
+```css
+@import "~react-responsive-ui/style";
+
+@media (max-width: 720px) {
+  @import "~react-responsive-ui/small-screen/Modal";
+  @import "~react-responsive-ui/small-screen/Snackbar";
+}
+```
+
 ## Variables
 
 This library uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden in a separate `react-responsive-ui-variables.css` file (analogous to the original `variables.css` file).
@@ -90,7 +113,8 @@ An example for Webpack and SCSS:
 @import "~react-responsive-ui/style";
 
 @media (max-width: 720px) {
-  @import "~react-responsive-ui/small-screen";
+  @import "~react-responsive-ui/small-screen/Modal";
+  @import "~react-responsive-ui/small-screen/Snackbar";
 }
 
 :root {
@@ -100,27 +124,6 @@ An example for Webpack and SCSS:
   --rrui-accent-color       : #cc0000;
   --rrui-accent-color-light : #ee0000;
   --rrui-gray-color         : #7f7f7f;
-}
-```
-
-## Responsive
-
-The included [`react-responsive-ui/small-screen.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/small-screen.css) stylesheet adapts all components for "small screens" ("mobile devices"). E.g. `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s open in fullscreen.
-
-Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
-
-```css
-@import url(~react-responsive-ui/style.css)
-@import url(~react-responsive-ui/small-screen.css) (max-width: 720px)
-```
-
-SCSS `@import` example:
-
-```css
-@import "~react-responsive-ui/style";
-
-@media (max-width: 720px) {
-  @import "~react-responsive-ui/small-screen";
 }
 ```
 
