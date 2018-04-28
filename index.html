@@ -18,6 +18,7 @@
 			.ReactModal__Body--open
 			{
 				touch-action: none;
+				position: fixed;
 			}
 		</style>
 
@@ -1381,7 +1382,7 @@ const ExampleModal = React.createClass
 	render()
 	{
 		return (
-			<Example name="modal" title="Modal.">
+			<Example name="modal" title="Modal">
 
 								<Button
 									action={() => this.setState({ show_modal: true })}>
