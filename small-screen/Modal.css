@@ -14,3 +14,10 @@
   margin-top    : var(--rrui-unit);
   margin-bottom : var(--rrui-unit);
 }
+
+/* Center the `<Modal/>` vertically. */
+.rrui__modal__vertical-margin--top,
+.rrui__modal__vertical-margin--bottom
+{
+	flex-grow : 1;
+}
