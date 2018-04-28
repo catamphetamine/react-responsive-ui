@@ -7,6 +7,12 @@
 	transition : none;
 }
 
+/* The transition is instant. */
+.rrui__modal__overlay
+{
+	transition : none;
+}
+
 /* Centers `<Modal/>` content (body) horizontally and vertically */
 .rrui__modal__container
 {
