@@ -322,10 +322,10 @@ export default class TextInput extends PureComponent
 
 	render_error_message()
 	{
-		const { error } = this.props
+		const { error, errorRef } = this.props
 
 		return (
-			<div className="rrui__input-error">
+			<div ref={ errorRef } className="rrui__input-error">
 				{ error }
 			</div>
 		)

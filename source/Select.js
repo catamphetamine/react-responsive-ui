@@ -16,6 +16,8 @@ import
 }
 from './utility/dom'
 
+import { onBlurForReduxForm } from './utility/redux-form'
+
 // Possible enhancements:
 //
 //  * If the menu is close to a screen edge,
@@ -24,6 +26,19 @@ from './utility/dom'
 //    (like in Material design), not below it.
 //
 // https://material.google.com/components/menus.html
+
+// This component could use `onBlur={...}` event handler
+// for collapsing the options list when a user clicks outside
+// using the `if (container.contains(event.relatedTarget))` technique,
+// but it doesn't work in Internet Explorer in React.
+// https://github.com/gpbl/react-day-picker/issues/668
+// https://github.com/facebook/react/issues/3751
+//
+// Therefore, using a 30ms timeout hack in `onBlur` handler
+// to get the new currently focused page element
+// and check if that element is inside the `<Select/>`.
+// https://github.com/mui-org/material-ui/blob/v1-beta/packages/material-ui/src/Menu/MenuList.js
+// Until Internet Explorer is no longer a supported browser.
 
 const Empty_value_option_value = ''
 
@@ -403,8 +418,6 @@ export default class Select extends Component
 	{
 		const { fallback, nativeExpanded } = this.props
 
-		document.addEventListener('click', this.onDocumentClick)
-
 		if (fallback)
 		{
 			this.setState({ javascript: true })
@@ -448,8 +461,6 @@ export default class Select extends Component
 	{
 		const { nativeExpanded } = this.props
 
-		document.removeEventListener('click', this.onDocumentClick)
-
 		if (nativeExpanded)
 		{
 			window.removeEventListener('resize', this.resize_native_expanded_select)
@@ -459,6 +470,7 @@ export default class Select extends Component
 		clearTimeout(this.scroll_into_view_timeout)
 		clearTimeout(this.restore_focus_on_collapse_timeout)
 		clearTimeout(this.nextFetchOptionsCallTimeout)
+		clearTimeout(this.blurTimer)
 	}
 
 	storeSelectInput = (node) => this.selectInput = node
@@ -561,8 +573,7 @@ export default class Select extends Component
 
 		return (
 			<div
-				onKeyDown={ this.on_key_down_in_container }
-				onBlur={ this.on_blur }
+				onBlur={ this.onBlur }
 				style={ style ? { ...wrapper_style, ...style } : wrapper_style }
 				className={ classNames
 				(
@@ -1280,36 +1291,15 @@ export default class Select extends Component
 
 	onToggle = (event) =>
 	{
-		const { autocomplete } = this.props
-		const { expanded } = this.state
-
-		// Don't navigate away when clicking links
+		// Don't navigate away when clicking links.
+		// (e.g. `<Select menu/>` with hyperlinks as items).
 		event.preventDefault()
 
-		if (!expanded && autocomplete)
-		{
-			// Focus the input after the select is expanded.
-			this.autocomplete.focus()
-		}
-
-		// Not discarding the click event because
-		// other expanded selects may be listening to it.
-		// // Discard the click event so that it won't reach `document` click listener
+		// Discarding this event seems to be unneeded.
 		// event.stopPropagation() // doesn't work
 		// event.nativeEvent.stopImmediatePropagation()
 
-		// Deferring expanding this `<Select/>` upon click
-		// because `document`'s `onClick` listener should fire first,
-		// otherwise, if `document`'s `onClick` listener fired after `this.toggle()`
-		// then `event.target` in that listener would be detached from the document
-		// (e.g. in case of autocomplete: the `<button/>` would be replaced with an `<input/>`),
-		// and therefore the click won't be detected as belonging to this `<Select/>`
-		// and because of that `this.onDocumentClick()` handler will immediately toggle
-		// this `<Select/>` back to collapsed state.
-		// `this.onToggle(event)` should be called instead of
-		// directly `this.toggle()` on any toggling click.
-		clearTimeout(this.toggle_timeout)
-		this.toggle_timeout = setTimeout(() => this.toggle({ timeout: true }), 0)
+		this.toggle()
 	}
 
 	toggle = (options = {}) =>
@@ -1395,11 +1385,11 @@ export default class Select extends Component
 		}
 	}
 
-	_toggle(expand, { timeout, refocus })
+	_toggle(expand, { refocus })
 	{
 		const { autocomplete, focusUponSelection } = this.props
 
-		if (expand && autocomplete && !timeout)
+		if (expand && autocomplete)
 		{
 			// Focus the input after the select is expanded.
 			this.autocomplete.focus()
@@ -1510,54 +1500,6 @@ export default class Select extends Component
 		this.onToggle(event)
 
 		this.setValue(value)
-	}
-
-	onDocumentClick = (event) =>
-	{
-		// Don't close the select if its expander button has been clicked,
-		// or if autocomplete has been clicked,
-		// or if an option was selected from the list.
-		if (!this.selectInput.contains(event.target))
-		{
-			this.toggle({ expanded: true, refocus: false })
-		}
-	}
-
-	// Would have used `onBlur={...}` event handler here
-	// with `if (container.contains(event.relatedTarget))` condition,
-	// but it doesn't work in IE in React.
-	// https://github.com/facebook/react/issues/3751
-	//
-	// Therefore, using the hacky `document.onClick` handlers
-	// and this `onKeyDown` Tab handler
-	// until `event.relatedTarget` support is consistent in React.
-	//
-	on_key_down_in_container = (event) =>
-	{
-		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
-		{
-			return
-		}
-
-		const { expanded } = this.state
-
-		switch (event.keyCode)
-		{
-			// Toggle on Tab out
-			case 9:
-				if (expanded)
-				{
-					this.toggle()
-
-					const { onTabOut } = this.props
-
-					if (onTabOut)
-					{
-						onTabOut(event)
-					}
-				}
-				return
-		}
 	}
 
 	onKeyDown = (event) =>
@@ -1690,39 +1632,38 @@ export default class Select extends Component
 		}
 	}
 
-	// This handler is a workaround for `redux-form`
-	on_blur = (event) =>
+	onBlur = (event) =>
 	{
-		const { onBlur, value } = this.props
+		// `<Select/>` options currently all have `tabIndex={-1}` so they're non-focusable.
+		// // If clicked on a select option then don't trigger "blur" event
+		// if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget))
+		// {
+		// 	return
+		// }
 
-		// If clicked on a select option then don't trigger "blur" event
-		if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget))
+		clearTimeout(this.blurTimer)
+		this.blurTimer = setTimeout(() =>
 		{
-			return
-		}
-
-		// This `onBlur` interceptor is a workaround for `redux-form`,
-		// so that it gets the right (parsed, not the formatted one)
-		// `event.target.value` in its `onBlur` handler.
-		if (onBlur)
-		{
-			const _event =
+			// If the component is still mounted.
+			if (this.selectInput)
 			{
-				...event,
-				target:
+				// If the currently focused element is not inside the `<Select/>`.
+				// Or if no element is currently focused.
+				if (!document.activeElement || !this.selectInput.contains(document.activeElement))
 				{
-					...event.target,
-					value
+					// Then collapse the `<Select/>`.
+					// (clicked/tapped outside or tabbed-out)
+					this.toggle({ expanded: true, refocus: false })
+
+					const { onBlur, value } = this.props
+
+					if (onBlur) {
+						onBlurForReduxForm(onBlur, event, value)
+					}
 				}
 			}
-
-			// For `redux-form` event detection.
-			// https://github.com/erikras/redux-form/blob/v5/src/events/isEvent.js
-			_event.stopPropagation = event.stopPropagation
-			_event.preventDefault  = event.preventDefault
-
-			onBlur(_event)
-		}
+		},
+		30)
 	}
 
 	trimOptions(options)

@@ -17,6 +17,8 @@ import
 }
 from './utility/dom'
 
+import { onBlurForReduxForm } from './utility/redux-form'
+
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
 
@@ -191,8 +193,6 @@ export default class DatePicker extends PureComponent
 
 	componentDidMount()
 	{
-		document.addEventListener('click', this.onDocumentClick)
-
 		// Set "previous" and "next" buttons untabbable
 		// so that a Tab out of the `<input/>` field
 		// moves cursor not inside to these buttons
@@ -210,9 +210,8 @@ export default class DatePicker extends PureComponent
 
 	componentWillUnmount()
 	{
-		document.removeEventListener('click', this.onDocumentClick)
-
 		clearTimeout(this.scroll_into_view_timeout)
+		clearTimeout(this.blurTimer)
 	}
 
 	on_input_focus = (event) =>
@@ -620,62 +619,40 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	onDocumentClick = (event) =>
-	{
-		// For some strange reason sometimes
-		// `container` is `undefined` or `null` here.
-		// All reported cases are currently for Microsoft Edge.
-		if (!this.container)
-		{
-			return
-		}
-
-		if (this.container.contains(event.target))
-		{
-			return
-		}
-
-		this.collapse()
-	}
-
 	on_month_selected = (month) =>
 	{
 		this.setState({ month })
 	}
 
-	// This handler is a workaround for `redux-form`
-	on_blur = (event) =>
+	onBlur = (event) =>
 	{
-		const { onBlur, value } = this.props
-
-		// If clicked on an expanded calendar then don't trigger "blur" event
-		if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget))
+		clearTimeout(this.blurTimer)
+		this.blurTimer = setTimeout(() =>
 		{
-			return
-		}
-
-		// This `onBlur` interceptor is a workaround for `redux-form`,
-		// so that it gets the right (parsed, not the formatted one)
-		// `event.target.value` in its `onBlur` handler.
-		if (onBlur)
-		{
-			const _event =
+			// If the component is still mounted.
+			if (this.container)
 			{
-				...event,
-				target:
+				// If the currently focused element is not inside the `<DatePicker/>`.
+				// Or if no element is currently focused.
+				if (!document.activeElement ||
+					!(this.container.contains(document.activeElement) &&
+						!(this.inputComponentError && this.inputComponentError.contains(document.activeElement))
+					)
+				)
 				{
-					...event.target,
-					value
+					// Then collapse the `<DatePicker/>`.
+					// (clicked/tapped outside or tabbed-out)
+					this.collapse()
+
+					const { onBlur, value } = this.props
+
+					if (onBlur) {
+						onBlurForReduxForm(onBlur, event, value)
+					}
 				}
 			}
-
-			// For `redux-form` event detection.
-			// https://github.com/erikras/redux-form/blob/v5/src/events/isEvent.js
-			_event.stopPropagation = event.stopPropagation
-			_event.preventDefault  = event.preventDefault
-
-			onBlur(_event)
-		}
+		},
+		30)
 	}
 
 	storeContainerNode = (node) => this.container = node
@@ -683,6 +660,7 @@ export default class DatePicker extends PureComponent
 	storeCalendarComponent = (ref) => this.calendar = ref
 	storeInputOverlayNode = (node) => this.inputOverlay = node
 	storeInputComponent = (ref) => this.input = ref
+	storeInputComponentErrorNode = (node) => this.inputComponentError = node
 
 	render()
 	{
@@ -742,7 +720,7 @@ export default class DatePicker extends PureComponent
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.on_key_down_in_container }
-				onBlur={ this.on_blur }
+				onBlur={ this.onBlur }
 				className={ classNames('rrui__date-picker', className,
 				{
 					'rrui__date-picker--expanded' : expanded,
@@ -754,6 +732,7 @@ export default class DatePicker extends PureComponent
 				<TextInput
 					id={ id }
 					ref={ this.storeInputComponent }
+					errorRef={ this.storeInputComponentErrorNode }
 					required={ required }
 					error={ error }
 					indicateInvalid={ indicateInvalid }
