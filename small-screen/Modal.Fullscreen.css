@@ -1,12 +1,15 @@
 /* `<Modal/>` goes full-screen wide and high. */
 
-/* Disable `<Modal/>` overlay fade in/out. */
-.rrui__modal__overlay:not(.ReactModal__Overlay--before-close)
+/* Without this line a long `<Modal/>` won't be scrollable to its beginning. */
+.rrui__modal__overlay
 {
-	background-color : var(--rrui-white-color);
-	-webkit-transition : none;
-	-o-transition : none;
-	transition : none;
+	display: block;
+}
+
+/* Disable `<Modal/>` overlay fade in/out. */
+.rrui__modal__overlay
+{
+	background-color : transparent;
 }
 
 /* Centers `<Modal/>` content (body) horizontally and vertically */
@@ -24,6 +27,13 @@
 	-webkit-justify-content : center;
 	    -ms-flex-pack : center;
 	        justify-content : center;
+
+	background-color : var(--rrui-white-color);
+}
+
+.ReactModal__Overlay--before-close .rrui__modal__container
+{
+	background-color: transparent;
 }
 
 /* `<Modal/>` goes full-screen wide and high */
