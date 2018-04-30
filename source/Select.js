@@ -70,7 +70,10 @@ export default class Select extends Component
 				([
 					PropTypes.node,
 					PropTypes.func
-				])
+				]),
+				// Render custom content (a React component).
+				// Receives `{ value, label }` properties.
+				content : PropTypes.func
 			})
 		),
 
@@ -533,7 +536,7 @@ export default class Select extends Component
 		{
 			const overflow = scroll && this.overflown()
 
-			list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon }, index) =>
+			list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon, content }, index) =>
 			{
 				return this.render_list_item
 				({
@@ -541,6 +544,7 @@ export default class Select extends Component
 					value,
 					label,
 					icon: !saveOnIcons && icon,
+					content,
 					overflow
 				})
 			})
@@ -665,7 +669,7 @@ export default class Select extends Component
 		)
 	}
 
-	render_list_item({ index, element, value, label, icon, overflow }) // , first, last
+	render_list_item({ index, element, value, label, icon, content, overflow }) // , first, last
 	{
 		const { disabled, menu, scrollbarPadding } = this.props
 		const { focusedOptionValue, expanded } = this.state
@@ -778,7 +782,7 @@ export default class Select extends Component
 						})
 					}
 					<span className="rrui__select__option-label">
-						{ label }
+						{ content && content({ value, label }) || label }
 					</span>
 				</button>
 			)
@@ -1004,6 +1008,7 @@ export default class Select extends Component
 				name={ name }
 				value={ value_is_empty(value) ? Empty_value_option_value : value }
 				disabled={ disabled }
+				onKeyDown={ this.nativeSelectOnKeyDown }
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.native_select_on_change }
 				tabIndex={ tabIndex }
@@ -1077,6 +1082,16 @@ export default class Select extends Component
 		}
 
 		return rendered_options
+	}
+
+	nativeSelectOnKeyDown = (event) =>
+	{
+		if (this.shouldShowOptionsList())
+		{
+			this.selected.focus()
+			this.onKeyDown(event)
+			event.preventDefault()
+		}
 	}
 
 	nativeSelectOnMouseDown = (event) =>
@@ -1603,6 +1618,8 @@ export default class Select extends Component
 				//  and restoring the selection present before the item list was toggled.
 				//
 				case 27:
+					event.preventDefault()
+
 					// Collapse the list if it's expanded
 					return this.collapse()
 
@@ -1611,6 +1628,8 @@ export default class Select extends Component
 					// Choose the focused item on Enter
 					if (expanded)
 					{
+						event.preventDefault()
+
 						// If no autocomplete value entered
 						// and the focused option is the first one
 						// then set value to `undefined`.
@@ -1658,12 +1677,16 @@ export default class Select extends Component
 					{
 						if (menu)
 						{
+							event.preventDefault()
+
 							// Choose the focused menu item.
 						}
 						// only if it it's an `options` select
 						// and also if it's not an autocomplete
-						else if (options.length > 0 && !autocomplete)
+						else if (!autocomplete)
 						{
+							event.preventDefault()
+
 							// `focusedOptionValue` could be non-existent
 							// in case of `autocomplete`, but since
 							// we're explicitly not handling autocomplete here
@@ -1671,8 +1694,12 @@ export default class Select extends Component
 							this.item_clicked(focusedOptionValue, event)
 						}
 					}
-					// Otherwise, the spacebar keydown event on a `<button/>`
-					// will trigger `onClick` and `.toggle()` will be called.
+					else
+					{
+						event.preventDefault()
+						// Expand.
+						this.toggle()
+					}
 
 					return
 			}
