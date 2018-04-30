@@ -697,41 +697,54 @@ export default class Select extends Component
 		// then enhance those elements with extra props.
 		if (element)
 		{
-			const extra_props =
+			if (element.type === Select.Separator)
 			{
-				style     : item_style ? { ...item_style, ...element.props.style } : element.props.style,
-				className : classNames
-				(
-					'rrui__button-reset',
-					'rrui__select__option',
+				button = element
+			}
+			else
+			{
+				const { onClick, className } = element.props
+
+				const _onClick = (event) =>
+				{
+					if (menu)
 					{
-						'rrui__select__option--focused' : is_focused
-					},
-					element.props.className
+						// Collapse the `<Select/>`.
+						this.onToggle(event)
+					}
+					else
+					{
+						this.item_clicked(value, event)
+					}
+
+					if (onClick)
+					{
+						onClick(event)
+					}
+				}
+
+				button = (
+					<button
+						type="button"
+						onClick={ _onClick }
+						disabled={ disabled }
+						tabIndex="-1"
+						aria-label={ element.props.label }
+						style={ item_style ? { ...item_style, ...element.props.style } : element.props.style }
+						className={ classNames
+						(
+							'rrui__button-reset',
+							'rrui__select__option',
+							{
+								'rrui__select__option--focused' : is_focused,
+								'rrui__select__option--disabled' : disabled
+							},
+							className
+						) }>
+						{ React.cloneElement(element, { onClick: undefined }) }
+					</button>
 				)
 			}
-
-			const onClick = element.props.onClick
-
-			extra_props.onClick = (event) =>
-			{
-				if (menu)
-				{
-					// Collapse the `<Select/>`.
-					this.onToggle(event)
-				}
-				else
-				{
-					this.item_clicked(value, event)
-				}
-
-				if (onClick)
-				{
-					onClick(event)
-				}
-			}
-
-			button = React.cloneElement(element, extra_props)
 		}
 		// Else, if a list of options is supplied as an array of `{ value, label }`,
 		// then transform those options to <buttons/>
@@ -754,7 +767,6 @@ export default class Select extends Component
 						'rrui__select__option',
 						{
 							'rrui__select__option--focused' : is_focused,
-							// CSS selector performance optimization
 							'rrui__select__option--disabled' : disabled
 						}
 					) }
