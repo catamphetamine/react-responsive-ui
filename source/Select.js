@@ -1438,9 +1438,9 @@ export default class Select extends Component
 			{
 				if (expand)
 				{
-					// Highlight either the option for the currently
-					// selected `value` or the first option available.
-					this.focusAnOption()
+					// // Highlight either the option for the currently
+					// // selected `value` or the first option available.
+					// this.focusAnOption()
 					// Scroll the options list into view if needed.
 					this.scrollIntoView()
 				}
@@ -1532,7 +1532,7 @@ export default class Select extends Component
 
 	onKeyDown = (event) =>
 	{
-		const { onKeyDown, menu, value, autocomplete } = this.props
+		const { onKeyDown, menu, value, autocomplete, required } = this.props
 		const { options, expanded, focusedOptionValue, autocompleteInputValue } = this.state
 
 		if (onKeyDown) {
@@ -1630,13 +1630,11 @@ export default class Select extends Component
 					{
 						event.preventDefault()
 
-						// If no autocomplete value entered
-						// and the focused option is the first one
-						// then set value to `undefined`.
-						if (autocomplete && !autocompleteInputValue
-							&& (options.length === 0 || focusedOptionValue === options[0].value))
+						// If no autocomplete option is focused
+						// then choose an option based on current input.
+						if (autocomplete && focusedOptionValue === undefined)
 						{
-							this.setValue()
+							this.setAutocompleteValueBasedOnCurrentInput()
 							this.collapse()
 						}
 						// If an item is focused
@@ -1662,9 +1660,20 @@ export default class Select extends Component
 					// So submit the enclosing form manually.
 					else
 					{
-						if (submitContainingForm(this.selectInput))
+						if (required)
 						{
 							event.preventDefault()
+							// Expand.
+							this.expand()
+						}
+						else if (submitContainingForm(this.selectInput))
+						{
+							event.preventDefault()
+						}
+						else if (autocomplete)
+						{
+							event.preventDefault()
+							this.expand()
 						}
 					}
 
@@ -1694,11 +1703,10 @@ export default class Select extends Component
 							this.item_clicked(focusedOptionValue, event)
 						}
 					}
-					else
+					else if (!autocomplete)
 					{
 						event.preventDefault()
-						// Expand.
-						this.toggle()
+						this.expand()
 					}
 
 					return
@@ -1737,28 +1745,10 @@ export default class Select extends Component
 	onFocusOut()
 	{
 		const { onBlur, value, autocomplete } = this.props
-		const { options, autocompleteInputValue, selectedOptionLabel } = this.state
 
 		if (autocomplete)
 		{
-			// If user's input equals to an option
-			// then it's logical (from user's perspective)
-			// to select that option on focus out (e.g. on tab out).
-			//
-			// Analogous, if user has erased the input
-			// then it means the user wants to "select nothing".
-			//
-			let newValue = value
-			if (!autocompleteInputValue) {
-				newValue = undefined
-			} else {
-				const option = options.filter(({ label }) => autocompleteInputValue.toLowerCase() === label.toLowerCase())[0]
-				if (option) {
-					newValue = option.value
-				}
-			}
-
-			this.setValue(newValue)
+			this.setAutocompleteValueBasedOnCurrentInput()
 		}
 
 		this.collapse({ refocus: false })
@@ -1766,6 +1756,31 @@ export default class Select extends Component
 		if (onBlur) {
 			onBlurForReduxForm(onBlur, event, value)
 		}
+	}
+
+	setAutocompleteValueBasedOnCurrentInput()
+	{
+		const { value } = this.props
+		const { options, autocompleteInputValue } = this.state
+
+		// If user's input equals to an option
+		// then it's logical (from user's perspective)
+		// to select that option on focus out (e.g. on tab out).
+		//
+		// Analogous, if user has erased the input
+		// then it means the user wants to "select nothing".
+		//
+		let newValue = value
+		if (!autocompleteInputValue) {
+			newValue = undefined
+		} else {
+			const option = options.filter(({ label }) => autocompleteInputValue.toLowerCase() === label.toLowerCase())[0]
+			if (option) {
+				newValue = option.value
+			}
+		}
+
+		this.setValue(newValue)
 	}
 
 	trimOptions(options)
@@ -1858,6 +1873,8 @@ export default class Select extends Component
 
 			if (Array.isArray(options))
 			{
+				this.unfocusMissingOption(options)
+
 				if (!autocomplete) {
 					return this.setState({ options }, resolve)
 				}
@@ -1949,6 +1966,8 @@ export default class Select extends Component
 			newState.fetchingOptionsCounter = undefined
 		}
 
+		this.unfocusMissingOption(options)
+
 		this.setState(newState, () =>
 		{
 			if (autocomplete) {
@@ -1956,6 +1975,18 @@ export default class Select extends Component
 			}
 			callback()
 		})
+	}
+
+	unfocusMissingOption(options)
+	{
+		const { focusedOptionValue } = this.state
+
+		// If the previously focused option is no longer available
+		// then unfocus it.
+		if (options.filter(({ value }) => value === focusedOptionValue).length === 0)
+		{
+			this.setState({ focusedOptionValue: undefined })
+		}
 	}
 
 	// Get the previous option (relative to the currently focused option)
@@ -1973,9 +2004,15 @@ export default class Select extends Component
 				{
 					return options[i - 1]
 				}
+
+				// If it's the first option
+				// then don't jump to the last one.
+				return
 			}
 			i++
 		}
+
+		return options[options.length - 1]
 	}
 
 	// Get the next option (relative to the currently focused option)
@@ -1995,9 +2032,15 @@ export default class Select extends Component
 				{
 					return options[i + 1]
 				}
+
+				// If it's the last option
+				// then don't jump to the first one.
+				return
 			}
 			i++
 		}
+
+		return options[0]
 	}
 
 	// Scrolls to an option having the value.
