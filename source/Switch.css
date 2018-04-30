@@ -83,6 +83,11 @@
 	transition    : all 0.25s ease-out;
 }
 
+.rrui__switch__input:focus + .rrui__switch__groove + .rrui__switch__knob
+{
+	box-shadow : inset 0 0 0 0.03em var(--rrui-accent-color), 0 0 0.05em var(--rrui-accent-color), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+}
+
 .rrui__switch__knob--on
 {
 	left : 0.7125em;
