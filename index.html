@@ -286,8 +286,9 @@
 		@import url("./small-screen/Modal.css") (max-width: 720px);
 		@import url("./small-screen/Snackbar.css") (max-width: 720px);
 		@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);
-		/*@import url("./small-screen/Select.css") (max-width: 720px);*/
-		/*@import url("./small-screen/DatePicker.css") (max-width: 720px);*/
+		/*@import url("./small-screen/Modal.Fullscreen.css") (max-width: 720px);*/
+		/*@import url("./small-screen/Select.Fullscreen.css") (max-width: 720px);*/
+		/*@import url("./small-screen/DatePicker.Fullscreen.css") (max-width: 720px);*/
 	</style>
 
 	<body>
@@ -495,41 +496,6 @@ const ExampleTextInputFloatingLabel = React.createClass
 	}
 })
 
-const ExampleTextInputPlaceholderAndFloatingLabel = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="text-input-placeholder-and-floating-label" title="Text input field (with both placeholder and floating label, and also required)">
-
-				<TextInput
-					required
-					style={input_style}
-					className="column-width"
-					name="text_input"
-					value={this.state.value}
-					onChange={value => this.setState({ value })}
-					label="Text"
-					placeholder="Enter something"/>
-
-				Value:  {this.state.value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  required
-  label="Text"
-  placeholder="Enter something"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
 const ExampleMultilineTextInputLabel = React.createClass
 ({
 	getInitialState() { return {} },
@@ -546,14 +512,14 @@ const ExampleMultilineTextInputLabel = React.createClass
 						className="column-width"
 						value={this.state.value}
 						onChange={value => this.setState({ value })}
-						label="Enter text"/>
+						label="Text"/>
 
 					Value:  {this.state.value}
 
 <Highlight lang="jsx">{`
 <TextInput
   multiline
-  label="Enter text"
+  label="Text"
   value={...}
   onChange={...} />
 `}</Highlight>
@@ -610,7 +576,6 @@ const ExampleSelect = React.createClass
 											value: 'G',
 											label: 'Garlic'
 										}]}
-										placeholder="Choose"
 										onChange={ value => this.setState({ value }) }/>
 
 									Value: {this.state.value ? this.state.value : '(empty)'}
@@ -618,20 +583,19 @@ const ExampleSelect = React.createClass
 <Highlight lang="jsx">{`
 <Select
   label="Fruit"
-  placeholder="Choose"
   value={...}
   onChange={...}
   options={[{ value: 'A', label: 'Apple' }, ...]} />
 `}</Highlight>
 
 <Highlight lang="css">{`
-.rrui__select__option--focused {
+.rrui__select__options--expanded .rrui__select__option--focused {
 	background-color : cyan;
 }
-.rrui__select__option:hover {
+.rrui__select__options--expanded .rrui__select__option:hover {
 	background-color : gray;
 }
-.rrui__select__option:active {
+.rrui__select__options--expanded .rrui__select__option:active {
 	background-color : blue;
 	color : white;
 }
@@ -655,6 +619,7 @@ const ExampleSelectAutocomplete = React.createClass
 										style={input_style}
 										className="column-width"
 										autocomplete
+										label="Food"
 										name="dropdown"
 										value={this.state.value}
 										options={[{
@@ -685,7 +650,6 @@ const ExampleSelectAutocomplete = React.createClass
 											value: 'G',
 											label: 'Garlic'
 										}]}
-										placeholder="Choose"
 										notFound="Not found"
 										onChange={ value => this.setState({ value }) }/>
 
@@ -694,7 +658,7 @@ const ExampleSelectAutocomplete = React.createClass
 <Highlight lang="jsx">{`
 <Select
   autocomplete
-  placeholder="Choose"
+  label="Fruit"
   notFound="Not found"
   value={...}
   onChange={...}
@@ -716,6 +680,7 @@ const ExampleSelectAutocompleteAsync = React.createClass
 			<Example name="select-asynchronous-autocomplete" title="Select (asynchronous autocomplete)">
 
 									<Select
+										label="Food"
 										style={input_style}
 										className="column-width"
 										autocomplete
@@ -748,8 +713,6 @@ const ExampleSelectAutocompleteAsync = React.createClass
 												.filter(({ label }) => label.toLowerCase().indexOf(query.toLowerCase()) >= 0)
 											})
 										}}
-										placeholder="Choose"
-										notFound="Not found"
 										onChange={ value => this.setState({ value }) }/>
 
 									Value: {this.state.value ? this.state.value : '(empty)'}
@@ -757,7 +720,7 @@ const ExampleSelectAutocompleteAsync = React.createClass
 <Highlight lang="jsx">{`
 <Select
   autocomplete
-  placeholder="Choose"
+  label="Fruit"
   notFound="Not found"
   value={...}
   onChange={...}
@@ -1545,7 +1508,6 @@ const ExampleModal = React.createClass
 
 									<ExampleTextInput/>
 									<ExampleTextInputFloatingLabel/>
-									<ExampleTextInputPlaceholderAndFloatingLabel/>
 									<ExampleMultilineTextInputLabel/>
 
 									<ExampleSelect/>

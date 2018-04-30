@@ -874,7 +874,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__input-field:focus,
 .rrui__select__button:focus,
-.rrui__select__native-expanded:focus + .rrui__select__button {
+.rrui__select__native:focus + .rrui__select__button {
   border-bottom-color: var(--rrui-accent-color); }
 
 .rrui__input-field {
@@ -935,6 +935,7 @@ than 100% of the parent if the parent is small enough.
   transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1); }
 
 /* Focused input label */
+.rrui__select__native:focus + .rrui__select__button + .rrui__input-label,
 .rrui__input-element:focus + .rrui__input-label {
   color: var(--rrui-accent-color); }
 
@@ -1506,7 +1507,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-transform-origin: 50% bottom 0px;
           transform-origin: 50% bottom 0px; }
 
-.rrui__select__option--focused {
+.rrui__select__options--expanded .rrui__select__option--focused {
   background-color: var(--rrui-gray-color-lightest); }
 
 .rrui__select__button,
@@ -1520,7 +1521,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
   text-align: left; }
 
 .rrui__select__button:active .rrui__select__selected-label,
-.rrui__select__button:active .rrui__select__arrow {
+.rrui__select__button:active .rrui__select__arrow,
+.rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
+.rrui__select__native:active + .rrui__select__button .rrui__select__arrow  {
   color: var(--rrui-accent-color); }
 
 .rrui__select__button--expanded {
@@ -1582,12 +1585,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 {
   opacity: 0.3;
 }*/
-.rrui__select__native-expanded {
-  position: absolute;
-  left: 0;
-  z-index: 1;
-  opacity: 0;
-  cursor: pointer; }
 
 .rrui__select__close {
   /*
@@ -1619,7 +1616,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* For native `<select/>` in Safari. */
 /* (in case this feature being used) */
 .rrui__select__native {
-  min-height: 100%; }
+  min-height: 100%;
+height: 100%;
+position: absolute;
+width: 100%;
+cursor: pointer;
+border: 0;
+opacity: 0;
+   }
 
 .rrui__select .rrui__ellipsis {
   position: absolute;
@@ -1793,6 +1797,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: var(--rrui-error-color); }
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder {
+  transition-delay : 100ms;
   -webkit-transform: translateY(0) scale(1);
       -ms-transform: translateY(0) scale(1);
           transform: translateY(0) scale(1); }
@@ -1801,7 +1806,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__input-field--multiline {
   height: var(--rrui-multiline-text-height);
   padding-top: calc(var(--rrui-unit) / 2);
-  padding-bottom: calc(var(--rrui-unit) / 2); }
+  padding-bottom: calc(var(--rrui-unit) / 2);
+  padding-left   : 0;
+  padding-right  : 0; }
 
 /* Multiline `<TextInput/>`'s label positioning. */
 /* Must be same as `padding-top`/`padding-bottom`. */
