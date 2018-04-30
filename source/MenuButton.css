@@ -5,6 +5,7 @@
 	margin      : calc(-1 * var(--rrui-unit) / 2);
 	line-height : 0;
 	color       : var(--rrui-black-color);
+	outline     : none;
 }
 
 .rrui__slideout-menu-button:active

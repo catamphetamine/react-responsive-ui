@@ -356,12 +356,22 @@ export default class DatePicker extends PureComponent
 
 		switch (event.keyCode)
 		{
-			// Collapse on Escape and on Enter
+			// "Escape"
 			case 27:
-				event.preventDefault()
+				if (expanded)
+				{
+					event.preventDefault()
+					this.collapse()
+				}
+				return
+
+			// "Enter"
 			case 13:
 				if (expanded)
 				{
+					// Don't "prevent default" here
+					// in order for a user to be able
+					// to submit an enclosing form on "Enter".
 					this.collapse()
 				}
 				return
@@ -370,18 +380,16 @@ export default class DatePicker extends PureComponent
 			case 32:
 				event.preventDefault()
 
-				if (expanded)
-				{
+				if (expanded) {
 					this.collapse()
 				}
-				else
-				{
+				else {
 					this.expand()
 				}
 
 				return
 
-			// Collapse the calendar (if expanded) on Up arrow
+			// Collapse the calendar (if expanded) on "Up" arrow.
 			case 38:
 				if (expanded)
 				{
@@ -390,7 +398,7 @@ export default class DatePicker extends PureComponent
 				}
 				return
 
-			// Expand the calendar (if collapsed) on Down arrow
+			// Expand the calendar (if collapsed) on "Down" arrow.
 			case 40:
 				if (!expanded)
 				{

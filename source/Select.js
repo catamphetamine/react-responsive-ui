@@ -465,6 +465,7 @@ export default class Select extends Component
 	storeListNode = (node) => this.list = node
 	storeSelectedOption = (ref) => this.selected = ref
 	storeAutocompleteInput = (node) => this.autocomplete = node
+	storeNativeSelect = (node) => this.native = node
 
 	render()
 	{
@@ -1016,7 +1017,7 @@ export default class Select extends Component
 
 		return (
 			<select
-				ref={ ref => this.native = ref }
+				ref={ this.storeNativeSelect }
 				id={ id }
 				name={ name }
 				value={ value_is_empty(value) ? Empty_value_option_value : value }
@@ -1102,7 +1103,11 @@ export default class Select extends Component
 		if (this.shouldShowOptionsList())
 		{
 			this.selected.focus()
+			this.onKeyDownFromNativeSelect = true
 			this.onKeyDown(event)
+			// Known bug:
+			// Firefox is stubborn with Spacebar key not being "preventDefault"ed.
+			// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
 			event.preventDefault()
 		}
 	}
@@ -1614,6 +1619,10 @@ export default class Select extends Component
 		const { onKeyDown, menu, value, autocomplete, required } = this.props
 		const { options, expanded, focusedOptionValue, autocompleteInputValue } = this.state
 
+		// Reset the flag.
+		const fromNativeSelect = this.onKeyDownFromNativeSelect
+		this.onKeyDownFromNativeSelect = false
+
 		if (onKeyDown) {
 			onKeyDown(event)
 		}
@@ -1713,12 +1722,12 @@ export default class Select extends Component
 					// Choose the focused item on Enter
 					if (expanded)
 					{
-						event.preventDefault()
-
 						// If no autocomplete option is focused
 						// then choose an option based on current input.
 						if (autocomplete && focusedOptionValue === undefined)
 						{
+							event.preventDefault()
+
 							this.setAutocompleteValueBasedOnCurrentInput()
 							this.collapse()
 						}
@@ -1729,6 +1738,8 @@ export default class Select extends Component
 						//  it is valid to have a default option)
 						else if (options.length > 0)
 						{
+							event.preventDefault()
+
 							// Choose the focused item
 							this.item_clicked(focusedOptionValue, event)
 						}
@@ -1766,32 +1777,40 @@ export default class Select extends Component
 
 				// "Spacebar".
 				case 32:
-					// Choose the focused item on Enter
-					if (expanded)
+					// Choose the focused item on Spacebar.
+					if (!autocomplete)
 					{
-						if (menu)
+						if (expanded)
 						{
+							if (menu)
+							{
+								// Choose the focused menu item.
+							}
+							// only if it it's an `options` select
+							// and also if it's not an autocomplete
+							else
+							{
+								// Known bug:
+								// Firefox is stubborn with Spacebar key not being "preventDefault"ed.
+								// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
+								event.preventDefault()
+
+								// `focusedOptionValue` could be non-existent
+								// in case of `autocomplete`, but since
+								// we're explicitly not handling autocomplete here
+								// it is valid to select any options including the default ones.
+								this.item_clicked(focusedOptionValue, event)
+							}
+						}
+						else if (fromNativeSelect)
+						{
+							// Known bug:
+							// Firefox is stubborn with Spacebar key not being "preventDefault"ed.
+							// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
 							event.preventDefault()
 
-							// Choose the focused menu item.
+							this.expand()
 						}
-						// only if it it's an `options` select
-						// and also if it's not an autocomplete
-						else if (!autocomplete)
-						{
-							event.preventDefault()
-
-							// `focusedOptionValue` could be non-existent
-							// in case of `autocomplete`, but since
-							// we're explicitly not handling autocomplete here
-							// it is valid to select any options including the default ones.
-							this.item_clicked(focusedOptionValue, event)
-						}
-					}
-					else if (!autocomplete)
-					{
-						event.preventDefault()
-						this.expand()
 					}
 
 					return
