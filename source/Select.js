@@ -677,7 +677,7 @@ export default class Select extends Component
 			value = element.props.value
 		}
 
-		const is_focused = !menu && value === focusedOptionValue
+		const is_focused = menu ? false : value === focusedOptionValue
 
 		let item_style
 
@@ -1517,7 +1517,7 @@ export default class Select extends Component
 
 	onKeyDown = (event) =>
 	{
-		const { onKeyDown, value, autocomplete } = this.props
+		const { onKeyDown, menu, value, autocomplete } = this.props
 		const { options, expanded, focusedOptionValue, autocompleteInputValue } = this.state
 
 		if (onKeyDown) {
@@ -1538,7 +1538,7 @@ export default class Select extends Component
 		}
 
 		// Maybe add support for `children` arrow navigation in future
-		if (options.length > 0)
+		if (menu || options.length > 0)
 		{
 			switch (event.keyCode)
 			{
@@ -1551,12 +1551,19 @@ export default class Select extends Component
 						return this.expand()
 					}
 
-					const previous = this.previous_focusable_option()
-
-					if (previous)
+					if (menu)
 					{
-						this.show_option(previous.value, 'top')
-						return this.setState({ focusedOptionValue: previous.value })
+						// Menu up.
+					}
+					else
+					{
+						const previous = this.previous_focusable_option()
+
+						if (previous)
+						{
+							this.show_option(previous.value, 'top')
+							return this.setState({ focusedOptionValue: previous.value })
+						}
 					}
 
 					return
@@ -1570,12 +1577,19 @@ export default class Select extends Component
 						return this.expand()
 					}
 
-					const next = this.next_focusable_option()
-
-					if (next)
+					if (menu)
 					{
-						this.show_option(next.value, 'bottom')
-						return this.setState({ focusedOptionValue: next.value })
+						// Menu down.
+					}
+					else
+					{
+						const next = this.next_focusable_option()
+
+						if (next)
+						{
+							this.show_option(next.value, 'bottom')
+							return this.setState({ focusedOptionValue: next.value })
+						}
 					}
 
 					return
@@ -1616,6 +1630,12 @@ export default class Select extends Component
 							// Choose the focused item
 							this.item_clicked(focusedOptionValue, event)
 						}
+						else // if (menu)
+						{
+							// Menu
+
+							// Choose the focused menu item.
+						}
 					}
 					// Else it should have just submitted the form on Enter,
 					// but it wouldn't because the select element activator is a <button/>
@@ -1636,9 +1656,13 @@ export default class Select extends Component
 					// Choose the focused item on Enter
 					if (expanded)
 					{
+						if (menu)
+						{
+							// Choose the focused menu item.
+						}
 						// only if it it's an `options` select
 						// and also if it's not an autocomplete
-						if (options.length > 0 && !autocomplete)
+						else if (options.length > 0 && !autocomplete)
 						{
 							// `focusedOptionValue` could be non-existent
 							// in case of `autocomplete`, but since
