@@ -456,6 +456,7 @@ export default class Select extends Component
 	componentWillUnmount()
 	{
 		clearTimeout(this.scroll_into_view_timeout)
+		clearTimeout(this.reset_options_list_snapshot_timer)
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 		clearTimeout(this.blurTimer)
 	}
@@ -501,7 +502,8 @@ export default class Select extends Component
 			options,
 			isFetchingOptions,
 			expanded,
-			list_height
+			list_height,
+			showOptionsList
 		}
 		= this.state
 
@@ -516,43 +518,84 @@ export default class Select extends Component
 
 		let list_items
 
-		// If a list of options is supplied as a set of child React elements,
-		// then render those elements.
-		if (children)
+		if (this.shouldShowOptionsList() && showOptionsList)
 		{
-			list_items = React.Children.map(children, (element, index) =>
+			// If a list of options is supplied as a set of child React elements,
+			// then render those elements.
+			if (children)
 			{
-				if (!element)
+				list_items = React.Children.map(children, (element, index) =>
 				{
-					return
-				}
+					if (!element)
+					{
+						return
+					}
 
-				return this.render_list_item({ index, element })
-			})
-		}
-		// If a list of options is supplied as an array of `{ value, label }`,
-		// then transform those elements to <buttons/>
-		else
-		{
-			const overflow = scroll && this.overflown()
-
-			list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon, content }, index) =>
-			{
-				return this.render_list_item
-				({
-					index,
-					value,
-					label,
-					icon: !saveOnIcons && icon,
-					content,
-					overflow
+					return this.render_list_item({ index, element })
 				})
-			})
+			}
+			// If a list of options is supplied as an array of `{ value, label }`,
+			// then transform those elements to <buttons/>
+			else
+			{
+				const overflow = scroll && this.overflown()
+
+				list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon, content }, index) =>
+				{
+					return this.render_list_item
+					({
+						index,
+						value,
+						label,
+						icon: !saveOnIcons && icon,
+						content,
+						overflow
+					})
+				})
+			}
 		}
 
 		const wrapper_style = { textAlign: alignment }
 
-		const show_options_list = this.shouldShowOptionsList() && list_items.length > 0
+		let optionsList
+		const show_options_list = list_items && list_items.length > 0
+
+		if (show_options_list)
+		{
+			// `<Select/>` options list is snapshotted
+			// because when `this.state.expanded` is `false`
+			// the option list is not rendered at all
+			// (which would result in an absent CSS collapse transition).
+			// So the options list snapshot is rendered
+			// until the "close" CSS animation is finished.
+			optionsList = (
+				<ul
+					ref={ this.storeListNode }
+					style={ list_style }
+					className={ classNames
+					(
+						'rrui__expandable',
+						'rrui__expandable--overlay',
+						'rrui__select__options',
+						'rrui__shadow',
+						{
+							'rrui__select__options--autocomplete'  : autocomplete,
+							'rrui__select__options--menu'          : menu,
+							'rrui__expandable--expanded'           : expanded,
+							'rrui__select__options--expanded'      : expanded,
+							'rrui__expandable--left-aligned'       : alignment === 'left',
+							'rrui__expandable--right-aligned'      : alignment === 'right',
+							'rrui__select__options--left-aligned'  : !children && alignment === 'left',
+							'rrui__select__options--right-aligned' : !children && alignment === 'right',
+							'rrui__select__options--upward'        : upward,
+							'rrui__select__options--downward'      : !upward
+						}
+					) }>
+					{ list_items }
+				</ul>
+			)
+		}
+
 		const label = this.getLabel()
 
 		return (
@@ -566,10 +609,7 @@ export default class Select extends Component
 						'rrui__rich'                 : fallback,
 						'rrui__select--autocomplete' : autocomplete,
 						'rrui__select--menu'         : menu,
-						'rrui__select--upward'       : upward,
 						'rrui__select--expanded'     : expanded,
-						'rrui__select--collapsed'    : !expanded,
-						'rrui__select--disabled'     : disabled,
 						'rrui__select--compact'      : compact || (concise && !autocomplete)
 					},
 					className
@@ -615,33 +655,7 @@ export default class Select extends Component
 					{ menu && this.render_toggler() }
 
 					{/* The list of selectable options */}
-					{ show_options_list &&
-						<ul
-							ref={ this.storeListNode }
-							style={ list_style }
-							className={ classNames
-							(
-								'rrui__expandable',
-								'rrui__expandable--overlay',
-								'rrui__select__options',
-								'rrui__shadow',
-								{
-									'rrui__select__options--autocomplete'  : autocomplete,
-									'rrui__select__options--menu'          : menu,
-									'rrui__expandable--expanded'           : expanded,
-									'rrui__select__options--expanded'      : expanded,
-									'rrui__expandable--left-aligned'       : alignment === 'left',
-									'rrui__expandable--right-aligned'      : alignment === 'right',
-									'rrui__select__options--left-aligned'  : !children && alignment === 'left',
-									'rrui__select__options--right-aligned' : !children && alignment === 'right',
-									// CSS selector performance optimization
-									'rrui__select__options--upward'        : upward,
-									'rrui__select__options--downward'      : !upward
-								}
-							) }>
-							{ list_items }
-						</ul>
-					}
+					{ optionsList }
 
 					{/* The "x" button to hide the list of options
 					    for fullscreen `<Select/>` on mobile devices */}
@@ -649,10 +663,7 @@ export default class Select extends Component
 						<Close
 							onClick={ this.onToggle }
 							closeLabel={ closeLabel }
-							className={ classNames('rrui__close--bottom-right', 'rrui__select__close',
-							{
-								'rrui__select__close--autocomplete' : autocomplete
-							}) }>
+							className={ classNames('rrui__close--bottom-right', 'rrui__select__close') }>
 							<CloseButtonIcon/>
 						</Close>
 					}
@@ -663,7 +674,9 @@ export default class Select extends Component
 
 				{/* Error message */}
 				{ this.should_indicate_invalid() &&
-					<div className="rrui__input-error">{ error }</div>
+					<div className="rrui__input-error">
+						{ error }
+					</div>
 				}
 			</div>
 		)
@@ -1252,10 +1265,10 @@ export default class Select extends Component
 
 		options = this.trimOptions(options)
 
-		if (!expanded)
-		{
-			options = options.slice(0, maxItems)
-		}
+		// if (!expanded)
+		// {
+		// 	options = options.slice(0, maxItems)
+		// }
 
 		return options
 	}
@@ -1375,6 +1388,7 @@ export default class Select extends Component
 		}
 
 		clearTimeout(this.scroll_into_view_timeout)
+		clearTimeout(this.reset_options_list_snapshot_timer)
 
 		if (onToggle && expand !== expanded) {
 			onToggle(expand)
@@ -1387,7 +1401,15 @@ export default class Select extends Component
 		}
 
 		// Expand.
-		return this.fetchOptions().then(() =>
+		return this.fetchOptions()
+		.then(() => new Promise((resolve) =>
+		{
+			// Without the timeout for some reason the CSS "expand" animation won't play.
+			// Perhaps a browser decides to optimize two subsequent renders
+			// and doesn't render "pre-expanded" and "expanded" separately.
+			this.setState({ showOptionsList : true }, () => setTimeout(resolve, 0))
+		}))
+		.then(() =>
 		{
 			// Toggling the options list in a timeout
 			// in order for iOS scroll not to get "janky"
@@ -1410,6 +1432,9 @@ export default class Select extends Component
 
 	_toggle(expand, { refocus, editing, toggle })
 	{
+		const { autocomplete } = this.props
+		const { autocompleteInputValue } = this.state
+
 		return new Promise((resolve) =>
 		{
 			// Focus the toggler after the select is collapsed.
@@ -1438,11 +1463,37 @@ export default class Select extends Component
 			{
 				if (expand)
 				{
-					// // Highlight either the option for the currently
-					// // selected `value` or the first option available.
-					// this.focusAnOption()
 					// Scroll the options list into view if needed.
 					this.scrollIntoView()
+
+					if (autocomplete)
+					{
+						if (autocompleteInputValue)
+						{
+							// Highlight either the option for the currently
+							// selected `value` or the first option available.
+							this.focusAnOption()
+						}
+						else
+						{
+							// Unfocus any focused option when erased all input.
+							// (in order to be able to "select nothing"
+							//  by pressing Enter in an empty input field)
+							this.setState({
+								focusedOptionValue : undefined
+							})
+						}
+					}
+				}
+				else
+				{
+					// `<Select/>` options list is snapshotted
+					// because when `this.state.expanded` is `false`
+					// the option list is not rendered at all
+					// (which would result in an absent CSS collapse transition).
+					// So the options list snapshot is rendered
+					// until the "close" CSS animation is finished.
+					this.clearOptionsListSnapshot()
 				}
 
 				resolve()
@@ -1466,14 +1517,42 @@ export default class Select extends Component
 		{
 			this.scroll_into_view_timeout = setTimeout(() =>
 			{
+				const { expanded } = this.state
+
 				// If still expanded and there are any options
 				// then scroll into view.
-				if (this.state.expanded && this.list) {
+				if (expanded && this.list) {
 					scrollIntoViewIfNeeded(this.list)
 				}
 			},
 			Math.max(expandAnimationDuration, keyboardSlideAnimationDuration) * 1.1)
 		}
+	}
+
+	// `<Select/>` options list is snapshotted
+	// because when `this.state.expanded` is `false`
+	// the option list is not rendered at all
+	// (which would result in an absent CSS collapse transition).
+	// So the options list snapshot is rendered
+	// until the "close" CSS animation is finished.
+	clearOptionsListSnapshot()
+	{
+		const { expandAnimationDuration } = this.props
+
+		// For some reason in IE 11 "scroll into view" scrolls
+		// to the top of the page, therefore turn it off for IE.
+		this.reset_options_list_snapshot_timer = setTimeout(() =>
+		{
+			const { expanded } = this.state
+
+			// If still not expanded.
+			if (!expanded)
+			{
+				// Re-render to remove the options DOM nodes.
+				this.setState({ showOptionsList : false })
+			}
+		},
+		expandAnimationDuration * 1.1)
 	}
 
 	focusAnOption = () =>
@@ -1619,6 +1698,12 @@ export default class Select extends Component
 				//
 				case 27:
 					event.preventDefault()
+
+					// Reset autocomplete input value.
+					if (autocomplete)
+					{
+						this.setValue(value)
+					}
 
 					// Collapse the list if it's expanded
 					return this.collapse()

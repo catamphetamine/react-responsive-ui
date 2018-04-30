@@ -35,10 +35,6 @@
 }
 
 /* Disable `<Select/>` options `:hover` effect. */
-/* Added `:not(:active)` here for `small-screen.css` */
-/* which expands the list of options to full screen */
-/* upon a click on `<Select/>` and that would make */
-/* an option below the touch to become stuck in `:hover` state. */
 .rrui__select__options--expanded .rrui__select__option:hover
 {
 	background-color : transparent;
