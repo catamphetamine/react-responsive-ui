@@ -26,6 +26,7 @@
 }
 
 /* Focused input label */
+.rrui__select__native:focus + .rrui__select__button + .rrui__input-label,
 .rrui__input-element:focus + .rrui__input-label
 {
 	color : var(--rrui-accent-color);

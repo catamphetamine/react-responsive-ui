@@ -120,7 +120,6 @@ from './modules/DragAndDrop'
 
 export
 {
-	set_modular_grid_unit,
-	set_modular_grid_unit as setModularGridUnit
+	setModularGridUnit
 }
 from './modules/utility/grid'

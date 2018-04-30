@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import classNames from 'classnames'
 
+import Label from './TextInputLabel'
+import TextInput from './TextInputInput'
 import Ellipsis from './Ellipsis'
 import Close, { CloseIcon } from './Close'
 
@@ -97,9 +99,6 @@ export default class Select extends Component
 		// Whether to use native `<select/>`
 		native      : PropTypes.bool.isRequired,
 
-		// Whether to use native `<select/>` when expanded
-		nativeExpanded : PropTypes.bool.isRequired,
-
 		// Show icon only for selected item,
 		// and only if `concise` is `true`.
 		saveOnIcons : PropTypes.bool,
@@ -118,9 +117,6 @@ export default class Select extends Component
 
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
-
-		// Is called when the select is focused
-		onFocus    : PropTypes.func,
 
 		// Is called when the select is blurred.
 		// This `onBlur` interceptor is a workaround for `redux-form`,
@@ -209,8 +205,6 @@ export default class Select extends Component
 		// Is `true` by default (only when the list of options is scrollable)
 		scrollbarPadding : PropTypes.bool,
 
-		focusUponSelection : PropTypes.bool.isRequired,
-
 		// When the `<Select/>` is expanded
 		// the options list may not fit on the screen.
 		// If `scrollIntoView` is `true` (which is the default)
@@ -226,6 +220,9 @@ export default class Select extends Component
 		onTabOut : PropTypes.func,
 
 		onToggle : PropTypes.func,
+
+		// The initial label for an asynchronous autocomplete.
+		selectedOptionLabel : PropTypes.string,
 
 		// `aria-label` for the `<Select/>`'s `<button/>`
 		ariaLabel : PropTypes.string.isRequired,
@@ -249,10 +246,8 @@ export default class Select extends Component
 		scroll             : true,
 		maxItems           : 6,
 		scrollbarPadding   : true,
-		focusUponSelection : true,
 		fallback           : false,
 		native             : false,
-		nativeExpanded     : false,
 		scrollIntoView     : true,
 
 		// If `scrollIntoView` is `true` (which is the default)
@@ -290,12 +285,14 @@ export default class Select extends Component
 		vertical_padding : 0,
 
 		// `getOptions()` must receive a `string`.
-		autocomplete_input_value : '',
+		autocompleteInputValue : '',
 
 		// The currently displayed `options` counter.
 		// (in case of `autocomplete` and `async getOptions()`).
 		optionsCounter : 0,
 		matchesCounter : 0,
+
+		selectedOptionLabel : this.props.selectedOptionLabel,
 
 		// Will be re-fetched in `componentDidMount()`.
 		options : this.props.options || [],
@@ -325,6 +322,8 @@ export default class Select extends Component
 		const
 		{
 			value,
+			label,
+			placeholder,
 			autocomplete,
 			options,
 			getOptions,
@@ -373,6 +372,11 @@ export default class Select extends Component
 		{
 			throw new Error(`"onChange" property must be specified for a non-menu <Select/>`)
 		}
+
+		if (label && placeholder)
+		{
+			throw new Error('`<Select/>` no longer accepts both `label` and `placeholder`.')
+		}
 	}
 
 	static getDerivedStateFromProps({ autocomplete, value, options }, state)
@@ -390,7 +394,7 @@ export default class Select extends Component
 		// Not re-fetching async options here.
 		if (Array.isArray(options))
 		{
-			const _options = _getOptions(options, null, state.autocomplete_input_value)
+			const _options = _getOptions(options, null, state.autocompleteInputValue)
 
 			// `<Select autocomplete/>`'s selected option label
 			// is stored in a special `selectedOptionLabel` variable in `this.state`.
@@ -416,27 +420,22 @@ export default class Select extends Component
 	// Client side rendering, javascript is enabled
 	componentDidMount()
 	{
-		const { fallback, nativeExpanded } = this.props
+		const { autocomplete, options, selectedOptionLabel, fallback } = this.props
 
 		if (fallback)
 		{
 			this.setState({ javascript: true })
 		}
 
-		if (nativeExpanded)
+		if (autocomplete && options && selectedOptionLabel === undefined)
 		{
-			this.resize_native_expanded_select()
-			window.addEventListener('resize', this.resize_native_expanded_select)
+			this.setState({ selectedOptionLabel: this.get_selected_option_label() })
 		}
-
-		// If some initial `value` is set then
-		// the `options` are required to display that `value`.
-		this.fetchOptions()
 	}
 
 	componentDidUpdate(previous_props, previous_state)
 	{
-		const { nativeExpanded, value } = this.props
+		const { value } = this.props
 		const { expanded, height } = this.state
 
 		if (expanded !== previous_state.expanded)
@@ -449,26 +448,11 @@ export default class Select extends Component
 				}
 			}
 		}
-
-		// If the `value` changed then resize the native expanded `<select/>`
-		if (nativeExpanded && value !== previous_props.value)
-		{
-			this.resize_native_expanded_select()
-		}
 	}
 
 	componentWillUnmount()
 	{
-		const { nativeExpanded } = this.props
-
-		if (nativeExpanded)
-		{
-			window.removeEventListener('resize', this.resize_native_expanded_select)
-		}
-
-		clearTimeout(this.toggle_timeout)
 		clearTimeout(this.scroll_into_view_timeout)
-		clearTimeout(this.restore_focus_on_collapse_timeout)
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 		clearTimeout(this.blurTimer)
 	}
@@ -496,11 +480,9 @@ export default class Select extends Component
 			maxItems,
 			fallback,
 			native,
-			nativeExpanded,
 			disabled,
 			required,
 			placeholder,
-			label,
 			value,
 			error,
 			closeButtonIcon : CloseButtonIcon,
@@ -566,10 +548,8 @@ export default class Select extends Component
 
 		const wrapper_style = { textAlign: alignment }
 
-		const selected = this.get_selected_option()
-
-		const show_options_list = !native && !nativeExpanded && list_items.length > 0
-		const show_label = label && (this.get_selected_option() || placeholder)
+		const show_options_list = this.shouldShowOptionsList() && list_items.length > 0
+		const label = this.getLabel()
 
 		return (
 			<div
@@ -600,8 +580,14 @@ export default class Select extends Component
 
 					{ (loading || isFetchingOptions) && <Ellipsis/> }
 
-					{/* Currently selected item */}
-					{ !menu && !native && this.render_selected_item(show_label) }
+					{/* In case of a custom `toggler`. */}
+					{ !menu && !native &&  toggler && this.render_toggler() }
+					{/* A transparent native `<select/>` above (for better UX on mobile devices). */}
+					{ !menu && !native && !toggler && !autocomplete && this.render_static() }
+					{/* The currently selected option */}
+					{ !menu && !native && !toggler && !autocomplete && this.render_selected_item() }
+					{/* Autocomplete input */}
+					{ !menu && !native && !toggler &&  autocomplete && this.render_autocomplete() }
 
 					{/* Label */}
 					{/* (this label is placed after the "selected" button
@@ -610,16 +596,15 @@ export default class Select extends Component
 					    but `label` was and no option is currently selected
 					    then the `label` becomes the `placeholder`
 					    until something is selected */}
-					{ show_label &&
-						<label
-							htmlFor={ id }
-							className={ classNames('rrui__input-label',
-							{
-								'rrui__input-label--required' : required && value_is_empty(value),
-								'rrui__input-label--invalid'  : this.should_indicate_invalid()
-							}) }>
+					{ label &&
+						<Label
+							id={ id }
+							value={ value }
+							required={ required }
+							invalid={ this.should_indicate_invalid() }
+							floats={ autocomplete }>
 							{ label }
-						</label>
+						</Label>
 					}
 
 					{/* Menu toggler */}
@@ -683,7 +668,7 @@ export default class Select extends Component
 	render_list_item({ index, element, value, label, icon, overflow }) // , first, last
 	{
 		const { disabled, menu, scrollbarPadding } = this.props
-		const { focused_option_value, expanded } = this.state
+		const { focusedOptionValue, expanded } = this.state
 
 		// If a list of options is supplied as a set of child React elements,
 		// then extract values from their props.
@@ -692,7 +677,7 @@ export default class Select extends Component
 			value = element.props.value
 		}
 
-		const is_focused = !menu && value === focused_option_value
+		const is_focused = !menu && value === focusedOptionValue
 
 		let item_style
 
@@ -807,59 +792,21 @@ export default class Select extends Component
 		)
 	}
 
-	// Renders the selected option
-	// and possibly a transparent native `<select/>` above it
-	// so that the native `<select/>` expands upon click
-	// on the selected option
-	// (in case of `nativeExpanded` setting).
-	render_selected_item(label_is_shown)
-	{
-		const { nativeExpanded, toggler } = this.props
-
-		if (toggler)
-		{
-			return this.render_toggler()
-		}
-
-		// `selected` can be just a button in a simple case
-		// and an array of a button and an input in case of autocomplete.
-		const selected = this.render_selected_item_only(label_is_shown)
-
-		if (nativeExpanded)
-		{
-			return (
-				<div style={ native_expanded_select_container_style }>
-					{ this.render_static() }
-					{ selected }
-				</div>
-			)
-		}
-
-		return selected
-	}
-
 	// Returns either just a button or a button and an input in case of autocomplete.
 	// Always returns an array so that when `[input, button]` (collapsed)
 	// becomes `[input]` (expanded) React doesn't re-mount the input element.
 	// (won't focus the input upon expansion otherwise)
-	render_selected_item_only(label_is_shown)
+	render_selected_item()
 	{
 		const
 		{
-			children,
 			value,
-			placeholder,
-			label,
 			disabled,
 			required,
-			autocomplete,
 			concise,
-			nativeExpanded,
 			tabIndex,
-			onFocus,
 			title,
 			ariaLabel,
-			inputClassName,
 			toggleClassName
 		}
 		= this.props
@@ -867,52 +814,33 @@ export default class Select extends Component
 		const
 		{
 			expanded,
-			autocomplete_width,
-			autocomplete_input_value,
-			isFetchingOptions,
-			matches,
-			selectedOptionLabel
+			isFetchingOptions
 		}
 		= this.state
 
+		const selected_label = this.get_selected_option_label() || this.getLabel() || this.getPlaceholder()
+
 		const selected = this.get_selected_option()
-		let selected_label = this.get_selected_option_label() || autocomplete && selectedOptionLabel
-
-		const selected_text = selected_label ||
-			// If an autocomplete has not been expanded yet
-			// then show the placeholder.
-			// (if no `value` is selected or until options are loaded).
-			// After that, either show the selected option label
-			// or show nothing.
-			(autocomplete && isFetchingOptions && expanded !== undefined ? autocomplete_input_value : placeholder || label)
-
-		const selected_style_classes =
-		{
-			'rrui__input-element' : true
-		}
-
 		const show_selected_as_an_icon = concise && selected && selected.icon
 
-		const button = (
+		return (
 			<button
-				key="button"
 				ref={ this.storeSelectedOption }
 				type="button"
 				disabled={ disabled }
 				onClick={ this.onToggle }
 				onKeyDown={ this.onKeyDown }
-				onFocus={ onFocus }
-				tabIndex={ nativeExpanded ? -1 : tabIndex }
+				tabIndex={ -1 }
 				title={ title }
 				aria-label={ ariaLabel }
 				className={ classNames
 				(
-					selected_style_classes,
+					'rrui__input-element',
 					'rrui__button-reset',
 					'rrui__select__button',
 					toggleClassName,
 					{
-						'rrui__select__button--empty'   : !selected_label,
+						'rrui__select__button--empty'   : value_is_empty(value),
 						'rrui__select__button--invalid' : this.should_indicate_invalid(),
 						'rrui__input-element--invalid'  : this.should_indicate_invalid(),
 						// CSS selector performance optimization
@@ -928,9 +856,9 @@ export default class Select extends Component
 					<div
 						className={ classNames('rrui__select__selected-label',
 						{
-							'rrui__select__selected-label--required' : !label_is_shown && required && value_is_empty(value)
+							'rrui__select__selected-label--required' : !this.getLabel() && required && value_is_empty(value)
 						}) }>
-						{ show_selected_as_an_icon ? React.cloneElement(render_icon(selected.icon), { title: selected_label }) : selected_text }
+						{ show_selected_as_an_icon ? React.cloneElement(render_icon(selected.icon), { title: selected_label }) : selected_label }
 					</div>
 
 					{/* An arrow */}
@@ -946,49 +874,63 @@ export default class Select extends Component
 				</div>
 			</button>
 		)
+	}
 
-		if (autocomplete)
+	render_autocomplete()
+	{
+		const
 		{
-			// style = { ...style, width: autocomplete_width + 'px' }
-
-			const input = (
-				<input
-					key="input"
-					type="text"
-					ref={ this.storeAutocompleteInput }
-					placeholder={ selected_label }
-					value={ autocomplete_input_value }
-					onChange={ this.on_autocomplete_input_change }
-					onKeyDown={ this.onKeyDown }
-					onFocus={ onFocus }
-					tabIndex={ expanded ? tabIndex : -1 }
-					title={ title }
-					className={ classNames
-					(
-						selected_style_classes,
-						'rrui__input-field',
-						'rrui__select__autocomplete',
-						inputClassName,
-						// CSS selector performance optimization
-						// (should it even be optimized).
-						{
-							'rrui__input-field--disabled' : disabled,
-							'rrui__input-field--invalid' : !matches,
-							'rrui__select__autocomplete--hidden' : !expanded,
-							'rrui__select__autocomplete--loading' : isFetchingOptions
-						}
-					) }/>
-			)
-
-			if (expanded)
-			{
-				return [input]
-			}
-
-			return [input, button]
+			value,
+			placeholder,
+			label,
+			disabled,
+			required,
+			tabIndex,
+			inputClassName
 		}
+		= this.props
 
-		return [button]
+		const
+		{
+			expanded,
+			autocomplete_width,
+			autocompleteInputValue,
+			isFetchingOptions,
+			matches,
+			// selectedOptionLabel
+		}
+		= this.state
+
+		// const selected_text = selectedOptionLabel ||
+		// 	// If an autocomplete has not been expanded yet
+		// 	// then show the placeholder.
+		// 	// (if no `value` is selected or until options are loaded).
+		// 	// After that, either show the selected option label
+		// 	// or show nothing.
+		// 	(isFetchingOptions && expanded !== undefined && autocompleteInputValue)
+
+		return (
+			<TextInput
+				inputRef={ this.storeAutocompleteInput }
+				value={ autocompleteInputValue }
+				onChange={ this.on_autocomplete_input_change }
+				onKeyDown={ this.onKeyDown }
+				onFocus={ this.expandAutocompleteOnFocus }
+				onClick={ this.expandAutocompleteOnFocus }
+				tabIndex={ tabIndex }
+				disabled={ disabled }
+				className={ classNames
+				(
+					'rrui__select__autocomplete',
+					inputClassName,
+					// CSS selector performance optimization
+					// (should it even be optimized).
+					{
+						'rrui__input-field--invalid' : matches === false,
+						'rrui__select__autocomplete--loading' : isFetchingOptions
+					}
+				) }/>
+		)
 	}
 
 	render_toggler()
@@ -1023,7 +965,6 @@ export default class Select extends Component
 			toggler,
 			fallback,
 			native,
-			nativeExpanded,
 			tabIndex,
 			children
 		}
@@ -1051,12 +992,12 @@ export default class Select extends Component
 				name={ name }
 				value={ value_is_empty(value) ? Empty_value_option_value : value }
 				disabled={ disabled }
+				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.native_select_on_change }
-				tabIndex={ (native || nativeExpanded) ? tabIndex : undefined }
+				tabIndex={ tabIndex }
 				className={ classNames('rrui__input', 'rrui__select__native',
 				{
-					'rrui__select__native-expanded' : nativeExpanded,
-					'rrui__rich__fallback'          : fallback
+					'rrui__rich__fallback' : fallback
 				}) }>
 				{
 					options
@@ -1126,6 +1067,43 @@ export default class Select extends Component
 		return rendered_options
 	}
 
+	nativeSelectOnMouseDown = (event) =>
+	{
+		if (this.shouldShowOptionsList())
+		{
+			event.preventDefault()
+			this.selected.focus()
+			this.toggle()
+		}
+	}
+
+	getLabel()
+	{
+		const { label, placeholder, value, autocomplete } = this.props
+
+		if (autocomplete) {
+			return label || placeholder
+		}
+
+		if (value_is_empty(value)) {
+			if (placeholder) {
+				return label
+			}
+		} else {
+			return label
+		}
+	}
+
+	// Not for autocomplete (it only has the floating label).
+	getPlaceholder()
+	{
+		const { label, placeholder, value } = this.props
+
+		if (value_is_empty(value)) {
+			return placeholder || label
+		}
+	}
+
 	// Whether should indicate that the input value is invalid
 	should_indicate_invalid()
 	{
@@ -1146,13 +1124,6 @@ export default class Select extends Component
 		}
 
 		this.setValue(value)
-	}
-
-	resize_native_expanded_select = () =>
-	{
-		// For some strange reason 1px on the right side of the `<select/>`
-		// still falls through to the underlying selected option label.
-		this.native.style.width = (this.selected.offsetWidth + 1) + 'px'
 	}
 
 	refreshSelectedOptionLabel(value = this.props.value, options = this.state.options)
@@ -1289,6 +1260,31 @@ export default class Select extends Component
 		}
 	}
 
+	isNativeExpanded()
+	{
+		return false
+		// throw new Error('check touchstart for this')
+	}
+
+	shouldShowOptionsList()
+	{
+		const { menu, native, autocomplete } = this.props
+
+		if (menu) {
+			return true
+		}
+
+		if (native) {
+			return false
+		}
+
+		if (autocomplete) {
+			return true
+		}
+
+		return !this.isNativeExpanded()
+	}
+
 	onToggle = (event) =>
 	{
 		// Don't navigate away when clicking links.
@@ -1299,136 +1295,135 @@ export default class Select extends Component
 		// event.stopPropagation() // doesn't work
 		// event.nativeEvent.stopImmediatePropagation()
 
-		this.toggle()
+		return this.toggle()
 	}
 
-	toggle = (options = {}) =>
+	expandAutocompleteOnFocus = () =>
+	{
+		if (this.dontExpandAutocompleteOnFocus !== true)
+		{
+			this.expand()
+		}
+	}
+
+	expand   = (options) => this.toggle(true, options)
+	collapse = (options) => this.toggle(false, options)
+
+	toggle = (expand, options = {}) =>
 	{
 		const
 		{
 			menu,
 			autocomplete,
 			disabled,
-			nativeExpanded,
 			onToggle
 		}
 		= this.props
 
-		const { isFetchingOptions } = this.state
+		const { expanded, isFetchingOptions } = this.state
 
-		const expanded = options.expanded !== undefined ? options.expanded : this.state.expanded
-
-		if (nativeExpanded || disabled)
+		// Manual toogle to a certain state (expanded/collapsed).
+		if (expand === undefined)
 		{
-			return
+			expand = !expanded
+		}
+		// Don't expand if already expanded
+		// (or collapse if already collapsed)
+		// until in editing mode.
+		else if (!options.editing && (expand === expanded))
+		{
+			return Promise.resolve()
 		}
 
+		// Won't expand/collapse in `native` and `nativeExpanded` cases.
+		// Won't expand/collapse a disabled `<Select/>`.
 		// If clicked on the toggler the second time
 		// while options are already being fetched
 		// then wait for the fetch to finish first.
-		if (isFetchingOptions && !expanded)
+		if (!this.shouldShowOptionsList()
+			|| disabled
+			|| expand && isFetchingOptions && !options.editing)
 		{
-			return
+			return Promise.resolve()
 		}
 
 		clearTimeout(this.scroll_into_view_timeout)
-		clearTimeout(this.restore_focus_on_collapse_timeout)
 
-		// if (!expanded && autocomplete)
-		// {
-		// 	this.setState
-		// 	({
-		// 		// The input value can't be `undefined`
-		// 		// because in that case React would complain
-		// 		// about it being an "uncontrolled input"
-		// 		autocomplete_input_value : '',
-		// 		matching_options         : options
-		// 	})
-		//
-		// 	// if (!this.state.autocomplete_width)
-		// 	// {
-		// 	// 	this.setState({ autocomplete_width: this.get_widest_label_width() })
-		// 	// }
-		// }
-
-		if (onToggle) {
-			onToggle(!expanded)
+		if (onToggle && expand !== expanded) {
+			onToggle(expand)
 		}
 
-		if (expanded)
+		// Collapse.
+		if (!expand)
 		{
-			this._toggle(false, options)
+			return this._toggle(false, options)
 		}
-		else
+
+		// Expand.
+		return this.fetchOptions().then(() =>
 		{
-			this.fetchOptions(() =>
+			// Toggling the options list in a timeout
+			// in order for iOS scroll not to get "janky"
+			// when `<Select autocomplete/>` gets focused.
+			// (for some unknown reason)
+			// `100` ms is an imperical value.
+			//
+			// Asynchronous `getOptions()` introduce a delay already
+			// so only adding a delay for synchronous autocomplete.
+			//
+			if (autocomplete && this.props.options && !options.editing)
 			{
-				// Toggling the options list in a timeout
-				// in order for iOS scroll not to get "janky"
-				// when `<Select autocomplete/>` gets focused.
-				// (for some unknown reason)
-				// `100` ms is an imperical value.
-				//
-				// Asynchronous `getOptions()` introduce a delay already
-				// so only adding a delay for synchronous autocomplete.
-				//
-				if (autocomplete && this.props.options)
-				{
-					setTimeout(() => this._toggle(true, options), 100)
-				}
-				else
-				{
-					// Asynchronous `getOptions()` introduce a delay already.
-					this._toggle(true, options)
-				}
-			})
-		}
-	}
-
-	_toggle(expand, { refocus })
-	{
-		const { autocomplete, focusUponSelection } = this.props
-
-		if (expand && autocomplete)
-		{
-			// Focus the input after the select is expanded.
-			this.autocomplete.focus()
-		}
-
-		this.setState
-		({
-			expanded : expand,
-
-			// The input value can't be `undefined`
-			// because in that case React would complain
-			// about it being an "uncontrolled input".
-			autocomplete_input_value : ''
-			// autocomplete_input_value : this.get_selected_option_label() || ''
-		},
-		() =>
-		{
-			if (!(expand && autocomplete))
-			{
-				if (focusUponSelection && refocus !== false)
-				{
-					// Focus the toggler after the select is collapsed.
-					// Can be a DOM Element or a custom React Component.
-					focus(this.selected)
-
-					// For some reason Firefox loses focus
-					// upon select expansion via a click,
-					// so this extra `focus()` works around that issue.
-				}
+				return timeout(100).then(() => this._toggle(true, options))
 			}
 
-			if (expand)
-			{
-				this.afterExpand()
-			}
+			// Asynchronous `getOptions()` introduces a delay already.
+			return this._toggle(true, options)
 		})
 	}
 
-	afterExpand()
+	_toggle(expand, { refocus, editing, toggle })
+	{
+		return new Promise((resolve) =>
+		{
+			// Focus the toggler after the select is collapsed.
+			// Can be a DOM Element or a custom React Component.
+			if (!expand && refocus !== false)
+			{
+				this.dontExpandAutocompleteOnFocus = true
+				focus(this.autocomplete || this.selected)
+				this.dontExpandAutocompleteOnFocus = false
+			}
+
+			const state = {}
+
+			if (toggle !== false)
+			{
+				state.expanded = expand
+			}
+
+			if (expand && !editing)
+			{
+				state.autocompleteInputValue = this.state.selectedOptionLabel || ''
+				state.matches = true
+			}
+
+			this.setState(state, () =>
+			{
+				if (expand)
+				{
+					// Highlight either the option for the currently
+					// selected `value` or the first option available.
+					this.focusAnOption()
+					// Scroll the options list into view if needed.
+					this.scrollIntoView()
+				}
+
+				resolve()
+			})
+		})
+	}
+
+	scrollIntoView()
 	{
 		const
 		{
@@ -1437,10 +1432,6 @@ export default class Select extends Component
 			keyboardSlideAnimationDuration
 		}
 		= this.props
-
-		// Highlight either the option for the currently
-		// selected `value` or the first option available.
-		this.focusAnOption()
 
 		// For some reason in IE 11 "scroll into view" scrolls
 		// to the top of the page, therefore turn it off for IE.
@@ -1470,12 +1461,12 @@ export default class Select extends Component
 
 			const selected_option = !autocomplete && this.get_selected_option()
 
-			const focused_option_value = selected_option ? selected_option.value : options[0].value
+			const focusedOptionValue = selected_option ? selected_option.value : options[0].value
 
-			this.setState({ focused_option_value })
+			this.setState({ focusedOptionValue })
 
 			// Scroll down to the focused option
-			this.scroll_to(focused_option_value)
+			this.scroll_to(focusedOptionValue)
 		}
 	}
 
@@ -1484,36 +1475,48 @@ export default class Select extends Component
 		const { autocomplete, onChange } = this.props
 		const { options } = this.state
 
+		if (autocomplete)
+		{
+			const selectedOptionLabel = getSelectedOptionLabel(value, options)
+
+			this.setState
+			({
+				selectedOptionLabel,
+				autocompleteInputValue : selectedOptionLabel || '',
+				matches : true
+			})
+		}
+
 		// Call `onChange` only if the `value` did change.
 		if (value !== this.props.value) {
 			onChange(value)
-		}
-
-		if (autocomplete) {
-			this.refreshSelectedOptionLabel(value)
 		}
 	}
 
 	item_clicked = (value, event) =>
 	{
 		// Collapse the `<Select/>`.
-		this.onToggle(event)
-
-		this.setValue(value)
+		// Doing `setValue` in a callback
+		// because otherwise `setValue()` would result in
+		// updating props and calling `getDerivedStateFromProps()`
+		// which reads `autocomplete_value` which is being reset inside `.toggle()`.
+		this.onToggle(event).then(() => this.setValue(value))
 	}
 
 	onKeyDown = (event) =>
 	{
 		const { onKeyDown, value, autocomplete } = this.props
-		const { options, expanded, focused_option_value } = this.state
+		const { options, expanded, focusedOptionValue, autocompleteInputValue } = this.state
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.autocomplete || this.selected))
-		{
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input)) {
 			return
 		}
 
@@ -1532,12 +1535,16 @@ export default class Select extends Component
 				case 38:
 					event.preventDefault()
 
+					if (!expanded) {
+						return this.expand()
+					}
+
 					const previous = this.previous_focusable_option()
 
 					if (previous)
 					{
 						this.show_option(previous.value, 'top')
-						return this.setState({ focused_option_value: previous.value })
+						return this.setState({ focusedOptionValue: previous.value })
 					}
 
 					return
@@ -1547,12 +1554,16 @@ export default class Select extends Component
 				case 40:
 					event.preventDefault()
 
+					if (!expanded) {
+						return this.expand()
+					}
+
 					const next = this.next_focusable_option()
 
 					if (next)
 					{
 						this.show_option(next.value, 'bottom')
-						return this.setState({ focused_option_value: next.value })
+						return this.setState({ focusedOptionValue: next.value })
 					}
 
 					return
@@ -1567,31 +1578,31 @@ export default class Select extends Component
 				//
 				case 27:
 					// Collapse the list if it's expanded
-					if (this.state.expanded)
-					{
-						this.toggle()
-
-						// Restore focus when the list is collapsed.
-						clearTimeout(this.restore_focus_on_collapse_timeout)
-						this.restore_focus_on_collapse_timeout = setTimeout(() => focus(this.selected), 0)
-					}
-
-					return
+					return this.collapse()
 
 				// "Enter".
 				case 13:
 					// Choose the focused item on Enter
 					if (expanded)
 					{
+						// If no autocomplete value entered
+						// and the focused option is the first one
+						// then set value to `undefined`.
+						if (autocomplete && !autocompleteInputValue
+							&& (options.length === 0 || focusedOptionValue === options[0].value))
+						{
+							this.setValue()
+							this.collapse()
+						}
 						// If an item is focused
 						// (which may not be the case
 						//  when autocomplete is matching no items)
 						// (still for non-autocomplete select
 						//  it is valid to have a default option)
-						if (options.length > 0)
+						else if (options.length > 0)
 						{
 							// Choose the focused item
-							this.item_clicked(focused_option_value, event)
+							this.item_clicked(focusedOptionValue, event)
 						}
 					}
 					// Else it should have just submitted the form on Enter,
@@ -1617,11 +1628,11 @@ export default class Select extends Component
 						// and also if it's not an autocomplete
 						if (options.length > 0 && !autocomplete)
 						{
-							// `focused_option_value` could be non-existent
+							// `focusedOptionValue` could be non-existent
 							// in case of `autocomplete`, but since
 							// we're explicitly not handling autocomplete here
 							// it is valid to select any options including the default ones.
-							this.item_clicked(focused_option_value, event)
+							this.item_clicked(focusedOptionValue, event)
 						}
 					}
 					// Otherwise, the spacebar keydown event on a `<button/>`
@@ -1653,17 +1664,45 @@ export default class Select extends Component
 				{
 					// Then collapse the `<Select/>`.
 					// (clicked/tapped outside or tabbed-out)
-					this.toggle({ expanded: true, refocus: false })
-
-					const { onBlur, value } = this.props
-
-					if (onBlur) {
-						onBlurForReduxForm(onBlur, event, value)
-					}
+					this.onFocusOut()
 				}
 			}
 		},
 		30)
+	}
+
+	onFocusOut()
+	{
+		const { onBlur, value, autocomplete } = this.props
+		const { options, autocompleteInputValue, selectedOptionLabel } = this.state
+
+		if (autocomplete)
+		{
+			// If user's input equals to an option
+			// then it's logical (from user's perspective)
+			// to select that option on focus out (e.g. on tab out).
+			//
+			// Analogous, if user has erased the input
+			// then it means the user wants to "select nothing".
+			//
+			let newValue = value
+			if (!autocompleteInputValue) {
+				newValue = undefined
+			} else {
+				const option = options.filter(({ label }) => autocompleteInputValue.toLowerCase() === label.toLowerCase())[0]
+				if (option) {
+					newValue = option.value
+				}
+			}
+
+			this.setValue(newValue)
+		}
+
+		this.collapse({ refocus: false })
+
+		if (onBlur) {
+			onBlurForReduxForm(onBlur, event, value)
+		}
 	}
 
 	trimOptions(options)
@@ -1689,7 +1728,7 @@ export default class Select extends Component
 		return options.slice(0, maxItems)
 	}
 
-	throttleFetchOptionsCall(callback)
+	throttleFetchOptionsCall(resolve)
 	{
 		let
 		{
@@ -1698,11 +1737,11 @@ export default class Select extends Component
 		}
 		= this.props
 
-		const { autocomplete_input_value } = this.state
+		const { autocompleteInputValue } = this.state
 
 		const wait = throttle - (Date.now() - this.latestFetchOptionsCallTimestamp)
 
-		if (autocomplete_input_value.length >= minCharactersToStartThrottling && wait > 0)
+		if (autocompleteInputValue.length >= minCharactersToStartThrottling && wait > 0)
 		{
 			if (!this.nextFetchOptionsCallTimeout)
 			{
@@ -1714,12 +1753,12 @@ export default class Select extends Component
 				wait)
 			}
 
-			this.latestFetchOptionsCall = () => this.fetchOptions(callback)
+			this.latestFetchOptionsCall = () => this.fetchOptions().then(resolve)
 			return true
 		}
 	}
 
-	fetchOptions(callback = () => {})
+	fetchOptions()
 	{
 		let
 		{
@@ -1733,72 +1772,75 @@ export default class Select extends Component
 		const
 		{
 			async,
-			autocomplete_input_value
+			autocompleteInputValue
 		}
 		= this.state
 
-		if (menu) {
-			return callback()
-		}
-
-		// If throttled then schedule a future invocation.
-		// The first invocation happens inside `componentDidMount()`
-		// and that's where `this.async` flag is set.
-		if (async && this.throttleFetchOptionsCall(callback)) {
-			return
-		}
-
-		this.latestFetchOptionsCallTimestamp = Date.now()
-
-		options = _getOptions(options, getOptions, autocomplete_input_value)
-
-		if (Array.isArray(options))
+		return new Promise((resolve) =>
 		{
-			if (!autocomplete) {
-				return this.setState({ options }, callback)
+			if (menu) {
+				return resolve()
 			}
 
-			if (options.length === 0) {
-				return this.setState({ matches: false }, callback)
+			// If throttled then schedule a future invocation.
+			// `this.async` flag is set on the first options fetch
+			// by examining the return type of `getOptions()`.
+			if (async && this.throttleFetchOptionsCall(resolve)) {
+				return
 			}
 
-			return this.setState
-			({
-				matches : true,
-				options // : this.trimOptions(options)
-			},
-			() =>
+			this.latestFetchOptionsCallTimestamp = Date.now()
+
+			options = _getOptions(options, getOptions, autocompleteInputValue)
+
+			if (Array.isArray(options))
 			{
-				if (autocomplete) {
-					this.refreshSelectedOptionLabel()
+				if (!autocomplete) {
+					return this.setState({ options }, resolve)
 				}
-				callback()
-			})
-		}
 
-		if (typeof options.then === 'function')
-		{
-			const counter = this.counter.getNextCounter()
+				if (options.length === 0) {
+					return this.setState({ matches: false }, resolve)
+				}
 
-			this.setState
-			({
-				async : true,
-				isFetchingOptions : true,
-				fetchingOptionsCounter : counter
-			},
-			() =>
-			{
-				options.then((options) =>
-				{
-					this.receiveOptions(options, counter, callback)
+				return this.setState
+				({
+					matches : true,
+					options // : this.trimOptions(options)
 				},
-				(error) =>
+				() =>
 				{
-					console.error(error)
-					this.receiveOptions([], counter, callback)
+					if (autocomplete) {
+						this.refreshSelectedOptionLabel()
+					}
+					resolve()
 				})
-			})
-		}
+			}
+
+			if (typeof options.then === 'function')
+			{
+				const counter = this.counter.getNextCounter()
+
+				this.setState
+				({
+					async : true,
+					isFetchingOptions : true,
+					fetchingOptionsCounter : counter
+				},
+				() =>
+				{
+					options.then((options) =>
+					{
+						this.receiveOptions(options, counter, resolve)
+					},
+					(error) =>
+					{
+						console.error(error)
+						this.receiveOptions([], counter, resolve)
+					})
+				})
+			}
+		})
 	}
 
 	receiveOptions(options, counter, callback)
@@ -1857,12 +1899,12 @@ export default class Select extends Component
 	previous_focusable_option()
 	{
 		const { options } = this.state
-		const { focused_option_value } = this.state
+		const { focusedOptionValue } = this.state
 
 		let i = 0
 		while (i < options.length)
 		{
-			if (options[i].value === focused_option_value)
+			if (options[i].value === focusedOptionValue)
 			{
 				if (i - 1 >= 0)
 				{
@@ -1877,14 +1919,14 @@ export default class Select extends Component
 	next_focusable_option()
 	{
 		let { options } = this.state
-		const { focused_option_value } = this.state
+		const { focusedOptionValue } = this.state
 
 		options = this.trimOptions(options)
 
 		let i = 0
 		while (i < options.length)
 		{
-			if (options[i].value === focused_option_value)
+			if (options[i].value === focusedOptionValue)
 			{
 				if (i + 1 < options.length)
 				{
@@ -2028,20 +2070,20 @@ export default class Select extends Component
 
 	on_autocomplete_input_change = (event) =>
 	{
-		const { expanded } = this.state
+		let value = event
 
-		if (!expanded)
+		if (event.target)
 		{
-			return event.preventDefault()
+			value = event.target.value
 		}
 
 		this.setState
 		({
-			autocomplete_input_value: event.target.value
+			autocompleteInputValue : value
 		},
 		() =>
 		{
-			this.fetchOptions(this.focusAnOption)
+			this.expand({ editing : true, toggle : !this.state.expanded })
 		})
 	}
 }
@@ -2136,20 +2178,22 @@ function get_matching_options(options, value)
 
 	value = value.toLowerCase()
 
-	return options.filter(({ label, verbose }) => {
-		return (verbose || label).toLowerCase().indexOf(value) >= 0
+	return options.filter(({ label }) => {
+		return label.toLowerCase().indexOf(value) >= 0
 	})
 }
 
-function _getOptions(options, getOptions, autocomplete_input_value)
+function _getOptions(options, getOptions, autocompleteInputValue)
 {
 	if (options)
 	{
-		return options && get_matching_options(options, autocomplete_input_value)
+		return options && get_matching_options(options, autocompleteInputValue)
 	}
 
 	if (getOptions)
 	{
-		return getOptions(autocomplete_input_value)
+		return getOptions(autocompleteInputValue)
 	}
 }
+
+const timeout = (delay) => new Promise(resolve => setTimeout(resolve, delay))

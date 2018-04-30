@@ -69,13 +69,15 @@ export default class Checkbox extends Component
 	{
 		const { onKeyDown } = this.props
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.checkbox))
-		{
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input)) {
 			return
 		}
 	}

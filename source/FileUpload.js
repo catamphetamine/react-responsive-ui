@@ -82,13 +82,15 @@ export default class FileUpload extends PureComponent
 	{
 		const { onKeyDown } = this.props
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.file_upload))
-		{
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input)) {
 			return
 		}
 	}

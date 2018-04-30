@@ -24,7 +24,6 @@ import
 	FILE,
 	Files,
 	FILES,
-	set_modular_grid_unit,
 	setModularGridUnit
 }
 from '../index'
@@ -62,7 +61,6 @@ describe('React Responsive UI', function()
 		expect(Files).to.be.a('string')
 		expect(FILES).to.be.a('string')
 
-		expect(set_modular_grid_unit).to.be.a('function')
 		expect(setModularGridUnit).to.be.a('function')
 	})
 
@@ -97,7 +95,6 @@ describe('React Responsive UI', function()
 		expect(_.Files).to.be.a('string')
 		expect(_.FILES).to.be.a('string')
 
-		expect(_.set_modular_grid_unit).to.be.a('function')
 		expect(_.setModularGridUnit).to.be.a('function')
 	})
 })

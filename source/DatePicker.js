@@ -6,12 +6,11 @@ import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
-import TextInput from './TextInput'
+import TextInput from './TextInputInputComponent'
 import Close, { CloseIcon } from './Close'
 
 import
 {
-	// submitFormOnCtrlEnter,
 	isInternetExplorer,
 	scrollIntoViewIfNeeded
 }
@@ -340,16 +339,13 @@ export default class DatePicker extends PureComponent
 	{
 		const { onKeyDown } = this.props
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		// `<TextInput/>` handles `Ctrl + Enter` by itself.
-		// if (submitFormOnCtrlEnter(event, this.input))
-		// {
-		// 	return
-		// }
+		if (event.defaultPrevented) {
+			return
+		}
 
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
 		{
@@ -659,8 +655,7 @@ export default class DatePicker extends PureComponent
 	storeExpandableNode = (node) => this.expandable = node
 	storeCalendarComponent = (ref) => this.calendar = ref
 	storeInputOverlayNode = (node) => this.inputOverlay = node
-	storeInputComponent = (ref) => this.input = ref
-	storeInputComponentErrorNode = (node) => this.inputComponentError = node
+	storeInputNode = (node) => this.input = node
 
 	render()
 	{
@@ -731,8 +726,7 @@ export default class DatePicker extends PureComponent
 				{/* Date input */}
 				<TextInput
 					id={ id }
-					ref={ this.storeInputComponent }
-					errorRef={ this.storeInputComponentErrorNode }
+					inputRef={ this.storeInputNode }
 					required={ required }
 					error={ error }
 					indicateInvalid={ indicateInvalid }
@@ -808,6 +802,11 @@ export default class DatePicker extends PureComponent
 						</div>
 					</div>
 				</TextInput>
+
+				{/* Error message */}
+				{ indicateInvalid && error &&
+					<div className="rrui__input-error">{ error }</div>
+				}
 			</div>
 		)
 	}

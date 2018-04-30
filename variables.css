@@ -15,10 +15,10 @@
   --rrui-button-side-padding : 0rem;
 
   /* `<Select/>` */
-  --rrui-list-vertical-padding  : var(--rrui-unit);
-  --rrui-list-item-side-padding : calc(var(--rrui-unit) * 1.5);
-  --rrui-list-item-height       : calc(var(--rrui-unit) * 4);
-  --rrui-list-icon-margin       : var(--rrui-unit);
+  --rrui-list-vertical-padding      : var(--rrui-unit);
+  --rrui-list-item-side-padding     : calc(var(--rrui-unit) * 1.5);
+  --rrui-list-item-height           : calc(var(--rrui-unit) * 4);
+  --rrui-list-icon-margin           : var(--rrui-unit);
 
   /* `<Select menu/>` */
   --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 2.5);

@@ -30,7 +30,7 @@
 
 .rrui__input-field:focus,
 .rrui__select__button:focus,
-.rrui__select__native-expanded:focus + .rrui__select__button
+.rrui__select__native:focus + .rrui__select__button
 {
 	border-bottom-color: var(--rrui-accent-color);
 }

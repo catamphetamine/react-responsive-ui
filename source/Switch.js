@@ -74,13 +74,15 @@ export default class Switch extends PureComponent
 	{
 		const { onKeyDown } = this.props
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.input))
-		{
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input)) {
 			return
 		}
 	}

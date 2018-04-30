@@ -6,6 +6,13 @@
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
 {
 	transform : translateY(0) scale(1);
+	/* Introducing a return animation delay */
+	/* Because when a user clicks/taps on an option */
+	/* Then the input loses focus */
+	/* Causing the return animation to start playing */
+	/* and then revert back as the click finishes */
+	/* returning focus to the input. */
+	transition-delay : 100ms;
 }
 
 /* Set the default height of multiline `<TextInput/>`s. */

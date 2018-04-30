@@ -154,7 +154,7 @@
 	transform-origin: 50% bottom 0px;
 }
 
-.rrui__select__option--focused
+.rrui__select__options--expanded .rrui__select__option--focused
 {
 	background-color: var(--rrui-gray-color-lightest);
 }
@@ -173,7 +173,9 @@
 }
 
 .rrui__select__button:active .rrui__select__selected-label,
-.rrui__select__button:active .rrui__select__arrow
+.rrui__select__button:active .rrui__select__arrow,
+.rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
+.rrui__select__native:active + .rrui__select__button .rrui__select__arrow
 {
 	color : var(--rrui-accent-color);
 }
@@ -247,15 +249,6 @@
 	opacity: 0.3;
 }*/
 
-.rrui__select__native-expanded
-{
-	position : absolute;
-	left     : 0;
-	z-index  : 1;
-	opacity  : 0;
-	cursor   : pointer;
-}
-
 .rrui__select__close
 {
 	/*
@@ -293,11 +286,18 @@
 	width : 100%;
 }
 
-/* For native `<select/>` in Safari. */
-/* (in case this feature being used) */
 .rrui__select__native
 {
+	position : absolute;
+	height   : 100%;
+
+	/* For native `<select/>` in Safari. */
+	/* (maybe not required anymore) */
 	min-height : 100%;
+
+	opacity : 0;
+	border  : 0;
+	cursor  : pointer;
 }
 
 .rrui__select .rrui__ellipsis

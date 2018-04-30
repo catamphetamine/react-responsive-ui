@@ -207,13 +207,15 @@ export default class Segmented_control extends PureComponent
 	{
 		const { onKeyDown } = this.props
 
-		if (onKeyDown)
-		{
+		if (onKeyDown) {
 			onKeyDown(event)
 		}
 
-		if (submitFormOnCtrlEnter(event, this.container))
-		{
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (submitFormOnCtrlEnter(event, this.input)) {
 			return
 		}
 
