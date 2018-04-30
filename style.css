@@ -1400,9 +1400,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -webkit-box-sizing: border-box;
           box-sizing: border-box; }
 
-.rrui__select__options:not(.rrui__expandable--expanded) {
-  overflow: hidden; }
-
 .rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu) {
   /*
   `margin-top` is constituted by:
@@ -1480,10 +1477,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* which expands the list of options to full screen */
 /* upon a click on `<Select/>` and that would make */
 /* an option below the touch to become stuck in `:hover` state. */
-.rrui__select__options--expanded .rrui__select__option:hover {
+.rrui__select__option:hover {
   background-color: var(--rrui-gray-color-lightest); }
 
-.rrui__select__options--expanded .rrui__select__option:active {
+.rrui__select__option:active {
   background-color: var(--rrui-accent-color);
   color: var(--rrui-white-color); }
 
