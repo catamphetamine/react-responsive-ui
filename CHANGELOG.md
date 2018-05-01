@@ -1,7 +1,7 @@
 0.12.13 / 01.05.2018
 ===================
 
-* (breaking change) `<Select/>`: `autocomplete` now always renders only `<input type="text"/>` (not a button), and native `<select/>` is always rendered in a transparent overlay so that native select is activated on mobile devices when there's too much options (for better UX) and custom select is always activated on desktop (if no `touchstart` has been received). `nativeExpanded` property removed, use `native` instead. `.rrui__select__native-expanded` CSS class removed and replaced with `.rrui__select__native` (mostly the same). Removed `onFocus` property of `<Select/>`.
+* (breaking change) `<Select/>`: `autocomplete` now always renders only `<input type="text"/>` (not a button), and native `<select/>` is always rendered in a transparent overlay so that native select is activated on mobile devices when there's too much options (for better UX) and custom select is always activated on desktop (if no `touchstart` has been received). `.rrui__select__native-expanded` CSS class removed and replaced with `.rrui__select__native` (mostly the same). Removed `onFocus` property of `<Select/>`.
 
 * (breaking change) `<Select/>` no longer accepts both `label` and `placeholder`.
 

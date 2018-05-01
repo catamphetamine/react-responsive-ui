@@ -102,6 +102,9 @@ export default class Select extends Component
 		// Whether to use native `<select/>`
 		native      : PropTypes.bool.isRequired,
 
+		// Whether to use native `<select/>` when expanded
+		nativeExpanded : PropTypes.bool.isRequired,
+
 		// Show icon only for selected item,
 		// and only if `concise` is `true`.
 		saveOnIcons : PropTypes.bool,
@@ -251,6 +254,7 @@ export default class Select extends Component
 		scrollbarPadding   : true,
 		fallback           : false,
 		native             : false,
+		nativeExpanded     : false,
 		scrollIntoView     : true,
 
 		// If `scrollIntoView` is `true` (which is the default)
@@ -1304,8 +1308,9 @@ export default class Select extends Component
 
 	isNativeExpanded()
 	{
-		return false
-		// throw new Error('check touchstart for this')
+		const { nativeExpanded } = this.props
+
+		return nativeExpanded
 	}
 
 	shouldShowOptionsList()
