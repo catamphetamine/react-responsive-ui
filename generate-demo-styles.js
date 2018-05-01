@@ -69,7 +69,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-z-index-above-overlay)', '101')
 
   if (text.indexOf('/*') === 0) {
-    text = text.split('\n').slice(1).join('\n')
+    text = text.slice(text.indexOf('*/') + '*/'.length).trim()
   }
 
   if (text.indexOf(':root') === 0) {
