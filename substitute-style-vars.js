@@ -65,4 +65,8 @@ let text = fs.readFileSync(path.join(__dirname, 'style.css'), 'utf8')
 
 text = text.slice(text.indexOf('}') + 1)
 
+if (text.indexOf('var(--') >= 0) {
+  throw new Error('Not all vars provided for substitution')
+}
+
 fs.writeFileSync(path.join(__dirname, 'bundle/style.css'), text)
