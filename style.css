@@ -1572,6 +1572,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__toggler {
   display: inline-block; }
 
+.rrui__select__options--scroll {
+  /* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; }
+
 .rrui__shadow {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
           box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
