@@ -52,3 +52,6 @@ npm-debug.log
 
 # SASS sources
 *.scss
+
+# This is for GitHub Pages only.
+/substitute-style-vars.js
