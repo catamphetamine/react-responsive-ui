@@ -7,8 +7,7 @@
 	bottom         : 0;
 	pointer-events : none;
 	z-index        : 1;
-	margin-bottom  : var(--rrui-snackbar-margin);
-	margin-left    : var(--rrui-snackbar-margin);
+	margin         : var(--rrui-snackbar-margin);
 	transition     : all 225ms cubic-bezier(0, 0, 0.2, 1);
 	transform      : translateY(0);
 	visibility     : visible;

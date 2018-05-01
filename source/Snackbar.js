@@ -139,7 +139,7 @@ export default class Snackbar extends PureComponent
 		const value = values.shift()
 
 		// Reset the notification display
-		this.setState({ value, height: undefined, hiding: false })
+		this.setState({ value, height: undefined, wide: undefined, hiding: false })
 
 		// If the queue is empty, then just exit
 		if (!value)
@@ -195,9 +195,10 @@ export default class Snackbar extends PureComponent
 		if (height === undefined && value)
 		{
 			height = this.snackbar.offsetHeight
+			const wide = this.snackbar.offsetWidth === document.documentElement.clientWidth
 			const marginBottom = parseInt(getComputedStyle(this.container).marginBottom)
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
-			this.setState({ height, marginBottom }, () =>
+			this.setState({ height, wide, marginBottom }, () =>
 			{
 				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
 			})
@@ -215,7 +216,7 @@ export default class Snackbar extends PureComponent
 	render()
 	{
 		const { type } = this.props
-		const { show, value, height, marginBottom, hiding } = this.state
+		const { show, value, height, wide, marginBottom, hiding } = this.state
 
 		const container_style = {}
 
@@ -242,7 +243,8 @@ export default class Snackbar extends PureComponent
 				style={ container_style }
 				className={ classNames('rrui__snackbar__container',
 				{
-					'rrui__snackbar__container--hidden' : !show
+					'rrui__snackbar__container--hidden' : !show,
+					'rrui__snackbar__container--wide' : wide
 				}) }>
 
 				<div
