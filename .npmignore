@@ -54,4 +54,4 @@ npm-debug.log
 *.scss
 
 # This is for GitHub Pages only.
-/substitute-style-vars.js
+/generate-demo-styles.js
