@@ -1438,7 +1438,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-transform-origin: 50% bottom 0px;
           transform-origin: 50% bottom 0px; }
 
-.rrui__select__options--expanded .rrui__select__option--focused {
+.rrui__select__option--focused {
   background-color: #F3F3F3; }
 
 .rrui__select__button,
@@ -1546,9 +1546,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__native {
   position: absolute;
   height: 100%;
-  /* For native `<select/>` in Safari. */
-  /* (maybe not required anymore) */
-  min-height: 100%;
+  width: 100%;
   opacity: 0;
   border: 0;
   cursor: pointer; }
