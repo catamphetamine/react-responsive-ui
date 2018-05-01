@@ -16,6 +16,8 @@ npm install react-responsive-ui --save
 
 See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
 
+`<Select/>` component requires `Promise` (get a polyfill for IE 11).
+
 ## Reducing footprint
 
 Webpack 4 still can't "tree-shake" simple cases like
