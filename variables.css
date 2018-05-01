@@ -58,7 +58,7 @@
 
   /* Lightest Gray is used as `<Select/>` options hover background color. */
   /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
-  --rrui-gray-color-lightest: #F3F3F3;
+  --rrui-gray-color-lightest: #f3f3f3;
 
   /* z-index */
   --rrui-z-index-overlay       : 100;
