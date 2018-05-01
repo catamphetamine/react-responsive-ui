@@ -211,6 +211,19 @@ export default class DatePicker extends PureComponent
 	{
 		clearTimeout(this.scroll_into_view_timeout)
 		clearTimeout(this.blurTimer)
+		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
+	}
+
+	focus = () =>
+	{
+		this.input.focus()
+	}
+
+	userHasJustChangedYearOrMonth = () =>
+	{
+		this._userHasJustChangedYearOrMonth = true
+		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
+		this.userHasJustChangedYearOrMonthTimer = setTimeout(() => this._userHasJustChangedYearOrMonth = false, 50)
 	}
 
 	on_input_focus = (event) =>
@@ -302,19 +315,9 @@ export default class DatePicker extends PureComponent
 		})
 	}
 
-	// Would have used `onBlur={...}` event handler here
-	// with `if (container.contains(event.relatedTarget))` condition,
-	// but it doesn't work in IE in React.
-	// https://github.com/facebook/react/issues/3751
-	//
-	// Therefore, using the hacky `document.onClick` handlers
-	// and this `onKeyDown` Tab handler
-	// until `event.relatedTarget` support is consistent in React.
-	//
 	on_key_down_in_container = (event) =>
 	{
-		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
-		{
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
 			return
 		}
 
@@ -322,13 +325,11 @@ export default class DatePicker extends PureComponent
 
 		switch (event.keyCode)
 		{
-			// Collapse on Escape or on Tab out
+			// "Escape"
 			case 27:
 				event.preventDefault()
 				this.input.focus()
-			case 9:
-				if (expanded)
-				{
+				if (expanded) {
 					this.collapse()
 				}
 				return
@@ -630,33 +631,62 @@ export default class DatePicker extends PureComponent
 
 	onBlur = (event) =>
 	{
-		clearTimeout(this.blurTimer)
-		this.blurTimer = setTimeout(() =>
+		// Blur `event.relatedTarget` doesn't work in Internet Explorer (in React).
+		// https://github.com/gpbl/react-day-picker/issues/668
+		// https://github.com/facebook/react/issues/3751
+		if (isInternetExplorer())
 		{
-			// If the component is still mounted.
-			if (this.container)
+			clearTimeout(this.blurTimer)
+			return this.blurTimer = setTimeout(() =>
 			{
-				// If the currently focused element is not inside the `<DatePicker/>`.
-				// Or if no element is currently focused.
-				if (!document.activeElement ||
-					!(this.container.contains(document.activeElement) &&
-						!(this.inputComponentError && this.inputComponentError.contains(document.activeElement))
-					)
-				)
+				// If the component is still mounted.
+				if (this.container)
 				{
-					// Then collapse the `<DatePicker/>`.
-					// (clicked/tapped outside or tabbed-out)
-					this.collapse()
-
-					const { onBlur, value } = this.props
-
-					if (onBlur) {
-						onBlurForReduxForm(onBlur, event, value)
+					// A hack for iOS when it collapses
+					// the calendar after selecting a year/month.
+					if (this._userHasJustChangedYearOrMonth) {
+						return this.focus()
 					}
+
+					// If the currently focused element is inside the `<DatePicker/>`
+					// then don't collapse the calendar.
+					if (document.activeElement && this.inputContainer.contains(document.activeElement)) {
+						return
+					}
+
+					// Collapse the `<DatePicker/>`.
+					// (clicked/tapped outside or tabbed-out)
+					this.onFocusOut()
 				}
-			}
-		},
-		30)
+			},
+			30)
+		}
+
+		// A hack for iOS when it collapses
+		// the calendar after selecting a year/month.
+		if (this._userHasJustChangedYearOrMonth) {
+			return this.focus()
+		}
+
+		// If clicked somewhere inside the `<DatePicker/>` then don't collapse it.
+		if (event.relatedTarget && this.inputContainer.contains(event.relatedTarget)) {
+			return
+		}
+
+		// Collapse the `<DatePicker/>`.
+		// (clicked/tapped outside or tabbed-out)
+		this.onFocusOut()
+	}
+
+	onFocusOut()
+	{
+		this.collapse()
+
+		const { onBlur, value } = this.props
+
+		if (onBlur) {
+			onBlurForReduxForm(onBlur, event, value)
+		}
 	}
 
 	storeContainerNode = (node) => this.container = node
@@ -664,6 +694,7 @@ export default class DatePicker extends PureComponent
 	storeCalendarComponent = (ref) => this.calendar = ref
 	storeInputOverlayNode = (node) => this.inputOverlay = node
 	storeInputNode = (node) => this.input = node
+	storeInputContainerNode = (node) => this.inputContainer = node
 
 	render()
 	{
@@ -712,6 +743,8 @@ export default class DatePicker extends PureComponent
 		{
 			captionElement = (
 				<YearMonthSelector
+					focus={ this.focus }
+					userHasJustChangedYearOrMonth={ this.userHasJustChangedYearOrMonth }
 					selectedDay={ value }
 					onChange={ this.on_month_selected }
 					selectYearsIntoPast={ selectYearsIntoPast }
@@ -734,6 +767,7 @@ export default class DatePicker extends PureComponent
 				{/* Date input */}
 				<TextInput
 					id={ id }
+					containerRef={ this.storeInputContainerNode }
 					inputRef={ this.storeInputNode }
 					required={ required }
 					error={ error }
@@ -1107,7 +1141,7 @@ function trim_invalid_part(value, format)
 
 // http://react-day-picker.js.org/examples/?yearNavigation
 // Component will receive date, locale and localeUtils props
-function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture, selectedDay })
+function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture, selectedDay, focus, userHasJustChangedYearOrMonth })
 {
 	// The current year in the user's time zone.
 	const current_year = new Date().getFullYear()
@@ -1144,12 +1178,30 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 
 	function on_change(event)
 	{
-		const month = event.target.parentNode.firstChild.value
-		const year  = event.target.parentNode.lastChild.value
+		const month = parseInt(event.target.parentNode.firstChild.value)
+		const year  = parseInt(event.target.parentNode.lastChild.value)
 
-		// The date created is in the user's time zone and the time is `00:00`.
-		// The `day` is `undefined` which means the first one of the `month`.
-		onChange(new Date(year, month))
+		if (month !== date.getMonth() || year !== date.getFullYear())
+		{
+			// The date created is in the user's time zone and the time is `00:00`.
+			// The `day` is `undefined` which means the first one of the `month`.
+			onChange(new Date(year, month))
+		}
+
+		// restoreFocus()
+	}
+
+	function restoreFocus()
+	{
+		// Doesn't work on iOS
+		// focus()
+
+		// A hack for iOS when it collapses
+		// the calendar after selecting a year/month.
+		// Known bug: it won't work when a user
+		// focuses one `<select/>` and then focuses another one
+		// because in that case `onBlur` won't be triggered for the second `<select/>`.
+		userHasJustChangedYearOrMonth()
 	}
 
 	return (
@@ -1157,6 +1209,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 			<div className="DayPicker-CaptionSelects">
 				<select
 					onChange={ on_change }
+					onBlur={ restoreFocus }
 					value={ date.getMonth() }
 					tabIndex={ -1 }
 					className="DayPicker-MonthSelect">
@@ -1170,6 +1223,7 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 
 				<select
 					onChange={ on_change }
+					onBlur={ restoreFocus }
 					value={ date.getFullYear() }
 					tabIndex={ -1 }
 					className="DayPicker-YearSelect">

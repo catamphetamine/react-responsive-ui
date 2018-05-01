@@ -145,7 +145,7 @@
 	transform-origin: 50% bottom 0px;
 }
 
-.rrui__select__options--expanded .rrui__select__option--focused
+.rrui__select__option--focused
 {
 	background-color: var(--rrui-gray-color-lightest);
 }
@@ -281,14 +281,10 @@
 {
 	position : absolute;
 	height   : 100%;
-
-	/* For native `<select/>` in Safari. */
-	/* (maybe not required anymore) */
-	min-height : 100%;
-
-	opacity : 0;
-	border  : 0;
-	cursor  : pointer;
+	width    : 100%;
+	opacity  : 0;
+	border   : 0;
+	cursor   : pointer;
 }
 
 .rrui__select .rrui__ellipsis
@@ -317,4 +313,11 @@
 .rrui__select__toggler
 {
 	display : inline-block;
+}
+
+.rrui__select__options--scroll
+{
+	/* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+	overflow-y : scroll;
+	-webkit-overflow-scrolling : touch;
 }

@@ -461,11 +461,11 @@ export default class Select extends Component
 		clearTimeout(this.blurTimer)
 	}
 
-	storeSelectInput = (node) => this.selectInput = node
-	storeListNode = (node) => this.list = node
-	storeSelectedOption = (ref) => this.selected = ref
-	storeAutocompleteInput = (node) => this.autocomplete = node
-	storeNativeSelect = (node) => this.native = node
+	storeInputComponentNode = (node) => this.inputComponentNode = node
+	storeListNode = (node) => this.optionsList = node
+	storeSelectButton = (ref) => this.selectButton = ref
+	storeAutocompleteInput = (node) => this.autocompleteInput = node
+	storeNativeSelect = (node) => this.select = node
 
 	render()
 	{
@@ -517,6 +517,8 @@ export default class Select extends Component
 			list_style = { maxHeight: `${list_height}px` }
 		}
 
+		const overflow = this.is_scrollable() && this.overflown()
+
 		let list_items
 
 		if (this.shouldShowOptionsList() && showOptionsList)
@@ -539,8 +541,6 @@ export default class Select extends Component
 			// then transform those elements to <buttons/>
 			else
 			{
-				const overflow = scroll && this.overflown()
-
 				list_items = this.getCurrentlyDisplayedOptions().map(({ value, label, icon, content }, index) =>
 				{
 					return this.render_list_item
@@ -589,7 +589,8 @@ export default class Select extends Component
 							'rrui__select__options--left-aligned'  : !children && alignment === 'left',
 							'rrui__select__options--right-aligned' : !children && alignment === 'right',
 							'rrui__select__options--upward'        : upward,
-							'rrui__select__options--downward'      : !upward
+							'rrui__select__options--downward'      : !upward,
+							'rrui__select__options--scroll'        : overflow
 						}
 					) }>
 					{ list_items }
@@ -617,7 +618,7 @@ export default class Select extends Component
 				) }>
 
 				<div
-					ref={ this.storeSelectInput }
+					ref={ this.storeInputComponentNode }
 					className={ classNames
 					({
 						'rrui__input': !toggler
@@ -732,7 +733,7 @@ export default class Select extends Component
 					}
 					else
 					{
-						this.item_clicked(value, event)
+						this.optionOnClick(value, event)
 					}
 
 					if (onClick)
@@ -746,7 +747,7 @@ export default class Select extends Component
 						type="button"
 						onClick={ _onClick }
 						disabled={ disabled }
-						tabIndex="-1"
+						tabIndex={ -1 }
 						aria-label={ element.props.label }
 						style={ item_style ? { ...item_style, ...element.props.style } : element.props.style }
 						className={ classNames
@@ -775,16 +776,19 @@ export default class Select extends Component
 			button = (
 				<button
 					type="button"
-					onClick={ event => this.item_clicked(value, event) }
+					onClick={ event => this.optionOnClick(value, event) }
+					onFocus={ event => this.optionOnFocus(value, event) }
+					onMouseDown={ this.optionOnMouseDown }
 					disabled={ disabled }
-					tabIndex="-1"
+					tabIndex={ -1 }
 					aria-label={ label }
 					className={ classNames
 					(
 						'rrui__button-reset',
 						'rrui__select__option',
 						{
-							'rrui__select__option--focused' : is_focused,
+							'rrui__select__option--selected' : value === this.props.value,
+							'rrui__select__option--focused'  : is_focused,
 							'rrui__select__option--disabled' : disabled
 						}
 					) }
@@ -834,7 +838,6 @@ export default class Select extends Component
 			disabled,
 			required,
 			concise,
-			tabIndex,
 			title,
 			ariaLabel,
 			toggleClassName
@@ -855,7 +858,7 @@ export default class Select extends Component
 
 		return (
 			<button
-				ref={ this.storeSelectedOption }
+				ref={ this.storeSelectButton }
 				type="button"
 				disabled={ disabled }
 				onClick={ this.onToggle }
@@ -969,7 +972,7 @@ export default class Select extends Component
 
 		const properties =
 		{
-			ref       : this.storeSelectedOption,
+			ref       : this.storeSelectButton,
 			onClick   : this.onToggle,
 			onKeyDown : this.onKeyDown
 		}
@@ -1102,7 +1105,7 @@ export default class Select extends Component
 	{
 		if (this.shouldShowOptionsList())
 		{
-			this.selected.focus()
+			this.selectButton.focus()
 			this.onKeyDownFromNativeSelect = true
 			this.onKeyDown(event)
 			// Known bug:
@@ -1117,7 +1120,7 @@ export default class Select extends Component
 		if (this.shouldShowOptionsList())
 		{
 			event.preventDefault()
-			this.selected.focus()
+			this.selectButton.focus()
 			this.toggle()
 		}
 	}
@@ -1282,8 +1285,9 @@ export default class Select extends Component
 	{
 		const { maxItems } = this.props
 
-		// (Adding vertical padding so that it shows these `maxItems` options fully)
-		return (height - 2 * vertical_padding) * (maxItems / this.getCurrentlyDisplayedOptions().length) + vertical_padding
+		// Adding vertical padding here so that it shows `maxItems` options fully.
+		// Also gives a peek on the `maxItems + 1`th option by showing a half of it.
+		return (height - 2 * vertical_padding) * ((maxItems + 0.5) / this.getCurrentlyDisplayedOptions().length) + vertical_padding
 	}
 
 	should_animate()
@@ -1295,14 +1299,7 @@ export default class Select extends Component
 
 	focus()
 	{
-		if (this.autocomplete)
-		{
-			focus(this.autocomplete)
-		}
-		else
-		{
-			focus(this.selected)
-		}
+		focus(this.autocompleteInput || this.selectButton)
 	}
 
 	isNativeExpanded()
@@ -1447,7 +1444,7 @@ export default class Select extends Component
 			if (!expand && refocus !== false)
 			{
 				this.dontExpandAutocompleteOnFocus = true
-				focus(this.autocomplete || this.selected)
+				this.focus()
 				this.dontExpandAutocompleteOnFocus = false
 			}
 
@@ -1470,6 +1467,10 @@ export default class Select extends Component
 				{
 					// Scroll the options list into view if needed.
 					this.scrollIntoView()
+
+					if (!autocomplete) {
+						this.showAndFocusSelectedOption()
+					}
 
 					if (autocomplete)
 					{
@@ -1526,8 +1527,8 @@ export default class Select extends Component
 
 				// If still expanded and there are any options
 				// then scroll into view.
-				if (expanded && this.list) {
-					scrollIntoViewIfNeeded(this.list)
+				if (expanded && this.optionsList) {
+					scrollIntoViewIfNeeded(this.optionsList)
 				}
 			},
 			Math.max(expandAnimationDuration, keyboardSlideAnimationDuration) * 1.1)
@@ -1604,7 +1605,7 @@ export default class Select extends Component
 		}
 	}
 
-	item_clicked = (value, event) =>
+	optionOnClick(value, event)
 	{
 		// Collapse the `<Select/>`.
 		// Doing `setValue` in a callback
@@ -1612,6 +1613,20 @@ export default class Select extends Component
 		// updating props and calling `getDerivedStateFromProps()`
 		// which reads `autocomplete_value` which is being reset inside `.toggle()`.
 		this.onToggle(event).then(() => this.setValue(value))
+	}
+
+	optionOnFocus(value, event)
+	{
+		this.setState({ focusedOptionValue : value })
+	}
+
+	optionOnMouseDown = (event) =>
+	{
+		// Without this Safari (both mobile and desktop)
+		// won't select any option
+		// because it will collapse the list of options
+		// immediately on `mouseDown` due to `onBlur`.
+		event.preventDefault()
 	}
 
 	onKeyDown = (event) =>
@@ -1741,7 +1756,7 @@ export default class Select extends Component
 							event.preventDefault()
 
 							// Choose the focused item
-							this.item_clicked(focusedOptionValue, event)
+							this.optionOnClick(focusedOptionValue, event)
 						}
 						else // if (menu)
 						{
@@ -1762,7 +1777,7 @@ export default class Select extends Component
 							// Expand.
 							this.expand()
 						}
-						else if (submitContainingForm(this.selectInput))
+						else if (submitContainingForm(this.inputComponentNode))
 						{
 							event.preventDefault()
 						}
@@ -1799,7 +1814,7 @@ export default class Select extends Component
 								// in case of `autocomplete`, but since
 								// we're explicitly not handling autocomplete here
 								// it is valid to select any options including the default ones.
-								this.item_clicked(focusedOptionValue, event)
+								this.optionOnClick(focusedOptionValue, event)
 							}
 						}
 						else if (fromNativeSelect)
@@ -1820,38 +1835,45 @@ export default class Select extends Component
 
 	onBlur = (event) =>
 	{
-		// `<Select/>` options currently all have `tabIndex={-1}` so they're non-focusable.
-		// // If clicked on a select option then don't trigger "blur" event
-		// if (event.relatedTarget && event.currentTarget.contains(event.relatedTarget))
-		// {
-		// 	return
-		// }
-
-		clearTimeout(this.blurTimer)
-		this.blurTimer = setTimeout(() =>
+		// Blur `event.relatedTarget` doesn't work in Internet Explorer (in React).
+		// https://github.com/gpbl/react-day-picker/issues/668
+		// https://github.com/facebook/react/issues/3751
+		if (isInternetExplorer())
 		{
-			// If the component is still mounted.
-			if (this.selectInput)
+			clearTimeout(this.blurTimer)
+			return this.blurTimer = setTimeout(() =>
 			{
-				// If the currently focused element is not inside the `<Select/>`.
-				// Or if no element is currently focused.
-				if (!document.activeElement || !this.selectInput.contains(document.activeElement))
+				// If the component is still mounted.
+				if (this.inputComponentNode)
 				{
-					// Then collapse the `<Select/>`.
+					// If the currently focused element is inside the `<Select/>`
+					// then don't collapse it.
+					if (document.activeElement && this.inputComponentNode.contains(document.activeElement)) {
+						return
+					}
+					// Collapse the `<Select/>`.
 					// (clicked/tapped outside or tabbed-out)
 					this.onFocusOut()
 				}
-			}
-		},
-		30)
+			},
+			30)
+		}
+
+		// If clicked somewhere inside the `<Select/>` then don't collapse it.
+		if (event.relatedTarget && this.inputComponentNode.contains(event.relatedTarget)) {
+			return
+		}
+
+		// Collapse the `<Select/>`.
+		// (clicked/tapped outside or tabbed-out)
+		this.onFocusOut()
 	}
 
 	onFocusOut()
 	{
 		const { onBlur, value, autocomplete } = this.props
 
-		if (autocomplete)
-		{
+		if (autocomplete) {
 			this.setAutocompleteValueBasedOnCurrentInput()
 		}
 
@@ -1977,15 +1999,17 @@ export default class Select extends Component
 
 			if (Array.isArray(options))
 			{
-				this.unfocusMissingOption(options)
-
-				if (!autocomplete) {
+				if (!autocomplete)
+				{
+					this.unfocusMissingOption(options)
 					return this.setState({ options }, resolve)
 				}
 
 				if (options.length === 0) {
 					return this.setState({ matches: false }, resolve)
 				}
+
+				this.unfocusMissingOption(options)
 
 				return this.setState
 				({
@@ -2070,7 +2094,9 @@ export default class Select extends Component
 			newState.fetchingOptionsCounter = undefined
 		}
 
-		this.unfocusMissingOption(options)
+		if (newState.options) {
+			this.unfocusMissingOption(newState.options)
+		}
 
 		this.setState(newState, () =>
 		{
@@ -2164,7 +2190,7 @@ export default class Select extends Component
 
 		let offset_top = option_element.offsetTop
 
-		const is_first_option = this.list.firstChild === option_element
+		const is_first_option = this.optionsList.firstChild === option_element
 
 		// If it's the first one - then scroll to list top
 		if (is_first_option)
@@ -2172,51 +2198,79 @@ export default class Select extends Component
 			offset_top -= vertical_padding
 		}
 
-		this.list.scrollTop = offset_top
+		this.optionsList.scrollTop = offset_top
 	}
 
 	// Fully shows an option having the `value` (scrolls to it if neccessary)
-	show_option(value, gravity)
+	show_option(value, edge)
 	{
-		const { vertical_padding } = this.state
-
 		const option_element = this.options_refs[get_option_key(value)]
 
-		const is_first_option = this.list.firstChild === option_element
-		const is_last_option  = this.list.lastChild === option_element
+		const is_first_option = this.optionsList.firstChild === option_element
+		const is_last_option  = this.optionsList.lastChild === option_element
 
-		switch (gravity)
+		switch (edge)
 		{
 			case 'top':
-				let top_line = option_element.offsetTop
-
-				if (is_first_option)
-				{
-					top_line -= vertical_padding
-				}
-
-				if (top_line < this.list.scrollTop)
-				{
-					this.list.scrollTop = top_line
-				}
-
+				this.showTopLine(option_element, is_first_option)
 				return
 
 			case 'bottom':
-				let bottom_line = option_element.offsetTop + option_element.offsetHeight
+				this.showBottomLine(option_element, is_last_option)
+				return
 
-				if (is_last_option)
-				{
-					bottom_line += vertical_padding
-				}
-
-				if (bottom_line > this.list.scrollTop + this.list.offsetHeight)
-				{
-					this.list.scrollTop = bottom_line - this.list.offsetHeight
-				}
-
+			default:
+				this.showBottomLine(option_element, is_last_option)
+				this.showTopLine(option_element, is_first_option)
 				return
 		}
+	}
+
+	showTopLine(option_element, is_first_option)
+	{
+		const { vertical_padding } = this.state
+
+		let top_line = option_element.offsetTop
+
+		if (is_first_option)
+		{
+			top_line -= vertical_padding
+		}
+
+		if (top_line < this.optionsList.scrollTop)
+		{
+			this.optionsList.scrollTop = top_line
+		}
+	}
+
+	showBottomLine(option_element, is_last_option)
+	{
+		const { vertical_padding } = this.state
+
+		let bottom_line = option_element.offsetTop + option_element.offsetHeight
+
+		if (is_last_option)
+		{
+			bottom_line += vertical_padding
+		}
+
+		if (bottom_line > this.optionsList.scrollTop + this.optionsList.offsetHeight)
+		{
+			this.optionsList.scrollTop = bottom_line - this.optionsList.offsetHeight
+		}
+	}
+
+	showAndFocusSelectedOption()
+	{
+		const selected = this.get_selected_option()
+
+		if (selected) {
+			this.show_option(selected.value)
+		}
+
+		this.setState({
+			focusedOptionValue: selected ? selected.value : undefined
+		})
 	}
 
 	// Calculates height of the expanded item list
@@ -2224,18 +2278,9 @@ export default class Select extends Component
 	{
 		const { options } = this.state
 
-		// const border = parseInt(window.getComputedStyle(this.list).borderTopWidth)
-		const height = this.list.scrollHeight
-		const vertical_padding = parseInt(window.getComputedStyle(this.list).paddingTop)
-
-		// For things like "accordeon".
-		//
-		// const images = this.list.querySelectorAll('img')
-		//
-		// if (images.length > 0)
-		// {
-		// 	return this.preload_images(this.list, images)
-		// }
+		// const border = parseInt(window.getComputedStyle(this.optionsList).borderTopWidth)
+		const height = this.optionsList.scrollHeight
+		const vertical_padding = parseInt(window.getComputedStyle(this.optionsList).paddingTop)
 
 		const state = { height, vertical_padding }
 
@@ -2268,7 +2313,7 @@ export default class Select extends Component
 	// get_widest_label_width()
 	// {
 	// 	// <ul/> -> <li/> -> <button/>
-	// 	const label = this.list.firstChild.firstChild
+	// 	const label = this.optionsList.firstChild.firstChild
 	//
 	// 	const style = getComputedStyle(label)
 	//
@@ -2278,22 +2323,19 @@ export default class Select extends Component
 	// 	return width - 2 * side_padding
 	// }
 
-	on_autocomplete_input_change = (event) =>
+	on_autocomplete_input_change = (value) =>
 	{
-		let value = event
-
-		if (event.target)
-		{
-			value = event.target.value
-		}
-
-		this.setState
-		({
+		this.setState({
 			autocompleteInputValue : value
 		},
 		() =>
 		{
-			this.expand({ editing : true, toggle : !this.state.expanded })
+			this.expand
+			({
+				editing : true,
+				// Only expand the options list if not already expanded.
+				toggle  : !this.state.expanded
+			})
 		})
 	}
 }

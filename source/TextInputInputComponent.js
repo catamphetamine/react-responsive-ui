@@ -17,14 +17,16 @@ export default function TextInput(props)
 		floatingLabel,
 		label,
 		multiline,
-		indicateInvalid,
 		error,
+		indicateInvalid,
+		containerRef,
 		children
 	}
 	= props
 
 	return (
 		<div
+			ref={ containerRef }
 			className={ classNames('rrui__input',
 			{
 				'rrui__input--multiline' : multiline,
