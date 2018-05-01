@@ -282,10 +282,10 @@
 /*
 .rrui__close--top-right
 {
-  position : fixed;
-  top      : calc(0.6rem * 2);
-  right    : calc(0.6rem * 2);
-  z-index  : 1;
+	position : fixed;
+	top      : calc(0.6rem * 2);
+	right    : calc(0.6rem * 2);
+	z-index  : 1;
 }
 */
 .rrui__close--bottom-right {
@@ -308,8 +308,8 @@
   stroke: currentColor; }
 
 .rrui__close {
-  padding: calc(calc(0.6rem * 2) / 2);
-  margin: calc(calc(0.6rem * 2) * -1 / 2); }
+  padding: calc(0.6rem * 2 / 2);
+  margin: calc(0.6rem * 2 * -1 / 2); }
 
 /* https://unpkg.com/react-day-picker@latest/lib/style.css */
 /* DayPicker styles */
@@ -565,10 +565,10 @@
 
 .rrui__date-picker__input-overlay {
   /*
-  Set `display` to `block` for fullscreen `.rrui__expandable` design.
-  This works around the mobile keyboard appearing from the bottom.
-  display  : block;
-  */
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	This works around the mobile keyboard appearing from the bottom.
+	display  : block;
+	*/
   display: none;
   position: absolute;
   top: 0;
@@ -578,9 +578,9 @@
 
 .rrui__date-picker__close {
   /*
-  Set `display` to `block` for fullscreen `.rrui__expandable` design.
-  display      : block;
-  */
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	display      : block;
+	*/
   display: none; }
 
 .rrui__date-picker:focus {
@@ -589,7 +589,7 @@
 .rrui__date-picker__icon {
   display: none;
   position: absolute;
-  top: calc((calc(0.6rem * 3) - 0.6rem * 1.5) / 2);
+  top: calc((0.6rem * 3 - 0.6rem * 1.5) / 2);
   right: calc(0.6rem / 2);
   width: calc(0.6rem * 1.5);
   height: calc(0.6rem * 1.5);
@@ -693,11 +693,11 @@
 
 .rrui__expandable__content {
   /*
-  The inner block's `opacity` is animated too
-  (it fades in and out by itself too).
-  This is done to fade out the inner block when the dropdown is collapsed
-  therefore hiding an otherwise bizarre and unwanted visual clutter
-  */
+	The inner block's `opacity` is animated too
+	(it fades in and out by itself too).
+	This is done to fade out the inner block when the dropdown is collapsed
+	therefore hiding an otherwise bizarre and unwanted visual clutter
+	*/
   opacity: 0;
   /* Mitigates inner content overlapping with itself creating a feeling of a mess */
   -webkit-transition: opacity 150ms ease-out;
@@ -855,11 +855,11 @@ than 100% of the parent if the parent is small enough.
           user-select: none;
   pointer-events: none;
   /*
-  When changing this label color
-  one could also change "input" and "textarea" placeholder color
-  if using `placeholder` property.
-  Changing `:placeholder` color is not widely supported though.
-  */
+	When changing this label color
+	one could also change "input" and "textarea" placeholder color
+	if using `placeholder` property.
+	Changing `:placeholder` color is not widely supported though.
+	*/
   color: #888888;
   -webkit-transform: scale(0.8) translateY(-70%);
       -ms-transform: scale(0.8) translateY(-70%);
@@ -977,14 +977,14 @@ also change `default_close_timeout` in ./Modal.js accordingly
 .rrui__modal__contents {
   opacity: 0;
   /*
-  Scaling `<Modal/>` down on appear looks cool
-  but it also can cause scrollbars to appear
-  due to overflow which is a weird `scale()` behaviour.
-  Those scrollbars alter window width resulting in
-  `<Modal/>` positioning glitches (while centering itself).
-  Therefore not using `scale()`s above `1`, only downscaling.
-  transform  : scale(1.07);
-  */
+	Scaling `<Modal/>` down on appear looks cool
+	but it also can cause scrollbars to appear
+	due to overflow which is a weird `scale()` behaviour.
+	Those scrollbars alter window width resulting in
+	`<Modal/>` positioning glitches (while centering itself).
+	Therefore not using `scale()`s above `1`, only downscaling.
+	transform  : scale(1.07);
+	*/
   -webkit-transform: scale(0.95);
       -ms-transform: scale(0.95);
           transform: scale(0.95);
@@ -1035,8 +1035,8 @@ While this would disable page scrolling when modal is presented,
 it would introduce page width jumps.
 .ReactModal__Body--open
 {
-  height: 100%;
-  overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 */
 /*==========================================================
@@ -1068,7 +1068,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__overlay--fullscreen {
   /* `display: flex` results in a weird content clipping bug in fullscreen mode
-     because of `justify-content: center` on the container */
+	   because of `justify-content: center` on the container */
   display: block;
   background-color: #ffffff; }
 
@@ -1082,7 +1082,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   /* Centers everything vertically */
   min-height: 100%;
   /* Using `inline-flex` here so that it doesn't
-     stretch to the whole overlay width */
+	   stretch to the whole overlay width */
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1119,7 +1119,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__contents {
   /* So that modal content won't neccessarily
-     stretch horizontally to the full width of the screen */
+	   stretch horizontally to the full width of the screen */
   display: inline-block;
   /* Modal content shouldn't stretch vertically */
   -webkit-box-flex: 0;
@@ -1319,7 +1319,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select {
   /* This is for `.rrui__select__options` to be positioned
-     correctly relative to the `<Select/>` itself. */
+	   correctly relative to the `<Select/>` itself. */
   position: relative;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -1340,26 +1340,26 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu) {
   /*
-  `margin-top` is constituted by:
-  - `.rrui__select__options` `padding-top`.
-  - `.rrui__input` `height`.
-  - half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
-  */
-  margin-top: calc(-1 * (0.6rem + calc(0.6rem * 3) + (calc(0.6rem * 4) - calc(0.6rem * 3)) / 2)); }
+	`margin-top` is constituted by:
+	- `.rrui__select__options` `padding-top`.
+	- `.rrui__input` `height`.
+	- half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
+	*/
+  margin-top: calc(-1 * (0.6rem + 0.6rem * 3 + (0.6rem * 4 - 0.6rem * 3) / 2)); }
 
 .rrui__select__options--left-aligned {
-  left: calc(calc(0.6rem * 1.5) * -1); }
+  left: calc(0.6rem * 1.5 * -1); }
 
 .rrui__select__options--right-aligned {
-  right: calc(calc(0.6rem * 1.5) * -1); }
+  right: calc(0.6rem * 1.5 * -1); }
 
 .rrui__select__options:not(.rrui__select__options--menu) {
   /*
-  `<Select/>` options text should be at least fully visible.
-  At the same time `<Select/>` options should stretch themselves
-  horizontally to the width of the containing column (when using grid layout).
-  */
-  width: calc(100% + calc(0.6rem * 1.5) * 2); }
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+  width: calc(100% + 0.6rem * 1.5 * 2); }
 
 .rrui__select__option-label {
   overflow: hidden;
@@ -1376,15 +1376,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__options--downward {
   /* When an html page is overflown by a long list
-     then this bottom margin helps to see that
-     there's no more options left out being clipped or something */
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
   margin-bottom: 1em; }
 
 .rrui__select__options--upward {
   bottom: 100%;
   /* When an html page is overflown by a long list
-     then this bottom margin helps to see that
-     there's no more options left out being clipped or something */
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
   margin-top: 1em; }
 
 .rrui__select__option {
@@ -1399,11 +1399,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
   width: 100%;
   height: calc(0.6rem * 4);
   /*
-  This side padding is also connected to
-  `.rrui__select__options--left-aligned`'s `left`,
-  `.rrui__select__options--right-aligned`'s `right`
-  and `.rrui__select__options`'s `min-width`.
-  */
+	This side padding is also connected to
+	`.rrui__select__options--left-aligned`'s `left`,
+	`.rrui__select__options--right-aligned`'s `right`
+	and `.rrui__select__options`'s `min-width`.
+	*/
   padding-left: calc(0.6rem * 1.5);
   padding-right: calc(0.6rem * 1.5);
   -webkit-box-sizing: border-box;
@@ -1514,13 +1514,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 /*.rrui__select__arrow--expanded
 {
-  opacity: 0.3;
+	opacity: 0.3;
 }*/
 .rrui__select__close {
   /*
-  Set `display` to `block` for fullscreen `.rrui__expandable` design.
-  display : block;
-  */
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	display : block;
+	*/
   display: none; }
 
 .rrui__select--compact {

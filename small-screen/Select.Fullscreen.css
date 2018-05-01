@@ -1,4 +1,3 @@
-/* `<Select/>` goes fullscreen when expanded. */
 /* Same as for `<DatePicker/>`. */
 .rrui__select__options
 {
@@ -8,7 +7,7 @@
 	right    : 0;
 	left     : 0;
 	margin   : 0;
-	z-index  : var(--rrui-z-index-overlay);
+	z-index  : 100;
 
 	-webkit-transform-origin : center center;
 
@@ -47,10 +46,6 @@
 }
 
 /* Disable `<Select/>` options `:hover` effect. */
-/* Added `:not(:active)` here for `small-screen.css` */
-/* which expands the list of options to full screen */
-/* upon a click on `<Select/>` and that would make */
-/* an option below the touch to become stuck in `:hover` state. */
 .rrui__select__options--expanded .rrui__select__option:hover
 {
 	background-color : transparent;
@@ -63,21 +58,21 @@
 	top              : 0;
 	left             : 0;
 	width            : 100%;
-	height           : var(--rrui-fullscreen-input-height);
-	padding-left     : var(--rrui-list-item-side-padding);
-	padding-right    : calc(var(--rrui-unit) * 2 + var(--rrui-unit) * 3 + var(--rrui-list-item-side-padding));
-	z-index          : var(--rrui-z-index-overlay);
-	background-color : var(--rrui-white-color);
+	height           : calc(0.6rem * 4);
+	padding-left     : calc(0.6rem * 1.5);
+	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + 0.6rem * 1.5);
+	z-index          : 100;
+	background-color : #ffffff;
 }
 
 /* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
 .rrui__select--autocomplete.rrui__select--expanded .rrui__ellipsis
 {
 	position    : fixed;
-	right       : var(--rrui-list-item-side-padding);
+	right       : calc(0.6rem * 1.5);
 	top         : 0;
-	z-index     : var(--rrui-z-index-above-overlay);
-	height      : var(--rrui-fullscreen-input-height);
+	z-index     : 101;
+	height      : calc(0.6rem * 4);
 	display     : -webkit-box;
 	display     : -webkit-flex;
 	display     : -ms-flexbox;
@@ -91,7 +86,7 @@
 /* `<Select autocomplete/>` options when fullscreen-expanded */
 .rrui__select__options--autocomplete
 {
-	top : var(--rrui-fullscreen-input-height);
+	top : calc(0.6rem * 4);
 	-webkit-box-shadow : none;
 	        box-shadow : none;
 }
@@ -101,5 +96,5 @@
 .rrui__select__close
 {
 	display : block;
-	z-index : var(--rrui-z-index-overlay);
+	z-index : 100;
 }

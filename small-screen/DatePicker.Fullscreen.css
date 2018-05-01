@@ -1,4 +1,3 @@
-/* `<DatePicker/>`s goes fullscreen when expanded. */
 /* Same as for `<Select/>`. */
 .rrui__date-picker__collapsible
 {
@@ -8,7 +7,7 @@
 	right    : 0;
 	left     : 0;
 	margin   : 0;
-	z-index  : var(--rrui-z-index-overlay);
+	z-index  : 100;
 
 	-webkit-transform-origin : center center;
 
@@ -42,16 +41,5 @@
 .rrui__date-picker__close
 {
 	display : block;
-	z-index : var(--rrui-z-index-overlay);
-}
-
-/*
-Displays a click-intercepting overlay
-over `<DatePicker/>`'s `<input/>`
-so that the keyboard doesn't slide from bottom
-pushing the expanded `<DatePicker/>` from the screen.
-*/
-.rrui__date-picker__input-overlay
-{
-	display : block;
+	z-index : 100;
 }
