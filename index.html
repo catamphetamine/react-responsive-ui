@@ -12,6 +12,9 @@
 		<link href="./lib/prism.css" rel="stylesheet" />
 		<script src="./lib/prism.js"></script>
 
+		<!-- Promise -->
+		<script src="./lib/promise.polyfill.min.js"></script>
+
 		<link rel="stylesheet" href="./style.css"/>
 
 		<!--
@@ -327,7 +330,7 @@
 				marginBottom : '1em'
 			}
 
-			var FileUploadArea = React.createClass
+			let FileUploadArea = React.createClass
 			({
 				render: function()
 				{
@@ -742,7 +745,7 @@ const ExampleSelectIcons = React.createClass
 			<Example name="select-icons" title="Select (icons)">
 
 									<Select
-										style={input_style}
+										style={{ ...input_style, width: 'auto' }}
 										className="column-width"
 										concise
 										name="dropdown"
@@ -763,8 +766,7 @@ const ExampleSelectIcons = React.createClass
 											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
 										}]}
 										placeholder="Choose"
-										onChange={ value => this.setState({ value }) }
-										className="rrui__select--compact"/>
+										onChange={ value => this.setState({ value }) } />
 
 									<div>
 										Value: {this.state.value ? this.state.value : '(empty)'}
@@ -1498,9 +1500,11 @@ const ExampleModal = React.createClass
 									<li><a href="#modal">Modal</a></li>
 								</ul>
 
+								{/*
 								<div className="sidenote">
 									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>.
 								</div>
+								*/}
 
 								<ExampleMenuButton/>
 
