@@ -58,8 +58,24 @@ export default class Button extends PureComponent
 		else if (prevProps.busy && !this.props.busy)
 		{
 			// Gives some time to CSS opacity transition to finish.
-			this.no_longer_busy_timeout = setTimeout(() => this.setState({ showBusy : false }), 300)
+			this.no_longer_busy_timeout = setTimeout(() =>
+			{
+				if (this._isMounted) {
+					this.setState({ showBusy : false })
+				}
+			},
+			300)
 		}
+	}
+
+	componentDidMount()
+	{
+		this._isMounted = true
+	}
+
+	componentWillUnmount()
+	{
+		this._isMounted = false
 	}
 
 	render()
