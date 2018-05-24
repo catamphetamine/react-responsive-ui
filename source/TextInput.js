@@ -101,7 +101,7 @@ export default class TextInput extends PureComponent
 		}
 	}
 
-	storeInputComponent = (ref) => this.input = ref
+	storeInputNode = (node) => this.input = node
 
 	focus()
 	{
@@ -132,7 +132,10 @@ export default class TextInput extends PureComponent
 					className
 				) }>
 
-				<Input {...this.props} ref={this.storeInputComponent} name={undefined} />
+				<Input
+					{...this.props}
+					name={undefined}
+					inputRef={this.storeInputNode} />
 
 				{/* Fallback in case javascript is disabled (no animated <label/>) */}
 				{ fallback && !this.state.javascript && this.render_static() }
