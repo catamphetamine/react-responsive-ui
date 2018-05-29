@@ -36,6 +36,12 @@ import TextInput from 'react-responsive-ui/commonjs/TextInput'
 
 Which results in a much smaller bundle size.
 
+The same can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`. There's a catch though: those stylesheets are usually dependent on each other and, for example, the `<Button/>` component actually requires three different stylesheets to be imported:
+
+* `react-responsive-ui/styles/Button.css`
+* `react-responsive-ui/styles/ButtonReset.css`
+* `react-responsive-ui/styles/Input.css`
+
 ## CSS
 
 The CSS for this library must be included on a page too.
@@ -161,7 +167,10 @@ class Application extends Component {
 import { CanDrop, FILE, FILES, FileUpload } from 'react-responsive-ui'
 
 class FileUploadPage extends Component {
+  state = {}
+
   onUpload = (file, action) => {
+    this.setState({ file })
     alert(`File ${action}: ${file.name}`)
   }
 
@@ -171,6 +180,7 @@ class FileUploadPage extends Component {
         <h1> File upload </h1>
 
         <FileUploadArea
+          file={ this.state.file }
           onUpload={ this.onUpload }
           className="file-upload"/>
       </div>
@@ -186,6 +196,7 @@ class FileUploadPage extends Component {
 class FileUploadArea extends Component {
   render() {
     const {
+      file,
       dropTarget,
       draggedOver,
       onUpload,
@@ -197,8 +208,8 @@ class FileUploadArea extends Component {
         <FileUpload
           action={(file) => onUpload(file, 'chosen')}
           className={`${className} ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
-          Click here to choose a file
-          or drop a file here
+          {file && file.name}
+          {!file && 'Click here to choose a file or drop a file here'}
         </FileUpload>
       </div>
     )
