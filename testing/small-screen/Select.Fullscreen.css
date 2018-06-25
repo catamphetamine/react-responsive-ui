@@ -1,0 +1,54 @@
+/* Same as for `<DatePicker/>`. */
+.rrui__select .rrui__list
+{
+	position : fixed;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	margin   : 0;
+	z-index  : 100;
+
+	-webkit-transform-origin : center center;
+
+	    -ms-transform-origin : center center;
+
+	        transform-origin : center center;
+	-webkit-transform        : scale(0.95);
+	    -ms-transform        : scale(0.95);
+	        transform        : scale(0.95);
+	opacity          : 0;
+	-webkit-transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	-o-transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	max-height       : none !important;
+
+	/* Resets the `width` set in `Select.css` */
+	width    : 100%;
+
+	/* `<Select/>` goes fullscreen when expanded. */
+	/* Same as for `<DatePicker/>`. */
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
+	opacity   : 1;
+
+	/* `<Select/>` options no top margin. */
+	margin-top: 0;
+}
+
+/* Disable `<Select/>` options `:hover` effect. */
+.rrui__select--expanded .rrui__list__item:hover
+{
+	background-color : transparent;
+}
+
+/* Show "Close" button for full-screen `<Select/>`. */
+/* Same as for `<DatePicker/>`. */
+.rrui__select__close
+{
+	display : block;
+	z-index : 100;
+}

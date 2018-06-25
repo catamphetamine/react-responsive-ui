@@ -1,0 +1,554 @@
+<html>
+	<head>
+		<title>React Responsive UI</title>
+
+		<!-- React 15.3.1 -->
+		<script src="./lib/react.js"></script>
+		<script src="./lib/react-dom.js"></script>
+		<!-- Babel 5.8 -->
+		<script src="./lib/babel.js"></script>
+
+		<!-- PrismJS -->
+		<link href="./lib/prism.css" rel="stylesheet" />
+		<script src="./lib/prism.js"></script>
+
+		<!-- Promise -->
+		<script src="./lib/promise.polyfill.min.js"></script>
+
+		<link rel="stylesheet" href="./style.css"/>
+
+		<!--
+		This makes the page not scale down on mobile devices
+		and instead adapt to the screen width using `@media` queries.
+		-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		<meta charset="utf-8">
+	</head>
+
+	<style>
+		/* Base styles */
+
+		html, body, button, input, textarea, select
+		{
+			font-family : Arial, Helvetica;
+			font-size   : 20px;
+		}
+
+		html, body
+		{
+			-webkit-tap-highlight-color : transparent;
+		}
+
+		body
+		{
+			/* Disables "double tap to zoom in" on mobile devices. */
+			/* https://stackoverflow.com/questions/46167604/iphone-html-disable-double-tap-to-zoom */
+			touch-action: manipulation;
+		}
+
+		pre
+		{
+			white-space: pre-wrap !important;
+			word-wrap: break-word !important;
+		}
+
+		/* Page style */
+
+		body
+		{
+			margin: 0;
+			padding: 40px;
+		}
+
+		body > form
+		{
+			margin-top: 2.4em;
+		}
+
+		h2.heading
+		{
+			margin-top: 30px;
+			padding-top: 30px;
+			margin-bottom: 30px;
+			font-size: 125%;
+		}
+
+		ul.list li
+		{
+			margin-top: 0.3rem;
+			margin-bottom: 0.3rem;
+			line-height: 1.4em;
+		}
+
+		code.colored
+		{
+			color : #c92c2c;
+		}
+
+		a
+		{
+			text-decoration: none;
+			color: #0093C4;
+		}
+
+		a:hover
+		{
+			text-decoration: underline;
+		}
+
+		a.main
+		{
+			display: block;
+			font-size: 125%;
+		}
+
+		p
+		{
+			margin-top: 10px;
+			margin-bottom: 40px;
+		}
+
+		.country-icon
+		{
+			width  : 1em;
+			height : 0.75em;
+			border : 1px solid #5f5f5f;
+		}
+
+		.title-anchor
+		{
+			color: inherit;
+			outline: none;
+		}
+
+		.title-anchor:hover
+		{
+			text-decoration: none;
+		}
+
+		.column-width
+		{
+			width : 20rem;
+			max-width : 100%;
+		}
+
+		.submit-form
+		{
+			margin-top: calc(0.3rem * 3);
+		}
+
+		pre
+		{
+			border: 1px solid rgba(0, 0, 0, 0.03);
+		}
+
+		.table-of-contents
+		{
+			margin-top: calc(0.3rem * 9);
+			margin-bottom: calc(0.3rem * 9);
+		}
+
+		.sidenote
+		{
+			line-height: 1.7em;
+			/*color : #7f7f7f;*/
+		}
+
+		.new-message-notification
+		{
+			height        : 100%;
+			display       : flex;
+			align-items   : center;
+			padding-left  : calc(0.3rem * 3);
+			padding-right : calc(0.3rem * 3);
+		}
+
+		.new-message-notification__user-picture
+		{
+			width         : calc(0.3rem * 14);
+			height        : calc(0.3rem * 14);
+			border-radius : 50%;
+			border        : 1px solid rgba(255,255,255,0.5);
+		}
+
+		.new-message-notification__text
+		{
+			flex          : 1;
+			padding-left  : calc(0.3rem * 4);
+			padding-right : calc(0.3rem * 3);
+		}
+
+		.new-message-notification__close
+		{
+			background : none;
+			border     : none;
+			color      : white;
+			cursor     : pointer;
+			outline    : none;
+		}
+
+		.new-message-notification__close:active
+		{
+			color : #2bd7f0;
+		}
+
+		.rrui__snackbar--new-message-notification
+		{
+			height  : calc(0.3rem * 20);
+			padding : 0;
+			line-height : 1.35em;
+		}
+	</style>
+
+	<style>
+		/* Responsive */
+		@media (max-width: 720px)
+		{
+			body
+			{
+				margin: 0;
+				padding: calc(0.3rem * 4);
+			}
+
+			h2.heading
+			{
+				margin-top: 40px;
+				margin-bottom: 15px;
+			}
+
+			html, body, button, input, textarea, select
+			{
+				/* The font size should be 16px minimum */
+				/* so that mobile browsers don't zoom on input focus. */
+				/* https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
+				font-size   : 16px;
+			}
+
+			.submit-form
+			{
+				margin-top: calc(0.3rem * 5);
+			}
+
+			.header
+			{
+				padding-top: 0.6em;
+				margin-left: 2.0em;
+			}
+		}
+	</style>
+
+	<!-- RRUI customization -->
+	<style>
+		.rrui__button--border
+		{
+			padding-left     : calc(0.3rem * 2.5);
+			padding-right    : calc(0.3rem * 2.5);
+			border        : 0.1em solid #03B2CB;
+			border-radius : 0.3em;
+		}
+
+		.rrui__button--border .rrui__button__busy
+		{
+			left   : calc(0.3rem * 2.5);
+			bottom : calc(50% - 0.6em);
+			width  : calc(100% - 2 * 0.3rem * 2.5);
+		}
+
+		.rrui__slideout-menu__item
+		{
+			color : #ECF1F6;
+		}
+
+		.rrui__slideout-menu__item:active
+		{
+			color : #BBD9FA;
+		}
+
+		.rrui__file-upload
+		{
+			display          : inline-block;
+			padding          : 10px;
+			border           : 1px dashed #afafaf;
+			border-radius    : 5px;
+			background-color : #fbfbfb;
+			cursor           : pointer;
+			text-align       : center;
+			line-height      : 1.5em;
+		}
+
+		.rrui__file-upload--dragged-over
+		{
+			background-color : #3678D1;
+			color            : white;
+		}
+	</style>
+
+	<style>
+		/* Responsive RRUI */
+		@import url("./small-screen/Modal.css") (max-width: 720px);
+		@import url("./small-screen/Snackbar.css") (max-width: 720px);
+		@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);
+		/*@import url("./small-screen/Modal.Fullscreen.css") (max-width: 720px);*/
+		/*@import url("./small-screen/Select.Fullscreen.css") (max-width: 720px);*/
+		/*@import url("./small-screen/DatePicker.Fullscreen.css") (max-width: 720px);*/
+	</style>
+
+	<body>
+		<script src="./react-responsive-ui.min.js"></script>
+
+		<script type="text/babel">
+			const library = window.RRUI = window['react-responsive-ui']
+
+			window.PageAndMenu       = library.PageAndMenu
+			window.Page              = library.Page
+			window.SlideoutMenu      = library.SlideoutMenu
+			window.ExpandableMenu    = library.ExpandableMenu
+			window.MenuButton        = library.MenuButton
+			window.Divider           = library.Divider
+			window.Form              = library.Form
+			window.Snackbar          = library.Snackbar
+			window.Tooltip           = library.Tooltip
+			window.ActivityIndicator = library.ActivityIndicator
+			window.Ellipsis          = library.Ellipsis
+			window.TextInput         = library.TextInput
+			window.Expandable        = library.Expandable
+			window.List              = library.List
+			window.ScrollableList    = library.ScrollableList
+			window.ExpandableList    = library.ExpandableList
+			window.Select            = library.Select
+			window.Autocomplete      = library.Autocomplete
+			window.Button            = library.Button
+			window.Switch            = library.Switch
+			window.Checkbox          = library.Checkbox
+			window.SegmentedControl  = library.SegmentedControl
+			window.DatePicker        = library.DatePicker
+			window.FileUpload        = library.FileUpload
+			window.Modal             = library.Modal
+
+			window.DragAndDrop       = library.DragAndDrop
+			window.CanDrop           = library.CanDrop
+			window.File              = library.File
+
+			window.input_style =
+			{
+				marginBottom : '1em'
+			}
+
+			function countTabs(text)
+			{
+				var count = 0;
+				var index = 0;
+				while (text.charAt(index++) === '\t') {
+					count++
+				}
+				return count
+			}
+
+			function untab(text)
+			{
+				text = text.replace(/^\n/, '').replace(/\n$/, '')
+				let lines = text.split('\n')
+
+				while (/^\s*$/.test(lines[0])) {
+					lines.shift()
+				}
+
+				while (/^\s*$/.test(lines[lines.length - 1])) {
+					lines.pop()
+				}
+
+				let leastTabs = Number.POSITIVE_INFINITY
+				for (const line of lines) {
+					if (!/^\s*$/.test(line)) {
+						leastTabs = Math.min(leastTabs, countTabs(line))
+					}
+				}
+
+				if (leastTabs === Number.POSITIVE_INFINITY) {
+					return lines.join('\n')
+				}
+
+				return lines.map(line => line.slice(leastTabs)).join('\n').replace(/\t/g, '  ')
+			}
+
+			window.Highlight = ({ lang, style, children }) =>
+			{
+				return (
+					<pre style={style || { marginTop: '20px' }} className={`language-${lang}`}>
+						<code dangerouslySetInnerHTML={{__html: Prism.highlight(untab(children), Prism.languages[lang], lang)}}/>
+					</pre>
+				)
+			}
+
+			window.Example = ({ name, title, children }) => (
+				<div>
+					<a name={name} href={`#${name}`} className="title-anchor" tabIndex="-1">
+						<h2 className="heading">{title}</h2>
+					</a>
+					{children}
+				</div>
+			)
+		</script>
+
+		<script src="./samples/ExampleMenuButton.js" type="text/babel"></script>
+		<script src="./samples/ExampleTextInput.js" type="text/babel"></script>
+		<script src="./samples/ExampleTextInputFloatingLabel.js" type="text/babel"></script>
+		<script src="./samples/ExampleMultilineTextInputLabel.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandable.js" type="text/babel"></script>
+		<script src="./samples/ExampleList.js" type="text/babel"></script>
+		<script src="./samples/ExampleScrollableList.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandableList.js" type="text/babel"></script>
+		<script src="./samples/ExampleListIcons.js" type="text/babel"></script>
+		<script src="./samples/ExampleListCustomContent.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelect.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectNative.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectNativeExpanded.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectIcons.js" type="text/babel"></script>
+		<script src="./samples/ExampleAutocomplete.js" type="text/babel"></script>
+		<script src="./samples/ExampleAutocompleteAsync.js" type="text/babel"></script>
+		<script src="./samples/ExampleMenu.js" type="text/babel"></script>
+		<script src="./samples/ExampleDatePicker.js" type="text/babel"></script>
+		<script src="./samples/ExampleCheckbox.js" type="text/babel"></script>
+		<script src="./samples/ExampleSwitch.js" type="text/babel"></script>
+		<script src="./samples/ExampleSegmentedControl.js" type="text/babel"></script>
+		<script src="./samples/ExampleFileUpload.js" type="text/babel"></script>
+		<script src="./samples/ExampleActivityIndicator.js" type="text/babel"></script>
+		<script src="./samples/ExampleEllipsis.js" type="text/babel"></script>
+		<script src="./samples/ExampleTooltip.js" type="text/babel"></script>
+		<script src="./samples/ExampleSnackbar.js" type="text/babel"></script>
+		<script src="./samples/ExampleButtons.js" type="text/babel"></script>
+		<script src="./samples/ExampleModal.js" type="text/babel"></script>
+
+		<div id="content"></div>
+
+		<script type="text/babel">
+			let Content = React.createClass
+			({
+				getInitialState: function()
+				{
+					return {
+						phone          : '',
+						text_value     : '',
+						select_value   : 'B',
+						checked        : true,
+						// selected: 'A',
+						// switched: true,
+					}
+				},
+
+				render: function()
+				{
+					return (
+						<PageAndMenu>
+							<SlideoutMenu>
+								<a target="_blank" href="https://google.com" className="rrui__slideout-menu__item">
+									Google.com
+								</a>
+								<a target="_blank" href="https://yandex.ru" className="rrui__slideout-menu__item">
+									Yandex.ru
+								</a>
+								<a target="_blank" href="https://www.baidu.com" className="rrui__slideout-menu__item">
+									Baidu.com
+								</a>
+							</SlideoutMenu>
+
+							<Page>
+								<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
+
+								<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
+
+								<ul className="list table-of-contents">
+									<li><a href="#slideout-menu">Slideout Menu</a></li>
+									<li><a href="#text-input-placeholder">Text input field (with placeholder)</a></li>
+									<li><a href="#text-input-floating-label">Text input field (with floating label)</a></li>
+									<li><a href="#text-input-placeholder-and-floating-label">Text input field (with both placeholder and floating label)</a></li>
+									<li><a href="#multiline-text-input-floating-label">Multiline Text Input</a></li>
+									<li><a href="#select">Select</a></li>
+									<li><a href="#select-icons">Select (icons)</a></li>
+									<li><a href="#autocomplete">Autocomplete</a></li>
+									<li><a href="#asynchronous-autocomplete">Autocomplete (asynchronous)</a></li>
+									<li><a href="#menu">Menu</a></li>
+									<li><a href="#checkbox">Checkbox</a></li>
+									<li><a href="#switch">Switch</a></li>
+									<li><a href="#segmented-control">Segmented Control</a></li>
+									<li><a href="#date-picker">Date picker</a></li>
+									<li><a href="#file-upload">File Upload</a></li>
+									<li><a href="#activity-indicator">Activity Indicator</a></li>
+									<li><a href="#ellipsis">Ellipsis</a></li>
+									<li><a href="#phone">Phone</a></li>
+									<li><a href="#tooltip">Tooltip</a></li>
+									<li><a href="#snackbar">Snackbar</a></li>
+									<li><a href="#form-and-buttons">Form and Buttons</a></li>
+									<li><a href="#modal">Modal</a></li>
+								</ul>
+
+								{/*
+								<div className="sidenote">
+									Sidenote: This demo doesn't transpile "native CSS variables" so it won't work in Internet Explorer.<br/>"Native CSS variables" can easily be transpiled for older browsers via PostCSS. <a target="_blank" href="https://github.com/catamphetamine/react-responsive-ui#variables">Read more</a>.
+								</div>
+								*/}
+
+								<ExampleMenuButton/>
+
+								<div style={{ marginTop: '2em' }}/>
+
+								<ExampleTextInput/>
+								<ExampleTextInputFloatingLabel/>
+								<ExampleMultilineTextInputLabel/>
+
+								<ExampleList/>
+								<ExampleListIcons/>
+								<ExampleListCustomContent/>
+
+								<ExampleScrollableList/>
+								<ExampleExpandable/>
+								<ExampleExpandableList/>
+
+								<ExampleSelect/>
+								<ExampleSelectNative/>
+								<ExampleSelectNativeExpanded/>
+								<ExampleSelectIcons/>
+
+								{/*<ExampleAutocomplete/>*/}
+								{/*<ExampleAutocompleteAsync/>*/}
+
+								{/*<ExampleMenu/>*/}
+
+								<ExampleDatePicker/>
+
+								<ExampleCheckbox/>
+								<ExampleSwitch/>
+								<ExampleSegmentedControl/>
+
+								<ExampleFileUpload/>
+
+								<ExampleActivityIndicator/>
+								<ExampleEllipsis/>
+
+								<a name="phone" href="#phone" className="title-anchor" tabIndex="-1">
+									<h2 className="heading">Phone number input</h2>
+								</a>
+
+								See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
+
+								<ExampleTooltip/>
+								<ExampleSnackbar/>
+								<ExampleButtons/>
+								<ExampleModal/>
+							</Page>
+						</PageAndMenu>
+					)
+				}
+			})
+
+			Content = DragAndDrop()(Content)
+
+			ReactDOM.render
+			(
+				<Content />,
+				document.getElementById('content')
+			)
+		</script>
+	</body>
+</html>

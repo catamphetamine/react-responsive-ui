@@ -1,0 +1,21 @@
+.rrui__snackbar__container
+{
+	margin : 0;
+	margin-bottom : 0.6rem;
+	-webkit-box-pack : center;
+	-webkit-justify-content : center;
+	    -ms-flex-pack : center;
+	        justify-content : center;
+}
+
+/* Full-width `<Snackbar/>`. */
+.rrui__snackbar__container--wide
+{
+	margin-bottom : 0;
+}
+
+/* Full-width `<Snackbar/>` border radius. */
+.rrui__snackbar__container--wide .rrui__snackbar
+{
+	border-radius : 0;
+}
