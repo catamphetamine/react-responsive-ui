@@ -1,6 +1,10 @@
 window.ExampleSelect = React.createClass
 ({
-	getInitialState() { return {} },
+	getInitialState()
+	{
+		// return { value: 'B' }
+		return {}
+	},
 
 	render()
 	{
@@ -54,13 +58,13 @@ window.ExampleSelect = React.createClass
 `}</Highlight>
 
 <Highlight lang="css">{`
-.rrui__select--expanded .rrui__list__item--focused {
+.rrui__select .rrui__list__item--focused {
 	background-color : cyan;
 }
-.rrui__select--expanded .rrui__list__item:hover {
+.rrui__select .rrui__list__item:hover {
 	background-color : gray;
 }
-.rrui__select--expanded .rrui__list__item:active {
+.rrui__select .rrui__list__item:active {
 	background-color : blue;
 	color : white;
 }

@@ -7,14 +7,17 @@ window.ExampleTextInput = React.createClass
 		return (
 			<Example name="text-input-placeholder" title="Text input field (with placeholder)">
 
-				<TextInput
-					focus={false}
-					style={input_style}
-					className="column-width"
-					name="text_input"
-					value={this.state.value}
-					onChange={value => this.setState({ value })}
-					placeholder="Enter some text"/>
+				<form>
+					<TextInput
+						focus={false}
+						autoComplete="tel"
+						style={input_style}
+						className="column-width"
+						name="text_input"
+						value={this.state.value}
+						onChange={value => this.setState({ value })}
+						placeholder="Enter some text"/>
+				</form>
 
 				Value:  {this.state.value}
 

@@ -290,8 +290,7 @@
 		@import url("./small-screen/Snackbar.css") (max-width: 720px);
 		@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);
 		/*@import url("./small-screen/Modal.Fullscreen.css") (max-width: 720px);*/
-		/*@import url("./small-screen/Select.Fullscreen.css") (max-width: 720px);*/
-		/*@import url("./small-screen/DatePicker.Fullscreen.css") (max-width: 720px);*/
+		@import url("./small-screen/Expandable.Fullscreen.css") (max-width: 720px);
 	</style>
 
 	<body>
@@ -402,12 +401,13 @@
 		<script src="./samples/ExampleListIcons.js" type="text/babel"></script>
 		<script src="./samples/ExampleListCustomContent.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelect.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectAsync.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectNative.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectNativeExpanded.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectIcons.js" type="text/babel"></script>
 		<script src="./samples/ExampleAutocomplete.js" type="text/babel"></script>
 		<script src="./samples/ExampleAutocompleteAsync.js" type="text/babel"></script>
-		<script src="./samples/ExampleMenu.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandableMenu.js" type="text/babel"></script>
 		<script src="./samples/ExampleDatePicker.js" type="text/babel"></script>
 		<script src="./samples/ExampleCheckbox.js" type="text/babel"></script>
 		<script src="./samples/ExampleSwitch.js" type="text/babel"></script>
@@ -456,7 +456,7 @@
 							<Page>
 								<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
 
-								<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
+								<p style={{ marginBottom: 0 }}>Responsive UI components for React applications.</p>
 
 								<ul className="list table-of-contents">
 									<li><a href="#slideout-menu">Slideout Menu</a></li>
@@ -468,7 +468,7 @@
 									<li><a href="#select-icons">Select (icons)</a></li>
 									<li><a href="#autocomplete">Autocomplete</a></li>
 									<li><a href="#asynchronous-autocomplete">Autocomplete (asynchronous)</a></li>
-									<li><a href="#menu">Menu</a></li>
+									<li><a href="#expandable-menu">Expandable Menu</a></li>
 									<li><a href="#checkbox">Checkbox</a></li>
 									<li><a href="#switch">Switch</a></li>
 									<li><a href="#segmented-control">Segmented Control</a></li>
@@ -501,19 +501,22 @@
 								<ExampleListIcons/>
 								<ExampleListCustomContent/>
 
+								{/*
 								<ExampleScrollableList/>
 								<ExampleExpandable/>
 								<ExampleExpandableList/>
+								*/}
 
 								<ExampleSelect/>
 								<ExampleSelectNative/>
 								<ExampleSelectNativeExpanded/>
 								<ExampleSelectIcons/>
+								{/*<ExampleSelectAsync/>*/}
 
-								{/*<ExampleAutocomplete/>*/}
-								{/*<ExampleAutocompleteAsync/>*/}
+								<ExampleAutocomplete/>
+								<ExampleAutocompleteAsync/>
 
-								{/*<ExampleMenu/>*/}
+								<ExampleExpandableMenu/>
 
 								<ExampleDatePicker/>
 

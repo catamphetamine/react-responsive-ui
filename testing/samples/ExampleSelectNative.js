@@ -13,6 +13,7 @@ window.ExampleSelectNative = React.createClass
 					className="column-width"
 					name="dropdown"
 					label="Fruit"
+					placeholder="Select"
 					value={this.state.value}
 					options={[{
 						value: 'A',
