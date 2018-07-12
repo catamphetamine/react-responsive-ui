@@ -4,7 +4,7 @@ exports = module.exports = {}
 
 exports.PageAndMenu = require('./commonjs/PageAndMenu').default
 exports.Page = require('./commonjs/Page').default
-exports.CollapsibleMenu = require('./commonjs/Menu').default
+exports.SlideoutMenu = require('./commonjs/SlideoutMenu').default
 exports.MenuButton = require('./commonjs/MenuButton').default
 exports.Form = require('./commonjs/Form').default
 exports.Snackbar = require('./commonjs/Snackbar').default
@@ -12,7 +12,14 @@ exports.Tooltip = require('./commonjs/Tooltip').default
 exports.ActivityIndicator = require('./commonjs/ActivityIndicator').default
 exports.Ellipsis = require('./commonjs/Ellipsis').default
 exports.TextInput = require('./commonjs/TextInput').default
+exports.List = require('./commonjs/List').default
+exports.ScrollableList = require('./commonjs/ScrollableList').default
+exports.ExpandableList = require('./commonjs/ExpandableList').default
+exports.Expandable = require('./commonjs/Expandable').default
 exports.Select = require('./commonjs/Select').default
+exports.Autocomplete = require('./commonjs/Autocomplete').default
+exports.ExpandableMenu = require('./commonjs/ExpandableMenu').default
+exports.Divider = require('./commonjs/Divider').default
 exports.Button = require('./commonjs/Button').default
 exports.Switch = require('./commonjs/Switch').default
 exports.Checkbox = require('./commonjs/Checkbox').default

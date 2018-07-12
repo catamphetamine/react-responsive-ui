@@ -106,10 +106,10 @@ export default class Button extends PureComponent
 			style,
 			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
 			{
-				'rrui__button--busy'     : busy,
-				'rrui__button--disabled' : disabled,
-				'rrui__button--stretch'  : stretch,
-				'rrui__button--link'     : link
+				'rrui__button--busy'       : busy,
+				'rrui__button--disabled'   : disabled,
+				'rrui__button--stretch'    : stretch,
+				'rrui__button-reset--link' : link
 			},
 			className)
 		}

@@ -7,16 +7,10 @@ import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
 import TextInput from './TextInputInputComponent'
-import Close, { CloseIcon } from './Close'
-
-import
-{
-	isInternetExplorer,
-	scrollIntoViewIfNeeded
-}
-from './utility/dom'
 
 import { onBlurForReduxForm } from './utility/redux-form'
+
+import { onBlur } from './utility/focus'
 
 // // Moment.js takes 161 KB of space (minified) which is too much
 // import moment from 'moment'
@@ -28,13 +22,6 @@ import { onBlurForReduxForm } from './utility/redux-form'
 // import parse_date_date_fns from 'date-fns/parse'
 // import format_date_date_fns from 'date-fns/format'
 
-const iconStyle =
-{
-	width  : '100%',
-	height : '100%',
-	fill   : 'currentColor'
-}
-
 export default class DatePicker extends PureComponent
 {
 	static propTypes =
@@ -45,9 +32,31 @@ export default class DatePicker extends PureComponent
 		// `<input/>` placeholder
 		placeholder : PropTypes.string,
 
+		// First day of week.
 		// `0` means "Sunday", `1` means "Monday", etc.
 		// (is `0` by default)
+		// http://react-day-picker.js.org/docs/localization/
 		firstDayOfWeek : PropTypes.number.isRequired,
+
+		// `react-day-picker` `locale`.
+		// http://react-day-picker.js.org/docs/localization/
+		locale : PropTypes.string,
+
+		// `react-day-picker` `localeUtils`.
+		// http://react-day-picker.js.org/docs/localization/
+		localeUtils : PropTypes.object,
+
+		// Month labels.
+		// http://react-day-picker.js.org/docs/localization/
+		months : PropTypes.arrayOf(PropTypes.string),
+
+		// Long weekday labels.
+		// http://react-day-picker.js.org/docs/localization/
+		weekdaysLong : PropTypes.arrayOf(PropTypes.string),
+
+		// Short weekday labels.
+		// http://react-day-picker.js.org/docs/localization/
+		weekdaysShort : PropTypes.arrayOf(PropTypes.string),
 
 		// Date format. Only supports `DD`, `MM`, `YY` and `YYYY` for now (to reduce bundle size).
 		// Can support custom localized formats, perhaps, when `date-fns@2` is released.
@@ -112,25 +121,8 @@ export default class DatePicker extends PureComponent
 		// The calendar icon.
 		icon : PropTypes.func,
 
-		// `aria-label` for the "Close" button
-		// (which is an "x" visible in fullscreen mode).
-		closeLabel : PropTypes.string,
-
-		// The "x" button icon that closes the `<DatePicker/>`
-		// in fullscreen mode on mobile devices.
-		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
-
-		// When the `<DatePicker/>` is expanded
-		// the calendar may not fit on the screen.
-		// If `scrollIntoView` is `true` (which is the default)
-		// then the browser will automatically scroll
-		// so that the expanded calendar fits on the screen.
-		scrollIntoView : PropTypes.bool.isRequired,
-
-		// If `scrollIntoView` is `true` (which is the default)
-		// then these two are gonna define the delay after which it scrolls into view.
-		expandAnimationDuration : PropTypes.number.isRequired,
-		keyboardSlideAnimationDuration : PropTypes.number.isRequired,
+		waitForKeyboardSlideIn : PropTypes.bool.isRequired,
+		keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
 
 		// CSS class
 		className : PropTypes.string,
@@ -167,26 +159,12 @@ export default class DatePicker extends PureComponent
 			</svg>
 		),
 
-		// The "x" button icon that closes the `<DatePicker/>`
-		// in fullscreen mode on mobile devices.
-		closeButtonIcon : CloseIcon,
-
-		// When the `<DatePicker/>` is expanded
-		// the calendar may not fit on the screen.
-		// If `scrollIntoView` is `true` (which is the default)
-		// then the browser will automatically scroll
-		// so that the expanded calendar fits on the screen.
-		scrollIntoView : true,
-
-		// If `scrollIntoView` is `true` (which is the default)
-		// then these two are gonna define the delay after which it scrolls into view.
-		expandAnimationDuration : 150,
-		keyboardSlideAnimationDuration : 300
+		waitForKeyboardSlideIn : true,
+		keyboardSlideInAnimationDuration : 300
 	}
 
 	state =
 	{
-		expanded     : false,
 		selected_day : null
 	}
 
@@ -209,10 +187,13 @@ export default class DatePicker extends PureComponent
 
 	componentWillUnmount()
 	{
-		clearTimeout(this.scroll_into_view_timeout)
-		clearTimeout(this.blurTimer)
 		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
 	}
+
+	expand     = () => this.expandable.expand()
+	collapse   = () => this.expandable.collapse()
+	toggle     = () => this.expandable.toggle()
+	isExpanded = () => this.expandable.isExpanded()
 
 	focus = () =>
 	{
@@ -230,35 +211,22 @@ export default class DatePicker extends PureComponent
 	{
 		const { onFocus } = this.props
 
-		if (onFocus)
-		{
+		if (onFocus) {
 			onFocus(event)
 		}
 
 		this.expand()
 	}
 
-	expand = () =>
+	onExpand = () =>
 	{
 		const
 		{
 			value,
 			format,
-			onToggle,
-			scrollIntoView,
-			expandAnimationDuration,
-			keyboardSlideAnimationDuration
+			onToggle
 		}
 		= this.props
-
-		const { expanded } = this.state
-
-		if (expanded)
-		{
-			return
-		}
-
-		clearTimeout(this.scroll_into_view_timeout)
 
 		this.setState
 		({
@@ -268,164 +236,32 @@ export default class DatePicker extends PureComponent
 			// Must re-calculate `text_value` on each "expand"
 			// because it's being reset on each "collapse".
 			text_value : format_date(value, format)
-		},
-		() =>
-		{
-			if (onToggle)
-			{
-				onToggle(true)
-			}
-
-			// Toggling the calendar in a timeout
-			// in order for iOS scroll not to get "janky"
-			// when `<DatePicker/>` gets focused.
-			// (for some unknown reason)
-			setTimeout(() =>
-			{
-				this.setState
-				({
-					expanded : true,
-					month    : value ? normalize_value(value) : new Date()
-				},
-				() =>
-				{
-					// For some reason in IE 11 "scroll into view" scrolls
-					// to the top of the page, therefore turn it off for IE.
-					if (!isInternetExplorer() && scrollIntoView)
-					{
-						this.scroll_into_view_timeout = setTimeout(() =>
-						{
-							// If still expanded and is still mounted
-							// then scroll into view.
-							if (this.state.expanded && this.expandable) {
-								scrollIntoViewIfNeeded(this.expandable)
-							}
-						},
-						Math.max(expandAnimationDuration, keyboardSlideAnimationDuration) * 1.1)
-					}
-				})
-
-				// Could also focus on the calendar controls upon expansion
-				// but it's configured to collapse on Tab event.
-				// , () =>
-				// {
-				// 	ReactDOM.findDOMNode(this.calendar).focus()
-				// })
-			}, 0)
 		})
 	}
 
-	on_key_down_in_container = (event) =>
+	onExpanded = () =>
 	{
-		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
-			return
-		}
+		const { value } = this.props
 
-		const { expanded } = this.state
-
-		switch (event.keyCode)
+		// Toggling the calendar in a timeout
+		// in order for iOS scroll not to get "janky"
+		// when `<DatePicker/>` gets focused.
+		// (for some unknown reason)
+		setTimeout(() =>
 		{
-			// "Escape"
-			case 27:
-				event.preventDefault()
-				this.input.focus()
-				if (expanded) {
-					this.collapse()
-				}
-				return
-		}
+			this.setState
+			({
+				month : value ? normalize_value(value) : new Date()
+			})
+		}, 0)
 	}
 
-	on_input_key_down = (event) =>
+	// Cancels textual date editing.
+	onCollapse = () =>
 	{
-		const { onKeyDown } = this.props
-
-		if (onKeyDown) {
-			onKeyDown(event)
-		}
-
-		if (event.defaultPrevented) {
-			return
-		}
-
-		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey)
-		{
-			return
-		}
-
-		const { expanded } = this.state
-
-		switch (event.keyCode)
-		{
-			// "Escape"
-			case 27:
-				if (expanded)
-				{
-					event.preventDefault()
-					this.collapse()
-				}
-				return
-
-			// "Enter"
-			case 13:
-				if (expanded)
-				{
-					// Don't "prevent default" here
-					// in order for a user to be able
-					// to submit an enclosing form on "Enter".
-					this.collapse()
-				}
-				return
-
-			// Toggle the calendar on Spacebar
-			case 32:
-				event.preventDefault()
-
-				if (expanded) {
-					this.collapse()
-				}
-				else {
-					this.expand()
-				}
-
-				return
-
-			// Collapse the calendar (if expanded) on "Up" arrow.
-			case 38:
-				if (expanded)
-				{
-					event.preventDefault()
-					this.collapse()
-				}
-				return
-
-			// Expand the calendar (if collapsed) on "Down" arrow.
-			case 40:
-				if (!expanded)
-				{
-					event.preventDefault()
-					this.expand()
-				}
-				return
-		}
-	}
-
-	// Hides the day picker calendar and cancels textual date editing
-	collapse = () =>
-	{
-		const { onToggle } = this.props
-
-		if (onToggle)
-		{
-			onToggle(false)
-		}
-
-		clearTimeout(this.scroll_into_view_timeout)
-
 		this.setState
 		({
-			text_value : undefined,
-			expanded   : false
+			text_value : undefined
 		})
 
 		// `onChange` fires on calendar day `click`
@@ -444,14 +280,82 @@ export default class DatePicker extends PureComponent
 		// in cases when a user manually typed in an incomplete date and then tabbed away.
 	}
 
-	toggle = () =>
+	on_key_down_in_container = (event) =>
 	{
-		const { expanded } = this.state
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
 
-		if (expanded) {
-			this.collapse()
-		} else {
-			this.expand()
+		switch (event.keyCode)
+		{
+			// "Escape".
+			//
+			// Collapse.
+			//
+			// Maybe add this kind of support for "Escape" key in some future:
+			//  hiding the item list, cancelling current item selection process
+			//  and restoring the selection present before the item list was toggled.
+			//
+			case 27:
+				event.preventDefault()
+				// Collapse the list if it's expanded.
+				return this.collapse()
+		}
+	}
+
+	on_input_key_down = (event) =>
+	{
+		const { onKeyDown } = this.props
+
+		if (onKeyDown) {
+			onKeyDown(event)
+		}
+
+		if (event.defaultPrevented) {
+			return
+		}
+
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+
+		switch (event.keyCode)
+		{
+			// On "Enter".
+			case 13:
+				if (this.isExpanded())
+				{
+					// Don't "prevent default" here
+					// in order for a user to be able
+					// to submit an enclosing form on "Enter".
+					this.collapse()
+				}
+				return
+
+			// On Spacebar.
+			case 32:
+				event.preventDefault()
+				return this.toggle()
+
+			// On "Up" arrow.
+			case 38:
+				// Collapse the calendar (if expanded).
+				if (this.isExpanded())
+				{
+					event.preventDefault()
+					this.collapse()
+				}
+				return
+
+			// On "Down" arrow.
+			case 40:
+				// Expand the calendar (if collapsed).
+				if (!this.isExpanded())
+				{
+					event.preventDefault()
+					this.expand()
+				}
+				return
 		}
 	}
 
@@ -631,54 +535,11 @@ export default class DatePicker extends PureComponent
 
 	onBlur = (event) =>
 	{
-		// Blur `event.relatedTarget` doesn't work in Internet Explorer (in React).
-		// https://github.com/gpbl/react-day-picker/issues/668
-		// https://github.com/facebook/react/issues/3751
-		if (isInternetExplorer())
-		{
-			clearTimeout(this.blurTimer)
-			return this.blurTimer = setTimeout(() =>
-			{
-				// If the component is still mounted.
-				if (this.container)
-				{
-					// A hack for iOS when it collapses
-					// the calendar after selecting a year/month.
-					if (this._userHasJustChangedYearOrMonth) {
-						return this.focus()
-					}
-
-					// If the currently focused element is inside the `<DatePicker/>`
-					// then don't collapse the calendar.
-					if (document.activeElement && this.inputContainer.contains(document.activeElement)) {
-						return
-					}
-
-					// Collapse the `<DatePicker/>`.
-					// (clicked/tapped outside or tabbed-out)
-					this.onFocusOut()
-				}
-			},
-			30)
-		}
-
-		// A hack for iOS when it collapses
-		// the calendar after selecting a year/month.
-		if (this._userHasJustChangedYearOrMonth) {
-			return this.focus()
-		}
-
-		// If clicked somewhere inside the `<DatePicker/>` then don't collapse it.
-		if (event.relatedTarget && this.inputContainer.contains(event.relatedTarget)) {
-			return
-		}
-
-		// Collapse the `<DatePicker/>`.
-		// (clicked/tapped outside or tabbed-out)
-		this.onFocusOut()
+		clearTimeout(this.blurTimer)
+		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, () => this.input, this.preventBlur)
 	}
 
-	onFocusOut()
+	onFocusOut = () =>
 	{
 		this.collapse()
 
@@ -689,8 +550,24 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
+	preventBlur = () =>
+	{
+		// A hack for iOS when it collapses
+		// the calendar after selecting a year/month.
+		if (this._userHasJustChangedYearOrMonth)
+		{
+			this.focus()
+			return true
+		}
+	}
+
+	componentWillUnmount()
+	{
+		clearTimeout(this.blurTimer)
+	}
+
 	storeContainerNode = (node) => this.container = node
-	storeExpandableNode = (node) => this.expandable = node
+	storeExpandableRef = (ref) => this.expandable = ref
 	storeCalendarComponent = (ref) => this.calendar = ref
 	storeInputOverlayNode = (node) => this.inputOverlay = node
 	storeInputNode = (node) => this.input = node
@@ -708,11 +585,18 @@ export default class DatePicker extends PureComponent
 			disabledDays,
 			selectYearsIntoPast,
 			selectYearsIntoFuture,
+			locale,
+			localeUtils,
+			months,
+			weekdaysShort,
+			weekdaysLong,
 			firstDayOfWeek,
 			disabled,
 			required,
 			label,
 			placeholder,
+			waitForKeyboardSlideIn,
+			keyboardSlideInAnimationDuration,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
 			icon,
@@ -759,7 +643,6 @@ export default class DatePicker extends PureComponent
 				onBlur={ this.onBlur }
 				className={ classNames('rrui__date-picker', className,
 				{
-					'rrui__date-picker--expanded' : expanded,
 					'rrui__date-picker--disabled' : disabled
 				}) }
 				style={ style }>
@@ -799,55 +682,37 @@ export default class DatePicker extends PureComponent
 					}
 
 					{/* <DayPicker/> doesn't support `style` property */}
-					<div
-						className={ classNames
-						(
-							'rrui__expandable',
-							'rrui__expandable--overlay',
-							'rrui__shadow',
-							'rrui__date-picker__collapsible',
-							{
-								'rrui__expandable--expanded' : expanded
-							}
-						) }>
-						<div
-							ref={ this.storeExpandableNode }
-							className={ classNames
-							(
-								'rrui__expandable__content',
-								{
-									// CSS selector performance optimization
-									'rrui__expandable__content--expanded'   : expanded
-								}
-							) }>
-							<DayPicker
-								ref={ this.storeCalendarComponent }
-								month={ month }
-								firstDayOfWeek={ firstDayOfWeek }
-								onDayClick={ this.on_day_click }
-								onKeyDown={ this.on_calendar_key_down }
-								selectedDays={ normalize_value(value) }
-								disabledDays={ disabledDays }
-								captionElement={ captionElement }
-								tabIndex={ -1 }
-								className="rrui__date-picker__calendar" />
+					<Expandable
+						ref={ this.storeExpandableRef }
+						onExpand={ this.onExpand }
+						onExpanded={ this.onExpanded }
+						onCollapse={ this.onCollapse }
+						scrollIntoViewDelay={ waitForKeyboardSlideIn ? keyboardSlideInAnimationDuration : undefined }>
 
-							{/* "Close" button for fullscreen mode on mobile devices */}
-							{ CloseButtonIcon &&
-								<Close
-									onClick={ this.collapse }
-									closeLabel={ closeLabel }
-									className="rrui__close--bottom-right rrui__date-picker__close">
-									<CloseButtonIcon/>
-								</Close>
-							}
-						</div>
-					</div>
+						<DayPicker
+							ref={ this.storeCalendarComponent }
+							month={ month }
+							locale={ locale }
+							localeUtils={ localeUtils }
+							months={ months }
+							weekdaysLong={ weekdaysLong }
+							weekdaysShort={ weekdaysShort }
+							firstDayOfWeek={ firstDayOfWeek }
+							onDayClick={ this.on_day_click }
+							onKeyDown={ this.on_calendar_key_down }
+							selectedDays={ normalize_value(value) }
+							disabledDays={ disabledDays }
+							captionElement={ captionElement }
+							tabIndex={ -1 }
+							className="rrui__date-picker__calendar" />
+					</Expandable>
 				</TextInput>
 
 				{/* Error message */}
 				{ indicateInvalid && error &&
-					<div className="rrui__input-error">{ error }</div>
+					<div className="rrui__input-error">
+						{ error }
+					</div>
 				}
 			</div>
 		)
@@ -858,8 +723,7 @@ export default class DatePicker extends PureComponent
 // The date returned is in the user's time zone and the time is `12:00`.
 function parse_date(text_value, format, noon, utc)
 {
-	if (!text_value)
-	{
+	if (!text_value) {
 		return
 	}
 
@@ -906,8 +770,7 @@ function format_date(date, format)
 // (only `DD`, `MM`, `YY` and `YYYY` literals are supported).
 function parse_date_custom(string, format, noon, utc)
 {
-	if (!string)
-	{
+	if (!string) {
 		return
 	}
 
@@ -929,8 +792,7 @@ function parse_date_custom(string, format, noon, utc)
 	const month = extract(string, format, 'MM')
 	const day   = extract(string, format, 'DD')
 
-	if (year === undefined || month === undefined || day === undefined)
-	{
+	if (year === undefined || month === undefined || day === undefined) {
 		return
 	}
 
@@ -951,8 +813,7 @@ function parse_date_custom(string, format, noon, utc)
 
 	// If `new Date()` returns "Invalid Date"
 	// (sometimes it does)
-	if (isNaN(date.getTime()))
-	{
+	if (isNaN(date.getTime())) {
 		return
 	}
 
@@ -963,29 +824,25 @@ function extract(string, template, piece)
 {
 	const starts_at = template.indexOf(piece)
 
-	if (starts_at < 0)
-	{
+	if (starts_at < 0) {
 		return
 	}
 
 	// Check overall sanity
-	if (!corresponds_to_template(string, template))
-	{
+	if (!corresponds_to_template(string, template)) {
 		return
 	}
 
 	const number = parseInt(string.slice(starts_at, starts_at + piece.length))
 
-	if (!isNaN(number))
-	{
+	if (!isNaN(number)) {
 		return number
 	}
 }
 
 function corresponds_to_template(string, template)
 {
-	if (string.length !== template.length)
-	{
+	if (string.length !== template.length) {
 		return false
 	}
 
@@ -1028,14 +885,12 @@ function format_date_custom(date, format)
 {
 	// Someone may accidentally pass a timestamp, or a string.
 	// Or `date` could be `undefined`.
-	if (!(date instanceof Date))
-	{
+	if (!(date instanceof Date)) {
 		return ''
 	}
 
 	// Check if `date` is "Invalid Date".
-	if (isNaN(date.getTime()))
-	{
+	if (isNaN(date.getTime())) {
 		return ''
 	}
 
@@ -1047,13 +902,11 @@ function format_date_custom(date, format)
 		.replace('DD', pad_with_zeroes(String(day),   2))
 		.replace('MM', pad_with_zeroes(String(month), 2))
 
-	if (text.indexOf('YYYY') >= 0)
-	{
+	if (text.indexOf('YYYY') >= 0) {
 		return text.replace('YYYY', pad_with_zeroes(String(year), 4))
 	}
 
-	if (text.indexOf('YY') >= 0)
-	{
+	if (text.indexOf('YY') >= 0) {
 		return text.replace('YY', pad_with_zeroes(String(year % 100), 2))
 	}
 }
@@ -1064,8 +917,7 @@ function format_date_custom(date, format)
 
 function pad_with_zeroes(string, target_length)
 {
-	while (string.length < target_length)
-	{
+	while (string.length < target_length) {
 		string = '0' + string
 	}
 
@@ -1098,14 +950,12 @@ function pad_with_zeroes(string, target_length)
 // (specially for `knex.js`)
 function normalize_value(value)
 {
-	if (value === null)
-	{
+	if (value === null) {
 		return
 	}
 
 	// Check if `value` is "Invalid Date".
-	if (value instanceof Date && isNaN(value.getTime()))
-	{
+	if (value instanceof Date && isNaN(value.getTime())) {
 		return
 	}
 
@@ -1249,4 +1099,11 @@ function convert_to_utc_timezone(date)
 	// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
 	//
 	return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
+}
+
+const iconStyle =
+{
+	width  : '100%',
+	height : '100%',
+	fill   : 'currentColor'
 }

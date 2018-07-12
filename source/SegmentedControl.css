@@ -43,6 +43,11 @@
 	border-right  : none;
 }
 
+.rrui__segmented-control__option:focus:not(:active):not(.rrui__segmented-control__option--selected)
+{
+	color : var(--rrui-accent-color);
+}
+
 .rrui__segmented-control__option:active
 {
 	color            : var(--rrui-white-color);
@@ -50,16 +55,20 @@
 	transition       : none;
 }
 
+/*
 .rrui__rich__fallback .rrui__segmented-control__option:active
 {
 	color            : var(--rrui-black-color);
 	background-color : transparent;
 }
+*/
 
+/*
 .rrui__rich__fallback .rrui__segmented-control__option input
 {
 	margin-left: 0;
 }
+*/
 
 .rrui__segmented-control__option--selected
 {

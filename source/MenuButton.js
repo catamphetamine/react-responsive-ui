@@ -2,22 +2,31 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Context, contextPropTypes } from './PageAndMenu'
+import { Context } from './PageAndMenu'
+import MenuButtonIconLinesCloseAnimated from './MenuButtonIconLinesCloseAnimated'
 
-const _MenuButton = (props) => (
+const ContextAwareMenuButton = (props) => (
 	<Context.Consumer>
-		{context => <MenuButton {...props} {...context}/>}
+		{(context) => (
+			<MenuButton
+				{...props}
+				registerMenuButton={context.registerMenuButton}
+				toggleMenu={context.toggleMenu}
+				menuIsExpanded={context.menuIsExpanded}/>
+		)}
 	</Context.Consumer>
 )
 
-export default _MenuButton
+export default ContextAwareMenuButton
 
 class MenuButton extends PureComponent
 {
 	static propTypes =
 	{
 		// Context.
-		...contextPropTypes,
+		registerMenuButton : PropTypes.func.isRequired,
+		toggleMenu : PropTypes.func.isRequired,
+		menuIsExpanded : PropTypes.bool.isRequired,
 
 		// A URL of the "Menu" page:
 		// if a web browser has javascript disabled (e.g. Tor),
@@ -25,19 +34,23 @@ class MenuButton extends PureComponent
 		// If not set then won't redirect anywhere.
 		link        : PropTypes.string.isRequired,
 
-		// HTML `title` attribute
+		// HTML `title` attribute.
 		title       : PropTypes.string,
 
-		// CSS class
+		// Menu button icon component.
+		icon        : PropTypes.func.isRequired,
+
+		// CSS class.
 		className   : PropTypes.string,
 
-		// CSS style object
+		// CSS style object.
 		style       : PropTypes.object
 	}
 
 	static defaultProps =
 	{
-		link : '#'
+		link : '#',
+		icon : MenuButtonIconLinesCloseAnimated
 	}
 
 	componentDidMount()
@@ -64,7 +77,7 @@ class MenuButton extends PureComponent
 		toggleMenu()
 	}
 
-	storeInstance = (ref) => this.button = ref
+	storeButtonNode = (node) => this.button = node
 
 	render()
 	{
@@ -72,11 +85,11 @@ class MenuButton extends PureComponent
 		{
 			link,
 			className,
+			icon : MenuButtonIcon,
+			menuIsExpanded,
 
 			// Getting "rest" properties.
-			menuIsExpanded,
 			toggleMenu,
-			registerMenu,
 			registerMenuButton,
 			...rest
 		}
@@ -84,25 +97,17 @@ class MenuButton extends PureComponent
 
 		return (
 			<a
-				ref={ this.storeInstance }
+				ref={ this.storeButtonNode }
 				href={ link }
 				onClick={ this.onClick }
-				className={ classNames('rrui__slideout-menu-button', className) }
+				className={ classNames('rrui__menu-button', className,
+				{
+					'rrui__menu-button--expanded' : menuIsExpanded
+				}) }
 				{ ...rest }>
 
-				<svg
-					className="rrui__slideout-menu-button__icon"
-					viewBox={ svg_canvas_dimensions }>
-
-					<path
-						d={ svg_path }
-						className="rrui__slideout-menu-button__icon-path"/>
-				</svg>
+				<MenuButtonIcon/>
 			</a>
 		)
 	}
 }
-
-// "Hamburger" icon (24x24)
-const svg_canvas_dimensions = "0 0 24 24"
-const svg_path = "M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"

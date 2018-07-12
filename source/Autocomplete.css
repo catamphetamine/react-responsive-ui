@@ -1,0 +1,52 @@
+.rrui__autocomplete__input
+{
+	height     : 100%;
+	box-sizing : border-box;
+}
+
+/* Stretches the inputs to full column width by default. */
+/* Because everyone uses CSS grids today. */
+.rrui__autocomplete__input
+{
+	width : 100%;
+}
+
+.rrui__autocomplete .rrui__ellipsis
+{
+	position : absolute;
+	right    : calc(var(--rrui-unit) / 3);
+	top      : calc(50% - var(--rrui-unit) / 6);
+
+	pointer-events : none;
+}
+
+.rrui__autocomplete__input
+{
+	padding-right : calc(var(--rrui-unit) * 2.5);
+}
+
+.rrui__autocomplete .rrui__options-list
+{
+	/*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
+
+	/* Makes `border-bottom` visible on an iPhone */
+	margin-top : 1px;
+}
+
+.rrui__autocomplete--compact
+{
+	/* Reverts `width: 100%` set at the top of this file */
+	width : auto;
+	/* If it's `compact` then it's most likely inlined */
+	display : inline-block;
+}
+
+.rrui__autocomplete--compact .rrui__expandable-list
+{
+	width : auto;
+}

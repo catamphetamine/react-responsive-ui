@@ -1,6 +1,8 @@
-.rrui__slideout-menu-button
+.rrui__menu-button
 {
 	display     : inline-block;
+	width       : var(--rrui-input-height);
+	height      : var(--rrui-input-height);
 	padding     : calc(var(--rrui-unit) / 2);
 	margin      : calc(-1 * var(--rrui-unit) / 2);
 	line-height : 0;
@@ -8,19 +10,16 @@
 	outline     : none;
 }
 
-.rrui__slideout-menu-button:active
+.rrui__menu-button
+{
+  position    : relative;
+  cursor      : pointer;
+  user-select : none;
+}
+
+/*
+.rrui__menu-button:active
 {
 	color : var(--rrui-accent-color);
 }
-
-.rrui__slideout-menu-button__icon
-{
-	display : block;
-	width   : var(--rrui-input-height);
-	height  : var(--rrui-input-height);
-}
-
-.rrui__slideout-menu-button__icon-path
-{
-	fill : currentColor;
-}
+*/

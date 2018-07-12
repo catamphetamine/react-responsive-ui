@@ -67,6 +67,7 @@ function transformStyle(filePath)
     /* z-index */
     .replace_all('var(--rrui-z-index-overlay)', '100')
     .replace_all('var(--rrui-z-index-above-overlay)', '101')
+    .replace_all('var(--rrui-menu-button-animation-duration)', '0.25s')
 
   if (text.indexOf('/*') === 0) {
     text = text.slice(text.indexOf('*/') + '*/'.length).trim()
@@ -81,7 +82,7 @@ function transformStyle(filePath)
   }
 
   if (text.indexOf('var(--') >= 0) {
-    throw new Error('Not all vars provided for substitution')
+    throw new Error(`Not all vars provided for substitution: ${text.slice(text.indexOf('var(--'), text.indexOf(')', text.indexOf('var(--')) + 1)}.`)
   }
 
   // Remove nested `calc()`s.

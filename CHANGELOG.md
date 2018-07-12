@@ -1,3 +1,48 @@
+<!-- Maybe somehow autoreplace CSS class names like `.menu-button-close__icon__icon-icon--modifier` with something like `.rrui-mbc-i-ii--m` to reduce the resulting application bundle size -->
+
+<!-- Maybe add support for React elements inside <Tooltip/>s: `<Tooltip content={<fasd/>}/>` -->
+
+<!-- Rewrite `<Tooltip/>` using React Portals -->
+
+<!-- Doesn't collapse `<ExpandableMenu/>` on an iPhone after any menu item was selected. -->
+
+0.13.0 / xx.07.2018
+===================
+
+* (breaking change) Some things got refactored so something might theoretically break.
+
+* (breaking change) `<MenuButton/>` changed the icon for SVG to a CSS-animated HTML.
+
+* (breaking change) Rewrote `<Select/>` and split it into `<Select/>`, `<Autocomplete/>` and `<ExpandableMenu/>`; their CSS structure got rewritten and CSS class names changed. Extracted `<Select.Separator/>` into `<Divider/>`. Due to the rewrite of `<Select/>` it may possibly be a breaking change for existing applications in some non-generic cases.
+
+* (breaking change) `<Select menu/>` `toggler` property moved to `children` of `<ExpandableMenu/>`.
+
+* (breaking change) Renamed `<CollapsibleMenu/>` to `<SlideOutMenu/>`.
+
+* (breaking change) Renamed `<Select/>`'s `concise` property to `icon`.
+
+* (breaking change) Renamed `<Select/>`'s `maxItems` property to `scrollMaxItems`.
+
+* (breaking change) Renamed `<Select/>`'s `autocompleteShowAll` property to `showAllMatchingOptions`.
+
+* (breaking change) `<Select/>` `icon` can now only be a React component (not an element). `<Select/>` `toggler` can now only be a React component (not an element).
+
+* (breaking change) `<Select/>` `onToggle` property replaced with `onExpand` and `onCollapse`.
+
+* (breaking change) `<TextInput/>` no longer accepts `email` and `password` properties. Use `type="..."` directly instead.
+
+* (breaking change) `.rrui__button--link` CSS class renamed to `.rrui__button-reset--link`.
+
+* (breaking change) `Select.Fullscreen.css` renamed to `Expandable.Fullscreen.css`.
+
+* (breaking change) `DatePicker.Fullscreen.css` merged into `Expandable.Fullscreen.css`.
+
+* (breaking change) `<DatePicker/>` design changed.
+
+* `<TextInput/>` now accepts `inputComponent` property.
+
+* Added `<List/>` component.
+
 0.12.13 / 01.05.2018
 ===================
 

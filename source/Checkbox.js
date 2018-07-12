@@ -31,11 +31,6 @@ export default class Checkbox extends Component
 		// The label (text)
 		children  : PropTypes.node,
 
-		// (exotic use case)
-		// Falls back to a plain HTML input
-		// when javascript is disabled (e.g. Tor)
-		fallback  : PropTypes.bool.isRequired,
-
 		// CSS class
 		className : PropTypes.string,
 
@@ -47,23 +42,11 @@ export default class Checkbox extends Component
 	{
 		disabled  : false,
 		value     : false,
-		fallback  : false,
 		multiline : false,
 		focus     : false
 	}
 
 	state = {}
-
-	// Client side rendering, javascript is enabled
-	componentDidMount()
-	{
-		const { value, fallback } = this.props
-
-		if (fallback)
-		{
-			this.setState({ javascript: true })
-		}
-	}
 
 	onKeyDown = (event) =>
 	{
@@ -94,7 +77,6 @@ export default class Checkbox extends Component
 			multiline,
 			disabled,
 			children,
-			fallback,
 			style,
 			className
 		}
@@ -104,7 +86,6 @@ export default class Checkbox extends Component
 			<div
 				className={ classNames('rrui__checkbox',
 				{
-					'rrui__rich'               : fallback,
 					// 'rrui__checkbox--checked'  : value,
 					'rrui__checkbox--invalid'  : indicateInvalid && error,
 					'rrui__checkbox--disabled' : disabled
@@ -159,45 +140,38 @@ export default class Checkbox extends Component
 						{ error }
 					</div>
 				}
-
-				{ fallback && !this.state.javascript && this.render_static() }
 			</div>
 		)
 	}
 
-	// supports disabled javascript
-	render_static()
-	{
-		const { name, value, focus, disabled, children } = this.props
+	// render_static()
+	// {
+	// 	const { name, value, focus, disabled, children } = this.props
+	//
+	// 	return (
+	// 		<div className="rrui__rich__fallback">
+	// 			{/* This checkbox will be sent as either "on" or `undefined` */}
+	// 			<input
+	// 				type="checkbox"
+	// 				name={ name }
+	// 				disabled={ disabled }
+	// 				defaultChecked={ value }
+	// 				autoFocus={ focus }/>
+	//
+	// 			<label className="rrui__checkbox__label rrui__checkbox__label--fallback">
+	// 				{ children }
+	// 			</label>
+	// 		</div>
+	// 	)
+	// }
 
-		return (
-			<div className="rrui__rich__fallback">
-				{/* This checkbox will be sent as either "on" or `undefined` */}
-				<input
-					type="checkbox"
-					name={ name }
-					disabled={ disabled }
-					defaultChecked={ value }
-					autoFocus={ focus }/>
-
-				<label className="rrui__checkbox__label rrui__checkbox__label--fallback">
-					{ children }
-				</label>
-			</div>
-		)
-	}
-
-	focus()
-	{
-		this.checkbox.focus()
-	}
+	focus = () => this.checkbox.focus()
 
 	toggle = (event) =>
 	{
 		// If a link was clicked - don't treat it as a checkbox label click.
 		// (is used for things like "✓ Read and accepted the <a>licence agreement</a>")
-		if (event.target.tagName.toLowerCase() === 'a')
-		{
+		if (event.target.tagName.toLowerCase() === 'a') {
 			return
 		}
 
@@ -205,15 +179,9 @@ export default class Checkbox extends Component
 
 		const { disabled, onChange, value } = this.props
 
-		if (disabled)
-		{
+		if (disabled) {
 			return
 		}
-
-		// if (value)
-		// {
-		// 	this.setState({ path_style: undefined })
-		// }
 
 		onChange(!value)
 	}

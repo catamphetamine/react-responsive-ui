@@ -13,7 +13,6 @@ export default function TextInput(props)
 		id,
 		value,
 		required,
-		placeholder,
 		floatingLabel,
 		label,
 		multiline,

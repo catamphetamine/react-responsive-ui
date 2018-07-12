@@ -3,25 +3,18 @@
 	/* This is for `.rrui__select__options` to be positioned
 	   correctly relative to the `<Select/>` itself. */
 	position : relative;
-
 	user-select : none;
 }
 
-.rrui__select__options
+.rrui__select .rrui__options-list
 {
-	margin           : 0;
-	padding-left     : 0;
-	padding-top      : var(--rrui-list-vertical-padding);
-	padding-bottom   : var(--rrui-list-vertical-padding);
-	overflow-y       : auto;
-	background-color : var(--rrui-white-color);
-	list-style-type  : none;
-	overflow-x       : hidden;
-	box-sizing       : border-box;
-}
+	/*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
 
-.rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu)
-{
 	/*
 	`margin-top` is constituted by:
 	- `.rrui__select__options` `padding-top`.
@@ -31,144 +24,20 @@
 	margin-top : calc(-1 * (var(--rrui-list-vertical-padding) + var(--rrui-input-height) + (var(--rrui-list-item-height) - var(--rrui-input-height)) / 2));
 }
 
-.rrui__select__options--left-aligned
-{
-	left : calc(var(--rrui-list-item-side-padding) * -1);
-}
-
-.rrui__select__options--right-aligned
-{
-	right : calc(var(--rrui-list-item-side-padding) * -1);
-}
-
-.rrui__select__options:not(.rrui__select__options--menu)
-{
-	/*
-	`<Select/>` options text should be at least fully visible.
-	At the same time `<Select/>` options should stretch themselves
-	horizontally to the width of the containing column (when using grid layout).
-	*/
-	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
-}
-
-.rrui__select__option-label
-{
-	overflow      : hidden;
-	text-overflow : ellipsis;
-}
-
-.rrui__select--menu
-{
-	/* Usually menu toggler is not 100% wide, so it makes sense. */
-	display : inline-block;
-}
-
-.rrui__select--menu .rrui__select__option
-{
-	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
-	padding-right : var(--rrui-collapsible-menu-item-side-padding);
-}
-
-.rrui__select__options--downward
-{
-	/* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
-	margin-bottom : 1em;
-}
-
-.rrui__select__options--upward
-{
-	bottom : 100%;
-
-	/* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
-	margin-top : 1em;
-}
-
-.rrui__select__option
-{
-	display     : flex;
-	align-items : center;
-	width       : 100%;
-	height      : var(--rrui-list-item-height);
-
-	/*
-	This side padding is also connected to
-	`.rrui__select__options--left-aligned`'s `left`,
-	`.rrui__select__options--right-aligned`'s `right`
-	and `.rrui__select__options`'s `min-width`.
-	*/
-	padding-left  : var(--rrui-list-item-side-padding);
-	padding-right : var(--rrui-list-item-side-padding);
-
-	box-sizing  : border-box;
-	text-align  : left;
-	white-space : nowrap;
-}
-
-.rrui__select__option:hover
-{
-	background-color : var(--rrui-gray-color-lightest);
-}
-
-.rrui__select__option:active
-{
-	background-color : var(--rrui-accent-color);
-	color            : var(--rrui-white-color);
-}
-
-.rrui__select__option-icon
-{
-	margin-right : var(--rrui-list-icon-margin);
-}
-
-.rrui__select__separator
-{
-	height           : 1px;
-	margin-bottom    : -1px;
-	padding          : 0;
-	line-height      : 0;
-	font-size        : 0;
-	background-color : rgba(0,0,0,.16);
-}
-
-.rrui__select__separator-option
-{
-	padding-top    : var(--rrui-list-vertical-padding);
-	padding-bottom : var(--rrui-list-vertical-padding);
-}
-
-.rrui__select__options--upward
-{
-	transform-origin: 50% bottom 0px;
-}
-
-.rrui__select__option--focused
-{
-	background-color: var(--rrui-gray-color-lightest);
-}
-
-.rrui__select__button,
-.rrui__select__autocomplete
+.rrui__select__button
 {
 	height     : 100%;
 	box-sizing : border-box;
-}
 
-.rrui__select__button
-{
+	color : inherit;
+
+	/* Not introducing an animation on `.rrui__select__option`
+	   because it would introduce a little clutter due to
+	   focused option animation in autocomplete mode */
+	transition : color 30ms ease-out;
+
 	/* Because Chrome adds `text-align: center` for all buttons */
 	text-align : left;
-}
-
-.rrui__select__button:active .rrui__select__selected-label,
-.rrui__select__button:active .rrui__select__arrow,
-.rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
-.rrui__select__native:active + .rrui__select__button .rrui__select__arrow
-{
-	color : var(--rrui-accent-color);
 }
 
 .rrui__select__button--expanded
@@ -176,13 +45,7 @@
 	color : var(--rrui-accent-color);
 }
 
-.rrui__select__button,
-.rrui__select__option
-{
-	color : inherit;
-}
-
-.rrui__select__button--empty .rrui__select__selected-label
+.rrui__select__button--empty .rrui__list__item-label
 {
 	color: var(--rrui-gray-color);
 }
@@ -192,12 +55,12 @@
 	border-bottom-color : var(--rrui-error-color);
 }
 
-/* Not introducing an animation on `.rrui__select__option`
-   because it would introduce a little clutter due to
-   focused option animation in autocomplete mode */
-.rrui__select__button
+.rrui__select__button:active .rrui__select__selected-label,
+.rrui__select__button:active .rrui__select__arrow,
+.rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
+.rrui__select__native:active + .rrui__select__button .rrui__select__arrow
 {
-	transition : color 30ms ease-out;
+	color : var(--rrui-accent-color);
 }
 
 .rrui__select__selected-content
@@ -211,6 +74,15 @@
 	flex          : 1 1 auto;
 	overflow      : hidden;
 	text-overflow : ellipsis;
+}
+
+.rrui__select .rrui__ellipsis
+{
+	position : absolute;
+	right    : calc(var(--rrui-unit) / 3);
+	top      : calc(50% - var(--rrui-unit) / 6);
+
+	pointer-events : none;
 }
 
 .rrui__select__arrow
@@ -235,20 +107,6 @@
 	border-right-color : transparent;
 }
 
-/*.rrui__select__arrow--expanded
-{
-	opacity: 0.3;
-}*/
-
-.rrui__select__close
-{
-	/*
-	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	display : block;
-	*/
-	display : none;
-}
-
 .rrui__select--compact
 {
 	/* Reverts `width: 100%` set at the top of this file */
@@ -257,13 +115,12 @@
 	display : inline-block;
 }
 
-.rrui__select--compact .rrui__select__options
+.rrui__select--compact .rrui__expandable-list
 {
 	width : auto;
 }
 
-.rrui__select__button--disabled,
-.rrui__select__option--disabled
+.rrui__select__button--disabled
 {
 	/* "pointer-events" prevents "cursor: wait" from working */
 	pointer-events : none;
@@ -271,53 +128,26 @@
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
-.rrui__select__button,
-.rrui__select__autocomplete
+.rrui__select__button
 {
 	width : 100%;
 }
 
 .rrui__select__native
 {
+	cursor : pointer;
+	outline : none;
+}
+
+.rrui__select__native--overlay
+{
 	position : absolute;
 	height   : 100%;
 	width    : 100%;
-	opacity  : 0;
-	border   : 0;
-	cursor   : pointer;
-}
-
-.rrui__select .rrui__ellipsis
-{
-	position : absolute;
-	right    : calc(var(--rrui-unit) / 3);
-	top      : calc(50% - var(--rrui-unit) / 6);
-
-	pointer-events : none;
-}
-
-.rrui__select__autocomplete
-{
-	padding-right : calc(var(--rrui-unit) * 2.5);
-}
-
-/* Hiding autocomplete input like this so that can */
-/* focus it programmatically when the expand button is clicked. */
-.rrui__select__autocomplete--hidden
-{
-	position : absolute;
-	z-index  : -1;
 	opacity  : 0;
 }
 
 .rrui__select__toggler
 {
 	display : inline-block;
-}
-
-.rrui__select__options--scroll
-{
-	/* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
-	overflow-y : scroll;
-	-webkit-overflow-scrolling : touch;
 }

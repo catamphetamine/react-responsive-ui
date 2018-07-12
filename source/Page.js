@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { Context, contextPropTypes } from './PageAndMenu'
+import { Context } from './PageAndMenu'
 
 const _Page = (props) => (
 	<Context.Consumer>

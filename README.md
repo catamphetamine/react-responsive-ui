@@ -76,8 +76,9 @@ Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) examp
 @import url(~react-responsive-ui/style.css)
 @import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 720px)
 @import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 720px)
-@import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 720px)
 ```
+
+<!-- @import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 720px) -->
 
 SCSS `@import` example:
 

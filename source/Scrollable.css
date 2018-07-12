@@ -1,0 +1,6 @@
+.rrui__scrollable
+{
+	/* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+	overflow-y : scroll;
+	-webkit-overflow-scrolling : touch;
+}

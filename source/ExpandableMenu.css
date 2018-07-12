@@ -1,0 +1,18 @@
+.rrui__menu
+{
+	/* Usually menu toggler is not 100% wide, so it makes sense. */
+	display : inline-block;
+
+	position : relative;
+}
+
+.rrui__menu .rrui__expandable-list
+{
+	width : auto;
+}
+
+.rrui__menu .rrui__list__item
+{
+	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
+	padding-right : var(--rrui-collapsible-menu-item-side-padding);
+}

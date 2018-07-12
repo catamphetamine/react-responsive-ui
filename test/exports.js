@@ -2,15 +2,18 @@ import
 {
 	PageAndMenu,
 	Page,
-	CollapsibleMenu,
+	SlideOutMenu,
 	MenuButton,
 	Form,
+	List,
 	Snackbar,
 	Tooltip,
 	ActivityIndicator,
 	Ellipsis,
 	TextInput,
 	Select,
+	Autocomplete,
+	Menu,
 	Button,
 	Switch,
 	Checkbox,
@@ -36,15 +39,18 @@ describe('React Responsive UI', function()
 	{
 		expect(PageAndMenu).to.be.a('function')
 		expect(Page).to.be.a('function')
-		expect(CollapsibleMenu).to.be.a('function')
+		expect(SlideOutMenu).to.be.a('function')
 		expect(MenuButton).to.be.a('function')
 		expect(Form).to.be.a('function')
+		expect(List).to.be.a('function')
 		expect(Snackbar).to.be.a('function')
 		expect(Tooltip).to.be.a('function')
 		expect(ActivityIndicator).to.be.a('function')
 		expect(Ellipsis).to.be.a('function')
 		expect(TextInput).to.be.a('function')
 		expect(Select).to.be.a('function')
+		expect(Autocomplete).to.be.a('function')
+		expect(ExpandableMenu).to.be.a('function')
 		expect(Button).to.be.a('function')
 		expect(Switch).to.be.a('function')
 		expect(Checkbox).to.be.a('function')
@@ -70,15 +76,18 @@ describe('React Responsive UI', function()
 
 		expect(_.PageAndMenu).to.be.a('function')
 		expect(_.Page).to.be.a('function')
-		expect(_.CollapsibleMenu).to.be.a('function')
+		expect(_.SlideOutMenu).to.be.a('function')
 		expect(_.MenuButton).to.be.a('function')
 		expect(_.Form).to.be.a('function')
+		expect(_.List).to.be.a('function')
 		expect(_.Snackbar).to.be.a('function')
 		expect(_.Tooltip).to.be.a('function')
 		expect(_.ActivityIndicator).to.be.a('function')
 		expect(_.Ellipsis).to.be.a('function')
 		expect(_.TextInput).to.be.a('function')
 		expect(_.Select).to.be.a('function')
+		expect(_.Autocomplete).to.be.a('function')
+		expect(_.ExpandableMenu).to.be.a('function')
 		expect(_.Button).to.be.a('function')
 		expect(_.Switch).to.be.a('function')
 		expect(_.Checkbox).to.be.a('function')

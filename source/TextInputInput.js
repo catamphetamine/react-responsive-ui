@@ -12,27 +12,37 @@ export default class TextInput extends PureComponent
 
 	static propTypes =
 	{
-		// A manually specified `type` attribute
-		type             : PropTypes.string.isRequired,
+		// `<input type/>` attribute.
+		type             : PropTypes.string,
 
 		// Whether `<textarea/>` should autoresize itself
 		// (is `true` by default)
 		autoresize       : PropTypes.bool.isRequired,
 
 		// Set to `false` to prevent the `<label/>` from floating
-		floatingLabel    : PropTypes.bool.isRequired
+		floatingLabel    : PropTypes.bool.isRequired,
+
+		// A custom input component.
+		// (is `<input/>` by default)
+		inputComponent   : PropTypes.oneOfType
+		([
+			PropTypes.func,
+			PropTypes.string
+		])
+		.isRequired
 	}
 
 	static defaultProps =
 	{
-		// HTML input `type` attribute
-		type : 'text',
-
 		// `<textarea/>` should autoresize itself
 		autoresize : true,
 
 		// Set to `false` to prevent the `<label/>` from floating
-		floatingLabel : true
+		floatingLabel : true,
+
+		// A custom input component.
+		// (is `<input/>` by default)
+		inputComponent : 'input'
 	}
 
 	// Client side rendering, javascript is enabled
@@ -48,13 +58,11 @@ export default class TextInput extends PureComponent
 		// // Measuring the height of `<textarea/>` during
 		// // the first `this.measurements()` call instead.
 
-		if (multiline && autoresize && value)
-		{
+		if (multiline && autoresize && value) {
 			this.autoresize()
 		}
 
-		if (multiline && autoresize)
-		{
+		if (multiline && autoresize) {
 			window.addEventListener('resize', this.onWindowResize)
 		}
 	}
@@ -63,8 +71,7 @@ export default class TextInput extends PureComponent
 	{
 		const { multiline, autoresize } = this.props
 
-		if (multiline && autoresize)
-		{
+		if (multiline && autoresize) {
 			window.removeEventListener('resize', this.onWindowResize)
 		}
 	}
@@ -100,10 +107,7 @@ export default class TextInput extends PureComponent
 
 	onWindowResize = throttle((event) => this.autoresize(), 100)
 
-	measure()
-	{
-		return autoresize_measure(this.input)
-	}
+	measure = () => autoresize_measure(this.input)
 
 	measurements()
 	{
@@ -120,31 +124,12 @@ export default class TextInput extends PureComponent
 			// If the `<textarea/>` is not hidden (e.g. via `display: none`)
 			// then keep its initial (minimum) height
 			// so that it doesn't shrink below this value
-			if (measurements.initial_height)
-			{
+			if (measurements.initial_height) {
 				this.setState({ autoresize: measurements })
 			}
 		}
 
 		return measurements
-	}
-
-	// "text", "email", "password", etc
-	get_input_type()
-	{
-		const { type, email, password } = this.props
-
-		if (email)
-		{
-			return 'email'
-		}
-
-		if (password)
-		{
-			return 'password'
-		}
-
-		return type
 	}
 
 	// The underlying `input` component
@@ -158,8 +143,7 @@ export default class TextInput extends PureComponent
 
 		let value = event
 
-		if (event.target !== undefined)
-		{
+		if (event.target !== undefined) {
 			value = event.target.value
 		}
 
@@ -170,8 +154,7 @@ export default class TextInput extends PureComponent
 		const { onChange } = this.props
 
 		// Call `onChange` only if `value` did actually change
-		if (value !== this.props.value)
-		{
+		if (value !== this.props.value) {
 			onChange(value)
 		}
 	}
@@ -204,37 +187,31 @@ export default class TextInput extends PureComponent
 		this.input = node
 	}
 
-	focus()
-	{
-		return this.input.focus()
-	}
+	focus = () => this.input.focus()
 
 	render()
 	{
 		const
 		{
+			name,
 			value,
 			multiline,
+			inputComponent,
 			focus,
 			onChange,
 			disabled,
-			rows,
-			cols,
-			tabIndex,
+			type,
 			autoresize,
 			indicateInvalid,
 			error,
 			className,
 
-			// Options
-			placeholder,
-			name,
-
-			// Passthrough properties
-			id,
-			onFocus,
-			onBlur,
-			onClick
+			// Rest
+			inputRef,
+			containerRef,
+			floatingLabel,
+			children,
+			...rest
 		}
 		= this.props
 
@@ -251,17 +228,13 @@ export default class TextInput extends PureComponent
 
 		const properties =
 		{
-			id,
+			...rest,
 			name        : name === false ? undefined : name,
 			ref         : this.storeInputNode,
 			value       : (value === undefined || value === null) ? '' : value,
-			placeholder,
+			disabled,
 			onChange    : this.onChange,
 			onKeyDown   : this.onKeyDown,
-			onFocus,
-			onBlur,
-			onClick,
-			disabled,
 			className   : classNames
 			(
 				'rrui__input-element',
@@ -275,8 +248,7 @@ export default class TextInput extends PureComponent
 				className
 			),
 			style       : inputStyle,
-			autoFocus   : focus,
-			tabIndex
+			autoFocus   : focus
 		}
 
 		// In case of `multiline` set to `true`
@@ -286,18 +258,18 @@ export default class TextInput extends PureComponent
 			// "keyup" is required for IE to properly reset height when deleting text
 			return (
 				<textarea
-					rows={ rows }
-					cols={ cols }
+					{ ...properties }
 					onInput={ autoresize ? this.autoresize : undefined }
-					onKeyUp={ autoresize ? this.autoresize : undefined }
-					{ ...properties }/>
+					onKeyUp={ autoresize ? this.autoresize : undefined }/>
 			)
 		}
 
-		// Add `<input/>` `type` to properties
-		properties.type = this.get_input_type()
+		// Add `<input/>` `type` property.
+		if (inputComponent === 'input') {
+			properties.type = type || 'text'
+		}
 
-		return <input {...properties}/>
+		return React.createElement(inputComponent, properties)
 	}
 }
 

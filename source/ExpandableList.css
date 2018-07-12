@@ -1,0 +1,19 @@
+.rrui__expandable-list--left-aligned
+{
+	left : 0;
+}
+
+.rrui__expandable-list--right-aligned
+{
+	right : 0;
+}
+
+.rrui__options-list--left-aligned
+{
+	left : calc(var(--rrui-list-item-side-padding) * -1);
+}
+
+.rrui__options-list--right-aligned
+{
+	right : calc(var(--rrui-list-item-side-padding) * -1);
+}

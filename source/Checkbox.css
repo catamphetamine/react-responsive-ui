@@ -32,11 +32,6 @@
 	flex : 1 0 0;
 }
 
-.rrui__checkbox__label--fallback
-{
-	padding-left : 0;
-}
-
 .rrui__checkbox__input,
 .rrui__checkbox__label
 {

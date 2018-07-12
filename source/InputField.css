@@ -11,6 +11,12 @@
 	font-style    : inherit;
 }
 
+/* Overrides Chrome autofill yellow background color */
+.rrui__input-field:-webkit-autofill
+{
+	box-shadow : 0 0 0 1000px white inset;
+}
+
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
 .rrui__input-field,
@@ -21,7 +27,8 @@
 }
 
 .rrui__input-field,
-.rrui__select__button
+.rrui__select__button,
+.rrui__select__native
 {
 	border        : none;
 	border-bottom : 1px solid var(--rrui-gray-color-light);

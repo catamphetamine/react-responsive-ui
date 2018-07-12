@@ -25,11 +25,6 @@ export default class Switch extends PureComponent
 		// Is called when the switch is switched
 		onChange  : PropTypes.func.isRequired,
 
-		// (exotic use case)
-		// Falls back to a plain HTML input
-		// when javascript is disabled (e.g. Tor)
-		fallback  : PropTypes.bool.isRequired,
-
 		// The label to the left of the switch
 		leftLabel : PropTypes.string,
 
@@ -48,26 +43,7 @@ export default class Switch extends PureComponent
 
 	static defaultProps =
 	{
-		value    : false,
-		fallback : false
-	}
-
-	constructor()
-	{
-		super()
-
-		this.toggle = this.toggle.bind(this)
-	}
-
-	// Client side rendering, javascript is enabled
-	componentDidMount()
-	{
-		const { fallback } = this.props
-
-		if (fallback)
-		{
-			this.setState({ javascript: true })
-		}
+		value : false
 	}
 
 	onKeyDown = (event) =>
@@ -94,7 +70,6 @@ export default class Switch extends PureComponent
 		const
 		{
 			value,
-			fallback,
 			disabled,
 			indicateInvalid,
 			error,
@@ -110,7 +85,6 @@ export default class Switch extends PureComponent
 			<label
 				className={ classNames('rrui__switch',
 				{
-					'rrui__rich'             : fallback,
 					'rrui__input'            : children,
 					'rrui__switch--label'    : children,
 					'rrui__switch--disabled' : disabled
@@ -161,23 +135,22 @@ export default class Switch extends PureComponent
 		)
 	}
 
-	// supports disabled javascript
-	render_static()
-	{
-		const { name, disabled, value } = this.props
+	// render_static()
+	// {
+	// 	const { name, disabled, value } = this.props
+	//
+	// 	return (
+	// 		<div className="rrui__rich__fallback">
+	// 			<input
+	// 				type="checkbox"
+	// 				name={ name }
+	// 				disabled={ disabled }
+	// 				value={ value }/>
+	// 		</div>
+	// 	)
+	// }
 
-		return (
-			<div className="rrui__rich__fallback">
-				<input
-					type="checkbox"
-					name={ name }
-					disabled={ disabled }
-					value={ value }/>
-			</div>
-		)
-	}
-
-	toggle(event)
+	toggle = (event) =>
 	{
 		const { onChange, disabled, value } = this.props
 

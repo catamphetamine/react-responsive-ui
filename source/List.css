@@ -1,0 +1,76 @@
+.rrui__list
+{
+	margin           : 0;
+	padding-left     : 0;
+	padding-top      : var(--rrui-list-vertical-padding);
+	padding-bottom   : var(--rrui-list-vertical-padding);
+	overflow-y       : auto;
+	background-color : var(--rrui-white-color);
+	list-style-type  : none;
+	overflow-x       : hidden;
+	box-sizing       : border-box;
+}
+
+.rrui__list__item
+{
+	display     : flex;
+	align-items : center;
+	width       : 100%;
+	height      : var(--rrui-list-item-height);
+
+	/*
+	This side padding is also connected to
+	`.rrui__select__options--left-aligned`'s `left`,
+	`.rrui__select__options--right-aligned`'s `right`
+	and `.rrui__select__options`'s `min-width`.
+	*/
+	padding-left  : var(--rrui-list-item-side-padding);
+	padding-right : var(--rrui-list-item-side-padding);
+
+	color : inherit;
+
+	box-sizing  : border-box;
+	text-align  : left;
+	white-space : nowrap;
+}
+
+.rrui__list__item:hover
+{
+	background-color : var(--rrui-gray-color-lightest);
+}
+
+.rrui__list__item:active
+{
+	background-color : var(--rrui-accent-color);
+	color            : var(--rrui-white-color);
+}
+
+.rrui__list__item--focused
+{
+	background-color: var(--rrui-gray-color-lightest);
+}
+
+.rrui__list__item-icon
+{
+	margin-right : var(--rrui-list-icon-margin);
+	flex-shrink  : 0;
+}
+
+.rrui__list__item-label
+{
+	overflow      : hidden;
+	text-overflow : ellipsis;
+}
+
+.rrui__list__item--disabled
+{
+	/* "pointer-events" prevents "cursor: wait" from working */
+	pointer-events : none;
+}
+
+.rrui__list__items--scroll
+{
+	/* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+	overflow-y : scroll;
+	-webkit-overflow-scrolling : touch;
+}

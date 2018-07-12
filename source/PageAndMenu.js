@@ -4,13 +4,13 @@ import createContext from 'create-react-context'
 
 export const Context = createContext()
 
-export const contextPropTypes =
-{
-	menuIsExpanded     : PropTypes.bool.isRequired,
-	toggleMenu         : PropTypes.func.isRequired,
-	registerMenu       : PropTypes.func.isRequired,
-	registerMenuButton : PropTypes.func.isRequired
-}
+// export const contextPropTypes =
+// {
+// 	menuIsExpanded     : PropTypes.bool.isRequired,
+// 	toggleMenu         : PropTypes.func.isRequired,
+// 	registerMenu       : PropTypes.func.isRequired,
+// 	registerMenuButton : PropTypes.func.isRequired
+// }
 
 export default class PageAndMenu extends Component
 {

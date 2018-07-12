@@ -15,3 +15,8 @@
 	font-style  : inherit;
 	user-select : none;
 }
+
+.rrui__button-reset--link:hover
+{
+	text-decoration : none;
+}

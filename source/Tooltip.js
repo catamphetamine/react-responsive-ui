@@ -7,8 +7,12 @@ export default class Tooltip extends PureComponent
 {
 	static propTypes =
 	{
-		// Tooltip text
+		// Tooltip text.
 		text : PropTypes.string,
+
+		// Tooltip content.
+		// `content` component gets passed `{...rest}` props.
+		content : PropTypes.func,
 
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
@@ -64,9 +68,6 @@ export default class Tooltip extends PureComponent
 	{
 		clearTimeout(this.show_timeout)
 		clearTimeout(this.hide_timeout)
-
-		this.show_timeout = undefined
-		this.hide_timeout = undefined
 
 		this.destroy_tooltip()
 	}
@@ -292,12 +293,13 @@ export default class Tooltip extends PureComponent
 
 			// These properties are here just for `...rest`
 			text,
+			content,
 			delay,
 			hidingAnimationDuration,
 			container,
 			tooltipClassName,
 
-			// Pass through all other properties
+			// Pass through all other properties.
 			...rest
 		}
 		= this.props

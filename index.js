@@ -12,9 +12,9 @@ from './modules/Page'
 
 export
 {
-	default as CollapsibleMenu
+	default as SlideoutMenu
 }
-from './modules/Menu'
+from './modules/SlideoutMenu'
 
 export
 {
@@ -60,9 +60,51 @@ from './modules/TextInput'
 
 export
 {
+	default as List
+}
+from './modules/List'
+
+export
+{
+	default as ScrollableList
+}
+from './modules/ScrollableList'
+
+export
+{
+	default as ExpandableList
+}
+from './modules/ExpandableList'
+
+export
+{
+	default as Expandable
+}
+from './modules/Expandable'
+
+export
+{
 	default as Select
 }
 from './modules/Select'
+
+export
+{
+	default as Autocomplete
+}
+from './modules/Autocomplete'
+
+export
+{
+	default as ExpandableMenu
+}
+from './modules/ExpandableMenu'
+
+export
+{
+	default as Divider
+}
+from './modules/Divider'
 
 export
 {

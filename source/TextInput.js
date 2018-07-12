@@ -20,6 +20,13 @@ export default class TextInput extends PureComponent
 		// Is called when the `value` is edited
 		onChange         : PropTypes.func.isRequired,
 
+		// A custom input component.
+		inputComponent   : PropTypes.oneOfType
+		([
+			PropTypes.func,
+			PropTypes.string
+		]),
+
 		// Disables the text field
 		disabled         : PropTypes.bool,
 
@@ -57,11 +64,6 @@ export default class TextInput extends PureComponent
 		// `<textarea/>` `cols` attribute (column count, i.e. width)
 		cols             : PropTypes.number,
 
-		// (exotic use case)
-		// Falls back to a plain HTML input
-		// when javascript is disabled (e.g. Tor)
-		fallback         : PropTypes.bool.isRequired,
-
 		// Is called when the input is focused
 		onFocus          : PropTypes.func,
 
@@ -84,29 +86,9 @@ export default class TextInput extends PureComponent
 		inputStyle       : PropTypes.object
 	}
 
-	static defaultProps =
-	{
-		// Javascriptless users support (e.g. Tor)
-		fallback : false
-	}
-
-	// Client side rendering, javascript is enabled
-	componentDidMount()
-	{
-		const { fallback } = this.props
-
-		if (fallback)
-		{
-			this.setState({ javascript: true })
-		}
-	}
-
 	storeInputNode = (node) => this.input = node
 
-	focus()
-	{
-		return this.input.focus()
-	}
+	focus = () => this.input.focus()
 
 	render()
 	{
@@ -126,9 +108,6 @@ export default class TextInput extends PureComponent
 				className={ classNames
 				(
 					'rrui__text-input',
-					{
-						'rrui__rich' : fallback
-					},
 					className
 				) }>
 
@@ -136,9 +115,6 @@ export default class TextInput extends PureComponent
 					{...this.props}
 					name={undefined}
 					inputRef={this.storeInputNode} />
-
-				{/* Fallback in case javascript is disabled (no animated <label/>) */}
-				{ fallback && !this.state.javascript && this.render_static() }
 
 				{/* Error message */}
 				{ indicateInvalid && error &&
@@ -150,15 +126,14 @@ export default class TextInput extends PureComponent
 		)
 	}
 
-	// Fallback in case javascript is disabled (no animated <label/>)
-	render_static()
-	{
-		const { label } = this.props
-
-		return (
-			<div className="rrui__rich__fallback">
-				<Input {...this.props} placeholder={label} />
-			</div>
-		)
-	}
+	// render_static()
+	// {
+	// 	const { label } = this.props
+	//
+	// 	return (
+	// 		<div className="rrui__rich__fallback">
+	// 			<Input {...this.props} placeholder={label} />
+	// 		</div>
+	// 	)
+	// }
 }
