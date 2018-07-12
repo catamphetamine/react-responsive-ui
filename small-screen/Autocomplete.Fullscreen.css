@@ -1,0 +1,38 @@
+.rrui__autocomplete--expanded .rrui__autocomplete__input
+{
+	position         : fixed;
+	top              : 0;
+	left             : 0;
+	width            : 100%;
+	height           : calc(0.6rem * 4);
+	padding-left     : calc(0.6rem * 1.5);
+	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + 0.6rem * 1.5);
+	z-index          : 100;
+	background-color : #ffffff;
+}
+
+/* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
+.rrui__autocomplete--expanded .rrui__ellipsis
+{
+	position    : fixed;
+	right       : calc(0.6rem * 1.5);
+	top         : 0;
+	z-index     : 101;
+	height      : calc(0.6rem * 4);
+	display     : -webkit-box;
+	display     : -webkit-flex;
+	display     : -ms-flexbox;
+	display     : flex;
+	-webkit-box-align : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
+}
+
+/* `<Select autocomplete/>` options when fullscreen-expanded */
+.rrui__autocomplete .rrui__list
+{
+	top : calc(0.6rem * 4);
+	-webkit-box-shadow : none;
+	        box-shadow : none;
+}

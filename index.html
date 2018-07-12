@@ -288,88 +288,99 @@
 		/* Responsive RRUI */
 		@import url("./small-screen/Modal.css") (max-width: 720px);
 		@import url("./small-screen/Snackbar.css") (max-width: 720px);
-		@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);
+		/*@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);*/
 		/*@import url("./small-screen/Modal.Fullscreen.css") (max-width: 720px);*/
-		/*@import url("./small-screen/Select.Fullscreen.css") (max-width: 720px);*/
-		/*@import url("./small-screen/DatePicker.Fullscreen.css") (max-width: 720px);*/
+		/*@import url("./small-screen/Expandable.Fullscreen.css") (max-width: 720px);*/
 	</style>
 
 	<body>
 		<script src="./react-responsive-ui.min.js"></script>
 
-		<div id="content"></div>
-
 		<script type="text/babel">
-			const library = window['react-responsive-ui']
+			const library = window.RRUI = window['react-responsive-ui']
 
-			const PageAndMenu       = library.PageAndMenu
-			const Page              = library.Page
-			const CollapsibleMenu   = library.CollapsibleMenu
-			const MenuButton        = library.MenuButton
-			const Form              = library.Form
-			const Snackbar          = library.Snackbar
-			const Tooltip           = library.Tooltip
-			const ActivityIndicator = library.ActivityIndicator
-			const Ellipsis          = library.Ellipsis
-			const TextInput         = library.TextInput
-			const Select            = library.Select
-			const Button            = library.Button
-			const Switch            = library.Switch
-			const Checkbox          = library.Checkbox
-			const SegmentedControl  = library.SegmentedControl
-			const DatePicker        = library.DatePicker
-			const FileUpload        = library.FileUpload
-			const Modal             = library.Modal
+			window.PageAndMenu       = library.PageAndMenu
+			window.Page              = library.Page
+			window.SlideOutMenu      = library.SlideOutMenu
+			window.ExpandableMenu    = library.ExpandableMenu
+			window.MenuButton        = library.MenuButton
+			window.Divider           = library.Divider
+			window.Form              = library.Form
+			window.Snackbar          = library.Snackbar
+			window.Tooltip           = library.Tooltip
+			window.ActivityIndicator = library.ActivityIndicator
+			window.Ellipsis          = library.Ellipsis
+			window.TextInput         = library.TextInput
+			window.Expandable        = library.Expandable
+			window.List              = library.List
+			window.ScrollableList    = library.ScrollableList
+			window.ExpandableList    = library.ExpandableList
+			window.Select            = library.Select
+			window.Autocomplete      = library.Autocomplete
+			window.Button            = library.Button
+			window.Switch            = library.Switch
+			window.Checkbox          = library.Checkbox
+			window.SegmentedControl  = library.SegmentedControl
+			window.DatePicker        = library.DatePicker
+			window.FileUpload        = library.FileUpload
+			window.Modal             = library.Modal
 
-			const DragAndDrop       = library.DragAndDrop
-			const CanDrop           = library.CanDrop
-			const File              = library.File
+			window.DragAndDrop       = library.DragAndDrop
+			window.CanDrop           = library.CanDrop
+			window.File              = library.File
 
-			const input_style =
+			window.input_style =
 			{
 				marginBottom : '1em'
 			}
 
-			let FileUploadArea = React.createClass
-			({
-				render: function()
-				{
-					const { dropTarget, draggedOver } = this.props
-
-					return dropTarget(
-						<div style={ { display: 'inline-block' } }>
-							<FileUpload
-								action={file => alert('File chosen: ' + file.name)}
-								className={`file-upload ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
-								Click here to choose a file
-								<br/>
-								or drop a file here
-							</FileUpload>
-						</div>
-					)
+			function countTabs(text)
+			{
+				var count = 0;
+				var index = 0;
+				while (text.charAt(index++) === '\t') {
+					count++
 				}
-			})
+				return count
+			}
 
-			FileUploadArea = CanDrop(File, (props, file) => alert('File dropped: ' + file.name))(FileUploadArea)
+			function untab(text)
+			{
+				text = text.replace(/^\n/, '').replace(/\n$/, '')
+				let lines = text.split('\n')
 
-			function Highlight({ lang, style, children })
+				while (/^\s*$/.test(lines[0])) {
+					lines.shift()
+				}
+
+				while (/^\s*$/.test(lines[lines.length - 1])) {
+					lines.pop()
+				}
+
+				let leastTabs = Number.POSITIVE_INFINITY
+				for (const line of lines) {
+					if (!/^\s*$/.test(line)) {
+						leastTabs = Math.min(leastTabs, countTabs(line))
+					}
+				}
+
+				if (leastTabs === Number.POSITIVE_INFINITY) {
+					return lines.join('\n')
+				}
+
+				return lines.map(line => line.slice(leastTabs)).join('\n').replace(/\t/g, '  ')
+			}
+
+			window.Highlight = ({ lang, style, children }) =>
 			{
 				return (
 					<pre style={style || { marginTop: '20px' }} className={`language-${lang}`}>
-						<code dangerouslySetInnerHTML={{__html: Prism.highlight(children.trim(), Prism.languages[lang], lang)}}/>
+						<code dangerouslySetInnerHTML={{__html: Prism.highlight(untab(children), Prism.languages[lang], lang)}}/>
 					</pre>
 				)
 			}
 
-			const NewMessageNotification = ({ from, hide }) => (
-				<div className="new-message-notification">
-					<img src={from.picture} className="new-message-notification__user-picture"/>
-					<div className="new-message-notification__text"> New message from {from.name} </div>
-					<button type="button" onClick={hide} className="new-message-notification__close"> ✕ </button>
-				</div>
-			)
-
-			const Example = ({ name, title, children }) => (
+			window.Example = ({ name, title, children }) => (
 				<div>
 					<a name={name} href={`#${name}`} className="title-anchor" tabIndex="-1">
 						<h2 className="heading">{title}</h2>
@@ -377,1132 +388,41 @@
 					{children}
 				</div>
 			)
-
-			const ExampleMenuButton = React.createClass
-			({
-				getInitialState() { return {} },
-
-				render()
-				{
-					return (
-						<Example name="collapsible-menu" title="Collapsible Menu">
-
-							<MenuButton
-								title="Show menu"/>
-
-<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
-<PageAndMenu>
-  <CollapsibleMenu>
-    <div>Item 1</div>
-    <div>Item 2</div>
-    <div>Item 3</div>
-  </CollapsibleMenu>
-  <Page>
-    <MenuButton />
-    Page content
-  </Page>
-</PageAndMenu>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__slideout-menu {
-  padding-top    : calc(0.3rem * 4);
-  padding-bottom : calc(0.3rem * 4);
-}
-
-.rrui__slideout-menu__item {
-  height        : calc(0.3rem * 7);
-  padding-left  : calc(0.3rem * 5);
-  padding-right : calc(0.3rem * 5);
-  color         : white;
-}
-
-.rrui__slideout-menu__item:active {
-  color : yellow;
-}
-`}</Highlight>
-
-						</Example>
-					)
-				}
-			})
-
-			const ExampleTextInput = React.createClass
-			({
-				getInitialState() { return {} },
-
-				render()
-				{
-					return (
-						<Example name="text-input-placeholder" title="Text input field (with placeholder)">
-
-							<TextInput
-								focus={false}
-								style={input_style}
-								className="column-width"
-								name="text_input"
-								value={this.state.value}
-								onChange={value => this.setState({ value })}
-								placeholder="Enter some text"/>
-
-							Value:  {this.state.value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  placeholder="Enter some text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-/* See \`variables.css\` for height customization. */
-.rrui__input-field {
-  border-bottom : 1px solid blue;
-}
-.rrui__input-field--invalid {
-  border-color : red;
-}
-`}</Highlight>
-						</Example>
-					)
-				}
-			})
-
-const ExampleTextInputFloatingLabel = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="text-input-floating-label" title="Text input field (with floating label)">
-
-				<TextInput
-					style={input_style}
-					className="column-width"
-					name="text_input"
-					value={this.state.value}
-					onChange={value => this.setState({ value })}
-					label="Text"/>
-
-				Value:  {this.state.value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  label="Text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleMultilineTextInputLabel = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="multiline-text-input-floating-label" title="Multiline Text Input">
-
-					<TextInput
-						multiline
-						name="description"
-						style={input_style}
-						className="column-width"
-						value={this.state.value}
-						onChange={value => this.setState({ value })}
-						label="Text"/>
-
-					Value:  {this.state.value}
-
-<Highlight lang="jsx">{`
-<TextInput
-  multiline
-  label="Text"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-/* See \`variables.css\` for height/padding customization. */
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSelect = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select" title="Select">
-
-									<Select
-										style={input_style}
-										className="column-width"
-										name="dropdown"
-										label="Fruit"
-										value={this.state.value}
-										options={[{
-											value: 'A',
-											label: 'Apple'
-										},
-										{
-											value: 'B',
-											label: 'Banana'
-										},
-										{
-											value: 'C',
-											label: 'Cranberry'
-										},
-										{
-											value: 'D',
-											label: 'Date'
-										},
-										{
-											value: 'E',
-											label: 'Elderberry'
-										},
-										{
-											value: 'F',
-											label: 'Fig'
-										},
-										{
-											value: 'G',
-											label: 'Garlic'
-										}]}
-										onChange={ value => this.setState({ value }) }/>
-
-									Value: {this.state.value ? this.state.value : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  label="Fruit"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__select__options--expanded .rrui__select__option--focused {
-	background-color : cyan;
-}
-.rrui__select__options--expanded .rrui__select__option:hover {
-	background-color : gray;
-}
-.rrui__select__options--expanded .rrui__select__option:active {
-	background-color : blue;
-	color : white;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-
-const ExampleSelectNativeExpanded = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select-native-expanded" title="Select (native expanded)">
-
-									<Select
-										style={input_style}
-										className="column-width"
-										name="dropdown"
-										label="Fruit"
-										value={this.state.value}
-										nativeExpanded
-										options={[{
-											value: 'A',
-											label: 'Apple'
-										},
-										{
-											value: 'B',
-											label: 'Banana'
-										},
-										{
-											value: 'C',
-											label: 'Cranberry'
-										},
-										{
-											value: 'D',
-											label: 'Date'
-										},
-										{
-											value: 'E',
-											label: 'Elderberry'
-										},
-										{
-											value: 'F',
-											label: 'Fig'
-										},
-										{
-											value: 'G',
-											label: 'Garlic'
-										}]}
-										onChange={ value => this.setState({ value }) }/>
-
-									Value: {this.state.value ? this.state.value : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  nativeExpanded
-  label="Fruit"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSelectAutocomplete = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select-autocomplete" title="Select (autocomplete)">
-
-									<Select
-										style={input_style}
-										className="column-width"
-										autocomplete
-										label="Food"
-										name="dropdown"
-										value={this.state.value}
-										options={[{
-											value: 'A',
-											label: 'Apple'
-										},
-										{
-											value: 'B',
-											label: 'Banana'
-										},
-										{
-											value: 'C',
-											label: 'Cranberry'
-										},
-										{
-											value: 'D',
-											label: 'Date'
-										},
-										{
-											value: 'E',
-											label: 'Elderberry'
-										},
-										{
-											value: 'F',
-											label: 'Fig'
-										},
-										{
-											value: 'G',
-											label: 'Garlic'
-										}]}
-										notFound="Not found"
-										onChange={ value => this.setState({ value }) }/>
-
-									Value: {this.state.value ? this.state.value : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  autocomplete
-  label="Fruit"
-  notFound="Not found"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSelectAutocompleteAsync = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select-asynchronous-autocomplete" title="Select (asynchronous autocomplete)">
-
-									<Select
-										label="Food"
-										style={input_style}
-										className="column-width"
-										autocomplete
-										name="dropdown"
-										value={this.state.value}
-										getOptions={(query) => {
-											return new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200)).then(() => {
-												return [{
-													value: 'A',
-													label: 'Apple'
-												}, {
-													value: 'B',
-													label: 'Banana'
-												}, {
-													value: 'C',
-													label: 'Cranberry'
-												}, {
-													value: 'D',
-													label: 'Date'
-												}, {
-													value: 'E',
-													label: 'Elderberry'
-												}, {
-													value: 'F',
-													label: 'Fig'
-												}, {
-													value: 'G',
-													label: 'Garlic'
-												}]
-												.filter(({ label }) => label.toLowerCase().indexOf(query.toLowerCase()) >= 0)
-											})
-										}}
-										onChange={ value => this.setState({ value }) }/>
-
-									Value: {this.state.value ? this.state.value : '(empty)'}
-
-<Highlight lang="jsx">{`
-<Select
-  autocomplete
-  label="Fruit"
-  notFound="Not found"
-  value={...}
-  onChange={...}
-  getOptions={async (query) => await httpClient.get(\u0060/search?query=\${query}\u0060)}/>
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSelectIcons = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select-icons" title="Select (icons)">
-
-									<Select
-										style={{ ...input_style, width: 'auto' }}
-										className="column-width"
-										concise
-										name="dropdown"
-										value={this.state.value}
-										options={[{
-											value: 'A',
-											label: 'Afghanistan',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/af.svg"/>
-										},
-										{
-											value: 'B',
-											label: 'Barbados',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/bb.svg"/>
-										},
-										{
-											value: 'C',
-											label: 'Canada',
-											icon: <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
-										}]}
-										placeholder="Choose"
-										onChange={ value => this.setState({ value }) } />
-
-									<div>
-										Value: {this.state.value ? this.state.value : '(empty)'}
-									</div>
-
-<Highlight lang="jsx">{`
-<Select
-  concise
-  placeholder="Choose"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Afghanistan', icon: <img src="..."/> }, ...]} />
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const MenuToggler = (props) => <button type="button" {...props}> Menu </button>
-
-const ExampleSelectMenu = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="select-menu" title="Select (menu)">
-
-									<Select
-										menu
-										toggler={MenuToggler}
-										className="column-width"
-										style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
-
-										<div onClick={() => alert('Google')}> Google </div>
-										<div onClick={() => alert('Yandex')}> Yandex </div>
-										<Select.Separator/>
-										<div onClick={() => alert('Other')}> Other </div>
-									</Select>
-
-<Highlight lang="jsx">{`
-const MenuToggler = (props) => <button type="button" {...props}> Menu </button>
-
-<Select menu toggler={MenuToggler}>
-  <div onClick={() => alert('Google')}> Google </div>
-  <div onClick={() => alert('Yandex')}> Yandex </div>
-  <Select.Separator/>
-  <div onClick={() => alert('Other')}> Other </div>
-</Select>
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleCheckbox = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="checkbox" title="Checkbox">
-
-									<Checkbox
-										style={input_style}
-										className="column-width"
-										name="checkbox"
-										value={this.state.value}
-										onChange={ value => this.setState({ value }) }>
-										Accept the <a target="_blank" href="https://google.ru">User Agreement</a>
-									</Checkbox>
-
-									<Checkbox
-										style={input_style}
-										className="column-width"
-										name="checkbox"
-										multiline
-										value={this.state.value}
-										onChange={ value => this.setState({ value }) }>
-										(<code>multiline</code>) <a target="_blank" href="https://en.wikipedia.org/wiki/Postmodernism">Postmodernism</a> describes a broad movement that developed in the mid to late 20th century across philosophy, the arts, architecture and criticism which marked a departure from modernism. While encompassing a broad range of ideas, postmodernism is typically defined by an attitude of skepticism, irony or distrust toward grand narratives, ideologies and various tenets of Enlightenment rationality, including notions of human nature, social progress, objective reality and morality, absolute truth, and reason.
-									</Checkbox>
-
-									Value: {this.state.value ? 'true' : 'false'}
-									{/*  ? '✓' : <span>−<span style={{ visibility: 'hidden' }}>✓</span></span> */}
-
-<Highlight lang="jsx">{`
-<Checkbox
-  value={...}
-  onChange={...}>
-  Accept the <a href="...">User Agreement</a>
-</Checkbox>
-
-<Checkbox
-  multiline
-  value={...}
-  onChange={...}>
-  Postmodernism describes a broad movement that developed ...
-</Checkbox>
-`}</Highlight>
-
-<Highlight lang="css">{`
-/* Checkbox inactive color */
-.rrui__checkbox__box {
-  color : black;
-}
-/* Checkbox color (:checked) */
-/* Checkbox color (:focus) */
-.rrui__checkbox__box--checked,
-.rrui__checkbox__input:focus + .rrui__checkbox__box {
-  color : blue;
-}
-/* Checkbox color (:checked / :active) */
-.rrui__checkbox:active .rrui__checkbox__box,
-.rrui__checkbox__input:active + .rrui__checkbox__box {
-  color : cyan;
-}
-/* Checkbox color (:invalid) */
-.rrui__checkbox--invalid .rrui__checkbox__box {
-  color : red;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSwitch = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="switch" title="Switch">
-
-									<div style={{ marginBottom: '1em' }}>
-										<Switch
-											name="switch"
-											value={this.state.value}
-											onChange={ value => this.setState({ value }) }>
-											iOS style switch
-										</Switch>
-									</div>
-
-									Value: {this.state.value ? 'true' : 'false'}
-
-<Highlight lang="jsx">{`
-<Switch
-  value={...}
-  onChange={...}>
-  iOS style switch
-</Switch>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__switch__groove {
-  background-color : green;
-  color : white;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSegmentedControl = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="segmented-control" title="Segmented Control">
-
-									<SegmentedControl
-										style={input_style}
-										className="column-width"
-										name="button_group"
-										options={[{ value: 'A', label: 'Apple' }, { value: 'B', label: 'Banana' }, { value: 'C', label: 'Cranberry' }]}
-										value={this.state.value}
-										onChange={ value => this.setState({ value }) }/>
-
-									Value: {this.state.value ? this.state.value : '(empty)'}
-
-<Highlight lang="jsx">{`
-<SegmentedControl
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__segmented-control__option {
-  background-color : white;
-  color : black;
-}
-.rrui__segmented-control__option:active {
-  background-color : cyan;
-}
-.rrui__segmented-control__option--selected {
-  background-color : blue;
-  color : white;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleDatePicker = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="date-picker" title="Date Picker">
-
-									<DatePicker
-										style={input_style}
-										className="column-width"
-										label="Date"
-										value={this.state.value}
-										onChange={value => this.setState({ value })}
-										disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)}/>
-
-									Value: {this.state.value ? this.state.value.toString() : '(empty)'}
-
-<Highlight lang="jsx">{`
-<DatePicker
-  label="Date"
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-<code className="colored">{'<DatePicker/>'}</code> also takes optional properties:
-
-<ul className="list">
-	<li><code className="colored">selectYearsIntoPast</code> and <code className="colored">selectYearsIntoFuture</code> properties must be numbers. They determine the range of the "Year" select. They only affect the "Year" select and don't affect the "Prev"/"Next" navigation buttons. Both of them are set to <code className="colored">100</code> by default.</li>
-</ul>
-			</Example>
-		)
-	}
-})
-
-const ExampleDatePickerMonthYear = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="date-picker-with-month-and-year" title="Date Picker (with month and year selectors)">
-
-									<DatePicker
-										style={input_style}
-										className="column-width"
-										label="Date"
-										selectYearsIntoPast={118}
-										selectYearsIntoFuture={10}
-										value={this.state.value}
-										onChange={value => this.setState({ value })}/>
-
-									Value: {this.state.value ? this.state.value.toString() : '(empty)'}
-
-<Highlight lang="jsx">{`
-<DatePicker
-  label="Date"
-  selectYearsIntoPast={118}
-  selectYearsIntoFuture={10}
-  value={...}
-  onChange={...} />
-`}</Highlight>
-
-
-			</Example>
-		)
-	}
-})
-
-const ExampleTooltip = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="tooltip" title="Tooltip">
-
-									<Tooltip text="Testing testing">
-										Hover this element (or touch down on mobile devices)
-									</Tooltip>
-
-<Highlight lang="jsx">{`
-<Tooltip text="Testing testing">
-  Hover this element (or touch down on mobile devices)
-</Tooltip>
-
-// \u0060container: () => DOMElement\u0060 property is optional
-// and is gonna be the parent DOM Element for the tooltip itself
-// (\u0060document.body\u0060 by default)
-// (in which case make sure that \u0060document.body\u0060 has no \u0060margin\u0060
-//  otherwise tooltip \u0060left\u0060 and \u0060top\u0060 positions will be slightly off).
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__tooltip {
-  background-color : black;
-  color : white;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleSnackbar = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="snackbar" title="Snackbar">
-
-				<Button action={() => {
-					const hours   = new Date().getHours()
-					const minutes = new Date().getMinutes()
-					const seconds = new Date().getSeconds()
-
-					const pad = number => number < 10 ? '0' + number : number
-
-					this.setState({ snack: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` })
-				}}>
-					Show a snack
-				</Button>
-
-				<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
-
-<Highlight lang="jsx">{`
-<Button action={() => this.setState({ snack: "..." })}>
-  Show a snack
-</Button>
-
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__snackbar {
-  background-color : black;
-  color : white;
-}
-`}</Highlight>
-
-<div>
-<code className="colored">value</code> can also be not just a string but an object of shape:
-</div>
-
-<ul className="list">
-	<li><code className="colored">content</code> — A string or a React element.</li>
-	<li><code className="colored">component</code> — (optional) Instead of <code className="colored">content</code> property one may supply <code className="colored">component</code> property which must be a React component which receives all <code className="colored">value.props</code> properties and also <code className="colored">hide</code> property (a function that hides the notification).</li>
-	<li><code className="colored">length</code> — (optional) Content length. Is used when calculating <code className="colored">duration</code> automatically. Is calculated automatically for string content.</li>
-	<li><code className="colored">type</code> — (optional) Is appended as a BEM modifier to <code className="colored">.rrui__snackbar</code> CSS class. E.g. <code className="colored">.rrui__snackbar--error</code> for <code className="colored">{'{ type: "error" }'}</code>.</li>
-	<li><code className="colored">duration</code> — (optional) How long will the notification stay. <code className="colored">-1</code> means "until manually closed". If not specified will be calculated automatically based on <code className="colored">length</code>.</li>
-</ul>
-
-<br/>
-
-<Button action={() => this.setState({
-	snack: {
-		type: 'new-message-notification',
-		component : NewMessageNotification,
-		props : {
-			from : {
-				picture : 'https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg',
-				name : 'Pavel Durov'
-			}
-		},
-		duration: -1
-	}
-})}>
-  Show new message notification
-</Button>
-
-<Highlight lang="jsx">{`
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
-
-const NewMessageNotification = ({ from, hide }) => (
-  <div>
-    <img src={from.picture}/>
-    <div> New message from {from.name} </div>
-    <button type="button" onClick={hide}> ✕ </button>
-  </div>
-)
-
-const newMessageReceived = (message) => {
-  this.setState({
-    snack: {
-      type: 'new-message-notification',
-      component: NewMessageNotification,
-      props: message,
-      duration: -1
-    }
-  })
-}
-
-newMessageReceived({
-  from: {
-    picture: 'https://...',
-    name: 'Pavel Durov'
-  }
-})
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__snackbar--new-message-notification {
-  height : 200px;
-  padding : 0;
-  line-height : 1.35em;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleButtons = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="form-and-buttons" title="Form and Buttons">
-
-				<div className="submit-form">
-					<Button action={() => {}}>
-						Borderless
-					</Button>
-				</div>
-
-				<div className="submit-form">
-					<Button action={() => {}} style={{ textTransform: 'uppercase' }}>
-						Uppercase
-					</Button>
-				</div>
-
-				<div className="submit-form">
-					<Button action={() => console.log('test')} className="rrui__button--border">
-						Bordered
-					</Button>
-				</div>
-
-				<div className="submit-form">
-					<Button link="https://google.com" target="_blank" className="rrui__button--border">
-						Hyperlink
-					</Button>
-				</div>
-
-			<Form
-				busy={this.state.busy}
-				submit={() => {
-					console.log('Submitting form...')
-					this.setState({ busy: true })
-					setTimeout(() => {
-						console.log('Form submitted.')
-						this.setState({ busy: false })
-					},
-					3500)
-				}}>
-				<div className="submit-form">
-					<Button
-						submit
-						busy={this.state.busy}
-						className="rrui__button--border">
-						Submit Form
-					</Button>
-				</div>
-
-				<div className="submit-form">
-					<Button
-						submit
-						busy={this.state.busy}>
-						SUBMIT
-					</Button>
-				</div>
-
-				<div className="submit-form">
-					Submitting: {this.state.busy ? 'true' : 'false'}
-				</div>
-			</Form>
-
-<Highlight lang="jsx">{`
-const submit = () => {
-  console.log('Submitting form...')
-  this.setState({ busy: true })
-  setTimeout(() => {
-    console.log('Form submitted.')
-    this.setState({ busy: false })
-  }, 3500)
-}
-
-<Form
-  busy={this.state.busy}
-  submit={submit}>
-  ...
-
-  <Button action={() => {}}>
-    Borderless
-  </Button>
-
-  <Button
-    link="https://google.com"
-    target="_blank"
-    className="rrui__button--border">
-    Hyperlink
-  </Button>
-
-  <Button
-    action={() => console.log('test')}
-    className="rrui__button--border">
-    Bordered
-  </Button>
-
-  <Button
-    submit
-    busy={this.state.busy}
-    className="rrui__button--border">
-    Submit Form
-  </Button>
-</Form>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__button--border {
-  padding-left  : 20px;
-  padding-right : 20px;
-  border        : 2px solid blue;
-  border-radius : 5px;
-}
-.rrui__button--border .rrui__button__busy {
-  left   : 20px;
-  width  : calc(100% - 2 * 20px);
-  bottom : 8px;
-}
-`}</Highlight>
-
-			</Example>
-		)
-	}
-})
-
-const ExampleModal = React.createClass
-({
-	getInitialState() { return {} },
-
-	render()
-	{
-		return (
-			<Example name="modal" title="Modal">
-
-								<Button
-									action={() => this.setState({ show_modal: true })}>
-									Show
-								</Button>
-
-{/*
-	closeButtonIcon={true}
-	closeLabel="x"
-*/}
-								<Modal
-									isOpen={this.state.show_modal}
-									close={() => this.setState({ show_modal: false })}
-									style={{ maxWidth : '40em' }}>
-
-									<Modal.Title>
-										An example modal
-									</Modal.Title>
-
-									<Modal.Content>
-										<p style={{ marginTop: 0, marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: '1.35em' }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-
-										<p style={{ marginTop: '1.35em', marginBottom: 0 }}>
-											На этом этапе электрификации все потребители электроэнергии (каковыми являлись исключительно осветительные приборы) использовали постоянный ток, и существовали определенные проблемы с передачей электроэнергии на значительные расстояния. Вследствие этого источник электроэнергии располагался в непосредственной близости от потребителя. Так, например, в&nbsp;случае с Киевскими железнодорожными мастерскими каждый из четырех фонарей имел свою электромагнитную машину Грамма.
-										</p>
-									</Modal.Content>
-
-									<Modal.Actions>
-										<Button
-											action={ () => this.setState({ show_modal: false }) }>
-											Hide
-										</Button>
-									</Modal.Actions>
-								</Modal>
-
-<Highlight lang="jsx">{`
-<Button action={() => this.setState({ showModal: true })}>
-  Show
-</Button>
-
-<Modal
-  isOpen={this.state.showModal}
-  close={() => this.setState({ showModal: false })}>
-
-  <Modal.Title>
-    An example modal
-  <Modal.Title>
-
-  <Modal.Content>
-    ...
-  </Modal.Content>
-
-  <Modal.Actions>
-    <Button action={() => this.setState({ showModal: false })}>
-      Hide
-    </Button>
-  </Modal.Actions>
-</Modal>
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__modal__content {
-  background-color : white;
-}
-.rrui__modal__content-body {
-  margin : 20px;
-}
-`}</Highlight>
-
-<code className="colored">{'<Modal/>'}</code> also takes optional properties:
-
-<ul className="list">
-	<li><code className="colored">closeButtonIcon</code> property which can either be <code className="colored">true</code> for a default "cross" icon or a custom <code className="colored">React.Component</code>.</li>
-
-	<li><code className="colored">closeLabel</code> property in which case a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
-</ul>
-
-			</Example>
-		)
-	}
-})
-
-
-
-
-
+		</script>
+
+		<script src="./samples/ExampleMenuButton.js" type="text/babel"></script>
+		<script src="./samples/ExampleTextInput.js" type="text/babel"></script>
+		<script src="./samples/ExampleTextInputFloatingLabel.js" type="text/babel"></script>
+		<script src="./samples/ExampleMultilineTextInputLabel.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandable.js" type="text/babel"></script>
+		<script src="./samples/ExampleList.js" type="text/babel"></script>
+		<script src="./samples/ExampleScrollableList.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandableList.js" type="text/babel"></script>
+		<script src="./samples/ExampleListIcons.js" type="text/babel"></script>
+		<script src="./samples/ExampleListCustomContent.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelect.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectAsync.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectNative.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectNativeExpanded.js" type="text/babel"></script>
+		<script src="./samples/ExampleSelectIcons.js" type="text/babel"></script>
+		<script src="./samples/ExampleAutocomplete.js" type="text/babel"></script>
+		<script src="./samples/ExampleAutocompleteAsync.js" type="text/babel"></script>
+		<script src="./samples/ExampleExpandableMenu.js" type="text/babel"></script>
+		<script src="./samples/ExampleDatePicker.js" type="text/babel"></script>
+		<script src="./samples/ExampleCheckbox.js" type="text/babel"></script>
+		<script src="./samples/ExampleSwitch.js" type="text/babel"></script>
+		<script src="./samples/ExampleSegmentedControl.js" type="text/babel"></script>
+		<script src="./samples/ExampleFileUpload.js" type="text/babel"></script>
+		<script src="./samples/ExampleActivityIndicator.js" type="text/babel"></script>
+		<script src="./samples/ExampleEllipsis.js" type="text/babel"></script>
+		<script src="./samples/ExampleTooltip.js" type="text/babel"></script>
+		<script src="./samples/ExampleSnackbar.js" type="text/babel"></script>
+		<script src="./samples/ExampleButtons.js" type="text/babel"></script>
+		<script src="./samples/ExampleModal.js" type="text/babel"></script>
+
+		<div id="content"></div>
+
+		<script type="text/babel">
 			let Content = React.createClass
 			({
 				getInitialState: function()
@@ -1521,7 +441,7 @@ const ExampleModal = React.createClass
 				{
 					return (
 						<PageAndMenu>
-							<CollapsibleMenu>
+							<SlideOutMenu>
 								<a target="_blank" href="https://google.com" className="rrui__slideout-menu__item">
 									Google.com
 								</a>
@@ -1531,7 +451,7 @@ const ExampleModal = React.createClass
 								<a target="_blank" href="https://www.baidu.com" className="rrui__slideout-menu__item">
 									Baidu.com
 								</a>
-							</CollapsibleMenu>
+							</SlideOutMenu>
 
 							<Page>
 								<a target="_blank" className="main" href="https://github.com/catamphetamine/react-responsive-ui"><code>react-responsive-ui</code></a>
@@ -1539,16 +459,16 @@ const ExampleModal = React.createClass
 								<p style={{ marginBottom: 0 }}>Responsive UI components for React applications</p>
 
 								<ul className="list table-of-contents">
-									<li><a href="#collapsible-menu">Collapsible Menu</a></li>
+									<li><a href="#slideout-menu">Slideout Menu</a></li>
 									<li><a href="#text-input-placeholder">Text input field (with placeholder)</a></li>
 									<li><a href="#text-input-floating-label">Text input field (with floating label)</a></li>
 									<li><a href="#text-input-placeholder-and-floating-label">Text input field (with both placeholder and floating label)</a></li>
 									<li><a href="#multiline-text-input-floating-label">Multiline Text Input</a></li>
 									<li><a href="#select">Select</a></li>
-									<li><a href="#select-autocomplete">Select (autocomplete)</a></li>
-									<li><a href="#select-asynchronous-autocomplete">Select (asynchronous autocomplete)</a></li>
 									<li><a href="#select-icons">Select (icons)</a></li>
-									<li><a href="#select-menu">Select (menu)</a></li>
+									<li><a href="#autocomplete">Autocomplete</a></li>
+									<li><a href="#asynchronous-autocomplete">Autocomplete (asynchronous)</a></li>
+									<li><a href="#expandable-menu">Expandable Menu</a></li>
 									<li><a href="#checkbox">Checkbox</a></li>
 									<li><a href="#switch">Switch</a></li>
 									<li><a href="#segmented-control">Segmented Control</a></li>
@@ -1573,74 +493,47 @@ const ExampleModal = React.createClass
 
 								<div style={{ marginTop: '2em' }}/>
 
-									<ExampleTextInput/>
-									<ExampleTextInputFloatingLabel/>
-									<ExampleMultilineTextInputLabel/>
+								<ExampleTextInput/>
+								<ExampleTextInputFloatingLabel/>
+								<ExampleMultilineTextInputLabel/>
 
-									<ExampleSelect/>
-									{/*<ExampleSelectNativeExpanded/>*/}
-									<ExampleSelectAutocomplete/>
-									<ExampleSelectAutocompleteAsync/>
-									<ExampleSelectIcons/>
-									<ExampleSelectMenu/>
+								<ExampleList/>
+								<ExampleListIcons/>
+								<ExampleListCustomContent/>
 
-									<ExampleDatePicker/>
+								{/*
+								<ExampleScrollableList/>
+								<ExampleExpandable/>
+								<ExampleExpandableList/>
+								*/}
 
-									<ExampleCheckbox/>
-									<ExampleSwitch/>
-									<ExampleSegmentedControl/>
+								<ExampleSelect/>
+								<ExampleSelectNative/>
+								<ExampleSelectNativeExpanded/>
+								<ExampleSelectIcons/>
+								{/*<ExampleSelectAsync/>*/}
 
-									<a name="file-upload" href="#file-upload" className="title-anchor" tabIndex="-1">
-										<h2 className="heading">File Upload</h2>
-									</a>
+								<ExampleAutocomplete/>
+								<ExampleAutocompleteAsync/>
 
-									<FileUploadArea/>
+								<ExampleExpandableMenu/>
 
-									<br/>
-									<br/>
+								<ExampleDatePicker/>
 
-									See the <a href="https://github.com/catamphetamine/react-responsive-ui#dragndrop" target="_blank">code sample</a>.
+								<ExampleCheckbox/>
+								<ExampleSwitch/>
+								<ExampleSegmentedControl/>
 
-									<a name="activity-indicator" href="#activity-indicator" className="title-anchor" tabIndex="-1">
-										<h2 className="heading">Activity Indicator</h2>
-									</a>
+								<ExampleFileUpload/>
 
-									<ActivityIndicator />
+								<ExampleActivityIndicator/>
+								<ExampleEllipsis/>
 
-<Highlight lang="jsx">{`
-<ActivityIndicator className="..." />
-`}</Highlight>
+								<a name="phone" href="#phone" className="title-anchor" tabIndex="-1">
+									<h2 className="heading">Phone number input</h2>
+								</a>
 
-<Highlight lang="css">{`
-.rrui__activity-indicator {
-  color     : black;
-  font-size : 30px;
-}
-`}</Highlight>
-
-									<a name="ellipsis" href="#ellipsis" className="title-anchor" tabIndex="-1">
-										<h2 className="heading">Ellipsis</h2>
-									</a>
-
-									<Ellipsis />
-
-<Highlight lang="jsx">{`
-<Ellipsis className="..." />
-`}</Highlight>
-
-<Highlight lang="css">{`
-.rrui__ellipsis {
-  width   : 20px;
-  color   : black;
-  opacity : 0.7;
-}
-`}</Highlight>
-
-									<a name="phone" href="#phone" className="title-anchor" tabIndex="-1">
-										<h2 className="heading">Phone number input</h2>
-									</a>
-
-									See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
+								See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
 
 								<ExampleTooltip/>
 								<ExampleSnackbar/>

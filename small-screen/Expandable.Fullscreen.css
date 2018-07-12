@@ -1,0 +1,110 @@
+/* Same as for `<DatePicker/>`. */
+.rrui__expandable
+{
+	position : fixed;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	margin   : 0;
+	z-index  : 100;
+
+	-webkit-transform-origin : center center;
+
+	    -ms-transform-origin : center center;
+
+	        transform-origin : center center;
+	-webkit-transform        : scale(0.95);
+	    -ms-transform        : scale(0.95);
+	        transform        : scale(0.95);
+	opacity          : 0;
+	-webkit-transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	-o-transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+}
+
+.rrui__expandable.rrui__expandable--expanded
+{
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
+	opacity   : 1;
+}
+
+.rrui__select .rrui__options-list
+{
+	/* Resets the `width` set in `Select.css` */
+	width : 100%;
+	/* `<Select/>` options no top margin. */
+	margin-top : 0;
+}
+
+.rrui__scrollable
+{
+	max-height : none !important;
+}
+
+.rrui__expandable,
+.rrui__expandable__content
+{
+	height : 100%;
+}
+
+/* Disable `<Select/>` options `:hover` effect. */
+/* Because `:hover` coloration would create extra
+   visual clutter for the collapse animation. */
+.rrui__expandable .rrui__list__item:hover
+{
+	color : #000000;
+	background-color : transparent;
+}
+
+/* Show "Close" button for full-screen `<Select/>`. */
+/* Same as for `<DatePicker/>`. */
+.rrui__expandable__close
+{
+	display : block;
+	z-index : 100;
+}
+
+/* `<Select autocomplete/>` goes fullscreen when expanded */
+.rrui__autocomplete--expanded .rrui__autocomplete__input
+{
+	position         : fixed;
+	top              : 0;
+	left             : 0;
+	width            : 100%;
+	height           : calc(0.6rem * 4);
+	padding-left     : calc(0.6rem * 1.5);
+	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + 0.6rem * 1.5);
+	z-index          : 100;
+	background-color : #ffffff;
+}
+
+/* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
+.rrui__autocomplete--expanded .rrui__ellipsis
+{
+	position    : fixed;
+	right       : calc(0.6rem * 1.5);
+	top         : 0;
+	z-index     : 101;
+	height      : calc(0.6rem * 4);
+	display     : -webkit-box;
+	display     : -webkit-flex;
+	display     : -ms-flexbox;
+	display     : flex;
+	-webkit-box-align : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
+}
+
+/* `<Select autocomplete/>` options when fullscreen-expanded */
+.rrui__autocomplete .rrui__list
+{
+	margin-top : calc(0.6rem * 4);
+	-webkit-box-shadow : none;
+	        box-shadow : none;
+}

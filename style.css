@@ -56,6 +56,44 @@
     stroke-dasharray: 89,200;
     stroke-dashoffset: -124; } }
 
+.rrui__autocomplete__input {
+  height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+/* Stretches the inputs to full column width by default. */
+/* Because everyone uses CSS grids today. */
+.rrui__autocomplete__input {
+  width: 100%; }
+
+.rrui__autocomplete .rrui__ellipsis {
+  position: absolute;
+  right: calc(0.6rem / 3);
+  top: calc(50% - 0.6rem / 6);
+  pointer-events: none; }
+
+.rrui__autocomplete__input {
+  padding-right: calc(0.6rem * 2.5); }
+
+.rrui__autocomplete .rrui__options-list {
+  /*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+  width: calc(100% + 0.6rem * 1.5 * 2);
+  /* Makes `border-bottom` visible on an iPhone */
+  margin-top: 1px; }
+
+.rrui__autocomplete--compact {
+  /* Reverts `width: 100%` set at the top of this file */
+  width: auto;
+  /* If it's `compact` then it's most likely inlined */
+  display: inline-block; }
+
+.rrui__autocomplete--compact .rrui__expandable-list {
+  width: auto; }
+
 /* Reset the default `<button/>` styles */
 .rrui__button-reset {
   margin: 0;
@@ -76,6 +114,9 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none; }
+
+.rrui__button-reset--link:hover {
+  text-decoration: none; }
 
 .rrui__button {
   display: -webkit-inline-box;
@@ -227,9 +268,6 @@
       -ms-flex: 1 0 0px;
           flex: 1 0 0; }
 
-.rrui__checkbox__label--fallback {
-  padding-left: 0; }
-
 .rrui__checkbox__input,
 .rrui__checkbox__label {
   cursor: pointer; }
@@ -311,78 +349,74 @@
   padding: calc(0.6rem * 2 / 2);
   margin: calc(0.6rem * 2 * -1 / 2); }
 
-/* https://unpkg.com/react-day-picker@latest/lib/style.css */
-/* DayPicker styles */
-.DayPicker {
-  display: inline-block; }
-
+/* DayPicker styles (version 7.1.10) */
 .DayPicker-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
   position: relative;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -ms-flex-direction: row;
   -webkit-flex-direction: row;
-          flex-direction: row;
-  padding: 1rem 0; }
+      -ms-flex-direction: row;
+          flex-direction: row; }
+
+.DayPicker-Months {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 .DayPicker-Month {
   display: table;
   border-collapse: collapse;
   border-spacing: 0;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin: 0 1rem; }
-
-.DayPicker-NavBar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  padding: 0 .5rem;
-  top: 1rem; }
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
 .DayPicker-NavButton {
   position: absolute;
-  width: 1.5rem;
-  height: 1.5rem;
+  right: 0;
+  cursor: pointer;
+  width: 1.25em;
+  height: 1.25em;
+  display: inline-block;
+  background-size: 50%;
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  cursor: pointer; }
+  background-position: center; }
 
 .DayPicker-NavButton--prev {
-  left: 1rem;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI2cHgiIGhlaWdodD0iNTBweCIgdmlld0JveD0iMCAwIDI2IDUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5wcmV2PC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9InByZXYiIHNrZXRjaDp0eXBlPSJNU0xheWVyR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzLjM5MzE5MywgMjUuMDAwMDAwKSBzY2FsZSgtMSwgMSkgdHJhbnNsYXRlKC0xMy4zOTMxOTMsIC0yNS4wMDAwMDApIHRyYW5zbGF0ZSgwLjg5MzE5MywgMC4wMDAwMDApIiBmaWxsPSIjNTY1QTVDIj4KICAgICAgICAgICAgPHBhdGggZD0iTTAsNDkuMTIzNzMzMSBMMCw0NS4zNjc0MzQ1IEwyMC4xMzE4NDU5LDI0LjcyMzA2MTIgTDAsNC4yMzEzODMxNCBMMCwwLjQ3NTA4NDQ1OSBMMjUsMjQuNzIzMDYxMiBMMCw0OS4xMjM3MzMxIEwwLDQ5LjEyMzczMzEgWiIgaWQ9InJpZ2h0IiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4K"); }
+  margin-right: 1.5em;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAAABGdBTUEAALGPC/xhBQAAAVVJREFUWAnN2G0KgjAYwPHpGfRkaZeqvgQaK+hY3SUHrk1YzNLay/OiEFp92I+/Mp2F2Mh2lLISWnflFjzH263RQjzMZ19wgs73ez0o1WmtW+dgA01VxrE3p6l2GLsnBy1VYQOtVSEH/atCCgqpQgKKqYIOiq2CBkqtggLKqQIKgqgCBjpJ2Y5CdJ+zrT9A7HHSTA1dxUdHgzCqJIEwq0SDsKsEg6iqBIEoq/wEcVRZBXFV+QJxV5mBtlDFB5VjYTaGZ2sf4R9PM7U9ZU+lLuaetPP/5Die3ToO1+u+MKtHs06qODB2zBnI/jBd4MPQm1VkY79Tb18gB+C62FdBFsZR6yeIo1YQiLJWMIiqVjQIu1YSCLNWFgijVjYIuhYYCKoWKAiiFgoopxYaKLUWOii2FgkophYp6F3r42W5A9s9OcgNvva8xQaysKXlFytoqdYmQH6tF3toSUo0INq9AAAAAElFTkSuQmCC"); }
 
 .DayPicker-NavButton--next {
-  right: 1rem;
-  background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI2cHgiIGhlaWdodD0iNTBweCIgdmlld0JveD0iMCAwIDI2IDUwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIj4KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggMy4zLjIgKDEyMDQzKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5uZXh0PC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgc2tldGNoOnR5cGU9Ik1TUGFnZSI+CiAgICAgICAgPGcgaWQ9Im5leHQiIHNrZXRjaDp0eXBlPSJNU0xheWVyR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuOTUxNDUxLCAwLjAwMDAwMCkiIGZpbGw9IiM1NjVBNUMiPgogICAgICAgICAgICA8cGF0aCBkPSJNMCw0OS4xMjM3MzMxIEwwLDQ1LjM2NzQzNDUgTDIwLjEzMTg0NTksMjQuNzIzMDYxMiBMMCw0LjIzMTM4MzE0IEwwLDAuNDc1MDg0NDU5IEwyNSwyNC43MjMwNjEyIEwwLDQ5LjEyMzczMzEgTDAsNDkuMTIzNzMzMSBaIiBpZD0icmlnaHQiIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPgo="); }
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAAABGdBTUEAALGPC/xhBQAAAXRJREFUWAnN119ugjAcwPHWzJ1gnmxzB/BBE0n24m4xfNkTaOL7wOtsl3AXMMb+Vjaa1BG00N8fSEibPpAP3xAKKs2yjzTPH9RAjhEo9WzPr/Vm8zgE0+gXATAxxuxtqeJ9t5tIwv5AtQAApsfT6TPdbp+kUBcgVwvO51KqVhMkXKsVJFXrOkigVhCIs1Y4iKlWZxB1rX4gwlpRIIpa8SDkWmggrFq4IIRaJKCYWnSgnrXIQV1r8YD+1Vrn+bReagysIFfLABRt31v8oBu1xEBttfRbltmfjgEcWh9snUS2kNdBK6WN1vrOWxObWsz+fjxevsxmB1GQDfINWiev83nhaoiB/CoOU438oPrhXS0WpQ9xc1ZQWxWHqUYe0I0qrKCQKjygDlXIQV2r0IF6ViEBxVTBBSFUQQNhVYkHIVeJAtkNsbQ7c1LtzP6FsObhb2rCKv7NBIGoq4SDmKoEgTirXAcJVGkFSVVpgoSrXICGUMUH/QBZNSUy5XWUhwAAAABJRU5ErkJggg=="); }
 
 .DayPicker-NavButton--interactionDisabled {
   display: none; }
 
 .DayPicker-Caption {
+  padding: 0 0.5em;
   display: table-caption;
-  height: 1.5rem;
-  text-align: center; }
+  text-align: left;
+  margin-bottom: 0.5em; }
+
+.DayPicker-Caption > div {
+  font-size: 1.15em;
+  font-weight: 500; }
 
 .DayPicker-Weekdays {
+  margin-top: 1em;
   display: table-header-group; }
 
 .DayPicker-WeekdaysRow {
@@ -390,10 +424,14 @@
 
 .DayPicker-Weekday {
   display: table-cell;
-  padding: .5rem;
-  font-size: .875em;
+  padding: 0.5em;
+  font-size: 0.875em;
   text-align: center;
-  color: #8b9898; }
+  color: #888888; }
+
+.DayPicker-Weekday abbr[title] {
+  border-bottom: none;
+  text-decoration: none; }
 
 .DayPicker-Body {
   display: table-row-group; }
@@ -403,105 +441,52 @@
 
 .DayPicker-Day {
   display: table-cell;
-  padding: .5rem;
-  border: 1px solid #eaecec;
+  padding: 0.5em;
   text-align: center;
   cursor: pointer;
-  vertical-align: middle; }
-
-.DayPicker-WeekNumber {
-  display: table-cell;
-  padding: .5rem;
-  text-align: right;
   vertical-align: middle;
-  min-width: 1rem;
-  font-size: 0.75em;
-  cursor: pointer;
-  color: #8b9898; }
+  border-radius: 50%; }
 
 .DayPicker--interactionDisabled .DayPicker-Day {
   cursor: default; }
 
 .DayPicker-Footer {
-  display: table-caption;
-  caption-side: bottom;
-  padding-top: .5rem; }
+  padding-top: 0.5em; }
 
 .DayPicker-TodayButton {
   border: none;
   background-image: none;
   background-color: transparent;
   -webkit-box-shadow: none;
-  box-shadow: none;
+          box-shadow: none;
   cursor: pointer;
-  color: #4A90E2;
+  color: #03b2cb;
   font-size: 0.875em; }
 
 /* Default modifiers */
 .DayPicker-Day--today {
   color: #d0021b;
-  font-weight: 500; }
-
-.DayPicker-Day--disabled {
-  color: #dce0e0;
-  cursor: default;
-  background-color: #eff1f1; }
+  font-weight: 700; }
 
 .DayPicker-Day--outside {
   cursor: default;
-  color: #dce0e0; }
+  color: #888888; }
+
+.DayPicker-Day--disabled {
+  color: #cacaca;
+  cursor: default; }
 
 /* Example modifiers */
-.DayPicker-Day--sunday {
-  background-color: #f7f8f8; }
-
-.DayPicker-Day--sunday:not(.DayPicker-Day--today) {
-  color: #dce0e0; }
-
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
-  color: #FFF;
-  background-color: #4A90E2; }
-
-/* DayPickerInput */
-.DayPickerInput {
-  display: inline-block; }
-
-.DayPickerInput-OverlayWrapper {
-  position: relative; }
-
-.DayPickerInput-Overlay {
-  left: 0;
-  position: absolute;
-  background: white;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); }
+  position: relative;
+  color: #ffffff;
+  background-color: #03b2cb; }
 
 /* =============================== */
 /* Custom `react-daypicker` styles */
 /* =============================== */
-.DayPicker {
-  display: block; }
-
-.DayPicker-wrapper {
-  padding: 0; }
-
-.DayPicker-NavBar {
-  top: -0.2em; }
-
-.DayPicker-CaptionSelects {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 100%; }
+.DayPicker-Month {
+  margin-top: 0; }
 
 .DayPicker-MonthSelect {
   margin-right: 0.6em; }
@@ -513,7 +498,6 @@
           appearance: none;
   outline: none;
   border: none;
-  margin-top: -0.4em;
   padding-left: 1em;
   padding-top: 0.1em;
   background: transparent;
@@ -546,19 +530,34 @@
 .DayPicker-Day--disabled {
   background-color: transparent; }
 
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover:not(:active) {
+  background-color: transparent; }
+
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover:active,
+.DayPicker-Day:active:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+  color: #ffffff;
+  background-color: #2bd7f0;
+  border-radius: 50%; }
+
 /* ----------------------------------------------------- */
 /* -                  `<DatePicker/>`                  - */
 /* ----------------------------------------------------- */
 .rrui__date-picker {
   position: relative; }
 
-.rrui__date-picker__collapsible {
+.rrui__date-picker .rrui__expandable {
   min-width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: center;
   background-color: #ffffff; }
 
-.rrui__date-picker__collapsible {
-  padding-top: calc(0.6rem * 3);
-  padding-bottom: calc(0.6rem * 3); }
+.rrui__date-picker .rrui__expandable__content {
+  display: inline-block;
+  padding-top: calc(0.6rem * 2);
+  padding-bottom: calc(0.6rem * 2);
+  padding-left: calc(0.6rem * 2);
+  padding-right: calc(0.6rem * 2); }
 
 .rrui__date-picker__calendar abbr {
   text-decoration: none; }
@@ -597,13 +596,27 @@
   opacity: 0.5;
   color: #000000; }
 
-.rrui__date-picker--expanded .rrui__date-picker__icon {
+.rrui__date-picker .rrui__expanded--expanded .rrui__date-picker__icon {
   opacity: 1;
   color: #03b2cb; }
 
 .rrui__date-picker__icon:active {
   opacity: 1;
   color: #2bd7f0; }
+
+.rrui__divider {
+  line-height: 0;
+  font-size: 0; }
+
+.rrui__divider--list {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem; }
+
+.rrui__divider__line {
+  height: 1px;
+  margin-bottom: -1px;
+  background-color: rgba(0, 0, 0, 0.16);
+  border: 0; }
 
 .rrui__ellipsis {
   width: calc(0.6rem * 1.5);
@@ -659,16 +672,16 @@
 .rrui__expandable {
   opacity: 0;
   pointer-events: none;
-  -webkit-transform: scaleY(0);
-      -ms-transform: scaleY(0);
-          transform: scaleY(0);
+  -webkit-transform: scaleY(0.5);
+      -ms-transform: scaleY(0.5);
+          transform: scaleY(0.5);
   -webkit-transform-origin: 50% top 0px;
       -ms-transform-origin: 50% top 0px;
           transform-origin: 50% top 0px;
   /* 250ms - too slow for short lists */
-  -webkit-transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
-  -o-transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
-  transition: all 150ms cubic-bezier(0.76, 0.04, 0.46, 0.75) 0ms;
+  -webkit-transition: all 100ms ease-out;
+  -o-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
   /* prevent white background showing through the transparent border */
   /* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
   background-clip: padding-box;
@@ -683,9 +696,9 @@
   -webkit-transform-origin: 50% top 0px;
       -ms-transform-origin: 50% top 0px;
           transform-origin: 50% top 0px;
-  -webkit-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  -o-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1) 0ms; }
+  -webkit-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  -o-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1); }
 
 .rrui__expandable--overlay {
   position: absolute;
@@ -700,9 +713,9 @@
 	*/
   opacity: 0;
   /* Mitigates inner content overlapping with itself creating a feeling of a mess */
-  -webkit-transition: opacity 150ms ease-out;
-  -o-transition: opacity 150ms ease-out;
-  transition: opacity 150ms ease-out; }
+  -webkit-transition: opacity 100ms ease-out;
+  -o-transition: opacity 100ms ease-out;
+  transition: opacity 100ms ease-out; }
 
 .rrui__expandable__content--expanded {
   opacity: 1; }
@@ -712,6 +725,41 @@
 
 .rrui__expandable--right-aligned {
   right: 0; }
+
+.rrui__expandable--downward {
+  /* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+  margin-bottom: 1em; }
+
+.rrui__expandable--upward {
+  bottom: 100%;
+  /* When an html page is overflown by a long list
+	   then this bottom margin helps to see that
+	   there's no more options left out being clipped or something */
+  margin-top: 1em;
+  -webkit-transform-origin: 50% bottom 0px;
+      -ms-transform-origin: 50% bottom 0px;
+          transform-origin: 50% bottom 0px; }
+
+.rrui__expandable__close {
+  /*
+	Set `display` to `block` for fullscreen `.rrui__expandable` design.
+	display : block;
+	*/
+  display: none; }
+
+.rrui__expandable-list--left-aligned {
+  left: 0; }
+
+.rrui__expandable-list--right-aligned {
+  right: 0; }
+
+.rrui__options-list--left-aligned {
+  left: calc(0.6rem * 1.5 * -1); }
+
+.rrui__options-list--right-aligned {
+  right: calc(0.6rem * 1.5 * -1); }
 
 .rrui__file-upload {
   cursor: pointer; }
@@ -796,6 +844,11 @@ than 100% of the parent if the parent is small enough.
   font-weight: inherit;
   font-style: inherit; }
 
+/* Overrides Chrome autofill yellow background color */
+.rrui__input-field:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+          box-shadow: 0 0 0 1000px white inset; }
+
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
 .rrui__input-field,
@@ -804,7 +857,8 @@ than 100% of the parent if the parent is small enough.
   width: 100%; }
 
 .rrui__input-field,
-.rrui__select__button {
+.rrui__select__button,
+.rrui__select__native {
   border: none;
   border-bottom: 1px solid #cacaca;
   -webkit-transition: border 0.1s;
@@ -885,58 +939,179 @@ than 100% of the parent if the parent is small enough.
   content: '*';
   margin-left: 0.2em; }
 
-.rrui__slideout-menu {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 100;
-  min-height: 100%;
+.rrui__list {
+  margin: 0;
+  padding-left: 0;
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
   overflow-y: auto;
-  opacity: 0.9;
-  background-color: #000000;
-  -webkit-transform: translate3d(-100%, 0, 0);
-          transform: translate3d(-100%, 0, 0);
-  -webkit-transition: -webkit-transform 120ms ease-out;
-  transition: -webkit-transform 120ms ease-out;
-  -o-transition: transform 120ms ease-out;
-  transition: transform 120ms ease-out;
-  transition: transform 120ms ease-out, -webkit-transform 120ms ease-out; }
+  background-color: #ffffff;
+  list-style-type: none;
+  overflow-x: hidden;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
-.rrui__slideout-menu__item {
-  display: block;
+.rrui__list__item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
   height: calc(0.6rem * 4);
-  line-height: calc(0.6rem * 4);
-  padding-left: calc(0.6rem * 2.5);
-  padding-right: calc(0.6rem * 2.5);
+  /*
+	This side padding is also connected to
+	`.rrui__select__options--left-aligned`'s `left`,
+	`.rrui__select__options--right-aligned`'s `right`
+	and `.rrui__select__options`'s `min-width`.
+	*/
+  padding-left: calc(0.6rem * 1.5);
+  padding-right: calc(0.6rem * 1.5);
+  color: inherit;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: left;
+  white-space: nowrap; }
+
+.rrui__list__item:hover {
+  background-color: #F3F3F3; }
+
+.rrui__list__item:active {
+  background-color: #03b2cb;
   color: #ffffff; }
 
-.rrui__slideout-menu--expanded {
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-  -webkit-box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4);
-          box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4); }
+.rrui__list__item--focused {
+  background-color: #F3F3F3; }
 
-.rrui__slideout-menu-button {
+.rrui__list__item-icon {
+  margin-right: 0.6rem;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0; }
+
+.rrui__list__item-label {
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis; }
+
+.rrui__list__item--disabled {
+  /* "pointer-events" prevents "cursor: wait" from working */
+  pointer-events: none; }
+
+.rrui__list__items--scroll {
+  /* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; }
+
+.rrui__menu {
+  /* Usually menu toggler is not 100% wide, so it makes sense. */
   display: inline-block;
+  position: relative; }
+
+.rrui__menu .rrui__expandable-list {
+  width: auto; }
+
+.rrui__menu .rrui__list__item {
+  padding-left: calc(0.6rem * 2.5);
+  padding-right: calc(0.6rem * 2.5); }
+
+.rrui__menu-button {
+  display: inline-block;
+  width: calc(0.6rem * 3);
+  height: calc(0.6rem * 3);
   padding: calc(0.6rem / 2);
   margin: calc(-1 * 0.6rem / 2);
   line-height: 0;
   color: #000000;
   outline: none; }
 
-.rrui__slideout-menu-button:active {
-  color: #03b2cb; }
+.rrui__menu-button {
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
 
-.rrui__slideout-menu-button__icon {
+/*
+.rrui__menu-button:active
+{
+	color : #03b2cb;
+}
+*/
+/* https://codepen.io/bennettfeely/pen/twbyA */
+.rrui__menu-button__icon {
+  position: relative;
+  top: calc((100% - 12.5%) / 2);
+  height: 12.5%;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s; }
+
+.rrui__menu-button__icon,
+.rrui__menu-button__icon:before,
+.rrui__menu-button__icon:after {
+  background: currentColor; }
+
+.rrui__menu-button__icon:before,
+.rrui__menu-button__icon:after {
   display: block;
-  width: calc(0.6rem * 3);
-  height: calc(0.6rem * 3); }
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s; }
 
-.rrui__slideout-menu-button__icon-path {
-  fill: currentColor; }
+.rrui__menu-button__icon:before {
+  top: -200%;
+  /* 25% */ }
+
+.rrui__menu-button__icon:after {
+  top: 200%;
+  /* 25% */ }
+
+.rrui__menu-button:hover .rrui__menu-button__icon:before {
+  -webkit-transform: translateY(-64%);
+      -ms-transform: translateY(-64%);
+          transform: translateY(-64%);
+  /* 33% */ }
+
+.rrui__menu-button:hover .rrui__menu-button__icon:after {
+  -webkit-transform: translateY(64%);
+      -ms-transform: translateY(64%);
+          transform: translateY(64%);
+  /* 33% */ }
+
+.rrui__menu-button--expanded .rrui__menu-button__icon {
+  -webkit-transform: scale(0.75);
+      -ms-transform: scale(0.75);
+          transform: scale(0.75); }
+
+.rrui__menu-button--expanded .rrui__menu-button__icon:before,
+.rrui__menu-button--expanded .rrui__menu-button__icon:after {
+  /* !important overrides `:hover` */
+  top: 0 !important; }
+
+.rrui__menu-button--expanded .rrui__menu-button__icon--x {
+  background: transparent; }
+
+.rrui__menu-button--expanded .rrui__menu-button__icon--x:before {
+  /* `!important` overrides `:hover` */
+  -webkit-transform: rotate(-45deg) !important;
+      -ms-transform: rotate(-45deg) !important;
+          transform: rotate(-45deg) !important; }
+
+.rrui__menu-button--expanded .rrui__menu-button__icon--x:after {
+  /* `!important` overrides `:hover` */
+  -webkit-transform: rotate(45deg) !important;
+      -ms-transform: rotate(45deg) !important;
+          transform: rotate(45deg) !important; }
 
 /*===========================================================
 = `react-modal`                                             =
@@ -1254,6 +1429,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
   /* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding */
   margin-left: 0; }
 
+.rrui__scrollable {
+  /* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch; }
+
 .rrui__segmented-control {
   position: relative;
   white-space: nowrap; }
@@ -1293,6 +1473,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
   border-radius: 0;
   border-right: none; }
 
+.rrui__segmented-control__option:focus:not(:active):not(.rrui__segmented-control__option--selected) {
+  color: #03b2cb; }
+
 .rrui__segmented-control__option:active {
   color: #ffffff;
   background-color: #2bd7f0;
@@ -1300,13 +1483,19 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -o-transition: none;
   transition: none; }
 
-.rrui__rich__fallback .rrui__segmented-control__option:active {
-  color: #000000;
-  background-color: transparent; }
-
-.rrui__rich__fallback .rrui__segmented-control__option input {
-  margin-left: 0; }
-
+/*
+.rrui__rich__fallback .rrui__segmented-control__option:active
+{
+	color            : #000000;
+	background-color : transparent;
+}
+*/
+/*
+.rrui__rich__fallback .rrui__segmented-control__option input
+{
+	margin-left: 0;
+}
+*/
 .rrui__segmented-control__option--selected {
   color: #ffffff;
   background-color: #03b2cb; }
@@ -1326,19 +1515,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-user-select: none;
           user-select: none; }
 
-.rrui__select__options {
-  margin: 0;
-  padding-left: 0;
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-  overflow-y: auto;
-  background-color: #ffffff;
-  list-style-type: none;
-  overflow-x: hidden;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
-
-.rrui__select__options:not(.rrui__select__options--autocomplete):not(.rrui__select__options--menu) {
+.rrui__select .rrui__options-list {
+  /*
+	`<Select/>` options text should be at least fully visible.
+	At the same time `<Select/>` options should stretch themselves
+	horizontally to the width of the containing column (when using grid layout).
+	*/
+  width: calc(100% + 0.6rem * 1.5 * 2);
   /*
 	`margin-top` is constituted by:
 	- `.rrui__select__options` `padding-top`.
@@ -1347,136 +1530,34 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	*/
   margin-top: calc(-1 * (0.6rem + 0.6rem * 3 + (0.6rem * 4 - 0.6rem * 3) / 2)); }
 
-.rrui__select__options--left-aligned {
-  left: calc(0.6rem * 1.5 * -1); }
-
-.rrui__select__options--right-aligned {
-  right: calc(0.6rem * 1.5 * -1); }
-
-.rrui__select__options:not(.rrui__select__options--menu) {
-  /*
-	`<Select/>` options text should be at least fully visible.
-	At the same time `<Select/>` options should stretch themselves
-	horizontally to the width of the containing column (when using grid layout).
-	*/
-  width: calc(100% + 0.6rem * 1.5 * 2); }
-
-.rrui__select__option-label {
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis; }
-
-.rrui__select--menu {
-  /* Usually menu toggler is not 100% wide, so it makes sense. */
-  display: inline-block; }
-
-.rrui__select--menu .rrui__select__option {
-  padding-left: calc(0.6rem * 2.5);
-  padding-right: calc(0.6rem * 2.5); }
-
-.rrui__select__options--downward {
-  /* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
-  margin-bottom: 1em; }
-
-.rrui__select__options--upward {
-  bottom: 100%;
-  /* When an html page is overflown by a long list
-	   then this bottom margin helps to see that
-	   there's no more options left out being clipped or something */
-  margin-top: 1em; }
-
-.rrui__select__option {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 100%;
-  height: calc(0.6rem * 4);
-  /*
-	This side padding is also connected to
-	`.rrui__select__options--left-aligned`'s `left`,
-	`.rrui__select__options--right-aligned`'s `right`
-	and `.rrui__select__options`'s `min-width`.
-	*/
-  padding-left: calc(0.6rem * 1.5);
-  padding-right: calc(0.6rem * 1.5);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  text-align: left;
-  white-space: nowrap; }
-
-.rrui__select__option:hover {
-  background-color: #F3F3F3; }
-
-.rrui__select__option:active {
-  background-color: #03b2cb;
-  color: #ffffff; }
-
-.rrui__select__option-icon {
-  margin-right: 0.6rem; }
-
-.rrui__select__separator {
-  height: 1px;
-  margin-bottom: -1px;
-  padding: 0;
-  line-height: 0;
-  font-size: 0;
-  background-color: rgba(0, 0, 0, 0.16); }
-
-.rrui__select__separator-option {
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem; }
-
-.rrui__select__options--upward {
-  -webkit-transform-origin: 50% bottom 0px;
-      -ms-transform-origin: 50% bottom 0px;
-          transform-origin: 50% bottom 0px; }
-
-.rrui__select__option--focused {
-  background-color: #F3F3F3; }
-
-.rrui__select__button,
-.rrui__select__autocomplete {
+.rrui__select__button {
   height: 100%;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
-
-.rrui__select__button {
+          box-sizing: border-box;
+  color: inherit;
+  /* Not introducing an animation on `.rrui__select__option`
+	   because it would introduce a little clutter due to
+	   focused option animation in autocomplete mode */
+  -webkit-transition: color 30ms ease-out;
+  -o-transition: color 30ms ease-out;
+  transition: color 30ms ease-out;
   /* Because Chrome adds `text-align: center` for all buttons */
   text-align: left; }
+
+.rrui__select__button--expanded {
+  color: #03b2cb; }
+
+.rrui__select__button--empty .rrui__list__item-label {
+  color: #888888; }
+
+.rrui__select__button--invalid {
+  border-bottom-color: #d30f00; }
 
 .rrui__select__button:active .rrui__select__selected-label,
 .rrui__select__button:active .rrui__select__arrow,
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
 .rrui__select__native:active + .rrui__select__button .rrui__select__arrow {
   color: #03b2cb; }
-
-.rrui__select__button--expanded {
-  color: #03b2cb; }
-
-.rrui__select__button,
-.rrui__select__option {
-  color: inherit; }
-
-.rrui__select__button--empty .rrui__select__selected-label {
-  color: #888888; }
-
-.rrui__select__button--invalid {
-  border-bottom-color: #d30f00; }
-
-/* Not introducing an animation on `.rrui__select__option`
-   because it would introduce a little clutter due to
-   focused option animation in autocomplete mode */
-.rrui__select__button {
-  -webkit-transition: color 30ms ease-out;
-  -o-transition: color 30ms ease-out;
-  transition: color 30ms ease-out; }
 
 .rrui__select__selected-content {
   display: -webkit-box;
@@ -1497,6 +1578,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -o-text-overflow: ellipsis;
      text-overflow: ellipsis; }
 
+.rrui__select .rrui__ellipsis {
+  position: absolute;
+  right: calc(0.6rem / 3);
+  top: calc(50% - 0.6rem / 6);
+  pointer-events: none; }
+
 .rrui__select__arrow {
   width: 0;
   height: 0;
@@ -1512,72 +1599,74 @@ but rather `width: auto` or `left: 0; right: 0;`.
   border-left-color: transparent;
   border-right-color: transparent; }
 
-/*.rrui__select__arrow--expanded
-{
-	opacity: 0.3;
-}*/
-.rrui__select__close {
-  /*
-	Set `display` to `block` for fullscreen `.rrui__expandable` design.
-	display : block;
-	*/
-  display: none; }
-
 .rrui__select--compact {
   /* Reverts `width: 100%` set at the top of this file */
   width: auto;
   /* If it's `compact` then it's most likely inlined */
   display: inline-block; }
 
-.rrui__select--compact .rrui__select__options {
+.rrui__select--compact .rrui__expandable-list {
   width: auto; }
 
-.rrui__select__button--disabled,
-.rrui__select__option--disabled {
+.rrui__select__button--disabled {
   /* "pointer-events" prevents "cursor: wait" from working */
   pointer-events: none; }
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
-.rrui__select__button,
-.rrui__select__autocomplete {
+.rrui__select__button {
   width: 100%; }
 
 .rrui__select__native {
+  cursor: pointer;
+  outline: none; }
+
+.rrui__select__native--overlay {
   position: absolute;
   height: 100%;
   width: 100%;
-  opacity: 0;
-  border: 0;
-  cursor: pointer; }
-
-.rrui__select .rrui__ellipsis {
-  position: absolute;
-  right: calc(0.6rem / 3);
-  top: calc(50% - 0.6rem / 6);
-  pointer-events: none; }
-
-.rrui__select__autocomplete {
-  padding-right: calc(0.6rem * 2.5); }
-
-/* Hiding autocomplete input like this so that can */
-/* focus it programmatically when the expand button is clicked. */
-.rrui__select__autocomplete--hidden {
-  position: absolute;
-  z-index: -1;
   opacity: 0; }
 
 .rrui__select__toggler {
   display: inline-block; }
 
-.rrui__select__options--scroll {
-  /* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch; }
-
 .rrui__shadow {
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
           box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); }
+
+.rrui__slideout-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  min-height: 100%;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  overflow-y: auto;
+  opacity: 0.9;
+  background-color: #000000;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0);
+  -webkit-transition: -webkit-transform 120ms ease-out;
+  transition: -webkit-transform 120ms ease-out;
+  -o-transition: transform 120ms ease-out;
+  transition: transform 120ms ease-out;
+  transition: transform 120ms ease-out, -webkit-transform 120ms ease-out; }
+
+.rrui__slideout-menu__item {
+  display: block;
+  height: calc(0.6rem * 4);
+  line-height: calc(0.6rem * 4);
+  padding-left: calc(0.6rem * 2.5);
+  padding-right: calc(0.6rem * 2.5);
+  color: #ffffff; }
+
+.rrui__slideout-menu--expanded {
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.4); }
 
 .rrui__snackbar__container {
   display: -webkit-box;
