@@ -81,7 +81,9 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-  width: calc(100% + 0.6rem * 1.5 * 2); }
+  width: calc(100% + 0.6rem * 1.5 * 2);
+  /* Makes `border-bottom` visible on an iPhone */
+  margin-top: 1px; }
 
 .rrui__autocomplete--compact {
   /* Reverts `width: 100%` set at the top of this file */
