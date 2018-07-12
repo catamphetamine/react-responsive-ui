@@ -1,5 +1,3 @@
-
-/* `<Select autocomplete/>` goes fullscreen when expanded */
 .rrui__autocomplete--expanded .rrui__autocomplete__input
 {
 	position         : fixed;

@@ -27,28 +27,19 @@ window.ExampleListCustomContent = React.createClass
 					</List.Item>
 				</List>
 
-<Highlight lang="jsx">{`
-<List className="rrui__shadow">
-  <List.Item value="AF" icon={Icon} label="Afghanistan" />
-  <List.Item value="BB" icon={Icon} label="Barbados" />
-  <List.Item value="CA" icon={Icon} label="Canada" />
-</List>
-
-const Icon = ({ value, label, className }) => (
-  <img
-    className={\`\${className} country-icon\`}
-    title={label}
-    src={\`https://lipis.github.io/flag-icon-css/flags/4x3/\${value.toLowerCase()}.svg\`}/>
-)
-`}</Highlight>
-
-<Highlight lang="css">{`
-.country-icon {
-	width  : 20px;
-	height : 14px;
-	border : 1px solid black;
-}
-`}</Highlight>
+				<Highlight lang="jsx">{`
+					<List className="rrui__shadow">
+						<List.Item value="PD">
+							<img src="..."/> Pavel Durov
+						</List.Item>
+						<List.Item value="DT">
+							<img src="..."/> Donald Trump
+						</List.Item>
+						<List.Item value="ML">
+							<img src="..."/> Monica Lent
+						</List.Item>
+					</List>
+				`}</Highlight>
 
 			</Example>
 		)

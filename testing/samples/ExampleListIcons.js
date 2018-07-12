@@ -26,30 +26,23 @@ window.ExampleListIcons = React.createClass
 
 				Value: {this.state.value === undefined ? '(none)' : this.state.value}
 
-<Highlight lang="jsx">{`
-<List
-  className="rrui__shadow"
-  onSelectItem={ value => this.setState({ value }) }>
-  <List.Item value="AF" icon={Icon} label="Afghanistan" />
-  <List.Item value="BB" icon={Icon} label="Barbados" />
-  <List.Item value="CA" icon={Icon} label="Canada" />
-</List>
+				<Highlight lang="jsx">{`
+					<List
+						className="rrui__shadow"
+						onSelectItem={ value => this.setState({ value }) }>
 
-const Icon = ({ value, label, className }) => (
-  <img
-    className={\`\${className} country-icon\`}
-    title={label}
-    src={\`https://lipis.github.io/flag-icon-css/flags/4x3/\${value.toLowerCase()}.svg\`}/>
-)
-`}</Highlight>
+						<List.Item value="AF" icon={Flag} label="Afghanistan" />
+						<List.Item value="BB" icon={Flag} label="Barbados" />
+						<List.Item value="CA" icon={Flag} label="Canada" />
+					</List>
 
-<Highlight lang="css">{`
-.country-icon {
-	width  : 20px;
-	height : 14px;
-	border : 1px solid black;
-}
-`}</Highlight>
+					const Flag = ({ value, label, className }) => (
+						<img
+							className={\`\${className} country-icon\`}
+							title={label}
+							src={\`https://lipis.github.io/flag-icon-css/flags/4x3/\${value.toLowerCase()}.svg\`}/>
+					)
+				`}</Highlight>
 
 			</Example>
 		)

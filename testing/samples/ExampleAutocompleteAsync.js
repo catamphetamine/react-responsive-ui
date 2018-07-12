@@ -34,7 +34,6 @@ window.ExampleAutocompleteAsync = React.createClass
 				<Highlight lang="jsx">{`
 					<Autocomplete
 						label="Fruit"
-						notFound="Not found"
 						value={...}
 						onChange={...}
 						getOptions={async (query) => await httpClient.get(\u0060/search?query=\${query}\u0060)}

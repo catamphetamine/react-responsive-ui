@@ -51,6 +51,7 @@ window.ExampleSelectNative = React.createClass
 					<Select
 						native
 						label="Fruit"
+						placeholder="Select"
 						value={...}
 						onChange={...}
 						options={[{ value: 'A', label: 'Apple' }, ...]} />
