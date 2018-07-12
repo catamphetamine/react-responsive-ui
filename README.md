@@ -79,9 +79,9 @@ Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) examp
 @import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 720px)
 /* Tweaks `<Snackbar/>`s for mobile devices a bit. */
 @import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 720px)
+/* Places a click-capturing overlay above `<DatePicker/>` input. */
+@import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 720px)
 ```
-
-<!-- @import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 720px) -->
 
 SCSS `@import` example:
 
@@ -119,7 +119,7 @@ require('react-responsive-ui/style.css')
 require('./src/styles/react-responsive-ui-variables.css')
 ```
 
-Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-css-variables`](https://github.com/MadLittleMods/postcss-css-variables). Check that it actually replaces `var()`s with the actual values in the output CSS ([a working example](https://github.com/catamphetamine/webpack-react-redux-server-side-render-example/blob/master/src/styles/react-responsive-ui.scss)).
+Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-css-variables`](https://github.com/MadLittleMods/postcss-css-variables). Check that it actually replaces `var()`s with the actual values in the output CSS.
 
 An example for Webpack and SCSS:
 
@@ -132,6 +132,7 @@ An example for Webpack and SCSS:
   @import "~react-responsive-ui/small-screen/DatePicker.InputOverlay";
 }
 
+// Replace the default variable values.
 :root {
   --rrui-unit               : 12px;
   --rrui-white-color        : #f0f7ff;
@@ -141,6 +142,8 @@ An example for Webpack and SCSS:
   --rrui-gray-color         : #7f7f7f;
 }
 ```
+
+[An example for PostCSS](https://github.com/catamphetamine/webpack-react-redux-server-side-render-example/blob/master/src/styles/react-responsive-ui.css)
 
 ## Validation
 
