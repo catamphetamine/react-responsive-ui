@@ -12,9 +12,9 @@ from './modules/Page'
 
 export
 {
-	default as SlideoutMenu
+	default as SlideOutMenu
 }
-from './modules/SlideoutMenu'
+from './modules/SlideOutMenu'
 
 export
 {

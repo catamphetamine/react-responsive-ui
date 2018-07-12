@@ -4,7 +4,7 @@ exports = module.exports = {}
 
 exports.PageAndMenu = require('./commonjs/PageAndMenu').default
 exports.Page = require('./commonjs/Page').default
-exports.SlideoutMenu = require('./commonjs/SlideoutMenu').default
+exports.SlideOutMenu = require('./commonjs/SlideOutMenu').default
 exports.MenuButton = require('./commonjs/MenuButton').default
 exports.Form = require('./commonjs/Form').default
 exports.Snackbar = require('./commonjs/Snackbar').default

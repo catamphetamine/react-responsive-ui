@@ -13,7 +13,7 @@ import
 	TextInput,
 	Select,
 	Autocomplete,
-	Menu,
+	ExpandableMenu,
 	Button,
 	Switch,
 	Checkbox,

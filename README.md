@@ -16,7 +16,7 @@ npm install react-responsive-ui --save
 
 See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
 
-`<Select/>` component requires `Promise` (get a polyfill for IE 11).
+Expandable components require `Promise` (get a polyfill for IE 11).
 
 ## Reducing footprint
 
@@ -68,13 +68,16 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ## Small Screen
 
-The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. E.g. `<Select/>`s, `<DatePicker/>`s and `<Modal/>`s can open in fullscreen and `<Snackbar/>` can be centered rather than placed in the lower left corner.
+The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. E.g. `<Select/>`s, `<Autocomplete/>`s, `<ExpandableMenu/>`s, `<DatePicker/>`s and `<Modal/>`s can open in fullscreen and `<Snackbar/>` are expanded in full screen (not neccessarily a good idea though).
 
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 
 ```css
+/* Main style. */
 @import url(~react-responsive-ui/style.css)
+/* Tweaks `<Modal/>`s for mobile devices a bit. */
 @import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 720px)
+/* Tweaks `<Snackbar/>`s for mobile devices a bit. */
 @import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 720px)
 ```
 
