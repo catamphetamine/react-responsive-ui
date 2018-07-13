@@ -262,7 +262,7 @@ export default class Select extends Component
 			matches : undefined
 		})
 
-		if (!collapsedDueToItemBeingSelected)
+		if (!collapsedDueToItemBeingSelected && !this.collapsedDueToEmptyValueOnEnter)
 		{
 			this.setState
 			({
@@ -382,7 +382,7 @@ export default class Select extends Component
 						onPreloadStateChange={this.onPreloadStateChange}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						selectedItemValue={value}
+						selectedItemValue={inputValue === '' ? undefined : value}
 						onSelectItem={this.setValue}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
@@ -474,7 +474,9 @@ export default class Select extends Component
 
 	onInputValueChange = (value) =>
 	{
-		if (!value)
+		const { isExpanded } = this.state
+
+		if (!value && isExpanded)
 		{
 			this.list.focusItem(undefined)
 		}
@@ -502,8 +504,10 @@ export default class Select extends Component
 			return
 		}
 
-		if (submitFormOnCtrlEnter(event, this.input)) {
-			return
+		if (!isExpanded) {
+			if (submitFormOnCtrlEnter(event, this.input)) {
+				return
+			}
 		}
 
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
@@ -515,18 +519,21 @@ export default class Select extends Component
 			// "Up" arrow.
 			// Select the previous item (if present).
 			case 38:
-				if (this.list.getFocusedItemIndex() === undefined)
+				if (isExpanded)
 				{
-					// Don't select any list item.
-				}
-				else if (this.list.getFocusedItemIndex() === 0)
-				{
-					this.list.focusItem(undefined)
-					event.preventDefault()
-				}
-				else
-				{
-					this.list.onKeyDown(event)
+					if (this.list.getFocusedItemIndex() === undefined)
+					{
+						// Don't select any list item.
+					}
+					else if (this.list.getFocusedItemIndex() === 0)
+					{
+						this.list.focusItem(undefined)
+						event.preventDefault()
+					}
+					else
+					{
+						this.list.onKeyDown(event)
+					}
 				}
 				return
 
@@ -546,28 +553,49 @@ export default class Select extends Component
 
 			// "Enter".
 			case 13:
+				if (!inputValue)
+				{
+					if (isExpanded && this.list.getFocusedItemIndex() === undefined)
+					{
+						event.preventDefault()
+						this.setValue(undefined)
+
+						this.focusAfterCollapse = true
+						this.collapsedDueToEmptyValueOnEnter = true
+						this.collapse()
+						this.focusAfterCollapse = undefined
+						this.collapsedDueToEmptyValueOnEnter = undefined
+
+						return
+					}
+
+					if (!isExpanded)
+					{
+						if (isEmptyValue(value))
+						{
+							// Submit containing `<form/>`.
+							// If the value is required then expand instead.
+							if (required)
+							{
+								event.preventDefault()
+								this.expand()
+							}
+							return
+						}
+
+						event.preventDefault()
+						this.setValue(undefined)
+						return
+					}
+				}
+
 				// Select the currently focused item (if expanded).
 				if (isExpanded)
 				{
-					if (!inputValue && this.list.getFocusedItemIndex() === undefined)
-					{
-						this.setValue(undefined)
-						this.focusAfterCollapse = true
-						this.collapse()
-						this.focusAfterCollapse = undefined
-					}
-					else
-					{
-						this.list.onKeyDown(event)
-					}
+					this.list.onKeyDown(event)
+					return
 				}
-				// Submit containing `<form/>`.
-				// Expand otherwise.
-				else if (required)
-				{
-					event.preventDefault()
-					this.expand()
-				}
+
 				return
 		}
 	}
@@ -737,7 +765,8 @@ export default class Select extends Component
 
 		this.collapse()
 
-		if (!inputValue) {
+		if (!inputValue)
+		{
 			value = undefined
 			this.setValue(value)
 		}

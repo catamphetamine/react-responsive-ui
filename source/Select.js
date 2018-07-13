@@ -476,6 +476,7 @@ export default class Select extends Component
 	onKeyDown = (event) =>
 	{
 		const { value, required } = this.props
+		const { isExpanded } = this.state
 
 		// Reset "event came from native select" flag.
 		const fromNativeSelect = this.onKeyDownFromNativeSelect
@@ -485,8 +486,10 @@ export default class Select extends Component
 			return
 		}
 
-		if (submitFormOnCtrlEnter(event, this.selectButton)) {
-			return
+		if (!isExpanded) {
+			if (submitFormOnCtrlEnter(event, this.selectButton)) {
+				return
+			}
 		}
 
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {

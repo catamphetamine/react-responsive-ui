@@ -147,12 +147,11 @@ export default class Expandable extends Component
 			return Promise.resolve()
 		}
 
-		clearTimeout(this.scrollIntoViewTimer)
-		clearTimeout(this.removeFromDOMTimer)
-
 		// Collapse.
 		if (!expand)
 		{
+			clearTimeout(this.scrollIntoViewTimer)
+
 			if (onCollapse) {
 				onCollapse()
 			}
@@ -173,6 +172,8 @@ export default class Expandable extends Component
 		// Expand.
 		return this.preload().then(() => new Promise((resolve) =>
 		{
+			clearTimeout(this.removeFromDOMTimer)
+
 			this.setState
 			({
 				shouldRender : true
@@ -285,14 +286,8 @@ export default class Expandable extends Component
 		// to the top of the page, therefore turn it off for IE.
 		this.removeFromDOMTimer = setTimeout(() =>
 		{
-			const { expanded } = this.state
-
-			// If still not expanded.
-			if (!expanded)
-			{
-				// Re-render to remove the options DOM nodes.
-				this.setState({ shouldRender : false })
-			}
+			// Re-render to remove the options DOM nodes.
+			this.setState({ shouldRender : false })
 		},
 		expandAnimationDuration * 1.1)
 	}
