@@ -1,6 +1,10 @@
-window.ExampleModal = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleModal = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -100,4 +104,4 @@ window.ExampleModal = React.createClass
 			</Example>
 		)
 	}
-})
+}

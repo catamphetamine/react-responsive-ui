@@ -1,6 +1,10 @@
-window.ExampleList = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleList = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -47,4 +51,4 @@ window.ExampleList = React.createClass
 			</Example>
 		)
 	}
-})
+}

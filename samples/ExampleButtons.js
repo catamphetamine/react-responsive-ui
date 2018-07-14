@@ -1,6 +1,10 @@
-window.ExampleButtons = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleButtons = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -122,4 +126,4 @@ const submit = () => {
 			</Example>
 		)
 	}
-})
+}

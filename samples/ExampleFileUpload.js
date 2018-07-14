@@ -1,6 +1,6 @@
-let FileUploadArea = React.createClass
-({
-	render: function()
+class FileUploadArea extends React.Component
+{
+	render()
 	{
 		const
 		{
@@ -23,19 +23,24 @@ let FileUploadArea = React.createClass
 			</div>
 		)
 	}
-})
+}
 
 FileUploadArea = CanDrop(File, (props, file) => props.onUpload(file, 'dropped'))(FileUploadArea)
 
-window.ExampleFileUpload = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleFileUpload = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+		this.onUpload = this.onUpload.bind(this)
+	}
 
 	onUpload(file, action)
 	{
 		this.setState({ file })
 		alert(`File ${action}: ${file.name}`)
-	},
+	}
 
 	render()
 	{
@@ -53,4 +58,4 @@ window.ExampleFileUpload = React.createClass
 			</Example>
 		)
 	}
-})
+}

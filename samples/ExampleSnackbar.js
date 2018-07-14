@@ -6,9 +6,13 @@ const NewMessageNotification = ({ from, hide }) => (
 	</div>
 )
 
-window.ExampleSnackbar = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleSnackbar = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -119,4 +123,4 @@ newMessageReceived({
 			</Example>
 		)
 	}
-})
+}

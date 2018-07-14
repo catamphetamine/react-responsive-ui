@@ -1,6 +1,10 @@
-window.ExampleSelectNative = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleSelectNative = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -60,4 +64,4 @@ window.ExampleSelectNative = React.createClass
 			</Example>
 		)
 	}
-})
+}

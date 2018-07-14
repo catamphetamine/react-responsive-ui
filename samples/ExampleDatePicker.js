@@ -1,6 +1,10 @@
-window.ExampleDatePicker = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleDatePicker = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -32,4 +36,4 @@ window.ExampleDatePicker = React.createClass
 			</Example>
 		)
 	}
-})
+}

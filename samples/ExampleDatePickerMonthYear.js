@@ -1,6 +1,10 @@
-window.ExampleDatePickerMonthYear = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleDatePickerMonthYear = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -30,4 +34,4 @@ window.ExampleDatePickerMonthYear = React.createClass
 			</Example>
 		)
 	}
-})
+}

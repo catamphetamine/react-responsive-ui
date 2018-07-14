@@ -1,10 +1,10 @@
-window.ExampleAutocomplete = React.createClass
-({
-	getInitialState()
+window.ExampleAutocomplete = class ExampleAutocomplete extends React.Component
+{
+	constructor()
 	{
-		return { value: 'B' }
-		return {}
-	},
+		super()
+		this.state = { value: 'B' }
+	}
 
 	render()
 	{
@@ -16,34 +16,7 @@ window.ExampleAutocomplete = React.createClass
 					label="Food"
 					name="dropdown"
 					value={this.state.value}
-					options={[{
-						value: 'A',
-						label: 'Apple'
-					},
-					{
-						value: 'B',
-						label: 'Banana'
-					},
-					{
-						value: 'C',
-						label: 'Cranberry'
-					},
-					{
-						value: 'D',
-						label: 'Date'
-					},
-					{
-						value: 'E',
-						label: 'Elderberry'
-					},
-					{
-						value: 'F',
-						label: 'Fig'
-					},
-					{
-						value: 'G',
-						label: 'Garlic'
-					}]}
+					options={options}
 					onChange={ value => this.setState({ value }) }/>
 
 				Value: {this.state.value ? this.state.value : '(empty)'}
@@ -59,4 +32,34 @@ window.ExampleAutocomplete = React.createClass
 			</Example>
 		)
 	}
-})
+}
+
+const options =
+[{
+	value: 'A',
+	label: 'Apple'
+},
+{
+	value: 'B',
+	label: 'Banana'
+},
+{
+	value: 'C',
+	label: 'Cranberry'
+},
+{
+	value: 'D',
+	label: 'Date'
+},
+{
+	value: 'E',
+	label: 'Elderberry'
+},
+{
+	value: 'F',
+	label: 'Fig'
+},
+{
+	value: 'G',
+	label: 'Garlic'
+}]

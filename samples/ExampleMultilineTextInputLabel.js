@@ -1,6 +1,10 @@
-window.ExampleMultilineTextInputLabel = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleMultilineTextInputLabel = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -33,4 +37,4 @@ window.ExampleMultilineTextInputLabel = React.createClass
 			</Example>
 		)
 	}
-})
+}

@@ -1,6 +1,10 @@
-window.ExampleExpandable = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleExpandable = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -46,4 +50,4 @@ window.ExampleExpandable = React.createClass
 			</Example>
 		)
 	}
-})
+}

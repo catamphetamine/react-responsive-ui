@@ -1,6 +1,10 @@
-window.ExampleSwitch = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleSwitch = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -36,4 +40,4 @@ window.ExampleSwitch = React.createClass
 			</Example>
 		)
 	}
-})
+}

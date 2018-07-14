@@ -1,6 +1,10 @@
-window.ExampleSelectIcons = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleSelectIcons = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -47,4 +51,4 @@ window.ExampleSelectIcons = React.createClass
 			</Example>
 		)
 	}
-})
+}

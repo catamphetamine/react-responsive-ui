@@ -2,7 +2,7 @@
 	<head>
 		<title>React Responsive UI</title>
 
-		<!-- React 15.3.1 -->
+		<!-- React 16.2.0 -->
 		<script src="./lib/react.js"></script>
 		<script src="./lib/react-dom.js"></script>
 		<!-- Babel 5.8 -->
@@ -401,7 +401,6 @@
 		<script src="./samples/ExampleListIcons.js" type="text/babel"></script>
 		<script src="./samples/ExampleListCustomContent.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelect.js" type="text/babel"></script>
-		<script src="./samples/ExampleSelectAsync.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectNative.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectNativeExpanded.js" type="text/babel"></script>
 		<script src="./samples/ExampleSelectIcons.js" type="text/babel"></script>
@@ -423,11 +422,14 @@
 		<div id="content"></div>
 
 		<script type="text/babel">
-			let Content = React.createClass
-			({
-				getInitialState: function()
+			let Content = class _Content extends React.Component
+			{
+				constructor()
 				{
-					return {
+					super()
+
+					this.state =
+					{
 						phone          : '',
 						text_value     : '',
 						select_value   : 'B',
@@ -435,9 +437,9 @@
 						// selected: 'A',
 						// switched: true,
 					}
-				},
+				}
 
-				render: function()
+				render()
 				{
 					return (
 						<PageAndMenu>
@@ -542,7 +544,7 @@
 						</PageAndMenu>
 					)
 				}
-			})
+			}
 
 			Content = DragAndDrop()(Content)
 

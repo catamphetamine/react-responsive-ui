@@ -1,10 +1,10 @@
-window.ExampleAutocompleteAsync = React.createClass
-({
-	getInitialState()
+window.ExampleAutocompleteAsync = class ExampleAutocompleteAsync extends React.Component
+{
+	constructor()
 	{
-		return { value: 'B' }
-		return {}
-	},
+		super()
+		this.state = { value: 'B' }
+	}
 
 	render()
 	{
@@ -51,7 +51,7 @@ window.ExampleAutocompleteAsync = React.createClass
 			</Example>
 		)
 	}
-})
+}
 
 const options =
 [{

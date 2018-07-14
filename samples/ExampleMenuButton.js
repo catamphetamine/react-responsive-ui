@@ -1,6 +1,10 @@
-window.ExampleMenuButton = React.createClass
-({
-  getInitialState() { return {} },
+window.ExampleMenuButton = class ExampleComponent extends React.Component
+{
+  constructor()
+  {
+    super()
+    this.state = {}
+  }
 
 	render()
 	{
@@ -45,4 +49,4 @@ window.ExampleMenuButton = React.createClass
 			</Example>
 		)
 	}
-})
+}

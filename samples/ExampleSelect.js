@@ -1,10 +1,10 @@
-window.ExampleSelect = React.createClass
-({
-	getInitialState()
+window.ExampleSelect = class ExampleComponent extends React.Component
+{
+	constructor()
 	{
-		// return { value: 'B' }
-		return {}
-	},
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -73,4 +73,4 @@ window.ExampleSelect = React.createClass
 			</Example>
 		)
 	}
-})
+}

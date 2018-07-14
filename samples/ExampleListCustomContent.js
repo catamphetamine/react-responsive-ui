@@ -1,6 +1,10 @@
-window.ExampleListCustomContent = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleListCustomContent = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -44,4 +48,4 @@ window.ExampleListCustomContent = React.createClass
 			</Example>
 		)
 	}
-})
+}

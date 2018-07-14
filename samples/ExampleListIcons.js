@@ -5,9 +5,13 @@ const ListIcon = ({ value, label, className }) => (
 		src={`https://lipis.github.io/flag-icon-css/flags/4x3/${value.toLowerCase()}.svg`}/>
 )
 
-window.ExampleListIcons = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleListIcons = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -47,4 +51,4 @@ window.ExampleListIcons = React.createClass
 			</Example>
 		)
 	}
-})
+}

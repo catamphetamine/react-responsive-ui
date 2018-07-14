@@ -1,6 +1,10 @@
-window.ExampleActivityIndicator = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleActivityIndicator = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -9,17 +13,17 @@ window.ExampleActivityIndicator = React.createClass
 
 				<ActivityIndicator />
 
-<Highlight lang="jsx">{`
-<ActivityIndicator className="..." />
-`}</Highlight>
+				<Highlight lang="jsx">{`
+					<ActivityIndicator className="..." />
+				`}</Highlight>
 
-<Highlight lang="css">{`
-.rrui__activity-indicator {
-  color     : black;
-  font-size : 30px;
-}
-`}</Highlight>
+				<Highlight lang="css">{`
+					.rrui__activity-indicator {
+						color     : black;
+						font-size : 30px;
+					}
+				`}</Highlight>
 			</Example>
 		)
 	}
-})
+}

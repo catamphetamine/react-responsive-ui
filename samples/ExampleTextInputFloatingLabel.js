@@ -1,6 +1,10 @@
-window.ExampleTextInputFloatingLabel = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleTextInputFloatingLabel = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -27,4 +31,4 @@ window.ExampleTextInputFloatingLabel = React.createClass
 			</Example>
 		)
 	}
-})
+}

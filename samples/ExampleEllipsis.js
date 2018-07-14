@@ -1,6 +1,10 @@
-window.ExampleEllipsis = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleEllipsis = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -23,4 +27,4 @@ window.ExampleEllipsis = React.createClass
 			</Example>
 		)
 	}
-})
+}

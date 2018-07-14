@@ -1,6 +1,10 @@
-window.ExampleCheckbox = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleCheckbox = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -69,4 +73,4 @@ window.ExampleCheckbox = React.createClass
 			</Example>
 		)
 	}
-})
+}

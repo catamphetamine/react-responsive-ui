@@ -1,6 +1,10 @@
-window.ExampleTextInput = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleTextInput = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -40,4 +44,4 @@ window.ExampleTextInput = React.createClass
 			</Example>
 		)
 	}
-})
+}

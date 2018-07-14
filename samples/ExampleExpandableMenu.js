@@ -1,5 +1,11 @@
-window.ExampleExpandableMenu = React.createClass
-({
+window.ExampleExpandableMenu = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
+
 	render()
 	{
 		return (
@@ -29,4 +35,4 @@ window.ExampleExpandableMenu = React.createClass
 			</Example>
 		)
 	}
-})
+}

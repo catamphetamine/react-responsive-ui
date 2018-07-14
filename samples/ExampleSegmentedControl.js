@@ -1,6 +1,10 @@
-window.ExampleSegmentedControl = React.createClass
-({
-	getInitialState() { return {} },
+window.ExampleSegmentedControl = class ExampleComponent extends React.Component
+{
+	constructor()
+	{
+		super()
+		this.state = {}
+	}
 
 	render()
 	{
@@ -41,4 +45,4 @@ window.ExampleSegmentedControl = React.createClass
 			</Example>
 		)
 	}
-})
+}
