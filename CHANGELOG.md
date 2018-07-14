@@ -9,6 +9,8 @@
 0.13.0 / 12.07.2018
 ===================
 
+* (breaking change) React >= 16 is required (uses "React Portals" for `<Tooltip/>`).
+
 * (breaking change) Some things got refactored so something might theoretically break.
 
 * (breaking change) `<MenuButton/>` changed the icon for SVG to a CSS-animated HTML.

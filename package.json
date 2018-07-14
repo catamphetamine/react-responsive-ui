@@ -5,7 +5,8 @@
   "main": "index.common.js",
   "module": "index.js",
   "peerDependencies": {
-    "react": ">=0.14"
+    "react": ">=0.16",
+    "react-dom": ">=0.16"
   },
   "dependencies": {
     "classnames": "^2.2.5",
