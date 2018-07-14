@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -7,12 +8,8 @@ export default class Tooltip extends PureComponent
 {
 	static propTypes =
 	{
-		// Tooltip text.
-		text : PropTypes.string,
-
 		// Tooltip content.
-		// `content` component gets passed `{...rest}` props.
-		content : PropTypes.func,
+		content : PropTypes.node.isRequired,
 
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
@@ -53,16 +50,12 @@ export default class Tooltip extends PureComponent
 		container : () => document.body
 	}
 
-	componentDidUpdate(prevProps)
-	{
-		const { text } = this.props
+	state = {}
 
-		// Update tooltip text
-		if (this.tooltip && text !== prevProps.text)
-		{
-			this.tooltip.textContent = text
-		}
-	}
+	// componentDidMount()
+	// {
+	// 	this.create_tooltip()
+	// }
 
 	componentWillUnmount()
 	{
@@ -74,11 +67,10 @@ export default class Tooltip extends PureComponent
 
 	create_tooltip()
 	{
-		const { text, tooltipClassName } = this.props
+		const { tooltipClassName } = this.props
 
 		this.tooltip = document.createElement('div')
 
-		// this.tooltip.style.display  = 'none'
 		this.tooltip.style.position = 'absolute'
 		this.tooltip.style.left = 0
 		this.tooltip.style.top  = 0
@@ -89,8 +81,6 @@ export default class Tooltip extends PureComponent
 		{
 			this.tooltip.classList.add(tooltipClassName)
 		}
-
-		this.tooltip.textContent = text
 
 		this.container().appendChild(this.tooltip)
 	}
@@ -119,7 +109,6 @@ export default class Tooltip extends PureComponent
 		const origin = this.origin
 
 		const origin_width  = origin.offsetWidth
-		// const origin_height = origin.offsetHeight
 
 		const _offset = offset(origin)
 
@@ -149,29 +138,34 @@ export default class Tooltip extends PureComponent
 		// Otherwise, the tooltip is hidden (or never been shown)
 		else
 		{
+			// Not creating in `componentDidMount()`
+			// therefore create it here.
 			if (!this.tooltip)
 			{
 				this.create_tooltip()
 			}
 
-			// this.tooltip.style.display = 'block'
-
 			// Play tooltip showing animation
 			animate = true
 		}
 
-		const { x, y } = this.calculate_coordinates()
-
-		this.tooltip.style.left = `${x}px`
-		this.tooltip.style.top  = `${y}px`
-
-		// Play tooltip showing animation
-		// (doing it after setting position because
-		//  setting position applies `display: block`)
-		if (animate)
+		// Now that `this.tooltip` has been created,
+		// re-render the component so that `ReactDOM.createPortal()` is called.
+		this.setState({ isShown: true }, () =>
 		{
-			this.tooltip.classList.add('rrui__tooltip--after-show')
-		}
+			const { x, y } = this.calculate_coordinates()
+
+			this.tooltip.style.left = `${x}px`
+			this.tooltip.style.top  = `${y}px`
+
+			// Play tooltip showing animation
+			// (doing it after setting position because
+			//  setting position applies `display: block`)
+			if (animate)
+			{
+				this.tooltip.classList.add('rrui__tooltip--after-show')
+			}
+		})
 	}
 
 	hide = () =>
@@ -194,16 +188,14 @@ export default class Tooltip extends PureComponent
 		{
 			this.hide_timeout = undefined
 			this.destroy_tooltip()
-			// this.tooltip.style.display = 'none'
-			// this.tooltip.classList.remove('rrui__tooltip--before-hide')
-			// this.tooltip.classList.remove('rrui__tooltip--after-show')
+			this.setState({ isShown: false })
 		},
 		hidingAnimationDuration)
 	}
 
 	on_mouse_enter = () =>
 	{
-		const { text } = this.props
+		const { content } = this.props
 
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -212,8 +204,9 @@ export default class Tooltip extends PureComponent
 			return
 		}
 
-		// If the tooltip has no text then don't show it.
-		if (!text)
+		// If the tooltip has no content then don't show it.
+		// Perhaps I added this because it seemed convenient.
+		if (!content)
 		{
 			return
 		}
@@ -263,13 +256,14 @@ export default class Tooltip extends PureComponent
 
 	on_touch_start = () =>
 	{
-		const { text } = this.props
+		const { content } = this.props
 
 		// mouse enter events won't be processed from now on
 		this.mobile = true
 
-		// If the tooltip has no text then don't show it.
-		if (!text)
+		// If the tooltip has no content then don't show it.
+		// Perhaps I added this because it seemed convenient.
+		if (!content)
 		{
 			return
 		}
@@ -286,14 +280,13 @@ export default class Tooltip extends PureComponent
 
 		const
 		{
+			content,
 			inline,
 			style,
 			className,
 			children,
 
 			// These properties are here just for `...rest`
-			text,
-			content,
 			delay,
 			hidingAnimationDuration,
 			container,
@@ -317,6 +310,7 @@ export default class Tooltip extends PureComponent
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
+				{ this.tooltip && ReactDOM.createPortal(content, this.tooltip) }
 			</div>
 		)
 	}

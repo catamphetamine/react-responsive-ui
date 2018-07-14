@@ -1,9 +1,5 @@
 <!-- Maybe somehow autoreplace CSS class names like `.menu-button-close__icon__icon-icon--modifier` with something like `.rrui-mbc-i-ii--m` to reduce the resulting application bundle size -->
 
-<!-- Maybe add support for React elements inside <Tooltip/>s: `<Tooltip content={<fasd/>}/>` -->
-
-<!-- Rewrite `<Tooltip/>` using React Portals -->
-
 <!-- Doesn't collapse `<ExpandableMenu/>` on an iPhone after any menu item was selected. -->
 
 0.13.0 / 12.07.2018
@@ -31,6 +27,10 @@
 
 * (breaking change) `<Select/>` `onToggle` property replaced with `onExpand` and `onCollapse`.
 
+* (breaking change) `<DatePicker/>` design changed.
+
+* (breaking change) `<Tooltip/>` now accepts `content` property instead of `text`, and `content` is now a `React.Element` instead of a function.
+
 * (breaking change) `<TextInput/>` no longer accepts `email` and `password` properties. Use `type="..."` directly instead.
 
 * (breaking change) `.rrui__button--link` CSS class renamed to `.rrui__button-reset--link`.
@@ -38,8 +38,6 @@
 * (breaking change) `Select.Fullscreen.css` renamed to `Expandable.Fullscreen.css`.
 
 * (breaking change) `DatePicker.Fullscreen.css` merged into `Expandable.Fullscreen.css`.
-
-* (breaking change) `<DatePicker/>` design changed.
 
 * `<TextInput/>` now accepts `inputComponent` property.
 
