@@ -5,7 +5,9 @@
 0.13.0 / 12.07.2018
 ===================
 
-* (breaking change) React >= 16 is required (uses "React Portals" for `<Tooltip/>`).
+* (breaking change) React >= 16.3 is required ("React Portals" are used for `<Tooltip/>`, which requires React >= 16; `react-dnd@5` requires React >= 16.3).
+
+* (breaking change) `react-dnd` updated from version `2.x` to version `5.x`.
 
 * (breaking change) Some things got refactored so something might theoretically break.
 
