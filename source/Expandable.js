@@ -109,10 +109,10 @@ export default class Expandable extends Component
 
 	isExpanded = () => this.state.expanded
 
-	expand   = (options) => this.toggle(true, options)
-	collapse = (options) => this.toggle(false, options)
+	expand   = (parameters) => this.toggle(true, parameters)
+	collapse = () => this.toggle(false)
 
-	toggle = (expand, options = {}) =>
+	toggle = (expand, parameters = {}) =>
 	{
 		const
 		{
@@ -126,26 +126,37 @@ export default class Expandable extends Component
 		}
 		= this.props
 
-		const { expanded, isPreloading } = this.state
+		const
+		{
+			expanded,
+			isPreloading
+		}
+		= this.state
 
 		// If no `expand` argument provided then just toggle.
 		if (expand === undefined) {
 			expand = !expanded
 		}
-		// Manual toogle to a certain state (expanded/collapsed).
+
+		// Don't collapse if already collapsed.
 		// Don't expand if already expanded
-		// (or collapse if already collapsed)
 		// until manually forcing a refresh of content.
-		else if (expand === expanded && !options.refresh) {
+
+		let refreshingExpanded
+
+		if (expand && expanded && parameters.refresh) {
+			refreshingExpanded = true
+		}
+
+		if (expand === expanded && !refreshingExpanded) {
 			return Promise.resolve()
 		}
 
-		// If clicked on the toggler the second time
-		// while content is already being preloaded
-		// then ignore the toggle call.
-		if (expand && isPreloading && !options.refresh) {
+		if (this.isToggling && !refreshingExpanded) {
 			return Promise.resolve()
 		}
+
+		this.isToggling = true
 
 		// Collapse.
 		if (!expand)
@@ -166,6 +177,8 @@ export default class Expandable extends Component
 				}
 
 				this.removeFromDOMAfterCollapsed()
+
+				this.isToggling = false
 			})
 		}
 
@@ -198,6 +211,8 @@ export default class Expandable extends Component
 
 						this.scrollIntoView()
 						resolve()
+
+						this.isToggling = false
 					})
 				},
 				10)

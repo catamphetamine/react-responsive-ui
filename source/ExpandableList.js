@@ -33,7 +33,7 @@ export default class ExpandableList extends Component
 	state = {}
 
 	toggle     = () => this.expandable.toggle()
-	expand     = () => this.expandable.expand()
+	expand     = (parameters) => this.expandable.expand(parameters)
 	collapse   = () => this.expandable.collapse()
 	isExpanded = () => this.expandable.isExpanded()
 	preload    = () => this.expandable.preload()

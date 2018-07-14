@@ -6,7 +6,7 @@
 
 <!-- Doesn't collapse `<ExpandableMenu/>` on an iPhone after any menu item was selected. -->
 
-0.13.0 / xx.07.2018
+0.13.0 / 12.07.2018
 ===================
 
 * (breaking change) Some things got refactored so something might theoretically break.

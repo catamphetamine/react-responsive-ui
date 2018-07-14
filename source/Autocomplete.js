@@ -170,11 +170,7 @@ export default class Select extends Component
 		options: [],
 
 		// `prevProps` for `getDerivedStateFromProps()`.
-		props:
-		{
-			value   : this.props.value,
-			options : this.props.options
-		}
+		props: {}
 	}
 
 	// Latest `async getOptions()` invocation timestamp (for throttling).
@@ -192,8 +188,7 @@ export default class Select extends Component
 			// `prevProps`.
 			props:
 			{
-				value,
-				options
+				value
 			}
 		}
 
@@ -203,7 +198,7 @@ export default class Select extends Component
 		{
 			// `<Autocomplete/>`'s selected option label
 			// is stored in a special `selectedOptionLabel` variable in `state`.
-			if (newState.props.value !== state.props.value)
+			if (value !== state.props.value)
 			{
 				newState.selectedOption = options.filter(_ => _.value === value)[0]
 				newState.inputValue = newState.selectedOption ? newState.selectedOption.label : ''
@@ -278,16 +273,18 @@ export default class Select extends Component
 		}
 	}
 
-	onExpand = () =>
+	onExpand = (options = {}) =>
 	{
-		if (!this.editing) {
-			this.setState({ matches: true })
-		}
-
 		this.setState({ isExpanded: true })
 	}
 
-	expand   = () => this.list.expand()
+	expand = () =>
+	{
+		// Reset the "matches" state before expanding.
+		this.setState({ matches: true }, this._expand)
+	}
+
+	_expand  = (parameters) => this.list.expand(parameters)
 	collapse = () => this.list.collapse()
 	toggle   = () => this.list.toggle()
 
@@ -466,9 +463,15 @@ export default class Select extends Component
 
 	expandOnFocus = () =>
 	{
-		if (this.dontExpandOnFocus !== true)
+		if (this.dontExpandOnFocus) {
+			return
+		}
+
+		const { isExpanded } = this.state
+
+		if (!isExpanded)
 		{
-			this.expand()
+			this.setState({ matches: true }, this.expand)
 		}
 	}
 
@@ -487,11 +490,7 @@ export default class Select extends Component
 		},
 		() =>
 		{
-			this.refreshOptions().then(() =>
-			{
-				this.editing = true
-				this.expand().then(() => this.editing = false, () => this.editing = false)
-			})
+			this._expand({ refresh: true })
 		})
 	}
 
@@ -540,7 +539,18 @@ export default class Select extends Component
 			// "Down" arrow.
 			// Select the next item (if present).
 			case 40:
-				return this.list.onKeyDown(event)
+				if (isExpanded)
+				{
+					// Navigate the list (if it was already expanded).
+					this.list.onKeyDown(event)
+				}
+				else
+				{
+					// Expand the list if it's collapsed.
+					event.preventDefault()
+					this.expand()
+				}
+				return
 
 			// "Escape".
 			// Collapse.
@@ -638,9 +648,8 @@ export default class Select extends Component
 
 	refreshOptions = () =>
 	{
-		let
+		const
 		{
-			options,
 			getOptions,
 			filterOptions
 		}
@@ -651,40 +660,24 @@ export default class Select extends Component
 		return new Promise((resolve) =>
 		{
 			// If throttled then schedule a future invocation.
-			if (getOptions && this.throttleFetchOptionsCall(resolve)) {
-				return
-			}
-
-			this.latestFetchOptionsCallTimestamp = Date.now()
-
-			options = options ? filterOptions(options, inputValue) : getOptions(inputValue)
-
-			if (Array.isArray(options))
+			if (getOptions)
 			{
-				if (options.length === 0)
-				{
-					return this.setState({ matches: false }, resolve)
+				if (this.throttleFetchOptionsCall(resolve)) {
+					return
 				}
 
-				return this.setState
-				({
-					matches : true,
-					options
-				},
-				resolve)
-			}
-			else
-			{
+				this.latestFetchOptionsCallTimestamp = Date.now()
+
 				const counter = this.counter.getNextCounter()
 
-				this.setState
+				return this.setState
 				({
 					isFetchingOptions : true,
 					fetchingOptionsCounter : counter
 				},
 				() =>
 				{
-					options.then((options) =>
+					getOptions(inputValue).then((options) =>
 					{
 						this.receiveNewOptions(options, counter, resolve)
 					},
@@ -695,6 +688,15 @@ export default class Select extends Component
 					})
 				})
 			}
+
+			const newOptions = filterOptions(this.props.options, inputValue)
+
+			return this.setState
+			({
+				matches : newOptions.length > 0,
+				options : newOptions.length > 0 ? newOptions : this.state.options
+			},
+			resolve)
 		})
 	}
 
