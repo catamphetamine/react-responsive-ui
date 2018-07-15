@@ -284,22 +284,12 @@ export default class Tooltip extends PureComponent
 			inline,
 			style,
 			className,
-			children,
-
-			// These properties are here just for `...rest`
-			delay,
-			hidingAnimationDuration,
-			container,
-			tooltipClassName,
-
-			// Pass through all other properties.
-			...rest
+			children
 		}
 		= this.props
 
 		return (
 			<div
-				{...rest}
 				ref={ this.storeOriginNode }
 				onMouseEnter={ this.on_mouse_enter }
 				onMouseLeave={ this.on_mouse_leave }
