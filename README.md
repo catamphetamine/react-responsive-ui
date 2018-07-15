@@ -18,30 +18,6 @@ See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It h
 
 Expandable components require `Promise` (get a polyfill for IE 11).
 
-## Reducing footprint
-
-Webpack 4 still can't "tree-shake" simple cases like
-
-```js
-import { Modal, Button, TextInput } from 'react-responsive-ui'
-```
-
-So if one's using only a small subset of this library it could be imported like so
-
-```js
-import Modal     from 'react-responsive-ui/commonjs/Modal'
-import Button    from 'react-responsive-ui/commonjs/Button'
-import TextInput from 'react-responsive-ui/commonjs/TextInput'
-```
-
-Which results in a much smaller bundle size.
-
-The same can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`. There's a catch though: those stylesheets are usually dependent on each other and, for example, the `<Button/>` component actually requires three different stylesheets to be imported:
-
-* `react-responsive-ui/styles/Button.css`
-* `react-responsive-ui/styles/ButtonReset.css`
-* `react-responsive-ui/styles/Input.css`
-
 ## CSS
 
 The CSS for this library must be included on a page too.
@@ -49,7 +25,6 @@ The CSS for this library must be included on a page too.
 #### When using Webpack
 
 ```js
-require('react-responsive-ui/variables.css')
 require('react-responsive-ui/style.css')
 ```
 
@@ -61,7 +36,6 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ```html
 <head>
-  <link rel="stylesheet" href="/css/react-responsive-ui/variables.css"/>
   <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
 </head>
 ```
@@ -144,6 +118,30 @@ An example for Webpack and SCSS:
 ```
 
 [An example for PostCSS](https://github.com/catamphetamine/webpack-react-redux-server-side-render-example/blob/master/src/styles/react-responsive-ui.css)
+
+## Reducing footprint
+
+Webpack 4 still can't "tree-shake" simple cases like
+
+```js
+import { Modal, Button, TextInput } from 'react-responsive-ui'
+```
+
+So if one's using only a small subset of this library it could be imported like so
+
+```js
+import Modal     from 'react-responsive-ui/commonjs/Modal'
+import Button    from 'react-responsive-ui/commonjs/Button'
+import TextInput from 'react-responsive-ui/commonjs/TextInput'
+```
+
+Which results in a much smaller bundle size.
+
+The same can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`. There's a catch though: those stylesheets are usually dependent on each other and, for example, the `<Button/>` component actually requires three different stylesheets to be imported:
+
+* `react-responsive-ui/styles/Button.css`
+* `react-responsive-ui/styles/ButtonReset.css`
+* `react-responsive-ui/styles/Input.css`
 
 ## Validation
 
