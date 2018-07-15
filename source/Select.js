@@ -270,7 +270,7 @@ export default class Select extends PureComponent
 				throw new Error(`"options" property is required for an "autocomplete" select`)
 			}
 
-			this.state.matching_options = this.get_matching_options(options, value)
+			this.state.matching_options = this.get_matching_options(options, undefined)
 		}
 
 		if (children && !menu)
