@@ -61,6 +61,7 @@
 
   /* Lightest Gray is used as `<Select/>` options hover background color. */
   /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
+  /* Lightest Gray is used as `<DatePicker/>`'s currently mouse-overed calendar day. */
   --rrui-gray-color-lightest : #f3f3f3;
 
   /* z-index */

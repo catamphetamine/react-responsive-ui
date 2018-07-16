@@ -344,15 +344,7 @@ export default class Select extends Component
 					</div>
 
 					{/* An arrow */}
-					{ !loading &&
-						<div
-							className={ classNames('rrui__select__arrow',
-							{
-								// CSS selector performance optimization
-								'rrui__select__arrow--expanded' : isExpanded,
-								'rrui__select__arrow--disabled' : disabled
-							}) }/>
-					}
+					{ !loading && <div className="rrui__select__arrow"/> }
 				</div>
 			</button>
 		)

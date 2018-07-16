@@ -1,7 +1,7 @@
 // Derived from `react-day-picker` example
 // http://react-day-picker.js.org/examples/?overlay
 
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
@@ -22,7 +22,7 @@ import { onBlur } from './utility/focus'
 // import parse_date_date_fns from 'date-fns/parse'
 // import format_date_date_fns from 'date-fns/format'
 
-export default class DatePicker extends PureComponent
+export default class DatePicker extends Component
 {
 	static propTypes =
 	{
@@ -528,7 +528,7 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
-	on_month_selected = (month) =>
+	onMonthChange = (month) =>
 	{
 		this.setState({ month })
 	}
@@ -541,7 +541,7 @@ export default class DatePicker extends PureComponent
 
 	onFocusOut = () =>
 	{
-		this.collapse()
+		// this.collapse()
 
 		const { onBlur, value } = this.props
 
@@ -630,7 +630,7 @@ export default class DatePicker extends PureComponent
 					focus={ this.focus }
 					userHasJustChangedYearOrMonth={ this.userHasJustChangedYearOrMonth }
 					selectedDay={ value }
-					onChange={ this.on_month_selected }
+					onChange={ this.onMonthChange }
 					selectYearsIntoPast={ selectYearsIntoPast }
 					selectYearsIntoFuture={ selectYearsIntoFuture } />
 			)
@@ -692,6 +692,7 @@ export default class DatePicker extends PureComponent
 						<DayPicker
 							ref={ this.storeCalendarComponent }
 							month={ month }
+							onMonthChange={ this.onMonthChange }
 							locale={ locale }
 							localeUtils={ localeUtils }
 							months={ months }
@@ -991,58 +992,94 @@ function trim_invalid_part(value, format)
 
 // http://react-day-picker.js.org/examples/?yearNavigation
 // Component will receive date, locale and localeUtils props
-function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, selectYearsIntoFuture, selectedDay, focus, userHasJustChangedYearOrMonth })
+class YearMonthSelector extends Component
 {
-	// The current year in the user's time zone.
-	const current_year = new Date().getFullYear()
-
-	let from_year = selectYearsIntoPast   ? current_year - selectYearsIntoPast   : current_year
-	const to_year = selectYearsIntoFuture ? current_year + selectYearsIntoFuture : current_year
-
-	const years = new Array(to_year - from_year + 1)
-
-	let i = 0
-	while (from_year + i <= to_year)
+	constructor(props)
 	{
-		years[i] = from_year + i
-		i++
+		super(props)
+
+		const
+		{
+			selectYearsIntoPast,
+			selectYearsIntoFuture,
+			selectedDay,
+			localeUtils
+		}
+		= this.props
+
+		// The current year in the user's time zone.
+		const current_year = new Date().getFullYear()
+
+		const from_year = selectYearsIntoPast   ? current_year - selectYearsIntoPast   : current_year
+		const   to_year = selectYearsIntoFuture ? current_year + selectYearsIntoFuture : current_year
+
+		const years = new Array(to_year - from_year + 1)
+
+		let i = 0
+		while (from_year + i <= to_year)
+		{
+			years[i] = from_year + i
+			i++
+		}
+
+		// Makes sure the currently selected year is in the list
+		// to not confuse the user.
+		if (selectedDay)
+		{
+			const selected_year = selectedDay.getFullYear()
+
+			if (selected_year < from_year)
+			{
+				years.unshift(selected_year)
+			}
+			else if (selected_year > to_year)
+			{
+				years.push(selected_year)
+			}
+		}
+
+		const months = localeUtils.getMonths()
+
+		this.months = months
+		this.years = years
 	}
 
-	// Makes sure the currently selected year is in the list
-	// to not confuse the user.
-	if (selectedDay)
+	onChangeMonth = (event) =>
 	{
-		const selected_year = selectedDay.getFullYear()
+		const { date, onChange } = this.props
 
-		if (selected_year < from_year)
-		{
-			years.unshift(selected_year)
-		}
-		else if (selected_year > to_year)
-		{
-			years.push(selected_year)
-		}
-	}
+		const month = event.target.value
 
-	const months = localeUtils.getMonths()
-
-	function on_change(event)
-	{
-		const month = parseInt(event.target.parentNode.firstChild.value)
-		const year  = parseInt(event.target.parentNode.lastChild.value)
-
-		if (month !== date.getMonth() || year !== date.getFullYear())
+		if (month !== date.getMonth())
 		{
 			// The date created is in the user's time zone and the time is `00:00`.
 			// The `day` is `undefined` which means the first one of the `month`.
-			onChange(new Date(year, month))
+			onChange(new Date(date.getFullYear(), month))
 		}
 
 		// restoreFocus()
 	}
 
-	function restoreFocus()
+	onChangeYear = (event) =>
 	{
+		const { date, onChange } = this.props
+
+		const year = event.target.value
+
+		if (year !== date.getFullYear())
+		{
+			// The date created is in the user's time zone and the time is `00:00`.
+			// The `day` is `undefined` which means the first one of the `month`.
+			onChange(new Date(year, date.getMonth()))
+		}
+
+		// restoreFocus()
+	}
+
+	restoreFocus = () =>
+	{
+		const { userHasJustChangedYearOrMonth } = this.props
+
 		// Doesn't work on iOS
 		// focus()
 
@@ -1054,39 +1091,70 @@ function YearMonthSelector({ date, localeUtils, onChange, selectYearsIntoPast, s
 		userHasJustChangedYearOrMonth()
 	}
 
-	return (
-		<div className="DayPicker-Caption">
-			<div className="DayPicker-CaptionSelects">
-				<select
-					onChange={ on_change }
-					onBlur={ restoreFocus }
-					value={ date.getMonth() }
-					tabIndex={ -1 }
-					className="DayPicker-MonthSelect">
+	render()
+	{
+		const { date } = this.props
 
-					{ months.map((month, i) => (
-						<option key={ i } value={ i }>
-							{ month }
-						</option>
-					)) }
-				</select>
+		return (
+			<div className="DayPicker-Caption">
+				<div className="DayPicker-CaptionSelects">
+					<div className="DayPicker-MonthSelect">
+						{/* Month `<select/>` */}
+						<select
+							onChange={ this.onChangeMonth }
+							onBlur={ this.restoreFocus }
+							value={ date.getMonth() }
+							tabIndex={ -1 }
+							className="rrui__select__native rrui__select__native--overlay">
 
-				<select
-					onChange={ on_change }
-					onBlur={ restoreFocus }
-					value={ date.getFullYear() }
-					tabIndex={ -1 }
-					className="DayPicker-YearSelect">
+							{ this.months.map((month, i) => (
+								<option key={ i } value={ i }>
+									{ month }
+								</option>
+							)) }
+						</select>
 
-					{ years.map((year, i) => (
-						<option key={ i } value={ year }>
-							{ year }
-						</option>
-					)) }
-				</select>
+						{/* Month `<select/>` button */}
+						<button type="button" className="rrui__button-reset">
+							<div className="rrui__select__selected-content">
+								<div className="rrui__select__selected-label">
+									{this.months[date.getMonth()]}
+								</div>
+								<div className="rrui__select__arrow"/>
+							</div>
+						</button>
+					</div>
+
+					<div className="DayPicker-YearSelect">
+						{/* Year `<select/>` */}
+						<select
+							onChange={ this.onChangeYear }
+							onBlur={ this.restoreFocus }
+							value={ date.getFullYear() }
+							tabIndex={ -1 }
+							className="rrui__select__native rrui__select__native--overlay">
+
+							{ this.years.map((year, i) => (
+								<option key={ i } value={ year }>
+									{ year }
+								</option>
+							)) }
+						</select>
+
+						{/* Year `<select/>` button */}
+						<button type="button" className="rrui__button-reset">
+							<div className="rrui__select__selected-content">
+								<div className="rrui__select__selected-label">
+									{date.getFullYear()}
+								</div>
+								<div className="rrui__select__arrow"/>
+							</div>
+						</button>
+					</div>
+				</div>
 			</div>
-		</div>
-	)
+		)
+	}
 }
 
 // Converts timezone to UTC while preserving the same time
