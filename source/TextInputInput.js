@@ -210,6 +210,7 @@ export default class TextInput extends PureComponent
 			inputRef,
 			containerRef,
 			floatingLabel,
+			required,
 			children,
 			...rest
 		}
