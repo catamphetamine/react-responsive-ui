@@ -16,8 +16,9 @@ window.ExampleDatePicker = class ExampleComponent extends React.Component
 					className="column-width"
 					label="Date"
 					value={this.state.value}
-					onChange={value => this.setState({ value })}
-					disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)}/>
+					onChange={value => this.setState({ value })}/>
+
+				{/* disabledDays={new Date(Date.now() - 24 * 60 * 60 * 1000)} */}
 
 				Value: {this.state.value ? this.state.value.toString() : '(empty)'}
 
