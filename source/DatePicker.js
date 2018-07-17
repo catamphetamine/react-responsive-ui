@@ -541,7 +541,7 @@ export default class DatePicker extends Component
 
 	onFocusOut = () =>
 	{
-		// this.collapse()
+		this.collapse()
 
 		const { onBlur, value } = this.props
 
