@@ -23,7 +23,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				</ExpandableMenu>
 
 				<Highlight lang="jsx">{`
-					<ExpandableMenu toggler={MenuToggler}>
+					<ExpandableMenu>
 						<button type="button"> Menu </button>
 						<List.Item onSelect={() => alert('Google')}> Google </List.Item>
 						<List.Item onSelect={() => alert('Yandex')}> Yandex </List.Item>
