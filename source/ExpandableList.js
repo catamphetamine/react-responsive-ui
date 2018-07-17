@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 
 import ScrollableList from './ScrollableList'
 import Expandable from './Expandable'
+import { findItemIndexByValue } from './List'
 
+@reactLifecyclesCompat
 export default class ExpandableList extends Component
 {
 	static propTypes =
@@ -29,6 +32,18 @@ export default class ExpandableList extends Component
 	{
 		alignment : 'left',
 		focusOnExpand : true
+	}
+
+	static getDerivedStateFromProps(props, state)
+	{
+		if (state.selectedItemValue !== props.selectedItemValue)
+		{
+			return {
+				selectedItemIndex : props.selectedItemValue === undefined ? undefined : findItemIndexByValue(props.selectedItemValue, props.children)
+			}
+		}
+
+		return null
 	}
 
 	state = {}

@@ -528,7 +528,7 @@ function haveItemsChanged(props, prevProps)
 	return false
 }
 
-function findItemIndexByValue(value, children)
+export function findItemIndexByValue(value, children)
 {
 	const items = React.Children.toArray(children)
 
