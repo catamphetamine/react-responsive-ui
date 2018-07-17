@@ -4,6 +4,8 @@ import classNames from 'classnames'
 
 import { getScrollbarWidth } from './utility/dom'
 
+import List from './List'
+
 export default class ScrollableList extends Component
 {
 	static propTypes =
