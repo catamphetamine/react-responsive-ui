@@ -47,8 +47,10 @@ npm-debug.log
 # tests aren't needed for npm
 /test/
 
-# browser builds
-/bundle/
+# demo
+/bundle/samples/
+/bundle/lib/
+/bundle/index.html
 
 # SASS sources
 *.scss
