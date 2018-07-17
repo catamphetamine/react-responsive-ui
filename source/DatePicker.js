@@ -7,6 +7,7 @@ import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
 import TextInput from './TextInputInputComponent'
+import Expandable from './Expandable'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 
