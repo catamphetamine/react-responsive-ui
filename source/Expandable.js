@@ -333,7 +333,7 @@ export default class Expandable extends Component
 	{
 		const { getTogglerNode, onFocusOut } = this.props
 
-		if (onFocusOut)
+		if (onFocusOut && this.container)
 		{
 			clearTimeout(this.blurTimer)
 			this.blurTimer = onBlur(event, onFocusOut, () => this.container, getTogglerNode)
