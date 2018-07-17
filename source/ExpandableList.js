@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import ScrollableList from './ScrollableList'
+import Expandable from './Expandable'
 
 export default class ExpandableList extends Component
 {

@@ -61,7 +61,7 @@ export default class Select extends Component
 
 		// Show icon only for selected item,
 		// and only if `icon` is `true`.
-		saveOnIcons : PropTypes.bool,
+		saveOnIcons : PropTypes.bool.isRequired,
 
 		// Disables this control
 		disabled   : PropTypes.bool,
@@ -122,6 +122,8 @@ export default class Select extends Component
 	{
 		native : false,
 		nativeExpanded : false,
+
+		saveOnIcons : false,
 
 		// Set to `true` to mark the field as required
 		required : false,
