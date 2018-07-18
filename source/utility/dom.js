@@ -1,5 +1,3 @@
-import scrollIntoViewIfNeededPolyfill from 'scroll-into-view-if-needed'
-
 // Submits the form on `Ctrl` + `Enter` (or `Cmd` + `Enter`).
 export function submitFormOnCtrlEnter(event, component)
 {
@@ -49,18 +47,4 @@ export function isInternetExplorer()
 {
 	return window.navigator.userAgent.indexOf('MSIE ') > 0 ||
 		window.navigator.userAgent.indexOf('Trident/') > 0
-}
-
-export function scrollIntoViewIfNeeded(element, duration = 300)
-{
-	// https://developer.mozilla.org/ru/docs/Web/API/Element/scrollIntoViewIfNeeded
-	if (element.scrollIntoViewIfNeeded)
-	{
-		element.scrollIntoViewIfNeeded(false)
-	}
-	else
-	{
-		// https://github.com/stipsan/scroll-into-view-if-needed
-		scrollIntoViewIfNeededPolyfill(element, { centerIfNeeded : false, duration })
-	}
 }

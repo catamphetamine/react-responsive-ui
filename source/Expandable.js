@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import scrollIntoView from 'scroll-into-view-if-needed'
 
 import Close, { CloseIcon } from './Close'
 
@@ -9,8 +10,7 @@ import { onBlurForReduxForm } from './utility/redux-form'
 import
 {
 	getScrollbarWidth,
-	isInternetExplorer,
-	scrollIntoViewIfNeeded
+	isInternetExplorer
 }
 from './utility/dom'
 
@@ -269,7 +269,7 @@ export default class Expandable extends Component
 	{
 		const
 		{
-			scrollIntoView,
+			scrollIntoView : shouldScrollIntoView,
 			scrollIntoViewDelay,
 			expandAnimationDuration
 		}
@@ -277,7 +277,7 @@ export default class Expandable extends Component
 
 		// For some reason in IE 11 "scroll into view" scrolls
 		// to the top of the page, therefore turn it off for IE.
-		if (!isInternetExplorer() && scrollIntoView)
+		if (!isInternetExplorer() && shouldScrollIntoView)
 		{
 			this.scrollIntoViewTimer = setTimeout(() =>
 			{
@@ -285,8 +285,15 @@ export default class Expandable extends Component
 
 				// If still expanded and there are any options
 				// then scroll into view.
-				if (expanded) {
-					scrollIntoViewIfNeeded(this.container)
+				if (expanded)
+				{
+					scrollIntoView(this.container,
+					{
+						scrollMode : 'if-needed',
+						behavior   : 'smooth',
+						block      : 'nearest',
+						inline     : 'nearest'
+					})
 				}
 			},
 			Math.max(scrollIntoViewDelay, expandAnimationDuration) * 1.1)
