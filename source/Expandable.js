@@ -7,12 +7,7 @@ import Close, { CloseIcon } from './Close'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 
-import
-{
-	getScrollbarWidth,
-	isInternetExplorer
-}
-from './utility/dom'
+import { getScrollbarWidth } from './utility/dom'
 
 import { onBlur } from './utility/focus'
 
@@ -277,7 +272,7 @@ export default class Expandable extends Component
 
 		// For some reason in IE 11 "scroll into view" scrolls
 		// to the top of the page, therefore turn it off for IE.
-		if (!isInternetExplorer() && shouldScrollIntoView)
+		if (shouldScrollIntoView)
 		{
 			this.scrollIntoViewTimer = setTimeout(() =>
 			{

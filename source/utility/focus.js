@@ -1,8 +1,4 @@
-import
-{
-	isInternetExplorer
-}
-from './dom'
+import { isInternetExplorer } from './dom'
 
 export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, preventBlur)
 {
