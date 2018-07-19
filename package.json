@@ -18,7 +18,7 @@
     "react-dnd-html5-backend": "^5.0.1",
     "react-lifecycles-compat": "^3.0.2",
     "react-modal": "^3.4.4",
-    "scroll-into-view-if-needed": "^1.5.0"
+    "scroll-into-view-if-needed": "1.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^8.4.1",
