@@ -949,6 +949,9 @@ than 100% of the parent if the parent is small enough.
           align-items: center;
   width: 100%;
   height: calc(0.6rem * 4);
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
   /*
 	This side padding is also connected to
 	`.rrui__select__options--left-aligned`'s `left`,
@@ -978,11 +981,6 @@ than 100% of the parent if the parent is small enough.
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0; }
-
-.rrui__list__item-label {
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis; }
 
 .rrui__list__item--disabled {
   /* "pointer-events" prevents "cursor: wait" from working */
@@ -1534,7 +1532,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__button--expanded {
   color: #03b2cb; }
 
-.rrui__select__button--empty .rrui__list__item-label {
+.rrui__select__button--empty .rrui__select__selected-label {
   color: #888888; }
 
 .rrui__select__button--invalid {
