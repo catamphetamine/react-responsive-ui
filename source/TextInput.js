@@ -74,6 +74,7 @@ export default class TextInput extends PureComponent
 
 		// A custom `input` component can be passed
 		input            : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+		inputComponent   : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
 
 		// (exotic use case)
 		// Falls back to a plain HTML input
@@ -117,10 +118,7 @@ export default class TextInput extends PureComponent
 		fallback : false,
 
 		// Set to `true` to mark the field as required
-		required : false,
-
-		// Render an `<input/>` by default
-		input: 'input'
+		required : false
 	}
 
 	// Client side rendering, javascript is enabled
@@ -255,6 +253,7 @@ export default class TextInput extends PureComponent
 			// A custom input component
 			// (e.g. for an `input-format` text input, like a phone number)
 			input,
+			inputComponent,
 
 			// Passthrough properties
 			id,
@@ -322,7 +321,7 @@ export default class TextInput extends PureComponent
 
 		// If a custom `input` component was passed then use it.
 		// Otherwise use a simple `<input/>`.
-		return createElement(input, properties)
+		return createElement(this.getInputComponent(), properties)
 	}
 
 	render_error_message()
@@ -350,6 +349,13 @@ export default class TextInput extends PureComponent
 				{ this.should_indicate_invalid() && this.render_error_message() }
 			</div>
 		)
+	}
+
+	getInputComponent()
+	{
+		const { input, inputComponent } = this.props
+
+		return input || inputComponent || 'input'
 	}
 
 	// "text", "email", "password", etc
@@ -483,11 +489,9 @@ export default class TextInput extends PureComponent
 
 	focus()
 	{
-		const { input } = this.props
-
 		// For simple DOM nodes like `<input/>`
 		// just focus on them.
-		if (typeof input === 'string') {
+		if (typeof this.getInputComponent() === 'string') {
 			return ReactDOM.findDOMNode(this.input).focus()
 		}
 
