@@ -540,4 +540,6 @@ export function findItemIndexByValue(value, children)
 		}
 		i++
 	}
+
+	console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.map(_ => _.props.value)}.`)
 }
