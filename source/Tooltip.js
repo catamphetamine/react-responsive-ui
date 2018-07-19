@@ -10,6 +10,7 @@ export default class Tooltip extends PureComponent
 	{
 		// Tooltip text
 		text : PropTypes.string,
+		content : PropTypes.string,
 
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
@@ -50,12 +51,12 @@ export default class Tooltip extends PureComponent
 		container : () => document.body
 	}
 
-	componentWillReceiveProps({ text })
+	componentWillReceiveProps({ text, content })
 	{
 		// Update tooltip text
-		if (this.tooltip && text !== this.props.text)
+		if (this.tooltip && (text !== this.props.text || content !== this.props.content))
 		{
-			this.tooltip.textContent = text
+			this.tooltip.textContent = text || content
 		}
 	}
 
@@ -72,7 +73,7 @@ export default class Tooltip extends PureComponent
 
 	create_tooltip()
 	{
-		const { text, tooltipClassName } = this.props
+		const { text, content, tooltipClassName } = this.props
 
 		this.tooltip = document.createElement('div')
 
@@ -88,7 +89,7 @@ export default class Tooltip extends PureComponent
 			this.tooltip.classList.add(tooltipClassName)
 		}
 
-		this.tooltip.textContent = text
+		this.tooltip.textContent = text || content
 
 		this.container().appendChild(this.tooltip)
 	}
@@ -201,7 +202,7 @@ export default class Tooltip extends PureComponent
 
 	on_mouse_enter = () =>
 	{
-		const { text } = this.props
+		const { text, content } = this.props
 
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -211,7 +212,7 @@ export default class Tooltip extends PureComponent
 		}
 
 		// If the tooltip has no text then don't show it.
-		if (!text)
+		if (!text && !content)
 		{
 			return
 		}
@@ -261,13 +262,13 @@ export default class Tooltip extends PureComponent
 
 	on_touch_start = () =>
 	{
-		const { text } = this.props
+		const { text, content } = this.props
 
 		// mouse enter events won't be processed from now on
 		this.mobile = true
 
 		// If the tooltip has no text then don't show it.
-		if (!text)
+		if (!text && !content)
 		{
 			return
 		}
@@ -289,6 +290,7 @@ export default class Tooltip extends PureComponent
 
 			// These properties are here just for `...rest`
 			text,
+			content,
 			delay,
 			hidingAnimationDuration,
 			container,
