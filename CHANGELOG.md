@@ -2,6 +2,8 @@
 
 <!-- Doesn't collapse `<ExpandableMenu/>` on an iPhone after any menu item was selected. -->
 
+<!-- `scroll-into-view-if-needed` bug: https://github.com/stipsan/scroll-into-view-if-needed/issues/359 -->
+
 0.13.0 / 12.07.2018
 ===================
 
@@ -30,6 +32,8 @@
 * (breaking change) `<Select/>` `onToggle` property replaced with `onExpand` and `onCollapse`.
 
 * (breaking change) `<DatePicker/>` design changed.
+
+* (breaking change) `<Button/>`'s `action` property is deprecated, use `onClick` instead.
 
 * (breaking change) `<Tooltip/>` now accepts `content` property instead of `text`, and `content` is now a `React.Element` instead of a function.
 

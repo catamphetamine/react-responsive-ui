@@ -8,7 +8,12 @@ export default class Button extends PureComponent
 {
 	static propTypes =
 	{
-		// onClick handler
+		// onClick handler.
+		// Doesn't receive `event` by default.
+		onClick         : PropTypes.func,
+
+		// onClick handler.
+		// (deprecated, use `onClick(event)` instead)
 		action          : PropTypes.func,
 
 		// If `busy` is `true` then the button
@@ -87,6 +92,7 @@ export default class Button extends PureComponent
 			busy,
 			disabled,
 			action,
+			onClick,
 			submit,
 			stretch,
 			style,
@@ -159,7 +165,8 @@ export default class Button extends PureComponent
 		{
 			busy,
 			disabled,
-			action
+			action,
+			onClick
 		}
 		= this.props
 
@@ -191,17 +198,23 @@ export default class Button extends PureComponent
 			event.preventDefault()
 			action()
 		}
+		else if (onClick)
+		{
+			event.preventDefault()
+			onClick()
+		}
 	}
 
 	button_on_click = (event) =>
 	{
-		const { action } = this.props
+		const { action, onClick } = this.props
 
 		// Could be just a `<button type="submit"/>`
 		// without any `action` supplied.
-		if (action)
-		{
+		if (action) {
 			action()
+		} else if (onClick) {
+			onClick()
 		}
 	}
 }

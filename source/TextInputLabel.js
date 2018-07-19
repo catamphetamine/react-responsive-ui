@@ -27,8 +27,14 @@ function isEmpty(value)
 		return false
 	}
 
+	// `false` is not an empty value
+	if (typeof value === 'boolean' && value === false)
+	{
+		return false
+	}
+
 	// An empty string, `undefined`, `null` –
-	// all those are an empty value.
+	// all those are considered an empty value.
 	if (!value)
 	{
 		return true

@@ -18,6 +18,9 @@
 	width       : 100%;
 	height      : var(--rrui-list-item-height);
 
+	overflow      : hidden;
+	text-overflow : ellipsis;
+
 	/*
 	This side padding is also connected to
 	`.rrui__select__options--left-aligned`'s `left`,
@@ -54,12 +57,6 @@
 {
 	margin-right : var(--rrui-list-icon-margin);
 	flex-shrink  : 0;
-}
-
-.rrui__list__item-label
-{
-	overflow      : hidden;
-	text-overflow : ellipsis;
 }
 
 .rrui__list__item--disabled

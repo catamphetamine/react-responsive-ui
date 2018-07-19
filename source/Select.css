@@ -45,7 +45,7 @@
 	color : var(--rrui-accent-color);
 }
 
-.rrui__select__button--empty .rrui__list__item-label
+.rrui__select__button--empty .rrui__select__selected-label
 {
 	color: var(--rrui-gray-color);
 }

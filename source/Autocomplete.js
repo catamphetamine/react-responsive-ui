@@ -9,6 +9,8 @@ import Label from './TextInputLabel'
 import TextInput from './TextInputInput'
 import Ellipsis from './Ellipsis'
 
+import { onBlurForReduxForm } from './utility/redux-form'
+
 import
 {
 	submitFormOnCtrlEnter,
@@ -247,7 +249,7 @@ export default class Select extends Component
 
 	focus = () => this.input.focus()
 
-	onCollapse = ({ collapsedDueToItemBeingSelected }) =>
+	onCollapse = ({ collapsedDueToItemBeingSelected, focusOut }) =>
 	{
 		const { options, selectedOption } = this.state
 
@@ -265,7 +267,7 @@ export default class Select extends Component
 			})
 		}
 
-		if (collapsedDueToItemBeingSelected || this.focusAfterCollapse)
+		if (!focusOut)
 		{
 			this.dontExpandOnFocus = true
 			this.focus()
@@ -399,7 +401,7 @@ export default class Select extends Component
 								key={i}
 								value={option.value}
 								icon={saveOnIcons ? undefined : option.icon}>
-								{option.label}
+								{option.content ? option.content(option) : option.label}
 							</List.Item>
 						))}
 					</ExpandableList>
@@ -556,9 +558,7 @@ export default class Select extends Component
 			// Collapse.
 			case 27:
 				event.preventDefault()
-				this.focusAfterCollapse = true
 				this.collapse()
-				this.focusAfterCollapse = undefined
 				return
 
 			// "Enter".
@@ -570,10 +570,8 @@ export default class Select extends Component
 						event.preventDefault()
 						this.setValue(undefined)
 
-						this.focusAfterCollapse = true
 						this.collapsedDueToEmptyValueOnEnter = true
 						this.collapse()
-						this.focusAfterCollapse = undefined
 						this.collapsedDueToEmptyValueOnEnter = undefined
 
 						return

@@ -34,12 +34,11 @@ export default class ExpandableMenu extends Component
 		closeButtonIcon : CloseIcon
 	}
 
-	// state = {}
-
-	onCollapse = () =>
+	onCollapse = ({ focusOut }) =>
 	{
-		// this.setState({ isExpanded: false })
-		this.focus()
+		if (!focusOut) {
+			this.focus()
+		}
 	}
 
 	focus = () => focus(this.toggler)
@@ -69,16 +68,12 @@ export default class ExpandableMenu extends Component
 		}
 		= this.props
 
-		// const { isExpanded } = this.state
-
-		const containerStyle = { textAlign: alignment }
-
 		const menuItems = React.Children.toArray(children)
 		const toggler = menuItems.shift()
 
 		return (
 			<div
-				style={ style ? { ...containerStyle, ...style } : containerStyle }
+				style={ style }
 				className={ classNames('rrui__menu', className) }>
 
 				<div

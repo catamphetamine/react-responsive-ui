@@ -5,10 +5,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 
 import Close, { CloseIcon } from './Close'
 
-import { onBlurForReduxForm } from './utility/redux-form'
-
-import { getScrollbarWidth } from './utility/dom'
-
+import { getScrollbarWidth, isInternetExplorer } from './utility/dom'
 import { onBlur } from './utility/focus'
 
 /**
@@ -159,7 +156,7 @@ export default class Expandable extends Component
 			clearTimeout(this.scrollIntoViewTimer)
 
 			if (onCollapse) {
-				onCollapse()
+				onCollapse({ focusOut: this.focusOut })
 			}
 
 			// Set `expanded` to `false` to play the collapse CSS animation.
@@ -272,7 +269,7 @@ export default class Expandable extends Component
 
 		// For some reason in IE 11 "scroll into view" scrolls
 		// to the top of the page, therefore turn it off for IE.
-		if (shouldScrollIntoView)
+		if (!isInternetExplorer() && shouldScrollIntoView)
 		{
 			this.scrollIntoViewTimer = setTimeout(() =>
 			{
@@ -282,13 +279,17 @@ export default class Expandable extends Component
 				// then scroll into view.
 				if (expanded)
 				{
-					scrollIntoView(this.container,
-					{
-						scrollMode : 'if-needed',
-						behavior   : 'smooth',
-						block      : 'nearest',
-						inline     : 'nearest'
-					})
+					// https://github.com/stipsan/scroll-into-view-if-needed/issues/359
+
+					// scrollIntoView(this.container,
+					// {
+					// 	scrollMode : 'if-needed',
+					// 	behavior   : 'smooth',
+					// 	block      : 'nearest',
+					// 	inline     : 'nearest'
+					// })
+
+					scrollIntoView(this.container, false, { duration: 300 })
 				}
 			},
 			Math.max(scrollIntoViewDelay, expandAnimationDuration) * 1.1)
@@ -331,6 +332,15 @@ export default class Expandable extends Component
 
 	storeContainerNode = (node) => this.container = node
 
+	onFocusOut = () =>
+	{
+		const { onFocusOut } = this.props
+
+		this.focusOut = true
+		onFocusOut()
+		this.focusOut = undefined
+	}
+
 	onBlur = (event) =>
 	{
 		const { getTogglerNode, onFocusOut } = this.props
@@ -338,7 +348,7 @@ export default class Expandable extends Component
 		if (onFocusOut && this.container)
 		{
 			clearTimeout(this.blurTimer)
-			this.blurTimer = onBlur(event, onFocusOut, () => this.container, getTogglerNode)
+			this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, getTogglerNode)
 		}
 	}
 

@@ -196,10 +196,7 @@ export default class DatePicker extends Component
 	toggle     = () => this.expandable.toggle()
 	isExpanded = () => this.expandable.isExpanded()
 
-	focus = () =>
-	{
-		this.input.focus()
-	}
+	focus = () => this.input.focus()
 
 	userHasJustChangedYearOrMonth = () =>
 	{

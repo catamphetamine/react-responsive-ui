@@ -8,6 +8,8 @@ import List from './List'
 import Label from './TextInputLabel'
 import Ellipsis from './Ellipsis'
 
+import { onBlurForReduxForm } from './utility/redux-form'
+
 import
 {
 	submitFormOnCtrlEnter,
@@ -141,10 +143,13 @@ export default class Select extends Component
 
 	focus = () => this.selectButton.focus()
 
-	onCollapse = () =>
+	onCollapse = ({ focusOut }) =>
 	{
 		this.setState({ isExpanded: false })
-		this.focus()
+
+		if (!focusOut) {
+			this.focus()
+		}
 	}
 
 	onExpand = () => this.setState({ isExpanded: true })
@@ -261,7 +266,7 @@ export default class Select extends Component
 									key={i}
 									value={option.value}
 									icon={saveOnIcons ? undefined : option.icon}>
-									{option.label}
+									{option.content ? option.content(option) : option.label}
 								</List.Item>
 							))}
 						</ExpandableList>

@@ -119,7 +119,7 @@ export default class ExpandableList extends Component
 		this.collapsedDueToItemBeingSelected = undefined
 	}
 
-	onCollapse = () =>
+	onCollapse = (parameters) =>
 	{
 		const { onCollapse } = this.props
 
@@ -127,6 +127,7 @@ export default class ExpandableList extends Component
 		{
 			onCollapse
 			({
+				...parameters,
 				collapsedDueToItemBeingSelected : this.collapsedDueToItemBeingSelected
 			})
 		}

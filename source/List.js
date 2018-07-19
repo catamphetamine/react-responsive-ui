@@ -6,6 +6,7 @@ import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import Divider from './Divider'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+import { focus } from './utility/focus'
 
 @reactLifecyclesCompat
 export default class List extends Component
@@ -137,7 +138,7 @@ export default class List extends Component
 			if (focusedItemIndex !== undefined)
 			{
 				if (shouldFocus) {
-					this.itemRefs[focusedItemIndex].focus()
+					focus(this.itemRefs[focusedItemIndex])
 				}
 
 				if (onFocusItem) {
@@ -158,15 +159,6 @@ export default class List extends Component
 		if (onSelect) {
 			onSelect()
 		}
-
-		// this.focusItem(index)
-
-		// // Collapse the `<Select/>`.
-		// // Doing `setValue` in a callback
-		// // because otherwise `setValue()` would result in
-		// // updating props and calling `getDerivedStateFromProps()`
-		// // which reads `autocomplete_value` which is being reset inside `.toggle()`.
-		// this.collapse().then(() => this.setValue(value))
 	}
 
 	onKeyDown = (event) =>
@@ -441,10 +433,10 @@ export class Item extends React.Component
 			content,
 			label,
 			icon,
-			link,
 			focused,
 			selected,
 			disabled,
+			component,
 			className,
 			children,
 			// Rest.
@@ -457,15 +449,24 @@ export class Item extends React.Component
 		= this.props
 
 		let ItemComponent
-		let specificProps
 
-		if (link) {
+		if (component)
+		{
+			ItemComponent = component
+		}
+		else if (rest.link)
+		{
 			ItemComponent = 'a'
-			specificProps = { href : 'link' }
-		} else if (onSelect) {
+			rest.href = rest.link
+			rest.link = undefined
+		}
+		else if (onSelect)
+		{
 			ItemComponent = 'button'
-			specificProps = { type : 'button' }
-		} else {
+			rest.type = 'button'
+		}
+		else
+		{
 			ItemComponent = 'div'
 			rest.tabIndex = undefined
 		}
@@ -485,13 +486,12 @@ export class Item extends React.Component
 						'rrui__list__item',
 						'rrui__button-reset',
 						{
-							'rrui__button-reset--link'   : link,
+							'rrui__button-reset--link'   : ItemComponent === 'a' && rest.link,
 							'rrui__list__item--selected' : selected,
 							'rrui__list__item--focused'  : focused,
 							'rrui__list__item--disabled' : disabled
 						}
 					) }
-					{...specificProps}
 					{...rest}>
 
 					{/* Icon. */}
@@ -502,7 +502,7 @@ export class Item extends React.Component
 					}
 
 					{/* Label (or content). */}
-					{ children || (content ? content({ value, label }) : <span className="rrui__list__item-label">{label}</span>) }
+					{ children }
 				</ItemComponent>
 			</li>
 		)
