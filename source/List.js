@@ -388,7 +388,6 @@ export default class List extends Component
 						selected     : getItemValue && item.value === getItemValue(i),
 						disabled     : disabled || item.props.disabled,
 						isSelectable : item.type !== Divider,
-						// onMouseDown  : item.type === Divider ? event => event.preventDefault() : undefined,
 						onSelect     : item.type === Divider ? undefined : (index, value) => this.onItemSelect(index, value, item.props.onSelect),
 						className    : item.type === Divider ? classNames(item.props.className, 'rrui__divider--list') : item.props.className
 					})
@@ -452,19 +451,24 @@ export class Item extends React.Component
 			index,
 			focus,
 			isSelectable,
+			onSelect,
 			...rest
 		}
 		= this.props
 
-		const specificProps = {}
+		let ItemComponent
+		let specificProps
 
 		if (link) {
-			specificProps.href = link
+			ItemComponent = 'a'
+			specificProps = { href : 'link' }
+		} else if (onSelect) {
+			ItemComponent = 'button'
+			specificProps = { type : 'button' }
 		} else {
-			specificProps.type = 'button'
+			ItemComponent = 'div'
+			rest.tabIndex = undefined
 		}
-
-		const ItemComponent = link ? 'a' : 'button'
 
 		return (
 			<li className="rrui__list__list-item">
@@ -541,5 +545,5 @@ export function findItemIndexByValue(value, children)
 		i++
 	}
 
-	console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.map(_ => _.props.value)}.`)
+	console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.length > 0 ? items.map(_ => _.props.value).join(', ') : '(none)'}.`)
 }

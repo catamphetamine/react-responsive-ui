@@ -379,7 +379,7 @@ export default class Select extends Component
 						onPreloadStateChange={this.onPreloadStateChange}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						selectedItemValue={inputValue === '' ? undefined : value}
+						selectedItemValue={options.length === 0 ? undefined : (inputValue === '' ? undefined : value)}
 						onSelectItem={this.setValue}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
