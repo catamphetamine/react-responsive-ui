@@ -73,8 +73,8 @@ export default class TextInput extends PureComponent
 		cols             : PropTypes.number,
 
 		// A custom `input` component can be passed
-		input            : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-		inputComponent   : PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+		input            : PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+		inputComponent   : PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 
 		// (exotic use case)
 		// Falls back to a plain HTML input
