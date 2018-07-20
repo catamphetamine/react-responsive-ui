@@ -41,6 +41,7 @@ export default class ExpandableList extends Component
 		if (state.selectedItemValue !== props.selectedItemValue)
 		{
 			return {
+				selectedItemValue : props.selectedItemValue,
 				selectedItemIndex : props.selectedItemValue === undefined ? undefined : findItemIndexByValue(props.selectedItemValue, props.children)
 			}
 		}

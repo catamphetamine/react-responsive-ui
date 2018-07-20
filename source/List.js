@@ -108,11 +108,6 @@ export default class List extends Component
 		}
 	}
 
-	findItemIndexByValue(value)
-	{
-		return findItemIndexByValue(value, this.props.children)
-	}
-
 	getItemValue(index)
 	{
 		const { children } = this.props
@@ -309,9 +304,11 @@ export default class List extends Component
 
 				{ React.Children.map(children, (item, i) =>
 				{
-					if (item.type !== Item) {
-						throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
-					}
+					// This check doesn't work for some reason,
+					// i.e. `Item !== Item`.
+					// if (item.type !== Item) {
+					// 	throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
+					// }
 
 					return React.cloneElement(item,
 					{
@@ -422,7 +419,9 @@ export class Item extends React.Component
 	{
 		const { itemRef, index } = this.props
 
-		itemRef(ref, index)
+		if (itemRef) {
+			itemRef(ref, index)
+		}
 	}
 
 	render()
