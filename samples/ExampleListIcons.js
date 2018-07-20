@@ -23,9 +23,9 @@ window.ExampleListIcons = class ExampleComponent extends React.Component
 					className="column-width rrui__shadow"
 					onSelectItem={value => this.setState({ value })}>
 
-					<List.Item value="AF" label="Afghanistan" icon={ListIcon} />
-					<List.Item value="BB" label="Barbados" icon={ListIcon} />
-					<List.Item value="CA" label="Canada" icon={ListIcon} />
+					<List.Item value="AF" icon={ListIcon}>Afghanistan</List.Item>
+					<List.Item value="BB" icon={ListIcon}>Barbados</List.Item>
+					<List.Item value="CA" icon={ListIcon}>Canada</List.Item>
 				</List>
 
 				Value: {this.state.value === undefined ? '(none)' : this.state.value}
@@ -35,9 +35,17 @@ window.ExampleListIcons = class ExampleComponent extends React.Component
 						className="rrui__shadow"
 						onSelectItem={ value => this.setState({ value }) }>
 
-						<List.Item value="AF" icon={Flag} label="Afghanistan" />
-						<List.Item value="BB" icon={Flag} label="Barbados" />
-						<List.Item value="CA" icon={Flag} label="Canada" />
+						<List.Item value="AF" icon={Flag}>
+							Afghanistan
+						</List.Item>
+
+						<List.Item value="BB" icon={Flag}>
+							Barbados
+						</List.Item>
+
+						<List.Item value="CA" icon={Flag}>
+							Canada
+						</List.Item>
 					</List>
 
 					const Flag = ({ value, label, className }) => (
