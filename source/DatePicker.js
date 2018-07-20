@@ -1,6 +1,3 @@
-// Derived from `react-day-picker` example
-// http://react-day-picker.js.org/examples/?overlay
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
@@ -8,21 +5,17 @@ import classNames from 'classnames'
 
 import TextInput from './TextInputInputComponent'
 import Expandable from './Expandable'
+import YearMonthSelect from './YearMonthSelect'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 
 import { onBlur } from './utility/focus'
+import { isInternetExplorer } from './utility/dom'
 
-// // Moment.js takes 161 KB of space (minified) which is too much
-// import moment from 'moment'
+import { parseDate, formatDate, trimInvalidPart, normalizeDate } from './utility/date'
 
-// // `date-fns` would be a better alternative to moment
-// // but it doesn't support templated date parsing
-// // until version `2.0.0` of it is released.
-// // https://github.com/date-fns/date-fns/issues/347
-// import parse_date_date_fns from 'date-fns/parse'
-// import format_date_date_fns from 'date-fns/format'
-
+// Derived from `react-day-picker` example
+// http://react-day-picker.js.org/examples/?overlay
 export default class DatePicker extends Component
 {
 	static propTypes =
@@ -205,7 +198,7 @@ export default class DatePicker extends Component
 		this.userHasJustChangedYearOrMonthTimer = setTimeout(() => this._userHasJustChangedYearOrMonth = false, 50)
 	}
 
-	on_input_focus = (event) =>
+	onInputFocus = (event) =>
 	{
 		const { onFocus } = this.props
 
@@ -213,7 +206,9 @@ export default class DatePicker extends Component
 			onFocus(event)
 		}
 
-		this.expand()
+		if (!this.focusAfterDaySelected) {
+			this.expand()
+		}
 	}
 
 	onExpand = () =>
@@ -233,7 +228,7 @@ export default class DatePicker extends Component
 
 			// Must re-calculate `text_value` on each "expand"
 			// because it's being reset on each "collapse".
-			text_value : format_date(value, format)
+			text_value : formatDate(value, format)
 		})
 	}
 
@@ -249,7 +244,7 @@ export default class DatePicker extends Component
 		{
 			this.setState
 			({
-				month : value ? normalize_value(value) : new Date()
+				month : value ? normalizeDate(value) : new Date()
 			})
 		}, 0)
 	}
@@ -267,7 +262,7 @@ export default class DatePicker extends Component
 		// therefore, say, if `value` was not set
 		// and a user selects a day in the calendar
 		// then the `value` is technically still `undefined`
-		// so can't just set `state.text_value = format_date(value)` here.
+		// so can't just set `state.text_value = formatDate(value)` here.
 		//
 		// Analogous, `setState({ text_value })` has been called
 		// in calendar day `onClick` handler but `state.text_value`
@@ -278,7 +273,7 @@ export default class DatePicker extends Component
 		// in cases when a user manually typed in an incomplete date and then tabbed away.
 	}
 
-	on_key_down_in_container = (event) =>
+	onContainerKeyDown = (event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
 			return
@@ -301,7 +296,7 @@ export default class DatePicker extends Component
 		}
 	}
 
-	on_input_key_down = (event) =>
+	onInputKeyDown = (event) =>
 	{
 		const { onKeyDown } = this.props
 
@@ -357,7 +352,7 @@ export default class DatePicker extends Component
 		}
 	}
 
-	on_input_change = (event) =>
+	onInputChange = (event) =>
 	{
 		const
 		{
@@ -395,9 +390,9 @@ export default class DatePicker extends Component
 			return this.setState({ text_value: '' })
 		}
 
-		value = trim_invalid_part(value, format)
+		value = trimInvalidPart(value, format)
 
-		const selected_day = parse_date(value, format, noon, utc)
+		const selected_day = parseDate(value, format, noon, utc)
 
 		// If the date input is unparseable,
 		// or if it's one of the disabled days,
@@ -421,7 +416,7 @@ export default class DatePicker extends Component
 		() => this.calendar.showMonth(selected_day))
 	}
 
-	on_day_click = (selected_day, { disabled }) =>
+	onDayClick = (selected_day, { disabled }) =>
 	{
 		const
 		{
@@ -485,46 +480,44 @@ export default class DatePicker extends Component
 			onChange(selected_day)
 		}
 
-		// this.setState
-		// ({
-		// 	// text_value: format_date(selected_day, format),
-		// 	expanded: false
-		// })
-
-		// // Blur the input so that the calendar
-		// // will open upon a future click on it.
-		// // (doesn't work in mobile browsers)
-		// this.input.blur()
-
 		// Hide the calendar
 		this.collapse()
 
-		// Focus the `<input/>`
+		// Focus the `<input/>`.
+		// (if not in "input overlay" mode for mobile devices).
 		if (getComputedStyle(this.inputOverlay).display === 'none')
 		{
+			this.focusAfterDaySelected = true
 			this.input.focus()
+
+			// For some reason in IE 11 `onFocus` on `<input/>` is not called immediately.
+			if (isInternetExplorer()) {
+				setTimeout(() => this.focusAfterDaySelected = false, 0)
+			} else {
+				this.focusAfterDaySelected = false
+			}
 		}
 	}
 
-	on_calendar_key_down = (event) =>
-	{
-		switch (event)
-		{
-			// The next year is selected on "Up" arrow,
-			// so `.preventDefault()` it to prevent page scrolling.
-			// https://github.com/gpbl/react-day-picker/issues/273
-			case 38:
-				event.preventDefault()
-				return
-
-			// The previous year is selected on "Down" arrow,
-			// so `.preventDefault()` it to prevent page scrolling.
-			// https://github.com/gpbl/react-day-picker/issues/273
-			case 40:
-				event.preventDefault()
-				return
-		}
-	}
+	// onCalendarKeyDown = (event) =>
+	// {
+	// 	switch (event)
+	// 	{
+	// 		// The next year is selected on "Up" arrow,
+	// 		// so `.preventDefault()` it to prevent page scrolling.
+	// 		// https://github.com/gpbl/react-day-picker/issues/273
+	// 		case 38:
+	// 			event.preventDefault()
+	// 			return
+	//
+	// 		// The previous year is selected on "Down" arrow,
+	// 		// so `.preventDefault()` it to prevent page scrolling.
+	// 		// https://github.com/gpbl/react-day-picker/issues/273
+	// 		case 40:
+	// 			event.preventDefault()
+	// 			return
+	// 	}
+	// }
 
 	onMonthChange = (month) =>
 	{
@@ -624,7 +617,7 @@ export default class DatePicker extends Component
 		if (selectYearsIntoPast || selectYearsIntoFuture)
 		{
 			captionElement = (
-				<YearMonthSelector
+				<YearMonthSelect
 					focus={ this.focus }
 					userHasJustChangedYearOrMonth={ this.userHasJustChangedYearOrMonth }
 					selectedDay={ value }
@@ -637,7 +630,7 @@ export default class DatePicker extends Component
 		return (
 			<div
 				ref={ this.storeContainerNode }
-				onKeyDown={ this.on_key_down_in_container }
+				onKeyDown={ this.onContainerKeyDown }
 				onBlur={ this.onBlur }
 				className={ classNames('rrui__date-picker', className,
 				{
@@ -656,10 +649,10 @@ export default class DatePicker extends Component
 					label={ label }
 					placeholder={ label ? placeholder : placeholder || formatHint }
 					disabled={ disabled }
-					value={ text_value !== undefined ? text_value : format_date(value, format) }
-					onKeyDown={ this.on_input_key_down }
-					onChange={ this.on_input_change }
-					onFocus={ this.on_input_focus }
+					value={ text_value !== undefined ? text_value : formatDate(value, format) }
+					onKeyDown={ this.onInputKeyDown }
+					onChange={ this.onInputChange }
+					onFocus={ this.onInputFocus }
 					onClick={ this.expand }>
 
 					{/* This layer can intercept taps on mobile devices
@@ -697,9 +690,8 @@ export default class DatePicker extends Component
 							weekdaysLong={ weekdaysLong }
 							weekdaysShort={ weekdaysShort }
 							firstDayOfWeek={ firstDayOfWeek }
-							onDayClick={ this.on_day_click }
-							onKeyDown={ this.on_calendar_key_down }
-							selectedDays={ normalize_value(value) }
+							onDayClick={ this.onDayClick }
+							selectedDays={ normalizeDate(value) }
 							disabledDays={ disabledDays }
 							captionElement={ captionElement }
 							tabIndex={ -1 }
@@ -716,455 +708,6 @@ export default class DatePicker extends Component
 			</div>
 		)
 	}
-}
-
-// Parses a text value into a `Date` provided a `format`.
-// The date returned is in the user's time zone and the time is `12:00`.
-function parse_date(text_value, format, noon, utc)
-{
-	if (!text_value) {
-		return
-	}
-
-	// Custom
-	return parse_date_custom(text_value, format, noon, utc)
-
-	// // Using `date-fns`
-	// const date = parse_date_date_fns(text_value)
-
-	// if (isNaN(date.getTime()))
-	// {
-	// 	return
-	// }
-
-	// return date
-
-	// // Using `Moment.js`
-	// const moment_day = moment(text_value, format, true)
-
-	// if (!moment_day.isValid())
-	// {
-	// 	return
-	// }
-
-	// return moment_day.toDate()
-}
-
-// (Moment.js)
-// Formats a `Date` into a text value provided a `format`
-function format_date(date, format)
-{
-	// Custom
-	return format_date_custom(date, format)
-
-	// // Using `date-fns`
-	// return format_date_date_fns(date, format)
-
-	// // Using `Moment.js`
-	// return moment(date).format(format)
-}
-
-// Parses a text value into a `Date` provided a `format`.
-// The date returned is in the user's time zone and the time is `00:00`.
-// (only `DD`, `MM`, `YY` and `YYYY` literals are supported).
-function parse_date_custom(string, format, noon, utc)
-{
-	if (!string) {
-		return
-	}
-
-	let year = extract(string, format, 'YYYY')
-
-	if (year === undefined)
-	{
-		year = extract(string, format, 'YY')
-
-		if (year !== undefined)
-		{
-			// Current year in the user's time zone.
-			const current_year = new Date().getFullYear()
-			const current_year_century = current_year - current_year % 100
-			year += current_year_century
-		}
-	}
-
-	const month = extract(string, format, 'MM')
-	const day   = extract(string, format, 'DD')
-
-	if (year === undefined || month === undefined || day === undefined) {
-		return
-	}
-
-	// The date created is in the user's time zone and the time is `00:00`.
-	let date = new Date
-	(
-		year,
-		month - 1,
-		day,
-		noon ? 12 : undefined
-	)
-
-	if (utc)
-	{
-		// Converts timezone to UTC while preserving the same time
-		date = convert_to_utc_timezone(date)
-	}
-
-	// If `new Date()` returns "Invalid Date"
-	// (sometimes it does)
-	if (isNaN(date.getTime())) {
-		return
-	}
-
-	return date
-}
-
-function extract(string, template, piece)
-{
-	const starts_at = template.indexOf(piece)
-
-	if (starts_at < 0) {
-		return
-	}
-
-	// Check overall sanity
-	if (!corresponds_to_template(string, template)) {
-		return
-	}
-
-	const number = parseInt(string.slice(starts_at, starts_at + piece.length))
-
-	if (!isNaN(number)) {
-		return number
-	}
-}
-
-function corresponds_to_template(string, template)
-{
-	if (string.length !== template.length) {
-		return false
-	}
-
-	let i = 0
-	while (i < string.length)
-	{
-		const is_a_digit = string[i] >= '0' && string[i] <= '9'
-
-		if (!is_a_digit)
-		{
-			if (string[i] !== template[i])
-			{
-				return false
-			}
-		}
-		else
-		{
-			if (template[i] !== 'D' && template[i] !== 'M' && template[i] !== 'Y')
-			{
-				return false
-			}
-		}
-
-		i++
-	}
-
-	return true
-}
-
-// console.log(corresponds_to_template('1231231234', 'DD.MM.YYYY'))
-// console.log(corresponds_to_template('12.12.1234', 'DD.MM.YYYY'))
-
-// console.log(parse_date_custom('fadsfasd', 'DD.MM.YYYY'))
-// console.log(parse_date_custom('28.02.2017', 'DD.MM.YYYY'))
-// console.log(parse_date_custom('12/02/2017', 'MM/DD/YYYY'))
-// console.log(parse_date_custom('99/99/2017', 'MM/DD/YYYY'))
-// console.log(parse_date_custom('02/03/17', 'MM/DD/YY'))
-
-function format_date_custom(date, format)
-{
-	// Someone may accidentally pass a timestamp, or a string.
-	// Or `date` could be `undefined`.
-	if (!(date instanceof Date)) {
-		return ''
-	}
-
-	// Check if `date` is "Invalid Date".
-	if (isNaN(date.getTime())) {
-		return ''
-	}
-
-	const day   = date.getDate()
-	const month = date.getMonth() + 1
-	const year  = date.getFullYear()
-
-	let text = format
-		.replace('DD', pad_with_zeroes(String(day),   2))
-		.replace('MM', pad_with_zeroes(String(month), 2))
-
-	if (text.indexOf('YYYY') >= 0) {
-		return text.replace('YYYY', pad_with_zeroes(String(year), 4))
-	}
-
-	if (text.indexOf('YY') >= 0) {
-		return text.replace('YY', pad_with_zeroes(String(year % 100), 2))
-	}
-}
-
-// console.log(format_date_custom(new Date(), 'DD.MM.YYYY'))
-// console.log(format_date_custom(new Date(), 'MM/DD/YYYY'))
-// console.log(format_date_custom(new Date(), 'MM/DD/YY'))
-
-function pad_with_zeroes(string, target_length)
-{
-	while (string.length < target_length) {
-		string = '0' + string
-	}
-
-	return string
-}
-
-// // Intl date formatting
-//
-// const dateFormatters = {}
-//
-// function format_dateIntl(date, locale) {
-//   if (typeof Intl === 'undefined') {
-//     return date.toISOString()
-//   }
-//
-//   const key = typeof locale === 'string' ? locale : locale.join(',')
-//
-//   if (!dateFormatters[key]) {
-//     dateFormatters[key] = new Intl.DateTimeFormat(locale, {
-//       day: '2-digit',
-//       month: '2-digit',
-//       year: 'numeric'
-//     })
-//   }
-//
-//   return dateFormatters[key]
-// }
-
-// Converts `null` to `undefined`
-// (specially for `knex.js`)
-function normalize_value(value)
-{
-	if (value === null) {
-		return
-	}
-
-	// Check if `value` is "Invalid Date".
-	if (value instanceof Date && isNaN(value.getTime())) {
-		return
-	}
-
-	return value
-}
-
-function trim_invalid_part(value, format)
-{
-	let i = 0
-	while (i < value.length && i < format.length)
-	{
-		if (format[i] === 'D' || format[i] === 'M' || format[i] === 'Y')
-		{
-			if (!(value[i] >= '0' && value[i] <= '9'))
-			{
-				break
-			}
-		}
-		else if (format[i] !== value[i])
-		{
-			break
-		}
-		i++
-	}
-
-	return value.slice(0, i)
-}
-
-// console.log(trim_invalid_part('fasdf', 'DD.MM.YYYY'))
-// console.log(trim_invalid_part('01.01.1234', 'DD.MM.YYYY'))
-// console.log(trim_invalid_part('01/02/34', 'MM/DD/YY'))
-// console.log(trim_invalid_part('01/a2/34', 'MM/DD/YY'))
-
-// http://react-day-picker.js.org/examples/?yearNavigation
-// Component will receive date, locale and localeUtils props
-class YearMonthSelector extends Component
-{
-	constructor(props)
-	{
-		super(props)
-
-		const
-		{
-			selectYearsIntoPast,
-			selectYearsIntoFuture,
-			selectedDay,
-			localeUtils
-		}
-		= this.props
-
-		// The current year in the user's time zone.
-		const current_year = new Date().getFullYear()
-
-		const from_year = selectYearsIntoPast   ? current_year - selectYearsIntoPast   : current_year
-		const   to_year = selectYearsIntoFuture ? current_year + selectYearsIntoFuture : current_year
-
-		const years = new Array(to_year - from_year + 1)
-
-		let i = 0
-		while (from_year + i <= to_year)
-		{
-			years[i] = from_year + i
-			i++
-		}
-
-		// Makes sure the currently selected year is in the list
-		// to not confuse the user.
-		if (selectedDay)
-		{
-			const selected_year = selectedDay.getFullYear()
-
-			if (selected_year < from_year)
-			{
-				years.unshift(selected_year)
-			}
-			else if (selected_year > to_year)
-			{
-				years.push(selected_year)
-			}
-		}
-
-		const months = localeUtils.getMonths()
-
-		this.months = months
-		this.years = years
-	}
-
-	onChangeMonth = (event) =>
-	{
-		const { date, onChange } = this.props
-
-		const month = event.target.value
-
-		if (month !== date.getMonth())
-		{
-			// The date created is in the user's time zone and the time is `00:00`.
-			// The `day` is `undefined` which means the first one of the `month`.
-			onChange(new Date(date.getFullYear(), month))
-		}
-
-		// restoreFocus()
-	}
-
-	onChangeYear = (event) =>
-	{
-		const { date, onChange } = this.props
-
-		const year = event.target.value
-
-		if (year !== date.getFullYear())
-		{
-			// The date created is in the user's time zone and the time is `00:00`.
-			// The `day` is `undefined` which means the first one of the `month`.
-			onChange(new Date(year, date.getMonth()))
-		}
-
-		// restoreFocus()
-	}
-
-	restoreFocus = () =>
-	{
-		const { userHasJustChangedYearOrMonth } = this.props
-
-		// Doesn't work on iOS
-		// focus()
-
-		// A hack for iOS when it collapses
-		// the calendar after selecting a year/month.
-		// Known bug: it won't work when a user
-		// focuses one `<select/>` and then focuses another one
-		// because in that case `onBlur` won't be triggered for the second `<select/>`.
-		userHasJustChangedYearOrMonth()
-	}
-
-	render()
-	{
-		const { date } = this.props
-
-		return (
-			<div className="DayPicker-Caption">
-				<div className="DayPicker-CaptionSelects">
-					<div className="DayPicker-MonthSelect">
-						{/* Month `<select/>` */}
-						<select
-							onChange={ this.onChangeMonth }
-							onBlur={ this.restoreFocus }
-							value={ date.getMonth() }
-							tabIndex={ -1 }
-							className="rrui__select__native rrui__select__native--overlay">
-
-							{ this.months.map((month, i) => (
-								<option key={ i } value={ i }>
-									{ month }
-								</option>
-							)) }
-						</select>
-
-						{/* Month `<select/>` button */}
-						<button type="button" className="rrui__button-reset">
-							<div className="rrui__select__selected-content">
-								<div className="rrui__select__selected-label">
-									{this.months[date.getMonth()]}
-								</div>
-								<div className="rrui__select__arrow"/>
-							</div>
-						</button>
-					</div>
-
-					<div className="DayPicker-YearSelect">
-						{/* Year `<select/>` */}
-						<select
-							onChange={ this.onChangeYear }
-							onBlur={ this.restoreFocus }
-							value={ date.getFullYear() }
-							tabIndex={ -1 }
-							className="rrui__select__native rrui__select__native--overlay">
-
-							{ this.years.map((year, i) => (
-								<option key={ i } value={ year }>
-									{ year }
-								</option>
-							)) }
-						</select>
-
-						{/* Year `<select/>` button */}
-						<button type="button" className="rrui__button-reset">
-							<div className="rrui__select__selected-content">
-								<div className="rrui__select__selected-label">
-									{date.getFullYear()}
-								</div>
-								<div className="rrui__select__arrow"/>
-							</div>
-						</button>
-					</div>
-				</div>
-			</div>
-		)
-	}
-}
-
-// Converts timezone to UTC while preserving the same time
-function convert_to_utc_timezone(date)
-{
-	// Doesn't account for leap seconds but I guess that's ok
-	// given that javascript's own `Date()` does not either.
-	// https://www.timeanddate.com/time/leap-seconds-background.html
-	//
-	// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-	//
-	return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
 }
 
 const iconStyle =

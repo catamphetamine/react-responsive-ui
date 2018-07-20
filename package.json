@@ -50,7 +50,7 @@
     "*.css"
   ],
   "scripts": {
-    "test": "mocha --require babel-core/register --colors --bail --reporter spec test/ --recursive",
+    "test": "mocha --require babel-core/register --require test/setup.js --colors --bail --reporter spec \"./{,!(node_modules)/**/}*.test.js\" --recursive",
     "test-coverage": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha -- --require babel-core/register --colors --reporter dot test/ --recursive",
     "test-travis": "istanbul cover -x \"commonjs/**\" node_modules/mocha/bin/_mocha --report lcovonly -- --require babel-core/register --colors --reporter spec test/ --recursive",
     "browser-build": "webpack --mode production --progress --colors",
