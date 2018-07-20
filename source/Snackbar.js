@@ -8,40 +8,36 @@ export default class Snackbar extends PureComponent
 	static propTypes =
 	{
 		// Snackbar value (either a message, or an object)
-		value : PropTypes.oneOfType
-		([
-			PropTypes.string,
-			PropTypes.shape
-			({
-				// Notification content.
-				content : PropTypes.oneOfType
-				([
-					PropTypes.string,
-					PropTypes.node
-				]),
+		value : PropTypes.shape
+		({
+			// Notification content.
+			content : PropTypes.oneOfType
+			([
+				PropTypes.string,
+				PropTypes.node
+			]),
 
-				// Instead of `content` property one may supply `component` property
-				// which must be a React component which receives all "rest" `value` properties
-				// and also `hide`property (a function that hides the notification).
-				component : PropTypes.func,
+			// Instead of `content` property one may supply `component` property
+			// which must be a React component which receives all "rest" `value` properties
+			// and also `hide`property (a function that hides the notification).
+			component : PropTypes.func,
 
-				// `props` are passed to `component`.
-				props : PropTypes.object,
+			// `props` are passed to `component`.
+			props : PropTypes.object,
 
-				// If `content` is a `string` then its `length` is calculated automatically.
-				// Otherwise one may pass `length` manually.
-				// It's used for calculating notification `duration`.
-				length : PropTypes.number,
+			// If `content` is a `string` then its `length` is calculated automatically.
+			// Otherwise one may pass `length` manually.
+			// It's used for calculating notification `duration`.
+			length : PropTypes.number,
 
-				// `type` is appended as a BEM modifier to `.rrui__snackbar` CSS class.
-				// E.g. `.rrui__snackbar--error` for `{ type: "error" }`.
-				type : PropTypes.string,
+			// `type` is appended as a BEM modifier to `.rrui__snackbar` CSS class.
+			// E.g. `.rrui__snackbar--error` for `{ type: "error" }`.
+			type : PropTypes.string,
 
-				// How long does the notification stay.
-				// Pass `-1` for it to stay until it's closed manually.
-				duration : PropTypes.number
-			})
-		]),
+			// How long does the notification stay.
+			// Pass `-1` for it to stay until it's closed manually.
+			duration : PropTypes.number
+		}),
 
 		// Must reset the `value`.
 		reset : PropTypes.func.isRequired,
@@ -80,25 +76,13 @@ export default class Snackbar extends PureComponent
 		clearTimeout(this.show_snack_timeout)
 	}
 
-	receiveNewValue()
+	receiveNewValue(prevProps)
 	{
-		let { value, reset } = this.props
+		const { value, reset } = this.props
 
-		// Redux has an optimization built in:
-		// it won't rerender a `@connect`ed component
-		// if its new `props` are shallowly equal to the previous ones.
-		// Therefore, manually resetting the `value` property here
-		// immediately after receiving it (a non-`undefined` value)
-		// so that the same notification message could later be displayed.
-		if (value)
+		// If `value` has changed, then push it to the queue and reset the `value`.
+		if (value && value !== prevProps.value)
 		{
-			// Normalize value (make it a plain javascript object)
-			// if it's a string or a react element.
-			if (!(typeof value === 'object' && !React.isValidElement(value)))
-			{
-				value = { content: value }
-			}
-
 			// Add the notification to the queue
 			this.push(value)
 			// Reset the `value` property immediately
@@ -178,14 +162,14 @@ export default class Snackbar extends PureComponent
 		this.show_next_snack_timeout = setTimeout(this.next, hideAnimationDuration)
 	}
 
-	componentDidUpdate()
+	componentDidUpdate(prevProps)
 	{
 		let { height, value } = this.state
 
 		// If `value` got updated, then push it
 		// to the list of `values` and reset
 		// the `value` property.
-		this.receiveNewValue()
+		this.receiveNewValue(prevProps)
 
 		// The notification DOM element has just been rendered
 		// which means its dimensions are set by now.

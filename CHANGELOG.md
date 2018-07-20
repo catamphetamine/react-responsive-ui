@@ -9,6 +9,8 @@
 
 * (breaking change) Changed how `<List.Item/>` works: it is now just a wrapper for its `children`. If `<List onSelectItem/>` or `<List.Item onSelect/>` are present then it creates a `<button/>`. Otherwise it just renders `children` (adding some props to them, like `onClick` and `onMouseDown`).
 
+* (breaking change) `<Snackbar/>` no longer receives `value` of type `String` — only an object of shape `{ content, type, component, ... }` is accepted.
+
 0.13.0 / 12.07.2018
 ===================
 
