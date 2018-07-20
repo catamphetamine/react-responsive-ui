@@ -26,7 +26,7 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 
 					const pad = number => number < 10 ? '0' + number : number
 
-					this.setState({ snack: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` })
+					this.setState({ snack: { content: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` } })
 				}}>
 					Show a snack
 				</Button>
@@ -34,7 +34,7 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 				<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
 
 <Highlight lang="jsx">{`
-<Button action={() => this.setState({ snack: "..." })}>
+<Button action={ () => this.setState({ snack: { content: "..." } }) }>
   Show a snack
 </Button>
 
