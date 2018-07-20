@@ -4,14 +4,9 @@
 	font-size        : 0;
 }
 
-.rrui__divider--list
-{
-	padding-top    : var(--rrui-list-vertical-padding);
-	padding-bottom : var(--rrui-list-vertical-padding);
-}
-
 .rrui__divider__line
 {
+	width            : 100%;
 	height           : 1px;
 	margin-bottom    : -1px;
 	background-color : rgba(0,0,0,.16);

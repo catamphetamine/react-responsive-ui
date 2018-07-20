@@ -43,8 +43,6 @@ export default class ExpandableMenu extends Component
 
 	focus = () => focus(this.toggler)
 
-	// onExpand = () => this.setState({ isExpanded: true })
-
 	expand   = () => this.list.expand()
 	collapse = () => this.list.collapse()
 	toggle   = () => this.list.toggle()
@@ -53,6 +51,8 @@ export default class ExpandableMenu extends Component
 	storeTogglerRef = (ref) => this.toggler = ref
 	storeTogglerNode = (node) => this.togglerNode = node
 	getTogglerNode = () => this.togglerNode
+
+	onBlur = (event) => this.list && this.list.onBlur(event)
 
 	render()
 	{
@@ -78,7 +78,7 @@ export default class ExpandableMenu extends Component
 
 				<div
 					ref={ this.storeTogglerNode }
-					onBlur={ (event) => this.list && this.list.onBlur(event) }
+					onBlur={ this.onBlur }
 					onClick={ this.toggle }
 					onKeyDown={ this.onKeyDown }>
 
@@ -96,6 +96,7 @@ export default class ExpandableMenu extends Component
 					getTogglerNode={this.getTogglerNode}
 					closeButtonIcon={closeButtonIcon}
 					closeLabel={closeLabel}
+					focusSelectedItem={false}
 					className="rrui__shadow">
 					{menuItems}
 				</ExpandableList>

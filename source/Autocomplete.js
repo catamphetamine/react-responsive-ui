@@ -381,7 +381,7 @@ export default class Select extends Component
 						onPreloadStateChange={this.onPreloadStateChange}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						selectedItemValue={options.length === 0 ? undefined : (inputValue === '' ? undefined : value)}
+						selectedItemValue={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
 						onSelectItem={this.setValue}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
@@ -446,7 +446,7 @@ export default class Select extends Component
 				onChange={ this.onInputValueChange }
 				onKeyDown={ this.onKeyDown }
 				onFocus={ this.expandOnFocus }
-				onBlur={ (event) => this.list && this.list.onBlur(event) }
+				onBlur={ this.onBlur }
 				onClick={ this.expandOnFocus }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
@@ -757,6 +757,8 @@ export default class Select extends Component
 			onChange(newValue)
 		}
 	}
+
+	onBlur = (event) => this.list && this.list.onBlur(event)
 
 	onFocusOut = () =>
 	{

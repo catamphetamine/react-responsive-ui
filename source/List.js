@@ -17,7 +17,7 @@ export default class List extends Component
 
 		onFocusItem : PropTypes.func,
 		onKeyDown : PropTypes.func,
-		onSpaceBar : PropTypes.func,
+		onSelectItem : PropTypes.func,
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
@@ -66,11 +66,12 @@ export default class List extends Component
 	state = {}
 
 	// `ref`s of all items currently rendered.
-	itemRefs = {}
+	itemRefs = []
 
 	getFocusedItemIndex = () =>
 	{
 		const { focusedItemIndex } = this.state
+
 		return focusedItemIndex
 	}
 
@@ -98,10 +99,11 @@ export default class List extends Component
 
 	getFirstFocusableItemIndex()
 	{
-		for (const index of Object.keys(this.itemRefs))
+		let i = 0
+		while (i < this.itemRefs.length)
 		{
-			if (this.itemRefs[index]) {
-				return parseInt(index)
+			if (this.itemRefs[i]) {
+				return i
 			}
 		}
 	}
@@ -148,22 +150,9 @@ export default class List extends Component
 		})
 	}
 
-	onItemSelect = (index, value, onSelect) =>
-	{
-		const { onSelectItem } = this.props
-
-		if (onSelectItem) {
-			onSelectItem(value, index)
-		}
-
-		if (onSelect) {
-			onSelect()
-		}
-	}
-
 	onKeyDown = (event) =>
 	{
-		const { onKeyDown, onSelectItem, onSpaceBar, children } = this.props
+		const { onKeyDown, children } = this.props
 		const { focusedItemIndex } = this.state
 
 		if (onKeyDown) {
@@ -193,8 +182,7 @@ export default class List extends Component
 
 					const previousIndex = this.getPreviousFocusableItemIndex()
 
-					if (previousIndex !== undefined)
-					{
+					if (previousIndex !== undefined) {
 						this.focusItem(previousIndex)
 					}
 
@@ -207,8 +195,7 @@ export default class List extends Component
 
 					const nextIndex = this.getNextFocusableItemIndex()
 
-					if (nextIndex !== undefined)
-					{
+					if (nextIndex !== undefined) {
 						this.focusItem(nextIndex)
 					}
 
@@ -241,45 +228,6 @@ export default class List extends Component
 			}
 		}
 	}
-
-	// refocusThePreviouslyFocusedItem()
-	// {
-	// 	const { children } = this.props
-	// 	const { focusedItemIndex, focusedItemValue } = this.state
-
-	// 	if (focusedItemIndex === undefined) {
-	// 		return
-	// 	}
-
-	// 	const listItems = React.Children.toArray(children)
-
-	// 	// Re-focus the prevously focused item, if it's present.
-	// 	if (focusedItemValue !== undefined)
-	// 	{
-	// 		let i = 0
-	// 		for (const item of listItems)
-	// 		{
-	// 			if (item.props.value === focusedItemValue)
-	// 			{
-	// 				return this.setState({
-	// 					focusedItemIndex: i
-	// 				})
-	// 			}
-	// 			i++
-	// 		}
-
-	// 		// Focus the first focusable list item.
-	// 		this.focusAny()
-	// 	}
-
-	// 	// If the previously focused option is no longer available
-	// 	// (or is not focusable), then focus the first focusable list item.
-	// 	if (!this.itemRefs[focusedItemIndex])
-	// 	{
-	// 		// Focus the first focusable list item.
-	// 		this.focusAny()
-	// 	}
-	// }
 
 	focusAny()
 	{
@@ -334,54 +282,47 @@ export default class List extends Component
 	// `this.list` is also being accessed from `<ScrollableList/>`.
 	storeListNode = (node) => this.list = node
 
+	storeItemRef = (ref, i) => this.itemRefs[i] = ref
+
 	render()
 	{
 		const
 		{
-			alignment,
-			upward,
 			disabled,
 			tabbable,
 			getItemValue,
+			onSelectItem,
 			className,
 			style,
-			itemStyle,
 			children
 		}
 		= this.props
 
-		const
-		{
-			focusedItemIndex
-		}
-		= this.state
+		const { focusedItemIndex } = this.state
 
 		return (
 			<ul
 				ref={ this.storeListNode }
 				onKeyDown={ this.onKeyDown }
 				style={ style }
-				className={ classNames
-				(
-					className,
-					'rrui__list'
-				) }>
+				className={ classNames(className, 'rrui__list') }>
+
 				{ React.Children.map(children, (item, i) =>
 				{
+					if (item.type !== Item) {
+						throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
+					}
+
 					return React.cloneElement(item,
 					{
-						key          : i, // this.getItemKey(i),
-						index        : i,
-						itemRef      : this.isFocusableItem(item) ? ref => this.itemRefs[i] = ref : undefined, // this.itemRefs[this.getItemKey(i)] = ref,
-						style        : item.props.style ? (itemStyle ? { ...item.props.style, ...itemStyle } : item.props.style) : itemStyle,
-						tabIndex     : tabbable && (focusedItemIndex === undefined ? i === 0 : focusedItemIndex === i) ? 0 : -1,
-						focus        : this.focusItem,
-						focused      : focusedItemIndex === i,
-						selected     : getItemValue && item.value === getItemValue(i),
-						disabled     : disabled || item.props.disabled,
-						isSelectable : item.type !== Divider,
-						onSelect     : item.type === Divider ? undefined : (index, value) => this.onItemSelect(index, value, item.props.onSelect),
-						className    : item.type === Divider ? classNames(item.props.className, 'rrui__divider--list') : item.props.className
+						key       : i,
+						index     : i,
+						itemRef   : this.isFocusableItem(item) ? this.storeItemRef : undefined,
+						focus     : this.focusItem,
+						focused   : focusedItemIndex === i,
+						disabled  : disabled || item.props.disabled,
+						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : focusedItemIndex === i) ? 0 : -1,
+						onSelectItem
 					})
 				}) }
 			</ul>
@@ -393,7 +334,14 @@ export class Item extends React.Component
 {
 	onMouseDown = (event) =>
 	{
-		const { isSelectable, focus, index } = this.props
+		const
+		{
+			onMouseDown,
+			value,
+			index,
+			focus
+		}
+		= this.props
 
 		// Without this Safari (both mobile and desktop)
 		// won't select any item in an expanded list
@@ -401,109 +349,153 @@ export class Item extends React.Component
 		// on `mouseDown` due to `blur` event being fired.
 		event.preventDefault()
 
-		if (isSelectable) {
+		if (this.isSelectable()) {
 			focus(index)
+		}
+
+		if (onMouseDown) {
+			onMouseDown(event)
 		}
 	}
 
 	onFocus = (event) =>
 	{
-		const { isSelectable, focus, index } = this.props
+		const
+		{
+			onFocus,
+			value,
+			focus,
+			index
+		}
+		= this.props
 
-		if (isSelectable) {
+		if (this.isSelectable()) {
 			focus(index)
+		}
+
+		if (onFocus) {
+			onFocus(event)
 		}
 	}
 
 	onClick = (event) =>
 	{
-		const { isSelectable, onSelect, index, value } = this.props
-
-		if (isSelectable) {
-			onSelect(index, value)
+		const
+		{
+			onSelect,
+			onSelectItem,
+			onClick,
+			index,
+			value
 		}
+		= this.props
+
+		if (this.isSelectable()) {
+			if (onSelect) {
+				onSelect(value, index)
+			}
+			if (onSelectItem) {
+				onSelectItem(value, index)
+			}
+		}
+
+		if (onClick) {
+			onClick(event)
+		}
+	}
+
+	isSelectable()
+	{
+		const { children } = this.props
+
+		return children.type !== Divider
+	}
+
+	focus = () =>
+	{
+		const { children } = this.props
+
+		focus(React.Children.toArray(children)[0])
+	}
+
+	storeRef = (ref) =>
+	{
+		const { itemRef, index } = this.props
+
+		itemRef(ref, index)
 	}
 
 	render()
 	{
 		const
 		{
-			itemRef,
 			value,
-			content,
-			label,
 			icon,
 			focused,
-			selected,
 			disabled,
-			component,
 			className,
-			children,
-			// Rest.
-			index,
-			focus,
-			isSelectable,
+			tabIndex,
 			onSelect,
-			...rest
+			onSelectItem,
+			children
 		}
 		= this.props
 
-		let ItemComponent
+		// Throws an error for some weird reason.
+		// React.Children.only(children)
 
-		if (component)
-		{
-			ItemComponent = component
+		if (React.Children.count(children) !== 1) {
+			throw new Error(`Each <List.Item/> must have a single child (and remove any whitespace).`)
 		}
-		else if (rest.link)
+
+		const properties =
 		{
-			ItemComponent = 'a'
-			rest.href = rest.link
-			rest.link = undefined
+			ref          : this.storeRef,
+			onMouseDown  : this.onMouseDown,
+			onClick      : this.onClick,
+			onFocus      : this.onFocus,
+			className    : classNames
+			(
+				className,
+				'rrui__list__item',
+				{
+					'rrui__list__item--focused'  : focused,
+					'rrui__list__item--disabled' : disabled,
+					'rrui__list__item--divider'  : children.type === Divider
+				}
+			)
 		}
-		else if (onSelect)
+
+		let ItemComponent
+		let label
+
+		if (this.isSelectable() && (onSelect || onSelectItem))
 		{
 			ItemComponent = 'button'
-			rest.type = 'button'
-		}
-		else
-		{
-			ItemComponent = 'div'
-			rest.tabIndex = undefined
+			label = this.props.label || children
+			properties.type = 'button'
+			properties['aria-label'] = label
+			properties.tabIndex = tabIndex
+			properties.disabled = disabled
+			properties.className = classNames(properties.className, 'rrui__button-reset', 'rrui__list__item--button')
 		}
 
 		return (
 			<li className="rrui__list__list-item">
-				<ItemComponent
-					ref={ itemRef }
-					onMouseDown={ this.onMouseDown }
-					onClick={ this.onClick }
-					onFocus={ this.onFocus }
-					disabled={ disabled }
-					aria-label={ label }
-					className={ classNames
-					(
-						className,
-						'rrui__list__item',
-						'rrui__button-reset',
-						{
-							'rrui__button-reset--link'   : ItemComponent === 'a' && rest.link,
-							'rrui__list__item--selected' : selected,
-							'rrui__list__item--focused'  : focused,
-							'rrui__list__item--disabled' : disabled
+				{ ItemComponent && React.createElement(ItemComponent, properties, (
+					<React.Fragment>
+						{/* Icon. */}
+						{ icon &&
+							<div className="rrui__list__item-icon">
+								{ React.createElement(icon, { value, label }) }
+							</div>
 						}
-					) }
-					{...rest}>
 
-					{/* Icon. */}
-					{ icon &&
-						<div className="rrui__list__item-icon">
-							{React.createElement(icon, { value, label })}
-						</div>
-					}
-
-					{/* Label (or content). */}
-					{ children }
-				</ItemComponent>
+						{/* Label (or content). */}
+						{ children }
+					</React.Fragment>
+				)) }
+				{ !ItemComponent && React.cloneElement(children, properties) }
 			</li>
 		)
 	}

@@ -16,3 +16,9 @@
 	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
 	padding-right : var(--rrui-collapsible-menu-item-side-padding);
 }
+
+.rrui__menu .rrui__list__item--divider
+{
+	padding-left  : 0;
+	padding-right : 0;
+}

@@ -24,6 +24,7 @@ export default class ExpandableList extends Component
 
 		// Whether the list items should be focused upon expand.
 		focusOnExpand : PropTypes.bool.isRequired,
+		focusSelectedItem : PropTypes.bool.isRequired,
 
 		className : PropTypes.string
 	}
@@ -31,7 +32,8 @@ export default class ExpandableList extends Component
 	static defaultProps =
 	{
 		alignment : 'left',
-		focusOnExpand : true
+		focusOnExpand : true,
+		focusSelectedItem : true
 	}
 
 	static getDerivedStateFromProps(props, state)
@@ -102,17 +104,19 @@ export default class ExpandableList extends Component
 
 	onSelectItem = (value, index) =>
 	{
-		const { onSelectItem } = this.props
+		const { onSelectItem, focusSelectedItem } = this.props
 
 		if (onSelectItem) {
 			onSelectItem(value, index)
 		}
 
-		this.setState
-		({
-			selectedItemIndex : index,
-			// selectedItemValue : value
-		})
+		if (focusSelectedItem)
+		{
+			this.setState
+			({
+				selectedItemIndex : index
+			})
+		}
 
 		this.collapsedDueToItemBeingSelected = true
 		this.collapse()

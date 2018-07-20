@@ -318,7 +318,7 @@ export default class Select extends Component
 				disabled={ disabled }
 				onClick={ this.toggle }
 				onKeyDown={ this.onKeyDown }
-				onBlur={ (event) => this.list && this.list.onBlur(event) }
+				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
 				aria-label={ ariaLabel }
@@ -566,6 +566,8 @@ export default class Select extends Component
 			onChange(newValue)
 		}
 	}
+
+	onBlur = (event) => this.list && this.list.onBlur(event)
 
 	onFocusOut = () =>
 	{

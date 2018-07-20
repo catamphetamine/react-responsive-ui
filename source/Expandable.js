@@ -5,7 +5,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 
 import Close, { CloseIcon } from './Close'
 
-import { getScrollbarWidth, isInternetExplorer } from './utility/dom'
+import { isInternetExplorer } from './utility/dom'
 import { onBlur } from './utility/focus'
 
 /**

@@ -30,16 +30,16 @@ export function submitContainingForm(node)
 	}
 }
 
-export function getScrollbarWidth()
-{
-	// // `window.innerWidth` has a bug:
-	// // it's decreases as the page scale is increased.
-	// // Therefore not using it.
-	// // (Full width) - (Width minus scrollbar)
-	// return document.body.clientWidth - window.innerWidth
-
-	return 17
-}
+// export function getScrollbarWidth()
+// {
+// 	// // `window.innerWidth` has a bug:
+// 	// // it's decreases as the page scale is increased.
+// 	// // Therefore not using it.
+// 	// // (Full width) - (Width minus scrollbar)
+// 	// return document.body.clientWidth - window.innerWidth
+//
+// 	return 17
+// }
 
 // Detects Internet Explorer.
 // https://stackoverflow.com/questions/19999388/check-if-user-is-using-ie-with-jquery

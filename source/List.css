@@ -16,7 +16,6 @@
 	display     : flex;
 	align-items : center;
 	width       : 100%;
-	height      : var(--rrui-list-item-height);
 
 	overflow      : hidden;
 	text-overflow : ellipsis;
@@ -46,6 +45,20 @@
 {
 	background-color : var(--rrui-accent-color);
 	color            : var(--rrui-white-color);
+}
+
+.rrui__list__item--button
+{
+	height : var(--rrui-list-item-height);
+}
+
+.rrui__list__item--divider
+{
+	padding-left   : 0;
+	padding-right  : 0;
+	padding-top    : var(--rrui-list-vertical-padding);
+	padding-bottom : var(--rrui-list-vertical-padding);
+	pointer-events : none;
 }
 
 .rrui__list__item--focused

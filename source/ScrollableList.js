@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { getScrollbarWidth } from './utility/dom'
-
 import List from './List'
 
 export default class ScrollableList extends Component
@@ -192,26 +190,11 @@ export default class ScrollableList extends Component
 			listStyle = { maxHeight: `${maxHeight}px` }
 		}
 
-		// getSelectedItemIndex={ this.getSelectedItemIndex }
-
-		let itemStyle
-
-		// on overflow the vertical scrollbar will take up space
-		// reducing padding-right and the only way to fix that
-		// is to add additional padding-right
-		//
-		// a hack to restore padding-right taken up by a vertical scrollbar
-		if (this.isOverflown() && scrollBarPadding)
-		{
-			itemStyle = { marginRight: getScrollbarWidth() + 'px' }
-		}
-
 		return (
 			<List
 				ref={ this.storeListRef }
 				onFocusItem={ this.onFocusItem }
 				style={ listStyle }
-				itemStyle={ itemStyle }
 				className={ classNames(className,
 				{
 					'rrui__scrollable' : this.isOverflown()
@@ -221,43 +204,4 @@ export default class ScrollableList extends Component
 			</List>
 		)
 	}
-
-	// renderItems()
-	// {
-	// 	const { items, scrollBarPadding } = this.props
-	//
-	// 	let itemStyle
-	//
-	// 	// on overflow the vertical scrollbar will take up space
-	// 	// reducing padding-right and the only way to fix that
-	// 	// is to add additional padding-right
-	// 	//
-	// 	// a hack to restore padding-right taken up by a vertical scrollbar
-	// 	if (this.isOverflown() && scrollBarPadding)
-	// 	{
-	// 		itemStyle = { marginRight: getScrollbarWidth() + 'px' }
-	// 	}
-	//
-	// 	return items.map(({ value, label, icon, content }, i) => (
-	// 		<List.Item
-	// 			key={ i }
-	// 			value={ value }
-	// 			label={ label }
-	// 			icon={ icon }
-	// 			content={ content }
-	// 			style={ itemStyle }/>
-	// 	))
-	// }
 }
-
-// // There can be an `undefined` value,
-// // so just `{ value }` won't do here.
-// function getItemKey(value)
-// {
-// 	return valueIsEmpty(value) ? '@@rrui/select/undefined' : value
-// }
-
-// function valueIsEmpty(value)
-// {
-// 	return value === null || value === undefined
-// }
