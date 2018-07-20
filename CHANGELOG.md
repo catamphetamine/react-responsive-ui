@@ -4,6 +4,11 @@
 
 <!-- `scroll-into-view-if-needed` bug: https://github.com/stipsan/scroll-into-view-if-needed/issues/359 -->
 
+0.14.0 / 20.07.2018
+===================
+
+* (breaking change) Changed how `<List.Item/>` works: it is now just a wrapper for its `children`. If `<List onSelectItem/>` or `<List.Item onSelect/>` are present then it creates a `<button/>`. Otherwise it just renders `children` (adding some props to them, like `onClick` and `onMouseDown`).
+
 0.13.0 / 12.07.2018
 ===================
 
