@@ -60,6 +60,7 @@ export default class ExpandableMenu extends Component
 		{
 			upward,
 			alignment,
+			scrollIntoView,
 			closeButtonIcon,
 			closeLabel,
 			style,
@@ -89,6 +90,7 @@ export default class ExpandableMenu extends Component
 					ref={this.storeListRef}
 					upward={upward}
 					alignment={alignment}
+					scrollIntoView={scrollIntoView}
 					scrollMaxItems={0}
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}

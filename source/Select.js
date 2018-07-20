@@ -174,6 +174,7 @@ export default class Select extends Component
 			compact,
 			scroll,
 			scrollMaxItems,
+			scrollIntoView,
 			alignment,
 			saveOnIcons,
 			native,
@@ -246,6 +247,7 @@ export default class Select extends Component
 							ref={this.storeListRef}
 							upward={upward}
 							alignment={alignment}
+							scrollIntoView={scrollIntoView}
 							scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 							selectedItemValue={value}
 							onSelectItem={this.setValue}

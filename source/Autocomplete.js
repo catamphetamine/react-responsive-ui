@@ -305,6 +305,7 @@ export default class Select extends Component
 			compact,
 			scroll,
 			scrollMaxItems,
+			scrollIntoView,
 			alignment,
 			saveOnIcons,
 			required,
@@ -377,6 +378,7 @@ export default class Select extends Component
 						items={options}
 						focusFirstItemWhenItemsChange={inputValue !== ''}
 						alignment={alignment}
+						scrollIntoView={scrollIntoView}
 						preload={this.refreshOptions}
 						onPreloadStateChange={this.onPreloadStateChange}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}

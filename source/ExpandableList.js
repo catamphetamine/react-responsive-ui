@@ -175,6 +175,7 @@ export default class ExpandableList extends Component
 		{
 			alignment,
 			upward,
+			scrollIntoView,
 			preload,
 			onPreloadStateChange,
 			getTogglerNode,
@@ -192,6 +193,7 @@ export default class ExpandableList extends Component
 				ref={ this.storeExpandableRef }
 				alignment={ alignment }
 				upward={ upward }
+				scrollIntoView={ scrollIntoView }
 				preload={ preload }
 				onPreloadStateChange={ onPreloadStateChange }
 				onExpand={ this.onExpand }
