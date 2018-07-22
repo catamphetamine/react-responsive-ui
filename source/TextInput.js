@@ -86,6 +86,12 @@ export default class TextInput extends PureComponent
 		inputStyle       : PropTypes.object
 	}
 
+	static defaultProps =
+	{
+		// Show `error` (if passed).
+		indicateInvalid : true
+	}
+
 	storeInputNode = (node) => this.input = node
 
 	focus = () => this.input.focus()

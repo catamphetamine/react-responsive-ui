@@ -141,6 +141,9 @@ export default class Select extends Component
 		// Set to `true` to mark the field as required
 		required : false,
 
+		// Show `error` (if passed).
+		indicateInvalid : true,
+
 		// Set to `true` to display the loading indicator
 		loading : false,
 

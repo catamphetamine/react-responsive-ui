@@ -42,6 +42,12 @@ export default class Segmented_control extends PureComponent
 		style        : PropTypes.object
 	}
 
+	static defaultProps =
+	{
+		// Show `error` (if passed).
+		indicateInvalid : true
+	}
+
 	render()
 	{
 		const

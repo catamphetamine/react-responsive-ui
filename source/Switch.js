@@ -71,8 +71,6 @@ export default class Switch extends PureComponent
 		{
 			value,
 			disabled,
-			indicateInvalid,
-			error,
 			style,
 			className,
 			leftLabel,

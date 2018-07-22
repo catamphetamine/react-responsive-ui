@@ -4,6 +4,11 @@
 
 <!-- `scroll-into-view-if-needed` bug: https://github.com/stipsan/scroll-into-view-if-needed/issues/359 -->
 
+0.14.4 / 22.07.2018
+===================
+
+* (could be a minor breaking change) `indicateInvalid` is now `true` by default, and is considered an "undocumented" feature.
+
 0.14.0 / 20.07.2018
 ===================
 

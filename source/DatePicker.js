@@ -136,6 +136,9 @@ export default class DatePicker extends Component
 		// Set to `true` to mark the field as required
 		required : false,
 
+		// Show `error` (if passed).
+		indicateInvalid : true,
+
 		// Whether dates being selected should be in UTC+0 timezone
 		utc : false,
 

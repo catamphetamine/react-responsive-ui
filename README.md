@@ -145,12 +145,7 @@ The same can be done for CSS: instead of importing the whole `react-responsive-u
 
 ## Validation
 
-Each form component receives two validation-specific properties
-
-* `error : String` – error message
-* `indicateInvalid : boolean` – whether the field should be displayed as an invalid one (including showing the `error` message)
-
-When both of these properties are set the form component appends `--invalid` postfixes to its CSS `className`s.
+Each form component receives an `error : String` error message property.
 
 ## Drag'n'drop
 

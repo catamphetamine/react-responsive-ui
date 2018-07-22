@@ -43,7 +43,10 @@ export default class Checkbox extends Component
 		disabled  : false,
 		value     : false,
 		multiline : false,
-		focus     : false
+		focus     : false,
+
+		// Show `error` (if passed).
+		indicateInvalid : true
 	}
 
 	state = {}
