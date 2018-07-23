@@ -5,7 +5,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 
 import Close, { CloseIcon } from './Close'
 
-import { isInternetExplorer } from './utility/dom'
+// import { isInternetExplorer } from './utility/dom'
 import { onBlur } from './utility/focus'
 
 /**
@@ -267,9 +267,10 @@ export default class Expandable extends Component
 		}
 		= this.props
 
-		// For some reason in IE 11 "scroll into view" scrolls
-		// to the top of the page, therefore turn it off for IE.
-		if (!isInternetExplorer() && shouldScrollIntoView)
+		// // For some reason in IE 11 "scroll into view" scrolls
+		// // to the top of the page, therefore turn it off for IE.
+		// if (!isInternetExplorer() && shouldScrollIntoView)
+		if (shouldScrollIntoView)
 		{
 			this.scrollIntoViewTimer = setTimeout(() =>
 			{
@@ -280,16 +281,15 @@ export default class Expandable extends Component
 				if (expanded)
 				{
 					// https://github.com/stipsan/scroll-into-view-if-needed/issues/359
+					// scrollIntoView(this.container, false, { duration: 300 })
 
-					// scrollIntoView(this.container,
-					// {
-					// 	scrollMode : 'if-needed',
-					// 	behavior   : 'smooth',
-					// 	block      : 'nearest',
-					// 	inline     : 'nearest'
-					// })
-
-					scrollIntoView(this.container, false, { duration: 300 })
+					scrollIntoView(this.container,
+					{
+						scrollMode : 'if-needed',
+						behavior   : 'smooth',
+						block      : 'nearest',
+						inline     : 'nearest'
+					})
 				}
 			},
 			Math.max(scrollIntoViewDelay, expandAnimationDuration) * 1.1)
