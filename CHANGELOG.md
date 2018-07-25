@@ -9,7 +9,7 @@
 0.14.6 / 26.07.2018
 ===================
 
-* Rewrote `<List/>` without using `<React.Fragment/>` for older React support.
+* Rewrote `<List/>` without using `<React.Fragment/>` for older React support (>= 15.3.0 for `PureComponent` support).
 
 0.14.4 / 22.07.2018
 ===================
