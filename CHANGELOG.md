@@ -4,6 +4,13 @@
 
 <!-- `scroll-into-view-if-needed` bug: https://github.com/stipsan/scroll-into-view-if-needed/issues/359 -->
 
+<!-- `List.js`: replace `<div></div>` with `<React.Fragment></React.Fragment>` in some future when React >= 16.2.0 is common -->
+
+0.14.6 / 26.07.2018
+===================
+
+* Rewrote `<List/>` without using `<React.Fragment/>` for older React support.
+
 0.14.4 / 22.07.2018
 ===================
 
@@ -19,7 +26,7 @@
 0.13.0 / 12.07.2018
 ===================
 
-* (breaking change) React >= 16.3 is required ("React Portals" are used for `<Tooltip/>`, which requires React >= 16; `react-dnd@5` requires React >= 16.3).
+* (breaking change) React >= 16.3 is required ("React Portals" are used for `<Tooltip/>`, which requires React >= 16; `react-dnd@5` requires React >= 16.3). Still, components other than `<Tooltip/>` and `@DragAndDrop` can be used with older React.
 
 * (breaking change) `react-dnd` updated from version `2.x` to version `5.x`.
 

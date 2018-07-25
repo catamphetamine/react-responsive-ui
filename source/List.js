@@ -466,6 +466,7 @@ export class Item extends React.Component
 		}
 
 		let ItemComponent
+		let itemChildren
 		let label
 
 		if (this.isSelectable() && (onSelect || onSelectItem))
@@ -477,23 +478,39 @@ export class Item extends React.Component
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
 			properties.className = classNames(properties.className, 'rrui__button-reset', 'rrui__list__item--button')
+
+			// Replace `itemChildren` array with `<React.Fragment/>`
+			// in some future when React >= 16.2.0 is common.
+			//
+			// <React.Fragment>
+			// 	{/* Icon. */}
+			// 	{ icon &&
+			// 		<div className="rrui__list__item-icon">
+			// 			{ React.createElement(icon, { value, label }) }
+			// 		</div>
+			// 	}
+			//
+			// 	{/* Label (or content). */}
+			// 	{ children }
+			// </React.Fragment>
+
+			// Label (or content).
+			itemChildren = React.Children.toArray(children)
+
+			// Icon.
+			if (icon)
+			{
+				itemChildren.unshift((
+					<div key='icon' className="rrui__list__item-icon">
+						{ React.createElement(icon, { value, label }) }
+					</div>
+				))
+			}
 		}
 
 		return (
 			<li className="rrui__list__list-item">
-				{ ItemComponent && React.createElement(ItemComponent, properties, (
-					<React.Fragment>
-						{/* Icon. */}
-						{ icon &&
-							<div className="rrui__list__item-icon">
-								{ React.createElement(icon, { value, label }) }
-							</div>
-						}
-
-						{/* Label (or content). */}
-						{ children }
-					</React.Fragment>
-				)) }
+				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }
 				{ !ItemComponent && React.cloneElement(children, properties) }
 			</li>
 		)
