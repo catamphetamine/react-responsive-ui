@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import classNames from 'classnames'
@@ -21,7 +21,7 @@ from './utility/dom'
 const empty_value_option_value = ''
 
 @reactLifecyclesCompat
-export default class Select extends Component
+export default class Autocomplete extends PureComponent
 {
 	static propTypes =
 	{
@@ -116,7 +116,7 @@ export default class Select extends Component
 		icon       : PropTypes.bool,
 
 		// If this flag is set to `true`,
-		// then it makes `<Select/>` not stretch itself
+		// then it makes `<Autocomplete/>` not stretch itself
 		// to 100% width by making it `inline-block`.
 		// Is set to `true` when `icon` is `true`
 		// because it makes sense.

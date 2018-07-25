@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 
 // http://react-day-picker.js.org/examples/?yearNavigation
 // Component will receive date, locale and localeUtils props
-export default class YearMonthSelect extends Component
+export default class YearMonthSelect extends PureComponent
 {
 	constructor(props)
 	{

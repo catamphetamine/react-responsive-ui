@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
@@ -16,7 +16,7 @@ import { parseDate, formatDate, trimInvalidPart, normalizeDate } from './utility
 
 // Derived from `react-day-picker` example
 // http://react-day-picker.js.org/examples/?overlay
-export default class DatePicker extends Component
+export default class DatePicker extends PureComponent
 {
 	static propTypes =
 	{

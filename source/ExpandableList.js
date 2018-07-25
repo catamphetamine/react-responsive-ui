@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
@@ -8,7 +8,7 @@ import Expandable from './Expandable'
 import { findItemIndexByValue } from './List'
 
 @reactLifecyclesCompat
-export default class ExpandableList extends Component
+export default class ExpandableList extends PureComponent
 {
 	static propTypes =
 	{

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
@@ -9,7 +9,7 @@ import { submitFormOnCtrlEnter } from './utility/dom'
 import { focus } from './utility/focus'
 
 @reactLifecyclesCompat
-export default class List extends Component
+export default class List extends PureComponent
 {
 	static propTypes =
 	{

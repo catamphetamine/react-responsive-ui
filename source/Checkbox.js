@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -6,7 +6,7 @@ import { submitFormOnCtrlEnter } from './utility/dom'
 
 // http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/
 
-export default class Checkbox extends Component
+export default class Checkbox extends PureComponent
 {
 	static propTypes =
 	{

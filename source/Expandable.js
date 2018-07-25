@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import scrollIntoView from 'scroll-into-view-if-needed'
@@ -25,7 +25,7 @@ import { onBlur } from './utility/focus'
  * * `.collapse()`
  * * `.isExpanded()`
  */
-export default class Expandable extends Component
+export default class Expandable extends PureComponent
 {
 	static propTypes =
 	{

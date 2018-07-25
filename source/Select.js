@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import classNames from 'classnames'
@@ -20,7 +20,7 @@ from './utility/dom'
 const empty_value_option_value = ''
 
 @reactLifecyclesCompat
-export default class Select extends Component
+export default class Select extends PureComponent
 {
 	static propTypes =
 	{

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -8,7 +8,7 @@ import Close, { CloseIcon } from './Close'
 
 import { focus } from './utility/focus'
 
-export default class ExpandableMenu extends Component
+export default class ExpandableMenu extends PureComponent
 {
 	static propTypes =
 	{
