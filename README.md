@@ -6,13 +6,15 @@ Responsive React UI components.
 
 [See Demo](https://catamphetamine.github.io/react-responsive-ui/)
 
-## Installation
+## Install
 
 ```
 npm install react-responsive-ui --save
 ```
 
-## Usage
+The general requirement is React >= 0.14, except for some components: `<Tooltip/>` (requires "React Portals" from React >= 16), `<DragAndDrop/>` ([`react-dnd`](https://github.com/react-dnd/react-dnd) requires React >= 16.3).
+
+## Use
 
 See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
 

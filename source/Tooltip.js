@@ -300,7 +300,7 @@ export default class Tooltip extends PureComponent
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
-				{ this.tooltip && ReactDOM.createPortal(content, this.tooltip) }
+				{ this.tooltip && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip) }
 			</div>
 		)
 	}
