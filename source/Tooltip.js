@@ -291,6 +291,9 @@ export default class Tooltip extends PureComponent
 		}
 		= this.props
 
+		// `ReactDOM.createPortal()` requires React >= 16.
+		// If it's not available then it won't show the tooltip.
+
 		return (
 			<div
 				ref={ this.storeOriginNode }
