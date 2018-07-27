@@ -17,7 +17,7 @@ The overall requirement is React >= 16.3, but most of the components only requir
 * `<Tooltip/>` (requires "React Portals" from React >= 16).
 * `<DragAndDrop/>` ([`react-dnd`](https://github.com/react-dnd/react-dnd) requires React >= 16.3).
 
-For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/commonjs/Select'` because the default `import { Select } from 'react-responsive-ui'` would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
+For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/commonjs/Select'` instead of `import { Select } from 'react-responsive-ui'` because otherwise it would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
 
 ## Use
 
