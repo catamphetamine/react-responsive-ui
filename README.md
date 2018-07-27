@@ -19,8 +19,6 @@ The overall requirement is React >= 16.3, but most of the components only requir
 
 For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/commonjs/Select'` instead of `import { Select } from 'react-responsive-ui'` because otherwise it would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
 
-Expandable components (`Select`, `Autocomplete`, `ExpandableMenu`, `Expandable`) require `Promise` (get a polyfill for IE 11).
-
 ## Use
 
 See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
@@ -248,6 +246,8 @@ Use [babel-plugin-transform-decorators-legacy](https://babeljs.io/docs/plugins/t
 ## Supported Browsers
 
 IE 11, Edge, Firefox, Chrome, Safari — have been tested.
+
+Expandable components (`Select`, `Autocomplete`, `ExpandableMenu`, `Expandable`) require `Promise` (get a polyfill for IE 11).
 
 ## Known Issues
 
