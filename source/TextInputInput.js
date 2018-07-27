@@ -1,10 +1,13 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import throttle from 'lodash/throttle'
 
 import { getModularGridUnit } from './utility/grid'
 import { submitFormOnCtrlEnter } from './utility/dom'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 export default class TextInput extends PureComponent
 {

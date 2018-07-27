@@ -1,6 +1,9 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 // Sits at the bottom of a page and displays notifications
 export default class Snackbar extends PureComponent

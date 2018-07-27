@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import DayPicker, { ModifiersUtils } from 'react-day-picker'
 import classNames from 'classnames'
@@ -13,6 +13,9 @@ import { onBlur } from './utility/focus'
 import { isInternetExplorer } from './utility/dom'
 
 import { parseDate, formatDate, trimInvalidPart, normalizeDate } from './utility/date'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 // Derived from `react-day-picker` example
 // http://react-day-picker.js.org/examples/?overlay

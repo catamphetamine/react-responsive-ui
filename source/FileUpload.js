@@ -1,8 +1,11 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 export default class FileUpload extends PureComponent
 {

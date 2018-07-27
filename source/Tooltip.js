@@ -1,7 +1,10 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 // https://github.com/Dogfalo/materialize/blob/master/js/tooltip.js
 export default class Tooltip extends PureComponent

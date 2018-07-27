@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
@@ -7,6 +7,9 @@ import Divider from './Divider'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 import { focus } from './utility/focus'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 @reactLifecyclesCompat
 export default class List extends PureComponent

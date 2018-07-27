@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
@@ -6,6 +6,9 @@ import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import ScrollableList from './ScrollableList'
 import Expandable from './Expandable'
 import { findItemIndexByValue } from './List'
+
+// `PureComponent` is only available in React >= 15.3.0.
+const PureComponent = React.PureComponent || React.Component
 
 @reactLifecyclesCompat
 export default class ExpandableList extends PureComponent
