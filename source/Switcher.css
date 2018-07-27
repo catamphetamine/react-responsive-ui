@@ -1,15 +1,15 @@
-.rrui__segmented-control
+.rrui__switcher
 {
 	position : relative;
 	white-space : nowrap;
 }
 
-.rrui__segmented-control .rrui__input
+.rrui__switcher .rrui__input
 {
 	display : flex;
 }
 
-.rrui__segmented-control__option
+.rrui__switcher__option
 {
 	flex           : 1;
 	height         : 100%;
@@ -24,31 +24,31 @@
 	transition : all 50ms ease-out;
 }
 
-.rrui__segmented-control__option--first
+.rrui__switcher__option--first
 {
 	border-top-right-radius    : 0;
 	border-bottom-right-radius : 0;
 	border-right               : none;
 }
 
-.rrui__segmented-control__option--last
+.rrui__switcher__option--last
 {
 	border-top-left-radius    : 0;
 	border-bottom-left-radius : 0;
 }
 
-.rrui__segmented-control__option--middle
+.rrui__switcher__option--middle
 {
 	border-radius : 0;
 	border-right  : none;
 }
 
-.rrui__segmented-control__option:focus:not(:active):not(.rrui__segmented-control__option--selected)
+.rrui__switcher__option:focus:not(:active):not(.rrui__switcher__option--selected)
 {
 	color : var(--rrui-accent-color);
 }
 
-.rrui__segmented-control__option:active
+.rrui__switcher__option:active
 {
 	color            : var(--rrui-white-color);
 	background-color : var(--rrui-accent-color-light);
@@ -56,7 +56,7 @@
 }
 
 /*
-.rrui__rich__fallback .rrui__segmented-control__option:active
+.rrui__rich__fallback .rrui__switcher__option:active
 {
 	color            : var(--rrui-black-color);
 	background-color : transparent;
@@ -64,24 +64,24 @@
 */
 
 /*
-.rrui__rich__fallback .rrui__segmented-control__option input
+.rrui__rich__fallback .rrui__switcher__option input
 {
 	margin-left: 0;
 }
 */
 
-.rrui__segmented-control__option--selected
+.rrui__switcher__option--selected
 {
 	color            : var(--rrui-white-color);
 	background-color : var(--rrui-accent-color);
 }
 
-.rrui__segmented-control__option
+.rrui__switcher__option
 {
   cursor : pointer;
 }
 
-.rrui__segmented-control__option--disabled
+.rrui__switcher__option--disabled
 {
   cursor : default;
 }

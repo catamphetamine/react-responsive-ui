@@ -68,9 +68,9 @@ export default class Switcher extends PureComponent
 			<div
 				ref={ this.storeContainerComponent }
 				onKeyDown={ this.onKeyDown }
-				className={ classNames('rrui__segmented-control',
+				className={ classNames('rrui__switcher',
 				{
-					'rrui__segmented-control--disabled' : disabled
+					'rrui__switcher--disabled' : disabled
 				},
 				className) }
 				style={ style }>
@@ -108,15 +108,15 @@ export default class Switcher extends PureComponent
 				className={ classNames
 				(
 					'rrui__button-reset',
-					'rrui__segmented-control__option',
+					'rrui__switcher__option',
 					{
-						'rrui__segmented-control__option--selected' : selected,
+						'rrui__switcher__option--selected' : selected,
 						// CSS selector performance optimization
-						'rrui__segmented-control__option--disabled' : disabled,
+						'rrui__switcher__option--disabled' : disabled,
 						// Ordering
-						'rrui__segmented-control__option--first'    : first,
-						'rrui__segmented-control__option--last'     : last,
-						'rrui__segmented-control__option--middle'   : !first && !last
+						'rrui__switcher__option--first'    : first,
+						'rrui__switcher__option--last'     : last,
+						'rrui__switcher__option--middle'   : !first && !last
 					}
 				) }>
 				{ option.label }
@@ -140,11 +140,11 @@ export default class Switcher extends PureComponent
 	// 	return (
 	// 		<span
 	// 			key={ option.value }
-	// 			className={ classNames('rrui__button-reset', 'rrui__segmented-control__option',
+	// 			className={ classNames('rrui__button-reset', 'rrui__switcher__option',
 	// 			{
-	// 				'rrui__segmented-control__option--first'  : first,
-	// 				'rrui__segmented-control__option--last'   : last,
-	// 				'rrui__segmented-control__option--middle' : !first && !last
+	// 				'rrui__switcher__option--first'  : first,
+	// 				'rrui__switcher__option--last'   : last,
+	// 				'rrui__switcher__option--middle' : !first && !last
 	// 			}) }>
 	// 			<input
 	// 				type="radio"

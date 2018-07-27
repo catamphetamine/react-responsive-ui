@@ -17,7 +17,7 @@ import
 	Button,
 	Switch,
 	Checkbox,
-	SegmentedControl,
+	Switcher,
 	DatePicker,
 	FileUpload,
 	Modal,
@@ -54,7 +54,7 @@ describe('React Responsive UI', function()
 		expect(Button).to.be.a('function')
 		expect(Switch).to.be.a('function')
 		expect(Checkbox).to.be.a('function')
-		expect(SegmentedControl).to.be.a('function')
+		expect(Switcher).to.be.a('function')
 		expect(DatePicker).to.be.a('function')
 		expect(FileUpload).to.be.a('function')
 		expect(Modal).to.be.a('function')
@@ -91,7 +91,7 @@ describe('React Responsive UI', function()
 		expect(_.Button).to.be.a('function')
 		expect(_.Switch).to.be.a('function')
 		expect(_.Checkbox).to.be.a('function')
-		expect(_.SegmentedControl).to.be.a('function')
+		expect(_.Switcher).to.be.a('function')
 		expect(_.DatePicker).to.be.a('function')
 		expect(_.FileUpload).to.be.a('function')
 		expect(_.Modal).to.be.a('function')

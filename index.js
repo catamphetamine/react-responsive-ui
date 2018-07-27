@@ -126,9 +126,9 @@ from './modules/Checkbox'
 
 export
 {
-	default as SegmentedControl
+	default as Switcher
 }
-from './modules/SegmentedControl'
+from './modules/Switcher'
 
 export
 {

@@ -6,6 +6,13 @@
 
 <!-- `List.js`: replace `<div></div>` with `<React.Fragment></React.Fragment>` in some future when React >= 16.2.0 is common -->
 
+0.14.7 / 27.07.2018
+===================
+
+* Reduced React requirements for most components (now >= 0.14) for `PureComponent`.
+
+* (breaking change) Renamed `SegmentedControl` to `Switcher` and `rrui__segmented-control__...` to `rrui__switcher__...`.
+
 0.14.6 / 26.07.2018
 ===================
 
