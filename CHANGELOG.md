@@ -30,6 +30,10 @@
 
 * (breaking change) `<Snackbar/>` no longer receives `value` of type `String` — only an object of shape `{ content, type, component, ... }` is accepted.
 
+* (breaking change) Renamed `SegmentedControl` to `Switcher` and `rrui__segmented-control__...` to `rrui__switcher__...`.
+
+* (could be a minor breaking change) `indicateInvalid` is now `true` by default, and is considered an "undocumented" feature.
+
 0.13.0 / 12.07.2018
 ===================
 
