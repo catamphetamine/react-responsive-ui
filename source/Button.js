@@ -19,6 +19,12 @@ export default class Button extends PureComponent
 		// (deprecated, use `onClick(event)` instead)
 		action          : PropTypes.func,
 
+		// If `wait` is `true` then the button
+		// will be disabled and a spinner will be shown.
+		wait            : PropTypes.bool,
+
+		// (deprecated)
+		// (use `wait` instead)
 		// If `busy` is `true` then the button
 		// will be disabled and a spinner will be shown.
 		busy            : PropTypes.bool,
@@ -53,17 +59,17 @@ export default class Button extends PureComponent
 
 	state =
 	{
-		showBusy : this.props.busy
+		showBusy : this.props.wait || this.props.busy
 	}
 
 	componentDidUpdate(prevProps)
 	{
-		if (!prevProps.busy && this.props.busy)
+		if ((!prevProps.wait && this.props.wait) || (!prevProps.busy && this.props.busy))
 		{
 			clearTimeout(this.no_longer_busy_timeout)
 			this.setState({ showBusy : true })
 		}
-		else if (prevProps.busy && !this.props.busy)
+		else if ((prevProps.wait && !this.props.wait) || (prevProps.busy && !this.props.busy))
 		{
 			// Gives some time to CSS opacity transition to finish.
 			this.no_longer_busy_timeout = setTimeout(() =>
@@ -92,6 +98,7 @@ export default class Button extends PureComponent
 		{
 			link,
 			title,
+			wait,
 			busy,
 			disabled,
 			action,
@@ -115,7 +122,7 @@ export default class Button extends PureComponent
 			style,
 			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
 			{
-				'rrui__button--busy'       : busy,
+				'rrui__button--busy'       : wait || busy,
 				'rrui__button--disabled'   : disabled,
 				'rrui__button--stretch'    : stretch,
 				'rrui__button-reset--link' : link
@@ -139,15 +146,15 @@ export default class Button extends PureComponent
 		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
-				disabled={ busy || disabled }
+				disabled={ wait || busy || disabled }
 				onClick={ this.button_on_click }
 				{ ...properties }>
 
-				{ (busy || showBusy) &&
+				{ (wait || busy || showBusy) &&
 					<div
 						className={ classNames('rrui__button__busy',
 						{
-							'rrui__button__busy--after-show' : busy && showBusy
+							'rrui__button__busy--after-show' : (wait || busy) && showBusy
 						}) }/>
 				}
 				{ children }
@@ -166,6 +173,7 @@ export default class Button extends PureComponent
 	{
 		const
 		{
+			wait,
 			busy,
 			disabled,
 			action,
@@ -184,7 +192,7 @@ export default class Button extends PureComponent
 			return
 		}
 
-		if (busy || disabled)
+		if (wait || busy || disabled)
 		{
 			return
 		}

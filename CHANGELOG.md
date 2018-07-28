@@ -10,6 +10,8 @@
 
 <!-- Rename `ActivityIndicator` -> `Spinner` + CSS class names -->
 
+<!-- Rename `--busy`/`__busy` CSS classes to `--wait`/`__wait` -->
+
 0.14.10 / 28.07.2018
 ====================
 

@@ -41,6 +41,18 @@ class Modal extends Component
 		// Modal content
 		children         : PropTypes.node,
 
+		// If `wait` is `true` then the modal
+		// won't close on click-out or Escape
+		// and will show spinner on the overlay.
+		wait            : PropTypes.bool,
+
+		// (deprecated)
+		// (use `wait` instead)
+		// If `busy` is `true` then the modal
+		// won't close on click-out or Escape
+		// and will show spinner on the overlay.
+		busy            : PropTypes.bool,
+
 		// Resets the modal on close
 		// (e.g. could reset edited form fields)
 		reset            : PropTypes.func,
@@ -184,6 +196,7 @@ class Modal extends Component
 	{
 		const
 		{
+			wait,
 			busy,
 			fullscreen,
 			isOpen,
@@ -219,7 +232,7 @@ class Modal extends Component
 				style={ react_modal_style }
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
-					'rrui__modal__overlay--busy'       : busy,
+					'rrui__modal__overlay--busy'       : wait || busy,
 					'rrui__modal__overlay--fullscreen' : fullscreen,
 					'rrui__modal__overlay--hidden'     : !unmount && !isOpen
 				},
@@ -251,7 +264,7 @@ class Modal extends Component
 						fullscreen={ fullscreen }
 						could_not_close_because_busy={ could_not_close_because_busy }
 						containsForm={ form > 0 }
-						busy={ busy }
+						wait={ wait || busy }
 						reset={ this.on_after_close }>
 						{ children }
 					</ModalContent>
@@ -331,7 +344,7 @@ class Modal extends Component
 
 	closeIfNotBusy = () =>
 	{
-		const { busy, close, closeTimeout } = this.props
+		const { wait, busy, close, closeTimeout } = this.props
 
 		// For weird messed development mode cases
 		if (this.unmounted)
@@ -340,7 +353,7 @@ class Modal extends Component
 		}
 
 		// Don't close the modal if it's busy
-		if (busy)
+		if (wait || busy)
 		{
 			return this.indicate_cannot_close()
 		}
@@ -612,7 +625,7 @@ class ModalContent extends Component
 			closeLabel,
 			closeButtonIcon,
 			close,
-			busy
+			wait
 		}
 		= this.props
 
@@ -629,7 +642,7 @@ class ModalContent extends Component
 				closeLabel={ closeLabel }
 				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
-					'rrui__modal__close--busy' : busy
+					'rrui__modal__close--busy' : wait
 				}) }>
 				<CloseButtonIcon/>
 			</Close>
