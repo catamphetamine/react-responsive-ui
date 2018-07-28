@@ -30,6 +30,9 @@ window.ExampleSelect = class ExampleComponent extends React.Component
 						label: 'Cranberry'
 					},
 					{
+						divider: true
+					},
+					{
 						value: 'D',
 						label: 'Date'
 					},
@@ -54,7 +57,7 @@ window.ExampleSelect = class ExampleComponent extends React.Component
   label="Fruit"
   value={...}
   onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ...]} />
+  options={[{ value: 'A', label: 'Apple' }, ..., { divider: true }, ...]} />
 `}</Highlight>
 
 <Highlight lang="css">{`
