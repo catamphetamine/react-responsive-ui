@@ -7,6 +7,7 @@ import ExpandableList from './ExpandableList'
 import List from './List'
 import Label from './TextInputLabel'
 import Ellipsis from './Ellipsis'
+import Divider from './Divider'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 
@@ -273,8 +274,8 @@ export default class Select extends PureComponent
 								<List.Item
 									key={i}
 									value={option.value}
-									icon={saveOnIcons ? undefined : option.icon}>
-									{option.content ? option.content(option) : option.label}
+									icon={option.divider || saveOnIcons ? undefined : option.icon}>
+									{option.divider ? <Divider/> : (option.content ? option.content(option) : option.label)}
 								</List.Item>
 							))}
 						</ExpandableList>
