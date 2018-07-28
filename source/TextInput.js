@@ -258,7 +258,8 @@ export default class TextInput extends PureComponent
 			// Passthrough properties
 			id,
 			onFocus,
-			onBlur
+			onBlur,
+			autoComplete
 		}
 		= this.props
 
@@ -284,6 +285,7 @@ export default class TextInput extends PureComponent
 			onKeyDown   : this.onKeyDown,
 			onFocus,
 			onBlur,
+			autoComplete,
 			disabled,
 			className   : classNames
 			(
