@@ -745,10 +745,10 @@
 .rrui__options-list--right-aligned {
   right: calc(0.6rem * 1.5 * -1); }
 
-.rrui__file-upload {
+.rrui__file-upload__area {
   cursor: pointer; }
 
-.rrui__file-upload--disabled {
+.rrui__file-upload__area--disabled {
   cursor: default; }
 
 .rrui__form {

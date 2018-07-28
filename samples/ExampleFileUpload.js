@@ -1,60 +1,74 @@
-class FileUploadArea extends React.Component
-{
-	render()
-	{
-		const
-		{
-			file,
-			dropTarget,
-			draggedOver,
-			onUpload,
-			className
-		}
-		= this.props
-
-		return dropTarget(
-			<div style={ { display: 'inline-block' } }>
-				<FileUpload
-					action={(file) => onUpload(file, 'chosen')}
-					className={`file-upload ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
-					{file && file.name}
-					{!file && <span>Click here to choose a file <br/> or drop a file here</span>}
-				</FileUpload>
-			</div>
-		)
-	}
-}
-
-FileUploadArea = CanDrop(File, (props, file) => props.onUpload(file, 'dropped'))(FileUploadArea)
-
 window.ExampleFileUpload = class ExampleComponent extends React.Component
 {
 	constructor()
 	{
 		super()
 		this.state = {}
-		this.onUpload = this.onUpload.bind(this)
 	}
 
-	onUpload(file, action)
-	{
-		this.setState({ file })
-		alert(`File ${action}: ${file.name}`)
-	}
+	onChange = (file) => this.setState({ file })
 
 	render()
 	{
+		const { file } = this.state
+
 		return (
 			<Example name="file-upload" title="File Upload">
 
-				<FileUploadArea
-					file={this.state.file}
-					onUpload={ this.onUpload }/>
+				<DropFileUpload onChange={ this.onChange }>
+					{file && file.name}
+					{!file && 'Click here to choose a file or drop a file here'}
+				</DropFileUpload>
 
 				<br/>
 				<br/>
 
-				See the <a href="https://github.com/catamphetamine/react-responsive-ui#dragndrop" target="_blank">code sample</a>.
+				<Highlight lang="jsx">{`
+					import { DragAndDrop, DropFileUpload } from 'react-responsive-ui'
+
+					@DragAndDrop
+					export default class App extends React.Component {
+						state = {}
+						onChange = (file) => this.setState({ file })
+
+						render() {
+							const { file } = this.state
+							return (
+								<DropFileUpload onChange={ this.onChange }>
+									{file && file.name}
+									{!file && 'Click here to choose a file or drop a file here'}
+								</DropFileUpload>
+							)
+						}
+					}
+				`}</Highlight>
+
+				<Highlight lang="css">{`
+					.rrui__file-upload__area {
+						display          : inline-block;
+						padding          : 20px;
+						border           : 1px dashed #afafaf;
+						border-radius    : 5px;
+						background-color : #fbfbfb;
+						cursor           : pointer;
+						text-align       : center;
+					}
+
+					.rrui__file-upload__area--dragged-over {
+						background-color : #3678D1;
+						color            : white;
+					}
+				`}</Highlight>
+
+				<div className="section">
+					Drag'n'drop is implemented internally using <a href="https://github.com/gaearon/react-dnd" target="_blank"><code>react-dnd</code></a>. Use <a href="https://babeljs.io/docs/plugins/transform-decorators/" target="_blank"><code>babel-plugin-transform-decorators-legacy</code></a> for decorators syntax support.
+				</div>
+
+				<br/>
+
+				<div className="section">
+					The example is for <code className="colored">{'<DropFileUpload/>'}</code>. There are also <code className="colored">{'<MultiDropFileUpload/>'}</code> (multiple file upload) and <code className="colored">{'<FileUpload/>'}</code> (without drag'n'drop feature).
+				</div>
 			</Example>
 		)
 	}
