@@ -20,6 +20,8 @@ import
 	Switcher,
 	DatePicker,
 	FileUpload,
+	DropFileUpload,
+	DropMultiFileUpload,
 	Modal,
 	DragAndDrop,
 	CanDrop,
@@ -57,6 +59,8 @@ describe('React Responsive UI', function()
 		expect(Switcher).to.be.a('function')
 		expect(DatePicker).to.be.a('function')
 		expect(FileUpload).to.be.a('function')
+		expect(DropFileUpload).to.be.a('function')
+		expect(DropMultiFileUpload).to.be.a('function')
 		expect(Modal).to.be.a('function')
 
 		// Drag'n'drop
@@ -94,6 +98,8 @@ describe('React Responsive UI', function()
 		expect(_.Switcher).to.be.a('function')
 		expect(_.DatePicker).to.be.a('function')
 		expect(_.FileUpload).to.be.a('function')
+		expect(_.DropFileUpload).to.be.a('function')
+		expect(_.DropMultiFileUpload).to.be.a('function')
 		expect(_.Modal).to.be.a('function')
 
 		// Drag'n'drop

@@ -11,19 +11,32 @@ export default class FileUpload extends PureComponent
 {
 	static propTypes =
 	{
-		// On file chosen handler
-		action    : PropTypes.func.isRequired,
+		// On file(s) chosen.
+		onChange  : PropTypes.func,
 
-		// Allows choosing multiple files if `true`
+		// (deprecated, use `onChange` instead).
+		// On file(s) chosen.
+		action    : PropTypes.func,
+
+		// Allows choosing multiple files if `true`.
 		multiple  : PropTypes.bool,
 
-		// Disables the file input
+		// Disables the file input.
 		disabled  : PropTypes.bool,
 
-		// `onClick` handler
+		// `onClick` handler.
 		onClick   : PropTypes.func,
 
-		// The clickable area, like "Click here to choose a file"
+		// `react-dnd` `dropTarget()`.
+		dropTarget : PropTypes.func.isRequired,
+
+		// `react-dnd` `draggedOver`.
+		draggedOver : PropTypes.bool.isRequired,
+
+		// Renders an error message below the `<input/>`.
+		error     : PropTypes.string,
+
+		// The clickable area, like "Click here to choose a file".
 		children  : PropTypes.node,
 
 		// CSS class
@@ -33,78 +46,60 @@ export default class FileUpload extends PureComponent
 		style     : PropTypes.object
 	}
 
-	on_input_click = (event) =>
+	static defaultProps =
 	{
-		event.stopPropagation()
+		dropTarget  : element => element,
+		draggedOver : false
 	}
 
-	on_input_change = (event) =>
+	onFileSelect = (event) =>
 	{
-		this.on_file_selected(event)
-	}
+		let { onChange, multiple } = this.props
 
-	on_file_selected = (event) =>
-	{
-		const { action, multiple } = this.props
+		// `action` property is deprecated.
+		onChange = onChange || this.props.action
 
-		let data = event.target.files
-
-		if (!multiple)
-		{
-			data = data[0]
+		// This check will be replaced with `onChange : PropTypes.func.isRequired`
+		// when `action` property is removed in some next breaking release.
+		if (!onChange) {
+			throw new Error(`"onChange" handler not passed.`)
 		}
 
-		action(data)
+		const value = event.target.files
+		onChange(multiple ? value : value[0])
 
-		// reset the selected file
-		// so that onChange would trigger again
-		// even with the same file
+		// Reset the selected file
+		// so that `onChange` is triggered again next time
+		// even if the user selects the same file.
 		event.target.value = null
 	}
 
-	on_click = (event) =>
+	onClick = (event) =>
 	{
 		const { disabled, onClick } = this.props
 
-		if (disabled)
-		{
+		if (disabled) {
 			return event.preventDefault()
 		}
 
-		if (onClick)
-		{
+		if (onClick) {
 			onClick()
 		}
 
-		this.file_upload.click()
+		// This is why `onClick` is set on the `<input/>`.
+		this.fileInput.click()
 	}
 
-	// Not working for some reason.
-	// (doesn't get called)
-	onKeyDown = (event) =>
-	{
-		const { onKeyDown } = this.props
-
-		if (onKeyDown) {
-			onKeyDown(event)
-		}
-
-		if (event.defaultPrevented) {
-			return
-		}
-
-		if (submitFormOnCtrlEnter(event, this.input)) {
-			return
-		}
-	}
-
-	storeInputComponent = _ => this.file_upload = _
+	storeFileInputNode = (node) => this.fileInput = node
 
 	render()
 	{
 		const
 		{
+			error,
 			disabled,
+			dropTarget,
+			draggedOver,
 			style,
 			className,
 			children
@@ -114,28 +109,44 @@ export default class FileUpload extends PureComponent
 		return (
 			<div
 				style={ style }
-				className={ classNames('rrui__file-upload', className,
-				{
-					'rrui__file-upload--disabled' : disabled
-				}) }
-				onKeyDown={ this.onKeyDown }
-				onClick={ this.on_click }>
+				className={ classNames('rrui__file-upload', className) }>
 
+				{/* Hidden. */}
 				<input
 					type="file"
-					ref={ this.storeInputComponent }
-					key="file_input"
-					style={ input_style }
-					onClick={ this.on_click }
-					onChange={ this.on_input_change }/>
+					ref={ this.storeFileInputNode }
+					onClick={ this.onClick }
+					onChange={ this.onFileSelect }
+					style={ HIDDEN }/>
 
-				{ children }
+				{/* The actual clickable area. */}
+				{ dropTarget(
+					<div
+						className={ classNames('rrui__file-upload__area',
+						{
+							'rrui__file-upload__area--disabled' : disabled,
+							'rrui__file-upload__area--invalid' : error,
+							'rrui__file-upload__area--dragged-over' : draggedOver
+						}) }
+						onClick={ this.onClick }>
+
+						{/* Could be an "UPLOAD" button or something. */}
+						{ children }
+					</div>
+				) }
+
+				{/* Error message (e.g. "Required"). */}
+				{ error &&
+					<div className="rrui__input-error">
+						{ error }
+					</div>
+				}
 			</div>
 		)
 	}
 }
 
-const input_style =
+const HIDDEN =
 {
 	display: 'none'
 }

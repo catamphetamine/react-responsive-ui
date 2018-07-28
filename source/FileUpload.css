@@ -1,9 +1,9 @@
-.rrui__file-upload
+.rrui__file-upload__area
 {
 	cursor : pointer;
 }
 
-.rrui__file-upload--disabled
+.rrui__file-upload__area--disabled
 {
 	cursor : default;
 }

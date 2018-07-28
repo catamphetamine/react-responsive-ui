@@ -26,6 +26,8 @@ exports.Checkbox = require('./commonjs/Checkbox').default
 exports.Switcher = require('./commonjs/Switcher').default
 exports.DatePicker = require('./commonjs/DatePicker').default
 exports.FileUpload = require('./commonjs/FileUpload').default
+exports.DropFileUpload = require('./commonjs/DropFileUpload').default
+exports.DropMultiFileUpload = require('./commonjs/DropMultiFileUpload').default
 exports.Modal = require('./commonjs/Modal').default
 
 // Drag'n'drop

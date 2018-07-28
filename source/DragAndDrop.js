@@ -75,6 +75,12 @@ export const File = 'File'
 // Native file drag'n'drop (multiple files)
 export const Files = 'Files'
 
+// Native file drag'n'drop (single file)
+export const FILE = File
+
+// Native file drag'n'drop (multiple files)
+export const FILES = Files
+
 // Gets the corresponding `react-dnd` type
 // for a given droppable object type
 function get_react_dnd_type(type)

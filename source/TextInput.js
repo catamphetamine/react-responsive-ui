@@ -34,7 +34,7 @@ export default class TextInput extends PureComponent
 		disabled         : PropTypes.bool,
 
 		// Renders an error message below the `<input/>`
-		error            : PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+		error            : PropTypes.string,
 
 		// If this flag is `true` then the `error` is shown.
 		// If this flag is `false` then the `error` is not shown (even if passed).

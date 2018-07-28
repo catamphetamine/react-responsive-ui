@@ -6,6 +6,19 @@
 
 <!-- `List.js`: replace `<div></div>` with `<React.Fragment></React.Fragment>` in some future when React >= 16.2.0 is common -->
 
+<!-- Remove <FileUpload/> action property -->
+
+<!-- Rename `ActivityIndicator` -> `Spinner` + CSS class names -->
+
+0.14.10 / 28.07.2018
+====================
+
+* `.rrui__file-upload` component now has two children: `.rrui__file-upload__area` and `.rrui__input-error`. This is unlikely to break existing code because `.rrui__input-error` is `display: none`, so if `error` is not passed then it doesn't matter much which CSS class is customized: `.rrui__file-upload` or `.rrui__file-upload__area`.
+
+* Renamed `<FileUpload/>` `action` property to `onChange`. `action` still works but is deprecated.
+
+* Added `<DropFileUpload/>` and `<DropMultiFileUpload/>`.
+
 0.14.7 / 27.07.2018
 ===================
 

@@ -144,6 +144,18 @@ from './modules/FileUpload'
 
 export
 {
+	default as DropFileUpload
+}
+from './modules/DropFileUpload'
+
+export
+{
+	default as DropMultiFileUpload
+}
+from './modules/DropMultiFileUpload'
+
+export
+{
 	default as Modal
 }
 from './modules/Modal'
