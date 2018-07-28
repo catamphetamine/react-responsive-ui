@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import Button from './Button'
 
-// Prevents `<form/> submission when `busy` is `true`.
+// Prevents `<form/> submission when `busy`/`wait` is `true`.
 // And also inserts `<Form.Error/>` when `error` is passed.
 // Using `Component` here instead of `PureComponent`
 // because `<Form.Actions>` depends on `context` and therefore
@@ -33,6 +33,8 @@ export default class Form extends Component
 
 		// Is form submission in progress
 		busy        : PropTypes.bool.isRequired,
+		// `wait` is an alias for `busy`
+		wait        : PropTypes.bool.isRequired,
 
 		// CSS class
 		className   : PropTypes.string,
@@ -43,7 +45,8 @@ export default class Form extends Component
 
 	static defaultProps =
 	{
-		busy : false
+		busy : false,
+		wait : false
 	}
 
 	constructor()
@@ -124,12 +127,12 @@ export default class Form extends Component
 			event.preventDefault()
 		}
 
-		const { busy, submit } = this.props
+		const { busy, wait, submit } = this.props
 
 		// Prevent form double submit
 		// (because not only buttons submit a form,
 		//  therefore just disabling buttons is not enough).
-		if (busy)
+		if (busy || wait)
 		{
 			return
 		}

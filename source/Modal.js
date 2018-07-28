@@ -191,6 +191,7 @@ export default class Modal extends Component
 		const
 		{
 			busy,
+			wait,
 			fullscreen,
 			isOpen,
 			closeTimeout,
@@ -225,7 +226,7 @@ export default class Modal extends Component
 				style={ react_modal_style }
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
-					'rrui__modal__overlay--busy'       : busy,
+					'rrui__modal__overlay--busy'       : busy || wait,
 					'rrui__modal__overlay--fullscreen' : fullscreen,
 					'rrui__modal__overlay--hidden'     : !unmount && !isOpen
 				},
@@ -256,7 +257,7 @@ export default class Modal extends Component
 					fullscreen={ fullscreen }
 					could_not_close_because_busy={ could_not_close_because_busy }
 					form={ form }
-					busy={ busy }
+					busy={ busy || wait }
 					reset={ this.on_after_close }>
 					{ children }
 				</ModalContent>
@@ -334,7 +335,7 @@ export default class Modal extends Component
 
 	close_if_not_busy = () =>
 	{
-		const { busy, close, closeTimeout } = this.props
+		const { busy, wait, close, closeTimeout } = this.props
 
 		// For weird messed development mode cases
 		if (this.unmounted)
@@ -343,7 +344,7 @@ export default class Modal extends Component
 		}
 
 		// Don't close the modal if it's busy
-		if (busy)
+		if (busy || wait)
 		{
 			return this.indicate_cannot_close()
 		}
@@ -565,7 +566,8 @@ class ModalContent extends Component
 			closeLabel,
 			closeButton,
 			close,
-			busy
+			busy,
+			wait
 		}
 		= this.props
 
@@ -580,7 +582,7 @@ class ModalContent extends Component
 				aria-label={ closeLabel }
 				className={ classNames('rrui__modal__close', 'rrui__modal__close--top',
 				{
-					'rrui__modal__close--busy' : busy
+					'rrui__modal__close--busy' : busy || wait
 				}) }>
 				{ closeButton }
 			</button>

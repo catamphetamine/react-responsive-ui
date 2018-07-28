@@ -16,6 +16,9 @@ export default class Button extends PureComponent
 		// will be disabled and a spinner will be shown.
 		busy            : PropTypes.bool,
 
+		// `wait` is an alias for `busy`.
+		wait            : PropTypes.bool,
+
 		// Disables the button
 		disabled        : PropTypes.bool,
 
@@ -64,6 +67,7 @@ export default class Button extends PureComponent
 		{
 			disabled,
 			busy,
+			wait,
 			submit,
 			title,
 			stretch,
@@ -76,7 +80,7 @@ export default class Button extends PureComponent
 			<div
 				className={ classNames('rrui__input', 'rrui__button',
 				{
-					'rrui__button--busy'     : busy,
+					'rrui__button--busy'     : busy || wait,
 					'rrui__button--disabled' : disabled,
 					'rrui__button--stretch'  : stretch
 				},
@@ -87,7 +91,7 @@ export default class Button extends PureComponent
 					className={ classNames('rrui__button__activity-indicator',
 					{
 						// CSS selector performance optimization
-						'rrui__button__activity-indicator--busy'   : busy
+						'rrui__button__activity-indicator--busy' : busy || wait
 					}) }/>
 
 				{ this.render_button() }
@@ -103,6 +107,7 @@ export default class Button extends PureComponent
 			linkDownload,
 			title,
 			busy,
+			wait,
 			disabled,
 			submit,
 			buttonStyle,
@@ -114,7 +119,7 @@ export default class Button extends PureComponent
 		{
 			'rrui__button__button--link'     : link,
 			// CSS selector performance optimization
-			'rrui__button__button--busy'     : busy,
+			'rrui__button__button--busy'     : busy || wait,
 			'rrui__button__button--disabled' : disabled
 		})
 
@@ -130,7 +135,7 @@ export default class Button extends PureComponent
 			className={ classNames('rrui__button__contents',
 			{
 				// CSS selector performance optimization
-				'rrui__button__contents--busy' : busy
+				'rrui__button__contents--busy' : busy || wait
 			}) }>
 			{ children }
 		</div>
@@ -152,7 +157,7 @@ export default class Button extends PureComponent
 		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
-				disabled={ busy || disabled }
+				disabled={ busy || wait || disabled }
 				onClick={ this.button_on_click }
 				{ ...properties }>
 
@@ -171,6 +176,7 @@ export default class Button extends PureComponent
 		const
 		{
 			busy,
+			wait,
 			disabled,
 			action
 		}
@@ -187,7 +193,7 @@ export default class Button extends PureComponent
 			return
 		}
 
-		if (busy || disabled)
+		if (busy || wait || disabled)
 		{
 			return
 		}
