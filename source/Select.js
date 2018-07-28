@@ -300,7 +300,6 @@ export default class Select extends PureComponent
 		const
 		{
 			loading,
-			options,
 			value,
 			disabled,
 			required,
@@ -315,10 +314,10 @@ export default class Select extends PureComponent
 
 		const { isExpanded } = this.state
 
-		const selected = options.filter(_ => _.value === value)[0]
+		const selected = this.getSelectedOption()
 
-		const selected_label = selected && selected.label || this.getLabel() || this.getPlaceholder()
-		const show_selected_as_an_icon = icon && selected && selected.icon
+		const selectedOptionLabel = selected && selected.label || this.getLabel() || this.getPlaceholder()
+		const showIconOnly = icon && selected && selected.icon
 
 		return (
 			<button
@@ -356,7 +355,7 @@ export default class Select extends PureComponent
 						{
 							'rrui__select__selected-label--required' : !this.getLabel() && required && isEmptyValue(value)
 						}) }>
-						{ show_selected_as_an_icon ? React.createElement(selected.icon, { title: selected_label }) : selected_label }
+						{ showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : selectedOptionLabel }
 					</div>
 
 					{/* An arrow */}
@@ -535,6 +534,19 @@ export default class Select extends PureComponent
 					this.expand()
 				}
 				return
+		}
+	}
+
+	getSelectedOption()
+	{
+		const { options, value } = this.props
+
+		for (const option of options)
+		{
+			if (!option.divider && option.value === value)
+			{
+				return option
+			}
 		}
 	}
 
