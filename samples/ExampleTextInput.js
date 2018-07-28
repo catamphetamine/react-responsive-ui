@@ -9,7 +9,7 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 	render()
 	{
 		return (
-			<Example name="text-input-placeholder" title="Text input field (with placeholder)">
+			<Example name="text-input-placeholder" title="Text input field (placeholder)">
 
 				<form>
 					<TextInput

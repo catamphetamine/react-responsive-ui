@@ -9,7 +9,7 @@ window.ExampleTextInputFloatingLabel = class ExampleComponent extends React.Comp
 	render()
 	{
 		return (
-			<Example name="text-input-floating-label" title="Text input field (with floating label)">
+			<Example name="text-input-floating-label" title="Text input field (floating label)">
 
 				<TextInput
 					style={input_style}

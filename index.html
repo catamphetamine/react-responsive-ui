@@ -31,6 +31,8 @@
 		<script src="./lib/promise.polyfill.min.js"></script>
 
 		<link rel="stylesheet" href="./style.css"/>
+		<link rel="stylesheet" href="./demo-style.css"/>
+		<link rel="stylesheet" href="./demo-rrui.css"/>
 
 		<!--
 		This makes the page not scale down on mobile devices
@@ -40,273 +42,6 @@
 
 		<meta charset="utf-8">
 	</head>
-
-	<style>
-		/* Base styles */
-
-		html, body, button, input, textarea, select
-		{
-			font-family : Arial, Helvetica;
-			font-size   : 20px;
-		}
-
-		html, body
-		{
-			-webkit-tap-highlight-color : transparent;
-		}
-
-		body
-		{
-			/* Disables "double tap to zoom in" on mobile devices. */
-			/* https://stackoverflow.com/questions/46167604/iphone-html-disable-double-tap-to-zoom */
-			touch-action: manipulation;
-		}
-
-		pre
-		{
-			white-space: pre-wrap !important;
-			word-wrap: break-word !important;
-		}
-
-		/* Page style */
-
-		body
-		{
-			margin: 0;
-			padding: 40px;
-		}
-
-		body > form
-		{
-			margin-top: 2.4em;
-		}
-
-		h2.heading
-		{
-			margin-top: 30px;
-			padding-top: 30px;
-			margin-bottom: 30px;
-			font-size: 125%;
-		}
-
-		ul.list li
-		{
-			margin-top: 0.3rem;
-			margin-bottom: 0.3rem;
-			line-height: 1.4em;
-		}
-
-		code.colored
-		{
-			color : #c92c2c;
-		}
-
-		a
-		{
-			text-decoration: none;
-			color: #0093C4;
-		}
-
-		a:hover
-		{
-			text-decoration: underline;
-		}
-
-		a.main
-		{
-			display: block;
-			font-size: 125%;
-		}
-
-		p
-		{
-			margin-top: 10px;
-			margin-bottom: 40px;
-		}
-
-		.country-icon
-		{
-			width  : 1em;
-			height : 0.75em;
-			border : 1px solid #5f5f5f;
-		}
-
-		.title-anchor
-		{
-			color: inherit;
-			outline: none;
-		}
-
-		.title-anchor:hover
-		{
-			text-decoration: none;
-		}
-
-		.column-width
-		{
-			width : 20rem;
-			max-width : 100%;
-		}
-
-		.submit-form
-		{
-			margin-top: calc(0.3rem * 3);
-		}
-
-		pre
-		{
-			border: 1px solid rgba(0, 0, 0, 0.03);
-		}
-
-		.table-of-contents
-		{
-			margin-top: calc(0.3rem * 9);
-			margin-bottom: calc(0.3rem * 9);
-		}
-
-		.sidenote
-		{
-			line-height: 1.7em;
-			/*color : #7f7f7f;*/
-		}
-
-		.new-message-notification
-		{
-			height        : 100%;
-			display       : flex;
-			align-items   : center;
-			padding-left  : calc(0.3rem * 3);
-			padding-right : calc(0.3rem * 3);
-		}
-
-		.new-message-notification__user-picture
-		{
-			width         : calc(0.3rem * 14);
-			height        : calc(0.3rem * 14);
-			border-radius : 50%;
-			border        : 1px solid rgba(255,255,255,0.5);
-		}
-
-		.new-message-notification__text
-		{
-			flex          : 1;
-			padding-left  : calc(0.3rem * 4);
-			padding-right : calc(0.3rem * 3);
-		}
-
-		.new-message-notification__close
-		{
-			background : none;
-			border     : none;
-			color      : white;
-			cursor     : pointer;
-			outline    : none;
-		}
-
-		.new-message-notification__close:active
-		{
-			color : #2bd7f0;
-		}
-
-		.rrui__snackbar--new-message-notification
-		{
-			height  : calc(0.3rem * 20);
-			padding : 0;
-			line-height : 1.35em;
-		}
-	</style>
-
-	<style>
-		/* Responsive */
-		@media (max-width: 720px)
-		{
-			body
-			{
-				margin: 0;
-				padding: calc(0.3rem * 4);
-			}
-
-			h2.heading
-			{
-				margin-top: 40px;
-				margin-bottom: 15px;
-			}
-
-			html, body, button, input, textarea, select
-			{
-				/* The font size should be 16px minimum */
-				/* so that mobile browsers don't zoom on input focus. */
-				/* https://stackoverflow.com/questions/2989263/disable-auto-zoom-in-input-text-tag-safari-on-iphone */
-				font-size   : 16px;
-			}
-
-			.submit-form
-			{
-				margin-top: calc(0.3rem * 5);
-			}
-
-			.header
-			{
-				padding-top: 0.6em;
-				margin-left: 2.0em;
-			}
-		}
-	</style>
-
-	<!-- RRUI customization -->
-	<style>
-		.rrui__button--border
-		{
-			padding-left     : calc(0.3rem * 2.5);
-			padding-right    : calc(0.3rem * 2.5);
-			border        : 0.1em solid #03B2CB;
-			border-radius : 0.3em;
-		}
-
-		.rrui__button--border .rrui__button__busy
-		{
-			left   : calc(0.3rem * 2.5);
-			bottom : calc(50% - 0.6em);
-			width  : calc(100% - 2 * 0.3rem * 2.5);
-		}
-
-		.rrui__slideout-menu__item
-		{
-			color : #ECF1F6;
-		}
-
-		.rrui__slideout-menu__item:active
-		{
-			color : #BBD9FA;
-		}
-
-		.rrui__file-upload__area
-		{
-			display          : inline-block;
-			padding          : 10px;
-			border           : 1px dashed #afafaf;
-			border-radius    : 5px;
-			background-color : #fbfbfb;
-			cursor           : pointer;
-			text-align       : center;
-			line-height      : 1.5em;
-		}
-
-		.rrui__file-upload__area--dragged-over
-		{
-			background-color : #3678D1;
-			color            : white;
-		}
-	</style>
-
-	<style>
-		/* Responsive RRUI */
-		@import url("./small-screen/Modal.css") (max-width: 720px);
-		@import url("./small-screen/Snackbar.css") (max-width: 720px);
-		@import url("./small-screen/DatePicker.InputOverlay.css") (max-width: 720px);
-		/*@import url("./small-screen/Modal.Fullscreen.css") (max-width: 720px);*/
-		/*@import url("./small-screen/Expandable.Fullscreen.css") (max-width: 720px);*/
-	</style>
 
 	<body>
 		<script src="./react-responsive-ui.min.js"></script>
@@ -479,8 +214,8 @@
 
 								<ul className="list table-of-contents">
 									<li><a href="#slideout-menu">Slideout Menu</a></li>
-									<li><a href="#text-input-placeholder">Text input field (with placeholder)</a></li>
-									<li><a href="#text-input-floating-label">Text input field (with floating label)</a></li>
+									<li><a href="#text-input-placeholder">Text input field (placeholder)</a></li>
+									<li><a href="#text-input-floating-label">Text input field (floating label)</a></li>
 									<li><a href="#multiline-text-input-floating-label">Multiline Text Input</a></li>
 									<li><a href="#select">Select</a></li>
 									<li><a href="#select-icons">Select (icons)</a></li>
@@ -492,13 +227,13 @@
 									<li><a href="#switcher">Switcher</a></li>
 									<li><a href="#date-picker">Date picker</a></li>
 									<li><a href="#file-upload">File Upload</a></li>
-									<li><a href="#activity-indicator">Activity Indicator</a></li>
-									<li><a href="#ellipsis">Ellipsis</a></li>
-									<li><a href="#phone">Phone</a></li>
 									<li><a href="#tooltip">Tooltip</a></li>
 									<li><a href="#snackbar">Snackbar</a></li>
 									<li><a href="#form-and-buttons">Form and Buttons</a></li>
 									<li><a href="#modal">Modal</a></li>
+									<li><a href="#phone">Phone</a></li>
+									<li><a href="#activity-indicator">Activity Indicator</a></li>
+									<li><a href="#ellipsis">Ellipsis</a></li>
 								</ul>
 
 								{/*
@@ -544,8 +279,10 @@
 
 								<ExampleFileUpload/>
 
-								<ExampleActivityIndicator/>
-								<ExampleEllipsis/>
+								<ExampleTooltip/>
+								<ExampleSnackbar/>
+								<ExampleButtons/>
+								<ExampleModal/>
 
 								<a name="phone" href="#phone" className="title-anchor" tabIndex="-1">
 									<h2 className="heading">Phone number input</h2>
@@ -553,10 +290,8 @@
 
 								See <a target="_blank" href="http://catamphetamine.github.io/react-phone-number-input/"><code>react-phone-number-input</code></a>
 
-								<ExampleTooltip/>
-								<ExampleSnackbar/>
-								<ExampleButtons/>
-								<ExampleModal/>
+								<ExampleActivityIndicator/>
+								<ExampleEllipsis/>
 							</Page>
 						</PageAndMenu>
 					)
