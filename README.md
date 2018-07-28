@@ -205,12 +205,14 @@ class FileUploadArea extends Component {
       dropTarget,
       draggedOver,
       onUpload,
+      disabled,
       className
     } = this.props
 
     return dropTarget(
       <div>
         <FileUpload
+          disabled={disabled}
           action={(file) => onUpload(file, 'chosen')}
           className={`${className} ${draggedOver ? 'rrui__file-upload--dragged-over' : ''}`}>
           {file && file.name}
