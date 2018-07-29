@@ -21,7 +21,6 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				</DropFileUpload>
 
 				<br/>
-				<br/>
 
 				<Highlight lang="jsx">{`
 					import { DragAndDrop, DropFileUpload } from 'react-responsive-ui'
