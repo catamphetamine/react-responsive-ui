@@ -103,6 +103,11 @@ export default class Expandable extends PureComponent
 		document.removeEventListener('click', this.onDocumentClick)
 	}
 
+	// On mobile devices "blur" event isn't triggered
+	// when a user taps outside. This is to allow touch scrolling
+	// while not losing focus on an input field or a button.
+	// Adding a manual "on click" listener to emulate
+	// "on blur" event when user taps outside (to collapse the expandable).
 	onDocumentClick = (event) =>
 	{
 		const { getTogglerNode, onClickOutside } = this.props
