@@ -262,6 +262,7 @@ export default class Select extends PureComponent
 							onExpand={this.onExpand}
 							getTogglerNode={this.getSelectButton}
 							onFocusOut={this.onFocusOut}
+							onClickOutside={this.collapse}
 							closeButtonIcon={closeButtonIcon}
 							closeLabel={closeLabel}
 							className={classNames('rrui__shadow', 'rrui__options-list',

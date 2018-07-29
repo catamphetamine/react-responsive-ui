@@ -40,8 +40,6 @@ export default class Expandable extends PureComponent
 
 		onExpand : PropTypes.func,
 		onCollapse : PropTypes.func,
-		// onBlur : PropTypes.func,
-		// onFocusOut : PropTypes.func,
 
 		// Whether the `<Expandable/>` expands upwards or downwards.
 		alignment : PropTypes.oneOf(['left', 'right']),
@@ -72,6 +70,7 @@ export default class Expandable extends PureComponent
 
 		getTogglerNode : PropTypes.func,
 		onFocusOut : PropTypes.func,
+		onClickOutside : PropTypes.func,
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
@@ -100,6 +99,27 @@ export default class Expandable extends PureComponent
 		clearTimeout(this.scrollIntoViewTimer)
 		clearTimeout(this.removeFromDOMTimer)
 		clearTimeout(this.blurTimer)
+
+		document.removeEventListener('click', this.onDocumentClick)
+	}
+
+	onDocumentClick = (event) =>
+	{
+		const { getTogglerNode, onClickOutside } = this.props
+
+		if (this.container.contains(event.target)) {
+			return
+		}
+
+		if (getTogglerNode) {
+			if (getTogglerNode().contains(event.target)) {
+				return
+			}
+		}
+
+		if (onClickOutside) {
+			onClickOutside()
+		}
 	}
 
 	isExpanded = () => this.state.expanded
@@ -117,7 +137,8 @@ export default class Expandable extends PureComponent
 			onCollapsed,
 			preload,
 			onPreloadStateChange,
-			onPreloadError
+			onPreloadError,
+			onClickOutside
 		}
 		= this.props
 
@@ -156,6 +177,8 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
+			document.removeEventListener('click', this.onDocumentClick)
+
 			clearTimeout(this.scrollIntoViewTimer)
 
 			if (onCollapse) {
@@ -206,6 +229,10 @@ export default class Expandable extends PureComponent
 
 						this.scrollIntoView()
 						resolve()
+
+						if (onClickOutside) {
+							document.addEventListener('click', this.onDocumentClick)
+						}
 
 						this.isToggling = false
 					})
@@ -384,7 +411,7 @@ export default class Expandable extends PureComponent
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.onKeyDown }
-				onBlur={ this.onBlur}
+				onBlur={ this.onBlur }
 				style={ style }
 				className={ classNames
 				(
