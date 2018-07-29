@@ -12,7 +12,7 @@ export default class Tooltip extends PureComponent
 	static propTypes =
 	{
 		// Tooltip content.
-		content : PropTypes.node.isRequired,
+		content : PropTypes.node,
 
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
@@ -207,9 +207,11 @@ export default class Tooltip extends PureComponent
 			return
 		}
 
-		// If the tooltip has no content then don't show it.
-		// Perhaps I added this because it seemed convenient.
-		if (!content)
+		// If the tooltip has no content
+		// (e.g. `react-time-ago` first render)
+		// or if React Portal API is not available
+		// then don't show the tooltip.
+		if (!content || !ReactDOM.createPortal)
 		{
 			return
 		}
@@ -264,9 +266,11 @@ export default class Tooltip extends PureComponent
 		// mouse enter events won't be processed from now on
 		this.mobile = true
 
-		// If the tooltip has no content then don't show it.
-		// Perhaps I added this because it seemed convenient.
-		if (!content)
+		// If the tooltip has no content
+		// (e.g. `react-time-ago` first render)
+		// or if React Portal API is not available
+		// then don't show the tooltip.
+		if (!content || !ReactDOM.createPortal)
 		{
 			return
 		}
@@ -306,7 +310,7 @@ export default class Tooltip extends PureComponent
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
-				{ this.tooltip && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip) }
+				{ this.tooltip && content && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip) }
 			</div>
 		)
 	}
