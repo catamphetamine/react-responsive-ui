@@ -12,19 +12,19 @@ window.ExampleButtons = class ExampleComponent extends React.Component
 			<Example name="form-and-buttons" title="Form and Buttons">
 
 				<div className="submit-form">
-					<Button action={() => {}}>
+					<Button onClick={() => {}}>
 						Borderless
 					</Button>
 				</div>
 
 				<div className="submit-form">
-					<Button action={() => {}} style={{ textTransform: 'uppercase' }}>
+					<Button onClick={() => {}} style={{ textTransform: 'uppercase' }}>
 						Uppercase
 					</Button>
 				</div>
 
 				<div className="submit-form">
-					<Button action={() => console.log('test')} className="rrui__button--border">
+					<Button onClick={() => console.log('test')} className="rrui__button--border">
 						Bordered
 					</Button>
 				</div>
@@ -32,6 +32,12 @@ window.ExampleButtons = class ExampleComponent extends React.Component
 				<div className="submit-form">
 					<Button link="https://google.com" target="_blank" className="rrui__button--border">
 						Hyperlink
+					</Button>
+				</div>
+
+				<div className="submit-form">
+					<Button onClick={() => new Promise(resolve => setTimeout(resolve, 3500))} className="rrui__button--border">
+						Promise
 					</Button>
 				</div>
 
@@ -83,7 +89,7 @@ const submit = () => {
   submit={submit}>
   ...
 
-  <Button action={() => {}}>
+  <Button onClick={() => {}}>
     Borderless
   </Button>
 
@@ -95,9 +101,15 @@ const submit = () => {
   </Button>
 
   <Button
-    action={() => console.log('test')}
+    onClick={() => console.log('test')}
     className="rrui__button--border">
     Bordered
+  </Button>
+
+  <Button
+    onClick={() => new Promise(resolve => setTimeout(resolve, 3500))}
+    className="rrui__button--border">
+    Promise
   </Button>
 
   <Button
