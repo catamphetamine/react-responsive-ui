@@ -53,6 +53,8 @@ export default class Button extends PureComponent
 		stretch : false
 	}
 
+	state = {}
+
 	constructor()
 	{
 		super()
@@ -80,7 +82,7 @@ export default class Button extends PureComponent
 			<div
 				className={ classNames('rrui__input', 'rrui__button',
 				{
-					'rrui__button--busy'     : busy || wait,
+					'rrui__button--busy'     : busy || wait || this.state.wait,
 					'rrui__button--disabled' : disabled,
 					'rrui__button--stretch'  : stretch
 				},
@@ -91,7 +93,7 @@ export default class Button extends PureComponent
 					className={ classNames('rrui__button__activity-indicator',
 					{
 						// CSS selector performance optimization
-						'rrui__button__activity-indicator--busy' : busy || wait
+						'rrui__button__activity-indicator--busy' : busy || wait || this.state.wait
 					}) }/>
 
 				{ this.render_button() }
@@ -119,7 +121,7 @@ export default class Button extends PureComponent
 		{
 			'rrui__button__button--link'     : link,
 			// CSS selector performance optimization
-			'rrui__button__button--busy'     : busy || wait,
+			'rrui__button__button--busy'     : busy || wait || this.state.wait,
 			'rrui__button__button--disabled' : disabled
 		})
 
@@ -135,7 +137,7 @@ export default class Button extends PureComponent
 			className={ classNames('rrui__button__contents',
 			{
 				// CSS selector performance optimization
-				'rrui__button__contents--busy' : busy || wait
+				'rrui__button__contents--busy' : busy || wait || this.state.wait
 			}) }>
 			{ children }
 		</div>
@@ -157,7 +159,7 @@ export default class Button extends PureComponent
 		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
-				disabled={ busy || wait || disabled }
+				disabled={ busy || wait || this.state.wait || disabled }
 				onClick={ this.button_on_click }
 				{ ...properties }>
 
@@ -193,7 +195,7 @@ export default class Button extends PureComponent
 			return
 		}
 
-		if (busy || wait || disabled)
+		if (busy || wait || this.state.wait || disabled)
 		{
 			return
 		}
@@ -219,7 +221,13 @@ export default class Button extends PureComponent
 		// Could be just a "submit" button
 		if (action)
 		{
-			action()
+			const result = action()
+
+			if (result && typeof result.then === 'function')
+			{
+				this.setState({ wait: true })
+				result.then(() => this.setState({ wait: false }), () => this.setState({ wait: false }))
+			}
 		}
 	}
 }
