@@ -13,6 +13,9 @@
 	/* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
 	background-clip         : padding-box;
 	-webkit-background-clip : padding-box;
+
+	/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
+	outline : none;
 }
 
 .rrui__expandable--expanded

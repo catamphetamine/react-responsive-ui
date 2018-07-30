@@ -480,11 +480,15 @@ export default class Expandable extends PureComponent
 			return null
 		}
 
+		// `tabIndex={ -1 }` makes the `<div/>` focusable.
+		// Hence the `<Expandable/>` doesn't collapse on click inside it.
+
 		return (
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
+				tabIndex={ -1 }
 				style={ style }
 				className={ classNames
 				(
