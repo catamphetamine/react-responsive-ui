@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -7,6 +8,13 @@ const PureComponent = React.PureComponent || React.Component
 // Component will receive date, locale and localeUtils props
 export default class YearMonthSelect extends PureComponent
 {
+	static propTypes =
+	{
+		date : PropTypes.instanceOf(Date).isRequired,
+		onChange : PropTypes.func.isRequired,
+		localeUtils : PropTypes.object.isRequired
+	}
+
 	constructor(props)
 	{
 		super(props)

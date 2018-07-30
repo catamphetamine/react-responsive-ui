@@ -563,6 +563,7 @@ export default class DatePicker extends PureComponent
 		clearTimeout(this.blurTimer)
 	}
 
+	getContainerNode = () => this.container
 	storeContainerNode = (node) => this.container = node
 	storeExpandableRef = (ref) => this.expandable = ref
 	storeCalendarComponent = (ref) => this.calendar = ref
@@ -684,6 +685,8 @@ export default class DatePicker extends PureComponent
 						onExpand={ this.onExpand }
 						onExpanded={ this.onExpanded }
 						onCollapse={ this.onCollapse }
+						onTapOutside={ this.collapse }
+						getTogglerNode={ this.getContainerNode }
 						scrollIntoViewDelay={ waitForKeyboardSlideIn ? keyboardSlideInAnimationDuration : undefined }>
 
 						<DayPicker

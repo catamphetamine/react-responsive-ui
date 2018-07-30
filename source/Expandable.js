@@ -70,7 +70,7 @@ export default class Expandable extends PureComponent
 
 		getTogglerNode : PropTypes.func,
 		onFocusOut : PropTypes.func,
-		onClickOutside : PropTypes.func,
+		onTapOutside : PropTypes.func,
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
@@ -100,7 +100,23 @@ export default class Expandable extends PureComponent
 		clearTimeout(this.removeFromDOMTimer)
 		clearTimeout(this.blurTimer)
 
-		document.removeEventListener('click', this.onDocumentClick)
+		this.stopListeningToTouches()
+	}
+
+	listenToTouches()
+	{
+		document.addEventListener('touchstart', this.onTouchStart)
+		document.addEventListener('touchmove', this.onTouchMove)
+		document.addEventListener('touchend', this.onTouchEnd)
+		document.addEventListener('touchcancel', this.onTouchCancel)
+	}
+
+	stopListeningToTouches()
+	{
+		document.removeEventListener('touchstart', this.onTouchStart)
+		document.removeEventListener('touchmove', this.onTouchMove)
+		document.removeEventListener('touchend', this.onTouchEnd)
+		document.removeEventListener('touchcancel', this.onTouchCancel)
 	}
 
 	// On mobile devices "blur" event isn't triggered
@@ -108,9 +124,9 @@ export default class Expandable extends PureComponent
 	// while not losing focus on an input field or a button.
 	// Adding a manual "on click" listener to emulate
 	// "on blur" event when user taps outside (to collapse the expandable).
-	onDocumentClick = (event) =>
+	onTap = (event) =>
 	{
-		const { getTogglerNode, onClickOutside } = this.props
+		const { getTogglerNode, onTapOutside } = this.props
 
 		if (this.container.contains(event.target)) {
 			return
@@ -122,9 +138,61 @@ export default class Expandable extends PureComponent
 			}
 		}
 
-		if (onClickOutside) {
-			onClickOutside()
+		if (onTapOutside) {
+			onTapOutside()
 		}
+	}
+
+	onTouchStart = (event) =>
+	{
+		// Ignore multitouch.
+		if (event.touches.length > 1)
+		{
+			// Reset.
+			return this.onTouchCancel()
+		}
+
+		this.initialTouchX = event.changedTouches[0].clientX
+		this.initialTouchY = event.changedTouches[0].clientY
+		this.tapping = true
+	}
+
+	onTouchMove = (event) =>
+	{
+		// Ignore multitouch.
+		if (!this.tapping) {
+			return
+		}
+
+		const deltaX = Math.abs(event.changedTouches[0].clientX - this.initialTouchX)
+		const deltaY = Math.abs(event.changedTouches[0].clientY - this.initialTouchY)
+		const moveThreshold = 5
+
+		if (deltaX > moveThreshold || deltaY > moveThreshold)
+		{
+			// Reset.
+			this.onTouchCancel()
+		}
+	}
+
+	onTouchEnd = (event) =>
+	{
+		// Ignore multitouch.
+		if (!this.tapping) {
+			return
+		}
+
+		// Reset.
+		this.onTouchCancel()
+
+		this.onTap(event)
+	}
+
+	onTouchCancel = () =>
+	{
+		this.initialTouchX = undefined
+		this.initialTouchY = undefined
+		this.tapping = false
 	}
 
 	isExpanded = () => this.state.expanded
@@ -143,7 +211,7 @@ export default class Expandable extends PureComponent
 			preload,
 			onPreloadStateChange,
 			onPreloadError,
-			onClickOutside
+			onTapOutside
 		}
 		= this.props
 
@@ -182,7 +250,7 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
-			document.removeEventListener('click', this.onDocumentClick)
+			this.stopListeningToTouches()
 
 			clearTimeout(this.scrollIntoViewTimer)
 
@@ -235,8 +303,8 @@ export default class Expandable extends PureComponent
 						this.scrollIntoView()
 						resolve()
 
-						if (onClickOutside) {
-							document.addEventListener('click', this.onDocumentClick)
+						if (onTapOutside) {
+							this.listenToTouches()
 						}
 
 						this.isToggling = false
