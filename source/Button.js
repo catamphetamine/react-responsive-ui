@@ -13,6 +13,8 @@ export default class Button extends PureComponent
 	{
 		// onClick handler.
 		// Doesn't receive `event` by default.
+		// Can be `async`/`await` or return a `Promise`
+		// in which case it will show "wait" animation.
 		onClick         : PropTypes.func,
 
 		// onClick handler.
@@ -36,7 +38,10 @@ export default class Button extends PureComponent
 		submit          : PropTypes.bool,
 
 		// If `link` is set, then the button is gonna be an <a/> tag.
-		link            : PropTypes.string,
+		link            : PropTypes.oneOfType([ PropTypes.string, PropTypes.bool ]),
+
+		// Custom React component for the button.
+		component       : PropTypes.func,
 
 		// HTML `title` attribute
 		title           : PropTypes.string,
@@ -59,26 +64,18 @@ export default class Button extends PureComponent
 
 	state =
 	{
-		showBusy : this.props.wait || this.props.busy
+		waiting : this.props.wait || this.props.busy
 	}
 
 	componentDidUpdate(prevProps)
 	{
 		if ((!prevProps.wait && this.props.wait) || (!prevProps.busy && this.props.busy))
 		{
-			clearTimeout(this.no_longer_busy_timeout)
-			this.setState({ showBusy : true })
+			this.startWaiting()
 		}
 		else if ((prevProps.wait && !this.props.wait) || (prevProps.busy && !this.props.busy))
 		{
-			// Gives some time to CSS opacity transition to finish.
-			this.no_longer_busy_timeout = setTimeout(() =>
-			{
-				if (this._isMounted) {
-					this.setState({ showBusy : false })
-				}
-			},
-			300)
+			this.stopWaiting()
 		}
 	}
 
@@ -90,12 +87,66 @@ export default class Button extends PureComponent
 	componentWillUnmount()
 	{
 		this._isMounted = false
+
+		clearTimeout(this.waitingHasStartedTimer)
+		clearTimeout(this.waitingHasEndedTimer)
+	}
+
+	startWaiting()
+	{
+		clearTimeout(this.waitingHasStartedTimer)
+		clearTimeout(this.waitingHasEndedTimer)
+
+		this.setState
+		({
+			waiting : true,
+			waitingHasStarted : false,
+			waitingHasEnded : false
+		})
+
+		this.waitingHasStartedTimer = setTimeout(() =>
+		{
+			if (this._isMounted) {
+				this.setState({
+					waitingHasStarted: true
+				})
+			}
+		},
+		// Adding a non-null delay in order to
+		// prevent web browser from optimizing
+		// adding CSS classes and doing it simultaneously
+		// rather than sequentially (required for CSS transition).
+		10)
+	}
+
+	stopWaiting = () =>
+	{
+		clearTimeout(this.waitingHasStartedTimer)
+
+		this.setState
+		({
+			waiting : false,
+			waitingHasStarted : false,
+			waitingHasEnded : true
+		})
+
+		// Gives some time to CSS opacity transition to finish.
+		this.waitingHasEndedTimer = setTimeout(() =>
+		{
+			if (this._isMounted) {
+				this.setState({
+					waitingHasEnded : false
+				})
+			}
+		},
+		300)
 	}
 
 	render()
 	{
 		const
 		{
+			component,
 			link,
 			title,
 			wait,
@@ -112,7 +163,13 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		const { showBusy } = this.state
+		const
+		{
+			waiting,
+			waitingHasStarted,
+			waitingHasEnded
+		}
+		= this.state
 
 		const properties =
 		{
@@ -122,7 +179,7 @@ export default class Button extends PureComponent
 			style,
 			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
 			{
-				'rrui__button--busy'       : wait || busy,
+				'rrui__button--busy'       : waiting,
 				'rrui__button--disabled'   : disabled,
 				'rrui__button--stretch'    : stretch,
 				'rrui__button-reset--link' : link
@@ -132,29 +189,31 @@ export default class Button extends PureComponent
 
 		if (link)
 		{
+			const LinkComponent = component || 'a'
+
 			return (
-				<a
-					href={ link }
-					onClick={ this.link_on_click }
+				<LinkComponent
+					href={ component ? undefined : link }
+					onClick={ this.linkOnClick }
 					{ ...properties }>
 
 					{ children }
-				</a>
+				</LinkComponent>
 			)
 		}
 
 		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
-				disabled={ wait || busy || disabled }
-				onClick={ this.button_on_click }
+				disabled={ waiting || disabled }
+				onClick={ this.buttonOnClick }
 				{ ...properties }>
 
-				{ (wait || busy || showBusy) &&
+				{ (waiting || waitingHasEnded) &&
 					<div
 						className={ classNames('rrui__button__busy',
 						{
-							'rrui__button__busy--after-show' : (wait || busy) && showBusy
+							'rrui__button__busy--after-show' : waitingHasStarted
 						}) }/>
 				}
 				{ children }
@@ -164,12 +223,9 @@ export default class Button extends PureComponent
 
 	storeInstance = (ref) => this.button = ref
 
-	focus()
-	{
-		this.button.focus()
-	}
+	focus = () => this.button.focus()
 
-	link_on_click = (event) =>
+	linkOnClick = (event) =>
 	{
 		const
 		{
@@ -204,28 +260,29 @@ export default class Button extends PureComponent
 		// then it should proceed with navigating to the `link`.
 		// And if `link` is set and `action` is specified too
 		// then it will prevent it from navigating to the `link`.
-		if (action)
-		{
+		if (action || onClick) {
 			event.preventDefault()
-			action()
 		}
-		else if (onClick)
-		{
-			event.preventDefault()
-			onClick()
-		}
+
+		this.buttonOnClick()
 	}
 
-	button_on_click = (event) =>
+	buttonOnClick = (event) =>
 	{
 		const { action, onClick } = this.props
 
+		let result
 		// Could be just a `<button type="submit"/>`
 		// without any `action` supplied.
 		if (action) {
-			action()
+			result = action()
 		} else if (onClick) {
-			onClick()
+			result = onClick()
+		}
+
+		if (result && typeof result.then === 'function') {
+			this.startWaiting()
+			result.then(this.stopWaiting, this.stopWaiting)
 		}
 	}
 }
