@@ -372,7 +372,8 @@
   display: none; }
 
 .DayPicker-Caption {
-  display: table-caption;
+  /* iPhone moves <select/>s around the screen on focus when using `display: table-caption`. */
+  /* display: table-caption; */
   text-align: center;
   margin-bottom: 1em; }
 
