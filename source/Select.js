@@ -76,7 +76,7 @@ export default class Select extends PureComponent
 		required   : PropTypes.bool.isRequired,
 
 		// Set to `true` to display the loading indicator
-		loading    : PropTypes.bool.isRequired,
+		wait       : PropTypes.bool.isRequired,
 
 		// Selected option value
 		value      : PropTypes.any,
@@ -138,7 +138,7 @@ export default class Select extends PureComponent
 		indicateInvalid : true,
 
 		// Set to `true` to display the loading indicator
-		loading : false,
+		wait : false,
 
 		// Will show scrollbar on overflow.
 		scroll : true,
@@ -195,7 +195,7 @@ export default class Select extends PureComponent
 			error,
 			closeButtonIcon,
 			closeLabel,
-			loading,
+			wait,
 			style,
 			className
 		}
@@ -223,7 +223,7 @@ export default class Select extends PureComponent
 					ref={ this.storeInputComponentNode }
 					className="rrui__input">
 
-					{ loading && <Ellipsis/> }
+					{ wait && <Ellipsis/> }
 
 					{/* A transparent native `<select/>` above (for better UX on mobile devices). */}
 					{ !native && this.renderNativeSelect() }
@@ -300,7 +300,7 @@ export default class Select extends PureComponent
 	{
 		const
 		{
-			loading,
+			wait,
 			value,
 			disabled,
 			required,
@@ -360,7 +360,7 @@ export default class Select extends PureComponent
 					</div>
 
 					{/* An arrow */}
-					{ !loading && <div className="rrui__select__arrow"/> }
+					{ !wait && <div className="rrui__select__arrow"/> }
 				</div>
 			</button>
 		)
