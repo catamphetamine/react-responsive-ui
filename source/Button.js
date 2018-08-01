@@ -123,6 +123,10 @@ export default class Button extends PureComponent
 	{
 		clearTimeout(this.waitingHasStartedTimer)
 
+		if (!this._isMounted) {
+			return
+		}
+
 		this.setState
 		({
 			waiting : false,
