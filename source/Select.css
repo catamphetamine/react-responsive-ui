@@ -28,14 +28,20 @@
 .rrui__select .rrui__expandable .rrui__list__item
 {
 	opacity    : 0;
-	transition : none;
 }
 
 /* Removes visual jitter caused by the first option being placed above the select toggler. */
 .rrui__select .rrui__expandable--expanded .rrui__list__item
 {
 	opacity    : 1;
-	transition : opacity 30ms ease-out 50ms;
+	transition : opacity 60ms ease-out 40ms;
+}
+
+/* Removes visual jitter caused by the first option being placed above the select toggler. */
+.rrui__select .rrui__expandable__content
+{
+	opacity    : 1;
+	transition : none;
 }
 
 .rrui__select__button

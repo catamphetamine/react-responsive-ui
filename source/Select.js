@@ -338,11 +338,9 @@ export default class Select extends PureComponent
 					'rrui__select__button',
 					toggleClassName,
 					{
-						'rrui__select__button--empty'   : isEmptyValue(value) && !this.hasEmptyOption(),
-						'rrui__select__button--invalid' : indicateInvalid && error,
-						'rrui__input-element--invalid'  : indicateInvalid && error,
-						// CSS selector performance optimization
-						// (should it even be optimized).
+						'rrui__select__button--empty'    : isEmptyValue(value) && !this.hasEmptyOption(),
+						'rrui__select__button--invalid'  : indicateInvalid && error,
+						'rrui__input-element--invalid'   : indicateInvalid && error,
 						'rrui__select__button--disabled' : disabled
 					}
 				) }>
