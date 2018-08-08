@@ -76,6 +76,8 @@ export default class Modal extends Component
 		// i.e. `closeButton` will be wrapped with a `<button/>`.
 		closeButton      : PropTypes.node,
 
+		closeButtonIcon  : PropTypes.func,
+
 		// If set to `false` will prevent modal contents
 		// from being unmounted when the modal is closed.
 		unmount          : PropTypes.bool.isRequired,
@@ -199,6 +201,7 @@ export default class Modal extends Component
 			title,
 			closeLabel,
 			closeButton,
+			closeButtonIcon,
 			actions,
 			unmount,
 			style,
@@ -251,6 +254,7 @@ export default class Modal extends Component
 					ref={ ref => this.content = ref }
 					closeLabel={ closeLabel }
 					closeButton={ closeButton }
+					closeButtonIcon={ closeButtonIcon }
 					close={ this.close_if_not_busy }
 					style={ style }
 					className={ className }
@@ -565,13 +569,14 @@ class ModalContent extends Component
 		{
 			closeLabel,
 			closeButton,
+			closeButtonIcon,
 			close,
 			busy,
 			wait
 		}
 		= this.props
 
-		if (!closeButton)
+		if (!closeButton && !closeButtonIcon)
 		{
 			return
 		}
@@ -584,7 +589,7 @@ class ModalContent extends Component
 				{
 					'rrui__modal__close--busy' : busy || wait
 				}) }>
-				{ closeButton }
+				{ closeButton || React.createElement(closeButtonIcon) }
 			</button>
 		)
 	}
