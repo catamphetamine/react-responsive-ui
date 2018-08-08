@@ -52,26 +52,26 @@ window.ExampleSelect = class ExampleComponent extends React.Component
 
 				Value: {this.state.value ? this.state.value : '(empty)'}
 
-<Highlight lang="jsx">{`
-<Select
-  label="Fruit"
-  value={...}
-  onChange={...}
-  options={[{ value: 'A', label: 'Apple' }, ..., { divider: true }, ...]} />
-`}</Highlight>
+				<Highlight lang="jsx">{`
+					<Select
+						label="Fruit"
+						value={...}
+						onChange={...}
+						options={[{ value: 'A', label: 'Apple' }, ..., { divider: true }, ...]} />
+				`}</Highlight>
 
-<Highlight lang="css">{`
-.rrui__select .rrui__list__item--focused {
-	background-color : cyan;
-}
-.rrui__select .rrui__list__item:hover {
-	background-color : gray;
-}
-.rrui__select .rrui__list__item:active {
-	background-color : blue;
-	color : white;
-}
-`}</Highlight>
+				<Highlight lang="css">{`
+					.rrui__select .rrui__list__item--focused {
+						background-color : cyan;
+					}
+					.rrui__select .rrui__list__item:hover {
+						background-color : gray;
+					}
+					.rrui__select .rrui__list__item:active {
+						background-color : blue;
+						color : white;
+					}
+				`}</Highlight>
 
 			</Example>
 		)

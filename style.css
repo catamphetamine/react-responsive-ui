@@ -81,7 +81,7 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-  width: calc(100% + 0.6rem * 1.5 * 2);
+  width: calc(100% + (0.6rem * 1.5 - 0rem) * 2);
   /* Makes `border-bottom` visible on an iPhone */
   margin-top: 1px; }
 
@@ -426,7 +426,7 @@
   font-size: 0.875em; }
 
 /* Default modifiers */
-.DayPicker-Day--today {
+.DayPicker-Day--today:not(.DayPicker-Day--selected) {
   /*
 	color: #03b2cb;
 	font-weight: 700;
@@ -712,10 +712,10 @@
   right: 0; }
 
 .rrui__options-list--left-aligned {
-  left: calc(0.6rem * 1.5 * -1); }
+  left: calc((0.6rem * 1.5 - 0rem) * -1); }
 
 .rrui__options-list--right-aligned {
-  right: calc(0.6rem * 1.5 * -1); }
+  right: calc((0.6rem * 1.5 - 0rem) * -1); }
 
 .rrui__file-upload__area {
   cursor: pointer; }
@@ -805,12 +805,13 @@ than 100% of the parent if the parent is small enough.
   -webkit-box-shadow: 0 0 0 1000px white inset;
           box-shadow: 0 0 0 1000px white inset; }
 
-/* Stretches the inputs to full column width by default. */
-/* Because everyone uses CSS grids today. */
 .rrui__input-field,
-.rrui__select__button,
-.rrui__select__autocomplete {
-  width: 100%; }
+.rrui__select__button {
+  /* Stretches the inputs to full column width by default. */
+  /* Because everyone uses CSS grids today. */
+  width: 100%;
+  padding-left: 0rem;
+  padding-right: 0rem; }
 
 .rrui__input-field,
 .rrui__select__button,
@@ -1416,7 +1417,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-  width: calc(100% + 0.6rem * 1.5 * 2);
+  width: calc(100% + (0.6rem * 1.5 - 0rem) * 2);
   /*
 	`margin-top` is constituted by:
 	- `.rrui__select__options` `padding-top`.
@@ -1424,6 +1425,20 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	- half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
 	*/
   margin-top: calc(-1 * (0.6rem + 0.6rem * 3 + (0.6rem * 4 - 0.6rem * 3) / 2)); }
+
+/* Removes visual jitter caused by the first option being placed above the select toggler. */
+.rrui__select .rrui__expandable .rrui__list__item {
+  opacity: 0;
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none; }
+
+/* Removes visual jitter caused by the first option being placed above the select toggler. */
+.rrui__select .rrui__expandable--expanded .rrui__list__item {
+  opacity: 1;
+  -webkit-transition: opacity 30ms ease-out 50ms;
+  -o-transition: opacity 30ms ease-out 50ms;
+  transition: opacity 30ms ease-out 50ms; }
 
 .rrui__select__button {
   height: 100%;
@@ -1804,15 +1819,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* Set the default height of multiline `<TextInput/>`s. */
 .rrui__input-field--multiline {
   height: calc(0.6rem * 7);
-  padding-top: calc(0.6rem / 2);
-  padding-bottom: calc(0.6rem / 2);
-  padding-left: 0;
-  padding-right: 0; }
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  padding-left: 0rem;
+  padding-right: 0rem; }
 
 /* Multiline `<TextInput/>`'s label positioning. */
 /* Must be same as `padding-top`/`padding-bottom`. */
 .rrui__text-input__label--multiline {
-  top: calc(0.6rem / 2); }
+  top: 0.6rem; }
 
 .rrui__tooltip {
   display: -webkit-box;
