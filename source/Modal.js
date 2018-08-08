@@ -558,7 +558,7 @@ class ModalContent extends Component
 		{
 			if (closeButtonIcon && !closeButtonAdded)
 			{
-				if (element.type === Modal.Title || element.type === Modal.Content)
+				if (element.type === ModalTitleType || element.type === ModalContentType)
 				{
 					closeButtonAdded = true
 					return React.cloneElement(element,
@@ -702,6 +702,11 @@ const Actions = ({ closeButton, children }) => (
 		{children}
 	</div>
 )
+
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+const ModalTitleType = <Title/>.type
+const ModalContentType = <Content/>.type
 
 Modal = reactLifecyclesCompat(Modal)
 

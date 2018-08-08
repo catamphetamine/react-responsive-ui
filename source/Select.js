@@ -325,7 +325,7 @@ export default class Select extends PureComponent
 				ref={ this.storeSelectButton }
 				type="button"
 				disabled={ disabled }
-				onClick={ this.toggle }
+				onClick={ this.onClick }
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
@@ -338,7 +338,7 @@ export default class Select extends PureComponent
 					'rrui__select__button',
 					toggleClassName,
 					{
-						'rrui__select__button--empty'   : isEmptyValue(value),
+						'rrui__select__button--empty'   : isEmptyValue(value) && !this.hasEmptyOption(),
 						'rrui__select__button--invalid' : indicateInvalid && error,
 						'rrui__input-element--invalid'  : indicateInvalid && error,
 						// CSS selector performance optimization
@@ -481,14 +481,27 @@ export default class Select extends PureComponent
 		this.setValue(value)
 	}
 
+	onClick = (event) =>
+	{
+		const { disabled } = this.props
+
+		if (!disabled) {
+			this.toggle()
+		}
+	}
+
 	onKeyDown = (event) =>
 	{
-		const { value, required } = this.props
+		const { disabled, value, required } = this.props
 		const { isExpanded } = this.state
 
 		// Reset "event came from native select" flag.
 		const fromNativeSelect = this.onKeyDownFromNativeSelect
 		this.onKeyDownFromNativeSelect = false
+
+		if (disabled) {
+			return
+		}
 
 		if (event.defaultPrevented) {
 			return
@@ -536,6 +549,21 @@ export default class Select extends PureComponent
 				}
 				return
 		}
+	}
+
+	hasEmptyOption()
+	{
+		const { options } = this.props
+
+		for (const option of options)
+		{
+			if (isEmptyValue(option.value))
+			{
+				return true
+			}
+		}
+
+		return false
 	}
 
 	getSelectedOption()

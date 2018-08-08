@@ -32,7 +32,7 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
+	width : calc(100% + (var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding)) * 2);
 
 	/* Makes `border-bottom` visible on an iPhone */
 	margin-top : 1px;

@@ -10,10 +10,10 @@
 
 .rrui__options-list--left-aligned
 {
-	left : calc(var(--rrui-list-item-side-padding) * -1);
+	left : calc((var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding)) * -1);
 }
 
 .rrui__options-list--right-aligned
 {
-	right : calc(var(--rrui-list-item-side-padding) * -1);
+	right : calc((var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding)) * -1);
 }

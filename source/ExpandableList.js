@@ -116,8 +116,7 @@ export default class ExpandableList extends PureComponent
 
 		if (focusSelectedItem)
 		{
-			this.setState
-			({
+			this.setState({
 				selectedItemIndex : index
 			})
 		}

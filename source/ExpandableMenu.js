@@ -55,8 +55,6 @@ export default class ExpandableMenu extends PureComponent
 	storeTogglerNode = (node) => this.togglerNode = node
 	getTogglerNode = () => this.togglerNode
 
-	onBlur = (event) => this.list && this.list.onBlur(event)
-
 	render()
 	{
 		const
@@ -83,7 +81,7 @@ export default class ExpandableMenu extends PureComponent
 				<div
 					ref={ this.storeTogglerNode }
 					onBlur={ this.onBlur }
-					onClick={ this.toggle }
+					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }>
 
 					{ React.cloneElement(toggler, { ref : this.storeTogglerRef }) }
@@ -103,6 +101,7 @@ export default class ExpandableMenu extends PureComponent
 					closeButtonIcon={closeButtonIcon}
 					closeLabel={closeLabel}
 					focusSelectedItem={false}
+					shouldCreateButtons={false}
 					className="rrui__shadow">
 					{menuItems}
 				</ExpandableList>
@@ -110,8 +109,25 @@ export default class ExpandableMenu extends PureComponent
 		)
 	}
 
+	onBlur = (event) => this.list && this.list.onBlur(event)
+
+	onClick = (event) =>
+	{
+		const { disabled } = this.props
+
+		if (!disabled) {
+			this.toggle()
+		}
+	}
+
 	onKeyDown = (event) =>
 	{
+		const { disabled } = this.props
+
+		if (disabled) {
+			return
+		}
+
 		if (event.defaultPrevented) {
 			return
 		}

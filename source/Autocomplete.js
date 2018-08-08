@@ -315,7 +315,7 @@ export default class Autocomplete extends PureComponent
 			alignment,
 			saveOnIcons,
 			required,
-			placeholder,
+			label,
 			value,
 			onChange,
 			indicateInvalid,
@@ -364,17 +364,13 @@ export default class Autocomplete extends PureComponent
 					{/* Label */}
 					{/* (this label is placed after the "selected" button
 					     to utilize the CSS `+` selector) */}
-					{/* If the `placeholder` wasn't specified
-					    but `label` was and no option is currently selected
-					    then the `label` becomes the `placeholder`
-					    until something is selected */}
-					{ this.getLabel() &&
+					{ label &&
 						<Label
 							id={ id }
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }>
-							{ this.getLabel() }
+							{ label }
 						</Label>
 					}
 
@@ -452,10 +448,11 @@ export default class Autocomplete extends PureComponent
 				inputRef={ this.storeInput }
 				value={ inputValue }
 				onChange={ this.onInputValueChange }
+				placeholder={ placeholder }
 				onKeyDown={ this.onKeyDown }
 				onFocus={ this.expandOnFocus }
 				onBlur={ this.onBlur }
-				onClick={ this.expandOnFocus }
+				onClick={ this.onClick }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
 				className={ classNames
@@ -506,8 +503,12 @@ export default class Autocomplete extends PureComponent
 
 	onKeyDown = (event) =>
 	{
-		const { value, required } = this.props
+		const { disabled, value, required } = this.props
 		const { isExpanded, inputValue } = this.state
+
+		if (disabled) {
+			return
+		}
 
 		if (event.defaultPrevented) {
 			return
@@ -614,12 +615,6 @@ export default class Autocomplete extends PureComponent
 
 				return
 		}
-	}
-
-	getLabel()
-	{
-		const { label, placeholder } = this.props
-		return label || placeholder
 	}
 
 	throttleFetchOptionsCall(resolve)
@@ -767,6 +762,15 @@ export default class Autocomplete extends PureComponent
 	}
 
 	onBlur = (event) => this.list && this.list.onBlur(event)
+
+	onClick = (event) =>
+	{
+		const { disabled } = this.props
+
+		if (!disabled) {
+			this.expandOnFocus()
+		}
+	}
 
 	onFocusOut = () =>
 	{

@@ -13,7 +13,7 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-	width : calc(100% + var(--rrui-list-item-side-padding) * 2);
+	width : calc(100% + (var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding)) * 2);
 
 	/*
 	`margin-top` is constituted by:
@@ -22,6 +22,20 @@
 	- half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
 	*/
 	margin-top : calc(-1 * (var(--rrui-list-vertical-padding) + var(--rrui-input-height) + (var(--rrui-list-item-height) - var(--rrui-input-height)) / 2));
+}
+
+/* Removes visual jitter caused by the first option being placed above the select toggler. */
+.rrui__select .rrui__expandable .rrui__list__item
+{
+	opacity    : 0;
+	transition : none;
+}
+
+/* Removes visual jitter caused by the first option being placed above the select toggler. */
+.rrui__select .rrui__expandable--expanded .rrui__list__item
+{
+	opacity    : 1;
+	transition : opacity 30ms ease-out 50ms;
 }
 
 .rrui__select__button

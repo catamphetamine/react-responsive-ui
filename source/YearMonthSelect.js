@@ -10,9 +10,9 @@ export default class YearMonthSelect extends PureComponent
 {
 	static propTypes =
 	{
-		date : PropTypes.instanceOf(Date).isRequired,
+		date : PropTypes.instanceOf(Date),
 		onChange : PropTypes.func.isRequired,
-		localeUtils : PropTypes.object.isRequired
+		localeUtils : PropTypes.object
 	}
 
 	constructor(props)

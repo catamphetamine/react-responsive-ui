@@ -24,6 +24,8 @@ function transformStyle(filePath)
     /* Everything */
     .replace_all('var(--rrui-input-height)', 'calc(0.6rem * 3)')
     .replace_all('var(--rrui-fullscreen-input-height)', 'calc(0.6rem * 4)')
+    /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
+    .replace_all('var(--rrui-input-field-side-padding)', '0rem')
     /* `<TextInput multiline/>` */
     .replace_all('var(--rrui-multiline-text-height)', 'calc(0.6rem * 7)')
     .replace_all('var(--rrui-multiline-text-input-vertical-padding)', '0.6rem')

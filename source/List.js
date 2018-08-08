@@ -11,6 +11,10 @@ import { focus } from './utility/focus'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+const DividerType = <Divider/>.type
+
 @reactLifecyclesCompat
 export default class List extends PureComponent
 {
@@ -24,14 +28,16 @@ export default class List extends PureComponent
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
-		focusFirstItemWhenItemsChange : PropTypes.bool.isRequired
+		focusFirstItemWhenItemsChange : PropTypes.bool.isRequired,
+		shouldCreateButtons : PropTypes.bool.isRequired
 	}
 
 	static defaultProps =
 	{
 		tabbable : true,
 		shouldFocus : true,
-		focusFirstItemWhenItemsChange : false
+		focusFirstItemWhenItemsChange : false,
+		shouldCreateButtons : true
 	}
 
 	static getDerivedStateFromProps(props, state)
@@ -275,7 +281,8 @@ export default class List extends PureComponent
 	}
 
 	isFocusableItemIndex = (index) => this.itemRefs[index] !== undefined
-	isFocusableItem = (item) => item.type !== Divider
+
+	isFocusableItem = (item) => item.type !== DividerType
 
 	// `this.list` is also being accessed from `<ScrollableList/>`.
 	storeListNode = (node) => this.list = node
@@ -290,6 +297,7 @@ export default class List extends PureComponent
 			tabbable,
 			getItemValue,
 			onSelectItem,
+			shouldCreateButtons,
 			className,
 			style,
 			children
@@ -307,11 +315,9 @@ export default class List extends PureComponent
 
 				{ React.Children.map(children, (item, i) =>
 				{
-					// This check doesn't work for some reason,
-					// i.e. `Item !== Item`.
-					// if (item.type !== Item) {
-					// 	throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
-					// }
+					if (item.type !== ItemType) {
+						throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
+					}
 
 					return React.cloneElement(item,
 					{
@@ -322,6 +328,7 @@ export default class List extends PureComponent
 						focused   : focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : focusedItemIndex === i) ? 0 : -1,
+						shouldCreateButton : shouldCreateButtons,
 						onSelectItem
 					})
 				}) }
@@ -332,16 +339,28 @@ export default class List extends PureComponent
 
 export class Item extends React.Component
 {
+	static propTypes =
+	{
+		value : PropTypes.any,
+		index : PropTypes.number,
+		focused : PropTypes.bool,
+		onSelect : PropTypes.func,
+		onSelectItem : PropTypes.func,
+		shouldCreateButton : PropTypes.bool
+	}
+
 	onMouseDown = (event) =>
 	{
 		const
 		{
-			onMouseDown,
 			value,
 			index,
-			focus
+			focus,
+			children
 		}
 		= this.props
+
+		const onMouseDown = this.shouldCreateButton() ? this.props.onMouseDown : children.props.onMouseDown
 
 		// Without this Safari (both mobile and desktop)
 		// won't select any item in an expanded list
@@ -362,12 +381,14 @@ export class Item extends React.Component
 	{
 		const
 		{
-			onFocus,
 			value,
 			focus,
-			index
+			index,
+			children
 		}
 		= this.props
+
+		const onFocus = this.shouldCreateButton() ? this.props.onFocus : children.props.onFocus
 
 		if (this.isSelectable()) {
 			focus(index)
@@ -384,13 +405,16 @@ export class Item extends React.Component
 		{
 			onSelect,
 			onSelectItem,
-			onClick,
 			index,
-			value
+			value,
+			children
 		}
 		= this.props
 
-		if (this.isSelectable()) {
+		const onClick = this.shouldCreateButton() ? this.props.onClick : children.props.onClick
+
+		if (this.isSelectable())
+		{
 			if (onSelect) {
 				onSelect(value, index)
 			}
@@ -407,8 +431,7 @@ export class Item extends React.Component
 	isSelectable()
 	{
 		const { children } = this.props
-
-		return children.type !== Divider
+		return children.type !== DividerType
 	}
 
 	focus = () =>
@@ -427,6 +450,13 @@ export class Item extends React.Component
 		}
 	}
 
+	shouldCreateButton()
+	{
+		const { onSelect, onSelectItem, shouldCreateButton } = this.props
+
+		return this.isSelectable() && (onSelect || (onSelectItem && shouldCreateButton))
+	}
+
 	render()
 	{
 		const
@@ -437,8 +467,6 @@ export class Item extends React.Component
 			disabled,
 			className,
 			tabIndex,
-			onSelect,
-			onSelectItem,
 			children
 		}
 		= this.props
@@ -463,7 +491,7 @@ export class Item extends React.Component
 				{
 					'rrui__list__item--focused'  : focused,
 					'rrui__list__item--disabled' : disabled,
-					'rrui__list__item--divider'  : children.type === Divider
+					'rrui__list__item--divider'  : children.type === DividerType
 				}
 			)
 		}
@@ -472,7 +500,7 @@ export class Item extends React.Component
 		let itemChildren
 		let label
 
-		if (this.isSelectable() && (onSelect || onSelectItem))
+		if (this.shouldCreateButton())
 		{
 			ItemComponent = 'button'
 			label = this.props.label || children
@@ -510,6 +538,11 @@ export class Item extends React.Component
 				))
 			}
 		}
+		else
+		{
+			// Don't overwrite `className` already defined on the `children`.
+			properties.className = classNames(properties.className, children.props && children.props.className)
+		}
 
 		return (
 			<li className="rrui__list__list-item">
@@ -521,6 +554,10 @@ export class Item extends React.Component
 }
 
 List.Item = Item
+
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+const ItemType = <Item/>.type
 
 function haveItemsChanged(props, prevProps)
 {

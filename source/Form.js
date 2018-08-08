@@ -90,14 +90,14 @@ export default class Form extends Component
 			let index = 0
 			for (const child of form_elements)
 			{
-				if (child.type === Form.Error)
+				if (child.type === FormErrorType)
 				{
 					form_elements[index] = React.cloneElement(child, { key: 'form-error' }, error)
 					error_element = null
 					break
 				}
 
-				if (child.type === Form.Actions)
+				if (child.type === FormActionsType)
 				{
 					form_elements.insert_at(index, error_element)
 					error_element = null
@@ -177,6 +177,11 @@ Form.Actions = function({ children })
 		</ModalContext.Consumer>
 	)
 }
+
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+const FormErrorType = <Form.Error/>.type
+const FormActionsType = <Form.Actions/>.type
 
 class Actions extends Component
 {

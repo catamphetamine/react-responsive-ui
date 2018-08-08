@@ -19,15 +19,15 @@
 .rrui__input-field--multiline
 {
 	height         : var(--rrui-multiline-text-height);
-	padding-top    : calc(var(--rrui-unit) / 2);
-	padding-bottom : calc(var(--rrui-unit) / 2);
-	padding-left   : 0;
-	padding-right  : 0;
+	padding-top    : var(--rrui-multiline-text-input-vertical-padding);
+	padding-bottom : var(--rrui-multiline-text-input-vertical-padding);
+	padding-left   : var(--rrui-input-field-side-padding);
+	padding-right  : var(--rrui-input-field-side-padding);
 }
 
 /* Multiline `<TextInput/>`'s label positioning. */
 /* Must be same as `padding-top`/`padding-bottom`. */
 .rrui__text-input__label--multiline
 {
-	top : calc(var(--rrui-unit) / 2);
+	top : var(--rrui-multiline-text-input-vertical-padding);
 }

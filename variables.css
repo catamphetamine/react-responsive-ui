@@ -7,9 +7,12 @@
   --rrui-input-height            : calc(var(--rrui-unit) * 3);
   --rrui-fullscreen-input-height : calc(var(--rrui-unit) * 4);
 
+  /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
+  --rrui-input-field-side-padding : 0rem;
+
   /* `<TextInput multiline/>` */
   --rrui-multiline-text-height                 : calc(var(--rrui-unit) * 7);
-  --rrui-multiline-text-input-vertical-padding : var(--rrui-unit);
+  --rrui-multiline-text-input-vertical-padding : calc(var(--rrui-unit) / 2);
 
   /* `<Button/>` */
   --rrui-button-side-padding : 0rem;
