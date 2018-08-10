@@ -1,5 +1,9 @@
 /* DayPicker styles (version 7.1.10) */
 
+.DayPicker {
+	user-select : none;
+}
+
 .DayPicker-wrapper {
 	position : relative;
 }
@@ -76,23 +80,10 @@
 	cursor: default;
 }
 
-.DayPicker-Footer {
-	padding-top: 0.5em;
-}
-
-.DayPicker-TodayButton {
-	border: none;
-	background-image: none;
-	background-color: transparent;
-	box-shadow: none;
-	cursor: pointer;
-	color: var(--rrui-accent-color);
-	font-size: 0.875em;
-}
-
 /* Default modifiers */
 
-.DayPicker-Day--today:not(.DayPicker-Day--selected):not(.DayPicker-Day--disabled) {
+.DayPicker-Day--today:not(.DayPicker-Day--selected):not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
+{
 	/*
 	color: var(--rrui-accent-color);
 	font-weight: 700;
@@ -106,22 +97,34 @@
 	font-weight: 700;
 }
 
-.DayPicker-Day--outside {
+.DayPicker-Day--outside
+{
 	cursor: default;
 	color: var(--rrui-gray-color);
 }
 
-.DayPicker-Day--disabled {
+.DayPicker-Day--disabled
+{
 	color: var(--rrui-gray-color-light);
 	cursor: default;
 }
 
-/* Example modifiers */
-
-.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
-	position: relative;
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
+{
 	color: var(--rrui-white-color);
 	background-color: var(--rrui-accent-color);
+}
+
+/* .DayPicker:not(.DayPicker--interactionDisabled) ... */
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover
+{
+	background-color: var(--rrui-gray-color-lightest);
+}
+
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active
+{
+	color: var(--rrui-white-color);
+	background-color: var(--rrui-accent-color-light);
 }
 
 /* =============================== */
@@ -157,12 +160,6 @@
 	outline: none
 }
 
-.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
-{
-	color : var(--rrui-white-color);
-	background-color : var(--rrui-accent-color);
-}
-
 /* https://github.com/gpbl/react-day-picker/issues/708 */
 /*
 .DayPicker-NavButton:active
@@ -170,20 +167,6 @@
 	color : var(--rrui-accent-color-light);
 }
 */
-
-/* .DayPicker:not(.DayPicker--interactionDisabled) ... */
-.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover
-{
-	background-color: var(--rrui-gray-color-lightest);
-	border-radius: 50%;
-}
-
-.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active
-{
-	color: var(--rrui-white-color);
-	background-color: var(--rrui-accent-color-light);
-	border-radius: 50%;
-}
 
 /* ----------------------------------------------------- */
 /* -                  `<DatePicker/>`                  - */
