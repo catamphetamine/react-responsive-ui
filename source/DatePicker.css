@@ -92,7 +92,7 @@
 
 /* Default modifiers */
 
-.DayPicker-Day--today:not(.DayPicker-Day--selected) {
+.DayPicker-Day--today:not(.DayPicker-Day--selected):not(.DayPicker-Day--disabled) {
 	/*
 	color: var(--rrui-accent-color);
 	font-weight: 700;
