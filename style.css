@@ -618,9 +618,9 @@
       -ms-transform-origin: 50% top 0px;
           transform-origin: 50% top 0px;
   /* 250ms - too slow for short lists */
-  -webkit-transition: all 100ms ease-out;
-  -o-transition: all 100ms ease-out;
-  transition: all 100ms ease-out;
+  -webkit-transition: all 150ms ease-out;
+  -o-transition: all 150ms ease-out;
+  transition: all 150ms ease-out;
   /* prevent white background showing through the transparent border */
   /* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
   background-clip: padding-box;
@@ -932,6 +932,11 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__list__item--focused {
   background-color: #F3F3F3; }
+
+.rrui__list__item--selected,
+.rrui__list__item--selected:hover {
+  background-color: #03b2cb;
+  color: #ffffff; }
 
 .rrui__list__item-icon {
   margin-right: 0.6rem;

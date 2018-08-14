@@ -42,12 +42,12 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 					<List.Item>
 						<a
 							target="_blank"
-							href="https://twitter.com/monicalent"
+							href="https://twitter.com/medvedevrussia"
 							className="new-message-notification"
 							style={{ outline: 'none', height: 'auto', paddingTop: '0.6rem', paddingBottom: '0.6rem', textDecoration: 'none' }}>
 
-							<img className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/871032082805510144/7GvHJc-c_200x200.jpg"/>
-							<span className="new-message-notification__text"> Monica Lent </span>
+							<img className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/2348558617/x0vh6bui3sq97vt4jd2n_200x200.png"/>
+							<span className="new-message-notification__text"> Dmitry Medvedev </span>
 						</a>
 					</List.Item>
 				</List>

@@ -14,7 +14,8 @@ window.ExampleList = class ExampleComponent extends React.Component
 				<List
 					style={input_style}
 					className="column-width rrui__shadow"
-					onSelectItem={value => this.setState({ value })}>
+					value={ this.state.value }
+					onSelectItem={ value => this.setState({ value }) }>
 					<List.Item value="A">Apple</List.Item>
 					<List.Item value="B">Banana</List.Item>
 					<List.Item value="C">Cranberry</List.Item>
@@ -28,7 +29,8 @@ window.ExampleList = class ExampleComponent extends React.Component
 				<Highlight lang="jsx">{`
 					<List
 						className="rrui__shadow"
-						onSelectItem={ value => this.setState({ value }) }>
+						value={ this.state.value }
+						onChange={ value => this.setState({ value }) }>
 
 						<List.Item value="A">
 							Apple

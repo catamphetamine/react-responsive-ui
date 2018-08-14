@@ -21,7 +21,8 @@ window.ExampleListIcons = class ExampleComponent extends React.Component
 				<List
 					style={input_style}
 					className="column-width rrui__shadow"
-					onSelectItem={value => this.setState({ value })}>
+					value={this.state.value}
+					onChange={value => this.setState({ value })}>
 
 					<List.Item value="AF" icon={ListIcon}>Afghanistan</List.Item>
 					<List.Item value="BB" icon={ListIcon}>Barbados</List.Item>
@@ -33,7 +34,8 @@ window.ExampleListIcons = class ExampleComponent extends React.Component
 				<Highlight lang="jsx">{`
 					<List
 						className="rrui__shadow"
-						onSelectItem={ value => this.setState({ value }) }>
+						value={ this.state.value }
+						onChange={ value => this.setState({ value }) }>
 
 						<List.Item value="AF" icon={Flag}>
 							Afghanistan
