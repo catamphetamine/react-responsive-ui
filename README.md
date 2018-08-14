@@ -124,6 +124,19 @@ An example for Webpack and SCSS:
 
 [An example for PostCSS](https://github.com/catamphetamine/webpack-react-redux-server-side-render-example/blob/master/src/styles/react-responsive-ui.css)
 
+## Asterisk on required fields
+
+```css
+/* (when the `value` is empty) */
+/* Required input field label asterisk. */
+.rrui__input-label--required:after,
+.rrui__select__selected-label--required:after
+{
+  content     : '*';
+  margin-left : 0.2em;
+}
+```
+
 ## Reducing footprint
 
 Webpack 4 still can't "tree-shake" simple cases like

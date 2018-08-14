@@ -31,12 +31,3 @@
 {
 	color : var(--rrui-accent-color);
 }
-
-/* (when the `value` is empty) */
-/* Required input field label asterisk. */
-.rrui__input-label--required:after,
-.rrui__select__selected-label--required:after
-{
-	content     : '*';
-	margin-left : 0.2em;
-}
