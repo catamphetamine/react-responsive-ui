@@ -256,8 +256,8 @@ export default class Select extends PureComponent
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
 							scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
-							selectedItemValue={value}
-							onSelectItem={this.setValue}
+							value={value}
+							onChange={this.setValue}
 							onCollapse={this.onCollapse}
 							onExpand={this.onExpand}
 							getTogglerNode={this.getSelectButton}

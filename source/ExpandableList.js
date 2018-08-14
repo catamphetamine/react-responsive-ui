@@ -41,11 +41,11 @@ export default class ExpandableList extends PureComponent
 
 	static getDerivedStateFromProps(props, state)
 	{
-		if (state.selectedItemValue !== props.selectedItemValue)
+		if (state.selectedItemValue !== props.value)
 		{
 			return {
-				selectedItemValue : props.selectedItemValue,
-				selectedItemIndex : props.selectedItemValue === undefined ? undefined : findItemIndexByValue(props.selectedItemValue, props.children)
+				selectedItemValue : props.value,
+				selectedItemIndex : props.value === undefined ? undefined : findItemIndexByValue(props.value, props.children)
 			}
 		}
 
@@ -106,12 +106,12 @@ export default class ExpandableList extends PureComponent
 	storeExpandableRef = (ref) => this.expandable = ref
 	storeListRef = (ref) => this.list = ref
 
-	onSelectItem = (value, index) =>
+	onChange = (value, index) =>
 	{
-		const { onSelectItem, focusSelectedItem } = this.props
+		const { onChange, focusSelectedItem } = this.props
 
-		if (onSelectItem) {
-			onSelectItem(value, index)
+		if (onChange) {
+			onChange(value, index)
 		}
 
 		if (focusSelectedItem)
@@ -183,6 +183,8 @@ export default class ExpandableList extends PureComponent
 			getTogglerNode,
 			onFocusOut,
 			onTapOutside,
+			onChange,
+			highlightSelectedItem,
 			closeLabel,
 			closeButtonIcon,
 			className,
@@ -215,7 +217,8 @@ export default class ExpandableList extends PureComponent
 				<ScrollableList
 					{...rest}
 					ref={ this.storeListRef }
-					onSelectItem={ this.onSelectItem }>
+					onChange={ this.onChange }
+					highlightSelectedItem={ onChange === undefined && highlightSelectedItem === undefined ? false : highlightSelectedItem }>
 					{ children }
 				</ScrollableList>
 			</Expandable>

@@ -63,7 +63,14 @@
 
 .rrui__list__item--focused
 {
-	background-color: var(--rrui-gray-color-lightest);
+	background-color : var(--rrui-gray-color-lightest);
+}
+
+.rrui__list__item--selected,
+.rrui__list__item--selected:hover
+{
+	background-color : var(--rrui-accent-color);
+	color            : var(--rrui-white-color);
 }
 
 .rrui__list__item-icon

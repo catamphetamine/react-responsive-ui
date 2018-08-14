@@ -12,6 +12,13 @@
 
 <!-- Rename `--busy`/`__busy` CSS classes to `--wait`/`__wait` -->
 
+0.14.33 / 14.08.2018
+====================
+
+* Added `value` property to `<List/>` and renamed `onSelectItem` to `onChange`. `onSelectItem` property still works but is deprecated.
+
+* Added the currently selected item indication to `<List/>` (and the components using it like `<Select/>` and `<Autocomplete/>`): `.rrui__list__item--selected`.
+
 0.14.10 / 28.07.2018
 ====================
 

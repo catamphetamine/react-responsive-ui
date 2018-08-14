@@ -385,11 +385,12 @@ export default class Autocomplete extends PureComponent
 						onPreloadStateChange={this.onPreloadStateChange}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						selectedItemValue={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
-						onSelectItem={this.setValue}
+						value={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
+						onChange={this.setValue}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
 						focusOnExpand={false}
+						highlightSelectedItem={false}
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
 						closeButtonIcon={closeButtonIcon}

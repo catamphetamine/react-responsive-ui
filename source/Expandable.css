@@ -7,7 +7,7 @@
 	transform-origin : 50% top 0px;
 
 	/* 250ms - too slow for short lists */
-	transition : all 100ms ease-out;
+	transition : all 150ms ease-out;
 
 	/* prevent white background showing through the transparent border */
 	/* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */

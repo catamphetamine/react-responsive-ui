@@ -28,8 +28,6 @@ export default class ScrollableList extends PureComponent
 		// 	})
 		// ),
 
-		onSelectItem : PropTypes.func,
-
 		// Maximum items fitting the list height (scrollable).
 		// Set to `0` to disable overflow.
 		// Is `6` by default.

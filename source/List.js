@@ -20,11 +20,14 @@ export default class List extends PureComponent
 {
 	static propTypes =
 	{
-		selectedItemValue : PropTypes.any,
+		value : PropTypes.any,
+		onChange : PropTypes.func,
+		// Legacy method, use `onChange` instead.
+		onSelectItem : PropTypes.func,
+		highlightSelectedItem : PropTypes.bool.isRequired,
 
 		onFocusItem : PropTypes.func,
 		onKeyDown : PropTypes.func,
-		onSelectItem : PropTypes.func,
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
@@ -37,7 +40,8 @@ export default class List extends PureComponent
 		tabbable : true,
 		shouldFocus : true,
 		focusFirstItemWhenItemsChange : false,
-		shouldCreateButtons : true
+		shouldCreateButtons : true,
+		highlightSelectedItem : true
 	}
 
 	static getDerivedStateFromProps(props, state)
@@ -61,12 +65,12 @@ export default class List extends PureComponent
 			}
 		}
 
-		if (state.selectedItemValue !== props.selectedItemValue)
+		if (state.selectedItemValue !== props.value)
 		{
-			newState.selectedItemValue = props.selectedItemValue
+			newState.selectedItemValue = props.value
 
-			newState.focusedItemValue = props.selectedItemValue
-			newState.focusedItemIndex = props.selectedItemValue === undefined ? undefined : findItemIndexByValue(props.selectedItemValue, props.children)
+			newState.focusedItemValue = props.value
+			newState.focusedItemIndex = props.value === undefined ? undefined : findItemIndexByValue(props.value, props.children)
 		}
 
 		return newState
@@ -295,8 +299,11 @@ export default class List extends PureComponent
 		{
 			disabled,
 			tabbable,
-			getItemValue,
+			value,
+			onChange,
+			// `onSelectItem` is deprecated, use `onChange` instead.
 			onSelectItem,
+			highlightSelectedItem,
 			shouldCreateButtons,
 			className,
 			style,
@@ -329,7 +336,9 @@ export default class List extends PureComponent
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : focusedItemIndex === i) ? 0 : -1,
 						shouldCreateButton : shouldCreateButtons,
-						onSelectItem
+						onSelectItem : onChange || onSelectItem,
+						selectedItemValue : value,
+						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem
 					})
 				}) }
 			</ul>
@@ -346,6 +355,8 @@ export class Item extends React.Component
 		focused : PropTypes.bool,
 		onSelect : PropTypes.func,
 		onSelectItem : PropTypes.func,
+		selectedItemValue : PropTypes.any,
+		highlightSelectedItem : PropTypes.bool,
 		shouldCreateButton : PropTypes.bool
 	}
 
@@ -467,6 +478,8 @@ export class Item extends React.Component
 			disabled,
 			className,
 			tabIndex,
+			highlightSelectedItem,
+			selectedItemValue,
 			children
 		}
 		= this.props
@@ -490,6 +503,7 @@ export class Item extends React.Component
 				'rrui__list__item',
 				{
 					'rrui__list__item--focused'  : focused,
+					'rrui__list__item--selected' : highlightSelectedItem && this.shouldCreateButton() && value === selectedItemValue,
 					'rrui__list__item--disabled' : disabled,
 					'rrui__list__item--divider'  : children.type === DividerType
 				}
