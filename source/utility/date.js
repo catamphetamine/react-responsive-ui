@@ -72,9 +72,26 @@ export function parseDateCustom(string, format, noon, utc)
 		if (year !== undefined)
 		{
 			// Current year in the user's time zone.
-			const current_year = new Date().getFullYear()
-			const current_year_century = current_year - current_year % 100
-			year += current_year_century
+			const current_year_and_century = new Date().getFullYear()
+			const current_year = current_year_and_century % 100
+			let century = (current_year_and_century - current_year) / 100
+
+			if (year >= current_year)
+			{
+				if (year - current_year > 100 * 1/5)
+				{
+					century--
+				}
+			}
+			else
+			{
+				if (current_year - year > 100 * 4/5)
+				{
+					century++
+				}
+			}
+
+			year += century * 100
 		}
 	}
 
