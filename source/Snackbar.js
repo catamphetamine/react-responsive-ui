@@ -42,9 +42,6 @@ export default class Snackbar extends PureComponent
 			duration : PropTypes.number
 		}),
 
-		// Must reset the `value`.
-		reset : PropTypes.func.isRequired,
-
 		// // "Snack" showing CSS animation duration.
 		// // Is 225 milliseconds by default.
 		// showAnimationDuration : PropTypes.number.isRequired,
@@ -81,15 +78,13 @@ export default class Snackbar extends PureComponent
 
 	receiveNewValue(prevProps)
 	{
-		const { value, reset } = this.props
+		const { value } = this.props
 
-		// If `value` has changed, then push it to the queue and reset the `value`.
+		// If `value` has changed then push it to the queue.
 		if (value && value !== prevProps.value)
 		{
 			// Add the notification to the queue
 			this.push(value)
-			// Reset the `value` property immediately
-			reset()
 		}
 	}
 
@@ -169,9 +164,7 @@ export default class Snackbar extends PureComponent
 	{
 		let { height, value } = this.state
 
-		// If `value` got updated, then push it
-		// to the list of `values` and reset
-		// the `value` property.
+		// If `value` got updated then push it to the list of `values`.
 		this.receiveNewValue(prevProps)
 
 		// The notification DOM element has just been rendered

@@ -12,7 +12,12 @@
 
 <!-- Rename `--busy`/`__busy` CSS classes to `--wait`/`__wait` -->
 
-0.14.33 / 14.08.2018
+0.14.25 / 22.08.2018
+====================
+
+* Removed `reset` property from `<Snackbar/>`. It's not required now.
+
+0.14.13 / 14.08.2018
 ====================
 
 * Added `value` property to `<List/>` and renamed `onSelectItem` to `onChange`. `onSelectItem` property still works but is deprecated.
