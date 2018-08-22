@@ -374,6 +374,8 @@ export default class Select extends PureComponent
 			label,
 			disabled,
 			native,
+			error,
+			indicateInvalid,
 			tabIndex
 		}
 		= this.props
@@ -391,7 +393,8 @@ export default class Select extends PureComponent
 				tabIndex={ tabIndex }
 				className={ classNames('rrui__input', 'rrui__select__native',
 				{
-					'rrui__select__native--overlay' : !native
+					'rrui__select__native--overlay' : !native,
+					'rrui__select__native--invalid' : indicateInvalid && error
 				}) }>
 				{this.renderNativeSelectOptions()}
 			</select>

@@ -41,7 +41,17 @@
 .rrui__select__button:focus,
 .rrui__select__native:focus + .rrui__select__button
 {
-	border-bottom-color: var(--rrui-accent-color);
+	border-color: var(--rrui-accent-color);
+}
+
+.rrui__input-field--invalid,
+.rrui__input-field--invalid:focus,
+.rrui__select__button--invalid,
+.rrui__select__button--invalid:focus,
+.rrui__select__native--invalid,
+.rrui__select__native:focus + .rrui__select__button--invalid
+{
+	border-color: var(--rrui-error-color);
 }
 
 .rrui__input-field
