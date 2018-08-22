@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import ActivityIndicator from './ActivityIndicator'
+import FadeInOut from './FadeInOut'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -62,89 +63,7 @@ export default class Button extends PureComponent
 		stretch : false
 	}
 
-	state =
-	{
-		waiting : this.props.wait || this.props.busy
-	}
-
-	componentDidUpdate(prevProps)
-	{
-		if ((!prevProps.wait && this.props.wait) || (!prevProps.busy && this.props.busy))
-		{
-			this.startWaiting()
-		}
-		else if ((prevProps.wait && !this.props.wait) || (prevProps.busy && !this.props.busy))
-		{
-			this.stopWaiting()
-		}
-	}
-
-	componentDidMount()
-	{
-		this._isMounted = true
-	}
-
-	componentWillUnmount()
-	{
-		this._isMounted = false
-
-		clearTimeout(this.waitingHasStartedTimer)
-		clearTimeout(this.waitingHasEndedTimer)
-	}
-
-	startWaiting()
-	{
-		clearTimeout(this.waitingHasStartedTimer)
-		clearTimeout(this.waitingHasEndedTimer)
-
-		this.setState
-		({
-			waiting : true,
-			waitingHasStarted : false,
-			waitingHasEnded : false
-		})
-
-		this.waitingHasStartedTimer = setTimeout(() =>
-		{
-			if (this._isMounted) {
-				this.setState({
-					waitingHasStarted: true
-				})
-			}
-		},
-		// Adding a non-null delay in order to
-		// prevent web browser from optimizing
-		// adding CSS classes and doing it simultaneously
-		// rather than sequentially (required for CSS transition).
-		10)
-	}
-
-	stopWaiting = () =>
-	{
-		clearTimeout(this.waitingHasStartedTimer)
-
-		if (!this._isMounted) {
-			return
-		}
-
-		this.setState
-		({
-			waiting : false,
-			waitingHasStarted : false,
-			waitingHasEnded : true
-		})
-
-		// Gives some time to CSS opacity transition to finish.
-		this.waitingHasEndedTimer = setTimeout(() =>
-		{
-			if (this._isMounted) {
-				this.setState({
-					waitingHasEnded : false
-				})
-			}
-		},
-		300)
-	}
+	state = {}
 
 	render()
 	{
@@ -167,14 +86,6 @@ export default class Button extends PureComponent
 		}
 		= this.props
 
-		const
-		{
-			waiting,
-			waitingHasStarted,
-			waitingHasEnded
-		}
-		= this.state
-
 		const properties =
 		{
 			...rest,
@@ -183,7 +94,7 @@ export default class Button extends PureComponent
 			style,
 			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
 			{
-				'rrui__button--busy'       : waiting,
+				'rrui__button--busy'       : wait || busy || this.state.wait,
 				'rrui__button--disabled'   : disabled,
 				'rrui__button--stretch'    : stretch,
 				'rrui__button-reset--link' : link
@@ -209,17 +120,17 @@ export default class Button extends PureComponent
 		return (
 			<button
 				type={ submit ? 'submit' : 'button' }
-				disabled={ waiting || disabled }
+				disabled={ wait || busy || this.state.wait || disabled }
 				onClick={ this.buttonOnClick }
 				{ ...properties }>
 
-				{ (waiting || waitingHasEnded) &&
-					<div
-						className={ classNames('rrui__button__busy',
-						{
-							'rrui__button__busy--after-show' : waitingHasStarted
-						}) }/>
-				}
+				<FadeInOut
+					show={ wait || busy || this.state.wait }
+					fadeOutDuration={300}
+					fadeInClassName="rrui__button__busy--after-show">
+					<div className="rrui__button__busy"/>
+				</FadeInOut>
+
 				{ children }
 			</button>
 		)
@@ -252,7 +163,7 @@ export default class Button extends PureComponent
 			return
 		}
 
-		if (wait || busy || disabled)
+		if (wait || busy || this.state.wait || disabled)
 		{
 			return
 		}
@@ -285,8 +196,11 @@ export default class Button extends PureComponent
 		}
 
 		if (result && typeof result.then === 'function') {
-			this.startWaiting()
-			result.then(this.stopWaiting, this.stopWaiting)
+			this.setState({ wait: true })
+			result.then(
+				() => this.setState({ wait: false }),
+				() => this.setState({ wait: false })
+			)
 		}
 	}
 }

@@ -111,7 +111,9 @@ export default class FadeInOut extends React.Component {
 		if (show || fadeOut) {
 			if (fadeInClassName) {
 				return React.cloneElement(children, {
-					className: classNames(children.props.className, fadeInClassName)
+					className: classNames(children.props.className, {
+						[fadeInClassName]: fadeIn
+					})
 				})
 			}
 			return children
