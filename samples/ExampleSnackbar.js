@@ -31,16 +31,14 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 					Show a snack
 				</Button>
 
-				<Snackbar reset={() => this.setState({ snack: undefined })} value={this.state.snack}/>
+				<Snackbar value={this.state.snack}/>
 
 <Highlight lang="jsx">{`
 <Button action={ () => this.setState({ snack: { content: "..." } }) }>
   Show a snack
 </Button>
 
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
+<Snackbar value={this.state.snack} />
 `}</Highlight>
 
 <Highlight lang="css">{`
@@ -81,9 +79,7 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 			</Button>
 
 <Highlight lang="jsx">{`
-<Snackbar
-  value={this.state.snack}
-  reset={() => this.setState({ snack: undefined })} />
+<Snackbar value={this.state.snack} />
 
 const NewMessageNotification = ({ from, hide }) => (
   <div>

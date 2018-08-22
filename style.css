@@ -810,7 +810,15 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field:focus,
 .rrui__select__button:focus,
 .rrui__select__native:focus + .rrui__select__button {
-  border-bottom-color: #03b2cb; }
+  border-color: #03b2cb; }
+
+.rrui__input-field--invalid,
+.rrui__input-field--invalid:focus,
+.rrui__select__button--invalid,
+.rrui__select__button--invalid:focus,
+.rrui__select__native--invalid,
+.rrui__select__native:focus + .rrui__select__button--invalid {
+  border-color: #d30f00; }
 
 .rrui__input-field {
   height: 100%;

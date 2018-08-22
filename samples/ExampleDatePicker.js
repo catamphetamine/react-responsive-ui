@@ -12,6 +12,7 @@ window.ExampleDatePicker = class ExampleComponent extends React.Component
 			<Example name="date-picker" title="Date Picker">
 
 				<DatePicker
+				format="MM/DD/YY"
 					style={input_style}
 					className="column-width"
 					label="Date"
