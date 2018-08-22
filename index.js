@@ -30,6 +30,12 @@ from './modules/Form'
 
 export
 {
+	default as FadeInOut
+}
+from './modules/FadeInOut'
+
+export
+{
 	default as Snackbar
 }
 from './modules/Snackbar'

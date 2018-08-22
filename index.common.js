@@ -7,6 +7,7 @@ exports.Page = require('./commonjs/Page').default
 exports.SlideOutMenu = require('./commonjs/SlideOutMenu').default
 exports.MenuButton = require('./commonjs/MenuButton').default
 exports.Form = require('./commonjs/Form').default
+exports.FadeInOut = require('./commonjs/FadeInOut').default
 exports.Snackbar = require('./commonjs/Snackbar').default
 exports.Tooltip = require('./commonjs/Tooltip').default
 exports.ActivityIndicator = require('./commonjs/ActivityIndicator').default
