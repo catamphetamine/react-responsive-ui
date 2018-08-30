@@ -38,10 +38,9 @@
 	cursor : pointer;
 }
 
-.rrui__checkbox--disabled .rrui__checkbox__input,
-.rrui__checkbox--disabled .rrui__checkbox__label
+.rrui__checkbox--disabled
 {
-	cursor : default;
+	pointer-events : none;
 }
 
 .rrui__checkbox__checkbox
