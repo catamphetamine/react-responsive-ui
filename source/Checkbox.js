@@ -26,7 +26,7 @@ export default class Checkbox extends PureComponent
 		disabled  : PropTypes.bool.isRequired,
 
 		// `onChange` handler
-		onChange  : PropTypes.func.isRequired,
+		onChange  : PropTypes.func,
 
 		// When `true` autofocuses the checkbox
 		focus     : PropTypes.bool.isRequired,
