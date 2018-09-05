@@ -65,6 +65,16 @@ export default class Button extends PureComponent
 
 	state = {}
 
+	componentDidMount()
+	{
+		this._isMounted = true
+	}
+
+	componentWillUnmount()
+	{
+		this._isMounted = false
+	}
+
 	render()
 	{
 		const
@@ -198,8 +208,8 @@ export default class Button extends PureComponent
 		if (result && typeof result.then === 'function') {
 			this.setState({ wait: true })
 			result.then(
-				() => this.setState({ wait: false }),
-				() => this.setState({ wait: false })
+				() => this._isMounted && this.setState({ wait: false }),
+				() => this._isMounted && this.setState({ wait: false })
 			)
 		}
 	}
