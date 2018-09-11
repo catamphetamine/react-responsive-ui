@@ -25,7 +25,7 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				<Highlight lang="jsx">{`
 					import { DragAndDrop, DropFileUpload } from 'react-responsive-ui'
 
-					@DragAndDrop
+					@DragAndDrop()
 					export default class App extends React.Component {
 						state = {}
 						onChange = (file) => this.setState({ file })
