@@ -12,7 +12,13 @@
 
 <!-- Rename `--busy`/`__busy` CSS classes to `--wait`/`__wait` -->
 
-<!-- (breaking change) Add `background-color: transparent;` to `TextInput` -->
+<!-- (breaking change) Add `background-color: transparent;` to `TextInput`:
+
+.rrui__input-field
+{
+  background-color: transparent;
+}
+-->
 
 0.14.25 / 22.08.2018
 ====================

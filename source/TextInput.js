@@ -105,9 +105,9 @@ export default class TextInput extends PureComponent
 		{
 			indicateInvalid,
 			error,
-			fallback,
 			style,
-			className
+			className,
+			...rest
 		}
 		= this.props
 
@@ -121,8 +121,7 @@ export default class TextInput extends PureComponent
 				) }>
 
 				<Input
-					{...this.props}
-					name={undefined}
+					{...rest}
 					inputRef={this.storeInputNode} />
 
 				{/* Error message */}

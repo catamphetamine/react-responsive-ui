@@ -196,7 +196,6 @@ export default class TextInput extends PureComponent
 	{
 		const
 		{
-			name,
 			value,
 			multiline,
 			inputComponent,
@@ -233,7 +232,6 @@ export default class TextInput extends PureComponent
 		const properties =
 		{
 			...rest,
-			name        : name === false ? undefined : name,
 			ref         : this.storeInputNode,
 			value       : (value === undefined || value === null) ? '' : value,
 			disabled,
