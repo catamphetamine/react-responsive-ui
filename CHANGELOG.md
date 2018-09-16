@@ -17,6 +17,7 @@
 .rrui__input-field
 {
   background-color: transparent;
+  color: inherit;
 }
 -->
 
