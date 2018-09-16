@@ -190,7 +190,10 @@ export default class Snackbar extends PureComponent
 
 	renderContent(value)
 	{
-		return value.component({ ...value.props, hide: this.hide })
+		if (value.component) {
+			return value.component({ ...value.props, hide: this.hide })
+		}
+		return null
 	}
 
 	render()
