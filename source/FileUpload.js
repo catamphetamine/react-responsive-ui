@@ -33,6 +33,9 @@ export default class FileUpload extends PureComponent
 		// `react-dnd` `draggedOver`.
 		draggedOver : PropTypes.bool.isRequired,
 
+		// `react-dnd` `canDrop()`.
+		// canDrop : PropTypes.bool.isRequired,
+
 		// Renders an error message below the `<input/>`.
 		error     : PropTypes.string,
 
@@ -100,6 +103,7 @@ export default class FileUpload extends PureComponent
 			disabled,
 			dropTarget,
 			draggedOver,
+			// canDrop,
 			style,
 			className,
 			children
@@ -126,7 +130,8 @@ export default class FileUpload extends PureComponent
 						{
 							'rrui__file-upload__area--disabled' : disabled,
 							'rrui__file-upload__area--invalid' : error,
-							'rrui__file-upload__area--dragged-over' : draggedOver
+							'rrui__file-upload__area--dragged-over' : draggedOver,
+							// 'rrui__file-upload__area--can-not-drop' : !canDrop
 						}) }
 						onClick={ this.onClick }>
 

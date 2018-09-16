@@ -29,9 +29,9 @@ export function CanDrop(type, drop)
 		throw new Error('Provide a `type` for `@CanDrop()` decorator')
 	}
 
-	return DropTarget(get_react_dnd_type(type),
+	return DropTarget(getReactDnDType(type),
 	{
-		drop: (props, monitor, component) => drop(props, get_dropped_object(monitor, type), component),
+		drop: (props, monitor, component) => drop(props, getDroppedObject(monitor, type), component),
 
 		// canDrop(props, monitor)
 		// {
@@ -83,7 +83,7 @@ export const FILES = Files
 
 // Gets the corresponding `react-dnd` type
 // for a given droppable object type
-function get_react_dnd_type(type)
+function getReactDnDType(type)
 {
 	switch (type)
 	{
@@ -96,7 +96,7 @@ function get_react_dnd_type(type)
 }
 
 // Gets the dropped object from `monitor`
-function get_dropped_object(monitor, type)
+function getDroppedObject(monitor, type)
 {
 	const dropped = monitor.getItem()
 
