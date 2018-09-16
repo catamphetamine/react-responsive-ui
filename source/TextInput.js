@@ -122,7 +122,9 @@ export default class TextInput extends PureComponent
 
 				<Input
 					{...rest}
-					inputRef={this.storeInputNode} />
+					inputRef={this.storeInputNode}
+					error={error}
+					indicateInvalid={indicateInvalid} />
 
 				{/* Error message */}
 				{ indicateInvalid && error &&
