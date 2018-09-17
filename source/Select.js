@@ -620,7 +620,7 @@ export default class Select extends PureComponent
 
 	onBlur = (event) => this.list && this.list.onBlur(event)
 
-	onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
 		const { onBlur, value, native, nativeExpanded } = this.props
 

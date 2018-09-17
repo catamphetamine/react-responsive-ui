@@ -536,7 +536,7 @@ export default class DatePicker extends PureComponent
 		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, () => this.input, this.preventBlur)
 	}
 
-	onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
 		this.collapse()
 

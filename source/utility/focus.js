@@ -24,7 +24,7 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 
 		// Collapse the expandable.
 		// (clicked/tapped outside or tabbed-out)
-		onFocusOut()
+		onFocusOut(event)
 	}
 
 	// Blur `event.relatedTarget` doesn't work in Internet Explorer (in React).

@@ -773,7 +773,7 @@ export default class Autocomplete extends PureComponent
 		}
 	}
 
-	onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
 		let { onBlur, value } = this.props
 		const { inputValue } = this.state

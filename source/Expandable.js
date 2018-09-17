@@ -435,12 +435,12 @@ export default class Expandable extends PureComponent
 
 	storeContainerNode = (node) => this.container = node
 
-	onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
 		const { onFocusOut } = this.props
 
 		this.focusOut = true
-		onFocusOut()
+		onFocusOut(event)
 		this.focusOut = undefined
 	}
 
