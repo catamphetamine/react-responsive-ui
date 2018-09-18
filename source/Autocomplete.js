@@ -430,6 +430,8 @@ export default class Autocomplete extends PureComponent
 			placeholder,
 			disabled,
 			required,
+			indicateInvalid,
+			error,
 			tabIndex,
 			inputClassName
 		}
@@ -459,11 +461,13 @@ export default class Autocomplete extends PureComponent
 				className={ classNames
 				(
 					'rrui__autocomplete__input',
+					'rrui__input-element',
+					'rrui__input-field',
 					inputClassName,
 					// CSS selector performance optimization
 					// (should it even be optimized).
 					{
-						'rrui__input-field--invalid' : matches === false
+						'rrui__input-field--invalid' : indicateInvalid && error || matches === false
 					}
 				) }/>
 		)
