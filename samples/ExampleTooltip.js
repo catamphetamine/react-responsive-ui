@@ -25,12 +25,14 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 		return (
 			<Example name="tooltip" title="Tooltip">
 
-				<Tooltip content={this.state.content}>
+				<Tooltip content={this.state.content} tooltipClassName="example-tooltip">
 					Hover this element (or touch down on mobile devices)
 				</Tooltip>
 
 				<Highlight lang="jsx">{`
-					<Tooltip content={ <div> <img/> Testing testing </div> }>
+					<Tooltip
+						content={ <div> <img/> Testing testing </div> }
+						tooltipClassName="example-tooltip">
 						Hover this element (or touch down on mobile devices)
 					</Tooltip>
 

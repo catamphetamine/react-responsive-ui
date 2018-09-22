@@ -272,9 +272,8 @@
 .rrui__checkbox__label {
   cursor: pointer; }
 
-.rrui__checkbox--disabled .rrui__checkbox__input,
-.rrui__checkbox--disabled .rrui__checkbox__label {
-  cursor: default; }
+.rrui__checkbox--disabled {
+  pointer-events: none; }
 
 .rrui__checkbox__checkbox {
   position: relative;
