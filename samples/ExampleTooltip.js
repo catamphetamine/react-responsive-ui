@@ -45,8 +45,17 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 
 				<Highlight lang="css">{`
 					.rrui__tooltip {
+						margin-top : -0.5em;
 						background-color : black;
 						color : white;
+					}
+
+					.rrui__tooltip--after-show {
+						opacity : 0.85;
+					}
+
+					.rrui__tooltip--before-hide {
+						opacity : 0;
 					}
 				`}</Highlight>
 
