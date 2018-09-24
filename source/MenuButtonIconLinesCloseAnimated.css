@@ -1,77 +1,72 @@
 /* https://codepen.io/bennettfeely/pen/twbyA */
 
-.rrui__menu-button__icon
+.rrui__menu-button-icon-x
+{
+	width  : 100%;
+	height : 100%;
+}
+
+.rrui__menu-button-icon-x__icon
 {
 	position   : relative;
 	top        : calc((100% - 12.5%) / 2);
 	height     : 12.5%;
-	transition : var(--rrui-menu-button-animation-duration);
+	transition : transform var(--rrui-menu-button-animation-duration), background-color var(--rrui-menu-button-animation-duration);
 }
 
-.rrui__menu-button__icon,
-.rrui__menu-button__icon:before,
-.rrui__menu-button__icon:after
+.rrui__menu-button-icon-x__icon,
+.rrui__menu-button-icon-x__icon:before,
+.rrui__menu-button-icon-x__icon:after
 {
-	background : currentColor;
+	background-color : currentColor;
 }
 
-.rrui__menu-button__icon:before,
-.rrui__menu-button__icon:after
+.rrui__menu-button-icon-x__icon:before,
+.rrui__menu-button-icon-x__icon:after
 {
 	display    : block;
 	content    : "";
 	position   : absolute;
+	top        : 0;
+	left       : 0;
 	width      : 100%;
 	height     : 100%;
-	z-index    : -1;
-	transition : var(--rrui-menu-button-animation-duration);
+	/*z-index  : -1;*/
+	transition : transform var(--rrui-menu-button-animation-duration);
 }
 
-.rrui__menu-button__icon:before
+.rrui__menu-button-icon-x__icon:before
 {
-	top : -200%; /* 25% */
+	transform: translateY(-200%); /* 25% */
 }
 
-.rrui__menu-button__icon:after
+.rrui__menu-button-icon-x__icon:after
 {
-	top : 200%; /* 25% */
+	transform: translateY(200%); /* 25% */
 }
 
-.rrui__menu-button:hover .rrui__menu-button__icon:before
+.rrui__menu-button-icon-x:hover .rrui__menu-button-icon-x__icon--collapsed:before
 {
-	transform : translateY(-64%); /* 33% */
+	transform : translateY(-264%); /* -33% */
 }
 
-.rrui__menu-button:hover .rrui__menu-button__icon:after
+.rrui__menu-button-icon-x:hover .rrui__menu-button-icon-x__icon--collapsed:after
 {
-	transform : translateY(64%); /* 33% */
+	transform : translateY(264%); /* +33% */
 }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon
+.rrui__menu-button-icon-x__icon--expanded
 {
-	transform : scale(0.75);
+	background-color : transparent;
+	transform : scale(0.85);
 }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon:before,
-.rrui__menu-button--expanded .rrui__menu-button__icon:after
+.rrui__menu-button-icon-x__icon--expanded:before
 {
-	/* !important overrides `:hover` */;
-	top : 0 !important;
+	transform : rotate(-45deg);
 }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon--x
+.rrui__menu-button-icon-x__icon--expanded:after
 {
-	background : transparent;
-}
-
-.rrui__menu-button--expanded .rrui__menu-button__icon--x:before
-{
-	/* `!important` overrides `:hover` */
-	transform : rotate(-45deg) !important;
-}
-
-.rrui__menu-button--expanded .rrui__menu-button__icon--x:after
-{
-	/* `!important` overrides `:hover` */
-	transform : rotate(45deg) !important;
+	transform : rotate(45deg);
 }

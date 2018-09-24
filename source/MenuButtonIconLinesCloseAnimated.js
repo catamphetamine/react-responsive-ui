@@ -1,6 +1,22 @@
-export default function MenuButtonLinesCloseAnimated()
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+
+export default function MenuButtonLinesCloseAnimated({ expanded, className })
 {
 	return (
-		<div className="rrui__menu-button__icon rrui__menu-button__icon--x"/>
+		<div className={classNames('rrui__menu-button-icon-x', className, {
+			// 'rrui__menu-button-icon-x--expanded': expanded
+		})}>
+			<div className={classNames('rrui__menu-button-icon-x__icon', {
+				'rrui__menu-button-icon-x__icon--collapsed': !expanded,
+				'rrui__menu-button-icon-x__icon--expanded': expanded
+			})}/>
+		</div>
 	)
+}
+
+MenuButtonLinesCloseAnimated.propTypes = {
+	expanded : PropTypes.bool,
+	className : PropTypes.string
 }

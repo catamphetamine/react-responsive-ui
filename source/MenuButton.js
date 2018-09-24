@@ -103,13 +103,10 @@ class MenuButton extends PureComponent
 				ref={ this.storeButtonNode }
 				href={ link }
 				onClick={ this.onClick }
-				className={ classNames('rrui__menu-button', className,
-				{
-					'rrui__menu-button--expanded' : menuIsExpanded
-				}) }
+				className={ classNames('rrui__menu-button', className) }
 				{ ...rest }>
 
-				<MenuButtonIcon/>
+				<MenuButtonIcon expanded={menuIsExpanded}/>
 			</a>
 		)
 	}
