@@ -17,7 +17,7 @@ The overall requirement is React >= 16.3, but most of the components only requir
 * `<Tooltip/>` (requires "React Portals" from React >= 16).
 * `<DragAndDrop/>` ([`react-dnd`](https://github.com/react-dnd/react-dnd) requires React >= 16.3).
 
-For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/commonjs/Select'` instead of `import { Select } from 'react-responsive-ui'` because otherwise it would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
+For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/modules/Select'` or `import Select from 'react-responsive-ui/commonjs/Select'` instead of `import { Select } from 'react-responsive-ui'` because otherwise it would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
 
 ## Use
 
@@ -146,6 +146,14 @@ import { Modal, Button, TextInput } from 'react-responsive-ui'
 ```
 
 So if one's using only a small subset of this library it could be imported like so
+
+```js
+import Modal     from 'react-responsive-ui/modules/Modal'
+import Button    from 'react-responsive-ui/modules/Button'
+import TextInput from 'react-responsive-ui/modules/TextInput'
+```
+
+or for CommonJS
 
 ```js
 import Modal     from 'react-responsive-ui/commonjs/Modal'
