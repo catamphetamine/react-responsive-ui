@@ -6,6 +6,7 @@ exports.PageAndMenu = require('./commonjs/PageAndMenu').default
 exports.Page = require('./commonjs/Page').default
 exports.SlideOutMenu = require('./commonjs/SlideOutMenu').default
 exports.MenuButton = require('./commonjs/MenuButton').default
+exports.MenuIcon = require('./commonjs/MenuIcon').default
 exports.Form = require('./commonjs/Form').default
 exports.FadeInOut = require('./commonjs/FadeInOut').default
 exports.Snackbar = require('./commonjs/Snackbar').default

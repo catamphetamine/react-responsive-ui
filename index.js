@@ -24,6 +24,12 @@ from './modules/MenuButton'
 
 export
 {
+	default as MenuIcon
+}
+from './modules/MenuIcon'
+
+export
+{
 	default as Form
 }
 from './modules/Form'
