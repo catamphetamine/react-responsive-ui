@@ -1,4 +1,4 @@
-export default function MenuButtonIconLines()
+export default function MenuIconBasic()
 {
 	return (
 		<svg viewBox={ SVG_CANVAS_DIMENSIONS }>
