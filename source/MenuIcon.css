@@ -9,8 +9,8 @@
 .rrui__menu-button-icon-x__icon
 {
 	position   : relative;
-	top        : calc((100% - 12.5%) / 2);
-	height     : 12.5%;
+	top        : calc((100% - 6%) / 2);
+	height     : 6%;
 	transition : transform var(--rrui-menu-button-animation-duration), background-color var(--rrui-menu-button-animation-duration);
 }
 
@@ -37,23 +37,23 @@
 
 .rrui__menu-button-icon-x__icon:before
 {
-	transform: translateY(-200%); /* 25% */
+	transform: translateY(-450%);
 }
 
 .rrui__menu-button-icon-x__icon:after
 {
-	transform: translateY(200%); /* 25% */
+	transform: translateY(450%);
 }
 
-.rrui__menu-button-icon-x:hover .rrui__menu-button-icon-x__icon--collapsed:before
+/*.rrui__menu-button-icon-x:hover .rrui__menu-button-icon-x__icon--collapsed:before
 {
-	transform : translateY(-264%); /* -33% */
+	transform : translateY(-264%);
 }
 
 .rrui__menu-button-icon-x:hover .rrui__menu-button-icon-x__icon--collapsed:after
 {
-	transform : translateY(264%); /* +33% */
-}
+	transform : translateY(264%);
+}*/
 
 .rrui__menu-button-icon-x__icon--expanded
 {

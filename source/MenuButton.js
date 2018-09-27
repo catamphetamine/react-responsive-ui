@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { Context } from './PageAndMenu'
-import MenuButtonIconLinesCloseAnimated from './MenuButtonIconLinesCloseAnimated'
+import MenuIcon from './MenuIcon'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -53,7 +53,7 @@ class MenuButton extends PureComponent
 	static defaultProps =
 	{
 		link : '#',
-		icon : MenuButtonIconLinesCloseAnimated
+		icon : MenuIcon
 	}
 
 	componentDidMount()

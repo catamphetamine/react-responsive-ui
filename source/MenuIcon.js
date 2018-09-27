@@ -2,7 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
-export default function MenuButtonLinesCloseAnimated({ expanded, className })
+export default function MenuIcon({ expanded, className })
 {
 	return (
 		<div className={classNames('rrui__menu-button-icon-x', className, {
@@ -16,7 +16,7 @@ export default function MenuButtonLinesCloseAnimated({ expanded, className })
 	)
 }
 
-MenuButtonLinesCloseAnimated.propTypes = {
+MenuIcon.propTypes = {
 	expanded : PropTypes.bool,
 	className : PropTypes.string
 }
