@@ -5,12 +5,18 @@ import PropTypes from 'prop-types'
 export default function MenuIcon({ expanded, className })
 {
 	return (
-		<div className={classNames('rrui__menu-button-icon-x', className, {
-			// 'rrui__menu-button-icon-x--expanded': expanded
-		})}>
-			<div className={classNames('rrui__menu-button-icon-x__icon', {
-				'rrui__menu-button-icon-x__icon--collapsed': !expanded,
-				'rrui__menu-button-icon-x__icon--expanded': expanded
+		<div className={classNames('rrui__menu-icon', className)}>
+			<div className={classNames('rrui__menu-icon__bar', {
+				// 'rrui__menu-icon__bar--collapsed': !expanded,
+				'rrui__menu-icon__bar--expanded': expanded
+			})}/>
+			<div className={classNames('rrui__menu-icon__bar', {
+				// 'rrui__menu-icon__bar--collapsed': !expanded,
+				'rrui__menu-icon__bar--expanded': expanded
+			})}/>
+			<div className={classNames('rrui__menu-icon__bar', {
+				// 'rrui__menu-icon__bar--collapsed': !expanded,
+				'rrui__menu-icon__bar--expanded': expanded
 			})}/>
 		</div>
 	)

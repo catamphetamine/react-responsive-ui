@@ -21,6 +21,13 @@
 }
 -->
 
+0.14.35 / 27.09.2018
+====================
+
+  * Refactored menu icon component, and it's now exported as `<MenuIcon/>`.
+
+  * (breaking change) Removed `.rrui__menu-button-icon-x` class, use `.rrui__menu-icon` instead.
+
 0.14.25 / 22.08.2018
 ====================
 
