@@ -20,16 +20,6 @@
 	width  : calc(100% - 2 * 0.3rem * 2.5);
 }
 
-.rrui__slideout-menu__item
-{
-	color : #ECF1F6;
-}
-
-.rrui__slideout-menu__item:active
-{
-	color : #BBD9FA;
-}
-
 .rrui__file-upload__area
 {
 	display          : inline-block;
@@ -46,4 +36,21 @@
 {
 	background-color : #3678D1;
 	color            : white;
+}
+
+.rrui__slideout-menu__item
+{
+	text-transform : uppercase;
+	letter-spacing : 0.13em;
+	color : #ECF1F6;
+}
+
+.rrui__slideout-menu__item:hover
+{
+	text-decoration: none;
+}
+
+.rrui__slideout-menu__item:active
+{
+	background-color: #03B2CB;
 }

@@ -4,13 +4,16 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 	{
 		return (
 			<Example name="slideout-menu" title="Slideout Menu">
+				<MenuButton title="Show menu"/>
 
-				<MenuButton
-					title="Show menu"/>
+				<p>
+					<br/>
+					<code className="colored">{'<SlideOutMenu/>'}</code> takes an optional <code className="colored">anchor</code> property which can be one of: <code className="colored">"left"</code>, <code className="colored">"right"</code>, <code className="colored">"top"</code>, <code className="colored">"bottom"</code>.
+				</p>
 
 				<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
 					<PageAndMenu>
-						<SlideOutMenu>
+						<SlideOutMenu anchor="right">
 							<div>Item 1</div>
 							<div>Item 2</div>
 							<div>Item 3</div>
@@ -39,7 +42,6 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 						color : yellow;
 					}
 				`}</Highlight>
-
 			</Example>
 		)
 	}
