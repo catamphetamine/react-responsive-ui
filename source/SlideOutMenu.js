@@ -36,6 +36,8 @@ class SlideoutMenu extends PureComponent
 			'bottom'
 		]).isRequired,
 
+		fullscreen : PropTypes.bool.isRequired,
+
 		toggleMenu   : PropTypes.func.isRequired,
 		registerMenu : PropTypes.func.isRequired,
 
@@ -48,7 +50,8 @@ class SlideoutMenu extends PureComponent
 
 	static defaultProps =
 	{
-		anchor : 'left'
+		anchor : 'left',
+		fullscreen : false
 	}
 
 	state = { show: false }
@@ -96,6 +99,7 @@ class SlideoutMenu extends PureComponent
 	{
 		const {
 			anchor,
+			fullscreen,
 			className,
 			style,
 			children
@@ -108,11 +112,12 @@ class SlideoutMenu extends PureComponent
 				ref={ this.storeInstance }
 				className={ classNames('rrui__slideout-menu',
 				{
-					'rrui__slideout-menu--left'     : anchor === 'left',
-					'rrui__slideout-menu--right'    : anchor === 'right',
-					'rrui__slideout-menu--top'      : anchor === 'top',
-					'rrui__slideout-menu--bottom'   : anchor === 'bottom',
-					'rrui__slideout-menu--expanded' : show
+					'rrui__slideout-menu--left'       : anchor === 'left',
+					'rrui__slideout-menu--right'      : anchor === 'right',
+					'rrui__slideout-menu--top'        : anchor === 'top',
+					'rrui__slideout-menu--bottom'     : anchor === 'bottom',
+					'rrui__slideout-menu--fullscreen' : fullscreen,
+					'rrui__slideout-menu--expanded'   : show
 				},
 				className) }
 				style={ style }>
