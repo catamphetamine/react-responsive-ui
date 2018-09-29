@@ -1001,75 +1001,62 @@ than 100% of the parent if the parent is small enough.
 }
 */
 /* https://codepen.io/bennettfeely/pen/twbyA */
-.rrui__menu-button__icon {
+.rrui__menu-icon {
   position: relative;
-  top: calc((100% - 12.5%) / 2);
-  height: 12.5%;
-  -webkit-transition: 0.25s;
-  -o-transition: 0.25s;
-  transition: 0.25s; }
-
-.rrui__menu-button__icon,
-.rrui__menu-button__icon:before,
-.rrui__menu-button__icon:after {
-  background: currentColor; }
-
-.rrui__menu-button__icon:before,
-.rrui__menu-button__icon:after {
-  display: block;
-  content: "";
-  position: absolute;
   width: 100%;
-  height: 100%;
-  z-index: -1;
-  -webkit-transition: 0.25s;
-  -o-transition: 0.25s;
-  transition: 0.25s; }
+  height: 100%; }
 
-.rrui__menu-button__icon:before {
-  top: -200%;
-  /* 25% */ }
+.rrui__menu-icon__bar {
+  position: absolute;
+  left: 0;
+  top: calc((100% - 6%) / 2);
+  width: 100%;
+  height: 6%;
+  background-color: currentColor; }
 
-.rrui__menu-button__icon:after {
-  top: 200%;
-  /* 25% */ }
+.rrui__menu-icon__bar--transition {
+  -webkit-transition: opacity 0.25s, -webkit-transform 0.25s;
+  transition: opacity 0.25s, -webkit-transform 0.25s;
+  -o-transition: transform 0.25s, opacity 0.25s;
+  transition: transform 0.25s, opacity 0.25s;
+  transition: transform 0.25s, opacity 0.25s, -webkit-transform 0.25s; }
 
-.rrui__menu-button:hover .rrui__menu-button__icon:before {
-  -webkit-transform: translateY(-64%);
-      -ms-transform: translateY(-64%);
-          transform: translateY(-64%);
-  /* 33% */ }
+.rrui__menu-icon__bar:nth-child(1) {
+  -webkit-transform: translateY(-450%);
+      -ms-transform: translateY(-450%);
+          transform: translateY(-450%); }
 
-.rrui__menu-button:hover .rrui__menu-button__icon:after {
-  -webkit-transform: translateY(64%);
-      -ms-transform: translateY(64%);
-          transform: translateY(64%);
-  /* 33% */ }
+.rrui__menu-icon__bar:nth-child(3) {
+  -webkit-transform: translateY(450%);
+      -ms-transform: translateY(450%);
+          transform: translateY(450%); }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon {
-  -webkit-transform: scale(0.75);
-      -ms-transform: scale(0.75);
-          transform: scale(0.75); }
+/*
+.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(1)
+{
+	transform : translateY(-550%);
+}
 
-.rrui__menu-button--expanded .rrui__menu-button__icon:before,
-.rrui__menu-button--expanded .rrui__menu-button__icon:after {
-  /* !important overrides `:hover` */
-  top: 0 !important; }
+.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(3)
+{
+	transform : translateY(550%);
+}
+*/
+.rrui__menu-icon__bar--expanded:nth-child(2) {
+  opacity: 0;
+  -webkit-transform: scale(0.9);
+      -ms-transform: scale(0.9);
+          transform: scale(0.9); }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon--x {
-  background: transparent; }
+.rrui__menu-icon__bar--expanded:nth-child(1) {
+  -webkit-transform: rotate(-45deg) scale(0.9);
+      -ms-transform: rotate(-45deg) scale(0.9);
+          transform: rotate(-45deg) scale(0.9); }
 
-.rrui__menu-button--expanded .rrui__menu-button__icon--x:before {
-  /* `!important` overrides `:hover` */
-  -webkit-transform: rotate(-45deg) !important;
-      -ms-transform: rotate(-45deg) !important;
-          transform: rotate(-45deg) !important; }
-
-.rrui__menu-button--expanded .rrui__menu-button__icon--x:after {
-  /* `!important` overrides `:hover` */
-  -webkit-transform: rotate(45deg) !important;
-      -ms-transform: rotate(45deg) !important;
-          transform: rotate(45deg) !important; }
+.rrui__menu-icon__bar--expanded:nth-child(3) {
+  -webkit-transform: rotate(45deg) scale(0.9);
+      -ms-transform: rotate(45deg) scale(0.9);
+          transform: rotate(45deg) scale(0.9); }
 
 /*===========================================================
 = `react-modal`                                             =
