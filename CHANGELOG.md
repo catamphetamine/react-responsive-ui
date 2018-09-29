@@ -21,6 +21,11 @@
 }
 -->
 
+0.14.37 / 29.09.2018
+====================
+
+  * `<SlideOutMenu/>` animation duration increased (added a new CSS variable for that). `<SlideOutMenu/>` now takes an optional `anchor` property which can be one of: `left`, `right`, `top`, `bottom`.
+
 0.14.35 / 27.09.2018
 ====================
 

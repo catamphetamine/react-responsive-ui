@@ -38,6 +38,9 @@
   /* `<Switch/>` and `<Checkbox/>` */
   --rrui-control-label-margin : var(--rrui-unit);
 
+  /* `<SlideOutMenu/>` */
+  --rrui-slideout-menu-animation-duration : 220ms;
+
   /* Close icon */
   --rrui-close-margin : calc(var(--rrui-unit) * 2);
   --rrui-close-size   : calc(var(--rrui-unit) * 2);

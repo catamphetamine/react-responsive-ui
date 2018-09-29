@@ -29,6 +29,13 @@ class SlideoutMenu extends PureComponent
 {
 	static propTypes =
 	{
+		anchor : PropTypes.oneOf([
+			'left',
+			'right',
+			'top',
+			'bottom'
+		]).isRequired,
+
 		toggleMenu   : PropTypes.func.isRequired,
 		registerMenu : PropTypes.func.isRequired,
 
@@ -37,6 +44,11 @@ class SlideoutMenu extends PureComponent
 
 		// CSS class
 		className : PropTypes.string
+	}
+
+	static defaultProps =
+	{
+		anchor : 'left'
 	}
 
 	state = { show: false }
@@ -82,7 +94,13 @@ class SlideoutMenu extends PureComponent
 
 	render()
 	{
-		const { className, style, children } = this.props
+		const {
+			anchor,
+			className,
+			style,
+			children
+		} = this.props
+
 		const { show } = this.state
 
 		return (
@@ -90,7 +108,11 @@ class SlideoutMenu extends PureComponent
 				ref={ this.storeInstance }
 				className={ classNames('rrui__slideout-menu',
 				{
-					'rrui__slideout-menu--expanded': show
+					'rrui__slideout-menu--left'     : anchor === 'left',
+					'rrui__slideout-menu--right'    : anchor === 'right',
+					'rrui__slideout-menu--top'      : anchor === 'top',
+					'rrui__slideout-menu--bottom'   : anchor === 'bottom',
+					'rrui__slideout-menu--expanded' : show
 				},
 				className) }
 				style={ style }>

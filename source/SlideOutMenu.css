@@ -1,18 +1,74 @@
 .rrui__slideout-menu
 {
 	position         : fixed;
-	left             : 0;
-	top              : 0;
-	bottom           : 0;
 	z-index          : var(--rrui-z-index-overlay);
 	min-height       : 100%;
-	padding-top      : var(--rrui-list-vertical-padding);
-	padding-bottom   : var(--rrui-list-vertical-padding);
+	padding-top      : calc(var(--rrui-list-vertical-padding) * 2);
+	padding-bottom   : calc(var(--rrui-list-vertical-padding) * 2);
+	/* `box-sizing` is for padding to not glitch when overflown vertically. */
+	box-sizing       : border-box;
 	overflow-y       : auto;
 	opacity          : 0.9;
 	background-color : var(--rrui-black-color);
 	transform        : translate3d(-100%, 0, 0);
-	transition       : transform 120ms ease-out;
+	transition       : transform var(--rrui-slideout-menu-animation-duration) ease-out, box-shadow var(--rrui-slideout-menu-animation-duration) ease-out;
+}
+
+.rrui__slideout-menu--expanded
+{
+	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
+}
+
+.rrui__slideout-menu--left
+{
+	left      : 0;
+	top       : 0;
+	bottom    : 0;
+	transform : translate3d(-100%, 0, 0);
+}
+
+.rrui__slideout-menu--left.rrui__slideout-menu--expanded
+{
+	transform : translate3d(0, 0, 0);
+}
+
+.rrui__slideout-menu--right
+{
+	right     : 0;
+	top       : 0;
+	bottom    : 0;
+	transform : translate3d(100%, 0, 0);
+}
+
+.rrui__slideout-menu--right.rrui__slideout-menu--expanded
+{
+	transform : translate3d(0, 0, 0);
+}
+
+.rrui__slideout-menu--top
+{
+	left      : 0;
+	right     : 0;
+	top       : 0;
+	transform : translate3d(0, -100%, 0);
+}
+
+.rrui__slideout-menu--top.rrui__slideout-menu--expanded
+{
+	transform : translate3d(0, 0, 0);
+}
+
+.rrui__slideout-menu--bottom
+{
+	left      : 0;
+	right     : 0;
+	bottom    : 0;
+	transform : translate3d(0, 100%, 0);
+}
+
+.rrui__slideout-menu--bottom.rrui__slideout-menu--expanded
+{
+	transform : translate3d(0, 0, 0);
 }
 
 .rrui__slideout-menu__item
@@ -23,10 +79,12 @@
 	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
 	padding-right : var(--rrui-collapsible-menu-item-side-padding);
 	color         : var(--rrui-white-color);
+
+	opacity    : 0;
+	transition : opacity calc(var(--rrui-slideout-menu-animation-duration) / 2) ease-out;
 }
 
-.rrui__slideout-menu--expanded
+.rrui__slideout-menu--expanded .rrui__slideout-menu__item
 {
-	transform  : translate3d(0, 0, 0);
-	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
+	opacity : 1;
 }

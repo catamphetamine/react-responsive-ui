@@ -70,6 +70,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-z-index-overlay)', '100')
     .replace_all('var(--rrui-z-index-above-overlay)', '101')
     .replace_all('var(--rrui-menu-button-animation-duration)', '0.25s')
+    .replace_all('var(--rrui-slideout-menu-animation-duration)', '220ms')
 
   if (text.indexOf('/*') === 0) {
     text = text.slice(text.indexOf('*/') + '*/'.length).trim()
