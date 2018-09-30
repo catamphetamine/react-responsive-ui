@@ -451,7 +451,10 @@ export default class Expandable extends PureComponent
 		if (onFocusOut && this.container)
 		{
 			clearTimeout(this.blurTimer)
-			this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, getTogglerNode)
+			const result = onBlur(event, this.onFocusOut, () => this.container, getTogglerNode)
+			if (typeof result === 'number') {
+				this.blurTimer = result
+			}
 		}
 	}
 

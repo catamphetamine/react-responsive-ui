@@ -8,7 +8,7 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 		{
 			if (preventBlur() === true)
 			{
-				return
+				return false
 			}
 		}
 
@@ -19,12 +19,13 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 			|| (getComponentNode2 && getComponentNode2().contains(focusedNode))
 		))
 		{
-			return
+			return false
 		}
 
 		// Collapse the expandable.
 		// (clicked/tapped outside or tabbed-out)
 		onFocusOut(event)
+		return true
 	}
 
 	// Blur `event.relatedTarget` doesn't work in Internet Explorer (in React).
@@ -42,7 +43,7 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 		return setTimeout(() => getComponentNode() && _onBlur(document.activeElement), 30)
 	}
 
-	_onBlur(event.relatedTarget)
+	return _onBlur(event.relatedTarget)
 }
 
 /**

@@ -84,6 +84,12 @@ export default class Select extends PureComponent
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
 
+		// Is called when the select is focused.
+		// Can be used for toggling `--focus` CSS class.
+		// Not tested.
+		// `event` argument can be `undefined`.
+		onFocus    : PropTypes.func,
+
 		// Is called when the select is blurred.
 		// This `onBlur` interceptor is a workaround for `redux-form`,
 		// so that it gets the parsed `value` in its `onBlur` handler,
@@ -159,7 +165,16 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onExpand = () => this.setState({ isExpanded: true })
+	onExpand = () =>
+	{
+		const { onFocus } = this.props
+
+		if (onFocus) {
+			onFocus()
+		}
+
+		this.setState({ isExpanded: true })
+	}
 
 	expand     = () => this.list.expand()
 	collapse   = () => this.list.collapse()
@@ -302,6 +317,7 @@ export default class Select extends PureComponent
 		{
 			wait,
 			value,
+			onFocus,
 			disabled,
 			required,
 			icon,
@@ -327,6 +343,7 @@ export default class Select extends PureComponent
 				disabled={ disabled }
 				onClick={ this.onClick }
 				onKeyDown={ this.onKeyDown }
+				onFocus={ onFocus }
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
@@ -617,7 +634,20 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onBlur = (event) => this.list && this.list.onBlur(event)
+	onBlur = (event) =>
+	{
+		const { onBlur, value } = this.props
+
+		if (this.list) {
+			this.list.onBlur(event)
+		}
+
+		// When the `<button/>` was focused out
+		// while there was no list being shown.
+		if (onBlur && this.list && this.list.expandable && !this.list.expandable.container) {
+			onBlurForReduxForm(onBlur, event, value)
+		}
+	}
 
 	onFocusOut = (event) =>
 	{
