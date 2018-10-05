@@ -5,7 +5,7 @@
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder
 {
-	transform : translateY(0) scale(1);
+	transform : translateX(var(--rrui-input-field-side-padding)) translateY(0) scale(1);
 	/* Introducing a return animation delay */
 	/* Because when a user clicks/taps on an option */
 	/* Then the input loses focus */
