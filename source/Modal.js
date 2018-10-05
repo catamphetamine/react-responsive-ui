@@ -682,15 +682,15 @@ function get_full_width_elements()
 	return full_width_elements
 }
 
-const Title = ({ closeButton, children }) => (
-	<h2 className="rrui__modal__title">
+const Title = ({ closeButton, className, children, ...rest }) => (
+	<h2 className={classNames('rrui__modal__title', className)} {...rest}>
 		{closeButton}
 		{children}
 	</h2>
 )
 
-const Content = ({ closeButton, children }) => (
-	<div className="rrui__modal__content">
+const Content = ({ closeButton, className, children, ...rest }) => (
+	<div className={classNames('rrui__modal__content', className)} {...rest}>
 		{closeButton}
 		{children}
 	</div>
