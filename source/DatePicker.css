@@ -118,7 +118,7 @@
 /* .DayPicker:not(.DayPicker--interactionDisabled) ... */
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover
 {
-	background-color: var(--rrui-gray-color-lightest);
+	background-color: var(--rrui-list-item-background-color-focus);
 }
 
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active

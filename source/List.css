@@ -38,7 +38,7 @@
 
 .rrui__list__item:hover
 {
-	background-color : var(--rrui-gray-color-lightest);
+	background-color : var(--rrui-list-item-background-color-focus);
 }
 
 .rrui__list__item:active
@@ -63,7 +63,7 @@
 
 .rrui__list__item--focused
 {
-	background-color : var(--rrui-gray-color-lightest);
+	background-color : var(--rrui-list-item-background-color-focus);
 }
 
 .rrui__list__item--selected,
