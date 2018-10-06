@@ -18,7 +18,7 @@
 	if using `placeholder` property.
 	Changing `:placeholder` color is not widely supported though.
 	*/
-	color : var(--rrui-gray-color);
+	color : var(--rrui-input-field-label-color);
 
 	transform        : scale(0.8) translateY(-70%);
 	transform-origin : left top;
@@ -29,5 +29,5 @@
 .rrui__select__native:focus + .rrui__select__button + .rrui__input-label,
 .rrui__input-element:focus + .rrui__input-label
 {
-	color : var(--rrui-accent-color);
+	color : var(--rrui-input-field-label-color-focus);
 }
