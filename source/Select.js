@@ -407,7 +407,7 @@ export default class Select extends PureComponent
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
 				tabIndex={ tabIndex }
-				className={ classNames('rrui__input', 'rrui__select__native',
+				className={ classNames('rrui__select__native',
 				{
 					'rrui__select__native--overlay' : !native,
 					'rrui__select__native--invalid' : indicateInvalid && error

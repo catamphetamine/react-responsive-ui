@@ -128,22 +128,22 @@
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
-.rrui__select__button
+.rrui__select__button,
+.rrui__select__native
 {
 	width : 100%;
 }
 
 .rrui__select__native
 {
-	cursor : pointer;
+	height  : 100%;
+	cursor  : pointer;
 	outline : none;
 }
 
 .rrui__select__native--overlay
 {
 	position : absolute;
-	height   : 100%;
-	width    : 100%;
 	z-index  : 1;
 	opacity  : 0;
 }
