@@ -43,7 +43,7 @@
 .rrui__select__button:focus,
 .rrui__select__native:focus + .rrui__select__button
 {
-	border-color: var(--rrui-accent-color);
+	border-color: var(--rrui-input-field-border-color-focus);
 }
 
 .rrui__input-field--invalid,

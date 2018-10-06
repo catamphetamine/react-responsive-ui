@@ -67,6 +67,7 @@
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
+  --rrui-input-field-border-color-focus : var(--accent-color);
 
   /* Lightest Gray is used as `<Select/>` options hover background color. */
   /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
