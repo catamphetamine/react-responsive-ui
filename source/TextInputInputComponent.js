@@ -15,6 +15,7 @@ export default function TextInput(props)
 		required,
 		floatingLabel,
 		label,
+		placeholder,
 		multiline,
 		error,
 		indicateInvalid,
@@ -43,7 +44,7 @@ export default function TextInput(props)
 					value={ value }
 					required={ required }
 					invalid={ indicateInvalid && error }
-					floats={ floatingLabel }>
+					floats={ floatingLabel && !placeholder }>
 					{ label }
 				</Label>
 			}
