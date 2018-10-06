@@ -61,8 +61,10 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-error-color)', '#d30f00')
     /* Gray is used as `<TextInput/>` `label` placeholder color. */
     .replace_all('var(--rrui-gray-color)', '#888888')
-    /* Light Gray is used as `<TextInput/>`, `<Select/>` and `<DatePicker/>` bottom border color. */
+    /* `<DatePicker/>` disabled day color. */
     .replace_all('var(--rrui-gray-color-light)', '#cacaca')
+    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
+    .replace_all('var(--rrui-input-field-border-color)', '#cacaca')
     /* Lightest Gray is used as `<Select/>` options hover background color. */
     /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
     .replace_all('var(--rrui-gray-color-lightest)', '#F3F3F3')

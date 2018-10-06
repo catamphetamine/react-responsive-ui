@@ -32,8 +32,10 @@
 .rrui__select__button,
 .rrui__select__native
 {
-	border        : none;
-	border-bottom : 1px solid var(--rrui-gray-color-light);
+	border-width  : 0;
+	border-bottom-width : 1px;
+	border-style  : solid;
+	border-color  : var(--rrui-input-field-border-color);
 	transition    : border 0.1s;
 }
 
