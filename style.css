@@ -800,8 +800,10 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field,
 .rrui__select__button,
 .rrui__select__native {
-  border: none;
-  border-bottom: 1px solid #cacaca;
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: #cacaca;
   -webkit-transition: border 0.1s;
   -o-transition: border 0.1s;
   transition: border 0.1s; }
@@ -1228,7 +1230,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
           justify-content: center; }
 
 .rrui__modal__close {
-  float: right;
   background: none;
   outline: none;
   border: none;
@@ -1374,6 +1375,21 @@ but rather `width: auto` or `left: 0; right: 0;`.
   /* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding */
   margin-left: 0; }
 
+.rrui__modal__content--close-button,
+.rrui__modal__title--close-button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
+
 .rrui__scrollable {
   /* https://css-tricks.com/snippets/css/momentum-scrolling-on-ios-overflow-elements/ */
   overflow-y: scroll;
@@ -1424,7 +1440,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: #888888; }
 
 .rrui__select__button--invalid {
-  border-bottom-color: #d30f00; }
+  border-color: #d30f00; }
 
 .rrui__select__button:active .rrui__select__selected-label,
 .rrui__select__button:active .rrui__select__arrow,
@@ -1487,17 +1503,17 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
-.rrui__select__button {
+.rrui__select__button,
+.rrui__select__native {
   width: 100%; }
 
 .rrui__select__native {
+  height: 100%;
   cursor: pointer;
   outline: none; }
 
 .rrui__select__native--overlay {
   position: absolute;
-  height: 100%;
-  width: 100%;
   z-index: 1;
   opacity: 0; }
 
@@ -1850,9 +1866,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: #d30f00; }
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder {
-  -webkit-transform: translateY(0) scale(1);
-      -ms-transform: translateY(0) scale(1);
-          transform: translateY(0) scale(1);
+  -webkit-transform: translateX(0rem) translateY(0) scale(1);
+      -ms-transform: translateX(0rem) translateY(0) scale(1);
+          transform: translateX(0rem) translateY(0) scale(1);
   /* Introducing a return animation delay */
   /* Because when a user clicks/taps on an option */
   /* Then the input loses focus */
