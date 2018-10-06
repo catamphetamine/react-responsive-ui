@@ -21,6 +21,11 @@
 }
 -->
 
+0.14.42 / 06.10.2018
+====================
+
+  * (breaking change) `<Modal/>`'s `closeButton` was previously styled as `float: right` which resulted in multiline content for single-line notifications. Re-styled `closeButton` without `float` using `flex`.
+
 0.14.38 / 29.09.2018
 ====================
 

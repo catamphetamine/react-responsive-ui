@@ -175,7 +175,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__close
 {
-  float      : right;
   background : none;
   outline    : none;
   border     : none;
@@ -322,4 +321,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
 {
 	/* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding */
 	margin-left : 0;
+}
+
+.rrui__modal__content--close-button,
+.rrui__modal__title--close-button
+{
+	display : flex;
+	justify-content : space-between;
+	align-items : flex-start;
 }

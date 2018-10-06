@@ -683,16 +683,25 @@ function get_full_width_elements()
 }
 
 const Title = ({ closeButton, className, children, ...rest }) => (
-	<h2 className={classNames('rrui__modal__title', className)} {...rest}>
-		{closeButton}
+	<h2
+		className={classNames('rrui__modal__title', className, {
+			'rrui__modal__title--close-button' : closeButton
+		})}
+		{...rest}>
 		{children}
+		{closeButton}
 	</h2>
 )
 
 const Content = ({ closeButton, className, children, ...rest }) => (
-	<div className={classNames('rrui__modal__content', className)} {...rest}>
+	<div
+		className={classNames('rrui__modal__content', className, {
+			'rrui__modal__content--close-button' : closeButton
+		})}
+		{...rest}>
+		{closeButton && <div>{children}</div>}
+		{!closeButton && children}
 		{closeButton}
-		{children}
 	</div>
 )
 
