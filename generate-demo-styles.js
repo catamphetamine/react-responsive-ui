@@ -64,11 +64,11 @@ function transformStyle(filePath)
     /* `<DatePicker/>` disabled day color. */
     .replace_all('var(--rrui-gray-color-light)', '#cacaca')
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
-    .replace_all('var(--rrui-input-border-color)', '#cacaca')
-    .replace_all('var(--rrui-input-border-color-focus)', '#03b2cb')
+    .replace_all('var(--rrui-input-field-border-color)', '#cacaca')
+    .replace_all('var(--rrui-input-field-border-color-focus)', '#03b2cb')
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
-    .replace_all('var(--rrui-input-label-color)', '#cacaca')
-    .replace_all('var(--rrui-input-label-color-focus)', '#03b2cb')
+    .replace_all('var(--rrui-input-field-label-color)', '#888888')
+    .replace_all('var(--rrui-input-field-label-color-focus)', '#03b2cb')
     /* Lightest Gray is used as `<Select/>` options hover background color. */
     /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
     .replace_all('var(--rrui-gray-color-lightest)', '#F3F3F3')

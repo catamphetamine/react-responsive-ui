@@ -66,12 +66,12 @@
   --rrui-gray-color-light : #cacaca;
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
-  --rrui-input-border-color : var(--rrui-gray-color-light);
-  --rrui-input-border-color-focus : var(--accent-color);
+  --rrui-input-field-border-color : var(--rrui-gray-color-light);
+  --rrui-input-field-border-color-focus : var(--accent-color);
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
-  --rrui-input-label-color : var(--rrui-gray-color);
-  --rrui-input-label-color-focus : var(--accent-color);
+  --rrui-input-field-label-color : var(--rrui-gray-color);
+  --rrui-input-field-label-color-focus : var(--accent-color);
 
   /* Lightest Gray is used as `<Select/>` options hover background color. */
   /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
