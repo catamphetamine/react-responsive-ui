@@ -107,7 +107,7 @@ export default class List extends PureComponent
 		}
 
 		// Focus the first focusable list item.
-		this.focusAny()
+		this.focusItem(this.getFirstFocusableItemIndex())
 	}
 
 	getFirstFocusableItemIndex()
@@ -235,17 +235,6 @@ export default class List extends PureComponent
 					return
 			}
 		}
-	}
-
-	focusAny()
-	{
-		// Focus the first focusable list item.
-		const i = this.getFirstFocusableItemIndex()
-		return this.setState
-		({
-			focusedItemIndex: i,
-			focusedItemValue: this.getItemValue(i)
-		})
 	}
 
 	// Get the previous option (relative to the currently focused option)
