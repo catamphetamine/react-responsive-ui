@@ -39,6 +39,7 @@
 .rrui__list__item:hover
 {
 	background-color : var(--rrui-list-item-background-color-focus);
+	color : var(--rrui-list-item-text-color-focus);
 }
 
 .rrui__list__item:active
@@ -69,8 +70,8 @@
 .rrui__list__item--selected,
 .rrui__list__item--selected:hover
 {
-	background-color : var(--rrui-accent-color);
-	color            : var(--rrui-white-color);
+	background-color : var(--rrui-list-item-background-color-selected);
+	color            : var(--rrui-list-item-text-color-selected);
 }
 
 .rrui__list__item-icon

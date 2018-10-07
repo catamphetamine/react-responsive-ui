@@ -72,7 +72,10 @@ function transformStyle(filePath)
     /* Lightest Gray is used as `<Select/>` options hover background color. */
     /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
     .replace_all('var(--rrui-gray-color-lightest)', '#F3F3F3')
+    .replace_all('var(--rrui-list-item-background-color-selected)', '#03b2cb')
+    .replace_all('var(--rrui-list-item-text-color-selected)', '#FFFFFF')
     .replace_all('var(--rrui-list-item-background-color-focus)', '#F3F3F3')
+    .replace_all('var(--rrui-list-item-text-color-focus)', '#000000')
     /* z-index */
     .replace_all('var(--rrui-z-index-overlay)', '100')
     .replace_all('var(--rrui-z-index-above-overlay)', '101')
