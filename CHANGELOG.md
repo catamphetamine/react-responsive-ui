@@ -21,6 +21,8 @@
 }
 -->
 
+<!-- (breaking change) `<Page/>` component was removed. `<PageAndMenu/>` was renamed to `<App/>` (or something). -->
+
 0.14.42 / 06.10.2018
 ====================
 

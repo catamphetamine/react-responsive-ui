@@ -1,25 +1,46 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import createRef from 'react-create-ref'
 
 import { Context } from './PageAndMenu'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-const ContextAwareSlideoutMenu = (props) => (
-	<Context.Consumer>
-		{context => (
-			<SlideoutMenu
-				{...props}
-				registerMenu={context.registerMenu}
-				toggleMenu={context.toggleMenu}/>
-			)
-		}
-	</Context.Consumer>
-)
+export default class ContextAwareSlideoutMenu extends PureComponent {
+	slideOutMenu = createRef()
+	show = () => this.slideOutMenu.current.show()
+	hide = () => this.slideOutMenu.current.hide()
+	render() {
+		return (
+			<Context.Consumer>
+				{context => (
+					<SlideoutMenu
+						ref={this.slideOutMenu}
+						{...this.props}
+						registerMenu={context.registerMenu}
+						toggleMenu={context.toggleMenu}/>
+					)
+				}
+			</Context.Consumer>
+		)
+	}
+}
 
-export default ContextAwareSlideoutMenu
+// const ContextAwareSlideoutMenu = (props) => (
+// 	<Context.Consumer>
+// 		{context => (
+// 			<SlideoutMenu
+// 				{...props}
+// 				registerMenu={context.registerMenu}
+// 				toggleMenu={context.toggleMenu}/>
+// 			)
+// 		}
+// 	</Context.Consumer>
+// )
+
+// export default ContextAwareSlideoutMenu
 
 // Swipeable feature example source code:
 // https://github.com/mui-org/material-ui/blob/v1-beta/packages/material-ui/src/SwipeableDrawer/SwipeableDrawer.js
@@ -36,6 +57,8 @@ class SlideoutMenu extends PureComponent
 			'bottom'
 		]).isRequired,
 
+		// isOpen : PropTypes.bool.isRequired,
+
 		fullscreen : PropTypes.bool.isRequired,
 
 		toggleMenu   : PropTypes.func.isRequired,
@@ -50,11 +73,15 @@ class SlideoutMenu extends PureComponent
 
 	static defaultProps =
 	{
+		// isOpen : false,
 		anchor : 'left',
 		fullscreen : false
 	}
 
-	state = { show: false }
+	state = {
+		// show: this.props.isOpen
+		show: false
+	}
 
 	componentDidMount()
 	{
@@ -69,19 +96,27 @@ class SlideoutMenu extends PureComponent
 			element : () => this.menu
 		})
 
-		// Listen to `pushstate` and `popstate` events (navigation).
-		window.addEventListener('pushstate', this.hide)
-		window.addEventListener('popstate', this.hide)
+		// // Hide on `Back`/`Forward` navigation.
+		// window.addEventListener('popstate', this.hide)
 	}
 
 	componentWillUnmount()
 	{
 		this.unregister()
 
-		// Stop listening to `pushstate` and `popstate` events (navigation).
-		window.removeEventListener('pushstate', this.hide)
-		window.removeEventListener('popstate', this.hide)
+		// window.removeEventListener('popstate', this.hide)
 	}
+
+	// componentDidUpdate(prevProps)
+	// {
+	// 	const { isOpen } = this.props
+
+	// 	if (prevProps.isOpen && !isOpen) {
+	// 		this.hide()
+	// 	} else if (!prevProps.isOpen && isOpen) {
+	// 		this.show()
+	// 	}
+	// }
 
 	hide = () =>
 	{
