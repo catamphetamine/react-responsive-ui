@@ -12,6 +12,9 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 					<br/>
 					<br/>
 					<code className="colored">{'<SlideOutMenu/>'}</code> also takes an optional <code className="colored">fullscreen: true/false</code> property.
+					<br/>
+					<br/>
+					<code className="colored">{'<SlideOutMenu/>'}</code> component instance also provides <code className="colored">.hide()</code> and <code className="colored">.show()</code> methods.
 				</p>
 
 				<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
@@ -21,10 +24,10 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 							<a href="#" className="rrui__slideout-menu__item"> Item 2 </a>
 							<a href="#" className="rrui__slideout-menu__item"> Item 3 </a>
 						</SlideOutMenu>
-						<Page>
+						<div>
 							<MenuButton />
 							Page content
-						</Page>
+						</div>
 					</PageAndMenu>
 				`}</Highlight>
 			</Example>
