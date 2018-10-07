@@ -76,6 +76,8 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-list-item-text-color-selected)', '#FFFFFF')
     .replace_all('var(--rrui-list-item-background-color-focus)', '#F3F3F3')
     .replace_all('var(--rrui-list-item-text-color-focus)', '#000000')
+    .replace_all('var(--rrui-list-item-background-color)', '#FFFFFF')
+    .replace_all('var(--rrui-list-item-text-color)', '#000000')
     /* z-index */
     .replace_all('var(--rrui-z-index-overlay)', '100')
     .replace_all('var(--rrui-z-index-above-overlay)', '101')

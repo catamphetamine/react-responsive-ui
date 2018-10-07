@@ -23,6 +23,8 @@
 
 <!-- (breaking change) `<Page/>` component was removed. `<PageAndMenu/>` was renamed to `<App/>` (or something). -->
 
+<!-- (breaking change) `.rrui__list` `color` added (defaults to black). */
+
 0.14.42 / 06.10.2018
 ====================
 

@@ -84,6 +84,10 @@
   --rrui-list-item-background-color-selected : var(--rrui-accent-color);
   --rrui-list-item-text-color-selected : var(--rrui-white-color);
 
+  /* `<Select/>` options colors. */
+  --rrui-list-item-background-color : var(--rrui-white-color);
+  --rrui-list-item-text-color : var(--rrui-black-color);
+
   /* z-index */
   --rrui-z-index-overlay       : 100;
   --rrui-z-index-above-overlay : 101;

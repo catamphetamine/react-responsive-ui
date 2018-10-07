@@ -6,6 +6,10 @@
 	padding-bottom   : var(--rrui-list-vertical-padding);
 	overflow-y       : auto;
 	background-color : var(--rrui-white-color);
+	/*
+	background-color : var(--rrui-list-item-background-color);
+	color            : var(--rrui-list-item-text-color);
+	*/
 	list-style-type  : none;
 	overflow-x       : hidden;
 	box-sizing       : border-box;
@@ -44,8 +48,8 @@
 
 .rrui__list__item:active
 {
-	background-color : var(--rrui-accent-color);
-	color            : var(--rrui-white-color);
+	background-color : var(--rrui-list-item-background-color-selected);
+	color            : var(--rrui-list-item-text-color-selected);
 }
 
 .rrui__list__item--button
