@@ -44,10 +44,13 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
+					:root {
+						--rrui-tooltip-background-color : black;
+						--rrui-tooltip-text-color : white;
+					}
+
 					.rrui__tooltip {
 						margin-top : -0.5em;
-						background-color : black;
-						color : white;
 					}
 
 					.rrui__tooltip--after-show {

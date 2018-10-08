@@ -31,7 +31,10 @@ window.ExampleMultilineTextInputLabel = class ExampleComponent extends React.Com
 `}</Highlight>
 
 <Highlight lang="css">{`
-/* See \`variables.css\` for height/padding customization. */
+:root {
+	--rrui-multiline-text-height: auto;
+	--rrui-multiline-text-input-vertical-padding: 15px;
+}
 `}</Highlight>
 
 			</Example>

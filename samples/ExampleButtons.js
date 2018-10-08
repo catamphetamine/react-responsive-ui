@@ -122,17 +122,22 @@ const submit = () => {
 `}</Highlight>
 
 <Highlight lang="css">{`
-.rrui__button--border {
-  padding-left  : 20px;
-  padding-right : 20px;
-  border        : 2px solid blue;
-  border-radius : 5px;
-}
-.rrui__button--border .rrui__button__busy {
-  left   : 20px;
-  width  : calc(100% - 2 * 20px);
-  bottom : 8px;
-}
+	:root {
+		--rrui-button-side-padding : 15px;
+		--rrui-button-border-radius : 5px;
+		--rrui-button-background-color : transparent;
+		--rrui-button-text-color : blue;
+		--rrui-button-background-color-active : blue;
+		--rrui-button-text-color-active : white;
+	}
+
+	.rrui__button--border {
+		border : 2px solid blue;
+	}
+
+	.rrui__button--border .rrui__button__busy {
+		bottom : 8px;
+	}
 `}</Highlight>
 
 			</Example>

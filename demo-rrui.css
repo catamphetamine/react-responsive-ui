@@ -13,6 +13,12 @@
 	border-radius : 0.3em;
 }
 
+.rrui__button--border:active
+{
+	background-color : #03B2CB;
+	color : white;
+}
+
 .rrui__button--border .rrui__button__busy
 {
 	left   : calc(0.3rem * 2.5);

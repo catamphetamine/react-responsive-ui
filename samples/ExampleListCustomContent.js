@@ -11,6 +11,13 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 		return (
 			<Example name="list-custom-content" title="List (custom content)">
 
+				<p>
+					In this case neither the <code className="colored">{'<List/>'}</code> has an <code className="colored">onChange</code> handler, nor do <code className="colored">{'<List.Item/>'}</code>s have an <code className="colored">onClick</code> handler, therefore the contents of these <code className="colored">{'<List.Item/>'}</code>s aren't wrapped in a <code className="colored">{'<button/>'}</code>.
+					<br/>
+					<br/>
+					<code className="colored">.rrui__list__item</code> CSS class is added to <code className="colored">{'<List.Item/>'}</code> children in this case (for side padding and <code className="colored">:focus</code>/<code className="colored">:active</code> coloration).
+				</p>
+
 				<List
 					style={input_style}
 					className="column-width rrui__shadow">

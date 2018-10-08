@@ -61,16 +61,7 @@ window.ExampleSelect = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					.rrui__select .rrui__list__item--focused {
-						background-color : cyan;
-					}
-					.rrui__select .rrui__list__item:hover {
-						background-color : gray;
-					}
-					.rrui__select .rrui__list__item:active {
-						background-color : blue;
-						color : white;
-					}
+					/* All \`<List/>\` customizations also apply here. */
 				`}</Highlight>
 
 			</Example>

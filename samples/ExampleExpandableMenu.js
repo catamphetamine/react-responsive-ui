@@ -16,21 +16,21 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 					style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
 
 					<button type="button"> Menu </button>
-					<List.Item onSelect={() => alert('Google')}>Google</List.Item>
-					<List.Item onSelect={() => alert('Yandex')}>Yandex</List.Item>
+					<List.Item onClick={() => alert('Google')}>Google</List.Item>
+					<List.Item onClick={() => alert('Yandex')}>Yandex</List.Item>
 					<List.Item><Divider/></List.Item>
-					<List.Item onSelect={() => console.log('Other')}>Other</List.Item>
+					<List.Item onClick={() => console.log('Other')}>Other</List.Item>
 				</ExpandableMenu>
 
 				<Highlight lang="jsx">{`
 					<ExpandableMenu>
 						<button type="button"> Menu </button>
 
-						<List.Item onSelect={() => alert('Google')}>
+						<List.Item onClick={() => alert('Google')}>
 							Google
 						</List.Item>
 
-						<List.Item onSelect={() => alert('Yandex')}>
+						<List.Item onClick={() => alert('Yandex')}>
 							Yandex
 						</List.Item>
 
@@ -38,7 +38,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 							<Divider/>
 						</List.Item>
 
-						<List.Item onSelect={() => console.log('Other')}>
+						<List.Item onClick={() => console.log('Other')}>
 							Other
 						</List.Item>
 					</ExpandableMenu>

@@ -15,6 +15,9 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 					<br/>
 					<br/>
 					<code className="colored">{'<SlideOutMenu/>'}</code> component instance also provides <code className="colored">.hide()</code> and <code className="colored">.show()</code> methods.
+					<br/>
+					<br/>
+					Optionally use <code className="colored">.rrui__slideout-menu__item</code> CSS class on slideout menu items.
 				</p>
 
 				<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
