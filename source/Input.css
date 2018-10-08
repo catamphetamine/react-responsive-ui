@@ -8,6 +8,7 @@
 .rrui__input-label
 {
 	height : var(--rrui-input-height);
+	font-size : var(--rrui-input-field-font-size);
 }
 
 /* `.rrui__input:not(.rrui__input--multiline)`

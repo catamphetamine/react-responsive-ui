@@ -16,8 +16,9 @@
 	padding-left   : calc(var(--rrui-unit) * 1.5);
 	padding-right  : calc(var(--rrui-unit) * 1.5);
 
-	background-color : transparent;
-	border           : 1px solid var(--rrui-accent-color);
+	background-color : var(--rrui-switcher-background-color);
+	color            : var(--rrui-switcher-text-color);
+	border           : 1px solid var(--rrui-switcher-text-color);
 	border-radius    : var(--rrui-border-radius-big);
 	outline          : none;
 
@@ -45,35 +46,22 @@
 
 .rrui__switcher__option:focus:not(:active):not(.rrui__switcher__option--selected)
 {
-	color : var(--rrui-accent-color);
+	color : var(--rrui-switcher-text-color);
 }
 
 .rrui__switcher__option:active
 {
-	color            : var(--rrui-white-color);
-	background-color : var(--rrui-accent-color-light);
+	color            : var(--rrui-switcher-text-color-active);
+	background-color : var(--rrui-switcher-background-color-active);
+	/*border-color     : var(--rrui-switcher-background-color);*/
 	transition       : none;
 }
 
-/*
-.rrui__rich__fallback .rrui__switcher__option:active
-{
-	color            : var(--rrui-black-color);
-	background-color : transparent;
-}
-*/
-
-/*
-.rrui__rich__fallback .rrui__switcher__option input
-{
-	margin-left: 0;
-}
-*/
-
 .rrui__switcher__option--selected
 {
-	color            : var(--rrui-white-color);
-	background-color : var(--rrui-accent-color);
+	color            : var(--rrui-switcher-text-color-selected);
+	background-color : var(--rrui-switcher-background-color-selected);
+	/*border-color     : var(--rrui-switcher-background-color-selected);*/
 }
 
 .rrui__switcher__option

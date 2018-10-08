@@ -5,11 +5,8 @@
 	padding-top      : var(--rrui-list-vertical-padding);
 	padding-bottom   : var(--rrui-list-vertical-padding);
 	overflow-y       : auto;
-	background-color : var(--rrui-white-color);
-	/*
 	background-color : var(--rrui-list-item-background-color);
 	color            : var(--rrui-list-item-text-color);
-	*/
 	list-style-type  : none;
 	overflow-x       : hidden;
 	box-sizing       : border-box;
@@ -81,7 +78,7 @@
 
 .rrui__list__item-icon
 {
-	margin-right : var(--rrui-list-icon-margin);
+	margin-right : var(--rrui-list-item-icon-margin);
 	flex-shrink  : 0;
 }
 

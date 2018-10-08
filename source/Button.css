@@ -1,21 +1,24 @@
 .rrui__button
 {
-	display         : inline-flex;
-	align-items     : center;
-	justify-content : center;
-	position        : relative;
-	height          : var(--rrui-input-height);
-	padding-left    : var(--rrui-button-side-padding);
-	padding-right   : var(--rrui-button-side-padding);
-	box-sizing      : border-box;
-	transition      : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
-	cursor          : pointer;
-	color           : var(--rrui-accent-color);
+	display          : inline-flex;
+	align-items      : center;
+	justify-content  : center;
+	position         : relative;
+	height           : var(--rrui-input-height);
+	padding-left     : var(--rrui-button-side-padding);
+	padding-right    : var(--rrui-button-side-padding);
+	box-sizing       : border-box;
+	transition       : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+	cursor           : pointer;
+	background-color : var(--rrui-button-background-color);
+	color            : var(--rrui-button-text-color);
+	border-radius    : var(--rrui-button-border-radius);
 }
 
 .rrui__button:active
 {
-	color : var(--rrui-accent-color-light);
+	background-color : var(--rrui-button-background-color-active);
+	color            : var(--rrui-button-text-color-active);
 }
 
 .rrui__button--busy,
@@ -29,6 +32,11 @@
 {
 	display : flex;
 	width   : 100%;
+}
+
+.rrui__button--link:hover
+{
+	text-decoration : none;
 }
 
 .rrui__button__busy
@@ -71,21 +79,4 @@
 	80%  { left : 30%;  width : 100%; }
 	95%  { left : 60%; }
 	to   { left : 100%; }
-}
-
-/* Button colors */
-
-.rrui__button
-{
-	color : var(--rrui-accent-color);
-}
-
-.rrui__button:active
-{
-	color : var(--rrui-accent-color-light);
-}
-
-.rrui__button--link:hover
-{
-	text-decoration : none;
 }

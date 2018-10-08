@@ -183,7 +183,8 @@
 	min-width  : 100%;
 	box-sizing : border-box;
 	text-align : center;
-	background-color : var(--rrui-white-color);
+	background-color : var(--rrui-list-item-background-color);
+	color : var(--rrui-list-item-text-color);
 }
 
 .rrui__date-picker .rrui__expandable__content

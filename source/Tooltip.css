@@ -8,8 +8,8 @@
 	height        : var(--rrui-tooltip-height);
 	margin-top    : calc(var(--rrui-unit) * -1);
 
-	color            : var(--rrui-white-color);
-	background-color : var(--rrui-black-color);
+	color            : var(--rrui-tooltip-text-color);
+	background-color : var(--rrui-tooltip-background-color);
 
 	border-radius : var(--rrui-border-radius-small);
 

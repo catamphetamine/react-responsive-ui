@@ -42,12 +42,12 @@
 
 .rrui__select__button--expanded
 {
-	color : var(--rrui-accent-color);
+	color : var(--rrui-select-toggler-text-color-active);
 }
 
 .rrui__select__button--empty .rrui__select__selected-label
 {
-	color: var(--rrui-gray-color);
+	color: var(--rrui-select-toggler-text-color-empty);
 }
 
 .rrui__select__button--invalid
@@ -60,7 +60,7 @@
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
 .rrui__select__native:active + .rrui__select__button .rrui__select__arrow
 {
-	color : var(--rrui-accent-color);
+	color : var(--rrui-select-toggler-text-color-active);
 }
 
 .rrui__select__selected-content
@@ -124,6 +124,8 @@
 {
 	/* "pointer-events" prevents "cursor: wait" from working */
 	pointer-events : none;
+
+	background-color : var(--rrui-input-field-background-color-disabled);
 }
 
 /* Stretches the inputs to full column width by default. */

@@ -142,7 +142,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	   because of `justify-content: center` on the container */
 	display : block;
 
-	background-color : var(--rrui-white-color);
+	background-color : var(--rrui-modal-background-color);
 }
 
 .rrui__modal__overlay--hidden
@@ -199,7 +199,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	flex-basis  : auto;
 
 	border-radius : var(--rrui-border-radius-big);
-	background-color : var(--rrui-white-color);
+	background-color : var(--rrui-modal-background-color);
+	color : var(--rrui-modal-text-color);
 }
 
 .rrui__modal__contents--fullscreen
@@ -308,7 +309,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 {
   /* Using `margin` instead of `padding` here
     to leverage the "margin collapse" CSS feature. */
-  margin : calc(var(--rrui-unit) * 3);
+  margin : var(--rrui-modal-padding);
 }
 
 .rrui__modal__actions

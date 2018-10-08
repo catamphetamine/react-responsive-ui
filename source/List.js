@@ -342,6 +342,8 @@ export class Item extends React.Component
 		value : PropTypes.any,
 		index : PropTypes.number,
 		focused : PropTypes.bool,
+		onClick : PropTypes.func,
+		// `onSelect` is deprecated, use `onClick` instead.
 		onSelect : PropTypes.func,
 		onSelectItem : PropTypes.func,
 		selectedItemValue : PropTypes.any,
@@ -403,6 +405,7 @@ export class Item extends React.Component
 	{
 		const
 		{
+			onClick,
 			onSelect,
 			onSelectItem,
 			index,
@@ -411,7 +414,9 @@ export class Item extends React.Component
 		}
 		= this.props
 
-		const onClick = this.shouldCreateButton() ? this.props.onClick : children.props.onClick
+		if (onClick) {
+			onClick(event)
+		}
 
 		if (this.isSelectable())
 		{
@@ -421,10 +426,6 @@ export class Item extends React.Component
 			if (onSelectItem) {
 				onSelectItem(value, index)
 			}
-		}
-
-		if (onClick) {
-			onClick(event)
 		}
 	}
 
@@ -452,9 +453,14 @@ export class Item extends React.Component
 
 	shouldCreateButton()
 	{
-		const { onSelect, onSelectItem, shouldCreateButton } = this.props
+		const {
+			onClick,
+			onSelect,
+			onSelectItem,
+			shouldCreateButton
+		} = this.props
 
-		return this.isSelectable() && (onSelect || (onSelectItem && shouldCreateButton))
+		return this.isSelectable() && (onClick || onSelect || (onSelectItem && shouldCreateButton))
 	}
 
 	render()

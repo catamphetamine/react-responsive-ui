@@ -27,8 +27,8 @@
 	flex-grow      : 0;
 	pointer-events : auto;
 
-	background : var(--rrui-black-color);
-	color      : var(--rrui-white-color);
+	background : var(--rrui-snackbar-background-color);
+	color      : var(--rrui-snackbar-text-color);
 
 	border-radius : var(--rrui-border-radius-small);
 

@@ -23,7 +23,11 @@
 
 <!-- (breaking change) `<Page/>` component was removed. `<PageAndMenu/>` was renamed to `<App/>` (or something). -->
 
-<!-- (breaking change) `.rrui__list` `color` added (defaults to black). */
+0.14.51 / 08.10.2018
+====================
+
+  * (CSS breaking change) Introduced a list of "CSS variables" for components for easier customization. This may possibly cause a couple of small breaking changes to CSS: `color` property is now being explicitly set on components (e.g. `<Select/>` options) instead of being not defined which could potentially overwrite someone's color if it was previously being inherited from a parent. Also, `<TextInput/>` now has `background-color`, `color` and `font-size: inherit` set explicitly (previously wasn't set and was using defaults for these). Also `<Checkbox/>` box size changed from `unit * 2` to `0.9em`. Also renamed `--rrui-list-icon-margin` to `--rrui-list-icon-margin`.
+
 
 0.14.42 / 06.10.2018
 ====================

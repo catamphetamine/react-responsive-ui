@@ -127,6 +127,8 @@ export default class Checkbox extends PureComponent
 							aria-hidden="true">
 							<path d={ value ? CHECKBOX_CHECKED_PATH : CHECKBOX_UNCHECKED_PATH }/> }
 						</svg>
+
+						<div className="rrui__checkbox__box-background"/>
 					</div>
 
 					{ children &&
@@ -193,5 +195,5 @@ export default class Checkbox extends PureComponent
 	}
 }
 
-const CHECKBOX_CHECKED_PATH   = "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
-const CHECKBOX_UNCHECKED_PATH = "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+const CHECKBOX_CHECKED_PATH   = "M21.3,0H2.7C1.2,0,0,1.2,0,2.7v18.7C0,22.8,1.2,24,2.7,24h18.7c1.5,0,2.7-1.2,2.7-2.7V2.7C24,1.2,22.8,0,21.3,0z M9.3,18.7 L2.7,12l1.9-1.9l4.8,4.8L19.5,4.8l1.9,1.9L9.3,18.7z"
+const CHECKBOX_UNCHECKED_PATH = "M21.3,2.7v18.7H2.7V2.7H21.3 M21.3,0H2.7C1.2,0,0,1.2,0,2.7v18.7C0,22.8,1.2,24,2.7,24h18.7c1.5,0,2.7-1.2,2.7-2.7V2.7 C24,1.2,22.8,0,21.3,0z"

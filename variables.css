@@ -1,27 +1,54 @@
 :root
 {
-  /* Base */
+  /* Colors */
+  --rrui-white-color        : #ffffff;
+  --rrui-black-color        : #000000;
+  --rrui-accent-color       : #03b2cb;
+  --rrui-accent-color-light : #2bd7f0;
+  --rrui-error-color        : #d30f00;
+
+  /* Gray is used as `<TextInput/>` `label` placeholder color. */
+  --rrui-gray-color : #888888;
+
+  /* `<DatePicker/>` disabled day color. */
+  --rrui-gray-color-light : #cacaca;
+
+  /* Lightest Gray is used as `<DatePicker/>`'s currently mouse-overed calendar day. */
+  --rrui-gray-color-lightest : #f3f3f3;
+
+  /* Modular grid unit. */
   --rrui-unit : 0.6rem;
 
-  /* Everything */
-  --rrui-input-height            : calc(var(--rrui-unit) * 3);
-  --rrui-fullscreen-input-height : calc(var(--rrui-unit) * 4);
+  /* `<TextInput/>`, `<Select/>`, `<Button/>` height. */
+  --rrui-input-height : calc(var(--rrui-unit) * 3);
 
-  /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
-  --rrui-input-field-side-padding : 0rem;
+  /* For `small-screen/*.Fullscreen.css` styles (only if used). */
+  --rrui-fullscreen-input-height : calc(var(--rrui-unit) * 4);
 
   /* `<TextInput multiline/>` */
   --rrui-multiline-text-height                 : calc(var(--rrui-unit) * 7);
   --rrui-multiline-text-input-vertical-padding : calc(var(--rrui-unit) / 2);
 
+  /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
+  --rrui-input-field-side-padding : 0rem;
+
+  /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
+  --rrui-input-field-background-color : var(--white-color);
+  --rrui-input-field-background-color-disabled : var(--rrui-gray-color-lightest);
+  --rrui-input-field-text-color : var(--black-color);
+  --rrui-input-field-font-size : inherit;
+
   /* `<Button/>` */
   --rrui-button-side-padding : 0rem;
+  --rrui-button-border-radius : 0rem;
 
-  /* `<Select/>` */
-  --rrui-list-vertical-padding  : var(--rrui-unit);
-  --rrui-list-item-side-padding : calc(var(--rrui-unit) * 1.5);
-  --rrui-list-item-height       : calc(var(--rrui-unit) * 4);
-  --rrui-list-icon-margin       : var(--rrui-unit);
+  /* `<Button/>` colors. */
+  --rrui-button-background-color : transparent;
+  --rrui-button-text-color : var(--rrui-accent-color);
+
+  /* `<Button/>` colors :active. */
+  --rrui-button-background-color-active : var(--rrui-button-background-color);
+  --rrui-button-text-color-active : var(--rrui-accent-color-light);
 
   /* `<ExpandableMenu/>` */
   --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 2.5);
@@ -52,20 +79,13 @@
   --rrui-border-radius-big   : 0.2rem;
   --rrui-border-radius-small : 0.1rem;
 
-  /* Colors */
-  --rrui-white-color        : #ffffff;
-  --rrui-black-color        : #000000;
-  --rrui-accent-color       : #03b2cb;
-  --rrui-accent-color-light : #2bd7f0;
-  --rrui-error-color        : #d30f00;
+  /* "Cards" are `<Modal/>`, `<Select/>`, `<Autocomplete/>`, `<DatePicker/>`. */
+  --rrui-card-background-color : var(--rrui-white-color);
+  --rrui-card-text-color : currentColor;
 
-  /* Gray is used as `<TextInput/>` `label` placeholder color. */
-  --rrui-gray-color : #888888;
-
-  /* `<DatePicker/>` disabled day color. */
-  --rrui-gray-color-light : #cacaca;
-
-  /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
+  /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border. */
+  --rrui-input-field-border-radius : 0rem;
+  --rrui-input-field-border-width : 1px;
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
 
@@ -73,20 +93,72 @@
   --rrui-input-field-label-color : var(--rrui-gray-color);
   --rrui-input-field-label-color-focus : var(--rrui-accent-color);
 
-  /* Lightest Gray is used as `<DatePicker/>`'s currently mouse-overed calendar day. */
-  --rrui-gray-color-lightest : #f3f3f3;
+  /* `<Select/>` toggler color. */
+  --rrui-select-toggler-text-color-active : var(--rrui-accent-color);
+  --rrui-select-toggler-text-color-empty : var(--rrui-gray-color);
 
-  /* `<Select/>` options hover/focused background color. */
+  /* `<Select/>` */
+  --rrui-list-vertical-padding  : var(--rrui-unit);
+  --rrui-list-item-height       : calc(var(--rrui-unit) * 4);
+  --rrui-list-item-side-padding : calc(var(--rrui-unit) * 1.5);
+  --rrui-list-item-icon-margin  : var(--rrui-unit);
+
+  /* `<Select/>` options colors. */
+  --rrui-list-item-background-color : var(--rrui-card-background-color);
+  --rrui-list-item-text-color : var(--rrui-card-text-color);
+
+  /* `<Select/>` options hover/focused colors. */
   --rrui-list-item-background-color-focus : var(--rrui-gray-color-lightest);
-  --rrui-list-item-text-color-focus : var(--rrui-black-color);
+  --rrui-list-item-text-color-focus : var(--rrui-list-item-text-color);
 
-  /* `<Select/>`'s currently selected option background color. */
+  /* `<Select/>`'s currently selected option colors. */
   --rrui-list-item-background-color-selected : var(--rrui-accent-color);
   --rrui-list-item-text-color-selected : var(--rrui-white-color);
 
-  /* `<Select/>` options colors. */
-  --rrui-list-item-background-color : var(--rrui-white-color);
-  --rrui-list-item-text-color : var(--rrui-black-color);
+  /* `<Checkbox/>` size. */
+  --rrui-checkbox-size : 0.9em;
+
+  /* `<Checkbox/>` colors. */
+  --rrui-checkbox-stroke-color : currentColor;
+  --rrui-checkbox-fill-color : var(--white-color);
+  --rrui-checkbox-color-focus : var(--rrui-accent-color);
+  --rrui-checkbox-color-checked : var(--rrui-accent-color);
+  --rrui-checkbox-color-active : var(--rrui-accent-color-light);
+
+  /* `<Modal/>`. */
+  --rrui-modal-padding : calc(var(--rrui-unit) * 3);
+
+  /* `<Modal/>` colors. */
+  --rrui-modal-background-color : var(--rrui-card-background-color);
+  --rrui-modal-text-color : var(--rrui-card-text-color);
+
+  /* `<SlideOutMenu/>` colors. */
+  --rrui-slide-out-menu-background-color : var(--rrui-black-color);
+  --rrui-slide-out-menu-text-color : var(--rrui-white-color);
+
+  /* `<SlideOutMenu/>` colors :active. */
+  --rrui-slide-out-menu-background-color-active : var(--rrui-accent-color);
+  --rrui-slide-out-menu-text-color-active : var(--rrui-slide-out-menu-text-color);
+
+  /* `<Snackbar/>` colors. */
+  --rrui-snackbar-background-color : var(--rrui-black-color);
+  --rrui-snackbar-text-color : var(--rrui-white-color);
+
+  /* `<Switcher/>` colors. */
+  --rrui-switcher-background-color : transparent;
+  --rrui-switcher-text-color : var(--rrui-accent-color);
+
+  /* `<Switcher/>` colors :active. */
+  --rrui-switcher-background-color-active : var(--rrui-accent-color-light);
+  --rrui-switcher-text-color-active : var(--rrui-white-color);
+
+  /* `<Switcher/>` colors selected. */
+  --rrui-switcher-background-color-selected : var(--rrui-accent-color);
+  --rrui-switcher-text-color-selected : var(--rrui-white-color);
+
+  /* `<Tooltip/>` colors. */
+  --rrui-tooltip-background-color : var(--rrui-black-color);
+  --rrui-tooltip-text-color : var(--rrui-white-color);
 
   /* z-index */
   --rrui-z-index-overlay       : 100;
