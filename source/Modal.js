@@ -688,7 +688,8 @@ const Title = ({ closeButton, className, children, ...rest }) => (
 			'rrui__modal__title--close-button' : closeButton
 		})}
 		{...rest}>
-		{children}
+		{closeButton && <span className="rrui__modal__title-itself">{children}</span>}
+		{!closeButton && children}
 		{closeButton}
 	</h2>
 )
@@ -699,7 +700,7 @@ const Content = ({ closeButton, className, children, ...rest }) => (
 			'rrui__modal__content--close-button' : closeButton
 		})}
 		{...rest}>
-		{closeButton && <div>{children}</div>}
+		{closeButton && <div className="rrui__modal__content-itself">{children}</div>}
 		{!closeButton && children}
 		{closeButton}
 	</div>
