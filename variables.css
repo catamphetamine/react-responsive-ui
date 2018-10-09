@@ -33,9 +33,9 @@
   --rrui-input-field-side-padding : 0rem;
 
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
-  --rrui-input-field-background-color : var(--white-color);
+  --rrui-input-field-background-color : var(--rrui-white-color);
   --rrui-input-field-background-color-disabled : var(--rrui-gray-color-lightest);
-  --rrui-input-field-text-color : var(--black-color);
+  --rrui-input-field-text-color : var(--rrui-black-color);
   --rrui-input-field-font-size : inherit;
 
   /* `<Button/>` */
@@ -119,8 +119,8 @@
   --rrui-checkbox-size : 0.9em;
 
   /* `<Checkbox/>` colors. */
-  --rrui-checkbox-stroke-color : currentColor;
-  --rrui-checkbox-fill-color : var(--white-color);
+  --rrui-checkbox-stroke-color : var(--rrui-black-color);
+  --rrui-checkbox-fill-color : var(--rrui-white-color);
   --rrui-checkbox-color-focus : var(--rrui-accent-color);
   --rrui-checkbox-color-checked : var(--rrui-accent-color);
   --rrui-checkbox-color-active : var(--rrui-accent-color-light);
