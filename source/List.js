@@ -418,6 +418,12 @@ export class Item extends React.Component
 			onClick(event)
 		}
 
+		if (!this.shouldCreateButton()) {
+			if (children.props.onClick) {
+				children.props.onClick(event)
+			}
+		}
+
 		if (this.isSelectable())
 		{
 			if (onSelect) {
