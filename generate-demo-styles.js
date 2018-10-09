@@ -19,6 +19,80 @@ String.prototype.replace_all = function (what, with_what)
 function transformStyle(filePath)
 {
   let text = fs.readFileSync(path.join(__dirname, filePath), 'utf8')
+
+    /*--------*/
+    /* Colors */
+    /*--------*/
+
+    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
+    .replace_all('var(--rrui-input-field-border-color)', 'var(--rrui-gray-color-light)')
+    .replace_all('var(--rrui-input-field-border-color-focus)', 'var(--rrui-accent-color)')
+    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
+    .replace_all('var(--rrui-input-field-label-color)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-input-field-label-color-focus)', 'var(--rrui-accent-color)')
+    /* `<Select/>` toggler. */
+    .replace_all('var(--rrui-select-toggler-text-color-active)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-select-toggler-text-color-empty)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-list-item-background-color-selected)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-list-item-text-color-selected)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-list-item-background-color-focus)', 'var(--rrui-gray-color-lightest)')
+    .replace_all('var(--rrui-list-item-text-color-focus)', 'var(--rrui-list-item-text-color)')
+    .replace_all('var(--rrui-list-item-background-color)', 'var(--rrui-card-background-color)')
+    .replace_all('var(--rrui-list-item-text-color)', 'var(--rrui-card-text-color)')
+    /* Button colors */
+    .replace_all('var(--rrui-button-background-color-active)', 'var(--rrui-button-background-color)')
+    .replace_all('var(--rrui-button-background-color)', 'transparent')
+    .replace_all('var(--rrui-button-text-color)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-button-text-color-active)', 'var(--rrui-accent-color-light)')
+    /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
+    .replace_all('var(--rrui-input-field-background-color-disabled)', 'var(--rrui-gray-color-lightest)')
+    .replace_all('var(--rrui-input-field-background-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-input-field-text-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-input-field-font-size)', 'inherit')
+    .replace_all('var(--rrui-input-field-border-radius)', '0rem')
+    .replace_all('var(--rrui-input-field-border-width)', '1px')
+    /* Checkbox size */
+    .replace_all('var(--rrui-checkbox-size)', '0.9em')
+    /* Checkbox colors */
+    .replace_all('var(--rrui-checkbox-stroke-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-checkbox-fill-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-checkbox-color-checked)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-checkbox-color-focus)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-checkbox-color-active)', 'var(--rrui-accent-color-light)')
+    /* `<Modal/>`. */
+    .replace_all('var(--rrui-modal-padding)', 'calc(0.6rem * 3)')
+    /* `<Modal/>` colors. */
+    .replace_all('var(--rrui-modal-background-color)', 'var(--rrui-card-background-color)')
+    .replace_all('var(--rrui-modal-text-color)', 'var(--rrui-card-text-color)')
+    /* `<SlideOutMenu/>` :active. */
+    .replace_all('var(--rrui-slide-out-menu-background-color-active)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-slide-out-menu-text-color-active)', 'var(--rrui-slide-out-menu-text-color)')
+    /* `<SlideOutMenu/>`. */
+    .replace_all('var(--rrui-slide-out-menu-background-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-slide-out-menu-text-color)', 'var(--rrui-white-color)')
+    /* `<Snackbar/>`. */
+    .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
+    /* `<Switcher/>`. */
+    .replace_all('var(--rrui-switcher-background-color)', 'transparent')
+    .replace_all('var(--rrui-switcher-text-color)', 'var(--rrui-accent-color)')
+    /* `<Switcher/>` :active. */
+    .replace_all('var(--rrui-switcher-background-color-active)', 'var(--rrui-accent-color-light)')
+    .replace_all('var(--rrui-switcher-text-color-active)', 'var(--rrui-white-color)')
+    /* `<Switcher/>` selected. */
+    .replace_all('var(--rrui-switcher-background-color-selected)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-switcher-text-color-selected)', 'var(--rrui-white-color)')
+    /* `<Tooltip/>`. */
+    .replace_all('var(--rrui-tooltip-background-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-tooltip-text-color)', 'var(--rrui-white-color)')
+    /* Card colors. */
+    .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-card-text-color)', 'currentColor')
+
+    /*--------------*/
+    /* Measurements */
+    /*--------------*/
+
     /* Base */
     .replace_all('var(--rrui-unit)', '0.6rem')
     /* Everything */
@@ -62,75 +136,11 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-error-color)', '#d30f00')
     /* Gray is used as `<TextInput/>` `label` placeholder color. */
     .replace_all('var(--rrui-gray-color)', '#888888')
-    /* Card colors. */
-    .replace_all('var(--rrui-card-background-color)', '#ffffff')
-    .replace_all('var(--rrui-card-text-color)', '#000000')
     /* `<DatePicker/>` disabled day color. */
     .replace_all('var(--rrui-gray-color-light)', '#cacaca')
-    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
-    .replace_all('var(--rrui-input-field-border-color)', '#cacaca')
-    .replace_all('var(--rrui-input-field-border-color-focus)', '#03b2cb')
-    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
-    .replace_all('var(--rrui-input-field-label-color)', '#888888')
-    .replace_all('var(--rrui-input-field-label-color-focus)', '#03b2cb')
-    /* `<Select/>` toggler. */
-    .replace_all('var(--rrui-select-toggler-text-color-active)', '#03b2cb')
-    .replace_all('var(--rrui-select-toggler-text-color-empty)', '#888888')
     /* Lightest Gray is used as `<Select/>` options hover background color. */
     /* Lightest Gray is used as `<Select/>`'s currently selected option background color. */
     .replace_all('var(--rrui-gray-color-lightest)', '#F3F3F3')
-    .replace_all('var(--rrui-list-item-background-color-selected)', '#03b2cb')
-    .replace_all('var(--rrui-list-item-text-color-selected)', '#FFFFFF')
-    .replace_all('var(--rrui-list-item-background-color-focus)', '#F3F3F3')
-    .replace_all('var(--rrui-list-item-text-color-focus)', '#000000')
-    .replace_all('var(--rrui-list-item-background-color)', '#FFFFFF')
-    .replace_all('var(--rrui-list-item-text-color)', '#000000')
-    /* Button colors */
-    .replace_all('var(--rrui-button-background-color)', '#FFFFFF')
-    .replace_all('var(--rrui-button-text-color)', '#03b2cb')
-    .replace_all('var(--rrui-button-background-color-active)', '#FFFFFF')
-    .replace_all('var(--rrui-button-text-color-active)', '#2bd7f0')
-    /* Checkbox size */
-    .replace_all('var(--rrui-checkbox-size)', '0.9em')
-    /* Checkbox colors */
-    .replace_all('var(--rrui-checkbox-stroke-color)', '#000000')
-    .replace_all('var(--rrui-checkbox-fill-color)', '#ffffff')
-    .replace_all('var(--rrui-checkbox-color-checked)', '#03b2cb')
-    .replace_all('var(--rrui-checkbox-color-focus)', '#03b2cb')
-    .replace_all('var(--rrui-checkbox-color-active)', '#2bd7f0')
-    /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
-    .replace_all('var(--rrui-input-field-background-color-disabled)', 'transparent')
-    .replace_all('var(--rrui-input-field-background-color)', '#ffffff')
-    .replace_all('var(--rrui-input-field-text-color)', '#000000')
-    .replace_all('var(--rrui-input-field-font-size)', 'inherit')
-    .replace_all('var(--rrui-input-field-border-radius)', '0rem')
-    .replace_all('var(--rrui-input-field-border-width)', '1px')
-    /* `<Modal/>`. */
-    .replace_all('var(--rrui-modal-padding)', 'calc(0.6rem * 3)')
-    /* `<Modal/>` colors. */
-    .replace_all('var(--rrui-modal-background-color)', '#ffffff')
-    .replace_all('var(--rrui-modal-text-color)', '#000000')
-    /* `<SlideOutMenu/>`. */
-    .replace_all('var(--rrui-slide-out-menu-background-color)', '#000000')
-    .replace_all('var(--rrui-slide-out-menu-text-color)', '#ffffff')
-    /* `<SlideOutMenu/>` :active. */
-    .replace_all('var(--rrui-slide-out-menu-background-color-active)', '#03b2cb')
-    .replace_all('var(--rrui-slide-out-menu-text-color-active)', '#ffffff')
-    /* `<Snackbar/>`. */
-    .replace_all('var(--rrui-snackbar-background-color)', '#000000')
-    .replace_all('var(--rrui-snackbar-text-color)', '#ffffff')
-    /* `<Tooltip/>`. */
-    .replace_all('var(--rrui-tooltip-background-color)', '#000000')
-    .replace_all('var(--rrui-tooltip-text-color)', '#ffffff')
-    /* `<Switcher/>`. */
-    .replace_all('var(--rrui-switcher-background-color)', 'transparent')
-    .replace_all('var(--rrui-switcher-text-color)', '#03b2cb')
-    /* `<Switcher/>` :active. */
-    .replace_all('var(--rrui-switcher-background-color-active)', '#2bd7f0')
-    .replace_all('var(--rrui-switcher-text-color-active)', '#ffffff')
-    /* `<Switcher/>` selected. */
-    .replace_all('var(--rrui-switcher-background-color-selected)', '#03b2cb')
-    .replace_all('var(--rrui-switcher-text-color-selected)', '#ffffff')
     /* z-index */
     .replace_all('var(--rrui-z-index-overlay)', '100')
     .replace_all('var(--rrui-z-index-above-overlay)', '101')
