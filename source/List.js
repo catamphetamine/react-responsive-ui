@@ -362,6 +362,12 @@ export class Item extends React.Component
 		}
 		= this.props
 
+		// If `<List.Item/>` child element gets wrapped in a `<button/>`
+		// then call `onMouseDown` defined on the `<List.Item/>`.
+		// If `<List.Item/>` child element doesn't get wrapped in a `<button/>`
+		// then manually call `onMouseDown` defined on the `<List.Item/>` child element
+		// because `onMouseDown` gets overridden for `<List.Item/>` child element.
+
 		const onMouseDown = this.shouldCreateButton() ? this.props.onMouseDown : children.props.onMouseDown
 
 		// Without this Safari (both mobile and desktop)
@@ -390,6 +396,12 @@ export class Item extends React.Component
 		}
 		= this.props
 
+		// If `<List.Item/>` child element gets wrapped in a `<button/>`
+		// then call `onFocus` defined on the `<List.Item/>`.
+		// If `<List.Item/>` child element doesn't get wrapped in a `<button/>`
+		// then manually call `onFocus` defined on the `<List.Item/>` child element
+		// because `onFocus` gets overridden for `<List.Item/>` child element.
+
 		const onFocus = this.shouldCreateButton() ? this.props.onFocus : children.props.onFocus
 
 		if (this.isSelectable()) {
@@ -414,11 +426,21 @@ export class Item extends React.Component
 		}
 		= this.props
 
+		// If `<List.Item/>` child element gets wrapped in a `<button/>`
+		// then call `onClick` defined on the `<List.Item/>`.
+		// If `<List.Item/>` child element doesn't get wrapped in a `<button/>`
+		// then manually call `onClick` defined on the `<List.Item/>` child element
+		// because `onClick` gets overridden for `<List.Item/>` child element,
+		// and also call `onClick` defined on the `<List.Item/>` (if any).
+
 		if (onClick) {
 			onClick(event)
 		}
 
 		if (!this.shouldCreateButton()) {
+			// Since `onClick` gets overridden
+			// for `<List.Item/>` child element
+			// call its original `onClick` manually here.
 			if (children.props.onClick) {
 				children.props.onClick(event)
 			}
