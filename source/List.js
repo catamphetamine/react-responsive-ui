@@ -22,6 +22,12 @@ export default class List extends PureComponent
 	{
 		value : PropTypes.any,
 		onChange : PropTypes.func,
+
+		// If `items` property is supplied then it's used to
+		// detect "on items changed" event in `getDerivedStateFromProps`.
+		// It seems to be the only usage of the `items` property.
+		items : PropTypes.arrayOf(PropTypes.object),
+
 		// Legacy method, use `onChange` instead.
 		onSelectItem : PropTypes.func,
 		highlightSelectedItem : PropTypes.bool.isRequired,
