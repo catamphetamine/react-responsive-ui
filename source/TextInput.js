@@ -49,9 +49,13 @@ export default class TextInput extends PureComponent
 		// `<textarea/>` instead of an `<input type="text"/>`
 		multiline        : PropTypes.bool,
 
+		// Deprecated.
+		// Use `type="email"` instead.
 		// Sets HTML input `type` attribute to `email`
 		email            : PropTypes.bool,
 
+		// Deprecated.
+		// Use `type="password"` instead.
 		// Sets HTML input `type` attribute to `password`
 		password         : PropTypes.bool,
 
@@ -107,9 +111,27 @@ export default class TextInput extends PureComponent
 			error,
 			style,
 			className,
+			// Deprecated.
+			// Use `type="password"` instead.
+			password,
+			// Deprecated.
+			// Use `type="email"` instead.
+			email,
 			...rest
 		}
 		= this.props
+
+		// Deprecated.
+		// Use `type="password"` instead.
+		if (password) {
+			rest.type = 'password'
+		}
+
+		// Deprecated.
+		// Use `type="email"` instead.
+		if (email) {
+			rest.type = 'email'
+		}
 
 		return (
 			<div
