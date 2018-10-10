@@ -81,7 +81,7 @@
 
 .rrui__input-field--disabled
 {
-	cursor           : default;
+	cursor : default;
 
 	background-color : var(--rrui-input-field-background-color-disabled);
 }

@@ -34,7 +34,7 @@
 
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
   --rrui-input-field-background-color : var(--rrui-white-color);
-  --rrui-input-field-background-color-disabled : var(--rrui-gray-color-lightest);
+  --rrui-input-field-background-color-disabled : var(--rrui-input-field-background-color);
   --rrui-input-field-text-color : var(--rrui-black-color);
   --rrui-input-field-font-size : inherit;
 

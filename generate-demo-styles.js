@@ -45,7 +45,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-button-text-color)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-button-text-color-active)', 'var(--rrui-accent-color-light)')
     /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
-    .replace_all('var(--rrui-input-field-background-color-disabled)', 'var(--rrui-gray-color-lightest)')
+    .replace_all('var(--rrui-input-field-background-color-disabled)', 'var(--rrui-input-field-background-color)')
     .replace_all('var(--rrui-input-field-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-input-field-text-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-input-field-font-size)', 'inherit')
