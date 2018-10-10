@@ -59,7 +59,12 @@ export default class Autocomplete extends PureComponent
 
 		// Can be supplied when supplying `options` prop.
 		// By default filters by substring inclusion (case-insensitive).
-		filterOptions : PropTypes.func,
+		filterOptions : PropTypes.func.isRequired,
+
+		// The maximum number of options to be rendered
+		// in the options list when it's expanded.
+		// `0` means "unlimited".
+		maxOptions : PropTypes.number,
 
 		// Throttle `async getOptions()` invocations.
 		throttle : PropTypes.number.isRequired,
@@ -162,7 +167,14 @@ export default class Autocomplete extends PureComponent
 		minCharactersToStartThrottling : 4,
 
 		// Filters options by substring inclusion (case-insensitive).
-		filterOptions
+		filterOptions,
+
+		// The maximum number of options to be rendered
+		// in the options list when it's expanded.
+		// The rationale is that otherwise the UI could
+		// stagger when initially expanding a huge list.
+		// `0` means "unlimited".
+		maxOptions : 500
 	}
 
 	state =
@@ -205,7 +217,7 @@ export default class Autocomplete extends PureComponent
 		if (Array.isArray(options))
 		{
 			// `<Autocomplete/>`'s selected option label
-			// is stored in a special `selectedOptionLabel` variable in `state`.
+			// is stored in a special `selectedOption.label` variable in `state`.
 			if (value !== state.props.value)
 			{
 				newState.selectedOption = options.filter(_ => _.value === value)[0]
@@ -218,7 +230,12 @@ export default class Autocomplete extends PureComponent
 
 	componentDidMount()
 	{
-		const { value, getOption } = this.props
+		const { value, getOptions, getOption } = this.props
+
+		if (!isEmptyValue(value) && !getOption && getOptions)
+		{
+			throw new Error("An initial `value` was passed to `<Autocomplete/>` which has `getOptions` but doesn't have `getOption` to get the label for that initial `value`.")
+		}
 
 		if (!isEmptyValue(value) && getOption)
 		{
@@ -401,7 +418,7 @@ export default class Autocomplete extends PureComponent
 							'rrui__options-list--right-aligned' : alignment === 'right'
 						})}>
 
-						{options.map((option, i) => (
+						{this.getOptionsForRendering().map((option, i) => (
 							<List.Item
 								key={i}
 								value={option.value}
@@ -446,31 +463,36 @@ export default class Autocomplete extends PureComponent
 		}
 		= this.state
 
+		// To expand on click/focus:
+		// onFocus={ this.expandOnFocus }
+		// onClick={ this.onClick }
+
 		return (
 			<TextInput
 				inputRef={ this.storeInput }
 				value={ inputValue }
-				onChange={ this.onInputValueChange }
 				placeholder={ placeholder }
+				onChange={ this.onInputValueChange }
 				onKeyDown={ this.onKeyDown }
-				onFocus={ this.expandOnFocus }
 				onBlur={ this.onBlur }
-				onClick={ this.onClick }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
-				className={ classNames
-				(
-					'rrui__autocomplete__input',
-					'rrui__input-element',
-					'rrui__input-field',
-					inputClassName,
-					// CSS selector performance optimization
-					// (should it even be optimized).
-					{
-						'rrui__input-field--invalid' : indicateInvalid && error || matches === false
-					}
-				) }/>
+				indicateInvalid={ indicateInvalid || (matches === false) }
+				error={ error || (matches === false ? 'no-match' : undefined) }
+				className={ classNames('rrui__autocomplete__input', inputClassName) }/>
 		)
+	}
+
+	getOptionsForRendering()
+	{
+		const { maxOptions } = this.props
+		const { options } = this.state
+
+		if (maxOptions > 0 && options.length > maxOptions) {
+			return options.slice(0, maxOptions)
+		}
+
+		return options
 	}
 
 	expandOnFocus = () =>

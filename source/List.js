@@ -636,5 +636,6 @@ export function findItemIndexByValue(value, children)
 		i++
 	}
 
-	console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.length > 0 ? items.map(_ => _.props.value).join(', ') : '(none)'}.`)
+	// The item could be missing due to being trimmed by `maxOptions` in `Autocomplete`.
+	// console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.length > 0 ? items.map(_ => _.props.value).join(', ') : '(none)'}.`)
 }
