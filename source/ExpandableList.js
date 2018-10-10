@@ -139,7 +139,7 @@ export default class ExpandableList extends PureComponent
 			})
 		}
 
-		this.list.unfocus()
+		this.list && this.list.unfocus()
 	}
 
 	onExpand = () =>
