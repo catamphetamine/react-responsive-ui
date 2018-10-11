@@ -419,7 +419,7 @@ export default class DatePicker extends PureComponent
 		({
 			text_value: value
 		},
-		() => this.calendar.showMonth(selected_day))
+		() => this.calendar && this.calendar.showMonth(selected_day))
 	}
 
 	onDayClick = (selected_day, { disabled }) =>
