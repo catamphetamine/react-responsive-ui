@@ -674,6 +674,25 @@ export default class Autocomplete extends PureComponent
 		}
 	}
 
+	fetchDefaultOptions = () =>
+	{
+		const
+		{
+			getOptions,
+			filterOptions
+		}
+		= this.props
+
+		return Promise.resolve().then(() =>
+		{
+			return getOptions ? getOptions('') : filterOptions(this.props.options, '')
+		})
+		.then(() =>
+		{
+			return new Promise(resolve => this.setState({ options }, resolve))
+		})
+	}
+
 	refreshOptions = () =>
 	{
 		const
@@ -707,29 +726,42 @@ export default class Autocomplete extends PureComponent
 				{
 					getOptions(inputValue).then((options) =>
 					{
-						this.receiveNewOptions(options, counter, resolve)
-					},
-					(error) =>
-					{
-						console.error(error)
-						this.receiveNewOptions([], counter, resolve)
+						this.handleNewOptions(options, counter, resolve)
 					})
 				})
 			}
 
 			const newOptions = filterOptions(this.props.options, inputValue)
+			this.handleNewOptions(newOptions, null, resolve)
+		})
+	}
 
-			return this.setState
-			({
-				matches : newOptions.length > 0,
-				options : newOptions.length > 0 ? newOptions : this.state.options
-			},
-			resolve)
+	handleNewOptions = (options, counter, resolve) =>
+	{
+		Promise.resolve(options).then((options) =>
+		{
+			// Autocomplete should always display some options.
+			if (options.length === 0 && this.state.options.length === 0)
+			{
+				return this.fetchDefaultOptions().then(() => options)
+			}
+			return options
+		})
+		.then((options) =>
+		{
+			this.receiveNewOptions(options, counter, resolve)
+		})
+		.catch((error) =>
+		{
+			console.error(error)
+			this.receiveNewOptions([], counter, resolve)
 		})
 	}
 
 	receiveNewOptions(options, counter, callback)
 	{
+		const { getOptions } = this.props
+
 		const
 		{
 			matchesCounter,
@@ -740,30 +772,43 @@ export default class Autocomplete extends PureComponent
 
 		const newState = {}
 
-		// Can only override "older" matching state.
-		if (isCounterAfter(counter, matchesCounter))
+		if (getOptions)
+		{
+			// Can only override "older" matching state.
+			if (isCounterAfter(counter, matchesCounter))
+			{
+				newState.matches = options.length > 0
+				newState.matchesCounter = counter
+			}
+
+			// Update options.
+			// Can only override "older" options.
+			// (not "newer" ones)
+			if (isCounterAfter(counter, optionsCounter))
+			{
+				// Autocomplete should always display some options.
+				if (options.length > 0)
+				{
+					newState.options = options
+					newState.optionsCounter = counter
+				}
+			}
+
+			if (counter === fetchingOptionsCounter)
+			{
+				newState.isFetchingOptions = false
+				newState.fetchingOptionsCounter = undefined
+			}
+		}
+		else
 		{
 			newState.matches = options.length > 0
-			newState.matchesCounter = counter
-		}
 
-		// Update options.
-		// Can only override "older" options.
-		// (not "newer" ones)
-		if (isCounterAfter(counter, optionsCounter))
-		{
 			// Autocomplete should always display some options.
 			if (options.length > 0)
 			{
 				newState.options = options
-				newState.optionsCounter = counter
 			}
-		}
-
-		if (counter === fetchingOptionsCounter)
-		{
-			newState.isFetchingOptions = false
-			newState.fetchingOptionsCounter = undefined
 		}
 
 		this.setState(newState, callback)
