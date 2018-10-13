@@ -5,6 +5,7 @@ import
 	SlideOutMenu,
 	MenuButton,
 	MenuIcon,
+	FadeInOut,
 	Form,
 	List,
 	Snackbar,
@@ -45,6 +46,7 @@ describe('React Responsive UI', function()
 		expect(SlideOutMenu).to.be.a('function')
 		expect(MenuButton).to.be.a('function')
 		expect(MenuIcon).to.be.a('function')
+		expect(FadeInOut).to.be.a('function')
 		expect(Form).to.be.a('function')
 		expect(List).to.be.a('function')
 		expect(Snackbar).to.be.a('function')
@@ -85,6 +87,7 @@ describe('React Responsive UI', function()
 		expect(_.SlideOutMenu).to.be.a('function')
 		expect(_.MenuButton).to.be.a('function')
 		expect(_.MenuIcon).to.be.a('function')
+		expect(_.FadeInOut).to.be.a('function')
 		expect(_.Form).to.be.a('function')
 		expect(_.List).to.be.a('function')
 		expect(_.Snackbar).to.be.a('function')
