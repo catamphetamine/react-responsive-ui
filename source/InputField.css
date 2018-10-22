@@ -14,7 +14,7 @@
 /* Overrides Chrome autofill yellow background color */
 .rrui__input-field:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px white inset;
+	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color) inset;
 }
 
 .rrui__input-field,
