@@ -21,6 +21,14 @@ export default class TextInput extends PureComponent
 		// (is `true` by default)
 		autoresize       : PropTypes.bool.isRequired,
 
+		// In order for this to work properly
+		// `<textarea/>` vertical padding should be `0`
+		// and instead the padding should be defined on `<textarea/>` parent `<div/>`
+		// like it's done in Material UI.
+		// Otherwise it won't look pretty and the line of text near the top border
+		// will be partially visible resulting in weird UX.
+		// If `<textarea/>` vertical padding was `0`
+		// the line of text near the top border wouldn't be visible.
 		// // The maximum number of rows <textarea/> grows up to.
 		// rowsMax          : PropTypes.number.isRequired,
 
@@ -50,7 +58,7 @@ export default class TextInput extends PureComponent
 		inputComponent : 'input',
 
 		// // The maximum number of rows <textarea/> grows up to.
-		// rowsMax : 20
+		// rowsMax : 12
 	}
 
 	hiddenTextArea = createRef()
