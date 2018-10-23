@@ -141,12 +141,12 @@
   -o-transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
   transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
   cursor: pointer;
-  background-color: #FFFFFF;
+  background-color: transparent;
   color: #03b2cb;
   border-radius: 0rem; }
 
 .rrui__button:active {
-  background-color: #FFFFFF;
+  background-color: transparent;
   color: #2bd7f0; }
 
 .rrui__button--busy,
@@ -459,7 +459,7 @@
 /* .DayPicker:not(.DayPicker--interactionDisabled) ... */
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
   background-color: #F3F3F3;
-  color: #000000; }
+  color: currentColor; }
 
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active {
   color: #ffffff;
@@ -505,8 +505,8 @@
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   text-align: center;
-  background-color: #FFFFFF;
-  color: #000000; }
+  background-color: #ffffff;
+  color: currentColor; }
 
 .rrui__date-picker .rrui__expandable__content {
   display: inline-block;
@@ -802,8 +802,8 @@ than 100% of the parent if the parent is small enough.
 
 /* Overrides Chrome autofill yellow background color */
 .rrui__input-field:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px white inset;
-          box-shadow: 0 0 0 1000px white inset; }
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+          box-shadow: 0 0 0 1000px #ffffff inset; }
 
 .rrui__input-field,
 .rrui__select__button {
@@ -856,7 +856,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__input-field--disabled {
   cursor: default;
-  background-color: transparent; }
+  background-color: #ffffff; }
 
 .rrui__input-label {
   position: absolute;
@@ -907,8 +907,8 @@ than 100% of the parent if the parent is small enough.
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
   overflow-y: auto;
-  background-color: #FFFFFF;
-  color: #000000;
+  background-color: #ffffff;
+  color: currentColor;
   list-style-type: none;
   overflow-x: hidden;
   -webkit-box-sizing: border-box;
@@ -943,11 +943,11 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__list__item:hover {
   background-color: #F3F3F3;
-  color: #000000; }
+  color: currentColor; }
 
 .rrui__list__item:active {
   background-color: #03b2cb;
-  color: #FFFFFF; }
+  color: #ffffff; }
 
 .rrui__list__item--button {
   height: calc(0.6rem * 4); }
@@ -961,12 +961,12 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__list__item--focused {
   background-color: #F3F3F3;
-  color: #000000; }
+  color: currentColor; }
 
 .rrui__list__item--selected,
 .rrui__list__item--selected:hover {
   background-color: #03b2cb;
-  color: #FFFFFF; }
+  color: #ffffff; }
 
 .rrui__list__item-icon {
   margin-right: 0.6rem;
@@ -1277,7 +1277,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
           flex-basis: auto;
   border-radius: 0.2rem;
   background-color: #ffffff;
-  color: #000000; }
+  color: currentColor; }
 
 .rrui__modal__contents--fullscreen {
   /* Completely cover the screen */
@@ -1522,7 +1522,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__button--disabled {
   /* "pointer-events" prevents "cursor: wait" from working */
   pointer-events: none;
-  background-color: transparent; }
+  background-color: #ffffff; }
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
