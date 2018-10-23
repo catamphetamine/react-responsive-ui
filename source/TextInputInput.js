@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import throttle from 'lodash/throttle'
+import createRef from 'react-create-ref'
 
 import { getModularGridUnit } from './utility/grid'
 import { submitFormOnCtrlEnter } from './utility/dom'
@@ -11,8 +12,6 @@ const PureComponent = React.PureComponent || React.Component
 
 export default class TextInput extends PureComponent
 {
-	state = {}
-
 	static propTypes =
 	{
 		// `<input type/>` attribute.
@@ -21,6 +20,9 @@ export default class TextInput extends PureComponent
 		// Whether `<textarea/>` should autoresize itself
 		// (is `true` by default)
 		autoresize       : PropTypes.bool.isRequired,
+
+		// The maximum number of rows <textarea/> grows up to.
+		rowsMax          : PropTypes.number.isRequired,
 
 		// Set to `false` to prevent the `<label/>` from floating
 		floatingLabel    : PropTypes.bool.isRequired,
@@ -45,8 +47,14 @@ export default class TextInput extends PureComponent
 
 		// A custom input component.
 		// (is `<input/>` by default)
-		inputComponent : 'input'
+		inputComponent : 'input',
+
+		// // The maximum number of rows <textarea/> grows up to.
+		// rowsMax : 20
 	}
+
+	hiddenTextArea = createRef()
+	// hiddenTextAreaSingleLine = createRef()
 
 	// Client side rendering, javascript is enabled
 	componentDidMount()
@@ -61,7 +69,22 @@ export default class TextInput extends PureComponent
 		// // Measuring the height of `<textarea/>` during
 		// // the first `this.measurements()` call instead.
 
-		if (multiline && autoresize && value) {
+		if (multiline && autoresize) {
+			const style = getComputedStyle(this.input)
+
+			// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
+			// `style.height` includes borders.
+			this.currentHeight = Math.ceil(parseFloat(style.height))
+			this.minHeight = this.currentHeight
+
+			// this.verticalPadding = Math.ceil(parseFloat(style.paddingTop)) + Math.ceil(parseFloat(style.paddingBottom))
+
+			// Top and bottom borders are extra height,
+			// because `.scrollHeight` doesn't include borders.
+			this.bordersHeight =
+				Math.ceil(parseFloat(style.borderTopWidth)) +
+				Math.ceil(parseFloat(style.borderBottomWidth))
+
 			this.autoresize()
 		}
 
@@ -79,61 +102,68 @@ export default class TextInput extends PureComponent
 		}
 	}
 
+	componentDidUpdate()
+	{
+		const { autoresize } = this.props
+
+		if (autoresize) {
+			this.autoresize()
+		}
+	}
+
+	// Copy-pasted from Material UI on Oct 24th, 2018.
+	// https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/InputBase/Textarea.js
 	autoresize = (event) =>
 	{
-		const measurements = this.measurements()
-		const element = event ? event.target : this.input
+		// const { rowsMax } = this.props
 
-		element.style.height = 0
-
-		// `element.scrollHeight` is always an integer
-		// so it doesn't need rounding (e.g. `em`s).
-		let height = element.scrollHeight + measurements.extra_height
-		height = Math.max(height, measurements.initial_height)
-
-		if (getModularGridUnit() && height % getModularGridUnit())
-		{
-			height = Math.ceil(height / getModularGridUnit()) * getModularGridUnit()
+		// Guarding for **broken** shallow rendering method that call componentDidMount
+		// but doesn't handle refs correctly.
+		// To remove once the shallow rendering has been fixed.
+		if (!this.hiddenTextArea.current) {
+			return
 		}
 
+		// const lineHeight = this.hiddenTextAreaSingleLine.current.scrollHeight - this.verticalPadding
+		let height = this.hiddenTextArea.current.scrollHeight
+
+		// Guarding for jsdom, where scrollHeight isn't present.
+		// See https://github.com/tmpvar/jsdom/issues/1013
+		if (height === undefined) {
+			return
+		}
+
+		// It would have to first subtract `paddingTop` and `paddingBottom`,
+		// then it would calculate `rowsMax * lineHeight` and
+		// then it would re-add `paddingTop` and `paddingBottom`.
+		// height = Math.min(rowsMax * lineHeight + this.verticalPadding, height)
+
+		// `.scrollHeight` doesn't include borders.
+		// `.style.height` does include borders.
+		height += this.bordersHeight
+
+		if (height <= this.minHeight) {
+			height = this.minHeight
+		}
 		// For some reason Chrome on Windows 10
 		// requires an extra pixel been added
 		// to avoid showing vertical scrollbar.
-		// (Jan 11, 2018)
-		if (height > measurements.initial_height)
-		{
+		// (Oct 24th, 2018)
+		else {
 			height += 1
 		}
 
-		element.style.height = height + 'px'
+		// "Need a large enough different to update the height.
+		//  This prevents infinite rendering loop."
+		// Don't know what loop they're talking about.
+		if (Math.abs(this.currentHeight - height) > 1) {
+			this.currentHeight = height
+			// `.style.height` includes borders.
+			this.input.style.height = height + 'px'
+		}
 	}
 
 	onWindowResize = throttle((event) => this.autoresize(), 100)
-
-	measure = () => autoresize_measure(this.input)
-
-	measurements()
-	{
-		let measurements = this.state.autoresize
-
-		// If it's the first time accessing measurements,
-		// or if the textarea was initially hidden
-		// (like `display: none` for a mobile-oriented responsive design)
-		// then make the initial measurements now.
-		if (!measurements || !measurements.initial_height)
-		{
-			measurements = this.measure()
-
-			// If the `<textarea/>` is not hidden (e.g. via `display: none`)
-			// then keep its initial (minimum) height
-			// so that it doesn't shrink below this value
-			if (measurements.initial_height) {
-				this.setState({ autoresize: measurements })
-			}
-		}
-
-		return measurements
-	}
 
 	// The underlying `input` component
 	// can pass both `event`s and `value`s
@@ -257,13 +287,35 @@ export default class TextInput extends PureComponent
 		// this is gonna be a `<textarea/>`
 		if (multiline)
 		{
-			// "keyup" is required for IE to properly reset height when deleting text
-			return (
-				<textarea
-					{ ...properties }
-					onInput={ autoresize ? this.autoresize : undefined }
-					onKeyUp={ autoresize ? this.autoresize : undefined }/>
-			)
+			if (autoresize) {
+				return [
+					// <textarea
+					// 	key="textarea-measurement-single-line"
+					// 	ref={this.hiddenTextAreaSingleLine}
+					// 	rows="1"
+					// 	readOnly
+					// 	aria-hidden="true"
+					// 	value=""
+					// 	tabIndex={-1}
+					// 	className={properties.className}
+					// 	style={this.props.inputStyle ? { ...inputStyle, ...HIDDEN_TEXTAREA_STYLE } : HIDDEN_TEXTAREA_STYLE}/>,
+
+					<textarea
+						key="textarea-measurement"
+						ref={this.hiddenTextArea}
+						readOnly
+						aria-hidden="true"
+						value={properties.value}
+						rows={properties.rows}
+						tabIndex={-1}
+						className={properties.className}
+						style={this.props.inputStyle ? { ...inputStyle, ...HIDDEN_TEXTAREA_STYLE } : HIDDEN_TEXTAREA_STYLE}/>,
+
+					<textarea key="textarea" { ...properties }/>
+				]
+			}
+
+			return <textarea key="textarea" { ...properties }/>
 		}
 
 		// Add `<input/>` `type` property.
@@ -275,27 +327,15 @@ export default class TextInput extends PureComponent
 	}
 }
 
-// <textarea/> autoresize (without ghost elements)
-// https://github.com/javierjulio/textarea-autosize/blob/master/src/jquery.textarea_autosize.js
-function autoresize_measure(element)
-{
-	const style = getComputedStyle(element)
-
-	// Borders extra height, because `.scrollHeight` doesn't include borders.
-	const extra_height =
-		parseInt(style.borderTopWidth) +
-		parseInt(style.borderBottomWidth)
-
-	// `<textarea/>`'s height is a float when using `em`, `rem`, `pt`, etc.
-	const non_rounded_initial_height = element.getBoundingClientRect().height
-	const initial_height = Math.ceil(non_rounded_initial_height)
-
-	// Round the height of `<textarea/>` so that it doesn't jump
-	// when autoresizing while typing for the first time.
-	if (initial_height !== non_rounded_initial_height)
-	{
-		element.style.height = initial_height + 'px'
-	}
-
-	return { extra_height, initial_height }
+// https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/InputBase/Textarea.js
+const HIDDEN_TEXTAREA_STYLE = {
+	// Overflow also needed to here to remove the extra row
+	// added to `<textarea/>`s in Firefox.
+	overflow: 'hidden',
+	// Visibility needed to hide the extra `<textarea/>` on iPads.
+	visibility: 'hidden',
+	position: 'absolute',
+	height: 'auto',
+	// Don't know why is it here.
+	whiteSpace: 'pre-wrap'
 }
