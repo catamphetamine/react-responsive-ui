@@ -21,8 +21,8 @@ export default class TextInput extends PureComponent
 		// (is `true` by default)
 		autoresize       : PropTypes.bool.isRequired,
 
-		// The maximum number of rows <textarea/> grows up to.
-		rowsMax          : PropTypes.number.isRequired,
+		// // The maximum number of rows <textarea/> grows up to.
+		// rowsMax          : PropTypes.number.isRequired,
 
 		// Set to `false` to prevent the `<label/>` from floating
 		floatingLabel    : PropTypes.bool.isRequired,
