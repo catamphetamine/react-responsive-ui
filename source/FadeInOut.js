@@ -7,7 +7,7 @@ export default class FadeInOut extends React.Component {
 		show: PropTypes.bool.isRequired,
 		fadeInInitially: PropTypes.bool.isRequired,
 		fadeInDuration: PropTypes.number,
-		fadeOutDuration: PropTypes.number.isRequired,
+		fadeOutDuration: PropTypes.number,
 		fadeInClassName: PropTypes.string,
 		children: PropTypes.element.isRequired
 	}
@@ -15,7 +15,8 @@ export default class FadeInOut extends React.Component {
 	static defaultProps = {
 		show: false,
 		fadeInInitially: false,
-		fadeInDuration: 0
+		fadeInDuration: 0,
+		fadeOutDuration: 0
 	}
 
 	state = {

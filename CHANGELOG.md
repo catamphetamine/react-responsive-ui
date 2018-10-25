@@ -23,6 +23,8 @@
 
 <!-- (breaking change) `<Page/>` component was removed. `<PageAndMenu/>` was renamed to `<App/>` (or something). -->
 
+<!-- Maybe add `maxLines` to `<TextInput multiline/>` (or maybe not) which would require rethinking CSS and markup if it was implemented. -->
+
 0.14.51 / 08.10.2018
 ====================
 
