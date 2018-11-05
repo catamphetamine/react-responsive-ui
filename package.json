@@ -44,6 +44,7 @@
     "react-dom": "^16.4.1",
     "react-router": "^3.0.0",
     "rimraf": "^2.5.0",
+    "simple-http-file-server": "^1.0.1",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14"
   },
