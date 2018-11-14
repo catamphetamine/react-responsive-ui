@@ -1,4 +1,4 @@
-import { isInternetExplorer } from './dom'
+import { isInternetExplorer, isElement } from './dom'
 
 export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, preventBlur)
 {
@@ -43,7 +43,10 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 		return setTimeout(() => getComponentNode() && _onBlur(document.activeElement), 30)
 	}
 
-	return _onBlur(event.relatedTarget)
+	// There was an error in Firefox 52:
+	// "Argument 1 of Node.contains does not implement interface Node".
+	// To prevent such errors `event.relatedTarget` is validated manually here.
+	return _onBlur(isElement(event.relatedTarget) ? event.relatedTarget : undefined)
 }
 
 /**

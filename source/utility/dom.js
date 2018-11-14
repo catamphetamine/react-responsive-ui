@@ -48,3 +48,8 @@ export function isInternetExplorer()
 	return window.navigator.userAgent.indexOf('MSIE ') > 0 ||
 		window.navigator.userAgent.indexOf('Trident/') > 0
 }
+
+// https://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
+export function isElement(element) {
+	return element instanceof Element || element instanceof HTMLDocument
+}
