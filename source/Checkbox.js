@@ -93,8 +93,9 @@ export default class Checkbox extends PureComponent
 				className={ classNames('rrui__checkbox',
 				{
 					// 'rrui__checkbox--checked'  : value,
-					'rrui__checkbox--invalid'  : indicateInvalid && error,
-					'rrui__checkbox--disabled' : disabled
+					'rrui__checkbox--invalid'   : indicateInvalid && error,
+					'rrui__checkbox--disabled'  : disabled,
+					'rrui__checkbox--multiline' : multiline
 				},
 				className) }
 				style={ style }>

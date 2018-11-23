@@ -32,6 +32,11 @@
 	flex : 1 0 0;
 }
 
+.rrui__checkbox--multiline .rrui__checkbox__checkbox
+{
+	margin-top: 0.12em;
+}
+
 .rrui__checkbox__input,
 .rrui__checkbox__label
 {
