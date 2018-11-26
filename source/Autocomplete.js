@@ -687,7 +687,7 @@ export default class Autocomplete extends PureComponent
 		{
 			return getOptions ? getOptions('') : filterOptions(this.props.options, '')
 		})
-		.then(() =>
+		.then((options) =>
 		{
 			return new Promise(resolve => this.setState({ options }, resolve))
 		})
