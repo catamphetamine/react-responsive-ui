@@ -66,7 +66,14 @@ export function DragAndDrop()
 		// current_offset : monitor.getSourceClientOffset()
 	}))
 
-	return component => context(layer(component))
+	return (component) => {
+		// A workaround to prevent `react-dnd` from breaking server-side rendering.
+		// https://github.com/react-dnd/react-dnd/issues/1192
+		if (typeof window === 'undefined') {
+			return component
+		}
+		return context(layer(component))
+	}
 }
 
 // Native file drag'n'drop (single file)
