@@ -16,7 +16,7 @@
     "react-create-ref": "^1.0.0",
     "react-day-picker": "^7.1.6",
     "react-dnd": "^7.0.1",
-    "react-dnd-html5-backend": "^5.0.1",
+    "react-dnd-html5-backend": "^7.0.1",
     "react-lifecycles-compat": "^3.0.2",
     "react-modal": "^3.4.4",
     "scroll-into-view-if-needed": "^2.2.16"
