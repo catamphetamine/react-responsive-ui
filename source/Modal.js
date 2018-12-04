@@ -76,7 +76,7 @@ class Modal extends Component
 
 		// `aria-label` for the modal.
 		// (is "Popup" by default)
-		contentLabel     : PropTypes.string.isRequired,
+		contentLabel     : PropTypes.string,
 
 		// An optional close button icon (like a cross).
 		// Set to `true` to show the default "cross" icon.
@@ -112,8 +112,6 @@ class Modal extends Component
 		// your .ReactModal__Overlay and .ReactModal__Content
 		// css transition times accordingly
 		closeTimeout : 150, // ms
-
-		contentLabel : 'Popup',
 
 		// Modal contents are unmounted when the modal is closed by default
 		unmount : true,
