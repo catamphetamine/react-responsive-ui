@@ -240,6 +240,8 @@ export default class TextInput extends PureComponent
 			focus,
 			onChange,
 			disabled,
+			label,
+			placeholder,
 			type,
 			autoresize,
 			indicateInvalid,
@@ -273,6 +275,7 @@ export default class TextInput extends PureComponent
 			ref         : this.storeInputNode,
 			value       : (value === undefined || value === null) ? '' : value,
 			disabled,
+			'aria-label' : label || placeholder,
 			onChange    : this.onChange,
 			onKeyDown   : this.onKeyDown,
 			className   : classNames
@@ -319,7 +322,9 @@ export default class TextInput extends PureComponent
 						className={properties.className}
 						style={this.props.inputStyle ? { ...inputStyle, ...HIDDEN_TEXTAREA_STYLE } : HIDDEN_TEXTAREA_STYLE}/>,
 
-					<textarea key="textarea" { ...properties }/>
+					<textarea
+						key="textarea"
+						{ ...properties }/>
 				]
 			}
 

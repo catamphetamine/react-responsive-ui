@@ -322,7 +322,6 @@ export default class Select extends PureComponent
 			required,
 			icon,
 			title,
-			ariaLabel,
 			toggleClassName,
 			indicateInvalid,
 			error
@@ -347,7 +346,7 @@ export default class Select extends PureComponent
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
-				aria-label={ ariaLabel }
+				aria-label={ this.getAriaLabel() }
 				className={ classNames
 				(
 					'rrui__input-element',
@@ -594,6 +593,17 @@ export default class Select extends PureComponent
 				return option
 			}
 		}
+	}
+
+	getAriaLabel()
+	{
+		const {
+			ariaLabel,
+			label,
+			placeholder
+		} = this.props
+
+		return ariaLabel || label || placeholder
 	}
 
 	getLabel()

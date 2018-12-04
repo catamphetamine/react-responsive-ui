@@ -66,12 +66,14 @@ export function DragAndDrop()
 		// current_offset : monitor.getSourceClientOffset()
 	}))
 
-	// Doesn't work, breaks `ReactDOM.hydrate()` ("didn't expect to ...").
-	// // A workaround to prevent `react-dnd` from breaking server-side rendering.
-	// // https://github.com/react-dnd/react-dnd/issues/1192
-	// if (typeof window === 'undefined') {
-	// 	return component => component
-	// }
+	// Doesn't work, breaks `ReactDOM.hydrate()`.
+	// ("Did not expect server HTML to contain ...").
+	//
+	// A workaround to prevent `react-dnd` from breaking server-side rendering.
+	// https://github.com/react-dnd/react-dnd/issues/1192
+	if (typeof window === 'undefined') {
+		return component => component
+	}
 
 	return (component) => context(layer(component))
 }

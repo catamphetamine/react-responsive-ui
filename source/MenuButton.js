@@ -35,13 +35,16 @@ class MenuButton extends PureComponent
 		// if a web browser has javascript disabled (e.g. Tor),
 		// then the menu button will redirect to this Menu page URL.
 		// If not set then won't redirect anywhere.
-		link        : PropTypes.string.isRequired,
+		link        : PropTypes.string,
 
 		// HTML `title` attribute.
 		title       : PropTypes.string,
 
 		// Menu button icon component.
 		icon        : PropTypes.func.isRequired,
+
+		// `aria-label`.
+		label       : PropTypes.string.isRequired,
 
 		// CSS class.
 		className   : PropTypes.string,
@@ -52,8 +55,8 @@ class MenuButton extends PureComponent
 
 	static defaultProps =
 	{
-		link : '#',
-		icon : MenuIcon
+		icon : MenuIcon,
+		label : 'Menu'
 	}
 
 	componentDidMount()
@@ -87,6 +90,7 @@ class MenuButton extends PureComponent
 		const
 		{
 			link,
+			label,
 			className,
 			icon : MenuButtonIcon,
 			menuIsExpanded,
@@ -98,16 +102,38 @@ class MenuButton extends PureComponent
 		}
 		= this.props
 
-		return (
-			<a
-				ref={ this.storeButtonNode }
-				href={ link }
-				onClick={ this.onClick }
-				className={ classNames('rrui__menu-button', className) }
-				{ ...rest }>
+		const properties = {
+			...rest,
+			ref: this.storeButtonNode,
+			onClick: this.onClick,
+			className: classNames('rrui__menu-button', className)
+		}
 
-				<MenuButtonIcon expanded={menuIsExpanded}/>
-			</a>
+		const children = <MenuButtonIcon expanded={menuIsExpanded}/>
+
+		// A link.
+		if (link) {
+			return React.createElement(
+				'a',
+				{
+					...properties,
+					href: link,
+					title: label
+				},
+				children
+			)
+		}
+
+		// A button.
+		return React.createElement(
+			'button',
+			{
+				...properties,
+				type: 'button',
+				'aria-label': label,
+				className: classNames(properties.className, 'rrui__button-reset')
+			},
+			children
 		)
 	}
 }
