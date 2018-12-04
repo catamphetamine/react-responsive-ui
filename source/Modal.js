@@ -75,7 +75,6 @@ class Modal extends Component
 		bodyOverflowY    : PropTypes.string.isRequired,
 
 		// `aria-label` for the modal.
-		// (is "Popup" by default)
 		contentLabel     : PropTypes.string,
 
 		// An optional close button icon (like a cross).
