@@ -168,23 +168,6 @@ export default class DatePicker extends PureComponent
 		selected_day : null
 	}
 
-	// componentDidMount()
-	// {
-	// 	// Set "previous" and "next" buttons untabbable
-	// 	// so that a Tab out of the `<input/>` field
-	// 	// moves cursor not inside to these buttons
-	// 	// but rather to the next form input.
-	// 	//
-	// 	// (rewritten)
-	// 	// Requires ES6 Symbol.Iterator polyfill.
-	// 	// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
-	// 	//
-	// 	for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton')))
-	// 	{
-	// 		button.removeAttribute('tabindex')
-	// 	}
-	// }
-
 	componentWillUnmount()
 	{
 		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
@@ -241,6 +224,23 @@ export default class DatePicker extends PureComponent
 	onExpanded = () =>
 	{
 		const { value } = this.props
+
+		// Set "previous" and "next" buttons untabbable
+		// so that a Tab out of the `<input/>` field
+		// moves cursor not inside to these buttons
+		// but rather to the first day of the month. // next form input.
+		//
+		// (rewritten)
+		// Requires ES6 Symbol.Iterator polyfill.
+		// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
+		//
+		// The user can still navigate via Up/Down arrow keys
+		// when the focus is on a calendar date.
+		// Or the user can enter the date in the `<input/>` text field.
+		//
+		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton'))) {
+			button.removeAttribute('tabindex')
+		}
 
 		// Toggling the calendar in a timeout
 		// in order for iOS scroll not to get "janky"
