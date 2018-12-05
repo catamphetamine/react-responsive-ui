@@ -23,7 +23,9 @@ window.ExampleModal = class ExampleComponent extends React.Component
 								<Modal
 									isOpen={this.state.show_modal}
 									close={() => this.setState({ show_modal: false })}
-									style={{ maxWidth : '40em' }}>
+									style={{ maxWidth : '40em' }}
+									contentLabel="aria-label"
+									appElement={document.body}>
 
 									<Modal.Title>
 										An example modal
@@ -95,9 +97,15 @@ window.ExampleModal = class ExampleComponent extends React.Component
 <code className="colored">{'<Modal/>'}</code> also takes optional properties:
 
 <ul className="list">
-	<li><code className="colored">closeButtonIcon</code> property which can either be <code className="colored">true</code> for a default "cross" icon or a custom <code className="colored">React.Component</code>.</li>
+	<li><code className="colored">closeButtonIcon</code> — pass <code className="colored">true</code> for a default "cross" icon, or a custom <code className="colored">React.Component</code>.</li>
 
-	<li><code className="colored">closeLabel</code> property in which case a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
+	<li><code className="colored">closeLabel</code> — if passed then a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
+
+	<li><code className="colored">contentLabel</code> — <code className="colored">aria-label</code> for the modal (accessibility).</li>
+
+	<li><code className="colored">appElement</code> — <code className="colored">aria-hidden</code> will be set to <code className="colored">true</code> for this DOM element if passed (accessibility).</li>
+
+	<li><code className="colored">appElementId</code> — <code className="colored">aria-hidden</code> will be set to <code className="colored">true</code> for the DOM element having this <code className="colored">id</code> if passed (accessibility).</li>
 </ul>
 
 			</Example>

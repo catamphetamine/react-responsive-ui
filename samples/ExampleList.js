@@ -15,7 +15,7 @@ window.ExampleList = class ExampleComponent extends React.Component
 					style={input_style}
 					className="column-width rrui__shadow"
 					value={ this.state.value }
-					onSelectItem={ value => this.setState({ value }) }>
+					onChange={ value => this.setState({ value }) }>
 					<List.Item value="A">Apple</List.Item>
 					<List.Item value="B">Banana</List.Item>
 					<List.Item value="C">Cranberry</List.Item>
