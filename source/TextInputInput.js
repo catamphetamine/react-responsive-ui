@@ -276,6 +276,7 @@ export default class TextInput extends PureComponent
 			value       : (value === undefined || value === null) ? '' : value,
 			disabled,
 			'aria-label' : label || placeholder,
+			placeholder,
 			onChange    : this.onChange,
 			onKeyDown   : this.onKeyDown,
 			className   : classNames

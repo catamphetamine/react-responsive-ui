@@ -31,6 +31,9 @@ export default class Checkbox extends PureComponent
 		// When `true` autofocuses the checkbox
 		focus     : PropTypes.bool.isRequired,
 
+		// `aria-label` attribute.
+		ariaLabel : PropTypes.string,
+
 		// The label (text)
 		children  : PropTypes.node,
 
@@ -82,6 +85,7 @@ export default class Checkbox extends PureComponent
 			indicateInvalid,
 			multiline,
 			disabled,
+			ariaLabel,
 			children,
 			style,
 			className
@@ -110,6 +114,7 @@ export default class Checkbox extends PureComponent
 						<input
 							ref={ this.storeInstance }
 							type="checkbox"
+							ariaLabel={ ariaLabel || (typeof children === 'string' ? children : undefined)}
 							checked={ value }
 							disabled={ disabled }
 							onKeyDown={ this.onKeyDown }

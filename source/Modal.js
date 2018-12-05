@@ -77,6 +77,14 @@ class Modal extends Component
 		// `aria-label` for the modal.
 		contentLabel     : PropTypes.string,
 
+		// `aria-hidden` will be set to true on the `appElement`.
+		appElement       : PropTypes.any,
+		appElementId     : PropTypes.string,
+
+		// Whether to set `aria-hidden` on the `appElement`.
+		// Is `true` inside `react-modal` by default.
+		ariaHideApp      : PropTypes.bool,
+
 		// An optional close button icon (like a cross).
 		// Set to `true` to show the default "cross" icon.
 		closeButtonIcon  : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([true])]),
@@ -201,6 +209,9 @@ class Modal extends Component
 			contentLabel,
 			title,
 			closeLabel,
+			ariaHideApp,
+			appElement,
+			appElementId,
 			closeButtonIcon,
 			actions,
 			unmount,
@@ -225,7 +236,8 @@ class Modal extends Component
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ contentLabel }
-				ariaHideApp={ false }
+				ariaHideApp={ ariaHideApp }
+				appElement={ appElementId ? (typeof window === 'undefined' ? undefined : document.getElementById(appElementId)) : appElement }
 				style={ react_modal_style }
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
@@ -720,5 +732,7 @@ Modal = reactLifecyclesCompat(Modal)
 Modal.Title = Title
 Modal.Content = Content
 Modal.Actions = Actions
+
+Modal.setAppElement = ReactModal.setAppElement
 
 export default Modal

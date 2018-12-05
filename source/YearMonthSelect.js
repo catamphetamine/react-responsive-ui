@@ -12,7 +12,18 @@ export default class YearMonthSelect extends PureComponent
 	{
 		date : PropTypes.instanceOf(Date),
 		onChange : PropTypes.func.isRequired,
-		localeUtils : PropTypes.object
+		localeUtils : PropTypes.object,
+		tabbable : PropTypes.bool.isRequired
+	}
+
+	static defaultProps =
+	{
+		// For some weird reason in Chrome 70
+		// the focus is trapped and jumps from
+		// the month `<select/>` back to the `<input/>`
+		// if `tabbable` is `true`.
+		// Works as intended in Firefox though.
+		tabbable : false
 	}
 
 	constructor(props)
@@ -114,7 +125,7 @@ export default class YearMonthSelect extends PureComponent
 
 	render()
 	{
-		const { date } = this.props
+		const { date, tabbable } = this.props
 
 		return (
 			<div className="DayPicker-Caption">
@@ -125,7 +136,8 @@ export default class YearMonthSelect extends PureComponent
 							onChange={ this.onChangeMonth }
 							onBlur={ this.restoreFocus }
 							value={ date.getMonth() }
-							tabIndex={ -1 }
+							aria-label="Month"
+							tabIndex={ tabbable ? 0 : -1 }
 							className="rrui__select__native rrui__select__native--overlay">
 
 							{ this.months.map((month, i) => (
@@ -136,7 +148,10 @@ export default class YearMonthSelect extends PureComponent
 						</select>
 
 						{/* Month `<select/>` button */}
-						<button type="button" className="rrui__button-reset">
+						<button
+							type="button"
+							tabIndex={-1}
+							className="rrui__button-reset rrui__date-picker__month-select-toggler">
 							<div className="rrui__select__selected-content">
 								<div className="rrui__select__selected-label">
 									{this.months[date.getMonth()]}
@@ -152,7 +167,8 @@ export default class YearMonthSelect extends PureComponent
 							onChange={ this.onChangeYear }
 							onBlur={ this.restoreFocus }
 							value={ date.getFullYear() }
-							tabIndex={ -1 }
+							aria-label="Year"
+							tabIndex={ tabbable ? 0 : -1 }
 							className="rrui__select__native rrui__select__native--overlay">
 
 							{ this.years.map((year, i) => (
@@ -163,7 +179,10 @@ export default class YearMonthSelect extends PureComponent
 						</select>
 
 						{/* Year `<select/>` button */}
-						<button type="button" className="rrui__button-reset">
+						<button
+							type="button"
+							tabIndex={-1}
+							className="rrui__button-reset rrui__date-picker__year-select-toggler">
 							<div className="rrui__select__selected-content">
 								<div className="rrui__select__selected-label">
 									{date.getFullYear()}

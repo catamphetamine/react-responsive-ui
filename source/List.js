@@ -35,6 +35,9 @@ export default class List extends PureComponent
 		onFocusItem : PropTypes.func,
 		onKeyDown : PropTypes.func,
 
+		// ARIA `role` attribute.
+		role : PropTypes.string,
+
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
 		focusFirstItemWhenItemsChange : PropTypes.bool.isRequired,
@@ -300,6 +303,7 @@ export default class List extends PureComponent
 			onSelectItem,
 			highlightSelectedItem,
 			shouldCreateButtons,
+			role,
 			className,
 			style,
 			children
@@ -312,6 +316,7 @@ export default class List extends PureComponent
 			<ul
 				ref={ this.storeListNode }
 				onKeyDown={ this.onKeyDown }
+				role={ role || (onChange ? 'listbox' : undefined)}
 				style={ style }
 				className={ classNames(className, 'rrui__list') }>
 
@@ -326,6 +331,7 @@ export default class List extends PureComponent
 						key       : i,
 						index     : i,
 						itemRef   : this.isFocusableItem(item) ? this.storeItemRef : undefined,
+						role      : role === 'listbox' || onChange ? 'option' : undefined,
 						focus     : this.focusItem,
 						focused   : focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
@@ -503,6 +509,7 @@ export class Item extends React.Component
 		{
 			value,
 			icon,
+			role,
 			focused,
 			disabled,
 			className,
@@ -520,6 +527,8 @@ export class Item extends React.Component
 			throw new Error(`Each <List.Item/> must have a single child (and remove any whitespace).`)
 		}
 
+		const isSelected = this.shouldCreateButton() && value === selectedItemValue
+
 		const properties =
 		{
 			ref          : this.storeRef,
@@ -532,7 +541,7 @@ export class Item extends React.Component
 				'rrui__list__item',
 				{
 					'rrui__list__item--focused'  : focused,
-					'rrui__list__item--selected' : highlightSelectedItem && this.shouldCreateButton() && value === selectedItemValue,
+					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
 					'rrui__list__item--disabled' : disabled,
 					'rrui__list__item--divider'  : children.type === DividerType
 				}
@@ -588,7 +597,10 @@ export class Item extends React.Component
 		}
 
 		return (
-			<li className="rrui__list__list-item">
+			<li
+				role={role}
+				aria-selected={isSelected}
+				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }
 				{ !ItemComponent && React.cloneElement(children, properties) }
 			</li>

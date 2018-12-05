@@ -118,7 +118,7 @@ class MenuButton extends PureComponent
 				{
 					...properties,
 					href: link,
-					title: label
+					'aria-label': label
 				},
 				children
 			)

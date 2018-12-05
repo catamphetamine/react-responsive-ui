@@ -26,6 +26,12 @@
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='fill: currentColor; color: %2303b2cb;'%3E%3Cpath d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'%3E%3C/path%3E%3C/svg%3E");
 }
 
+.DayPicker-NavButton--prev:focus,
+.DayPicker-NavButton--next:focus {
+	background-color: #f7f7f7;
+	border-radius: 50%;
+}
+
 .DayPicker-NavButton--interactionDisabled {
 	display: none;
 }
@@ -74,6 +80,10 @@
 	cursor: pointer;
 	vertical-align: middle;
 	border-radius: 50%;
+}
+
+.DayPicker-Day:focus {
+	background-color: #f7f7f7;
 }
 
 .DayPicker--interactionDisabled .DayPicker-Day {
@@ -254,4 +264,10 @@
 {
 	opacity : 1;
 	color   : var(--rrui-accent-color-light);
+}
+
+.DayPicker-YearSelect select:focus + button .rrui__select__arrow,
+.DayPicker-MonthSelect select:focus + button .rrui__select__arrow
+{
+	color : var(--rrui-select-toggler-text-color-active);
 }

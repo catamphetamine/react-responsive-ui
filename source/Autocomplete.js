@@ -444,6 +444,7 @@ export default class Autocomplete extends PureComponent
 		const
 		{
 			value,
+			label,
 			placeholder,
 			disabled,
 			required,
@@ -471,6 +472,7 @@ export default class Autocomplete extends PureComponent
 			<TextInput
 				inputRef={ this.storeInput }
 				value={ inputValue }
+				label={ label }
 				placeholder={ placeholder }
 				onChange={ this.onInputValueChange }
 				onKeyDown={ this.onKeyDown }

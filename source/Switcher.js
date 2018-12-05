@@ -38,6 +38,9 @@ export default class Switcher extends PureComponent
 		// Is called when an option is selected
 		onChange     : PropTypes.func.isRequired,
 
+		// `aria-label` attribute.
+		ariaLabel    : PropTypes.string,
+
 		// CSS class
 		className    : PropTypes.string,
 
@@ -59,6 +62,7 @@ export default class Switcher extends PureComponent
 			options,
 			indicateInvalid,
 			error,
+			ariaLabel,
 			style,
 			className
 		}
@@ -68,6 +72,7 @@ export default class Switcher extends PureComponent
 			<div
 				ref={ this.storeContainerComponent }
 				onKeyDown={ this.onKeyDown }
+				aria-label={ ariaLabel }
 				className={ classNames('rrui__switcher',
 				{
 					'rrui__switcher--disabled' : disabled
@@ -75,7 +80,9 @@ export default class Switcher extends PureComponent
 				className) }
 				style={ style }>
 
-				<div className="rrui__input">
+				<div
+					className="rrui__input"
+					role="radiogroup">
 					{ options.map((option, index) => this.render_button(option, index)) }
 				</div>
 
@@ -102,7 +109,9 @@ export default class Switcher extends PureComponent
 				key={ option.value }
 				ref={ ref => this[`button_${index}`] = ref }
 				type="button"
-				tabIndex={ index === 0 ? undefined : '-1' }
+				role="radio"
+				aria-checked={ selected }
+				tabIndex={ selected ? 0 : -1 }
 				disabled={ disabled }
 				onClick={ this.chooser(option.value) }
 				className={ classNames

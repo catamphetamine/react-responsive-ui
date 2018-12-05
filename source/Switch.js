@@ -108,6 +108,7 @@ export default class Switch extends PureComponent
 						value={ value }
 						onKeyDown={ this.onKeyDown }
 						onChange={ this.toggle }
+						aria-label={ leftLabel || rightLabel || (typeof children === 'string' ? children : undefined)}
 						className="rrui__switch__input"
 						style={ inputStyle }/>
 

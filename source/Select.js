@@ -240,7 +240,12 @@ export default class Select extends PureComponent
 
 					{ wait && <Ellipsis/> }
 
-					{/* A transparent native `<select/>` above (for better UX on mobile devices). */}
+					{/* A transparent native `<select/>` on top
+					    in case of `nativeExpanded={true}`.
+					    (for better UX on mobile devices).
+					    In case of `nativeExpanded={false}`
+					    the native `<select/>` can be used for
+					    javascriptless `<form/>` submission. */}
 					{ !native && this.renderNativeSelect() }
 					{/* The currently selected option */}
 					{ !native && this.renderSelectButton() }
@@ -322,6 +327,7 @@ export default class Select extends PureComponent
 			required,
 			icon,
 			title,
+			nativeExpanded,
 			toggleClassName,
 			indicateInvalid,
 			error
@@ -347,6 +353,8 @@ export default class Select extends PureComponent
 				tabIndex={ -1 }
 				title={ title }
 				aria-label={ this.getAriaLabel() }
+				aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
+				aria-hidden={ nativeExpanded ? true : undefined }
 				className={ classNames
 				(
 					'rrui__input-element',
@@ -389,6 +397,7 @@ export default class Select extends PureComponent
 			label,
 			disabled,
 			native,
+			nativeExpanded,
 			error,
 			indicateInvalid,
 			tabIndex
@@ -406,6 +415,8 @@ export default class Select extends PureComponent
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
 				tabIndex={ tabIndex }
+				aria-hidden={ native || nativeExpanded ? undefined : true }
+				aria-label={ label }
 				className={ classNames('rrui__select__native',
 				{
 					'rrui__select__native--overlay' : !native,

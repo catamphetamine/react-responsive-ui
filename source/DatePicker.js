@@ -168,22 +168,22 @@ export default class DatePicker extends PureComponent
 		selected_day : null
 	}
 
-	componentDidMount()
-	{
-		// Set "previous" and "next" buttons untabbable
-		// so that a Tab out of the `<input/>` field
-		// moves cursor not inside to these buttons
-		// but rather to the next form input.
-		//
-		// (rewritten)
-		// Requires ES6 Symbol.Iterator polyfill.
-		// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
-		//
-		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton')))
-		{
-			button.removeAttribute('tabindex')
-		}
-	}
+	// componentDidMount()
+	// {
+	// 	// Set "previous" and "next" buttons untabbable
+	// 	// so that a Tab out of the `<input/>` field
+	// 	// moves cursor not inside to these buttons
+	// 	// but rather to the next form input.
+	// 	//
+	// 	// (rewritten)
+	// 	// Requires ES6 Symbol.Iterator polyfill.
+	// 	// for (const button of calendar.querySelectorAll('.DayPicker-NavButton'))
+	// 	//
+	// 	for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton')))
+	// 	{
+	// 		button.removeAttribute('tabindex')
+	// 	}
+	// }
 
 	componentWillUnmount()
 	{
@@ -703,7 +703,6 @@ export default class DatePicker extends PureComponent
 							selectedDays={ normalizeDate(value) }
 							disabledDays={ disabledDays }
 							captionElement={ captionElement }
-							tabIndex={ -1 }
 							className="rrui__date-picker__calendar" />
 					</Expandable>
 				</TextInput>

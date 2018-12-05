@@ -492,6 +492,7 @@ export default class Expandable extends PureComponent
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
+				aria-expanded={ expanded }
 				style={ style }
 				className={ classNames
 				(
