@@ -7,6 +7,7 @@ import Divider from './Divider'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 import { focus } from './utility/focus'
+import { getShowOutline } from './utility/configuration'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -560,7 +561,13 @@ export class Item extends React.Component
 			properties['aria-label'] = label
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
-			properties.className = classNames(properties.className, 'rrui__button-reset', 'rrui__list__item--button')
+			properties.className = classNames(
+				properties.className,
+				'rrui__button-reset',
+				'rrui__list__item--button', {
+					'rrui__outline': getShowOutline()
+				}
+			)
 
 			// Replace `itemChildren` array with `<React.Fragment/>`
 			// in some future when React >= 16.2.0 is common.

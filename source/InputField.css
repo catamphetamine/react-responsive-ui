@@ -1,6 +1,5 @@
 .rrui__input-field
 {
-	outline       : none;
 	border-radius : 0;
 	/* Some web browsers add <input/> padding by default */
 	padding       : 0;
@@ -9,6 +8,15 @@
 	font-family   : inherit;
 	font-weight   : inherit;
 	font-style    : inherit;
+}
+
+/* `<TextInput/>` has `border-color` to indicate its `:focus` state.
+   Therefore the `outline` can be safely removed. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__input-field:not(.rrui__outline)
+{
+	outline : none;
 }
 
 /* Overrides Chrome autofill yellow background color */
@@ -43,8 +51,10 @@
 }
 
 .rrui__input-field:focus,
-.rrui__select__button:focus,
-.rrui__select__native:focus + .rrui__select__button
+/* For `<Select native={false}/>` (default). */
+.rrui__select__native:focus + .rrui__select__button,
+/* For `<Select native={true}/>`. */
+.rrui__select__native:focus
 {
 	border-color: var(--rrui-input-field-border-color-focus);
 }

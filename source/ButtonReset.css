@@ -4,7 +4,6 @@
 	margin      : 0;
 	padding     : 0;
 	white-space : nowrap;
-	outline     : none;
 	appearance  : none;
 	border      : none;
 	background  : none;
@@ -14,6 +13,15 @@
 	font-weight : inherit;
 	font-style  : inherit;
 	user-select : none;
+	/* box-sizing  : border-box; */
+}
+
+/* Developers should define `:focus` styles for `<Button/>`s. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__button-reset:not(.rrui__outline)
+{
+	outline : none;
 }
 
 .rrui__button-reset--link:hover

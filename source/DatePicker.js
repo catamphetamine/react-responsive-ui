@@ -239,7 +239,7 @@ export default class DatePicker extends PureComponent
 		// Or the user can enter the date in the `<input/>` text field.
 		//
 		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton'))) {
-			button.removeAttribute('tabindex')
+			button.setAttribute('tabindex', '-1')
 		}
 
 		// Toggling the calendar in a timeout

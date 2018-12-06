@@ -164,11 +164,18 @@
 	position : relative;
 }
 
+/* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
+   It gets focused upon expanding which causes an outline.
+   That outline can be safely removed because it doesn't aid accesiblity. */
 .DayPicker-wrapper,
+/* Calendar days have `background-color` on `:focus`.
+   Therefore their `outline` can be safely removed. */
 .DayPicker-Day,
+/* Previous/Next month buttons have `background-color` on `:focus`.
+   Therefore their `outline` can be safely removed. */
 .DayPicker-NavButton
 {
-	outline: none
+	outline: none;
 }
 
 /* https://github.com/gpbl/react-day-picker/issues/708 */

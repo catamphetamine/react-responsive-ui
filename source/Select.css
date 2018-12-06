@@ -55,10 +55,11 @@
 	border-color : var(--rrui-error-color);
 }
 
-.rrui__select__button:active .rrui__select__selected-label,
-.rrui__select__button:active .rrui__select__arrow,
+/* For `<Select native={false}/>` (default). */
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
-.rrui__select__native:active + .rrui__select__button .rrui__select__arrow
+.rrui__select__native:active + .rrui__select__button .rrui__select__arrow,
+/* For `<Select native={true}/>`. */
+.rrui__select__native:active + .rrui__input-label
 {
 	color : var(--rrui-select-toggler-text-color-active);
 }
@@ -140,6 +141,14 @@
 {
 	height  : 100%;
 	cursor  : pointer;
+}
+
+/* `:focus` style is implemented via border color
+   so outline can be muted safely here. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__select__native:not(.rrui__outline)
+{
 	outline : none;
 }
 

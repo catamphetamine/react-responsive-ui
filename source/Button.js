@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import ActivityIndicator from './ActivityIndicator'
 import FadeInOut from './FadeInOut'
+import { getShowOutline } from './utility/configuration'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -107,7 +108,8 @@ export default class Button extends PureComponent
 				'rrui__button--busy'       : wait || busy || this.state.wait,
 				'rrui__button--disabled'   : disabled,
 				'rrui__button--stretch'    : stretch,
-				'rrui__button-reset--link' : link
+				'rrui__button-reset--link' : link,
+				'rrui__outline'            : getShowOutline()
 			},
 			className)
 		}

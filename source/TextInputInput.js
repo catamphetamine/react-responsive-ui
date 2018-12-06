@@ -6,6 +6,7 @@ import createRef from 'react-create-ref'
 
 import { getModularGridUnit } from './utility/grid'
 import { submitFormOnCtrlEnter } from './utility/dom'
+import { getShowOutline } from './utility/configuration'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -287,7 +288,8 @@ export default class TextInput extends PureComponent
 					// CSS selector performance optimization
 					'rrui__input-field--invalid'   : indicateInvalid && error,
 					'rrui__input-field--disabled'  : disabled,
-					'rrui__input-field--multiline' : multiline
+					'rrui__input-field--multiline' : multiline,
+					'rrui__outline'                : getShowOutline()
 				},
 				className
 			),

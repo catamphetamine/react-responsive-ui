@@ -31,7 +31,8 @@ import
 	FILE,
 	Files,
 	FILES,
-	setModularGridUnit
+	setModularGridUnit,
+	showOutline
 }
 from '../index'
 
@@ -76,6 +77,7 @@ describe('React Responsive UI', function()
 		expect(FILES).to.be.a('string')
 
 		expect(setModularGridUnit).to.be.a('function')
+		expect(showOutline).to.be.a('function')
 	})
 
 	it('should export CommonJS', function()
@@ -117,5 +119,6 @@ describe('React Responsive UI', function()
 		expect(_.FILES).to.be.a('string')
 
 		expect(_.setModularGridUnit).to.be.a('function')
+		expect(_.showOutline).to.be.a('function')
 	})
 })

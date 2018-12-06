@@ -25,6 +25,21 @@
 
 <!-- Maybe add `maxLines` to `<TextInput multiline/>` (or maybe not) which would require rethinking CSS and markup if it was implemented. -->
 
+<!-- (breaking change) (maybe) Removed `outline: none` from button styles. -->
+
+<!-- (breaking change) (maybe) Moved `box-sizing: border-box` from `.rrui__button` to `.rrui__button-reset`. -->
+
+0.14.76 / 07.12.2018
+====================
+
+  * A couple of `:focus` fixes (accessibility).
+
+  * Added `showOutline(true)` function for not adding `outline: none` CSS rule to buttons, inputs and selects (some people prefer this).
+
+  * Increased default `<MenuButton/>` width and height. Shouldn't break anyone's code because users of this library almost 100% re-define the menu button dimensions.
+
+  * Fixed `<Select/>` focusing on the toggler `<button/>` instead of the hidden `<select/>`.
+
 0.14.51 / 08.10.2018
 ====================
 

@@ -23,7 +23,8 @@
 	box-sizing : content-box;
 }
 
-.rrui__close__icon:active .rrui__close__icon-path
+.rrui__close:active .rrui__close__icon-path,
+.rrui__button:active .rrui__close__icon-path
 {
 	color : var(--rrui-accent-color);
 }

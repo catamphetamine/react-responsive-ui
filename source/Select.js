@@ -10,13 +10,8 @@ import Ellipsis from './Ellipsis'
 import Divider from './Divider'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-
-import
-{
-	submitFormOnCtrlEnter,
-	submitContainingForm
-}
-from './utility/dom'
+import { getShowOutline } from './utility/configuration'
+import { submitFormOnCtrlEnter, submitContainingForm } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -154,7 +149,7 @@ export default class Select extends PureComponent
 
 	state = {}
 
-	focus = () => this.selectButton.focus()
+	focus = () => this.select.focus()
 
 	onCollapse = ({ focusOut }) =>
 	{
@@ -181,6 +176,7 @@ export default class Select extends PureComponent
 	toggle     = () => this.list.toggle()
 
 	storeListRef = (ref) => this.list = ref
+	storeSelectNode = (node) => this.select = node
 	storeSelectButton = (node) => this.selectButton = node
 	storeInputComponentNode = (node) => this.inputComponentNode = node
 
@@ -245,8 +241,11 @@ export default class Select extends PureComponent
 					    (for better UX on mobile devices).
 					    In case of `nativeExpanded={false}`
 					    the native `<select/>` can be used for
-					    javascriptless `<form/>` submission. */}
-					{ !native && this.renderNativeSelect() }
+					    javascriptless `<form/>` submission.
+					    In case of `native={true}` it's just a
+					    native `<select/>`. */}
+					{ this.renderNativeSelect() }
+
 					{/* The currently selected option */}
 					{ !native && this.renderSelectButton() }
 
@@ -301,9 +300,6 @@ export default class Select extends PureComponent
 							))}
 						</ExpandableList>
 					}
-
-					{/* Native `<select/>` */}
-					{ native && this.renderNativeSelect() }
 				</div>
 
 				{/* Error message */}
@@ -406,7 +402,7 @@ export default class Select extends PureComponent
 
 		return (
 			<select
-				ref={ this.storeNativeSelect }
+				ref={ this.storeSelectNode }
 				id={ id }
 				name={ name }
 				value={ isEmptyValue(value) ? empty_value_option_value : value }
@@ -420,7 +416,8 @@ export default class Select extends PureComponent
 				className={ classNames('rrui__select__native',
 				{
 					'rrui__select__native--overlay' : !native,
-					'rrui__select__native--invalid' : indicateInvalid && error
+					'rrui__select__native--invalid' : indicateInvalid && error,
+					'rrui__outline'                 : getShowOutline()
 				}) }>
 				{this.renderNativeSelectOptions()}
 			</select>

@@ -20,7 +20,6 @@
 	color            : var(--rrui-switcher-text-color);
 	border           : 1px solid var(--rrui-switcher-text-color);
 	border-radius    : var(--rrui-border-radius-big);
-	outline          : none;
 
 	transition : all 50ms ease-out;
 }

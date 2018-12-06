@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+import { getShowOutline } from './utility/configuration'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -125,7 +126,8 @@ export default class Switcher extends PureComponent
 						// Ordering
 						'rrui__switcher__option--first'    : first,
 						'rrui__switcher__option--last'     : last,
-						'rrui__switcher__option--middle'   : !first && !last
+						'rrui__switcher__option--middle'   : !first && !last,
+						'rrui__outline'                    : getShowOutline()
 					}
 				) }>
 				{ option.label }

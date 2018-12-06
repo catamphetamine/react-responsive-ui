@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { getShowOutline } from './utility/configuration'
+
 export default function Close({ onClick, closeLabel, className, children })
 {
 	return (
@@ -9,7 +11,9 @@ export default function Close({ onClick, closeLabel, className, children })
 			type="button"
 			onClick={ onClick }
 			aria-label={ closeLabel }
-			className={ classNames('rrui__button-reset', 'rrui__close', className) }>
+			className={ classNames('rrui__button-reset', 'rrui__close', className, {
+				'rrui__outline': getShowOutline()
+			}) }>
 			{ children }
 		</button>
 	)

@@ -1,20 +1,15 @@
 .rrui__menu-button
 {
+	position    : relative;
 	display     : inline-block;
-	width       : var(--rrui-input-height);
-	height      : var(--rrui-input-height);
+	width       : calc(var(--rrui-input-height) + var(--rrui-unit));
+	height      : calc(var(--rrui-input-height) + var(--rrui-unit));
 	padding     : calc(var(--rrui-unit) / 2);
 	margin      : calc(-1 * var(--rrui-unit) / 2);
 	line-height : 0;
 	color       : var(--rrui-black-color);
-	outline     : none;
-}
-
-.rrui__menu-button
-{
-  position    : relative;
-  cursor      : pointer;
-  user-select : none;
+	/* This CSS rule can be removed if .rrui__button-reset gets it. */
+	box-sizing  : border-box;
 }
 
 /*

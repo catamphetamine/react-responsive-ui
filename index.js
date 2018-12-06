@@ -189,3 +189,9 @@ export
 	setModularGridUnit
 }
 from './modules/utility/grid'
+
+export
+{
+	showOutline
+}
+from './modules/utility/configuration'

@@ -25,8 +25,13 @@
 	transition       : color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Focused input label */
+/* Focused input label. */
+
+/* For `<Select native={false}/>` (default). */
 .rrui__select__native:focus + .rrui__select__button + .rrui__input-label,
+/* For `<Select native={true}/>`. */
+.rrui__select__native:focus + .rrui__input-label,
+/* For `<TextInput/>`, `<Autocomplete/>`, `<DatePicker/>`. */
 .rrui__input-element:focus + .rrui__input-label
 {
 	color : var(--rrui-input-field-label-color-focus);

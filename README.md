@@ -173,6 +173,16 @@ The same can be done for CSS: instead of importing the whole `react-responsive-u
 
 Each form component receives an `error : String` error message property.
 
+## Outline
+
+By default all `<Button/>`s, `<TextInput/>`s, `<DatePicker/>`s, `<Autocomplete/>`s and `<Select/>`s have `outline: none` CSS rule set. To re-enable outlines on those components call the exported `showOutline()` function.
+
+```js
+import { showOutline } from 'react-responsive-ui'
+
+showOutline(true)
+```
+
 ## Supported Browsers
 
 IE 11, Edge, Firefox, Chrome, Safari — have been tested.
