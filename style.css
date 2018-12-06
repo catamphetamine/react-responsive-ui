@@ -99,7 +99,6 @@
   margin: 0;
   padding: 0;
   white-space: nowrap;
-  outline: none;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -113,7 +112,14 @@
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-          user-select: none; }
+          user-select: none;
+  /* box-sizing  : border-box; */ }
+
+/* Developers should define `:focus` styles for `<Button/>`s. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__button-reset:not(.rrui__outline) {
+  outline: none; }
 
 .rrui__button-reset--link:hover {
   text-decoration: none; }
@@ -140,7 +146,6 @@
   -webkit-transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
   -o-transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
   transition: background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
-  cursor: pointer;
   background-color: transparent;
   color: #03b2cb;
   border-radius: 0rem; }
@@ -354,7 +359,8 @@
   -webkit-box-sizing: content-box;
           box-sizing: content-box; }
 
-.rrui__close__icon:active .rrui__close__icon-path {
+.rrui__close:active .rrui__close__icon-path,
+.rrui__button:active .rrui__close__icon-path {
   color: #03b2cb; }
 
 .rrui__close__icon-path {
@@ -494,6 +500,9 @@
   display: inline-block;
   position: relative; }
 
+/* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
+   It gets focused upon expanding which causes an outline.
+   That outline can be safely removed because it doesn't aid accesiblity. */
 .DayPicker-wrapper,
 .DayPicker-Day,
 .DayPicker-NavButton {
@@ -656,6 +665,7 @@
   background-clip: padding-box;
   -webkit-background-clip: padding-box;
   /* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
+  /* This outline doesn't relate to actual accessibilty so it can be muted safely. */
   outline: none; }
 
 .rrui__expandable--expanded {
@@ -804,7 +814,6 @@ than 100% of the parent if the parent is small enough.
   color: #d30f00; }
 
 .rrui__input-field {
-  outline: none;
   border-radius: 0;
   /* Some web browsers add <input/> padding by default */
   padding: 0;
@@ -815,6 +824,13 @@ than 100% of the parent if the parent is small enough.
   font-family: inherit;
   font-weight: inherit;
   font-style: inherit; }
+
+/* `<TextInput/>` has `border-color` to indicate its `:focus` state.
+   Therefore the `outline` can be safely removed. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__input-field:not(.rrui__outline) {
+  outline: none; }
 
 /* Overrides Chrome autofill yellow background color */
 .rrui__input-field:-webkit-autofill {
@@ -843,8 +859,8 @@ than 100% of the parent if the parent is small enough.
   transition: border 0.1s; }
 
 .rrui__input-field:focus,
-.rrui__select__button:focus,
-.rrui__select__native:focus + .rrui__select__button {
+.rrui__select__native:focus + .rrui__select__button,
+.rrui__select__native:focus {
   border-color: #03b2cb; }
 
 .rrui__input-field--invalid,
@@ -912,8 +928,10 @@ than 100% of the parent if the parent is small enough.
   transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
   transition: color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1), -webkit-transform 450ms cubic-bezier(0.23, 1, 0.32, 1); }
 
-/* Focused input label */
+/* Focused input label. */
+/* For `<Select native={false}/>` (default). */
 .rrui__select__native:focus + .rrui__select__button + .rrui__input-label,
+.rrui__select__native:focus + .rrui__input-label,
 .rrui__input-element:focus + .rrui__input-label {
   color: #03b2cb; }
 
@@ -1016,22 +1034,17 @@ than 100% of the parent if the parent is small enough.
   padding-right: 0; }
 
 .rrui__menu-button {
+  position: relative;
   display: inline-block;
-  width: calc(0.6rem * 3);
-  height: calc(0.6rem * 3);
+  width: calc(0.6rem * 3 + 0.6rem);
+  height: calc(0.6rem * 3 + 0.6rem);
   padding: calc(0.6rem / 2);
   margin: calc(-1 * 0.6rem / 2);
   line-height: 0;
   color: #000000;
-  outline: none; }
-
-.rrui__menu-button {
-  position: relative;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
+  /* This CSS rule can be removed if .rrui__button-reset gets it. */
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
 
 /*
 .rrui__menu-button:active
@@ -1131,6 +1144,8 @@ also change `default_close_timeout` in ./Modal.js accordingly
   transition: background-color 100ms ease-out; }
 
 .ReactModal__Content {
+  /* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
+  /* This outline doesn't relate to actual accessibilty so it can be muted safely. */
   outline: none; }
 
 .rrui__modal__contents {
@@ -1266,11 +1281,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-flex-pack: center;
           justify-content: center; }
 
-.rrui__modal__close {
-  background: none;
-  outline: none;
-  border: none;
-  cursor: pointer; }
+.rrui__modal__close:focus {
+  background-color: #F3F3F3;
+  border-radius: 50%; }
 
 .rrui__modal__close--busy {
   cursor: wait; }
@@ -1480,10 +1493,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__button--invalid {
   border-color: #d30f00; }
 
-.rrui__select__button:active .rrui__select__selected-label,
-.rrui__select__button:active .rrui__select__arrow,
+/* For `<Select native={false}/>` (default). */
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
-.rrui__select__native:active + .rrui__select__button .rrui__select__arrow {
+.rrui__select__native:active + .rrui__select__button .rrui__select__arrow,
+.rrui__select__native:active + .rrui__input-label {
   color: #03b2cb; }
 
 .rrui__select__selected-content {
@@ -1548,7 +1561,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select__native {
   height: 100%;
-  cursor: pointer;
+  cursor: pointer; }
+
+/* `:focus` style is implemented via border color
+   so outline can be muted safely here. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+.rrui__select__native:not(.rrui__outline) {
   outline: none; }
 
 .rrui__select__native--overlay {
@@ -1853,7 +1872,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: #03b2cb;
   border: 1px solid #03b2cb;
   border-radius: 0.2rem;
-  outline: none;
   -webkit-transition: all 50ms ease-out;
   -o-transition: all 50ms ease-out;
   transition: all 50ms ease-out; }
