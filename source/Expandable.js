@@ -50,6 +50,9 @@ export default class Expandable extends PureComponent
 		// (as opposed to the default downward)
 		upward : PropTypes.bool,
 
+		// `aria-hidden` attribute (accessibility).
+		ariaHidden : PropTypes.bool,
+
 		// CSS style object.
 		style : PropTypes.object,
 
@@ -465,6 +468,7 @@ export default class Expandable extends PureComponent
 		{
 			alignment,
 			upward,
+			ariaHidden,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
 			style,
@@ -493,7 +497,8 @@ export default class Expandable extends PureComponent
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
-				aria-expanded={ expanded }
+				aria-hidden={ ariaHidden }
+				aria-expanded={ ariaHidden ? undefined : expanded }
 				style={ style }
 				className={ classNames
 				(

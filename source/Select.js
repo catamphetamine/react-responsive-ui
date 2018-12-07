@@ -268,9 +268,12 @@ export default class Select extends PureComponent
 					}
 
 					{/* The list of selectable options */}
+					{/* Since native `<select/>` is always rendered
+						 this custom Select can be made `aria-hidden={true}`. */}
 					{ this.shouldShowOptionsList() &&
 						<ExpandableList
 							ref={this.storeListRef}
+							ariaHidden={ true }
 							upward={upward}
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
@@ -337,6 +340,18 @@ export default class Select extends PureComponent
 		const selectedOptionLabel = selected && selected.label || this.getLabel() || this.getPlaceholder()
 		const showIconOnly = icon && selected && selected.icon
 
+		// Since native `<select/>` is always rendered
+		// this custom Select can be made `aria-hidden={true}`.
+		//
+		// Otherwise it would be something like:
+		//
+		// aria-label={ this.getAriaLabel() }
+		// aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
+		// aria-hidden={ nativeExpanded ? true : undefined }
+		//
+		// ARIA (accessibility) roles info:
+		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+
 		return (
 			<button
 				ref={ this.storeSelectButton }
@@ -348,9 +363,7 @@ export default class Select extends PureComponent
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
-				aria-label={ this.getAriaLabel() }
-				aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
-				aria-hidden={ nativeExpanded ? true : undefined }
+				aria-hidden={ true }
 				className={ classNames
 				(
 					'rrui__input-element',
@@ -411,8 +424,7 @@ export default class Select extends PureComponent
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
 				tabIndex={ tabIndex }
-				aria-hidden={ native || nativeExpanded ? undefined : true }
-				aria-label={ label }
+				aria-label={ this.getAriaLabel() }
 				className={ classNames('rrui__select__native',
 				{
 					'rrui__select__native--overlay' : !native,

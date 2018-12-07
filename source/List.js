@@ -38,6 +38,7 @@ export default class List extends PureComponent
 
 		// ARIA `role` attribute.
 		role : PropTypes.string,
+		ariaHidden : PropTypes.bool,
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
@@ -304,6 +305,7 @@ export default class List extends PureComponent
 			onSelectItem,
 			highlightSelectedItem,
 			shouldCreateButtons,
+			ariaHidden,
 			role,
 			className,
 			style,
@@ -313,11 +315,15 @@ export default class List extends PureComponent
 
 		const { focusedItemIndex } = this.state
 
+		// ARIA (accessibility) roles info:
+		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+
 		return (
 			<ul
 				ref={ this.storeListNode }
 				onKeyDown={ this.onKeyDown }
-				role={ role || (onChange ? 'listbox' : undefined)}
+				role={ ariaHidden ? undefined : role || (onChange ? 'listbox' : undefined)}
+				aria-hidden={ ariaHidden }
 				style={ style }
 				className={ classNames(className, 'rrui__list') }>
 
@@ -332,7 +338,7 @@ export default class List extends PureComponent
 						key       : i,
 						index     : i,
 						itemRef   : this.isFocusableItem(item) ? this.storeItemRef : undefined,
-						role      : role === 'listbox' || onChange ? 'option' : undefined,
+						role      : ariaHidden ? undefined : role === 'listbox' || (onChange ? 'option' : undefined),
 						focus     : this.focusItem,
 						focused   : focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
@@ -556,9 +562,9 @@ export class Item extends React.Component
 		if (this.shouldCreateButton())
 		{
 			ItemComponent = 'button'
-			label = this.props.label || children
+			label = this.props.label || (typeof children === 'string' ? children : undefined)
 			properties.type = 'button'
-			properties['aria-label'] = label
+			properties['aria-label'] = typeof children === 'string' ? undefined : label
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
 			properties.className = classNames(
@@ -607,6 +613,7 @@ export class Item extends React.Component
 			<li
 				role={role}
 				aria-selected={isSelected}
+				aria-label={label}
 				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }
 				{ !ItemComponent && React.cloneElement(children, properties) }
