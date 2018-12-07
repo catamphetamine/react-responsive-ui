@@ -13,9 +13,13 @@
 	/* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
 	background-clip         : padding-box;
 	-webkit-background-clip : padding-box;
+}
 
-	/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
-	/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
+/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* To retain outlines on buttons call `showOutline(true)` static function. */
+.rrui__expandable:not(.rrui__outline)
+{
 	outline : none;
 }
 

@@ -164,16 +164,22 @@
 	position : relative;
 }
 
+/* `:focus` styles are implemented using
+   `background-color` / `border-color`
+   instead of a standard `outline`. */
+/* To retain outlines on buttons call
+   `showOutline(true)` static function. */
+/* ------------------------------------ */
 /* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
    It gets focused upon expanding which causes an outline.
    That outline can be safely removed because it doesn't aid accesiblity. */
-.DayPicker-wrapper,
+.rrui__date-picker:not(.rrui__outline) .DayPicker-wrapper,
 /* Calendar days have `background-color` on `:focus`.
    Therefore their `outline` can be safely removed. */
-.DayPicker-Day,
+.rrui__date-picker:not(.rrui__outline) .DayPicker-Day,
 /* Previous/Next month buttons have `background-color` on `:focus`.
    Therefore their `outline` can be safely removed. */
-.DayPicker-NavButton
+.rrui__date-picker:not(.rrui__outline) .DayPicker-NavButton
 {
 	outline: none;
 }

@@ -8,7 +8,7 @@ import Expandable from './Expandable'
 import YearMonthSelect from './YearMonthSelect'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-
+import { getShowOutline } from './utility/configuration'
 import { onBlur } from './utility/focus'
 import { isInternetExplorer } from './utility/dom'
 
@@ -641,7 +641,8 @@ export default class DatePicker extends PureComponent
 				onBlur={ this.onBlur }
 				className={ classNames('rrui__date-picker', className,
 				{
-					'rrui__date-picker--disabled' : disabled
+					'rrui__date-picker--disabled' : disabled,
+					'rrui__outline'               : getShowOutline()
 				}) }
 				style={ style }>
 

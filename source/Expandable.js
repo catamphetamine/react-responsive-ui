@@ -7,6 +7,7 @@ import Close, { CloseIcon } from './Close'
 
 // import { isInternetExplorer } from './utility/dom'
 import { onBlur } from './utility/focus'
+import { getShowOutline } from './utility/configuration'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -505,7 +506,8 @@ export default class Expandable extends PureComponent
 						'rrui__expandable--left-aligned'  : alignment === 'left',
 						'rrui__expandable--right-aligned' : alignment === 'right',
 						'rrui__expandable--upward'        : upward,
-						'rrui__expandable--downward'      : !upward
+						'rrui__expandable--downward'      : !upward,
+						'rrui__outline'                   : getShowOutline()
 					}
 				) }>
 				{ React.Children.map(children, (child) =>

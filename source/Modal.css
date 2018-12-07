@@ -39,10 +39,11 @@ also change `default_close_timeout` in ./Modal.js accordingly
 	transition: background-color 100ms ease-out;
 }
 
-.ReactModal__Content
+/* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
+/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* To retain outlines on buttons call `showOutline(true)` static function. */
+.rrui__modal__container:not(.rrui__outline) .ReactModal__Content
 {
-	/* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
-	/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
 	outline: none;
 }
 
