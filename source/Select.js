@@ -438,15 +438,15 @@ export default class Select extends PureComponent
 
 		const rendered_options = options.map((option) =>
 		{
-			let { value, label } = option
+			let { value, label, divider } = option
 
-			if (isEmptyValue(value))
+			if (!divider && isEmptyValue(value))
 			{
 				empty_option_present = true
 				value = empty_value_option_value
 			}
 
-			return this.renderNativeSelectOption(value, label)
+			return this.renderNativeSelectOption(value, label, divider === true, divider)
 		})
 
 		if (isEmptyValue(value) && !empty_option_present)
@@ -457,15 +457,17 @@ export default class Select extends PureComponent
 		return rendered_options
 	}
 
-	renderNativeSelectOption(value, label, nonSelectable)
+	renderNativeSelectOption(value, label, nonSelectable, isDivider)
 	{
 		return (
 			<option
 				key={ getOptionKey(value) }
 				value={ isEmptyValue(value) ? '' : value }
-				hidden={ nonSelectable ? true : undefined }
+				hidden={ nonSelectable && !isDivider ? true : undefined }
 				disabled={ nonSelectable ? true : undefined }
-				className="rrui__select__native-option">
+				className={ classNames('rrui__select__native-option', {
+					'rrui__select__native-option--divider': isDivider
+				})}>
 				{ label }
 			</option>
 		)
@@ -503,6 +505,18 @@ export default class Select extends PureComponent
 		}
 
 		this.setValue(value)
+
+		// Firefox has a bug:
+		// Spacebar key on native `<select/>` is not being "preventDefault"ed.
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1428992
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1019630
+		// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
+		// This workaround hides the custom `<Select/>`
+		// when a user selects something in the native `<select/>`
+		// which expands over the custom one in Firefox due to the bug.
+		if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
+			this.collapse()
+		}
 	}
 
 	onClick = (event) =>
@@ -549,6 +563,16 @@ export default class Select extends PureComponent
 			// "Down" arrow.
 			// Select the next item (if present).
 			case 40:
+				// Firefox has a bug:
+				// Up/Down arrow keys on native `<select/>` are not being "preventDefault"ed.
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=1428992
+				// https://bugzilla.mozilla.org/show_bug.cgi?id=1019630
+				// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
+				// This workaround doesn't expand the custom `<Select/>`
+				// when a user presses an Up/Down arrow key on the native `<select/>`.
+				if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
+					return
+				}
 				return this.list.onKeyDown(event)
 
 			// "Enter".
@@ -564,8 +588,10 @@ export default class Select extends PureComponent
 			case 32:
 				if (fromNativeSelect)
 				{
-					// Known bug:
-					// Firefox is stubborn with Spacebar key not being "preventDefault"ed.
+					// Firefox has a bug:
+					// Spacebar key on native `<select/>` is not being "preventDefault"ed.
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1428992
+					// https://bugzilla.mozilla.org/show_bug.cgi?id=1019630
 					// https://stackoverflow.com/questions/15141398/cannot-preventdefault-via-firefox-on-a-select
 					event.preventDefault()
 
@@ -579,10 +605,8 @@ export default class Select extends PureComponent
 	{
 		const { options } = this.props
 
-		for (const option of options)
-		{
-			if (isEmptyValue(option.value))
-			{
+		for (const option of options) {
+			if (!option.divider && isEmptyValue(option.value)) {
 				return true
 			}
 		}

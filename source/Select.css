@@ -152,6 +152,13 @@
 	outline : none;
 }
 
+/* Something from stackoverflow. */
+.rrui__select__native-option--divider
+{
+	font-size  : 1px;
+	background : currentColor;
+}
+
 .rrui__select__native--overlay
 {
 	position : absolute;
