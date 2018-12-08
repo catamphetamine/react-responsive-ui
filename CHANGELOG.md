@@ -29,6 +29,19 @@
 
 <!-- (breaking change) (maybe) Moved `box-sizing: border-box` from `.rrui__button` to `.rrui__button-reset`. -->
 
+<!-- (CSS breaking change) ARIA requires <Button/> focus indication, so default button style now has `border-bottom` added for focused and non-focused states. -->
+
+0.14.79 / 07.12.2018
+====================
+
+  * Removed the recently added `showOutline()` function. Use `rrui__outline` CSS class directly to retain outlines.
+
+  * `<ExpandableMenu/>` now accepts `toggler`, `togglerAriaLabel` and `togglerClassName` properties. The older way of `toggler` being the first child is now deprecated.
+
+  * `<FileUpload/>`'s `.rrui__file-upload__area` now has `tabIndex` property which is `0` by default (for accessibility), and pressing `Enter` or `Spacebar` triggers `click` event. `<DropFileUpload/>` and `<DropFilesUpload/>` both wrap `<FileUpload/>`.
+
+  * Some ARIA-related fixes.
+
 0.14.76 / 07.12.2018
 ====================
 
