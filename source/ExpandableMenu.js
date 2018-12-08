@@ -104,7 +104,7 @@ export default class ExpandableMenu extends PureComponent
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
 					aria-haspopup="dialog"
-					aria-label={ togglerAriaLabel || (typeof togglerElement === 'string' ? togglerElement : undefined) }
+					aria-label={ togglerAriaLabel }
 					aria-expanded={ isExpanded }
 					className={ togglerClassName }>
 					{ togglerElement }

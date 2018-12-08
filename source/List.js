@@ -305,24 +305,27 @@ export default class List extends PureComponent
 			highlightSelectedItem,
 			shouldCreateButtons,
 			ariaHidden,
-			role,
 			className,
 			style,
 			children
 		}
 		= this.props
 
+		let { role } = this.props
+
 		const { focusedItemIndex } = this.state
 
 		// ARIA (accessibility) roles info:
 		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+		if (!role && (onChange || onSelectItem)) {
+			role = 'listbox'
+		}
 
 		return (
 			<ul
 				ref={ this.storeListNode }
 				onKeyDown={ this.onKeyDown }
-				role={ ariaHidden ? undefined : role || (onChange ? 'listbox' : undefined)}
-				aria-hidden={ ariaHidden }
+				role={ role }
 				style={ style }
 				className={ classNames(className, 'rrui__list') }>
 
@@ -337,7 +340,7 @@ export default class List extends PureComponent
 						key       : i,
 						index     : i,
 						itemRef   : this.isFocusableItem(item) ? this.storeItemRef : undefined,
-						role      : ariaHidden ? undefined : role === 'listbox' || (onChange ? 'option' : undefined),
+						role      : role === 'listbox' ? 'option' : undefined,
 						focus     : this.focusItem,
 						focused   : focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
@@ -564,6 +567,7 @@ export class Item extends React.Component
 			label = this.props.label || (typeof children === 'string' ? children : undefined)
 			properties.type = 'button'
 			properties.role = role
+			properties['aria-selected'] = isSelected
 			properties['aria-label'] = typeof children === 'string' ? undefined : label
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
@@ -610,8 +614,8 @@ export class Item extends React.Component
 		return (
 			<li
 				role={this.shouldCreateButton() ? 'none' : role}
-				aria-selected={isSelected}
-				aria-label={label}
+				aria-selected={this.shouldCreateButton() ? undefined : isSelected}
+				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }
 				{ !ItemComponent && React.cloneElement(children, properties) }
