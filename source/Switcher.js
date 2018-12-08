@@ -111,7 +111,7 @@ export default class Switcher extends PureComponent
 				type="button"
 				role="radio"
 				aria-checked={ selected }
-				tabIndex={ selected ? 0 : -1 }
+				tabIndex={ isAnythingSelected(value, options) ? (selected ? 0 : -1) : (first ? 0 : -1) }
 				disabled={ disabled }
 				onClick={ this.chooser(option.value) }
 				className={ classNames
@@ -279,4 +279,13 @@ export default class Switcher extends PureComponent
 		const i = this.getFocusedOptionIndex()
 		return i === options.length - 1 ? i : i + 1
 	}
+}
+
+function isAnythingSelected(value, options) {
+	for (const option of options) {
+		if (option.value === value) {
+			return true
+		}
+	}
+	return false
 }
