@@ -17,8 +17,7 @@
 }
 
 /* Developers should define `:focus` styles for `<Button/>`s. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__button-reset:not(.rrui__outline)
 {
 	outline : none;

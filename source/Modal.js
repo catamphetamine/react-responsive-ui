@@ -9,8 +9,6 @@ import Form from './Form'
 import Button from './Button'
 import Close, { CloseIcon } from './Close'
 
-import { getShowOutline } from './utility/configuration'
-
 export const ModalContext = createContext()
 
 // Make sure to add `.rrui__fixed-full-width` CSS class
@@ -250,8 +248,7 @@ class Modal extends Component
 				overlayClassName) }
 				className={ classNames('rrui__modal__container',
 				{
-					'rrui__modal__container--fullscreen' : fullscreen,
-					'rrui__outline'                      : getShowOutline()
+					'rrui__modal__container--fullscreen' : fullscreen
 				}) }>
 
 				{/* Top margin, grows less than bottom margin */}

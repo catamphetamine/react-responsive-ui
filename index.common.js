@@ -41,6 +41,5 @@ exports.Files = require('./commonjs/DragAndDrop').Files
 exports.FILES = exports.Files
 
 exports.setModularGridUnit = require('./commonjs/utility/grid').setModularGridUnit
-exports.showOutline = require('./commonjs/utility/configuration').showOutline
 
 // exports['default'] = ...

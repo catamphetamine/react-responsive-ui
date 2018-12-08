@@ -145,8 +145,7 @@
 
 /* `:focus` style is implemented via border color
    so outline can be muted safely here. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__select__native:not(.rrui__outline)
 {
 	outline : none;

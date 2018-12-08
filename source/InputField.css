@@ -12,8 +12,7 @@
 
 /* `<TextInput/>` has `border-color` to indicate its `:focus` state.
    Therefore the `outline` can be safely removed. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__input-field:not(.rrui__outline)
 {
 	outline : none;

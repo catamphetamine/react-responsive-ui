@@ -10,7 +10,6 @@ import Ellipsis from './Ellipsis'
 import Divider from './Divider'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-import { getShowOutline } from './utility/configuration'
 import { submitFormOnCtrlEnter, submitContainingForm } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
@@ -428,8 +427,7 @@ export default class Select extends PureComponent
 				className={ classNames('rrui__select__native',
 				{
 					'rrui__select__native--overlay' : !native,
-					'rrui__select__native--invalid' : indicateInvalid && error,
-					'rrui__outline'                 : getShowOutline()
+					'rrui__select__native--invalid' : indicateInvalid && error
 				}) }>
 				{this.renderNativeSelectOptions()}
 			</select>

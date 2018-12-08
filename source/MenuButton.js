@@ -5,8 +5,6 @@ import classNames from 'classnames'
 import { Context } from './PageAndMenu'
 import MenuIcon from './MenuIcon'
 
-import { getShowOutline } from './utility/configuration'
-
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
@@ -108,9 +106,7 @@ class MenuButton extends PureComponent
 			...rest,
 			ref: this.storeButtonNode,
 			onClick: this.onClick,
-			className: classNames('rrui__button-reset', 'rrui__menu-button', className, {
-				'rrui__outline' : getShowOutline()
-			})
+			className: classNames('rrui__button-reset', 'rrui__menu-button', className)
 		}
 
 		const children = <MenuButtonIcon expanded={menuIsExpanded}/>
