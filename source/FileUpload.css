@@ -3,6 +3,13 @@
 	cursor : pointer;
 }
 
+/* Developers should define `:focus` styles for `<FileUpload/>`s. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__file-upload__area:not(.rrui__outline)
+{
+	outline : none;
+}
+
 .rrui__file-upload__area--disabled
 {
 	cursor : default;

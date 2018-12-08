@@ -39,6 +39,8 @@ export default class FileUpload extends PureComponent
 		// Renders an error message below the `<input/>`.
 		error     : PropTypes.string,
 
+		tabIndex  : PropTypes.number.isRequired,
+
 		// The clickable area, like "Click here to choose a file".
 		children  : PropTypes.node,
 
@@ -52,7 +54,8 @@ export default class FileUpload extends PureComponent
 	static defaultProps =
 	{
 		dropTarget  : element => element,
-		draggedOver : false
+		draggedOver : false,
+		tabIndex : 0
 	}
 
 	onFileSelect = (event) =>
@@ -81,7 +84,7 @@ export default class FileUpload extends PureComponent
 	{
 		const { disabled, onClick } = this.props
 
-		if (disabled) {
+		if (disabled && event) {
 			return event.preventDefault()
 		}
 
@@ -91,6 +94,28 @@ export default class FileUpload extends PureComponent
 
 		// This is why `onClick` is set on the `<input/>`.
 		this.fileInput.click()
+	}
+
+	onKeyDown = (event) => {
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+		switch (event.keyCode) {
+			// "Enter".
+			case 13:
+			// Spacebar.
+			case 32:
+				event.preventDefault()
+				// Emulate `:active` on key press.
+				// setTimeout(() => {
+				// 	if (this._isMounted) {
+				// 		this.setState({
+				// 			isActive: true
+				// 		})
+				// 	}
+				// })
+				return this.onClick()
+		}
 	}
 
 	storeFileInputNode = (node) => this.fileInput = node
@@ -104,6 +129,7 @@ export default class FileUpload extends PureComponent
 			dropTarget,
 			draggedOver,
 			// canDrop,
+			tabIndex,
 			style,
 			className,
 			children
@@ -126,14 +152,17 @@ export default class FileUpload extends PureComponent
 				{/* The actual clickable area. */}
 				{ dropTarget(
 					<div
+						tabIndex={ tabIndex }
+						role="button"
+						onClick={ this.onClick }
+						onKeyDown={ this.onKeyDown }
 						className={ classNames('rrui__file-upload__area',
 						{
 							'rrui__file-upload__area--disabled' : disabled,
 							'rrui__file-upload__area--invalid' : error,
 							'rrui__file-upload__area--dragged-over' : draggedOver,
 							// 'rrui__file-upload__area--can-not-drop' : !canDrop
-						}) }
-						onClick={ this.onClick }>
+						}) }>
 
 						{/* Could be an "UPLOAD" button or something. */}
 						{ children }
