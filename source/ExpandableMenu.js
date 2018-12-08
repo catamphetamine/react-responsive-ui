@@ -27,7 +27,11 @@ export default class ExpandableMenu extends PureComponent
 
 		// The "x" button icon that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired
+		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
+
+		toggler : PropTypes.func,
+		togglerAriaLabel : PropTypes.string,
+		togglerClassName : PropTypes.string
 	}
 
 	static defaultProps =
@@ -37,21 +41,33 @@ export default class ExpandableMenu extends PureComponent
 		closeButtonIcon : CloseIcon
 	}
 
+	state = {}
+
+	onExpand = () => this.setState({ isExpanded: true })
+
 	onCollapse = ({ focusOut }) =>
 	{
 		if (!focusOut) {
 			this.focus()
 		}
+		this.setState({ isExpanded: false })
 	}
 
-	focus = () => focus(this.toggler)
+	// `this.toggler` is deprecated.
+	focus = () => focus(this.toggler || this.togglerNode)
 
 	expand   = () => this.list.expand()
 	collapse = () => this.list.collapse()
 	toggle   = () => this.list.toggle()
 
 	storeListRef = (ref) => this.list = ref
+
+	// (legacy) (deprecated)
+	// Is used to focus legacy togglers.
 	storeTogglerRef = (ref) => this.toggler = ref
+
+	// `this.togglerNode` is only used to determine
+	// whether the focus is "inside" the component or "outside" of it.
 	storeTogglerNode = (node) => this.togglerNode = node
 	getTogglerNode = () => this.togglerNode
 
@@ -66,26 +82,54 @@ export default class ExpandableMenu extends PureComponent
 			closeLabel,
 			style,
 			className,
+			toggler,
+			togglerAriaLabel,
+			togglerClassName,
 			children
 		}
 		= this.props
 
-		const menuItems = React.Children.toArray(children)
-		const toggler = menuItems.shift()
+		const { isExpanded } = this.state
+
+		let menuToggler
+		let menuItems
+
+		if (toggler) {
+			menuItems = children
+			const togglerElement = React.createElement(toggler)
+			menuToggler = (
+				<button
+					ref={ this.storeTogglerNode }
+					onClick={ this.onClick }
+					onKeyDown={ this.onKeyDown }
+					onBlur={ this.onBlur }
+					aria-haspopup="dialog"
+					aria-label={ togglerAriaLabel || (typeof togglerElement === 'string' ? togglerElement : undefined) }
+					aria-expanded={ isExpanded }
+					className={ togglerClassName }>
+					{ togglerElement }
+				</button>
+			)
+		} else {
+			menuItems = React.Children.toArray(children)
+			menuToggler = menuItems.shift()
+			menuToggler = (
+				<div
+					ref={ this.storeTogglerNode }
+					onClick={ this.onClick }
+					onKeyDown={ this.onKeyDown }
+					onBlur={ this.onBlur }>
+					{ React.cloneElement(menuToggler, { ref : this.storeTogglerRef }) }
+				</div>
+			)
+		}
 
 		return (
 			<div
 				style={ style }
 				className={ classNames('rrui__menu', className) }>
 
-				<div
-					ref={ this.storeTogglerNode }
-					onBlur={ this.onBlur }
-					onClick={ this.onClick }
-					onKeyDown={ this.onKeyDown }>
-
-					{ React.cloneElement(toggler, { ref : this.storeTogglerRef }) }
-				</div>
+				{menuToggler}
 
 				<ExpandableList
 					ref={this.storeListRef}
@@ -106,6 +150,21 @@ export default class ExpandableMenu extends PureComponent
 					{menuItems}
 				</ExpandableList>
 			</div>
+		)
+	}
+
+	renderToggler()
+	{
+		const { toggler, togglerClassName } = this.props
+
+		return (
+			<button
+				type="button"
+				aria-haspopup="dialog"
+				aria-expanded={isExpanded}
+				className={classNames('rrui__button-reset', togglerClassName)}>
+				{toggler}
+			</button>
 		)
 	}
 
