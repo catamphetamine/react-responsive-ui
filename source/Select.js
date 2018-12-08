@@ -377,20 +377,20 @@ export default class Select extends PureComponent
 				) }>
 
 				{/* http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers */}
-				<div className="rrui__select__selected-content">
+				<span className="rrui__select__selected-content">
 
 					{/* Selected option label (or icon) */}
-					<div
+					<span
 						className={ classNames('rrui__select__selected-label',
 						{
 							'rrui__select__selected-label--required' : !this.getLabel() && required && isEmptyValue(value)
 						}) }>
 						{ showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : selectedOptionLabel }
-					</div>
+					</span>
 
 					{/* An arrow */}
-					{ !wait && <div className="rrui__select__arrow"/> }
-				</div>
+					{ !wait && <span className="rrui__select__arrow"/> }
+				</span>
 			</button>
 		)
 	}
