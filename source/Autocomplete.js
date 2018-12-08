@@ -356,6 +356,9 @@ export default class Autocomplete extends PureComponent
 
 		const containerStyle = { textAlign: alignment }
 
+		// ARIA (accessibility) docs:
+		// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
+
 		return (
 			<div
 				style={ style ? { ...containerStyle, ...style } : containerStyle }
@@ -371,6 +374,8 @@ export default class Autocomplete extends PureComponent
 
 				<div
 					ref={ this.storeInputComponentNode }
+					role="combobox"
+					aria-expanded={ isExpanded }
 					className="rrui__input">
 
 					{ (isFetchingOptions || isFetchingInitiallySelectedOption) && <Ellipsis/> }
@@ -477,6 +482,7 @@ export default class Autocomplete extends PureComponent
 				onChange={ this.onInputValueChange }
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
+				aria-autocomplete="list"
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
 				indicateInvalid={ indicateInvalid || (matches === false) }
