@@ -106,6 +106,9 @@ class MenuButton extends PureComponent
 			...rest,
 			ref: this.storeButtonNode,
 			onClick: this.onClick,
+			'aria-label': label,
+			'aria-haspopup': 'menu',
+			'aria-expanded': menuIsExpanded,
 			className: classNames('rrui__button-reset', 'rrui__menu-button', className)
 		}
 
@@ -117,8 +120,7 @@ class MenuButton extends PureComponent
 				'a',
 				{
 					...properties,
-					href: link,
-					'aria-label': label
+					href: link
 				},
 				children
 			)
@@ -129,8 +131,7 @@ class MenuButton extends PureComponent
 			'button',
 			{
 				...properties,
-				type: 'button',
-				'aria-label': label
+				type: 'button'
 			},
 			children
 		)
