@@ -8,14 +8,15 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 
 	render()
 	{
+		const Toggler = () => 'Menu'
+
 		return (
 			<Example name="expandable-menu" title="Expandable Menu">
 
 				<ExpandableMenu
 					className="column-width"
+					toggler={Toggler}
 					style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
-
-					<button type="button"> Menu </button>
 					<List.Item onClick={() => alert('Google')}>Google</List.Item>
 					<List.Item onClick={() => alert('Yandex')}>Yandex</List.Item>
 					<List.Item><Divider/></List.Item>
@@ -23,9 +24,9 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				</ExpandableMenu>
 
 				<Highlight lang="jsx">{`
-					<ExpandableMenu>
-						<button type="button"> Menu </button>
+					const Toggler = () => 'Menu'
 
+					<ExpandableMenu toggler={Toggler}>
 						<List.Item onClick={() => alert('Google')}>
 							Google
 						</List.Item>
@@ -44,6 +45,13 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 					</ExpandableMenu>
 				`}</Highlight>
 
+				<code className="colored">{'<ExpandableMenu/>'}</code> takes properties:
+
+				<ul className="list">
+					<li><code className="colored">toggler</code> — a React component which will be wrapped in a <code className="colored">&lt;button/&gt;</code>.</li>
+					<li><code className="colored">togglerAriaLabel</code> — (optional) <code className="colored">aria-label</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
+					<li><code className="colored">togglerClassName</code> — (optional) <code className="colored">className</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
+				</ul>
 			</Example>
 		)
 	}

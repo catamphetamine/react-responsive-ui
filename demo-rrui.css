@@ -30,12 +30,24 @@
 {
 	display          : inline-block;
 	padding          : 10px;
-	border           : 1px dashed #afafaf;
 	border-radius    : 5px;
 	background-color : #fbfbfb;
 	cursor           : pointer;
 	text-align       : center;
 	line-height      : 1.5em;
+	border           : 1px solid #a0a0a0;
+}
+
+.rrui__file-upload__area:focus
+{
+	border-color : black;
+}
+
+.rrui__file-upload__area:active
+{
+	border-color     : #03B2CB;
+	background-color : #03B2CB;
+	color            : white;
 }
 
 .rrui__file-upload__area--dragged-over

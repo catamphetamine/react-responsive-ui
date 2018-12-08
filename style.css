@@ -116,8 +116,7 @@
   /* box-sizing  : border-box; */ }
 
 /* Developers should define `:focus` styles for `<Button/>`s. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__button-reset:not(.rrui__outline) {
   outline: none; }
 
@@ -500,12 +499,17 @@
   display: inline-block;
   position: relative; }
 
+/* `:focus` styles are implemented using
+   `background-color` / `border-color`
+   instead of a standard `outline`. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+/* ------------------------------------ */
 /* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
    It gets focused upon expanding which causes an outline.
    That outline can be safely removed because it doesn't aid accesiblity. */
-.DayPicker-wrapper,
-.DayPicker-Day,
-.DayPicker-NavButton {
+.rrui__date-picker:not(.rrui__outline) .DayPicker-wrapper,
+.rrui__date-picker:not(.rrui__outline) .DayPicker-Day,
+.rrui__date-picker:not(.rrui__outline) .DayPicker-NavButton {
   outline: none; }
 
 /* https://github.com/gpbl/react-day-picker/issues/708 */
@@ -573,6 +577,11 @@
   opacity: 0.5;
   color: #000000; }
 
+/*
+// Adding `:focus` style for date picker icon is not required
+// because it's not tabbable (`tabIndex={-1}`).
+.rrui__date-picker__icon:focus,
+*/
 .rrui__date-picker .rrui__expanded--expanded .rrui__date-picker__icon {
   opacity: 1;
   color: #03b2cb; }
@@ -663,9 +672,12 @@
   /* prevent white background showing through the transparent border */
   /* http://stackoverflow.com/questions/7473200/transparent-border-expands-background-color-image */
   background-clip: padding-box;
-  -webkit-background-clip: padding-box;
-  /* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
-  /* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+  -webkit-background-clip: padding-box; }
+
+/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
+/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__expandable:not(.rrui__outline) {
   outline: none; }
 
 .rrui__expandable--expanded {
@@ -744,6 +756,11 @@
 
 .rrui__file-upload__area {
   cursor: pointer; }
+
+/* Developers should define `:focus` styles for `<FileUpload/>`s. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__file-upload__area:not(.rrui__outline) {
+  outline: none; }
 
 .rrui__file-upload__area--disabled {
   cursor: default; }
@@ -827,8 +844,7 @@ than 100% of the parent if the parent is small enough.
 
 /* `<TextInput/>` has `border-color` to indicate its `:focus` state.
    Therefore the `outline` can be safely removed. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__input-field:not(.rrui__outline) {
   outline: none; }
 
@@ -1143,9 +1159,10 @@ also change `default_close_timeout` in ./Modal.js accordingly
   -o-transition: background-color 100ms ease-out;
   transition: background-color 100ms ease-out; }
 
-.ReactModal__Content {
-  /* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
-  /* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
+/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__modal__container:not(.rrui__outline) .ReactModal__Content {
   outline: none; }
 
 .rrui__modal__contents {
@@ -1565,10 +1582,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 /* `:focus` style is implemented via border color
    so outline can be muted safely here. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 .rrui__select__native:not(.rrui__outline) {
   outline: none; }
+
+/* Something from stackoverflow. */
+.rrui__select__native-option--divider {
+  font-size: 1px;
+  background: currentColor; }
 
 .rrui__select__native--overlay {
   position: absolute;
