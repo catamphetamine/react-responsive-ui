@@ -8,7 +8,6 @@ import Expandable from './Expandable'
 import YearMonthSelect from './YearMonthSelect'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-import { getShowOutline } from './utility/configuration'
 import { onBlur } from './utility/focus'
 import { isInternetExplorer } from './utility/dom'
 
@@ -118,6 +117,9 @@ export default class DatePicker extends PureComponent
 		// The calendar icon.
 		icon : PropTypes.func,
 
+		// `aria-label` attribute.
+		ariaLabel : PropTypes.string.isRequired,
+
 		waitForKeyboardSlideIn : PropTypes.bool.isRequired,
 		keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
 
@@ -158,6 +160,9 @@ export default class DatePicker extends PureComponent
 				<path d=" M2 2 L10 2 L10 10 L2 10z M12 2 L20 2 L20 10 L12 10z M22 2 L30 2 L30 10 L22 10z M2 12 L10 12 L10 20 L2 20z M12 12 L20 12 L20 20 L12 20z M22 12 L30 12 L30 20 L22 20z M2 22 L10 22 L10 30 L2 30z M12 22 L20 22 L20 30 L12 30z M22 22 L30 22 L30 30 L22 30z "/>
 			</svg>
 		),
+
+		// `aria-label` attribute.
+		ariaLabel : 'Open Calendar',
 
 		waitForKeyboardSlideIn : true,
 		keyboardSlideInAnimationDuration : 300
@@ -217,7 +222,10 @@ export default class DatePicker extends PureComponent
 
 			// Must re-calculate `text_value` on each "expand"
 			// because it's being reset on each "collapse".
-			text_value : formatDate(value, format)
+			text_value : formatDate(value, format),
+
+			// For `aria-expanded`.
+			isExpanded : true
 		})
 	}
 
@@ -260,7 +268,9 @@ export default class DatePicker extends PureComponent
 	{
 		this.setState
 		({
-			text_value : undefined
+			text_value : undefined,
+			// For `aria-expanded`.
+			isExpanded : false
 		})
 
 		// `onChange` fires on calendar day `click`
@@ -595,6 +605,7 @@ export default class DatePicker extends PureComponent
 			placeholder,
 			waitForKeyboardSlideIn,
 			keyboardSlideInAnimationDuration,
+			ariaLabel,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
 			icon,
@@ -606,7 +617,7 @@ export default class DatePicker extends PureComponent
 		const
 		{
 			text_value,
-			expanded,
+			isExpanded,
 			month
 		}
 		= this.state
@@ -641,8 +652,7 @@ export default class DatePicker extends PureComponent
 				onBlur={ this.onBlur }
 				className={ classNames('rrui__date-picker', className,
 				{
-					'rrui__date-picker--disabled' : disabled,
-					'rrui__outline'               : getShowOutline()
+					'rrui__date-picker--disabled' : disabled
 				}) }
 				style={ style }>
 
@@ -672,13 +682,18 @@ export default class DatePicker extends PureComponent
 						className="rrui__date-picker__input-overlay"/>
 
 					{/* Calendar icon which toggles the calendar */}
-					{ icon &&
-						<div
-							onClick={ this.toggle }
-							className="rrui__date-picker__icon">
-							{ icon() }
-						</div>
-					}
+					<button
+						type="button"
+						onClick={ this.toggle }
+						tabIndex={-1}
+						aria-haspopup="grid"
+						aria-expanded={ isExpanded }
+						aria-label={ ariaLabel }
+						className={ classNames('rrui__button-reset', 'rrui__date-picker__icon', {
+							'rrui__date-picker__icon--hidden': !icon
+						}) }>
+						{ icon ? icon() : null }
+					</button>
 
 					{/* <DayPicker/> doesn't support `style` property */}
 					<Expandable

@@ -167,8 +167,7 @@
 /* `:focus` styles are implemented using
    `background-color` / `border-color`
    instead of a standard `outline`. */
-/* To retain outlines on buttons call
-   `showOutline(true)` static function. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
 /* ------------------------------------ */
 /* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
    It gets focused upon expanding which causes an outline.
@@ -267,6 +266,11 @@
 	color    : var(--rrui-black-color);
 }
 
+/*
+// Adding `:focus` style for date picker icon is not required
+// because it's not tabbable (`tabIndex={-1}`).
+.rrui__date-picker__icon:focus,
+*/
 .rrui__date-picker .rrui__expanded--expanded .rrui__date-picker__icon
 {
 	opacity : 1;
