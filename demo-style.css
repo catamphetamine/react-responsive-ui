@@ -205,3 +205,23 @@ pre
 		margin-left: 2.0em;
 	}
 }
+
+.slideout-menu
+{
+	background-color: transparent;
+}
+
+.slideout-menu .rrui__list__item:hover:not(.rrui__list__item--focused)
+{
+	background-color: transparent;
+}
+
+.slideout-menu .rrui__list__item--focused
+{
+	background-color: #EB006D;
+}
+
+.slideout-menu .rrui__list__item--focused:active
+{
+	background-color: #2bd7f0;
+}

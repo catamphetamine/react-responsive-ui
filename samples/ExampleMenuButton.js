@@ -4,7 +4,7 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 	{
 		return (
 			<Example name="slideout-menu" title="Slideout Menu">
-				<MenuButton title="Show menu"/>
+				<MenuButton/>
 
 				<p>
 					<br/>
@@ -21,11 +21,24 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 				</p>
 
 				<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
+					// \`menuRef\` is an optional property that can be
+					// used for focusing the menu upon expanding.
+					const menuRef = React.createRef()
+					const clearFocus = () => menuRef.current.clearFocus()
+
 					<PageAndMenu>
-						<SlideOutMenu anchor="right">
-							<a href="#" className="rrui__slideout-menu__item"> Item 1 </a>
-							<a href="#" className="rrui__slideout-menu__item"> Item 2 </a>
-							<a href="#" className="rrui__slideout-menu__item"> Item 3 </a>
+						<SlideOutMenu anchor="right" menuRef={menuRef} onExpand={clearFocus}>
+							<List role="menu">
+								<List.Item role="none">
+									<a href="/1" role="menuitem" className="rrui__slideout-menu__item"> Item 1 </a>
+								</List.Item>
+								<List.Item role="none">
+									<a href="/2" role="menuitem" className="rrui__slideout-menu__item"> Item 2 </a>
+								</List.Item>
+								<List.Item role="none">
+									<a href="/3" role="menuitem" className="rrui__slideout-menu__item"> Item 3 </a>
+								</List.Item>
+							</List>
 						</SlideOutMenu>
 						<div>
 							<MenuButton />

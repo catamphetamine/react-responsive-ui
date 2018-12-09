@@ -1623,6 +1623,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
   transition: transform 220ms ease-out, box-shadow 220ms ease-out;
   transition: transform 220ms ease-out, box-shadow 220ms ease-out, -webkit-transform 220ms ease-out, -webkit-box-shadow 220ms ease-out; }
 
+/* Developers can define custom `:focus` style for the slideout menu. */
+/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__slideout-menu:not(.rrui__outline) {
+  outline: none; }
+
 .rrui__slideout-menu--fullscreen {
   display: -webkit-box;
   display: -webkit-flex;
