@@ -31,6 +31,11 @@
 
 <!-- (CSS breaking change) ARIA requires <Button/> focus indication, so default button style now has `border-bottom` added for focused and non-focused states. -->
 
+0.14.81 / 09.12.2018
+====================
+
+  * Added focus on `<SlideOutMenu/>` upon expanding it. Added close `<SlideOutMenu/>` on Escape. Added focus on `<MenuButton/>` upon collapsing the menu.
+
 0.14.80 / 09.12.2018
 ====================
 

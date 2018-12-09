@@ -2,8 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import createRef from 'react-create-ref'
+import createContext from 'create-react-context'
 
-import { Context } from './PageAndMenu'
+import { Context as PageAndMenuContext } from './PageAndMenu'
+
+export const Context = createContext()
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -14,7 +17,7 @@ export default class ContextAwareSlideoutMenu extends PureComponent {
 	hide = () => this.slideOutMenu.current.hide()
 	render() {
 		return (
-			<Context.Consumer>
+			<PageAndMenuContext.Consumer>
 				{context => (
 					<SlideoutMenu
 						ref={this.slideOutMenu}
@@ -23,13 +26,13 @@ export default class ContextAwareSlideoutMenu extends PureComponent {
 						toggleMenu={context.toggleMenu}/>
 					)
 				}
-			</Context.Consumer>
+			</PageAndMenuContext.Consumer>
 		)
 	}
 }
 
 // const ContextAwareSlideoutMenu = (props) => (
-// 	<Context.Consumer>
+// 	<PageAndMenuContext.Consumer>
 // 		{context => (
 // 			<SlideoutMenu
 // 				{...props}
@@ -37,7 +40,7 @@ export default class ContextAwareSlideoutMenu extends PureComponent {
 // 				toggleMenu={context.toggleMenu}/>
 // 			)
 // 		}
-// 	</Context.Consumer>
+// 	</PageAndMenuContext.Consumer>
 // )
 
 // export default ContextAwareSlideoutMenu
@@ -61,6 +64,10 @@ class SlideoutMenu extends PureComponent
 
 		fullscreen : PropTypes.bool.isRequired,
 
+		// A result of `React.createRef()`.
+		// Will be focused when the menu is opened.
+		menuRef : PropTypes.object,
+
 		toggleMenu   : PropTypes.func.isRequired,
 		registerMenu : PropTypes.func.isRequired,
 
@@ -83,9 +90,12 @@ class SlideoutMenu extends PureComponent
 		show: false
 	}
 
+	container = createRef()
+	menu = createRef()
+
 	componentDidMount()
 	{
-		const { registerMenu } = this.props
+		const { registerMenu, menuRef } = this.props
 		const { show } = this.state
 
 		this.unregister = registerMenu
@@ -93,7 +103,8 @@ class SlideoutMenu extends PureComponent
 			hide    : () => this.setState({ show: false }),
 			toggle  : (callback) => this.setState(state => ({ show: !state.show }), callback),
 			isShown : () => this.state.show,
-			element : () => this.menu
+			element : () => this.container.current,
+			menu    : () => menuRef ? menuRef.current : this.menu.current
 		})
 
 		// // Hide on `Back`/`Forward` navigation.
@@ -128,7 +139,18 @@ class SlideoutMenu extends PureComponent
 		}
 	}
 
-	storeInstance = (ref) => this.menu = ref
+	onKeyDown = (event) => {
+		const { toggleMenu } = this.props
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+		switch (event.keyCode) {
+			// Collapse on "Escape".
+			case 27:
+				event.preventDefault()
+				return toggleMenu()
+		}
+	}
 
 	render()
 	{
@@ -136,15 +158,16 @@ class SlideoutMenu extends PureComponent
 			anchor,
 			fullscreen,
 			className,
-			style,
-			children
+			style
 		} = this.props
 
 		const { show } = this.state
 
 		return (
 			<div
-				ref={ this.storeInstance }
+				ref={ this.container }
+				aria-hidden={ !show }
+				onKeyDown={ this.onKeyDown }
 				className={ classNames('rrui__slideout-menu',
 				{
 					'rrui__slideout-menu--left'       : anchor === 'left',
@@ -156,8 +179,19 @@ class SlideoutMenu extends PureComponent
 				},
 				className) }
 				style={ style }>
-				{ children }
+				{ this.renderChildren() }
 			</div>
 		)
+	}
+
+	renderChildren() {
+		const { menuRef, children } = this.props
+		if (menuRef) {
+			return children
+		}
+		if (React.Children.count(children) === 1) {
+			return React.cloneElement(children, { ref: this.menu, tabIndex: -1 })
+		}
+		return children
 	}
 }

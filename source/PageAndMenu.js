@@ -29,7 +29,10 @@ export default class PageAndMenu extends Component
 		// after all instance methods because it references them.
 		this.state =
 		{
-			menuIsExpanded     : false,
+			// Using `undefined` for `menuIsExpanded` instead of `false`
+			// because menu icon uses it to determine whether
+			// the button has been activated yet.
+			menuIsExpanded     : undefined, // false,
 			toggleMenu         : this.toggleMenu,
 			registerMenu       : this.registerMenu,
 			registerMenuButton : this.registerMenuButton
@@ -41,8 +44,8 @@ export default class PageAndMenu extends Component
 		return (
 			<Context.Provider value={ this.state }>
 				<div
-					onTouchStart={ this.hide_menu_on_mouse_down }
-					onMouseDown={ this.hide_menu_on_mouse_down }
+					onTouchStart={ this.hideMenu }
+					onMouseDown={ this.hideMenu }
 					{ ...this.props }/>
 			</Context.Provider>
 		)
@@ -50,11 +53,18 @@ export default class PageAndMenu extends Component
 
 	toggleMenu = () =>
 	{
-		this.menu.toggle(() =>
-		{
+		this.menu.toggle(() => {
 			this.setState({
 				menuIsExpanded : this.menu.isShown()
 			})
+			// Focus the menu when it's expanded.
+			// Focus the menu button when menu is collapsed.
+			if (this.menu.isShown()) {
+				const menu = this.menu.menu()
+				menu && menu.focus && menu.focus()
+			} else {
+				this.menuButton.element().focus()
+			}
 		})
 	}
 
@@ -82,20 +92,15 @@ export default class PageAndMenu extends Component
 		return () => this.menuButton = undefined
 	}
 
-	hide_menu_on_mouse_down = (event) =>
-	{
-		if (!this.menu || !this.menuButton)
-		{
+	hideMenu = (event) => {
+		if (!this.menu || !this.menuButton) {
 			return
 		}
-
 		// Hide the menu only if clicked outside
 		if (this.menu.element().contains(event.target)
-		|| this.menuButton.element().contains(event.target))
-		{
+			|| this.menuButton.element().contains(event.target)) {
 			return
 		}
-
 		if (this.menu.isShown()) {
 			this.toggleMenu()
 		}

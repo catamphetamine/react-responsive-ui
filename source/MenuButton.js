@@ -29,7 +29,7 @@ class MenuButton extends PureComponent
 		// Context.
 		registerMenuButton : PropTypes.func.isRequired,
 		toggleMenu : PropTypes.func.isRequired,
-		menuIsExpanded : PropTypes.bool.isRequired,
+		menuIsExpanded : PropTypes.bool, //.isRequired,
 
 		// A URL of the "Menu" page:
 		// if a web browser has javascript disabled (e.g. Tor),
@@ -63,8 +63,7 @@ class MenuButton extends PureComponent
 	{
 		const { registerMenuButton } = this.props
 
-		this.unregister = registerMenuButton
-		({
+		this.unregister = registerMenuButton({
 			element : () => this.button
 		})
 	}
@@ -76,10 +75,8 @@ class MenuButton extends PureComponent
 
 	onClick = (event) =>
 	{
-		event.preventDefault()
-
 		const { toggleMenu } = this.props
-
+		event.preventDefault()
 		toggleMenu()
 	}
 
