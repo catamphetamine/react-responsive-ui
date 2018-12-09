@@ -43,9 +43,6 @@ class MenuButton extends PureComponent
 		// Menu button icon component.
 		icon        : PropTypes.func.isRequired,
 
-		// `aria-label`.
-		label       : PropTypes.string.isRequired,
-
 		// CSS class.
 		className   : PropTypes.string,
 
@@ -55,8 +52,7 @@ class MenuButton extends PureComponent
 
 	static defaultProps =
 	{
-		icon : MenuIcon,
-		label : 'Menu'
+		icon : MenuIcon
 	}
 
 	componentDidMount()
@@ -87,7 +83,6 @@ class MenuButton extends PureComponent
 		const
 		{
 			link,
-			label,
 			className,
 			icon : MenuButtonIcon,
 			menuIsExpanded,
@@ -100,13 +95,13 @@ class MenuButton extends PureComponent
 		= this.props
 
 		const properties = {
-			...rest,
 			ref: this.storeButtonNode,
 			onClick: this.onClick,
-			'aria-label': label,
+			'aria-label': 'Menu',
 			'aria-haspopup': 'menu',
 			'aria-expanded': menuIsExpanded,
-			className: classNames('rrui__button-reset', 'rrui__menu-button', className)
+			className: classNames('rrui__button-reset', 'rrui__menu-button', className),
+			...rest
 		}
 
 		const children = <MenuButtonIcon expanded={menuIsExpanded}/>

@@ -31,6 +31,8 @@
 
 <!-- (CSS breaking change) ARIA requires <Button/> focus indication, so default button style now has `border-bottom` added for focused and non-focused states. -->
 
+<!-- (breaking change) Maybe remove "fullscreen" styles. -->
+
 0.14.81 / 09.12.2018
 ====================
 

@@ -147,7 +147,6 @@ export default class ExpandableMenu extends PureComponent
 					closeButtonIcon={closeButtonIcon}
 					closeLabel={closeLabel}
 					focusSelectedItem={false}
-					shouldCreateButtons={false}
 					className="rrui__shadow">
 					{menuItems}
 				</ExpandableList>

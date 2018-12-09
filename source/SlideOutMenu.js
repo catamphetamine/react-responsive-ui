@@ -68,6 +68,9 @@ class SlideoutMenu extends PureComponent
 		// Will be focused when the menu is opened.
 		menuRef : PropTypes.object,
 
+		onCollapse : PropTypes.func,
+		onExpand : PropTypes.func,
+
 		toggleMenu   : PropTypes.func.isRequired,
 		registerMenu : PropTypes.func.isRequired,
 
@@ -91,7 +94,6 @@ class SlideoutMenu extends PureComponent
 	}
 
 	container = createRef()
-	menu = createRef()
 
 	componentDidMount()
 	{
@@ -101,10 +103,10 @@ class SlideoutMenu extends PureComponent
 		this.unregister = registerMenu
 		({
 			hide    : () => this.setState({ show: false }),
-			toggle  : (callback) => this.setState(state => ({ show: !state.show }), callback),
+			toggle  : this.toggle,
 			isShown : () => this.state.show,
 			element : () => this.container.current,
-			menu    : () => menuRef ? menuRef.current : this.menu.current
+			menu    : () => menuRef ? menuRef.current : this.container.current
 		})
 
 		// // Hide on `Back`/`Forward` navigation.
@@ -128,6 +130,20 @@ class SlideoutMenu extends PureComponent
 	// 		this.show()
 	// 	}
 	// }
+
+	toggle = (callback) => {
+		const { onCollapse, onExpand } = this.props
+		this.setState((state) => {
+			if (state.show) {
+				onCollapse && onCollapse()
+			} else {
+				onExpand && onExpand()
+			}
+			return {
+				show: !state.show
+			}
+		}, callback)
+	}
 
 	hide = () =>
 	{
@@ -157,18 +173,24 @@ class SlideoutMenu extends PureComponent
 		const {
 			anchor,
 			fullscreen,
+			style,
 			className,
-			style
+			children
 		} = this.props
 
 		const { show } = this.state
+
+		// ARIA menu notes:
+		// https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-links.html
 
 		return (
 			<div
 				ref={ this.container }
 				aria-hidden={ !show }
+				tabIndex={ -1 }
 				onKeyDown={ this.onKeyDown }
-				className={ classNames('rrui__slideout-menu',
+				style={ style }
+				className={ classNames('rrui__slideout-menu', className,
 				{
 					'rrui__slideout-menu--left'       : anchor === 'left',
 					'rrui__slideout-menu--right'      : anchor === 'right',
@@ -176,22 +198,9 @@ class SlideoutMenu extends PureComponent
 					'rrui__slideout-menu--bottom'     : anchor === 'bottom',
 					'rrui__slideout-menu--fullscreen' : fullscreen,
 					'rrui__slideout-menu--expanded'   : show
-				},
-				className) }
-				style={ style }>
-				{ this.renderChildren() }
+				}) }>
+				{ children }
 			</div>
 		)
-	}
-
-	renderChildren() {
-		const { menuRef, children } = this.props
-		if (menuRef) {
-			return children
-		}
-		if (React.Children.count(children) === 1) {
-			return React.cloneElement(children, { ref: this.menu, tabIndex: -1 })
-		}
-		return children
 	}
 }
