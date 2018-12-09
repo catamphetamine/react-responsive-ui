@@ -31,6 +31,7 @@ export default class ExpandableMenu extends PureComponent
 
 		toggler : PropTypes.func,
 		togglerAriaLabel : PropTypes.string,
+		togglerAriaHasPopup : PropTypes.string,
 		togglerClassName : PropTypes.string
 	}
 
@@ -84,6 +85,7 @@ export default class ExpandableMenu extends PureComponent
 			className,
 			toggler,
 			togglerAriaLabel,
+			togglerAriaHasPopup,
 			togglerClassName,
 			children
 		}
@@ -103,9 +105,9 @@ export default class ExpandableMenu extends PureComponent
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
-					aria-haspopup="dialog"
+					aria-haspopup={ togglerAriaHasPopup }
 					aria-label={ togglerAriaLabel }
-					aria-expanded={ isExpanded }
+					aria-expanded={ togglerAriaHasPopup ? isExpanded : undefined }
 					className={ togglerClassName }>
 					{ togglerElement }
 				</button>

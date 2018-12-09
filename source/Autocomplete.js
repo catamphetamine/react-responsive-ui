@@ -333,6 +333,7 @@ export default class Autocomplete extends PureComponent
 			saveOnIcons,
 			required,
 			label,
+			placeholder,
 			value,
 			onChange,
 			indicateInvalid,
@@ -417,6 +418,7 @@ export default class Autocomplete extends PureComponent
 						onFocusOut={this.onFocusOut}
 						closeButtonIcon={closeButtonIcon}
 						closeLabel={closeLabel}
+						ariaLabel={label || placeholder}
 						className={classNames('rrui__shadow', 'rrui__options-list',
 						{
 							'rrui__options-list--left-aligned'  : alignment === 'left',

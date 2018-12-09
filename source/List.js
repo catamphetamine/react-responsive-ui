@@ -38,6 +38,7 @@ export default class List extends PureComponent
 		// ARIA `role` attribute.
 		role : PropTypes.string,
 		ariaHidden : PropTypes.bool,
+		ariaLabel : PropTypes.string,
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
@@ -305,6 +306,7 @@ export default class List extends PureComponent
 			highlightSelectedItem,
 			shouldCreateButtons,
 			ariaHidden,
+			ariaLabel,
 			className,
 			style,
 			children
@@ -321,11 +323,17 @@ export default class List extends PureComponent
 			role = 'listbox'
 		}
 
+		if (ariaHidden) {
+			role = undefined
+		}
+
 		return (
 			<ul
 				ref={ this.storeListNode }
 				onKeyDown={ this.onKeyDown }
 				role={ role }
+				aria-label={ ariaLabel }
+				aria-hidden={ ariaHidden }
 				style={ style }
 				className={ classNames(className, 'rrui__list') }>
 
@@ -344,7 +352,7 @@ export default class List extends PureComponent
 						focus     : this.focusItem,
 						focused   : focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
-						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : focusedItemIndex === i) ? 0 : -1,
+						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : i === focusedItemIndex) ? 0 : -1,
 						shouldCreateButton : shouldCreateButtons,
 						onSelectItem : onChange || onSelectItem,
 						selectedItemValue : value,
