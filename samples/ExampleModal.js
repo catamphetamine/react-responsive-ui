@@ -24,7 +24,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 									isOpen={this.state.show_modal}
 									close={() => this.setState({ show_modal: false })}
 									style={{ maxWidth : '40em' }}
-									contentLabel="aria-label"
+									ariaLabel="aria-label example"
 									appElement={document.body}>
 
 									<Modal.Title>
@@ -101,7 +101,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 
 	<li><code className="colored">closeLabel</code> — if passed then a default "Close" button is added to <code className="colored">{'<Modal.Actions/>'}</code> (if <code className="colored">closeButtonIcon</code> property wasn't passed).</li>
 
-	<li><code className="colored">contentLabel</code> — <code className="colored">aria-label</code> for the modal (accessibility).</li>
+	<li><code className="colored">ariaLabel</code> — <code className="colored">aria-label</code> for the modal (accessibility).</li>
 
 	<li><code className="colored">appElement</code> — <code className="colored">aria-hidden</code> will be set to <code className="colored">true</code> for this DOM element if passed (accessibility).</li>
 

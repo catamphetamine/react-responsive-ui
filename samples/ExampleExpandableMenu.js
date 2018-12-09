@@ -50,6 +50,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				<ul className="list">
 					<li><code className="colored">toggler</code> — a React component which will be wrapped in a <code className="colored">&lt;button/&gt;</code>.</li>
 					<li><code className="colored">togglerAriaLabel</code> — (optional) <code className="colored">aria-label</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
+					<li><code className="colored">togglerAriaHasPopup</code> — (optional) <code className="colored">aria-haspopup</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
 					<li><code className="colored">togglerClassName</code> — (optional) <code className="colored">className</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
 				</ul>
 			</Example>
