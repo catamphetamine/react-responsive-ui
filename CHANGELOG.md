@@ -31,6 +31,13 @@
 
 <!-- (CSS breaking change) ARIA requires <Button/> focus indication, so default button style now has `border-bottom` added for focused and non-focused states. -->
 
+0.14.80 / 09.12.2018
+====================
+
+  * Renamed `<Modal/>`'s `contentLabel` to `ariaLabel`. `contentLabel` still works but is deprecated.
+
+  * Added `togglerAriaHasPopup` property to `<ExpandableMenu/>`.
+
 0.14.79 / 07.12.2018
 ====================
 
