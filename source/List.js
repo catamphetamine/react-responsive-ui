@@ -378,12 +378,7 @@ export class Item extends React.Component
 		onSelectItem : PropTypes.func,
 		selectedItemValue : PropTypes.any,
 		highlightSelectedItem : PropTypes.bool,
-		shouldCreateButton : PropTypes.bool,
-		// Item component.
-		component : PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.func
-		])
+		shouldCreateButton : PropTypes.bool
 	}
 
 	onMouseDown = (event) =>
@@ -520,11 +515,10 @@ export class Item extends React.Component
 			onClick,
 			onSelect,
 			onSelectItem,
-			shouldCreateButton,
-			component
+			shouldCreateButton
 		} = this.props
 
-		return !component && this.isSelectable() && (onClick || onSelect || (onSelectItem && shouldCreateButton))
+		return this.isSelectable() && (onClick || onSelect || (onSelectItem && shouldCreateButton))
 	}
 
 	render()
@@ -540,7 +534,6 @@ export class Item extends React.Component
 			tabIndex,
 			highlightSelectedItem,
 			selectedItemValue,
-			component,
 			children
 		}
 		= this.props
@@ -620,10 +613,6 @@ export class Item extends React.Component
 					</div>
 				))
 			}
-		}
-		else if (component)
-		{
-			ItemComponent = component
 		}
 		else
 		{
