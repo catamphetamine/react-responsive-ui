@@ -15,9 +15,6 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 					<br/>
 					<br/>
 					<code className="colored">{'<SlideOutMenu/>'}</code> component instance also provides <code className="colored">.hide()</code> and <code className="colored">.show()</code> methods.
-					<br/>
-					<br/>
-					Optionally use <code className="colored">.rrui__slideout-menu__item</code> CSS class on slideout menu items.
 				</p>
 
 				<Highlight lang="jsx" style={{ marginTop: '40px' }}>{`
@@ -30,13 +27,13 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 						<SlideOutMenu anchor="right" menuRef={menuRef} onExpand={clearFocus}>
 							<List role="menu">
 								<List.Item role="none">
-									<a href="/1" role="menuitem" className="rrui__slideout-menu__item"> Item 1 </a>
+									<a href="/1" role="menuitem"> Item 1 </a>
 								</List.Item>
 								<List.Item role="none">
-									<a href="/2" role="menuitem" className="rrui__slideout-menu__item"> Item 2 </a>
+									<a href="/2" role="menuitem"> Item 2 </a>
 								</List.Item>
 								<List.Item role="none">
-									<a href="/3" role="menuitem" className="rrui__slideout-menu__item"> Item 3 </a>
+									<a href="/3" role="menuitem"> Item 3 </a>
 								</List.Item>
 							</List>
 						</SlideOutMenu>
