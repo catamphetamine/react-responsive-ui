@@ -118,7 +118,8 @@ export default class DatePicker extends PureComponent
 		icon : PropTypes.func,
 
 		// `aria-label` attribute.
-		ariaLabel : PropTypes.string.isRequired,
+		// Deprecated, use `aria-label` instead.
+		ariaLabel : PropTypes.string,
 
 		waitForKeyboardSlideIn : PropTypes.bool.isRequired,
 		keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
@@ -160,9 +161,6 @@ export default class DatePicker extends PureComponent
 				<path d=" M2 2 L10 2 L10 10 L2 10z M12 2 L20 2 L20 10 L12 10z M22 2 L30 2 L30 10 L22 10z M2 12 L10 12 L10 20 L2 20z M12 12 L20 12 L20 20 L12 20z M22 12 L30 12 L30 20 L22 20z M2 22 L10 22 L10 30 L2 30z M12 22 L20 22 L20 30 L12 30z M22 22 L30 22 L30 30 L22 30z "/>
 			</svg>
 		),
-
-		// `aria-label` attribute.
-		ariaLabel : 'Open Calendar',
 
 		waitForKeyboardSlideIn : true,
 		keyboardSlideInAnimationDuration : 300
@@ -605,6 +603,7 @@ export default class DatePicker extends PureComponent
 			placeholder,
 			waitForKeyboardSlideIn,
 			keyboardSlideInAnimationDuration,
+			// Deprecated, use `aria-label` instead.
 			ariaLabel,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
@@ -688,7 +687,7 @@ export default class DatePicker extends PureComponent
 						tabIndex={-1}
 						aria-haspopup="grid"
 						aria-expanded={ isExpanded }
-						aria-label={ ariaLabel }
+						aria-label={ this.props['aria-label'] || ariaLabel || 'Open Calendar' }
 						className={ classNames('rrui__button-reset', 'rrui__date-picker__icon', {
 							'rrui__date-picker__icon--hidden': !icon
 						}) }>

@@ -32,6 +32,7 @@ export default class Checkbox extends PureComponent
 		focus     : PropTypes.bool.isRequired,
 
 		// `aria-label` attribute.
+		// Deprecated, use `aria-label` instead.
 		ariaLabel : PropTypes.string,
 
 		// The label (text)
@@ -85,6 +86,7 @@ export default class Checkbox extends PureComponent
 			indicateInvalid,
 			multiline,
 			disabled,
+			// Deprecated, use `aria-label` instead.
 			ariaLabel,
 			children,
 			style,
@@ -114,7 +116,7 @@ export default class Checkbox extends PureComponent
 						<input
 							ref={ this.storeInstance }
 							type="checkbox"
-							ariaLabel={ ariaLabel || (typeof children === 'string' ? children : undefined)}
+							aria-label={ this.props['aria-label'] || ariaLabel || (typeof children === 'string' ? children : undefined) }
 							checked={ value }
 							disabled={ disabled }
 							onKeyDown={ this.onKeyDown }

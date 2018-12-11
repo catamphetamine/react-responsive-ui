@@ -120,7 +120,8 @@ export default class Select extends PureComponent
 		// HTML `tabindex` attribute
 		tabIndex   : PropTypes.number,
 
-		// `aria-label` for the `<Select/>`'s `<button/>`
+		// `aria-label` for the `<Select/>`'s `<button/>`.
+		// Deprecated, use `aria-label` instead.
 		ariaLabel : PropTypes.string
 	}
 
@@ -272,7 +273,7 @@ export default class Select extends PureComponent
 					{ this.shouldShowOptionsList() &&
 						<ExpandableList
 							ref={this.storeListRef}
-							ariaHidden={ true }
+							aria-hidden={ true }
 							upward={upward}
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
@@ -640,12 +641,13 @@ export default class Select extends PureComponent
 	getAriaLabel()
 	{
 		const {
+			// Deprecated, use `aria-label` instead.
 			ariaLabel,
 			label,
 			placeholder
 		} = this.props
 
-		return ariaLabel || label || placeholder
+		return this.props['aria-label'] || ariaLabel || label || placeholder
 	}
 
 	getLabel()

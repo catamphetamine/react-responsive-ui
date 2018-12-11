@@ -74,9 +74,9 @@ class Modal extends Component
 		//  it will be consistent across all pages)
 		bodyOverflowY    : PropTypes.string.isRequired,
 
-		// `aria-label` for the modal.
+		// Deprecated, use `aria-label` instead.
 		ariaLabel        : PropTypes.string,
-		// Deprecated, use `ariaLabel` instead.
+		// Deprecated, use `aria-label` instead.
 		contentLabel     : PropTypes.string,
 
 		// `aria-hidden` will be set to true on the `appElement`.
@@ -208,8 +208,9 @@ class Modal extends Component
 			fullscreen,
 			isOpen,
 			closeTimeout,
+			// Deprecated, use `aria-label` instead.
 			ariaLabel,
-			// Deprecated, use `ariaLabel` instead.
+			// Deprecated, use `aria-label` instead.
 			contentLabel,
 			title,
 			closeLabel,
@@ -239,7 +240,7 @@ class Modal extends Component
 				onAfterOpen={ unmount ? this.on_after_open : undefined }
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
-				contentLabel={ ariaLabel || contentLabel }
+				contentLabel={ this.props['aria-label'] || ariaLabel || contentLabel }
 				ariaHideApp={ ariaHideApp }
 				appElement={ appElementId ? (typeof window === 'undefined' ? undefined : document.getElementById(appElementId)) : appElement }
 				style={ react_modal_style }

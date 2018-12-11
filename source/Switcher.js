@@ -39,6 +39,7 @@ export default class Switcher extends PureComponent
 		onChange     : PropTypes.func.isRequired,
 
 		// `aria-label` attribute.
+		// Deprecated, use `aria-label` instead.
 		ariaLabel    : PropTypes.string,
 
 		// CSS class
@@ -62,6 +63,7 @@ export default class Switcher extends PureComponent
 			options,
 			indicateInvalid,
 			error,
+			// Deprecated, use `aria-label` instead.
 			ariaLabel,
 			style,
 			className
@@ -72,7 +74,7 @@ export default class Switcher extends PureComponent
 			<div
 				ref={ this.storeContainerComponent }
 				onKeyDown={ this.onKeyDown }
-				aria-label={ ariaLabel }
+				aria-label={ this.props['aria-label'] || ariaLabel }
 				className={ classNames('rrui__switcher',
 				{
 					'rrui__switcher--disabled' : disabled
