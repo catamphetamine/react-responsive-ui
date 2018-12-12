@@ -1,5 +1,34 @@
 
 
+/* Developers should define `:focus` styles for focusable controls. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__outline:not(.rrui__outline--default) {
+  outline: none; }
+
+/* Reset the default `<button/>` styles */
+.rrui__button-reset {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  /* box-sizing  : border-box; */ }
+
+.rrui__button-reset--link:hover {
+  text-decoration: none; }
+
 .rrui__activity-indicator {
   width: calc(0.6rem * 3);
   height: calc(0.6rem * 3);
@@ -93,35 +122,6 @@
 
 .rrui__autocomplete--compact .rrui__expandable-list {
   width: auto; }
-
-/* Reset the default `<button/>` styles */
-.rrui__button-reset {
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  font-weight: inherit;
-  font-style: inherit;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  /* box-sizing  : border-box; */ }
-
-/* Developers should define `:focus` styles for `<Button/>`s. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__button-reset:not(.rrui__outline--default) {
-  outline: none; }
-
-.rrui__button-reset--link:hover {
-  text-decoration: none; }
 
 .rrui__button {
   display: -webkit-inline-box;
@@ -567,7 +567,6 @@
   display: none; }
 
 .rrui__date-picker__icon {
-  display: none;
   position: absolute;
   top: calc((0.6rem * 3 - 0.6rem * 1.5) / 2);
   right: calc(0.6rem / 2);
@@ -576,6 +575,9 @@
   z-index: 1;
   opacity: 0.5;
   color: #000000; }
+
+.rrui__date-picker__icon--hidden {
+  display: none; }
 
 /*
 // Adding `:focus` style for date picker icon is not required
@@ -674,12 +676,6 @@
   background-clip: padding-box;
   -webkit-background-clip: padding-box; }
 
-/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
-/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__expandable:not(.rrui__outline--default) {
-  outline: none; }
-
 .rrui__expandable--expanded {
   opacity: 1;
   pointer-events: auto;
@@ -756,11 +752,6 @@
 
 .rrui__file-upload__area {
   cursor: pointer; }
-
-/* Developers should define `:focus` styles for `<FileUpload/>`s. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__file-upload__area:not(.rrui__outline--default) {
-  outline: none; }
 
 .rrui__file-upload__area--disabled {
   cursor: default; }
@@ -841,12 +832,6 @@ than 100% of the parent if the parent is small enough.
   font-family: inherit;
   font-weight: inherit;
   font-style: inherit; }
-
-/* `<TextInput/>` has `border-color` to indicate its `:focus` state.
-   Therefore the `outline` can be safely removed. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__input-field:not(.rrui__outline--default) {
-  outline: none; }
 
 /* Overrides Chrome autofill yellow background color */
 .rrui__input-field:-webkit-autofill {
@@ -1158,12 +1143,6 @@ also change `default_close_timeout` in ./Modal.js accordingly
   -webkit-transition: background-color 100ms ease-out;
   -o-transition: background-color 100ms ease-out;
   transition: background-color 100ms ease-out; }
-
-/* A `<Modal/>` gets focused when it gets open and this causes an outline around it. */
-/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__modal__container:not(.rrui__outline--default) .ReactModal__Content {
-  outline: none; }
 
 .rrui__modal__contents {
   opacity: 0;
@@ -1580,12 +1559,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   height: 100%;
   cursor: pointer; }
 
-/* `:focus` style is implemented via border color
-   so outline can be muted safely here. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__select__native:not(.rrui__outline--default) {
-  outline: none; }
-
 /* Something from stackoverflow. */
 .rrui__select__native-option--divider {
   font-size: 1px;
@@ -1622,12 +1595,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -o-transition: transform 220ms ease-out, box-shadow 220ms ease-out;
   transition: transform 220ms ease-out, box-shadow 220ms ease-out;
   transition: transform 220ms ease-out, box-shadow 220ms ease-out, -webkit-transform 220ms ease-out, -webkit-box-shadow 220ms ease-out; }
-
-/* Developers can define custom `:focus` style for the slideout menu. */
-/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__slideout-menu:not(.rrui__outline--default) {
-  outline: none; }
 
 .rrui__slideout-menu--fullscreen {
   display: -webkit-box;
