@@ -177,6 +177,7 @@ export default class DatePicker extends PureComponent
 	isExpanded = () => this.expandable.isExpanded()
 
 	focus = () => this.input.focus()
+	focusCalendar = () => this.calendar && this.calendar.dayPicker && this.calendar.dayPicker.firstChild.focus()
 
 	userHasJustChangedYearOrMonth = () =>
 	{
@@ -257,8 +258,12 @@ export default class DatePicker extends PureComponent
 	}
 
 	// Cancels textual date editing.
-	onCollapse = () =>
+	onCollapse = ({ focusOut }) =>
 	{
+		if (!focusOut) {
+			this.focus()
+		}
+
 		this.setState
 		({
 			text_value : undefined,
@@ -355,7 +360,7 @@ export default class DatePicker extends PureComponent
 				if (!this.isExpanded())
 				{
 					event.preventDefault()
-					this.expand()
+					this.expand().then(this.focusCalendar)
 				}
 				return
 		}
@@ -556,16 +561,13 @@ export default class DatePicker extends PureComponent
 		// the calendar after selecting a year/month.
 		if (this._userHasJustChangedYearOrMonth)
 		{
-			this.focus()
+			this.focusCalendar()
 			return true
 		}
 	}
 
 	onToggleButtonClick = (event) => {
-		this.toggle().then(() => {
-			// Focus the calendar.
-			this.calendar && this.calendar.dayPicker && this.calendar.dayPicker.firstChild.focus()
-		})
+		this.toggle().then(this.focusCalendar)
 	}
 
 	componentWillUnmount()
@@ -636,7 +638,7 @@ export default class DatePicker extends PureComponent
 		{
 			captionElement = (
 				<YearMonthSelect
-					focus={ this.focus }
+					focus={ this.focusCalendar }
 					userHasJustChangedYearOrMonth={ this.userHasJustChangedYearOrMonth }
 					selectedDay={ value }
 					onChange={ this.onMonthChange }

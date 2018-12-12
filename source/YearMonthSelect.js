@@ -113,7 +113,9 @@ export default class YearMonthSelect extends PureComponent
 	{
 		const { userHasJustChangedYearOrMonth } = this.props
 
-		// Doesn't work on iOS
+		// Doesn't work on iOS.
+		// Or maybe it does with the new `focus()` being
+		// `focusCalendar()` vs the old `.focus()`.
 		// focus()
 
 		// A hack for iOS when it collapses
