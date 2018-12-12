@@ -175,7 +175,25 @@ Each form component receives an `error : String` error message property.
 
 ## Outline
 
-By default all buttons and inputs have their outlines hidden via `outline: none` CSS rule. The developer is supposed to define their own `:focus` styles for such components. For this, every button and input has `rrui__outline` CSS class which can be set, for example, to `box-shadow: 0 0 0 0.2rem blue`. If the developer still prefers the default browser outline then they can add `rrui__outline--default` CSS class to buttons and inputs to prevent `outline: none` CSS rule from being applied.
+By default all buttons and inputs have `rrui__outline` CSS class attached to them which hides the default browser outline for focused components.
+
+```css
+.rrui__outline:not(.rrui__outline--default) {
+  outline: none;
+}
+```
+
+Instead of using the default browser outline which doesn't look pretty by any standards and which nobody uses (not "Google", not "Apple", not anyone else) the default `react-responsive-ui` styles define custom `:focus` styling for most cases (though not for all of them). Still, these default `:focus` styles are quite subtle and if a developer is implementing a [WAI-ARIA](https://developers.google.com/web/fundamentals/accessibility/)-compliant website then they should make sure that those `:focus` styles are pronounced enough and that the few missing `:focus` styles are added.
+
+Alternatively, those looking for a very-quick-and-dirty solution can use the same default browser outline, but prettier.
+
+```css
+.rrui__outline:focus {
+  box-shadow: 0 0 0 0.15rem #00aaff;
+}
+```
+
+If a developer still prefers the default browser outline then they still can manually add `rrui__outline--default` CSS class to buttons and inputs to prevent `outline: none` CSS rule from being applied.
 
 There's also an exported component called `<KeyboardNavigationListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch events reset the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events. It's more of an experimental feature.
 
