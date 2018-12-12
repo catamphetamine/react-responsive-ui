@@ -33,6 +33,17 @@
 
 <!-- (breaking change) Maybe remove "fullscreen" styles. -->
 
+0.14.83 / 11.12.2018
+====================
+
+  * Removed default `aria-haspopup` and `aria-label` attributes from `<MenuButton/>`: pass them manually if required.
+
+  * Renamed `rrui__outline` to `rrui__outline--default`. `rrui__outline` is now always added to all focusable components and can be used to define custom "outline"-like styling (for example, via `box-shadow`).
+
+  * Added `<KeyboardNavigationListener/>` component which sets `rrui__tabbing` CSS class on `document.body`. It can be used to only show outlines on buttons/links when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events. It's more of an experimental feature.
+
+  * Added `buttonAriaLabel` property to `<DatePicker/>`.
+
 0.14.81 / 09.12.2018
 ====================
 
