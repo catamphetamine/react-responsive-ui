@@ -2,6 +2,7 @@
 
 exports = module.exports = {}
 
+exports.KeyboardNavigationListener = require('./commonjs/KeyboardNavigationListener').default
 exports.PageAndMenu = require('./commonjs/PageAndMenu').default
 exports.Page = require('./commonjs/Page').default
 exports.SlideOutMenu = require('./commonjs/SlideOutMenu').default

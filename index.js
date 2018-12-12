@@ -1,5 +1,11 @@
 export
 {
+	default as KeyboardNavigationListener
+}
+from './modules/KeyboardNavigationListener'
+
+export
+{
 	default as PageAndMenu
 }
 from './modules/PageAndMenu'

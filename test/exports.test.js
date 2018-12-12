@@ -1,5 +1,6 @@
 import
 {
+	KeyboardNavigationListener,
 	PageAndMenu,
 	Page,
 	SlideOutMenu,
@@ -41,6 +42,7 @@ describe('React Responsive UI', function()
 {
 	it('should export ES6', function()
 	{
+		expect(KeyboardNavigationListener).to.be.a('function')
 		expect(PageAndMenu).to.be.a('function')
 		expect(Page).to.be.a('function')
 		expect(SlideOutMenu).to.be.a('function')
@@ -82,6 +84,7 @@ describe('React Responsive UI', function()
 	{
 		const _ = require('../index.common')
 
+		expect(_.KeyboardNavigationListener).to.be.a('function')
 		expect(_.PageAndMenu).to.be.a('function')
 		expect(_.Page).to.be.a('function')
 		expect(_.SlideOutMenu).to.be.a('function')

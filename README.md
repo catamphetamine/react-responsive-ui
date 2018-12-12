@@ -177,9 +177,7 @@ Each form component receives an `error : String` error message property.
 
 By default all buttons and inputs have their outlines hidden via `outline: none` CSS rule. The developer is supposed to define their own `:focus` styles for such components. For this, every button and input has `rrui__outline` CSS class which can be set, for example, to `box-shadow: 0 0 0 0.2rem blue`. If the developer still prefers the default browser outline then they can add `rrui__outline--default` CSS class to buttons and inputs to prevent `outline: none` CSS rule from being applied.
 
-<!--
-There's also an exported component called `<TabListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch event resets the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing.
--->
+There's also an exported component called `<KeyboardNavigationListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch events reset the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events. It's more of an experimental feature.
 
 ## Supported Browsers
 
