@@ -97,9 +97,9 @@ class MenuButton extends PureComponent
 		const properties = {
 			ref: this.storeButtonNode,
 			onClick: this.onClick,
-			'aria-label': 'Menu',
-			'aria-haspopup': 'menu',
-			'aria-expanded': menuIsExpanded,
+			// 'aria-label': 'Menu',
+			// 'aria-haspopup': 'menu',
+			'aria-expanded': rest['aria-haspopup'] ? menuIsExpanded : undefined,
 			className: classNames('rrui__button-reset', 'rrui__menu-button', className),
 			...rest
 		}

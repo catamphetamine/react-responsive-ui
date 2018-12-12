@@ -414,6 +414,7 @@ export default class Autocomplete extends PureComponent
 						onExpand={this.onExpand}
 						focusOnExpand={false}
 						highlightSelectedItem={false}
+						tabbable={false}
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
 						closeButtonIcon={closeButtonIcon}

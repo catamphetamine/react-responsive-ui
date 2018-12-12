@@ -320,9 +320,9 @@ export default class List extends PureComponent
 			role = 'listbox'
 		}
 
-		if (this.props['aria-hidden']) {
-			role = undefined
-		}
+		// if (this.props['aria-hidden']) {
+		// 	role = undefined
+		// }
 
 		return (
 			<ul
