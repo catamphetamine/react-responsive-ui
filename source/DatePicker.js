@@ -117,9 +117,8 @@ export default class DatePicker extends PureComponent
 		// The calendar icon.
 		icon : PropTypes.func,
 
-		// `aria-label` attribute.
-		// Deprecated, use `aria-label` instead.
-		ariaLabel : PropTypes.string,
+		// `aria-label` attribute for the toggle calendar button.
+		buttonAriaLabel : PropTypes.string,
 
 		waitForKeyboardSlideIn : PropTypes.bool.isRequired,
 		keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
@@ -603,8 +602,7 @@ export default class DatePicker extends PureComponent
 			placeholder,
 			waitForKeyboardSlideIn,
 			keyboardSlideInAnimationDuration,
-			// Deprecated, use `aria-label` instead.
-			ariaLabel,
+			buttonAriaLabel,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
 			icon,
@@ -687,7 +685,7 @@ export default class DatePicker extends PureComponent
 						tabIndex={-1}
 						aria-haspopup="grid"
 						aria-expanded={ isExpanded }
-						aria-label={ this.props['aria-label'] || ariaLabel || 'Open Calendar' }
+						aria-label={ buttonAriaLabel }
 						className={ classNames('rrui__button-reset', 'rrui__date-picker__icon', {
 							'rrui__date-picker__icon--hidden': !icon
 						}) }>
