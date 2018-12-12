@@ -716,7 +716,6 @@ export default class DatePicker extends PureComponent
 							selectedDays={ normalizeDate(value) }
 							disabledDays={ disabledDays }
 							captionElement={ captionElement }
-							classNames={ REACT_DAY_PICKER_CLASS_NAMES }
 							className="rrui__date-picker__calendar" />
 					</Expandable>
 				</TextInput>
@@ -738,50 +737,53 @@ const iconStyle = {
 	fill   : 'currentColor'
 }
 
-// Should have been exported from `react-day-picker`.
-// https://github.com/gpbl/react-day-picker/blob/master/src/classNames.js
-// Can change in future versions of `react-day-picker`.
-const REACT_DAY_PICKER_DEFAULT_CLASS_NAMES = {
-	container: 'DayPicker',
-	wrapper: 'DayPicker-wrapper',
-	interactionDisabled: 'DayPicker--interactionDisabled',
-	months: 'DayPicker-Months',
-	month: 'DayPicker-Month',
-
-	navBar: 'DayPicker-NavBar',
-	navButtonPrev: 'DayPicker-NavButton DayPicker-NavButton--prev',
-	navButtonNext: 'DayPicker-NavButton DayPicker-NavButton--next',
-	navButtonInteractionDisabled: 'DayPicker-NavButton--interactionDisabled',
-
-	caption: 'DayPicker-Caption',
-	weekdays: 'DayPicker-Weekdays',
-	weekdaysRow: 'DayPicker-WeekdaysRow',
-	weekday: 'DayPicker-Weekday',
-	body: 'DayPicker-Body',
-	week: 'DayPicker-Week',
-	weekNumber: 'DayPicker-WeekNumber',
-	day: 'DayPicker-Day',
-	footer: 'DayPicker-Footer',
-	todayButton: 'DayPicker-TodayButton',
-
-	// default modifiers
-	today: 'today',
-	selected: 'selected',
-	disabled: 'disabled',
-	outside: 'outside',
-}
-
-const REACT_DAY_PICKER_CLASS_NAMES = {
-	...REACT_DAY_PICKER_DEFAULT_CLASS_NAMES,
-	/* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
-	   It gets focused upon expanding which causes an outline.
-	   That outline can be safely removed because it doesn't aid accesiblity. */
-	wrapper: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.wrapper + ' rrui__outline',
-	/* Calendar days have `background-color` on `:focus`.
-	   Therefore their `outline` can be safely removed. */
-	day: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.day + ' rrui__outline',
-	/* Previous/Next month buttons have `background-color` on `:focus`.
-	   Therefore their `outline` can be safely removed. */
-	navButtonPrev: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonPrev + ' rrui__outline',
-	navButtonNext: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonNext + ' rrui__outline'
-}
+// Doesn't work.
+// https://github.com/gpbl/react-day-picker/issues/841
+//
+// classNames={ REACT_DAY_PICKER_CLASS_NAMES }
+//
+// // Default `react-day-picker` CSS class names.
+// // Should have been exported from `react-day-picker`.
+// // https://github.com/gpbl/react-day-picker/blob/master/src/classNames.js
+// // Can change in future versions of `react-day-picker`.
+// const REACT_DAY_PICKER_DEFAULT_CLASS_NAMES = {
+// 	container: 'DayPicker',
+// 	wrapper: 'DayPicker-wrapper',
+// 	interactionDisabled: 'DayPicker--interactionDisabled',
+// 	months: 'DayPicker-Months',
+// 	month: 'DayPicker-Month',
+// 	navBar: 'DayPicker-NavBar',
+// 	navButtonPrev: 'DayPicker-NavButton DayPicker-NavButton--prev',
+// 	navButtonNext: 'DayPicker-NavButton DayPicker-NavButton--next',
+// 	navButtonInteractionDisabled: 'DayPicker-NavButton--interactionDisabled',
+// 	caption: 'DayPicker-Caption',
+// 	weekdays: 'DayPicker-Weekdays',
+// 	weekdaysRow: 'DayPicker-WeekdaysRow',
+// 	weekday: 'DayPicker-Weekday',
+// 	body: 'DayPicker-Body',
+// 	week: 'DayPicker-Week',
+// 	weekNumber: 'DayPicker-WeekNumber',
+// 	day: 'DayPicker-Day',
+// 	footer: 'DayPicker-Footer',
+// 	todayButton: 'DayPicker-TodayButton',
+// 	// default modifiers
+// 	today: 'today',
+// 	selected: 'selected',
+// 	disabled: 'disabled',
+// 	outside: 'outside',
+// }
+//
+// const REACT_DAY_PICKER_CLASS_NAMES = {
+// 	...REACT_DAY_PICKER_DEFAULT_CLASS_NAMES,
+// 	/* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
+// 	   It gets focused upon expanding which causes an outline.
+// 	   That outline can be safely removed because it doesn't aid accesiblity. */
+// 	wrapper: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.wrapper + ' rrui__outline',
+// 	/* Calendar days have `background-color` on `:focus`.
+// 	   Therefore their `outline` can be safely removed. */
+// 	day: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.day + ' rrui__outline',
+// 	/* Previous/Next month buttons have `background-color` on `:focus`.
+// 	   Therefore their `outline` can be safely removed. */
+// 	navButtonPrev: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonPrev + ' rrui__outline',
+// 	navButtonNext: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonNext + ' rrui__outline'
+// }
