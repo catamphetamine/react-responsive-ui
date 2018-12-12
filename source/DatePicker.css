@@ -172,13 +172,13 @@
 /* `.DayPicker-wrapper` is a `<div/>` wrapping the calendar.
    It gets focused upon expanding which causes an outline.
    That outline can be safely removed because it doesn't aid accesiblity. */
-.rrui__date-picker:not(.rrui__outline) .DayPicker-wrapper,
+.rrui__date-picker:not(.rrui__outline--default) .DayPicker-wrapper,
 /* Calendar days have `background-color` on `:focus`.
    Therefore their `outline` can be safely removed. */
-.rrui__date-picker:not(.rrui__outline) .DayPicker-Day,
+.rrui__date-picker:not(.rrui__outline--default) .DayPicker-Day,
 /* Previous/Next month buttons have `background-color` on `:focus`.
    Therefore their `outline` can be safely removed. */
-.rrui__date-picker:not(.rrui__outline) .DayPicker-NavButton
+.rrui__date-picker:not(.rrui__outline--default) .DayPicker-NavButton
 {
 	outline: none;
 }

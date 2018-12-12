@@ -146,7 +146,7 @@
 /* `:focus` style is implemented via border color
    so outline can be muted safely here. */
 /* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__select__native:not(.rrui__outline)
+.rrui__select__native:not(.rrui__outline--default)
 {
 	outline : none;
 }
