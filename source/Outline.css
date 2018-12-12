@@ -1,0 +1,6 @@
+/* Developers should define `:focus` styles for focusable controls. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__outline:not(.rrui__outline--default)
+{
+	outline : none;
+}

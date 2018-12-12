@@ -33,6 +33,11 @@
 
 <!-- (breaking change) Maybe remove "fullscreen" styles. -->
 
+0.14.84 / 12.12.2018
+====================
+
+  * Fixed `rrui__outline` CSS class across components.
+
 0.14.83 / 11.12.2018
 ====================
 

@@ -10,14 +10,6 @@
 	font-style    : inherit;
 }
 
-/* `<TextInput/>` has `border-color` to indicate its `:focus` state.
-   Therefore the `outline` can be safely removed. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__input-field:not(.rrui__outline--default)
-{
-	outline : none;
-}
-
 /* Overrides Chrome autofill yellow background color */
 .rrui__input-field:-webkit-autofill
 {

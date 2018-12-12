@@ -16,13 +16,6 @@
 	/* box-sizing  : border-box; */
 }
 
-/* Developers should define `:focus` styles for `<Button/>`s. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__button-reset:not(.rrui__outline--default)
-{
-	outline : none;
-}
-
 .rrui__button-reset--link:hover
 {
 	text-decoration : none;

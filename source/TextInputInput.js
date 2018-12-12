@@ -281,6 +281,9 @@ export default class TextInput extends PureComponent
 			onKeyDown   : this.onKeyDown,
 			className   : classNames
 			(
+				// `<TextInput/>` has `border-color` to indicate its `:focus` state.
+				// Therefore the `outline` can be safely removed.
+				'rrui__outline',
 				'rrui__input-element',
 				'rrui__input-field',
 				{

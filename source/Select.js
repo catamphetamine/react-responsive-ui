@@ -368,6 +368,7 @@ export default class Select extends PureComponent
 				(
 					'rrui__input-element',
 					'rrui__button-reset',
+					'rrui__outline',
 					'rrui__select__button',
 					toggleClassName,
 					{
@@ -425,11 +426,15 @@ export default class Select extends PureComponent
 				onChange={ this.nativeSelectOnChange }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
-				className={ classNames('rrui__select__native',
-				{
-					'rrui__select__native--overlay' : !native,
-					'rrui__select__native--invalid' : indicateInvalid && error
-				}) }>
+				className={ classNames(
+					// `:focus` style is implemented via border color
+					// so outline can be muted safely here.
+					'rrui__outline',
+					'rrui__select__native', {
+						'rrui__select__native--overlay' : !native,
+						'rrui__select__native--invalid' : indicateInvalid && error
+					}
+				) }>
 				{this.renderNativeSelectOptions()}
 			</select>
 		)

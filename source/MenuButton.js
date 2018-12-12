@@ -100,7 +100,7 @@ class MenuButton extends PureComponent
 			// 'aria-label': 'Menu',
 			// 'aria-haspopup': 'menu',
 			'aria-expanded': rest['aria-haspopup'] ? menuIsExpanded : undefined,
-			className: classNames('rrui__button-reset', 'rrui__menu-button', className),
+			className: classNames('rrui__button-reset', 'rrui__outline', 'rrui__menu-button', className),
 			...rest
 		}
 

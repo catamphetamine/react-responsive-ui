@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -138,7 +139,13 @@ export default class YearMonthSelect extends PureComponent
 							value={ date.getMonth() }
 							aria-label="Month"
 							tabIndex={ tabbable ? 0 : -1 }
-							className="rrui__select__native rrui__select__native--overlay">
+							className={ classNames(
+								// `:focus` style is implemented via border color
+								// so outline can be muted safely here.
+								'rrui__outline',
+								'rrui__select__native',
+								'rrui__select__native--overlay'
+							) }>
 
 							{ this.months.map((month, i) => (
 								<option key={ i } value={ i }>
@@ -151,7 +158,11 @@ export default class YearMonthSelect extends PureComponent
 						<button
 							type="button"
 							tabIndex={-1}
-							className="rrui__button-reset rrui__date-picker__month-select-toggler">
+							className={classNames(
+								'rrui__button-reset',
+								'rrui__outline',
+								'rrui__date-picker__month-select-toggler'
+							)}>
 							<div className="rrui__select__selected-content">
 								<div className="rrui__select__selected-label">
 									{this.months[date.getMonth()]}
@@ -169,7 +180,13 @@ export default class YearMonthSelect extends PureComponent
 							value={ date.getFullYear() }
 							aria-label="Year"
 							tabIndex={ tabbable ? 0 : -1 }
-							className="rrui__select__native rrui__select__native--overlay">
+							className={ classNames(
+								// `:focus` style is implemented via border color
+								// so outline can be muted safely here.
+								'rrui__outline',
+								'rrui__select__native',
+								'rrui__select__native--overlay'
+							) }>
 
 							{ this.years.map((year, i) => (
 								<option key={ i } value={ year }>
@@ -182,7 +199,11 @@ export default class YearMonthSelect extends PureComponent
 						<button
 							type="button"
 							tabIndex={-1}
-							className="rrui__button-reset rrui__date-picker__year-select-toggler">
+							className={classNames(
+								'rrui__button-reset',
+								'rrui__outline',
+								'rrui__date-picker__year-select-toggler'
+							)}>
 							<div className="rrui__select__selected-content">
 								<div className="rrui__select__selected-label">
 									{date.getFullYear()}

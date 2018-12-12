@@ -119,6 +119,7 @@ export default class Switcher extends PureComponent
 				className={ classNames
 				(
 					'rrui__button-reset',
+					'rrui__outline',
 					'rrui__switcher__option',
 					{
 						'rrui__switcher__option--selected' : selected,
@@ -151,7 +152,7 @@ export default class Switcher extends PureComponent
 	// 	return (
 	// 		<span
 	// 			key={ option.value }
-	// 			className={ classNames('rrui__button-reset', 'rrui__switcher__option',
+	// 			className={ classNames('rrui__button-reset', 'rrui__outline', 'rrui__switcher__option',
 	// 			{
 	// 				'rrui__switcher__option--first'  : first,
 	// 				'rrui__switcher__option--last'   : last,

@@ -503,9 +503,12 @@ export default class Expandable extends PureComponent
 				className={ classNames
 				(
 					className,
+					/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
+					/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
+					'rrui__outline',
+					'rrui__shadow',
 					'rrui__expandable',
 					'rrui__expandable--overlay',
-					'rrui__shadow',
 					{
 						'rrui__expandable--expanded'      : expanded,
 						'rrui__expandable--left-aligned'  : alignment === 'left',

@@ -251,10 +251,16 @@ class Modal extends Component
 					'rrui__modal__overlay--hidden'     : !unmount && !isOpen
 				},
 				overlayClassName) }
-				className={ classNames('rrui__modal__container',
-				{
-					'rrui__modal__container--fullscreen' : fullscreen
-				}) }>
+				className={ classNames(
+					// A `<Modal/>` gets focused when it gets open
+					// and this causes an outline around it.
+					// This outline doesn't relate that much to actual
+					// accessibilty so it can be muted safely.
+					'rrui__outline',
+					'rrui__modal__container', {
+						'rrui__modal__container--fullscreen' : fullscreen
+					}
+				) }>
 
 				{/* Top margin, grows less than bottom margin */}
 				<div

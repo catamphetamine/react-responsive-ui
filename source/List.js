@@ -579,6 +579,7 @@ export class Item extends React.Component
 			properties.className = classNames(
 				properties.className,
 				'rrui__button-reset',
+				'rrui__outline',
 				'rrui__list__item--button'
 			)
 

@@ -15,14 +15,6 @@
 	-webkit-background-clip : padding-box;
 }
 
-/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
-/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__expandable:not(.rrui__outline--default)
-{
-	outline : none;
-}
-
 .rrui__expandable--expanded
 {
 	opacity        : 1;

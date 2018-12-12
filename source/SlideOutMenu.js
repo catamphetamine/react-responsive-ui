@@ -190,15 +190,21 @@ class SlideoutMenu extends PureComponent
 				tabIndex={ -1 }
 				onKeyDown={ this.onKeyDown }
 				style={ style }
-				className={ classNames('rrui__slideout-menu', className,
-				{
-					'rrui__slideout-menu--left'       : anchor === 'left',
-					'rrui__slideout-menu--right'      : anchor === 'right',
-					'rrui__slideout-menu--top'        : anchor === 'top',
-					'rrui__slideout-menu--bottom'     : anchor === 'bottom',
-					'rrui__slideout-menu--fullscreen' : fullscreen,
-					'rrui__slideout-menu--expanded'   : show
-				}) }>
+				className={ classNames(
+					className,
+					/* Developers can define custom `:focus` style for the slideout menu. */
+					/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
+					'rrui__outline',
+					'rrui__slideout-menu',
+					{
+						'rrui__slideout-menu--left'       : anchor === 'left',
+						'rrui__slideout-menu--right'      : anchor === 'right',
+						'rrui__slideout-menu--top'        : anchor === 'top',
+						'rrui__slideout-menu--bottom'     : anchor === 'bottom',
+						'rrui__slideout-menu--fullscreen' : fullscreen,
+						'rrui__slideout-menu--expanded'   : show
+					}
+				) }>
 				{ children }
 			</div>
 		)

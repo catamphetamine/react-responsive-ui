@@ -14,14 +14,6 @@
 	transition       : transform var(--rrui-slideout-menu-animation-duration) ease-out, box-shadow var(--rrui-slideout-menu-animation-duration) ease-out;
 }
 
-/* Developers can define custom `:focus` style for the slideout menu. */
-/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__slideout-menu:not(.rrui__outline--default)
-{
-	outline : none;
-}
-
 .rrui__slideout-menu--fullscreen
 {
 	display         : flex;

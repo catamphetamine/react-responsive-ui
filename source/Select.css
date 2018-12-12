@@ -143,14 +143,6 @@
 	cursor  : pointer;
 }
 
-/* `:focus` style is implemented via border color
-   so outline can be muted safely here. */
-/* Didn't add `:focus` specifier for lesser CSS rule priority. */
-.rrui__select__native:not(.rrui__outline--default)
-{
-	outline : none;
-}
-
 /* Something from stackoverflow. */
 .rrui__select__native-option--divider
 {

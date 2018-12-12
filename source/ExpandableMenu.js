@@ -163,7 +163,7 @@ export default class ExpandableMenu extends PureComponent
 				type="button"
 				aria-haspopup="dialog"
 				aria-expanded={isExpanded}
-				className={classNames('rrui__button-reset', togglerClassName)}>
+				className={classNames('rrui__button-reset', 'rrui__outline', togglerClassName)}>
 				{toggler}
 			</button>
 		)

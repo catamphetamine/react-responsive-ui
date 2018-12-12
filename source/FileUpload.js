@@ -156,13 +156,17 @@ export default class FileUpload extends PureComponent
 						role="button"
 						onClick={ this.onClick }
 						onKeyDown={ this.onKeyDown }
-						className={ classNames('rrui__file-upload__area',
-						{
-							'rrui__file-upload__area--disabled' : disabled,
-							'rrui__file-upload__area--invalid' : error,
-							'rrui__file-upload__area--dragged-over' : draggedOver,
-							// 'rrui__file-upload__area--can-not-drop' : !canDrop
-						}) }>
+						className={ classNames(
+							/* Developers should define `:focus` styles for `<FileUpload/>`s. */
+							'rrui__outline',
+							'rrui__file-upload__area',
+							{
+								'rrui__file-upload__area--disabled' : disabled,
+								'rrui__file-upload__area--invalid' : error,
+								'rrui__file-upload__area--dragged-over' : draggedOver,
+								// 'rrui__file-upload__area--can-not-drop' : !canDrop
+							}
+						) }>
 
 						{/* Could be an "UPLOAD" button or something. */}
 						{ children }

@@ -102,7 +102,7 @@ export default class Button extends PureComponent
 			ref : this.storeInstance,
 			title,
 			style,
-			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__button',
+			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__outline', 'rrui__button',
 			{
 				'rrui__button--busy'       : wait || busy || this.state.wait,
 				'rrui__button--disabled'   : disabled,
