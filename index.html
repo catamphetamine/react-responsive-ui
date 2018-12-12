@@ -52,6 +52,8 @@
 			// Uncomment for testing CSS outlines.
 			// library.showOutline(true)
 
+			window.KeyboardNavigationListener = library.KeyboardNavigationListener
+
 			window.PageAndMenu       = library.PageAndMenu
 			window.Page              = library.Page
 			window.SlideOutMenu      = library.SlideOutMenu
@@ -201,6 +203,8 @@
 				{
 					return (
 						<PageAndMenu>
+							<KeyboardNavigationListener/>
+
 							<ExampleSlideOutMenu/>
 
 							<div>
