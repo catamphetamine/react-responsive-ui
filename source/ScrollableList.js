@@ -55,7 +55,7 @@ export default class ScrollableList extends PureComponent
 	// Proxy `<List/>` methods.
 	focusItem = (index) => this.list.focusItem(index)
 	focus = () => this.list.focus()
-	unfocus = () => this.list.unfocus()
+	clearFocus = () => this.list.clearFocus()
 	onListItemsChanged = () => this.list.onListItemsChanged()
 	onKeyDown = (event) => this.list.onKeyDown(event)
 	getFocusedItemIndex = () => this.list.getFocusedItemIndex()

@@ -97,7 +97,7 @@ export default class List extends PureComponent
 		return focusedItemIndex
 	}
 
-	unfocus = () =>
+	clearFocus = () =>
 	{
 		this.setState
 		({
@@ -106,8 +106,8 @@ export default class List extends PureComponent
 		})
 	}
 
-	// A better public API method name.
-	clearFocus = this.unfocus
+	// Deprecated method name.
+	unfocus = this.clearFocus
 
 	// Focuses on the list.
 	focus = () => {
