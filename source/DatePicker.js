@@ -115,7 +115,10 @@ export default class DatePicker extends PureComponent
 		noon : PropTypes.bool.isRequired,
 
 		// The calendar icon.
-		icon : PropTypes.func,
+		icon : PropTypes.oneOfType([
+			PropTypes.func,
+			PropTypes.bool
+		]),
 
 		// `aria-label` attribute for the toggle calendar button.
 		buttonAriaLabel : PropTypes.string,
@@ -153,13 +156,6 @@ export default class DatePicker extends PureComponent
 		// A sensible default.
 		selectYearsIntoPast : 100,
 		selectYearsIntoFuture : 100,
-
-		// Default calendar icon
-		icon : () => (
-			<svg style={iconStyle} viewBox="0 0 32 32">
-				<path d=" M2 2 L10 2 L10 10 L2 10z M12 2 L20 2 L20 10 L12 10z M22 2 L30 2 L30 10 L22 10z M2 12 L10 12 L10 20 L2 20z M12 12 L20 12 L20 20 L12 20z M22 12 L30 12 L30 20 L22 20z M2 22 L10 22 L10 30 L2 30z M12 22 L20 22 L20 30 L12 30z M22 22 L30 22 L30 30 L22 30z "/>
-			</svg>
-		),
 
 		waitForKeyboardSlideIn : true,
 		keyboardSlideInAnimationDuration : 300
@@ -341,7 +337,7 @@ export default class DatePicker extends PureComponent
 			// On Spacebar.
 			case 32:
 				event.preventDefault()
-				return this.toggle()
+				return this.onToggleButtonClick()
 
 			// On "Up" arrow.
 			case 38:
@@ -565,6 +561,13 @@ export default class DatePicker extends PureComponent
 		}
 	}
 
+	onToggleButtonClick = (event) => {
+		this.toggle().then(() => {
+			// Focus the calendar.
+			this.calendar && this.calendar.dayPicker && this.calendar.dayPicker.firstChild.focus()
+		})
+	}
+
 	componentWillUnmount()
 	{
 		clearTimeout(this.blurTimer)
@@ -675,21 +678,25 @@ export default class DatePicker extends PureComponent
 					    when the date picker is in fullscreen mode */}
 					<div
 						ref={ this.storeInputOverlayNode }
-						onClick={ this.toggle }
+						onClick={ this.onToggleButtonClick }
 						className="rrui__date-picker__input-overlay"/>
 
 					{/* Calendar icon which toggles the calendar */}
 					<button
 						type="button"
-						onClick={ this.toggle }
+						onClick={this.onToggleButtonClick}
 						tabIndex={-1}
 						aria-haspopup="grid"
-						aria-expanded={ isExpanded }
-						aria-label={ buttonAriaLabel }
-						className={ classNames('rrui__button-reset', 'rrui__outline', 'rrui__date-picker__icon', {
-							'rrui__date-picker__icon--hidden': !icon
-						}) }>
-						{ icon ? icon() : null }
+						aria-expanded={isExpanded}
+						aria-label={buttonAriaLabel}
+						className={classNames(
+							'rrui__button-reset',
+							'rrui__outline',
+							'rrui__date-picker__icon', {
+								'rrui__date-picker__icon--hidden': !icon
+							}
+						)}>
+						{typeof icon === 'function' ? icon() : DEFAULT_CALENDAR_ICON()}
 					</button>
 
 					{/* <DayPicker/> doesn't support `style` property */}
@@ -787,3 +794,10 @@ const iconStyle = {
 // 	navButtonPrev: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonPrev + ' rrui__outline',
 // 	navButtonNext: REACT_DAY_PICKER_DEFAULT_CLASS_NAMES.navButtonNext + ' rrui__outline'
 // }
+
+// Default calendar icon
+const DEFAULT_CALENDAR_ICON = () => (
+	<svg style={iconStyle} viewBox="0 0 32 32">
+		<path d=" M2 2 L10 2 L10 10 L2 10z M12 2 L20 2 L20 10 L12 10z M22 2 L30 2 L30 10 L22 10z M2 12 L10 12 L10 20 L2 20z M12 12 L20 12 L20 20 L12 20z M22 12 L30 12 L30 20 L22 20z M2 22 L10 22 L10 30 L2 30z M12 22 L20 22 L20 30 L12 30z M22 22 L30 22 L30 30 L22 30z "/>
+	</svg>
+)

@@ -255,7 +255,6 @@
 
 .rrui__date-picker__icon
 {
-	display  : none;
 	position : absolute;
 	top      : calc((var(--rrui-input-height) - var(--rrui-unit) * 1.5) / 2);
 	right    : calc(var(--rrui-unit) / 2);
@@ -264,6 +263,11 @@
 	z-index  : 1;
 	opacity  : 0.5;
 	color    : var(--rrui-black-color);
+}
+
+.rrui__date-picker__icon--hidden
+{
+	display : none;
 }
 
 /*
