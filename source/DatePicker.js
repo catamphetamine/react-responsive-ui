@@ -553,7 +553,7 @@ export default class DatePicker extends PureComponent
 
 	onFocusOut = (event) =>
 	{
-		// this.collapse()
+		this.collapse()
 
 		const { onBlur, value } = this.props
 
