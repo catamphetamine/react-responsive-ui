@@ -9,11 +9,11 @@
 	display: flex;
 	justify-content: center;
 	padding: calc(var(--rrui-unit) * 2);
-	border: 1px solid transparent;
+	border-bottom: 1px solid transparent;
 }
 
 .DayPicker-wrapper:focus {
-	border: 1px solid var(--rrui-input-field-border-color-focus);
+	border-bottom: 1px solid var(--rrui-input-field-border-color-focus);
 }
 
 .DayPicker-NavButton {
