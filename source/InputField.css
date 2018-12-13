@@ -42,7 +42,9 @@
 }
 
 .rrui__input-field:focus,
-/* For `<Select native={false}/>` (default). */
+/* For `<Select/>` when `<button/>` is focused. */
+.rrui__select__button:focus,
+/* For `<Select/>` when `<select/>` is focused. */
 .rrui__select__native:focus + .rrui__select__button,
 /* For `<Select native={true}/>`. */
 .rrui__select__native:focus

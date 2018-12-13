@@ -150,13 +150,20 @@ export default class Select extends PureComponent
 	state = {}
 
 	focus = () => this.select.focus()
+	focusToggler = () => this.selectButton.focus()
 
 	onCollapse = ({ focusOut }) =>
 	{
+		const { native, nativeExpanded } = this.props
+
 		this.setState({ isExpanded: false })
 
 		if (!focusOut) {
-			this.focus()
+			if (native || nativeExpanded) {
+				this.focus()
+			} else {
+				this.focusToggler()
+			}
 		}
 	}
 
