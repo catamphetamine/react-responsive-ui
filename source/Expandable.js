@@ -142,7 +142,9 @@ export default class Expandable extends PureComponent
 		}
 
 		if (onTapOutside) {
+			this.focusOut = true
 			onTapOutside()
+			this.focusOut = undefined
 		}
 	}
 
