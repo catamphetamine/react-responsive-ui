@@ -490,6 +490,9 @@ export default class Expandable extends PureComponent
 		// `tabIndex={ -1 }` makes the `<div/>` focusable.
 		// Hence the `<Expandable/>` doesn't collapse on click inside it.
 
+		// `aria-hidden={true/false}` is not set automatically here
+		// because when `<Expandable/>` is collapsed then it's not rendered.
+
 		return (
 			<div
 				ref={ this.storeContainerNode }

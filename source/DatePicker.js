@@ -307,6 +307,12 @@ export default class DatePicker extends PureComponent
 				event.preventDefault()
 				// Collapse the list if it's expanded.
 				return this.collapse()
+
+			// On "Up" arrow.
+			case 38:
+			// On "Down" arrow.
+			case 40:
+				return event.preventDefault()
 		}
 	}
 
@@ -356,10 +362,11 @@ export default class DatePicker extends PureComponent
 
 			// On "Down" arrow.
 			case 40:
+				event.preventDefault()
 				// Expand the calendar (if collapsed).
-				if (!this.isExpanded())
-				{
-					event.preventDefault()
+				if (this.isExpanded()) {
+					this.focusCalendar()
+				} else {
 					this.expand().then(this.focusCalendar)
 				}
 				return
@@ -546,7 +553,7 @@ export default class DatePicker extends PureComponent
 
 	onFocusOut = (event) =>
 	{
-		this.collapse()
+		// this.collapse()
 
 		const { onBlur, value } = this.props
 
@@ -559,6 +566,10 @@ export default class DatePicker extends PureComponent
 	{
 		// A hack for iOS when it collapses
 		// the calendar after selecting a year/month.
+		// When selecting a year/month and pressing "Done" button
+		// iOS triggers `blur` event on the corresponding `<select/>`
+		// which in turn causes the calendar to collapse.
+		// This workaround prevents that by re-focusing the calendar.
 		if (this._userHasJustChangedYearOrMonth)
 		{
 			this.focusCalendar()

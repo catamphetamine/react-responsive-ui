@@ -1,28 +1,36 @@
 /* DayPicker styles (version 7.1.10) */
 
 .DayPicker {
-	user-select : none;
+	user-select: none;
 }
 
 .DayPicker-wrapper {
-	position : relative;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	padding: calc(var(--rrui-unit) * 2);
+	border: 1px solid transparent;
+}
+
+.DayPicker-wrapper:focus {
+	border: 1px solid var(--rrui-input-field-border-color-focus);
 }
 
 .DayPicker-NavButton {
 	position : absolute;
-	top      : -0.25em;
+	top      : calc(var(--rrui-unit) * 2 + 0.25em);
 	cursor   : pointer;
 	width    : 1.5em;
 	height   : 1.5em;
 }
 
 .DayPicker-NavButton--prev {
-	left: 0.25em;
+	left: calc(var(--rrui-unit) * 2 + 0.25em);
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='fill: currentColor; color: %2303b2cb;'%3E%3Cpath d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .DayPicker-NavButton--next {
-	right: 0.25em;
+	right: calc(var(--rrui-unit) * 2 + 0.25em);
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' style='fill: currentColor; color: %2303b2cb;'%3E%3Cpath d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'%3E%3C/path%3E%3C/svg%3E");
 }
 
@@ -203,20 +211,15 @@
 .rrui__date-picker .rrui__expandable
 {
 	min-width  : 100%;
-	box-sizing : border-box;
-	text-align : center;
 	background-color : var(--rrui-list-item-background-color);
 	color : var(--rrui-list-item-text-color);
 }
 
 .rrui__date-picker .rrui__expandable__content
 {
-	display : inline-block;
-
-	padding-top      : calc(var(--rrui-unit) * 2);
-	padding-bottom   : calc(var(--rrui-unit) * 2);
-	padding-left     : calc(var(--rrui-unit) * 2);
-	padding-right    : calc(var(--rrui-unit) * 2);
+	/* For compatibility with older versions. */
+	/* Deprecated. Will be removed in versions > 0.14. */
+	padding : 0;
 }
 
 .rrui__date-picker__calendar abbr

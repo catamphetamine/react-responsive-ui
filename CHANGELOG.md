@@ -33,6 +33,12 @@
 
 <!-- (breaking change) Maybe remove "fullscreen" styles. -->
 
+
+0.14.87 / 12.12.2018
+====================
+
+  * (CSS breaking change) Removed the default padding from `.rrui__date-picker .rrui__expandable__content` and added the default padding to `.DayPicker-wrapper`. Also changed the positioning of `.DayPicker-NavButton`s. Added a border to `.DayPicker-wrapper` when it's focused (accessibility).
+
 0.14.84 / 12.12.2018
 ====================
 
