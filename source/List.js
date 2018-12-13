@@ -6,7 +6,7 @@ import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import Divider from './Divider'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
-import { focus } from './utility/focus'
+import { onBlur, focus } from './utility/focus'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -37,6 +37,11 @@ export default class List extends PureComponent
 
 		// ARIA `role` attribute.
 		role : PropTypes.string,
+
+		// If a `<List/>` is `expandable`
+		// then it won't be `.rrui__list:not(.rrui__list--focus)`.
+		// `.rrui__list:not(.rrui__list--focus)` is only for standalone lists.
+		expandable : PropTypes.bool,
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
@@ -89,6 +94,11 @@ export default class List extends PureComponent
 
 	// `ref`s of all items currently rendered.
 	itemRefs = []
+
+	componentWillUnmount()
+	{
+		clearTimeout(this.blurTimer)
+	}
 
 	getFocusedItemIndex = () =>
 	{
@@ -153,14 +163,11 @@ export default class List extends PureComponent
 			// the focused option stays focused.
 			focusedItemValue: focusedItemIndex === undefined ? undefined : this.getItemValue(focusedItemIndex)
 		},
-		() =>
-		{
-			if (focusedItemIndex !== undefined)
-			{
+		() => {
+			if (focusedItemIndex !== undefined) {
 				if (shouldFocus) {
 					focus(this.itemRefs[focusedItemIndex])
 				}
-
 				if (onFocusItem) {
 					onFocusItem(focusedItemIndex)
 				}
@@ -283,6 +290,42 @@ export default class List extends PureComponent
 		}
 	}
 
+	onItemFocus = (event) => {
+		const { expandable } = this.props
+		if (expandable) {
+			return
+		}
+		this.onFocusIn()
+	}
+
+	onBlur = (event) => {
+		const { expandable } = this.props
+		if (expandable) {
+			return
+		}
+		clearTimeout(this.blurTimer)
+		const result = onBlur(event, this.onFocusOut, () => this.list)
+		if (typeof result === 'number') {
+			this.blurTimer = result
+		}
+	}
+
+	onFocusIn = () => {
+		this.setState({
+			isFocused: true
+		})
+	}
+
+	onFocusOut = () => {
+		const { value } = this.props
+		if (value === undefined) {
+			this.clearFocus()
+		}
+		this.setState({
+			isFocused: false
+		})
+	}
+
 	isFocusableItemIndex = (index) => this.itemRefs[index] !== undefined
 
 	isFocusableItem = (item) => item.type !== DividerType
@@ -296,6 +339,7 @@ export default class List extends PureComponent
 	{
 		const
 		{
+			expandable,
 			disabled,
 			tabbable,
 			value,
@@ -312,7 +356,10 @@ export default class List extends PureComponent
 
 		let { role } = this.props
 
-		const { focusedItemIndex } = this.state
+		const {
+			focusedItemIndex,
+			isFocused
+		} = this.state
 
 		// ARIA (accessibility) roles info:
 		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
@@ -332,7 +379,9 @@ export default class List extends PureComponent
 				aria-label={ this.props['aria-label'] }
 				aria-hidden={ this.props['aria-hidden'] }
 				style={ style }
-				className={ classNames(className, 'rrui__list') }>
+				className={ classNames(className, 'rrui__list', {
+					'rrui__list--focus': isFocused
+				}) }>
 
 				{ React.Children.map(children, (item, i) =>
 				{
@@ -347,10 +396,12 @@ export default class List extends PureComponent
 						itemRef   : this.isFocusableItem(item) ? this.storeItemRef : undefined,
 						role      : role === 'listbox' ? 'option' : item.props.role,
 						focus     : this.focusItem,
-						focused   : focusedItemIndex === i,
+						focused   : (expandable || isFocused) && focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : i === focusedItemIndex) ? 0 : -1,
 						shouldCreateButton : createButtons,
+						onItemFocus : this.onItemFocus,
+						onItemBlur : this.onBlur,
 						onSelectItem : onChange || onSelectItem,
 						selectedItemValue : value,
 						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem
@@ -415,9 +466,9 @@ export class Item extends React.Component
 	{
 		const
 		{
-			value,
 			focus,
 			index,
+			onItemFocus,
 			children
 		}
 		= this.props
@@ -436,6 +487,31 @@ export class Item extends React.Component
 
 		if (onFocus) {
 			onFocus(event)
+		}
+
+		if (onItemFocus) {
+			onItemFocus(event)
+		}
+	}
+
+	onBlur = (event) =>
+	{
+		const { onItemBlur, children } = this.props
+
+		// If `<List.Item/>` child element gets wrapped in a `<button/>`
+		// then call `onBlur` defined on the `<List.Item/>`.
+		// If `<List.Item/>` child element doesn't get wrapped in a `<button/>`
+		// then manually call `onFocus` defined on the `<List.Item/>` child element
+		// because `onBlur` gets overridden for `<List.Item/>` child element.
+
+		const onBlur = this.shouldCreateButton() ? this.props.onBlur : children.props.onBlur
+
+		if (onBlur) {
+			onBlur(event)
+		}
+
+		if (onItemBlur) {
+			onItemBlur(event)
 		}
 	}
 
@@ -549,6 +625,7 @@ export class Item extends React.Component
 			onMouseDown  : this.onMouseDown,
 			onClick      : this.onClick,
 			onFocus      : this.onFocus,
+			onBlur       : this.onBlur,
 			className    : classNames
 			(
 				className,

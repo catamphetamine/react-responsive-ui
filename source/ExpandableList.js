@@ -218,6 +218,7 @@ export default class ExpandableList extends PureComponent
 					{...rest}
 					ref={ this.storeListRef }
 					onChange={ this.onChange }
+					expandable
 					highlightSelectedItem={ onChange === undefined && highlightSelectedItem === undefined ? false : highlightSelectedItem }>
 					{ children }
 				</ScrollableList>
