@@ -683,7 +683,8 @@ export default class DatePicker extends PureComponent
 						onClick={ this.onToggleButtonClick }
 						className="rrui__date-picker__input-overlay"/>
 
-					{/* Calendar icon which toggles the calendar */}
+					{/* Calendar icon which toggles the calendar. */}
+					{/* `aria-haspopup`: https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup */}
 					<button
 						type="button"
 						onClick={this.onToggleButtonClick}

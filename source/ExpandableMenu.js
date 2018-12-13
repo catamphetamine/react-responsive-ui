@@ -158,6 +158,9 @@ export default class ExpandableMenu extends PureComponent
 	{
 		const { toggler, togglerClassName } = this.props
 
+		// `aria-haspopup`:
+		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
+
 		return (
 			<button
 				type="button"

@@ -351,6 +351,9 @@ export default class Select extends PureComponent
 		//
 		// ARIA (accessibility) roles info:
 		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
+		//
+		// `aria-haspopup`:
+		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
 
 		return (
 			<button
