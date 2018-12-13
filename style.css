@@ -388,10 +388,10 @@
       -ms-flex-pack: center;
           justify-content: center;
   padding: calc(0.6rem * 2);
-  border: 1px solid transparent; }
+  border-bottom: 1px solid transparent; }
 
 .DayPicker-wrapper:focus {
-  border: 1px solid #03b2cb; }
+  border-bottom: 1px solid #03b2cb; }
 
 .DayPicker-NavButton {
   position: absolute;
@@ -868,6 +868,7 @@ than 100% of the parent if the parent is small enough.
   transition: border 0.1s; }
 
 .rrui__input-field:focus,
+.rrui__select__button:focus,
 .rrui__select__native:focus + .rrui__select__button,
 .rrui__select__native:focus {
   border-color: #03b2cb; }
