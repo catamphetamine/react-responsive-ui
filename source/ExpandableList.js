@@ -126,6 +126,15 @@ export default class ExpandableList extends PureComponent
 		this.collapsedDueToItemBeingSelected = undefined
 	}
 
+	// If a `<List/>` has `onChange` then it wraps `<List.Item/>`s with `<button/>`s.
+	// The `onChange` added by `<ExpandableList/>` overrides the original `onChange`.
+	// If there was no `onChange` — there will be one.
+	// So to retain that info `hasOnChange` property is used as a workaround.
+	hasOnChange = () => {
+		const { onChange } = this.props
+		return !!onChange
+	}
+
 	onCollapse = (parameters) =>
 	{
 		const { onCollapse } = this.props
@@ -218,6 +227,7 @@ export default class ExpandableList extends PureComponent
 					{...rest}
 					ref={ this.storeListRef }
 					onChange={ this.onChange }
+					hasOnChange={ this.hasOnChange() }
 					expandable
 					highlightSelectedItem={ onChange === undefined && highlightSelectedItem === undefined ? false : highlightSelectedItem }>
 					{ children }

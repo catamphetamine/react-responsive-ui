@@ -23,6 +23,13 @@ export default class List extends PureComponent
 		value : PropTypes.any,
 		onChange : PropTypes.func,
 
+		// If a `<List/>` has `onChange` then it wraps `<List.Item/>`s with `<button/>`s.
+		// The `onChange` added by `<ExpandableList/>` overrides the original `onChange`.
+		// If there was no `onChange` — there will be one.
+		// So to retain that info `hasOnChange` property is used as a workaround.
+		// `undefined` means "ignore this property".
+		hasOnChange : PropTypes.bool,
+
 		// If `items` property is supplied then it's used to
 		// detect "on items changed" event in `getDerivedStateFromProps`.
 		// It seems to be the only usage of the `items` property.
@@ -343,6 +350,7 @@ export default class List extends PureComponent
 			disabled,
 			tabbable,
 			value,
+			hasOnChange,
 			onChange,
 			// `onSelectItem` is deprecated, use `onChange` instead.
 			onSelectItem,
@@ -399,10 +407,11 @@ export default class List extends PureComponent
 						focused   : (expandable || isFocused) && focusedItemIndex === i,
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : i === focusedItemIndex) ? 0 : -1,
-						shouldCreateButton : createButtons,
+						createButton : createButtons,
 						onItemFocus : this.onItemFocus,
 						onItemBlur : this.onBlur,
 						onSelectItem : onChange || onSelectItem,
+						hasOnSelectItem : hasOnChange,
 						selectedItemValue : value,
 						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem
 					})
@@ -423,8 +432,16 @@ export class Item extends React.Component
 		// `onSelect` is deprecated, use `onClick` instead.
 		onSelect : PropTypes.func,
 		onSelectItem : PropTypes.func,
+		// If a `<List/>` has `onChange` then it wraps `<List.Item/>`s with `<button/>`s.
+		// The `onChange` added by `<ExpandableList/>` overrides the original `onChange`.
+		// If there was no `onChange` — there will be one.
+		// So to retain that info `hasOnChange` property is used as a workaround.
+		// `undefined` means "ignore this property".
+		hasOnSelectItem : PropTypes.bool,
 		selectedItemValue : PropTypes.any,
 		highlightSelectedItem : PropTypes.bool,
+		createButton : PropTypes.bool,
+		// Deprecated. Use `createButton` instead.
 		shouldCreateButton : PropTypes.bool
 	}
 
@@ -587,10 +604,21 @@ export class Item extends React.Component
 			onClick,
 			onSelect,
 			onSelectItem,
+			hasOnSelectItem,
+			createButton,
+			// Deprecated. Use `createButton` instead.
 			shouldCreateButton
 		} = this.props
 
-		return this.isSelectable() && (onClick || onSelect || (onSelectItem && shouldCreateButton))
+		return this.isSelectable() && (
+			onClick ||
+			onSelect ||
+			(
+				onSelectItem &&
+				(hasOnSelectItem === undefined ? true : hasOnSelectItem) &&
+				(createButton || shouldCreateButton)
+			)
+		)
 	}
 
 	render()
