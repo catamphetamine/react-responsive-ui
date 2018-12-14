@@ -291,7 +291,7 @@ export default class Select extends PureComponent
 							onExpand={this.onExpand}
 							getTogglerNode={this.getSelectButton}
 							onFocusOut={this.onFocusOut}
-							onTapOutside={this.collapse}
+							onTapOutside={this._onFocusOut}
 							closeButtonIcon={closeButtonIcon}
 							closeLabel={closeLabel}
 							className={classNames('rrui__shadow', 'rrui__options-list',
@@ -718,13 +718,24 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onFocusOut = (event) =>
+	_onFocusOut = () =>
 	{
-		const { onBlur, value, native, nativeExpanded } = this.props
+		const { native, nativeExpanded } = this.props
 
 		if (!native && !nativeExpanded) {
-			this.collapse()
+			// `window.rruiCollapseOnFocusOut` can be used
+			// for debugging expandable contents.
+			if (window.rruiCollapseOnFocusOut !== false) {
+				this.collapse()
+			}
 		}
+	}
+
+	onFocusOut = (event) =>
+	{
+		const { onBlur, value } = this.props
+
+		this._onFocusOut()
 
 		if (onBlur) {
 			onBlurForReduxForm(onBlur, event, value)

@@ -197,6 +197,10 @@ If a developer still prefers the default browser outline then they still can man
 
 There's also an exported component called `<KeyboardNavigationListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch events reset the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events. It's more of an experimental feature.
 
+## Inspecting Expandables
+
+Expandables are implemented in such a way that they collapse when losing focus. This may present difficulties when trying to inspect expandable content via DevTools because switching to DevTools captures focus causing expandables to collapse. For such cases there's a global debug flag `window.rruiCollapseOnFocusOut` which can be set to `false` to prevent expandables from collapsing when losing focus.
+
 ## Supported Browsers
 
 IE 11, Edge, Firefox, Chrome, Safari — have been tested.

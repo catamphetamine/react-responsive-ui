@@ -860,7 +860,11 @@ export default class Autocomplete extends PureComponent
 		let { onBlur, value } = this.props
 		const { inputValue } = this.state
 
-		this.collapse()
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			this.collapse()
+		}
 
 		if (!inputValue)
 		{

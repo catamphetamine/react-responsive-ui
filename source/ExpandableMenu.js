@@ -61,6 +61,14 @@ export default class ExpandableMenu extends PureComponent
 	collapse = () => this.list.collapse()
 	toggle   = () => this.list.toggle()
 
+	onFocusOut = () => {
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			this.collapse()
+		}
+	}
+
 	storeListRef = (ref) => this.list = ref
 
 	// (legacy) (deprecated)
@@ -141,8 +149,8 @@ export default class ExpandableMenu extends PureComponent
 					scrollMaxItems={0}
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}
-					onTapOutside={this.collapse}
-					onFocusOut={this.collapse}
+					onTapOutside={this.onFocusOut}
+					onFocusOut={this.onFocusOut}
 					getTogglerNode={this.getTogglerNode}
 					closeButtonIcon={closeButtonIcon}
 					closeLabel={closeLabel}
