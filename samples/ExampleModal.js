@@ -25,7 +25,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 									close={() => this.setState({ show_modal: false })}
 									style={{ maxWidth : '40em' }}
 									ariaLabel="aria-label example"
-									appElement={document.body}>
+									appElementId="content">
 
 									<Modal.Title>
 										An example modal

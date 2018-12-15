@@ -26,6 +26,13 @@
           user-select: none;
   /* box-sizing  : border-box; */ }
 
+/* This CSS class can be used on its own in applications. */
+/* Because of that, `outline: none` is added here too. */
+/* Developers should define `:focus` styles for buttons. */
+/* Didn't add `:focus` specifier for lesser CSS rule priority. */
+.rrui__button-reset:not(.rrui__outline--default) {
+  outline: none; }
+
 .rrui__button-reset--link:hover {
   text-decoration: none; }
 
@@ -757,6 +764,88 @@
 
 .rrui__options-list--right-aligned {
   right: calc((0.6rem * 1.5 - 0rem) * -1); }
+
+/* Styles are from Material UI. */
+/* https://material-ui.com/demos/expansion-panels/ */
+.rrui__expansion-panel {
+  background-color: #ffffff; }
+
+.rrui__expansion-panel--expanded {
+  /* margin: 16px 0; */ }
+
+/*
+.rrui__expansion-panel:before
+{
+	top: -1px;
+	left: 0;
+	right: 0;
+	height: 1px;
+	content: "";
+	opacity: 1;
+	position: absolute;
+	transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	background-color: ;
+}
+
+.rrui__expansion-panel--expanded:before
+{
+	opacity: 0;
+}
+*/
+.rrui__expansion-panel__heading {
+  position: relative;
+  width: 100%;
+  height: calc(0.6rem * 4);
+  -webkit-transition: height 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  -o-transition: height 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: height 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: normal;
+  text-align: left;
+  background-color: #F3F3F3; }
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__heading {
+  height: calc(0.6rem * 5); }
+
+.rrui__expansion-panel__heading:focus {
+  -webkit-box-shadow: inset 0 0 0 1px #cacaca;
+          box-shadow: inset 0 0 0 1px #cacaca; }
+
+.rrui__expansion-panel__content-wrapper {
+  overflow: hidden;
+  -webkit-transition: height 208ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  -o-transition: height 208ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: height 208ms cubic-bezier(0.4, 0, 0.2, 1) 0ms; }
+
+.rrui__expansion-panel__heading,
+.rrui__expansion-panel__content {
+  padding-left: calc(0.6rem * 2);
+  padding-right: calc(0.6rem * 2); }
+
+.rrui__expansion-panel__content {
+  padding-top: calc(0.6rem * 2);
+  padding-bottom: calc(0.6rem * 2); }
+
+.rrui__expansion-panel__icon {
+  position: absolute;
+  top: 50%;
+  width: 0.6rem;
+  right: calc(0.6rem * 2);
+  -webkit-transition: -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  -o-transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  -webkit-transform: translateY(-50%) rotate(0deg);
+      -ms-transform: translateY(-50%) rotate(0deg);
+          transform: translateY(-50%) rotate(0deg); }
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon {
+  -webkit-transition-duration: 207ms;
+       -o-transition-duration: 207ms;
+          transition-duration: 207ms;
+  -webkit-transform: translateY(-50%) rotate(180deg);
+      -ms-transform: translateY(-50%) rotate(180deg);
+          transform: translateY(-50%) rotate(180deg); }
 
 .rrui__file-upload__area {
   cursor: pointer; }

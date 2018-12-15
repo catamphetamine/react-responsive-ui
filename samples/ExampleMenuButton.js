@@ -65,20 +65,20 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 						<SlideOutMenu anchor="right" menuRef={menuRef} onExpand={onExpand} onCollapse={onCollapse}>
 							<nav aria-label="Menu">
 								<List role="menu" aria-label="Menu">
-									<List.Item role="none">
+									<List.Item role="presentation">
 										<a href="/1" role="menuitem" tabIndex={tabIndex}> Item 1 </a>
 									</List.Item>
-									<List.Item role="none">
+									<List.Item role="presentation">
 										<a href="/2" role="menuitem" tabIndex={tabIndex}> Item 2 </a>
 									</List.Item>
-									<List.Item role="none">
+									<List.Item role="presentation">
 										<a href="/3" role="menuitem" tabIndex={tabIndex}> Item 3 </a>
 									</List.Item>
 								</List>
 							</nav>
 						</SlideOutMenu>
 						<div>
-							<MenuButton aria-label="Open Menu" aria-haspopup="menu" />
+							<MenuButton aria-label="Open Menu" aria-haspopup />
 							Page content
 						</div>
 					</PageAndMenu>
