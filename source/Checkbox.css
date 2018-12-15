@@ -115,3 +115,26 @@
 {
 	color : var(--rrui-error-color);
 }
+
+/* Focus ring. */
+.rrui__checkbox__input + .rrui__checkbox__box + .rrui__checkbox__box-background:before
+{
+	display: block;
+	content: "";
+	position: absolute;
+	left: calc(-1 * (var(--rrui-checkbox-focus-ring-size) - 100%) / 2);
+	top: calc(-1 * (var(--rrui-checkbox-focus-ring-size) - 100%) / 2);
+	width: var(--rrui-checkbox-focus-ring-size);
+	height: var(--rrui-checkbox-focus-ring-size);
+	border-radius: 50%;
+}
+
+.rrui__checkbox__input:focus + .rrui__checkbox__box + .rrui__checkbox__box-background:before
+{
+	background-color: var(--rrui-checkbox-focus-ring-background-color);
+}
+
+.rrui__checkbox__input:active + .rrui__checkbox__box + .rrui__checkbox__box-background:before
+{
+	background-color: var(--rrui-checkbox-focus-ring-background-color-active);
+}

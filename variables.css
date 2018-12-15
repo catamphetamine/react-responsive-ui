@@ -124,6 +124,9 @@
   --rrui-checkbox-color-focus : var(--rrui-accent-color);
   --rrui-checkbox-color-checked : var(--rrui-accent-color);
   --rrui-checkbox-color-active : var(--rrui-accent-color-light);
+  --rrui-checkbox-focus-ring-size : 250%;
+  --rrui-checkbox-focus-ring-background-color : transparent;
+  --rrui-checkbox-focus-ring-background-color-active : transparent;
 
   /* `<Modal/>`. */
   --rrui-modal-padding : calc(var(--rrui-unit) * 3);

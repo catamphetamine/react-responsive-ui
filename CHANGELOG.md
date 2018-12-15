@@ -35,6 +35,8 @@
 
 <!-- (CSS breaking change) Maybe move classes like `rrui__autocomplete` a level deeper so that they don't include the error message section. -->
 
+<!-- Maybe add `--focus` CSS classes; maybe replace :focus with --focus if the specificity is the same, or in future version. -->
+
 0.14.87 / 12.12.2018
 ====================
 

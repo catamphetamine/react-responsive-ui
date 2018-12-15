@@ -59,6 +59,9 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-checkbox-color-checked)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-checkbox-color-focus)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-checkbox-color-active)', 'var(--rrui-accent-color-light)')
+    .replace_all('var(--rrui-checkbox-focus-ring-size)', '250%')
+    .replace_all('var(--rrui-checkbox-focus-ring-background-color)', 'transparent') // 'var(--rrui-gray-color-lightest)')
+    .replace_all('var(--rrui-checkbox-focus-ring-background-color-active)', 'transparent')
     /* `<Modal/>`. */
     .replace_all('var(--rrui-modal-padding)', 'calc(0.6rem * 3)')
     /* `<Modal/>` colors. */
