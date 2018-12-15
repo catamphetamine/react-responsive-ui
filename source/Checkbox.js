@@ -75,6 +75,9 @@ export default class Checkbox extends PureComponent
 		}
 	}
 
+	onFocus = () => this.setState({ isFocused: true })
+	onBlur  = () => this.setState({ isFocused: false })
+
 	storeInstance = (ref) => this.checkbox = ref
 
 	render()
@@ -94,6 +97,8 @@ export default class Checkbox extends PureComponent
 		}
 		= this.props
 
+		const { isFocused } = this.state
+
 		return (
 			<div
 				className={ classNames('rrui__checkbox',
@@ -101,7 +106,8 @@ export default class Checkbox extends PureComponent
 					// 'rrui__checkbox--checked'  : value,
 					'rrui__checkbox--invalid'   : indicateInvalid && error,
 					'rrui__checkbox--disabled'  : disabled,
-					'rrui__checkbox--multiline' : multiline
+					'rrui__checkbox--multiline' : multiline,
+					'rrui__checkbox--focus'     : isFocused
 				},
 				className) }
 				style={ style }>
@@ -121,8 +127,8 @@ export default class Checkbox extends PureComponent
 							disabled={ disabled }
 							onKeyDown={ this.onKeyDown }
 							onChange={ this.toggle }
-							onFocus={ this.on_focus }
-							onBlur={ this.on_blur }
+							onFocus={ this.onFocus }
+							onBlur={ this.onBlur }
 							className="rrui__checkbox__input"/>
 
 						<svg
