@@ -669,7 +669,9 @@ export class Item extends React.Component
 				className,
 				'rrui__list__item',
 				{
+					/* `--focused` modifiers are deprecated, use `--focus` instead. */
 					'rrui__list__item--focused'  : focused,
+					'rrui__list__item--focus'    : focused,
 					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
 					'rrui__list__item--disabled' : disabled,
 					'rrui__list__item--divider'  : children.type === DividerType
