@@ -234,6 +234,9 @@ class Modal extends Component
 		}
 		= this.state
 
+		// `aria-modal` was added in WAI-ARIA 1.1 and is not supported yet.
+		// https://www.levelaccess.com/differences-aria-1-0-1-1-deprecations-additions/
+
 		return (
 			<ReactModal
 				isOpen={ unmount ? isOpen : true }
