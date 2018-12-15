@@ -120,6 +120,10 @@ export default class ExpansionPanel extends React.Component {
 
 		const Heading = `h${headingLevel}`
 
+		// There was a possibility of using `<details/>`/`<summary/>` elements here
+		// but `<summary/>` can only contain any valid paragraph content
+		// which means it can't contain lists, divs, paragraphs, etc.
+
 		return (
 			<section
 				style={style}
