@@ -105,7 +105,7 @@ export default class ExpansionPanel extends React.Component {
 					this.setState({
 						height: 0
 					})
-				}, 10)
+				}, 20)
 			}
 		}
 	}

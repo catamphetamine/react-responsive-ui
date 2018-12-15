@@ -4,7 +4,6 @@
 .rrui__expansion-panel
 {
 	background-color: var(--rrui-white-color);
-	border: 1px solid var(--rrui-gray-color-light);
 }
 
 .rrui__expansion-panel--expanded
@@ -40,6 +39,7 @@
 	transition: height 150ms cubic-bezier(0.4, 0, 0.2, 1);
 	font-weight: normal;
 	text-align: left;
+	background-color: var(--rrui-gray-color-lightest);
 }
 
 .rrui__expansion-panel--expanded .rrui__expansion-panel__heading
@@ -49,18 +49,13 @@
 
 .rrui__expansion-panel__heading:focus
 {
-	background-color: var(--rrui-gray-color-lightest);
+	box-shadow: inset 0 0 0 1px var(--rrui-gray-color-light);
 }
 
 .rrui__expansion-panel__content-wrapper
 {
 	overflow: hidden;
-	transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-}
-
-.rrui__expansion-panel--expanded .rrui__expansion-panel__content-wrapper
-{
-	transition-duration: 207ms;
+	transition: height 208ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
 .rrui__expansion-panel__heading,
