@@ -344,6 +344,23 @@
 .rrui__checkbox--invalid .rrui__checkbox__box {
   color: #d30f00; }
 
+/* Focus ring. */
+.rrui__checkbox__input + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+  display: block;
+  content: "";
+  position: absolute;
+  left: calc(-1 * (250% - 100%) / 2);
+  top: calc(-1 * (250% - 100%) / 2);
+  width: 250%;
+  height: 250%;
+  border-radius: 50%; }
+
+.rrui__checkbox__input:focus + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+  background-color: transparent; }
+
+.rrui__checkbox__input:active + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+  background-color: transparent; }
+
 /*
 .rrui__close--top-right
 {
@@ -792,7 +809,7 @@
 	opacity: 0;
 }
 */
-.rrui__expansion-panel__heading {
+.rrui__expansion-panel__header {
   position: relative;
   width: 100%;
   height: calc(0.6rem * 4);
@@ -800,15 +817,24 @@
   -o-transition: height 210ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: height 210ms cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: normal;
-  text-align: left;
-  background-color: #F3F3F3; }
+  text-align: left; }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__heading {
+.rrui__expansion-panel--expanded .rrui__expansion-panel__header {
   height: calc(0.6rem * 5); }
 
-.rrui__expansion-panel__heading:focus {
+.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header {
+  background-color: #F3F3F3; }
+
+.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header:focus {
   -webkit-box-shadow: inset 0 0 0 1px #cacaca;
           box-shadow: inset 0 0 0 1px #cacaca; }
+
+.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:focus .rrui__expansion-panel__heading {
+  padding-bottom: 0.15em;
+  border-bottom: 1px solid #03b2cb; }
+
+.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:active .rrui__expansion-panel__heading {
+  border-bottom: 1px solid #2bd7f0; }
 
 .rrui__expansion-panel__content-wrapper {
   overflow: hidden;
@@ -816,7 +842,7 @@
   -o-transition: height 210ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: height 210ms cubic-bezier(0.4, 0, 0.2, 1); }
 
-.rrui__expansion-panel__heading,
+.rrui__expansion-panel__header,
 .rrui__expansion-panel__content {
   padding-left: calc(0.6rem * 2);
   padding-right: calc(0.6rem * 2); }
@@ -829,23 +855,34 @@
   position: absolute;
   top: 50%;
   width: 0.6rem;
-  right: calc(0.6rem * 2);
   -webkit-transition: -webkit-transform 210ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: -webkit-transform 210ms cubic-bezier(0.4, 0, 0.2, 1);
   -o-transition: transform 210ms cubic-bezier(0.4, 0, 0.2, 1);
   transition: transform 210ms cubic-bezier(0.4, 0, 0.2, 1);
-  transition: transform 210ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 210ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 210ms cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 210ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+.rrui__expansion-panel__icon--end {
+  right: calc(0.6rem * 2);
   -webkit-transform: translateY(-50%) rotate(0deg);
       -ms-transform: translateY(-50%) rotate(0deg);
           transform: translateY(-50%) rotate(0deg); }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon {
-  -webkit-transition-duration: 210ms;
-       -o-transition-duration: 210ms;
-          transition-duration: 210ms;
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--end {
   -webkit-transform: translateY(-50%) rotate(180deg);
       -ms-transform: translateY(-50%) rotate(180deg);
           transform: translateY(-50%) rotate(180deg); }
+
+.rrui__expansion-panel__icon--start {
+  left: 0;
+  margin-right: 0.6rem;
+  -webkit-transform: translateY(-50%) rotate(-90deg);
+      -ms-transform: translateY(-50%) rotate(-90deg);
+          transform: translateY(-50%) rotate(-90deg); }
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--start {
+  -webkit-transform: translateY(-50%) rotate(0deg);
+      -ms-transform: translateY(-50%) rotate(0deg);
+          transform: translateY(-50%) rotate(0deg); }
 
 .rrui__file-upload__area {
   cursor: pointer; }
@@ -1092,7 +1129,9 @@ than 100% of the parent if the parent is small enough.
   padding-bottom: 0.6rem;
   pointer-events: none; }
 
-.rrui__list__item--focused {
+/* `--focused` modifiers are deprecated, use `--focus` instead. */
+.rrui__list__item--focused,
+.rrui__list__item--focus {
   background-color: #F3F3F3;
   color: currentColor; }
 

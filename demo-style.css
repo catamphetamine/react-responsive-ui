@@ -78,6 +78,7 @@ p
 {
 	margin-top: 10px;
 	margin-bottom: 40px;
+	line-height: 1.45;
 }
 
 .country-icon
@@ -211,7 +212,7 @@ pre
 	background-color: transparent;
 }
 
-.slideout-menu .rrui__list__item:hover:not(.rrui__list__item--focused)
+.slideout-menu .rrui__list__item:hover:not(.rrui__list__item--focus)
 {
 	background-color: transparent;
 }
@@ -221,7 +222,7 @@ pre
 	border-left: 0.2rem solid transparent;
 }
 
-.slideout-menu .rrui__list__item--focused
+.slideout-menu .rrui__list__item--focus
 {
 	position: relative;
 	/*background-color: #EB006D;*/
@@ -229,7 +230,7 @@ pre
 	/*border-color: #2bd7f0;*/
 }
 
-.slideout-menu .rrui__list__item--focused:before
+.slideout-menu .rrui__list__item--focus:before
 {
 	position: absolute;
 	left: 0;
@@ -241,7 +242,7 @@ pre
 	background-color: #2bd7f0;
 }
 
-.slideout-menu .rrui__list__item--focused:active
+.slideout-menu .rrui__list__item--focus:active
 {
 	background-color: #2bd7f0;
 }
