@@ -1,0 +1,93 @@
+/* Styles are from Material UI. */
+/* https://material-ui.com/demos/expansion-panels/ */
+
+.rrui__expansion-panel
+{
+	background-color: var(--rrui-white-color);
+	border: 1px solid var(--rrui-gray-color-light);
+}
+
+.rrui__expansion-panel--expanded
+{
+	/* margin: 16px 0; */
+}
+
+/*
+.rrui__expansion-panel:before
+{
+	top: -1px;
+	left: 0;
+	right: 0;
+	height: 1px;
+	content: "";
+	opacity: 1;
+	position: absolute;
+	transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	background-color: ;
+}
+
+.rrui__expansion-panel--expanded:before
+{
+	opacity: 0;
+}
+*/
+
+.rrui__expansion-panel__heading
+{
+	position: relative;
+	width: 100%;
+	height: var(--rrui-expansion-panel-heading-height);
+	transition: height 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	font-weight: normal;
+	text-align: left;
+}
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__heading
+{
+	height: var(--rrui-expansion-panel-heading-height-expanded);
+}
+
+.rrui__expansion-panel__heading:focus
+{
+	background-color: var(--rrui-gray-color-lightest);
+}
+
+.rrui__expansion-panel__content-wrapper
+{
+	overflow: hidden;
+	transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__content-wrapper
+{
+	transition-duration: 207ms;
+}
+
+.rrui__expansion-panel__heading,
+.rrui__expansion-panel__content
+{
+	padding-left: var(--rrui-expansion-panel-side-padding);
+	padding-right: var(--rrui-expansion-panel-side-padding);
+}
+
+.rrui__expansion-panel__content
+{
+	padding-top: var(--rrui-expansion-panel-content-padding-top);
+	padding-bottom: var(--rrui-expansion-panel-content-padding-bottom);
+}
+
+.rrui__expansion-panel__icon
+{
+	position: absolute;
+	top: 50%;
+	width: var(--rrui-expansion-panel-icon-size);
+	right: var(--rrui-expansion-panel-side-padding);
+	transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	transform: translateY(-50%) rotate(0deg);
+}
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon
+{
+	transition-duration: 207ms;
+	transform: translateY(-50%) rotate(180deg)
+}

@@ -120,6 +120,12 @@ from './modules/ExpandableMenu'
 
 export
 {
+	default as ExpansionPanel
+}
+from './modules/ExpansionPanel'
+
+export
+{
 	default as Divider
 }
 from './modules/Divider'

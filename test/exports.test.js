@@ -17,6 +17,7 @@ import
 	Select,
 	Autocomplete,
 	ExpandableMenu,
+	ExpansionPanel,
 	Button,
 	Switch,
 	Checkbox,
@@ -59,6 +60,7 @@ describe('React Responsive UI', function()
 		expect(Select).to.be.a('function')
 		expect(Autocomplete).to.be.a('function')
 		expect(ExpandableMenu).to.be.a('function')
+		expect(ExpansionPanel).to.be.a('function')
 		expect(Button).to.be.a('function')
 		expect(Switch).to.be.a('function')
 		expect(Checkbox).to.be.a('function')
@@ -101,6 +103,7 @@ describe('React Responsive UI', function()
 		expect(_.Select).to.be.a('function')
 		expect(_.Autocomplete).to.be.a('function')
 		expect(_.ExpandableMenu).to.be.a('function')
+		expect(_.ExpansionPanel).to.be.a('function')
 		expect(_.Button).to.be.a('function')
 		expect(_.Switch).to.be.a('function')
 		expect(_.Checkbox).to.be.a('function')

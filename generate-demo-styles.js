@@ -85,6 +85,13 @@ function transformStyle(filePath)
     /* `<Tooltip/>`. */
     .replace_all('var(--rrui-tooltip-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-tooltip-text-color)', 'var(--rrui-white-color)')
+    /* `<ExpansionPanel/>`. */
+    .replace_all('var(--rrui-expansion-panel-heading-height)', 'calc(0.6rem * 4)')
+    .replace_all('var(--rrui-expansion-panel-heading-height-expanded)', 'calc(0.6rem * 5)')
+    .replace_all('var(--rrui-expansion-panel-icon-size)', '0.6rem')
+    .replace_all('var(--rrui-expansion-panel-side-padding)', 'calc(0.6rem * 2)')
+    .replace_all('var(--rrui-expansion-panel-content-padding-top)', 'calc(0.6rem * 2)')
+    .replace_all('var(--rrui-expansion-panel-content-padding-bottom)', 'calc(0.6rem * 2)')
     /* Card colors. */
     .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-card-text-color)', 'currentColor')

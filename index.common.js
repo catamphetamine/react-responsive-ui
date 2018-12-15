@@ -22,6 +22,7 @@ exports.Expandable = require('./commonjs/Expandable').default
 exports.Select = require('./commonjs/Select').default
 exports.Autocomplete = require('./commonjs/Autocomplete').default
 exports.ExpandableMenu = require('./commonjs/ExpandableMenu').default
+exports.ExpansionPanel = require('./commonjs/ExpansionPanel').default
 exports.Divider = require('./commonjs/Divider').default
 exports.Button = require('./commonjs/Button').default
 exports.Switch = require('./commonjs/Switch').default

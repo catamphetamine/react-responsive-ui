@@ -160,6 +160,14 @@
   --rrui-tooltip-background-color : var(--rrui-black-color);
   --rrui-tooltip-text-color : var(--rrui-white-color);
 
+  /* `<ExpansionPanel/>` */
+  --rrui-expansion-panel-heading-height : calc(var(--rrui-unit) * 4);
+  --rrui-expansion-panel-heading-height-expanded : calc(var(--rrui-unit) * 5);
+  --rrui-expansion-panel-icon-size : var(--rrui-unit);
+  --rrui-expansion-panel-side-padding : calc(var(--rrui-unit) * 2);
+  --rrui-expansion-panel-content-padding-top : calc(var(--rrui-unit) * 2);
+  --rrui-expansion-panel-content-padding-bottom : calc(var(--rrui-unit) * 2);
+
   /* z-index */
   --rrui-z-index-overlay       : 100;
   --rrui-z-index-above-overlay : 101;
