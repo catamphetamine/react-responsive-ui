@@ -163,6 +163,7 @@
   /* `<ExpansionPanel/>` */
   --rrui-expansion-panel-heading-height : calc(var(--rrui-unit) * 4);
   --rrui-expansion-panel-heading-height-expanded : calc(var(--rrui-unit) * 5);
+  --rrui-expansion-panel-animation-duration : 210ms;
   --rrui-expansion-panel-icon-size : var(--rrui-unit);
   --rrui-expansion-panel-side-padding : calc(var(--rrui-unit) * 2);
   --rrui-expansion-panel-content-padding-top : calc(var(--rrui-unit) * 2);

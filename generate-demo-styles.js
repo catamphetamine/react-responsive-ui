@@ -88,6 +88,7 @@ function transformStyle(filePath)
     /* `<ExpansionPanel/>`. */
     .replace_all('var(--rrui-expansion-panel-heading-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-expansion-panel-heading-height-expanded)', 'calc(0.6rem * 5)')
+    .replace_all('var(--rrui-expansion-panel-animation-duration)', '210ms')
     .replace_all('var(--rrui-expansion-panel-icon-size)', '0.6rem')
     .replace_all('var(--rrui-expansion-panel-side-padding)', 'calc(0.6rem * 2)')
     .replace_all('var(--rrui-expansion-panel-content-padding-top)', 'calc(0.6rem * 2)')
