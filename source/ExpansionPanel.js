@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 import createRef from 'react-create-ref'
 import classNames from 'classnames'
 
@@ -12,21 +11,21 @@ const DownArrow = (props) => (
 	</svg>
 )
 
-@reactLifecyclesCompat
 export default class ExpansionPanel extends React.Component {
 	static propTypes = {
 		title: PropTypes.string.isRequired,
 		disabled: PropTypes.bool,
 		headingLevel: PropTypes.number.isRequired,
-		// `toggle` and `isExpanded` can be used for manual control.
+		// `isExpanded` can be used for manual control.
 		// For example, when there's a group of expansion panels
 		// and only one of them should be expanded at any given time.
-		toggle: PropTypes.func,
 		isExpanded: PropTypes.bool,
-		statusIcon: PropTypes.oneOfType([
+		onToggle: PropTypes.func,
+		toggleIcon: PropTypes.oneOfType([
 			PropTypes.func,
 			PropTypes.bool
 		]).isRequired,
+		toggleIconPlacement: PropTypes.oneOf(['start', 'end']).isRequired,
 		expandContentAnimationDuration: PropTypes.number.isRequired,
 		style: PropTypes.object,
 		className: PropTypes.string
@@ -34,44 +33,26 @@ export default class ExpansionPanel extends React.Component {
 
 	static defaultProps = {
 		headingLevel: 3,
-		statusIcon: DownArrow,
+		toggleIcon: DownArrow,
+		toggleIconPlacement: 'end',
 		expandContentAnimationDuration: 300
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		if (props.toggle) {
-			// On external toggle.
-			state = {
-				...state,
-				isExpanded: props.isExpanded
-			}
-			if (props.isExpanded !== state.isExpanded) {
-				clearTimeout(this.resetHeightTimer)
-				// If `<ExpansionPanel/>` is being expanded then measure its height.
-				if (props.isExpanded) {
-					state.height = null
-					state.expandedHeight = null
-				} else {
-					state.height = undefined
-					// Verify `expandedHeight` is defined.
-					state.expandedHeight = state.expandedHeight === undefined ? 'auto' : state.expandedHeight
-				}
-			}
-			return state
-		}
-		return state
-	}
-
 	state = {
-		height: 0
+		height: this.props.isExpanded ? undefined : 0,
+		isExpanded: this.props.isExpanded
 	}
 
 	content = createRef()
 
-	toggle = () => {
+	toggle = (expand = !this.state.isExpanded) => {
+		const { onToggle } = this.props
+		if (onToggle) {
+			onToggle(expand)
+		}
 		clearTimeout(this.resetHeightTimer)
 		this.setState((state) => {
-			const isExpanded = !state.isExpanded
+			const isExpanded = expand
 			return {
 				isExpanded,
 				height: isExpanded ? null : undefined,
@@ -81,8 +62,13 @@ export default class ExpansionPanel extends React.Component {
 		})
 	}
 
+	onToggle = () => this.toggle()
+
 	componentDidUpdate(prevProps, prevState) {
 		const { expandContentAnimationDuration } = this.props
+		if (this.props.isExpanded !== prevProps.isExpanded) {
+			this.toggle(this.props.isExpanded)
+		}
 		if (this.state.isExpanded !== prevState.isExpanded) {
 			// If `<ExpansionPanel/>` is being expanded then measure its content height.
 			if (this.state.height === null) {
@@ -114,22 +100,13 @@ export default class ExpansionPanel extends React.Component {
 		clearTimeout(this.resetHeightTimer)
 	}
 
-	onToggle = () => {
-		const { toggle } = this.props
-		if (toggle) {
-			toggle()
-		} else {
-			this.toggle()
-		}
-	}
-
 	render() {
 		const {
 			title,
 			disabled,
 			headingLevel,
-			statusIcon: StatusIcon,
-			toggle,
+			toggleIcon: ToggleIcon,
+			toggleIconPlacement,
 			style,
 			className,
 			children
@@ -147,20 +124,30 @@ export default class ExpansionPanel extends React.Component {
 			<section
 				style={style}
 				className={classNames(className, 'rrui__expansion-panel', {
-					'rrui__expansion-panel--expanded': isExpanded
+					'rrui__expansion-panel--expanded': isExpanded,
+					'rrui__expansion-panel--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
+					'rrui__expansion-panel--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
 				})}>
 				<Heading style={HEADING_STYLE}>
 					<button
 						type="button"
 						onClick={this.onToggle}
 						aria-expanded={isExpanded}
+						aria-label={this.props['aria-label'] || title}
 						disabled={disabled}
-						className="rrui__button-reset rrui__outline rrui__expansion-panel__heading">
-						{title}
-						{StatusIcon &&
-							<StatusIcon
+						className="rrui__button-reset rrui__outline rrui__expansion-panel__header">
+						{ToggleIcon && toggleIconPlacement === 'start' &&
+							<ToggleIcon
 								aria-hidden
-								className="rrui__expansion-panel__icon"/>
+								className="rrui__expansion-panel__icon rrui__expansion-panel__icon--start"/>
+						}
+						<span className="rrui__expansion-panel__heading">
+							{title}
+						</span>
+						{ToggleIcon && toggleIconPlacement === 'end' &&
+							<ToggleIcon
+								aria-hidden
+								className="rrui__expansion-panel__icon rrui__expansion-panel__icon--end"/>
 						}
 					</button>
 				</Heading>

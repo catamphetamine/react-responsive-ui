@@ -31,7 +31,7 @@
 }
 */
 
-.rrui__expansion-panel__heading
+.rrui__expansion-panel__header
 {
 	position: relative;
 	width: 100%;
@@ -39,17 +39,32 @@
 	transition: height var(--rrui-expansion-panel-animation-duration) cubic-bezier(0.4, 0, 0.2, 1);
 	font-weight: normal;
 	text-align: left;
-	background-color: var(--rrui-gray-color-lightest);
 }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__heading
+.rrui__expansion-panel--expanded .rrui__expansion-panel__header
 {
 	height: var(--rrui-expansion-panel-heading-height-expanded);
 }
 
-.rrui__expansion-panel__heading:focus
+.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header
+{
+	background-color: var(--rrui-gray-color-lightest);
+}
+
+.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header:focus
 {
 	box-shadow: inset 0 0 0 1px var(--rrui-gray-color-light);
+}
+
+.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:focus .rrui__expansion-panel__heading
+{
+	padding-bottom: 0.15em;
+	border-bottom: 1px solid var(--rrui-expansion-panel-border-color-focus);
+}
+
+.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:active .rrui__expansion-panel__heading
+{
+	border-bottom: 1px solid var(--rrui-expansion-panel-border-color-active);
 }
 
 .rrui__expansion-panel__content-wrapper
@@ -58,7 +73,7 @@
 	transition: height var(--rrui-expansion-panel-animation-duration) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.rrui__expansion-panel__heading,
+.rrui__expansion-panel__header,
 .rrui__expansion-panel__content
 {
 	padding-left: var(--rrui-expansion-panel-side-padding);
@@ -76,13 +91,28 @@
 	position: absolute;
 	top: 50%;
 	width: var(--rrui-expansion-panel-icon-size);
-	right: var(--rrui-expansion-panel-side-padding);
 	transition: transform var(--rrui-expansion-panel-animation-duration) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rrui__expansion-panel__icon--end
+{
+	right: var(--rrui-expansion-panel-side-padding);
 	transform: translateY(-50%) rotate(0deg);
 }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--end
 {
-	transition-duration: var(--rrui-expansion-panel-animation-duration);
 	transform: translateY(-50%) rotate(180deg)
+}
+
+.rrui__expansion-panel__icon--start
+{
+	left: 0;
+	margin-right: var(--rrui-unit);
+	transform: translateY(-50%) rotate(-90deg);
+}
+
+.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--start
+{
+	transform: translateY(-50%) rotate(0deg)
 }

@@ -93,6 +93,8 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-expansion-panel-side-padding)', 'calc(0.6rem * 2)')
     .replace_all('var(--rrui-expansion-panel-content-padding-top)', 'calc(0.6rem * 2)')
     .replace_all('var(--rrui-expansion-panel-content-padding-bottom)', 'calc(0.6rem * 2)')
+    .replace_all('var(--rrui-expansion-panel-border-color-focus)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-expansion-panel-border-color-active)', 'var(--rrui-accent-color-light)')
     /* Card colors. */
     .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-card-text-color)', 'currentColor')

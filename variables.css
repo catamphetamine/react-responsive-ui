@@ -168,6 +168,8 @@
   --rrui-expansion-panel-side-padding : calc(var(--rrui-unit) * 2);
   --rrui-expansion-panel-content-padding-top : calc(var(--rrui-unit) * 2);
   --rrui-expansion-panel-content-padding-bottom : calc(var(--rrui-unit) * 2);
+  --rrui-expansion-panel-border-color-focus : var(--rrui-accent-color);
+  --rrui-expansion-panel-border-color-active : var(--rrui-accent-color-light);
 
   /* z-index */
   --rrui-z-index-overlay       : 100;
