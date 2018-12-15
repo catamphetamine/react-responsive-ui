@@ -33,6 +33,7 @@
 
 <!-- (breaking change) Maybe remove "fullscreen" styles. -->
 
+<!-- (CSS breaking change) Maybe move classes like `rrui__autocomplete` a level deeper so that they don't include the error message section. -->
 
 0.14.87 / 12.12.2018
 ====================

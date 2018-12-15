@@ -45,6 +45,10 @@ export default class List extends PureComponent
 		// ARIA `role` attribute.
 		role : PropTypes.string,
 
+		// `role="combobox"` requires `aria-selected` to be
+		// `true` on the currently focused list option.
+		ariaSelectedOnFocusedItem : PropTypes.bool,
+
 		// If a `<List/>` is `expandable`
 		// then it won't be `.rrui__list:not(.rrui__list--focus)`.
 		// `.rrui__list:not(.rrui__list--focus)` is only for standalone lists.
@@ -355,6 +359,7 @@ export default class List extends PureComponent
 			// `onSelectItem` is deprecated, use `onChange` instead.
 			onSelectItem,
 			highlightSelectedItem,
+			ariaSelectedOnFocusedItem,
 			createButtons,
 			className,
 			style,
@@ -413,7 +418,8 @@ export default class List extends PureComponent
 						onSelectItem : onChange || onSelectItem,
 						hasOnSelectItem : hasOnChange,
 						selectedItemValue : value,
-						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem
+						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem,
+						ariaSelectedOnFocusedItem
 					})
 				}) }
 			</ul>
@@ -440,6 +446,9 @@ export class Item extends React.Component
 		hasOnSelectItem : PropTypes.bool,
 		selectedItemValue : PropTypes.any,
 		highlightSelectedItem : PropTypes.bool,
+		// `role="combobox"` requires `aria-selected` to be
+		// `true` on the currently focused list option.
+		ariaSelectedOnFocusedItem : PropTypes.bool,
 		createButton : PropTypes.bool,
 		// Deprecated. Use `createButton` instead.
 		shouldCreateButton : PropTypes.bool
@@ -633,6 +642,7 @@ export class Item extends React.Component
 			className,
 			tabIndex,
 			highlightSelectedItem,
+			ariaSelectedOnFocusedItem,
 			selectedItemValue,
 			children
 		}
@@ -677,7 +687,7 @@ export class Item extends React.Component
 			label = this.props.label || (typeof children === 'string' ? children : undefined)
 			properties.type = 'button'
 			properties.role = role
-			properties['aria-selected'] = isSelected
+			properties['aria-selected'] = ariaSelectedOnFocusedItem ? focused : isSelected
 			properties['aria-label'] = typeof children === 'string' ? undefined : label
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
@@ -725,7 +735,7 @@ export class Item extends React.Component
 		return (
 			<li
 				role={this.shouldCreateButton() ? 'none' : role}
-				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'none' ? isSelected : undefined)}
+				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'none' ? (ariaSelectedOnFocusedItem ? focused : isSelected) : undefined)}
 				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }

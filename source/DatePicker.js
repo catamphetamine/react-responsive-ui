@@ -705,11 +705,12 @@ export default class DatePicker extends PureComponent
 
 					{/* Calendar icon which toggles the calendar. */}
 					{/* `aria-haspopup`: https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup */}
+					{/* WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="grid"`. */}
 					<button
 						type="button"
 						onClick={this.onToggleButtonClick}
 						tabIndex={-1}
-						aria-haspopup="grid"
+						aria-haspopup={undefined && 'grid'}
 						aria-expanded={isExpanded}
 						aria-label={buttonAriaLabel}
 						className={classNames(

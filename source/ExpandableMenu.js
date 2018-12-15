@@ -162,24 +162,6 @@ export default class ExpandableMenu extends PureComponent
 		)
 	}
 
-	renderToggler()
-	{
-		const { toggler, togglerClassName } = this.props
-
-		// `aria-haspopup`:
-		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
-
-		return (
-			<button
-				type="button"
-				aria-haspopup="dialog"
-				aria-expanded={isExpanded}
-				className={classNames('rrui__button-reset', 'rrui__outline', togglerClassName)}>
-				{toggler}
-			</button>
-		)
-	}
-
 	onBlur = (event) => this.list && this.list.onBlur(event)
 
 	onClick = (event) =>

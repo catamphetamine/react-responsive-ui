@@ -353,7 +353,7 @@ export default class Select extends PureComponent
 		// Otherwise it would be something like:
 		//
 		// aria-label={ this.getAriaLabel() }
-		// aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
+		// // aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
 		// aria-hidden={ nativeExpanded ? true : undefined }
 		//
 		// ARIA (accessibility) roles info:
@@ -361,6 +361,7 @@ export default class Select extends PureComponent
 		//
 		// `aria-haspopup`:
 		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
+		// WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="listbox"`.
 
 		return (
 			<button

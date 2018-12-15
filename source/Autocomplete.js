@@ -357,8 +357,13 @@ export default class Autocomplete extends PureComponent
 
 		const containerStyle = { textAlign: alignment }
 
-		// ARIA (accessibility) docs:
+		// ARIA 1.1 (accessibility) docs:
 		// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html
+		// (not yet supported)
+		//
+		// ARIA 1.0 (accessibility) docs:
+		// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.0pattern/combobox-autocomplete-list.html
+		// (is supported)
 
 		return (
 			<div
@@ -375,8 +380,6 @@ export default class Autocomplete extends PureComponent
 
 				<div
 					ref={ this.storeInputComponentNode }
-					role="combobox"
-					aria-expanded={ isExpanded }
 					className="rrui__input">
 
 					{ (isFetchingOptions || isFetchingInitiallySelectedOption) && <Ellipsis/> }
@@ -414,6 +417,7 @@ export default class Autocomplete extends PureComponent
 						onExpand={this.onExpand}
 						focusOnExpand={false}
 						highlightSelectedItem={false}
+						ariaSelectedOnFocusedItem={true}
 						tabbable={false}
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
@@ -485,7 +489,10 @@ export default class Autocomplete extends PureComponent
 				onChange={ this.onInputValueChange }
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
+				role="combobox"
 				aria-autocomplete="list"
+				aria-expanded={ isExpanded }
+				aria-haspopup={ true }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
 				indicateInvalid={ indicateInvalid || (matches === false) }
