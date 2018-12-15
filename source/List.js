@@ -734,8 +734,8 @@ export class Item extends React.Component
 
 		return (
 			<li
-				role={this.shouldCreateButton() ? 'none' : role}
-				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'none' ? (ariaSelectedOnFocusedItem ? focused : isSelected) : undefined)}
+				role={this.shouldCreateButton() ? 'presentation' : role}
+				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'presentation' ? (ariaSelectedOnFocusedItem ? focused : isSelected) : undefined)}
 				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }
