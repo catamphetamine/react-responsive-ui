@@ -249,6 +249,7 @@ export default class Select extends PureComponent
 					    In some future major version, when `--focus`
 					    classes are added, the `<button/>` can be
 					    moved out of the wrapping `<label/>`. */}
+					{/* https://www.w3.org/TR/html50/forms.html#category-label */}
 
 					{/* A transparent native `<select/>` on top
 					    in case of `nativeExpanded={true}`.
