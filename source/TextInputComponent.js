@@ -6,7 +6,7 @@ import Input from './TextInputInput'
 import Label from './TextInputLabel'
 
 // `<input/>` and its `<label/>`.
-export default function TextInput(props)
+export default function TextInputComponent(props)
 {
 	const
 	{
@@ -54,7 +54,7 @@ export default function TextInput(props)
 	)
 }
 
-TextInput.propTypes =
+TextInputComponent.propTypes =
 {
 	// Set to `true` to mark the field as required.
 	required : PropTypes.bool.isRequired,
@@ -63,7 +63,7 @@ TextInput.propTypes =
 	floatingLabel : PropTypes.bool.isRequired
 }
 
-TextInput.defaultProps =
+TextInputComponent.defaultProps =
 {
 	// Set to `true` to mark the field as required.
 	required : false,
