@@ -1,19 +1,20 @@
 import React from 'react'
 import classNames from 'classnames'
 
-export default function TextInputLabel({ inputId, value, required, invalid, floats, children })
+export default function TextInputLabel({ inputId, value, required, invalid, floats, children, ...rest })
 {
 	return (
 		<label
-			htmlFor={ inputId }
-			className={ classNames('rrui__input-label',
+			{...rest}
+			htmlFor={inputId}
+			className={classNames('rrui__input-label',
 			{
 				'rrui__input-label--required'          : required && isEmptyOrBlank(value),
 				'rrui__input-label--invalid'           : invalid,
 				'rrui__input-label--floating'          : floats,
 				'rrui__text-input__label--placeholder' : floats && isEmptyOrBlank(value)
-			}) }>
-			{ children }
+			})}>
+			{children}
 		</label>
 	)
 }

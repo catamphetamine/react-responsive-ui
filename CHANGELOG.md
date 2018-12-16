@@ -37,6 +37,10 @@
 
 <!-- Maybe add `--focus` CSS classes; maybe replace :focus with --focus if the specificity is the same, or in future version. -->
 
+<!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> with labels. -->
+
+Maybe remove `id`s
+
 0.14.87 / 12.12.2018
 ====================
 

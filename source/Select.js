@@ -268,6 +268,7 @@ export default class Select extends PureComponent
 					    until something is selected */}
 					{ label &&
 						<Label
+							aria-hidden
 							inputId={ id }
 							value={ value }
 							required={ required }

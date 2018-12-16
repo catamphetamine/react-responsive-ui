@@ -395,6 +395,7 @@ export default class Autocomplete extends PureComponent
 					     to utilize the CSS `+` selector) */}
 					{ label &&
 						<Label
+							aria-hidden
 							inputId={ id }
 							value={ value }
 							required={ required }
@@ -458,6 +459,7 @@ export default class Autocomplete extends PureComponent
 	{
 		const
 		{
+			id,
 			value,
 			label,
 			placeholder,

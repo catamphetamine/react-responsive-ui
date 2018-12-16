@@ -40,6 +40,7 @@ export default function TextInputComponent(props)
 		       `input:focus + label` CSS selector rule */}
 			{ label &&
 				<Label
+					aria-hidden
 					inputId={ id }
 					value={ value }
 					required={ required }
