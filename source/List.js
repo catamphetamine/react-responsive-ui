@@ -391,6 +391,8 @@ export default class List extends PureComponent
 				role={ role }
 				aria-label={ this.props['aria-label'] }
 				aria-hidden={ this.props['aria-hidden'] }
+				aria-required={ this.props['aria-required'] }
+				aria-invalid={ this.props['aria-invalid'] }
 				style={ style }
 				className={ classNames(className, 'rrui__list', {
 					'rrui__list--focus': isFocused

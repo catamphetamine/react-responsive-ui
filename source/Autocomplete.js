@@ -493,6 +493,7 @@ export default class Autocomplete extends PureComponent
 				aria-autocomplete="list"
 				aria-expanded={ isExpanded }
 				aria-haspopup={ true }
+				required={ required }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
 				indicateInvalid={ indicateInvalid || (matches === false) }

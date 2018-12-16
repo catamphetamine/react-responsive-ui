@@ -36,6 +36,9 @@ export default class FileUpload extends PureComponent
 		// `react-dnd` `canDrop()`.
 		// canDrop : PropTypes.bool.isRequired,
 
+		// Whether choosing a file is required.
+		required : PropTypes.bool,
+
 		// Renders an error message below the `<input/>`.
 		error     : PropTypes.string,
 
@@ -124,6 +127,7 @@ export default class FileUpload extends PureComponent
 	{
 		const
 		{
+			required,
 			error,
 			disabled,
 			dropTarget,
@@ -147,6 +151,9 @@ export default class FileUpload extends PureComponent
 					ref={ this.storeFileInputNode }
 					onClick={ this.onClick }
 					onChange={ this.onFileSelect }
+					aria-label={ this.props['aria-label'] }
+					aria-required={ required ? true : undefined }
+					aria-invalid={ error ? true : undefined }
 					style={ HIDDEN }/>
 
 				{/* The actual clickable area. */}

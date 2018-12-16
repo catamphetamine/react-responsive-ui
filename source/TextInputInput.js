@@ -275,7 +275,9 @@ export default class TextInput extends PureComponent
 			ref         : this.storeInputNode,
 			value       : (value === undefined || value === null) ? '' : value,
 			disabled,
-			'aria-label' : label || placeholder,
+			'aria-label'    : rest['aria-label'] || label || placeholder,
+			'aria-required' : required || rest['aria-required'],
+			'aria-invalid'  : error && indicateInvalid ? true : rest['aria-invalid'],
 			placeholder,
 			onChange    : this.onChange,
 			onKeyDown   : this.onKeyDown,
@@ -319,7 +321,7 @@ export default class TextInput extends PureComponent
 						key="textarea-measurement"
 						ref={this.hiddenTextArea}
 						readOnly
-						aria-hidden="true"
+						aria-hidden
 						value={properties.value}
 						rows={properties.rows}
 						tabIndex={-1}

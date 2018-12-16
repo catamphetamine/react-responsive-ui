@@ -74,7 +74,6 @@ export default class Switcher extends PureComponent
 			<div
 				ref={ this.storeContainerComponent }
 				onKeyDown={ this.onKeyDown }
-				aria-label={ this.props['aria-label'] || ariaLabel }
 				className={ classNames('rrui__switcher',
 				{
 					'rrui__switcher--disabled' : disabled
@@ -84,7 +83,9 @@ export default class Switcher extends PureComponent
 
 				<div
 					className="rrui__input"
-					role="radiogroup">
+					role="radiogroup"
+					aria-label={ this.props['aria-label'] || ariaLabel }
+					aria-invalid={ indicateInvalid && error ? true : undefined }>
 					{ options.map((option, index) => this.render_button(option, index)) }
 				</div>
 

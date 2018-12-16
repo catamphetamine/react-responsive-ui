@@ -280,7 +280,9 @@ export default class Select extends PureComponent
 					{ this.shouldShowOptionsList() &&
 						<ExpandableList
 							ref={this.storeListRef}
-							aria-hidden={ true }
+							aria-hidden
+							aria-required={required && isEmptyValue(value)}
+							aria-invalid={error && indicateInvalid ? true : undefined}
 							upward={upward}
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
@@ -417,6 +419,7 @@ export default class Select extends PureComponent
 			value,
 			label,
 			disabled,
+			required,
 			native,
 			nativeExpanded,
 			error,
@@ -437,6 +440,8 @@ export default class Select extends PureComponent
 				onChange={ this.nativeSelectOnChange }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
+				aria-required={ required && isEmptyValue(value) }
+				aria-invalid={ error && indicateInvalid ? true : undefined }
 				className={ classNames(
 					// `:focus` style is implemented via border color
 					// so outline can be muted safely here.
@@ -606,7 +611,7 @@ export default class Select extends PureComponent
 			case 13:
 				// Submit containing `<form/>`.
 				// Expand otherwise.
-				if (required || !submitContainingForm(this.selectButton)) {
+				if ((required && isEmptyValue(value)) || !submitContainingForm(this.selectButton)) {
 					this.expand()
 				}
 				return event.preventDefault()
