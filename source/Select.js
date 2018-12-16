@@ -22,6 +22,9 @@ export default class Select extends PureComponent
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		id : PropTypes.string,
+
 		// A list of selectable options
 		options : PropTypes.arrayOf
 		(
@@ -265,7 +268,7 @@ export default class Select extends PureComponent
 					    until something is selected */}
 					{ label &&
 						<Label
-							id={ id }
+							inputId={ id }
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }

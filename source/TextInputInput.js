@@ -14,12 +14,15 @@ export default class TextInput extends PureComponent
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		id : PropTypes.string,
+
 		// `<input type/>` attribute.
-		type             : PropTypes.string,
+		type : PropTypes.string,
 
 		// Whether `<textarea/>` should autoresize itself
 		// (is `true` by default)
-		autoresize       : PropTypes.bool.isRequired,
+		autoresize : PropTypes.bool.isRequired,
 
 		// In order for this to work properly
 		// `<textarea/>` vertical padding should be `0`
@@ -234,6 +237,7 @@ export default class TextInput extends PureComponent
 	{
 		const
 		{
+			id,
 			value,
 			multiline,
 			inputComponent,
@@ -272,10 +276,11 @@ export default class TextInput extends PureComponent
 		const properties =
 		{
 			...rest,
-			ref         : this.storeInputNode,
-			value       : (value === undefined || value === null) ? '' : value,
+			id,
+			ref : this.storeInputNode,
+			value : (value === undefined || value === null) ? '' : value,
 			disabled,
-			'aria-label'    : rest['aria-label'] || label || placeholder,
+			'aria-label'    : rest['aria-label'] || (id && label ? undefined : label || placeholder),
 			'aria-required' : required || rest['aria-required'],
 			'aria-invalid'  : error && indicateInvalid ? true : rest['aria-invalid'],
 			placeholder,

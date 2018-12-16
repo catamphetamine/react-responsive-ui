@@ -22,6 +22,9 @@ export default class DatePicker extends PureComponent
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		id : PropTypes.string,
+
 		// An optional label placed on top of the input field
 		label : PropTypes.string,
 

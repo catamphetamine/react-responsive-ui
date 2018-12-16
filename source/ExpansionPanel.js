@@ -134,7 +134,7 @@ export default class ExpansionPanel extends React.Component {
 						type="button"
 						onClick={this.onToggle}
 						aria-expanded={isExpanded}
-						aria-label={this.props['aria-label'] || title}
+						aria-label={this.props['aria-label']}
 						disabled={disabled}
 						className="rrui__button-reset rrui__outline rrui__expansion-panel__header">
 						{ToggleIcon && toggleIconPlacement === 'start' &&

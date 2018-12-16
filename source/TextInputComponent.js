@@ -40,7 +40,7 @@ export default function TextInputComponent(props)
 		       `input:focus + label` CSS selector rule */}
 			{ label &&
 				<Label
-					id={ id }
+					inputId={ id }
 					value={ value }
 					required={ required }
 					invalid={ indicateInvalid && error }

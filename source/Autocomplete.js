@@ -28,6 +28,9 @@ export default class Autocomplete extends PureComponent
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		id : PropTypes.string,
+
 		// A list of selectable options
 		options : PropTypes.arrayOf
 		(
@@ -392,7 +395,7 @@ export default class Autocomplete extends PureComponent
 					     to utilize the CSS `+` selector) */}
 					{ label &&
 						<Label
-							id={ id }
+							inputId={ id }
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }>
@@ -482,6 +485,7 @@ export default class Autocomplete extends PureComponent
 
 		return (
 			<TextInput
+				id={ id }
 				inputRef={ this.storeInput }
 				value={ inputValue }
 				label={ label }
