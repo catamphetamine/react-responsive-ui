@@ -13,9 +13,6 @@ export default class Checkbox extends PureComponent
 {
 	static propTypes =
 	{
-		// (optional) HTML `id` attribute.
-		id : PropTypes.string,
-
 		// HTML form field "name"
 		name : PropTypes.string,
 
@@ -87,7 +84,6 @@ export default class Checkbox extends PureComponent
 	{
 		const
 		{
-			id,
 			value,
 			error,
 			indicateInvalid,
@@ -116,18 +112,17 @@ export default class Checkbox extends PureComponent
 				className) }
 				style={ style }>
 
-				<div
+				<label
 					className={ classNames('rrui__input',
 					{
 						'rrui__input--multiline' : multiline
 					}) }>
 
-					<div className="rrui__checkbox__checkbox">
+					<span className="rrui__checkbox__checkbox">
 						<input
-							id={ id }
 							ref={ this.storeInstance }
 							type="checkbox"
-							aria-label={ this.props['aria-label'] || ariaLabel || (id ? undefined : (typeof children === 'string' ? children : undefined)) }
+							aria-label={ this.props['aria-label'] || ariaLabel }
 							aria-invalid={ indicateInvalid && error ? true : undefined }
 							checked={ value }
 							disabled={ disabled }
@@ -148,21 +143,19 @@ export default class Checkbox extends PureComponent
 							<path d={ value ? CHECKBOX_CHECKED_PATH : CHECKBOX_UNCHECKED_PATH }/> }
 						</svg>
 
-						<div className="rrui__checkbox__box-background"/>
-					</div>
+						<span className="rrui__checkbox__box-background"/>
+					</span>
 
 					{ children &&
-						<label
-							htmlFor={ id }
-							onClick={ this.toggle }
+						<span
 							className={ classNames('rrui__checkbox__label',
 							{
 								'rrui__checkbox__label--multiline' : multiline
 							}) }>
 							{ children }
-						</label>
+						</span>
 					}
-				</div>
+				</label>
 
 				{ indicateInvalid && error &&
 					<div className="rrui__input-error">

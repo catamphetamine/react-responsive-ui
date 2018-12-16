@@ -2,7 +2,7 @@
 
 .rrui__checkbox .rrui__input
 {
-	display     : flex;
+	display     : inline-flex;
 	align-items : center;
 }
 
@@ -91,7 +91,6 @@
 }
 
 /* Checkbox color (:checked / :active) */
-.rrui__checkbox:active .rrui__checkbox__box,
 .rrui__checkbox__input:active + .rrui__checkbox__box
 {
 	color : var(--rrui-checkbox-color-active);
