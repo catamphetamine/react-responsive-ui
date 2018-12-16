@@ -56,8 +56,7 @@ export default class ExpansionPanel extends React.Component {
 			return {
 				isExpanded,
 				height: isExpanded ? null : undefined,
-				// Verify `expandedHeight` is defined.
-				expandedHeight: isExpanded ? null : (state.expandedHeight === undefined ? this.content.current.scrollHeight : state.expandedHeight)
+				expandedHeight: isExpanded ? null : this.content.current.scrollHeight
 			}
 		})
 	}
@@ -72,10 +71,8 @@ export default class ExpansionPanel extends React.Component {
 		if (this.state.isExpanded !== prevState.isExpanded) {
 			// If `<ExpansionPanel/>` is being expanded then measure its content height.
 			if (this.state.height === null) {
-				const height = this.content.current.scrollHeight
 				this.setState({
-					height,
-					expandedHeight: height
+					height: this.content.current.scrollHeight
 				})
 				this.resetHeightTimer = setTimeout(() => {
 					this.setState((state) => ({

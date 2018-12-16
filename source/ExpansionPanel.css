@@ -67,6 +67,11 @@
 	border-bottom: 1px solid var(--rrui-expansion-panel-border-color-active);
 }
 
+.rrui__expansion-panel--toggle-icon-start.rrui__expansion-panel--expanded .rrui__expansion-panel__header
+{
+	height: var(--rrui-expansion-panel-heading-height);
+}
+
 .rrui__expansion-panel__content-wrapper
 {
 	overflow: hidden;
