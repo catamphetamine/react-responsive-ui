@@ -22,9 +22,6 @@ export default class Select extends PureComponent
 {
 	static propTypes =
 	{
-		// (optional) HTML `id` attribute.
-		id : PropTypes.string,
-
 		// A list of selectable options
 		options : PropTypes.arrayOf
 		(
@@ -196,7 +193,6 @@ export default class Select extends PureComponent
 	{
 		const
 		{
-			id,
 			upward,
 			icon,
 			compact,
@@ -269,7 +265,6 @@ export default class Select extends PureComponent
 					{ label &&
 						<Label
 							aria-hidden
-							inputId={ id }
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }
@@ -418,7 +413,6 @@ export default class Select extends PureComponent
 	{
 		const
 		{
-			id,
 			name,
 			value,
 			label,
@@ -435,7 +429,6 @@ export default class Select extends PureComponent
 		return (
 			<select
 				ref={ this.storeSelectNode }
-				id={ id }
 				name={ name }
 				value={ isEmptyValue(value) ? empty_value_option_value : value }
 				disabled={ disabled }
