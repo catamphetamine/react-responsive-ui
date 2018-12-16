@@ -242,6 +242,14 @@ export default class Select extends PureComponent
 
 					{ wait && <Ellipsis/> }
 
+					{/* Could use a wrapping `<label/>` here
+					    but except the native `<select/>` there's
+					    also a `<button/>` so they can't both
+					    be wrapped in a `<label/>`.
+					    In some future major version, when `--focus`
+					    classes are added, the `<button/>` can be
+					    moved out of the wrapping `<label/>`. */}
+
 					{/* A transparent native `<select/>` on top
 					    in case of `nativeExpanded={true}`.
 					    (for better UX on mobile devices).
