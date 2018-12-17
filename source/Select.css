@@ -155,6 +155,9 @@
 	position : absolute;
 	z-index  : 1;
 	opacity  : 0;
+	/* ChromeVox has a bug where `opacity: 0` elements are ignored. */
+	/* https://github.com/michalsnik/aos/issues/397 */
+	/* opacity  : 0.001; */
 }
 
 .rrui__select__toggler

@@ -692,7 +692,7 @@ export class Item extends React.Component
 			properties.type = 'button'
 			properties.role = role
 			properties['aria-selected'] = ariaSelectedOnFocusedItem ? focused : isSelected
-			properties['aria-label'] = typeof children === 'string' ? undefined : label
+			properties['aria-label'] = this.props.label || (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined)
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
 			properties.className = classNames(
@@ -724,9 +724,9 @@ export class Item extends React.Component
 			if (icon)
 			{
 				itemChildren.unshift((
-					<div key='icon' className="rrui__list__item-icon">
+					<span key='icon' className="rrui__list__item-icon">
 						{ React.createElement(icon, { value, label }) }
-					</div>
+					</span>
 				))
 			}
 		}
@@ -738,7 +738,7 @@ export class Item extends React.Component
 
 		return (
 			<li
-				role={this.shouldCreateButton() ? 'presentation' : role}
+				role={this.shouldCreateButton() || children.type === DividerType ? 'presentation' : role}
 				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'presentation' ? (ariaSelectedOnFocusedItem ? focused : isSelected) : undefined)}
 				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">

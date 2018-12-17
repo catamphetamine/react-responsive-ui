@@ -151,6 +151,7 @@ export default class FileUpload extends PureComponent
 					ref={ this.storeFileInputNode }
 					onClick={ this.onClick }
 					onChange={ this.onFileSelect }
+					disabled={ disabled }
 					aria-label={ this.props['aria-label'] }
 					aria-required={ required ? true : undefined }
 					aria-invalid={ error ? true : undefined }
@@ -161,6 +162,7 @@ export default class FileUpload extends PureComponent
 					<div
 						tabIndex={ tabIndex }
 						role="button"
+						aria-label={ this.props['aria-label'] }
 						onClick={ this.onClick }
 						onKeyDown={ this.onKeyDown }
 						className={ classNames(

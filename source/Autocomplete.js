@@ -427,7 +427,7 @@ export default class Autocomplete extends PureComponent
 						onFocusOut={this.onFocusOut}
 						closeButtonIcon={closeButtonIcon}
 						closeLabel={closeLabel}
-						aria-label={label || placeholder}
+						aria-label={this.props['aria-label'] || label}
 						className={classNames('rrui__shadow', 'rrui__options-list',
 						{
 							'rrui__options-list--left-aligned'  : alignment === 'left',
@@ -497,7 +497,7 @@ export default class Autocomplete extends PureComponent
 				onBlur={ this.onBlur }
 				role="combobox"
 				aria-autocomplete="list"
-				aria-expanded={ isExpanded }
+				aria-expanded={ isExpanded ? true : false }
 				aria-haspopup={ true }
 				required={ required }
 				tabIndex={ tabIndex }

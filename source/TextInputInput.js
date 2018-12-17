@@ -278,11 +278,11 @@ export default class TextInput extends PureComponent
 			...rest,
 			id,
 			ref : this.storeInputNode,
-			value : (value === undefined || value === null) ? '' : value,
+			value : isEmptyValue(value) ? '' : value,
 			disabled,
-			'aria-label'    : rest['aria-label'] || (id && label ? undefined : label || placeholder),
-			'aria-required' : required || rest['aria-required'],
-			'aria-invalid'  : error && indicateInvalid ? true : rest['aria-invalid'],
+			'aria-label'    : rest['aria-label'] || (id && label ? undefined : label),
+			'aria-required' : rest['aria-required'] || (required ? true : undefined),
+			'aria-invalid'  : rest['aria-invalid'] || (error && indicateInvalid ? true : undefined),
 			placeholder,
 			onChange    : this.onChange,
 			onKeyDown   : this.onKeyDown,
@@ -362,4 +362,8 @@ const HIDDEN_TEXTAREA_STYLE = {
 	height: 'auto',
 	// Don't know why is it here.
 	whiteSpace: 'pre-wrap'
+}
+
+function isEmptyValue(value) {
+	return value === '' || value === undefined || value === null
 }

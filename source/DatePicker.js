@@ -263,7 +263,7 @@ export default class DatePicker extends PureComponent
 	// Cancels textual date editing.
 	onCollapse = ({ focusOut }) =>
 	{
-		if (!focusOut) {
+		if (!focusOut && !this.focusingOut) {
 			this.focus()
 		}
 
@@ -559,7 +559,9 @@ export default class DatePicker extends PureComponent
 		// `window.rruiCollapseOnFocusOut` can be used
 		// for debugging expandable contents.
 		if (window.rruiCollapseOnFocusOut !== false) {
+			this.focusingOut = true
 			this.collapse()
+			this.focusingOut = undefined
 		}
 	}
 
@@ -590,7 +592,12 @@ export default class DatePicker extends PureComponent
 	}
 
 	onToggleButtonClick = (event) => {
-		this.toggle().then(this.focusCalendar)
+		this.toggle().then(() => {
+			const { isExpanded } = this.state
+			if (isExpanded) {
+				this.focusCalendar()
+			}
+		})
 	}
 
 	componentWillUnmount()
@@ -691,6 +698,7 @@ export default class DatePicker extends PureComponent
 					indicateInvalid={ indicateInvalid }
 					label={ label }
 					placeholder={ label ? placeholder : placeholder || formatHint }
+					aria-label={ label ? `${label}: ${placeholder || formatHint}` : undefined }
 					disabled={ disabled }
 					value={ text_value !== undefined ? text_value : formatDate(value, format) }
 					onKeyDown={ this.onInputKeyDown }
@@ -712,15 +720,15 @@ export default class DatePicker extends PureComponent
 					<button
 						type="button"
 						onClick={this.onToggleButtonClick}
-						tabIndex={-1}
+						tabIndex={buttonAriaLabel ? undefined : -1}
 						aria-haspopup={undefined && 'grid'}
-						aria-expanded={isExpanded}
+						aria-expanded={isExpanded ? true : false}
 						aria-label={buttonAriaLabel}
 						className={classNames(
 							'rrui__button-reset',
 							'rrui__outline',
 							'rrui__date-picker__icon', {
-								'rrui__date-picker__icon--hidden': !icon
+								'rrui__date-picker__icon--hidden': !buttonAriaLabel && !icon
 							}
 						)}>
 						{typeof icon === 'function' ? icon() : DEFAULT_CALENDAR_ICON()}

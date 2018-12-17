@@ -133,7 +133,7 @@ export default class ExpansionPanel extends React.Component {
 					<button
 						type="button"
 						onClick={this.onToggle}
-						aria-expanded={isExpanded}
+						aria-expanded={isExpanded ? true : false}
 						aria-label={this.props['aria-label']}
 						disabled={disabled}
 						className="rrui__button-reset rrui__outline rrui__expansion-panel__header">

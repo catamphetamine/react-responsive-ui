@@ -9,11 +9,11 @@
 	display: flex;
 	justify-content: center;
 	padding: calc(var(--rrui-unit) * 2);
-	border-bottom: 1px solid transparent;
+	border-bottom: 0.1em solid transparent;
 }
 
 .DayPicker-wrapper:focus {
-	border-bottom: 1px solid var(--rrui-input-field-border-color-focus);
+	border-bottom-color: var(--rrui-input-field-border-color-focus);
 }
 
 .DayPicker-NavButton {
@@ -279,6 +279,12 @@
 .rrui__date-picker__icon:focus,
 */
 .rrui__date-picker .rrui__expanded--expanded .rrui__date-picker__icon
+{
+	opacity : 1;
+	color   : var(--rrui-accent-color);
+}
+
+.rrui__date-picker__icon:focus
 {
 	opacity : 1;
 	color   : var(--rrui-accent-color);

@@ -95,43 +95,42 @@ export default class Switch extends PureComponent
 
 				{/* Left label */}
 				{ (leftLabel || children) &&
-					<div className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
+					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
 						{ leftLabel || children }
-					</div>
+					</span>
 				}
 
 				{/* The switch */}
-				<div className="rrui__switch__switch">
+				<span className="rrui__switch__switch">
 					<input
 						ref={ this.storeInputComponent }
 						type="checkbox"
 						value={ value }
 						onKeyDown={ this.onKeyDown }
 						onChange={ this.toggle }
-						aria-label={ leftLabel || rightLabel || (typeof children === 'string' ? children : undefined)}
 						className="rrui__switch__input"
 						style={ inputStyle }/>
 
-					<div
+					<span
 						className={ classNames('rrui__switch__groove',
 						{
 							// CSS selector performance optimization
 							'rrui__switch__groove--on' : value
 						}) }/>
 
-					<div
+					<span
 						className={ classNames('rrui__switch__knob',
 						{
 							// CSS selector performance optimization
 							'rrui__switch__knob--on' : value
 						}) }/>
-				</div>
+				</span>
 
 				{/* Right label */}
 				{ rightLabel &&
-					<div className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
+					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
 						{ rightLabel }
-					</div>
+					</span>
 				}
 			</label>
 		)

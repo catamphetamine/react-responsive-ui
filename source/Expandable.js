@@ -266,15 +266,15 @@ export default class Expandable extends PureComponent
 			// Set `expanded` to `false` to play the collapse CSS animation.
 			// Once that animation is finished remove
 			// the contents of the `<Expanded/>` from DOM.
-			return this.setState({ expanded : false }, () =>
-			{
-				if (onCollapsed) {
-					onCollapsed();
-				}
-
-				this.removeFromDOMAfterCollapsed()
-
-				this.isToggling = false
+			return new Promise((resolve) => {
+				this.setState({ expanded : false }, () => {
+					if (onCollapsed) {
+						onCollapsed();
+					}
+					this.removeFromDOMAfterCollapsed()
+					this.isToggling = false
+					resolve()
+				})
 			})
 		}
 

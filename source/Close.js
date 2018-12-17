@@ -2,13 +2,19 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-export default function Close({ onClick, closeLabel, className, children })
+export default function Close(props)
 {
+	const {
+		onClick,
+		closeLabel,
+		className,
+		children
+	} = props
 	return (
 		<button
 			type="button"
 			onClick={ onClick }
-			aria-label={ closeLabel }
+			aria-label={ props['aria-label'] || closeLabel }
 			className={ classNames('rrui__button-reset', 'rrui__outline', 'rrui__close', className) }>
 			{ children }
 		</button>

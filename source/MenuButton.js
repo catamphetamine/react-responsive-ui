@@ -99,7 +99,7 @@ class MenuButton extends PureComponent
 			onClick: this.onClick,
 			// 'aria-label': 'Menu',
 			// 'aria-haspopup': 'menu',
-			'aria-expanded': menuIsExpanded,
+			'aria-expanded': menuIsExpanded ? true : false, // can be `undefined` to differentiate between "has been toggled yet"/"has not been toggled yet" to workaround the CSS animation bug.
 			className: classNames('rrui__button-reset', 'rrui__outline', 'rrui__menu-button', className),
 			...rest
 		}

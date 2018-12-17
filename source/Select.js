@@ -122,7 +122,14 @@ export default class Select extends PureComponent
 
 		// `aria-label` for the `<Select/>`'s `<button/>`.
 		// Deprecated, use `aria-label` instead.
-		ariaLabel : PropTypes.string
+		ariaLabel : PropTypes.string,
+
+		// Has a bug when navigating via keyboard using Voice Over.
+		// So don't use this property.
+		// // Set to `false` to prevent the custom listbox from being `aria-hidden`
+		// // and make the native `<select/>` `aria-hidden` instead.
+		// // (except when `native` is `true`).
+		ariaPreferNativeSelect : PropTypes.bool.isRequired
 	}
 
 	static defaultProps =
@@ -144,7 +151,9 @@ export default class Select extends PureComponent
 		// Will show scrollbar on overflow.
 		scroll : true,
 
-		alignment : 'left'
+		alignment : 'left',
+
+		ariaPreferNativeSelect : true
 	}
 
 	state = {}
@@ -212,6 +221,7 @@ export default class Select extends PureComponent
 			error,
 			closeButtonIcon,
 			closeLabel,
+			ariaPreferNativeSelect,
 			wait,
 			style,
 			className
@@ -288,8 +298,9 @@ export default class Select extends PureComponent
 					{ this.shouldShowOptionsList() &&
 						<ExpandableList
 							ref={this.storeListRef}
-							aria-hidden
-							aria-required={required && isEmptyValue(value)}
+							aria-hidden={ariaPreferNativeSelect || native ? true : undefined}
+							aria-label={this.getAriaLabel()}
+							aria-required={required && isEmptyValue(value) ? true : undefined}
 							aria-invalid={error && indicateInvalid ? true : undefined}
 							upward={upward}
 							alignment={alignment}
@@ -343,10 +354,12 @@ export default class Select extends PureComponent
 			required,
 			icon,
 			title,
+			native,
 			nativeExpanded,
 			toggleClassName,
 			indicateInvalid,
-			error
+			error,
+			ariaPreferNativeSelect
 		}
 		= this.props
 
@@ -382,9 +395,11 @@ export default class Select extends PureComponent
 				onKeyDown={ this.onKeyDown }
 				onFocus={ onFocus }
 				onBlur={ this.onBlur }
-				tabIndex={ -1 }
+				tabIndex={ ariaPreferNativeSelect || native ? -1 : undefined }
 				title={ title }
-				aria-hidden={ true }
+				aria-hidden={ ariaPreferNativeSelect || native ? true : undefined }
+				aria-label={ this.getAriaLabel() }
+				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
 				(
 					'rrui__input-element',
@@ -431,7 +446,8 @@ export default class Select extends PureComponent
 			nativeExpanded,
 			error,
 			indicateInvalid,
-			tabIndex
+			tabIndex,
+			ariaPreferNativeSelect
 		}
 		= this.props
 
@@ -444,9 +460,10 @@ export default class Select extends PureComponent
 				onKeyDown={ this.nativeSelectOnKeyDown }
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
-				tabIndex={ tabIndex }
+				tabIndex={ ariaPreferNativeSelect || native ? tabIndex : -1 }
+				aria-hidden={ ariaPreferNativeSelect || native ? undefined : true }
 				aria-label={ this.getAriaLabel() }
-				aria-required={ required && isEmptyValue(value) }
+				aria-required={ required && isEmptyValue(value) ? true : undefined }
 				aria-invalid={ error && indicateInvalid ? true : undefined }
 				className={ classNames(
 					// `:focus` style is implemented via border color
@@ -559,10 +576,18 @@ export default class Select extends PureComponent
 
 	onClick = (event) =>
 	{
-		const { disabled } = this.props
+		const { disabled, nativeExpanded } = this.props
 
 		if (!disabled) {
-			this.toggle()
+			// The special case can only happen when `ariaPreferNativeSelect` is `false`
+			// and tabbed to the `<button/>` of a `nativeExpanded` `<Select/>` and pressed Spacebar.
+			if (nativeExpanded) {
+				// Doesn't work.
+				// this.select.click()
+				// Don't use `ariaPreferNativeSelect`.
+			} else {
+				this.toggle()
+			}
 		}
 	}
 
@@ -670,11 +695,10 @@ export default class Select extends PureComponent
 		const {
 			// Deprecated, use `aria-label` instead.
 			ariaLabel,
-			label,
-			placeholder
+			label
 		} = this.props
 
-		return this.props['aria-label'] || ariaLabel || label || placeholder
+		return this.props['aria-label'] || ariaLabel || label
 	}
 
 	getLabel()
