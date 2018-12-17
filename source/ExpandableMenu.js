@@ -115,7 +115,7 @@ export default class ExpandableMenu extends PureComponent
 					onBlur={ this.onBlur }
 					aria-haspopup={ togglerAriaHasPopup }
 					aria-label={ togglerAriaLabel }
-					aria-expanded={ togglerAriaHasPopup ? (isExpanded ? true : false) : undefined }
+					aria-expanded={ isExpanded ? true : false }
 					className={ togglerClassName }>
 					{ togglerElement }
 				</button>
