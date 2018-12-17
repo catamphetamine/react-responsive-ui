@@ -243,9 +243,19 @@ export default class DatePicker extends PureComponent
 		// when the focus is on a calendar date.
 		// Or the user can enter the date in the `<input/>` text field.
 		//
+		// https://github.com/gpbl/react-day-picker/issues/848
+		//
 		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton'))) {
 			button.setAttribute('tabindex', '-1')
 		}
+
+		// A workaround for a bug where `tabIndex` of the "wrapper" div is `0`
+		// and at the same time there's no `aria-label`.
+		// https://github.com/gpbl/react-day-picker/issues/848
+		this.container.querySelector('.DayPicker-wrapper').setAttribute('tabindex', -1)
+		// Could also potentially update `aria-label` attribute to (month + year)
+		// on expand and on month/year change in the expanded calendar.
+		// But that would be too much hassle.
 
 		// Toggling the calendar in a timeout
 		// in order for iOS scroll not to get "janky"
