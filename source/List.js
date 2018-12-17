@@ -724,7 +724,7 @@ export class Item extends React.Component
 			if (icon)
 			{
 				itemChildren.unshift((
-					<span key='icon' className="rrui__list__item-icon">
+					<span key="icon" aria-hidden className="rrui__list__item-icon">
 						{ React.createElement(icon, { value, label }) }
 					</span>
 				))
