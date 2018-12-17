@@ -122,14 +122,7 @@ export default class Select extends PureComponent
 
 		// `aria-label` for the `<Select/>`'s `<button/>`.
 		// Deprecated, use `aria-label` instead.
-		ariaLabel : PropTypes.string,
-
-		// Has a bug when navigating via keyboard using Voice Over.
-		// So don't use this property.
-		// // Set to `false` to prevent the custom listbox from being `aria-hidden`
-		// // and make the native `<select/>` `aria-hidden` instead.
-		// // (except when `native` is `true`).
-		ariaPreferNativeSelect : PropTypes.bool.isRequired
+		ariaLabel : PropTypes.string
 	}
 
 	static defaultProps =
@@ -151,28 +144,20 @@ export default class Select extends PureComponent
 		// Will show scrollbar on overflow.
 		scroll : true,
 
-		alignment : 'left',
-
-		ariaPreferNativeSelect : true
+		alignment : 'left'
 	}
 
 	state = {}
 
 	focus = () => this.select.focus()
-	focusToggler = () => this.selectButton.focus()
+	// focusToggler = () => this.selectButton.focus()
 
 	onCollapse = ({ focusOut }) =>
 	{
-		const { native, nativeExpanded } = this.props
-
 		this.setState({ isExpanded: false })
 
 		if (!focusOut) {
-			if (native || nativeExpanded) {
-				this.focus()
-			} else {
-				this.focusToggler()
-			}
+			this.focus()
 		}
 	}
 
@@ -221,7 +206,6 @@ export default class Select extends PureComponent
 			error,
 			closeButtonIcon,
 			closeLabel,
-			ariaPreferNativeSelect,
 			wait,
 			style,
 			className
@@ -293,12 +277,9 @@ export default class Select extends PureComponent
 					}
 
 					{/* The list of selectable options */}
-					{/* Since native `<select/>` is always rendered
-						 this custom Select can be made `aria-hidden={true}`. */}
 					{ this.shouldShowOptionsList() &&
 						<ExpandableList
 							ref={this.storeListRef}
-							aria-hidden={ariaPreferNativeSelect || native ? true : undefined}
 							aria-label={this.getAriaLabel()}
 							aria-required={required && isEmptyValue(value) ? true : undefined}
 							aria-invalid={error && indicateInvalid ? true : undefined}
@@ -358,8 +339,7 @@ export default class Select extends PureComponent
 			nativeExpanded,
 			toggleClassName,
 			indicateInvalid,
-			error,
-			ariaPreferNativeSelect
+			error
 		}
 		= this.props
 
@@ -367,24 +347,21 @@ export default class Select extends PureComponent
 
 		const selected = this.getSelectedOption()
 
-		const selectedOptionLabel = selected && selected.label || this.getLabel() || this.getPlaceholder()
+		const selectedOptionLabel = selected && selected.label || this.getPlaceholder()
 		const showIconOnly = icon && selected && selected.icon
 
-		// Since native `<select/>` is always rendered
-		// this custom Select can be made `aria-hidden={true}`.
-		//
-		// Otherwise it would be something like:
-		//
-		// aria-label={ this.getAriaLabel() }
-		// // aria-haspopup={ nativeExpanded ? undefined : 'listbox' }
-		// aria-hidden={ nativeExpanded ? true : undefined }
-		//
 		// ARIA (accessibility) roles info:
 		// https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
 		//
 		// `aria-haspopup`:
 		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
 		// WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="listbox"`.
+
+		// This button could be focusable in case of !native && !nativeExpanded.
+		// In case of nativeExpanded if this button was focusable then the user would
+		// tab to the button and press Spacebar key and there would be no way to
+		// expand the native select so the keyboard user would be stuck.
+		// Because of this, this button is never tabbable and native select always is.
 
 		return (
 			<button
@@ -395,9 +372,8 @@ export default class Select extends PureComponent
 				onKeyDown={ this.onKeyDown }
 				onFocus={ onFocus }
 				onBlur={ this.onBlur }
-				tabIndex={ ariaPreferNativeSelect || native ? -1 : undefined }
+				tabIndex={ -1 }
 				title={ title }
-				aria-hidden={ ariaPreferNativeSelect || native ? true : undefined }
 				aria-label={ this.getAriaLabel() }
 				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
@@ -446,8 +422,7 @@ export default class Select extends PureComponent
 			nativeExpanded,
 			error,
 			indicateInvalid,
-			tabIndex,
-			ariaPreferNativeSelect
+			tabIndex
 		}
 		= this.props
 
@@ -460,8 +435,7 @@ export default class Select extends PureComponent
 				onKeyDown={ this.nativeSelectOnKeyDown }
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
-				tabIndex={ ariaPreferNativeSelect || native ? tabIndex : -1 }
-				aria-hidden={ ariaPreferNativeSelect || native ? undefined : true }
+				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
 				aria-required={ required && isEmptyValue(value) ? true : undefined }
 				aria-invalid={ error && indicateInvalid ? true : undefined }
@@ -532,7 +506,9 @@ export default class Select extends PureComponent
 	{
 		if (this.shouldShowOptionsList())
 		{
-			this.focus()
+			// Native select is the main focusable element now
+			// even when the custom select is rendered.
+			// this.focusToggler()
 			this.onKeyDownFromNativeSelect = true
 			this.onKeyDown(event)
 		}
@@ -543,13 +519,17 @@ export default class Select extends PureComponent
 		if (this.shouldShowOptionsList())
 		{
 			event.preventDefault()
-			this.focus()
+			// Native select is the main focusable element now
+			// even when the custom select is rendered.
+			// this.focusToggler()
 			this.toggle()
 		}
 	}
 
 	nativeSelectOnChange = (event) =>
 	{
+		const { native, nativeExpanded } = this.props
+
 		let value = event.target.value
 
 		// Convert back from an empty string to `undefined`
@@ -570,7 +550,9 @@ export default class Select extends PureComponent
 		// when a user selects something in the native `<select/>`
 		// which expands over the custom one in Firefox due to the bug.
 		if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
-			this.collapse()
+			if (!native && !nativeExpanded) {
+				this.collapse()
+			}
 		}
 	}
 
@@ -579,15 +561,7 @@ export default class Select extends PureComponent
 		const { disabled, nativeExpanded } = this.props
 
 		if (!disabled) {
-			// The special case can only happen when `ariaPreferNativeSelect` is `false`
-			// and tabbed to the `<button/>` of a `nativeExpanded` `<Select/>` and pressed Spacebar.
-			if (nativeExpanded) {
-				// Doesn't work.
-				// this.select.click()
-				// Don't use `ariaPreferNativeSelect`.
-			} else {
-				this.toggle()
-			}
+			this.toggle()
 		}
 	}
 
@@ -705,13 +679,13 @@ export default class Select extends PureComponent
 	{
 		const { label, placeholder, value } = this.props
 
-		if (isEmptyValue(value)) {
-			if (placeholder) {
-				return label
-			}
-		} else {
-			return label
+		if (isEmptyValue(value) && !placeholder) {
+			// Label will be shown in placeholder's place
+			// so don't show it as a label to prevent duplication.
+			return
 		}
+
+		return label
 	}
 
 	getPlaceholder()
