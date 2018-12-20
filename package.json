@@ -18,7 +18,7 @@
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.1",
     "react-lifecycles-compat": "^3.0.2",
-    "react-modal": "^3.4.4",
+    "react-modal": "^3.8.1",
     "scroll-into-view-if-needed": "^2.2.16"
   },
   "devDependencies": {
@@ -40,8 +40,8 @@
     "node-sass": "^4.7.2",
     "npm-run-all": "^1.4.0",
     "postcss": "^6.0.22",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "react-router": "^3.0.0",
     "rimraf": "^2.5.0",
     "simple-http-file-server": "^1.0.1",
