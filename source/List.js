@@ -650,6 +650,7 @@ export class Item extends React.Component
 		const properties =
 		{
 			id,
+			tabIndex,
 			ref          : this.storeRef,
 			onMouseDown  : this.onMouseDown,
 			onClick      : this.onClick,
@@ -682,7 +683,6 @@ export class Item extends React.Component
 			properties.role = role
 			properties['aria-selected'] = isSelected
 			properties['aria-label'] = this.props.label || (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined)
-			properties.tabIndex = tabIndex
 			properties.disabled = disabled
 			properties.className = classNames(
 				properties.className,
