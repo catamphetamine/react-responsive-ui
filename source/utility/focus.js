@@ -62,6 +62,17 @@ export function focus(component)
 	}
 
 	if (typeof component.focus === 'function') {
-		return component.focus()
+		component.focus()
+		return true
 	}
+
+	// `findDOMNode()` is deprecated in React.
+	// https://reactjs.org/docs/strict-mode.html#warning-about-deprecated-finddomnode-usage
+	// // For cases when `<List.Item/>` wraps some custom
+	// // `<Button/>` component which renders a generic `<button/>`.
+	// const node = ReactDOM.findDOMNode(component)
+	// if (node && node.focus) {
+	// 	node.focus()
+	// 	return true
+	// }
 }

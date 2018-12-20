@@ -84,6 +84,8 @@ export default class List extends PureComponent
 		if (highlightFirstItem) {
 			this.focusItem(0)
 		}
+
+		this._isMounted = true
 	}
 
 	componentDidUpdate(prevProps, prevState)
@@ -108,6 +110,7 @@ export default class List extends PureComponent
 
 	componentWillUnmount()
 	{
+		this._isMounted = false
 		clearTimeout(this.blurTimer)
 	}
 
@@ -164,8 +167,10 @@ export default class List extends PureComponent
 		}, () => {
 			// Actually focus the item.
 			if (focusedItemIndex !== undefined) {
-				if (shouldFocus) {
-					focus(this.itemRefs[focusedItemIndex])
+				if (shouldFocus && this._isMounted) {
+					if (!focus(this.itemRefs[focusedItemIndex])) {
+						console.error(`<List.Item/> #${focusedItemIndex + 1}'s child component doesn't have a ".focus()" method.`)
+					}
 				}
 			}
 		})
@@ -218,31 +223,6 @@ export default class List extends PureComponent
 
 					if (nextIndex !== undefined) {
 						this.focusItem(nextIndex, { interaction: true })
-					}
-
-					return
-
-				// "Enter".
-				case 13:
-					// Choose the focused item on Enter
-					event.preventDefault()
-
-					if (focusedItemIndex !== undefined) {
-						this.itemRefs[focusedItemIndex].click()
-					}
-
-					return
-
-				// "Spacebar".
-				case 32:
-					// Choose the focused item on Spacebar.
-					if (focusedItemIndex !== undefined)
-					{
-						if (this.itemRefs[focusedItemIndex].tagName.toLowerCase() !== 'button')
-						{
-							event.preventDefault()
-							this.itemRefs[focusedItemIndex].click()
-						}
 					}
 
 					return
@@ -649,8 +629,6 @@ export class Item extends React.Component
 
 		const properties =
 		{
-			id,
-			tabIndex,
 			ref          : this.storeRef,
 			onMouseDown  : this.onMouseDown,
 			onClick      : this.onClick,
@@ -669,6 +647,14 @@ export class Item extends React.Component
 					'rrui__list__item--divider'  : children.type === DividerType
 				}
 			)
+		}
+
+		if (id !== undefined) {
+			properties.id = id
+		}
+
+		if (tabIndex !== undefined) {
+			properties.tabIndex = tabIndex
 		}
 
 		let ItemComponent
