@@ -39,7 +39,10 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
-Maybe remove `id`s
+0.14.97 / 20.12.2018
+====================
+
+  * Fixed `<ActivityIndicator/>` SVG path animation using 100% CPU for some reason. `<ActivityIndicator/>` component got replaced for that, and the line thickness is now fixed compared of the older percentage value. Line thickness can be set as `.rrui__activity-indicator__arc { border-width: ... }`.
 
 0.14.87 / 12.12.2018
 ====================
