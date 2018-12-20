@@ -11,7 +11,7 @@ window.ExampleAutocomplete = class ExampleAutocomplete extends React.Component
 		return (
 			<Example name="autocomplete" title="Autocomplete">
 				<Autocomplete
-					highlightFirstOption={false}
+					highlightFirstOption={true}
 					style={input_style}
 					className="column-width"
 					label="Food"
