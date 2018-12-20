@@ -4,7 +4,7 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 	{
 		return (
 			<Example name="slideout-menu" title="Slideout Menu">
-				<MenuButton aria-label="Open Menu" aria-haspopup="menu"/>
+				<MenuButton aria-label="Menu" aria-haspopup="menu"/>
 
 				<p>
 					<br/>
@@ -63,8 +63,8 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 
 					<PageAndMenu>
 						<SlideOutMenu anchor="right" menuRef={menuRef} onExpand={onExpand} onCollapse={onCollapse}>
-							<nav aria-label="Menu">
-								<List role="menu" aria-label="Menu">
+							<nav>
+								<List role="menu">
 									<List.Item role="presentation">
 										<a href="/1" role="menuitem" tabIndex={tabIndex}> Item 1 </a>
 									</List.Item>
@@ -78,7 +78,7 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 							</nav>
 						</SlideOutMenu>
 						<div>
-							<MenuButton aria-label="Open Menu" aria-haspopup />
+							<MenuButton aria-label="Menu" aria-haspopup />
 							Page content
 						</div>
 					</PageAndMenu>

@@ -1,4 +1,4 @@
-window.ExampleExpandableMenu = class ExampleComponent extends React.Component
+window.ExampleExpansionPanel = class ExampleComponent extends React.Component
 {
 	constructor()
 	{

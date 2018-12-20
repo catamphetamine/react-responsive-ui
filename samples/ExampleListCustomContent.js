@@ -29,7 +29,7 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 							className="new-message-notification"
 							style={{ outline: 'none', height: 'auto', paddingTop: '0.6rem', paddingBottom: '0.6rem', textDecoration: 'none' }}>
 
-							<img className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg"/>
+							<img aria-hidden className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/658376777258151936/-Jz8l4Rr_200x200.jpg"/>
 							<span className="new-message-notification__text"> Pavel Durov </span>
 						</a>
 					</List.Item>
@@ -41,7 +41,7 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 							className="new-message-notification"
 							style={{ outline: 'none', height: 'auto', paddingTop: '0.6rem', paddingBottom: '0.6rem', textDecoration: 'none' }}>
 
-							<img className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_200x200.jpg"/>
+							<img aria-hidden className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_200x200.jpg"/>
 							<span className="new-message-notification__text"> Donald Trump </span>
 						</a>
 					</List.Item>
@@ -53,7 +53,7 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 							className="new-message-notification"
 							style={{ outline: 'none', height: 'auto', paddingTop: '0.6rem', paddingBottom: '0.6rem', textDecoration: 'none' }}>
 
-							<img className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/2348558617/x0vh6bui3sq97vt4jd2n_200x200.png"/>
+							<img aria-hidden className="new-message-notification__user-picture" src="https://pbs.twimg.com/profile_images/2348558617/x0vh6bui3sq97vt4jd2n_200x200.png"/>
 							<span className="new-message-notification__text"> Dmitry Medvedev </span>
 						</a>
 					</List.Item>
@@ -63,19 +63,19 @@ window.ExampleListCustomContent = class ExampleComponent extends React.Component
 					<List className="rrui__shadow">
 						<List.Item>
 							<a href="...">
-								<img src="..."/> Pavel Durov
+								<img aria-hidden src="..."/> Pavel Durov
 							</a>
 						</List.Item>
 
 						<List.Item>
 							<a href="...">
-								<img src="..."/> Donald Trump
+								<img aria-hidden src="..."/> Donald Trump
 							</a>
 						</List.Item>
 
 						<List.Item>
 							<a href="...">
-								<img src="..."/> Monica Lent
+								<img aria-hidden src="..."/> Monica Lent
 							</a>
 						</List.Item>
 					</List>

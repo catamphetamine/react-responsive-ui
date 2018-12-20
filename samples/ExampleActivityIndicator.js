@@ -19,8 +19,11 @@ window.ExampleActivityIndicator = class ExampleComponent extends React.Component
 
 				<Highlight lang="css">{`
 					.rrui__activity-indicator {
-						color     : black;
-						font-size : 30px;
+						color : black;
+					}
+
+					.rrui__activity-indicator__arc {
+						border-width: 1px;
 					}
 				`}</Highlight>
 			</Example>

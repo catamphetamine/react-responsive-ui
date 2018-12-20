@@ -32,7 +32,7 @@ window.ExampleSelectIcons = class ExampleComponent extends React.Component
 						label: 'Canada',
 						icon: () => <img className="country-icon" src="https://lipis.github.io/flag-icon-css/flags/4x3/ca.svg"/>
 					}]}
-					placeholder="Choose"
+					placeholder="Country"
 					onChange={ value => this.setState({ value }) } />
 
 				<div>

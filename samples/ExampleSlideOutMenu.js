@@ -11,8 +11,8 @@ window.ExampleSlideOutMenu = class ExampleComponent extends React.Component
 	render() {
 		return (
 			<SlideOutMenu anchor="right" menuRef={this.menuRef} onCollapse={this.onCollapse} onExpand={this.onExpand}>
-				<nav aria-label="Menu">
-					<List ref={this.setMenuRef} role="menu" className="slideout-menu" aria-label="Menu">
+				<nav>
+					<List ref={this.setMenuRef} role="menu" className="slideout-menu">
 						<List.Item role="none">
 							<a role="menuitem" target="_blank" href="https://google.com" className="rrui__slideout-menu__item" tabIndex={this.state.isExpanded ? undefined : -1}>
 								Google.com
