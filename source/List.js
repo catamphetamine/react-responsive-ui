@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 
 import Divider from './Divider'
 
@@ -15,11 +14,15 @@ const PureComponent = React.PureComponent || React.Component
 // https://github.com/gaearon/react-hot-loader#checking-element-types
 const DividerType = <Divider/>.type
 
-@reactLifecyclesCompat
 export default class List extends PureComponent
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		// Can be used for WAI-ARIA stuff.
+		// Example: `<input role="combobox"/>` with `aria-owns={listId}`.
+		id : PropTypes.string,
+
 		value : PropTypes.any,
 		onChange : PropTypes.func,
 
@@ -45,10 +48,6 @@ export default class List extends PureComponent
 		// ARIA `role` attribute.
 		role : PropTypes.string,
 
-		// `role="combobox"` requires `aria-selected` to be
-		// `true` on the currently focused list option.
-		ariaSelectedOnFocusedItem : PropTypes.bool,
-
 		// If a `<List/>` is `expandable`
 		// then it won't be `.rrui__list:not(.rrui__list--focus)`.
 		// `.rrui__list:not(.rrui__list--focus)` is only for standalone lists.
@@ -56,7 +55,7 @@ export default class List extends PureComponent
 
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
-		focusFirstItemWhenItemsChange : PropTypes.bool.isRequired,
+		highlightFirstItem : PropTypes.bool.isRequired,
 		createButtons : PropTypes.bool.isRequired
 	}
 
@@ -64,73 +63,60 @@ export default class List extends PureComponent
 	{
 		tabbable : true,
 		shouldFocus : true,
-		focusFirstItemWhenItemsChange : false,
+		highlightFirstItem : false,
 		createButtons : true,
 		highlightSelectedItem : true
 	}
 
-	static getDerivedStateFromProps(props, state)
-	{
-		const newState =
-		{
-			items : props.items
-		}
-
-		// If `items` property is supplied
-		// then it's used to detect "on items changed" event.
-		if (state.items && state.items !== props.items)
-		{
-			newState.items = props.items
-
-			// Focus the first item.
-			if (props.focusFirstItemWhenItemsChange)
-			{
-				newState.focusedItemValue = props.items[0].value
-				newState.focusedItemIndex = 0
-			}
-		}
-
-		if (state.selectedItemValue !== props.value)
-		{
-			newState.selectedItemValue = props.value
-
-			newState.focusedItemValue = props.value
-			newState.focusedItemIndex = props.value === undefined ? undefined : findItemIndexByValue(props.value, props.children)
-		}
-
-		return newState
+	state = {
+		items: this.props.items
 	}
-
-	state = {}
 
 	// `ref`s of all items currently rendered.
 	itemRefs = []
+
+	componentDidMount()
+	{
+		const {
+			highlightFirstItem
+		} = this.props
+
+		if (highlightFirstItem) {
+			this.focusItem(0)
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState)
+	{
+		const {
+			value,
+			items,
+			children,
+			highlightSelectedItem,
+			highlightFirstItem
+		} = this.props
+
+		// If `items` property is supplied
+		// then it's used to detect "on items changed" event.
+		if (prevState.items && prevState.items !== items)
+		{
+			this.setState({ items })
+			const selectedItemIndex = highlightSelectedItem && value !== undefined ? findItemIndexByValue(value, children) : undefined
+			this.focusItem(selectedItemIndex === undefined ? (highlightFirstItem ? 0 : undefined) : selectedItemIndex)
+		}
+	}
 
 	componentWillUnmount()
 	{
 		clearTimeout(this.blurTimer)
 	}
 
-	getFocusedItemIndex = () =>
-	{
-		const { focusedItemIndex } = this.state
-
-		return focusedItemIndex
-	}
-
-	clearFocus = () =>
-	{
-		this.setState
-		({
-			focusedItemIndex : undefined,
-			focusedItemValue : undefined
-		})
-	}
-
+	getFocusedItemIndex = () => this.state.focusedItemIndex
+	clearFocus = () => this.focusItem()
 	// Deprecated method name.
 	unfocus = this.clearFocus
 
-	// Focuses on the list.
+	// Focuses the list.
 	focus = () => {
 		const { focusedItemIndex } = this.state
 		if (focusedItemIndex !== undefined) {
@@ -143,8 +129,7 @@ export default class List extends PureComponent
 	getFirstFocusableItemIndex()
 	{
 		let i = 0
-		while (i < this.itemRefs.length)
-		{
+		while (i < this.itemRefs.length) {
 			if (this.itemRefs[i]) {
 				return i
 			}
@@ -160,12 +145,15 @@ export default class List extends PureComponent
 	}
 
 	// Can be public API for programmatically focusing a certain `<List.Item/>`.
-	focusItem = (focusedItemIndex) =>
+	focusItem = (focusedItemIndex, options = {}) =>
 	{
 		const { onFocusItem, shouldFocus } = this.props
 
-		this.setState
-		({
+		if (onFocusItem) {
+			onFocusItem(focusedItemIndex, options)
+		}
+
+		this.setState({
 			// Focus the item.
 			focusedItemIndex,
 			// Store the focused item value.
@@ -173,14 +161,11 @@ export default class List extends PureComponent
 			// where the list of options changes but
 			// the focused option stays focused.
 			focusedItemValue: focusedItemIndex === undefined ? undefined : this.getItemValue(focusedItemIndex)
-		},
-		() => {
+		}, () => {
+			// Actually focus the item.
 			if (focusedItemIndex !== undefined) {
 				if (shouldFocus) {
 					focus(this.itemRefs[focusedItemIndex])
-				}
-				if (onFocusItem) {
-					onFocusItem(focusedItemIndex)
 				}
 			}
 		})
@@ -219,7 +204,7 @@ export default class List extends PureComponent
 					const previousIndex = this.getPreviousFocusableItemIndex()
 
 					if (previousIndex !== undefined) {
-						this.focusItem(previousIndex)
+						this.focusItem(previousIndex, { interaction: true })
 					}
 
 					return
@@ -232,7 +217,7 @@ export default class List extends PureComponent
 					const nextIndex = this.getNextFocusableItemIndex()
 
 					if (nextIndex !== undefined) {
-						this.focusItem(nextIndex)
+						this.focusItem(nextIndex, { interaction: true })
 					}
 
 					return
@@ -350,6 +335,7 @@ export default class List extends PureComponent
 	{
 		const
 		{
+			id,
 			expandable,
 			disabled,
 			tabbable,
@@ -359,7 +345,6 @@ export default class List extends PureComponent
 			// `onSelectItem` is deprecated, use `onChange` instead.
 			onSelectItem,
 			highlightSelectedItem,
-			ariaSelectedOnFocusedItem,
 			createButtons,
 			className,
 			style,
@@ -387,12 +372,13 @@ export default class List extends PureComponent
 		return (
 			<ul
 				ref={ this.storeListNode }
-				onKeyDown={ this.onKeyDown }
+				id={ id }
 				role={ role }
 				aria-label={ this.props['aria-label'] }
 				aria-hidden={ this.props['aria-hidden'] }
 				aria-required={ this.props['aria-required'] }
 				aria-invalid={ this.props['aria-invalid'] }
+				onKeyDown={ this.onKeyDown }
 				style={ style }
 				className={ classNames(className, 'rrui__list', {
 					'rrui__list--focus': isFocused
@@ -420,8 +406,7 @@ export default class List extends PureComponent
 						onSelectItem : onChange || onSelectItem,
 						hasOnSelectItem : hasOnChange,
 						selectedItemValue : value,
-						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem,
-						ariaSelectedOnFocusedItem
+						highlightSelectedItem : (onChange || onSelectItem) && highlightSelectedItem
 					})
 				}) }
 			</ul>
@@ -433,6 +418,11 @@ export class Item extends React.Component
 {
 	static propTypes =
 	{
+		// (optional) HTML `id` attribute.
+		// Can be used for WAI-ARIA stuff.
+		// Example: `<input role="combobox"/>` with `aria-activedescendant={focusedListItemId}`.
+		id : PropTypes.string,
+
 		value : PropTypes.any,
 		index : PropTypes.number,
 		focused : PropTypes.bool,
@@ -448,9 +438,6 @@ export class Item extends React.Component
 		hasOnSelectItem : PropTypes.bool,
 		selectedItemValue : PropTypes.any,
 		highlightSelectedItem : PropTypes.bool,
-		// `role="combobox"` requires `aria-selected` to be
-		// `true` on the currently focused list option.
-		ariaSelectedOnFocusedItem : PropTypes.bool,
 		createButton : PropTypes.bool,
 		// Deprecated. Use `createButton` instead.
 		shouldCreateButton : PropTypes.bool
@@ -593,10 +580,11 @@ export class Item extends React.Component
 		return children.type !== DividerType
 	}
 
+	// Perhaps this is called by `focus()` utility function.
+	// Something like: `focus(this.itemRefs[i])`.
 	focus = () =>
 	{
 		const { children } = this.props
-
 		focus(React.Children.toArray(children)[0])
 	}
 
@@ -636,6 +624,7 @@ export class Item extends React.Component
 	{
 		const
 		{
+			id,
 			value,
 			icon,
 			role,
@@ -644,7 +633,6 @@ export class Item extends React.Component
 			className,
 			tabIndex,
 			highlightSelectedItem,
-			ariaSelectedOnFocusedItem,
 			selectedItemValue,
 			children
 		}
@@ -661,6 +649,7 @@ export class Item extends React.Component
 
 		const properties =
 		{
+			id,
 			ref          : this.storeRef,
 			onMouseDown  : this.onMouseDown,
 			onClick      : this.onClick,
@@ -671,7 +660,7 @@ export class Item extends React.Component
 				className,
 				'rrui__list__item',
 				{
-					/* `--focused` modifiers are deprecated, use `--focus` instead. */
+					/* `--focused` modifier is deprecated, use `--focus` instead. */
 					'rrui__list__item--focused'  : focused,
 					'rrui__list__item--focus'    : focused,
 					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
@@ -691,7 +680,7 @@ export class Item extends React.Component
 			label = this.props.label || (typeof children === 'string' ? children : undefined)
 			properties.type = 'button'
 			properties.role = role
-			properties['aria-selected'] = ariaSelectedOnFocusedItem ? focused : isSelected
+			properties['aria-selected'] = isSelected
 			properties['aria-label'] = this.props.label || (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined)
 			properties.tabIndex = tabIndex
 			properties.disabled = disabled
@@ -739,7 +728,7 @@ export class Item extends React.Component
 		return (
 			<li
 				role={this.shouldCreateButton() || children.type === DividerType ? 'presentation' : role}
-				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'presentation' ? (ariaSelectedOnFocusedItem ? focused : isSelected) : undefined)}
+				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'presentation' ? isSelected : undefined)}
 				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">
 				{ ItemComponent && React.createElement(ItemComponent, properties, itemChildren) }

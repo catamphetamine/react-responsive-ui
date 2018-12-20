@@ -63,8 +63,6 @@
 	pointer-events : none;
 }
 
-/* `--focused` modifiers are deprecated, use `--focus` instead. */
-.rrui__list__item--focused,
 .rrui__list__item--focus
 {
 	background-color : var(--rrui-list-item-background-color-focus);

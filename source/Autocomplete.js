@@ -28,9 +28,6 @@ export default class Autocomplete extends PureComponent
 {
 	static propTypes =
 	{
-		// (optional) HTML `id` attribute.
-		id : PropTypes.string,
-
 		// A list of selectable options
 		options : PropTypes.arrayOf
 		(
@@ -144,7 +141,16 @@ export default class Autocomplete extends PureComponent
 		// Until then `<Autocomplete/>` doesn't display any selected option.
 		// One may supply an already pre-loaded currently selected option
 		// to display the currently selected option sooner (e.g. Server-Side Rendering).
-		selectedOption : PropTypes.object
+		selectedOption : PropTypes.object,
+
+		// WAI-ARIA requires any option be focused only on-demand
+		// when the user explicitly presses the Down arrow key.
+		// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.0pattern/combobox-autocomplete-list.html
+		// Still, it's not be the best user experience for non-disabled users:
+		// it would be more convenient for them if the first option was automatically focused.
+		// Hence this property.
+		// (is `false` by default for WAI-ARIA compliancy)
+		highlightFirstOption : PropTypes.bool.isRequired
 	}
 
 	static defaultProps =
@@ -177,7 +183,11 @@ export default class Autocomplete extends PureComponent
 		// The rationale is that otherwise the UI could
 		// stagger when initially expanding a huge list.
 		// `0` means "unlimited".
-		maxOptions : 500
+		maxOptions : 500,
+
+		// UX for non-disabled users is better this way.
+		// Disabled users still can use this component.
+		highlightFirstOption : true
 	}
 
 	state =
@@ -234,6 +244,14 @@ export default class Autocomplete extends PureComponent
 	componentDidMount()
 	{
 		const { value, getOptions, getOption } = this.props
+
+		// Generate unique ID.
+		let id = `rrui-autocomplete`
+		while (document.getElementById(`${id}__input`)) {
+			id = `rrui-autocomplete-${generateRandomString()}`
+		}
+		this.input.id = `${id}__input`
+		this.setState({ id })
 
 		if (!isEmptyValue(value) && !getOption && getOptions)
 		{
@@ -306,6 +324,14 @@ export default class Autocomplete extends PureComponent
 		this.setState({ isExpanded: true })
 	}
 
+	onFocusItem = (i, options) => {
+		if (options.interaction) {
+			this.setState({ focusedOptionIndex: i })
+		} else {
+			this.setState({ focusedOptionIndex: undefined })
+		}
+	}
+
 	expand = () =>
 	{
 		// Reset the "matches" state before expanding.
@@ -326,7 +352,6 @@ export default class Autocomplete extends PureComponent
 	{
 		const
 		{
-			id,
 			icon,
 			compact,
 			scroll,
@@ -334,6 +359,7 @@ export default class Autocomplete extends PureComponent
 			scrollIntoView,
 			alignment,
 			saveOnIcons,
+			highlightFirstOption,
 			required,
 			label,
 			placeholder,
@@ -350,6 +376,7 @@ export default class Autocomplete extends PureComponent
 
 		const
 		{
+			id,
 			options,
 			isFetchingOptions,
 			isFetchingInitiallySelectedOption,
@@ -368,8 +395,11 @@ export default class Autocomplete extends PureComponent
 		// https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.0pattern/combobox-autocomplete-list.html
 		// (is supported)
 
+		// value={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
+
 		return (
 			<div
+				id={ id }
 				style={ style ? { ...containerStyle, ...style } : containerStyle }
 				className={ classNames
 				(
@@ -396,7 +426,7 @@ export default class Autocomplete extends PureComponent
 					{ label &&
 						<Label
 							aria-hidden
-							inputId={ id }
+							inputId={ id ? `${id}__input` : undefined }
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }>
@@ -407,21 +437,22 @@ export default class Autocomplete extends PureComponent
 					{/* The list of selectable options */}
 					<ExpandableList
 						ref={this.storeListRef}
+						id={id ? `${id}__list` : undefined}
 						items={options}
-						focusFirstItemWhenItemsChange={inputValue !== ''}
+						value={options.length === 0 ? undefined : value}
+						highlightFirstItem={highlightFirstOption && inputValue.trim() !== ''}
 						alignment={alignment}
 						scrollIntoView={scrollIntoView}
 						preload={this.refreshOptions}
 						onPreloadStateChange={this.onPreloadStateChange}
+						onFocusItem={this.onFocusItem}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						value={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
 						onChange={this.setValue}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
 						focusOnExpand={false}
 						highlightSelectedItem={false}
-						ariaSelectedOnFocusedItem={true}
 						tabbable={false}
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
@@ -437,6 +468,7 @@ export default class Autocomplete extends PureComponent
 						{this.getOptionsForRendering().map((option, i) => (
 							<List.Item
 								key={i}
+								id={id ? `${id}__list-item-${i}` : undefined}
 								value={option.value}
 								icon={saveOnIcons ? undefined : option.icon}>
 								{option.content ? option.content(option) : option.label}
@@ -459,7 +491,6 @@ export default class Autocomplete extends PureComponent
 	{
 		const
 		{
-			id,
 			value,
 			label,
 			placeholder,
@@ -474,10 +505,12 @@ export default class Autocomplete extends PureComponent
 
 		const
 		{
+			id,
 			isExpanded,
 			inputValue,
 			matches,
-			isFetchingInitiallySelectedOption
+			isFetchingInitiallySelectedOption,
+			focusedOptionIndex
 		}
 		= this.state
 
@@ -485,9 +518,13 @@ export default class Autocomplete extends PureComponent
 		// onFocus={ this.expandOnFocus }
 		// onClick={ this.onClick }
 
+		// WAI-ARIA 1.0 impelmentation info (accessibility):
+		// https://www.w3.org/TR/wai-aria-practices/#combobox
+		// https://www.levelaccess.com/differences-aria-1-0-1-1-changes-rolecombobox/
+
 		return (
 			<TextInput
-				id={ id }
+				id={ id ? `${id}__input` : undefined }
 				inputRef={ this.storeInput }
 				value={ inputValue }
 				label={ label }
@@ -499,6 +536,8 @@ export default class Autocomplete extends PureComponent
 				aria-autocomplete="list"
 				aria-expanded={ isExpanded ? true : false }
 				aria-haspopup={ true }
+				aria-owns={ id && isExpanded ? `${id}__list` : undefined }
+				aria-activedescendant={ id && (focusedOptionIndex !== undefined) ? `${id}__list-item-${focusedOptionIndex}` : undefined }
 				required={ required }
 				tabIndex={ tabIndex }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
@@ -538,25 +577,25 @@ export default class Autocomplete extends PureComponent
 	{
 		const { isExpanded } = this.state
 
-		if (!value && isExpanded)
-		{
+		// Rewrite this somehow.
+		//
+		// When `highlightFirstOption` is `true`
+		// this is a special case when the first option is not highlighted.
+		if (!value && isExpanded) {
 			this.list.focusItem(undefined)
 		}
 
-		this.setState
-		({
+		this.setState({
 			inputValue : value
-		},
-		() =>
-		{
+		}, () => {
 			this._expand({ refresh: true })
 		})
 	}
 
 	onKeyDown = (event) =>
 	{
-		const { disabled, value, required } = this.props
-		const { isExpanded, inputValue } = this.state
+		const { disabled, value, required, highlightFirstOption } = this.props
+		const { options, isExpanded, inputValue, focusedOptionIndex } = this.state
 
 		if (disabled) {
 			return
@@ -583,13 +622,18 @@ export default class Autocomplete extends PureComponent
 			case 38:
 				if (isExpanded)
 				{
+					// If no item was selected then do nothing.
 					if (this.list.getFocusedItemIndex() === undefined)
 					{
 						// Don't select any list item.
 					}
+					// If the first item was selected.
 					else if (this.list.getFocusedItemIndex() === 0)
 					{
-						this.list.focusItem(undefined)
+						// then unselect it.
+						if (!highlightFirstOption) {
+							this.list.clearFocus()
+						}
 						event.preventDefault()
 					}
 					else
@@ -602,16 +646,37 @@ export default class Autocomplete extends PureComponent
 			// "Down" arrow.
 			// Select the next item (if present).
 			case 40:
-				if (isExpanded)
-				{
-					// Navigate the list (if it was already expanded).
-					this.list.onKeyDown(event)
-				}
-				else
-				{
+				if (isExpanded) {
+					// An edge case for `highlightFirstOption`
+					// when there's only one option available
+					// so pressing "Down" arrow key won't result in
+					// `onFocusItem` call which won't set `focusedOptionIndex`
+					// in order for screen reader to announce it.
+					if (highlightFirstOption &&
+						focusedOptionIndex === undefined &&
+						options.length === 1) {
+						this.setState({ focusedOptionIndex: 0 })
+					} else {
+						// Navigate the list (if it was already expanded).
+						this.list.onKeyDown(event)
+					}
+				} else {
 					// Expand the list if it's collapsed.
 					event.preventDefault()
 					this.expand()
+				}
+				return
+
+			// "Left" arrow.
+			case 37:
+			// "Right" arrow.
+			case 39:
+				// Exit "focus options" mode.
+				if (isExpanded) {
+					this.list.clearFocus()
+					if (highlightFirstOption) {
+						this.list.focusItem(0)
+					}
 				}
 				return
 
@@ -785,15 +850,17 @@ export default class Autocomplete extends PureComponent
 
 	receiveNewOptions(options, counter, callback)
 	{
-		const { getOptions } = this.props
+		const {
+			getOptions,
+			highlightFirstOption
+		} = this.props
 
-		const
-		{
+		const {
+			isExpanded,
 			matchesCounter,
 			optionsCounter,
 			fetchingOptionsCounter
-		}
-		= this.state
+		} = this.state
 
 		const newState = {}
 
@@ -833,6 +900,12 @@ export default class Autocomplete extends PureComponent
 			if (options.length > 0)
 			{
 				newState.options = options
+			}
+		}
+
+		if (newState.matches === false && !highlightFirstOption) {
+			if (isExpanded) {
+				this.list.clearFocus()
 			}
 		}
 
@@ -945,4 +1018,8 @@ function isCounterAfter(counter, currentStateCounter)
 	// then they can override them.
 	// (also accounts for counter overflow)
 	return diff > 0 || (diff < 0 && Math.abs(diff) > MAX_SAFE_INTEGER / 2)
+}
+
+function generateRandomString() {
+	return Math.random().toString().replace(/\D/g , '')
 }

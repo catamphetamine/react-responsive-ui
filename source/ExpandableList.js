@@ -63,6 +63,7 @@ export default class ExpandableList extends PureComponent
 
 	getFocusedItemIndex = () => this.list ? this.list.getFocusedItemIndex() : undefined
 	focusItem = (index) => this.list.focusItem(index)
+	clearFocus = () => this.list.clearFocus()
 
 	onKeyDown = (event) =>
 	{
@@ -225,10 +226,10 @@ export default class ExpandableList extends PureComponent
 
 				<ScrollableList
 					{...rest}
+					expandable
 					ref={ this.storeListRef }
 					onChange={ this.onChange }
 					hasOnChange={ this.hasOnChange() }
-					expandable
 					highlightSelectedItem={ onChange === undefined && highlightSelectedItem === undefined ? false : highlightSelectedItem }>
 					{ children }
 				</ScrollableList>

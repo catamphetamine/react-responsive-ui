@@ -61,7 +61,17 @@ export default class ScrollableList extends PureComponent
 	getFocusedItemIndex = () => this.list.getFocusedItemIndex()
 	focusItem = (index) => this.list.focusItem(index)
 
-	onFocusItem = (index) => this.showItem(index)
+	onFocusItem = (index, options) => {
+		const { onFocusItem } = this.props
+		if (onFocusItem) {
+			onFocusItem(index, options)
+		}
+		// When `<List/>` calls `.focusItem()` in `componentDidMount()`
+		// `this.list` doesn't exist yet, hence the check.
+		if (index !== undefined && this.list) {
+			this.showItem(index)
+		}
+	}
 
 	getListNode = () => this.list.list
 
@@ -193,14 +203,14 @@ export default class ScrollableList extends PureComponent
 
 		return (
 			<List
+				{...rest}
 				ref={ this.storeListRef }
 				onFocusItem={ this.onFocusItem }
 				style={ listStyle }
 				className={ classNames(className,
 				{
 					'rrui__scrollable' : this.isOverflown()
-				}) }
-				{...rest}>
+				}) }>
 				{ children }
 			</List>
 		)
