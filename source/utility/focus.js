@@ -4,21 +4,22 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 {
 	function _onBlur(focusedNode)
 	{
-		if (preventBlur)
-		{
-			if (preventBlur() === true)
-			{
+		if (preventBlur) {
+			if (preventBlur() === true) {
 				return false
 			}
 		}
 
 		// If the currently focused element is inside the expandable
 		// then don't collapse it.
-		if (focusedNode && (
-			getComponentNode().contains(focusedNode)
-			|| (getComponentNode2 && getComponentNode2().contains(focusedNode))
-		))
-		{
+		if (
+			focusedNode &&
+			(focusedNode instanceof Element || focusedNode instanceof HTMLDocument) &&
+			(
+				getComponentNode().contains(focusedNode) ||
+				(getComponentNode2 && getComponentNode2().contains(focusedNode))
+			)
+		) {
 			return false
 		}
 
@@ -38,8 +39,7 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 	// https://github.com/mui-org/material-ui/blob/v1-beta/packages/material-ui/src/Menu/MenuList.js
 	// Until Internet Explorer is no longer a supported browser.
 	//
-	if (isInternetExplorer())
-	{
+	if (isInternetExplorer()) {
 		return setTimeout(() => getComponentNode() && _onBlur(document.activeElement), 30)
 	}
 
