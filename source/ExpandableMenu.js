@@ -143,6 +143,7 @@ export default class ExpandableMenu extends PureComponent
 
 				<ExpandableList
 					ref={this.storeListRef}
+					aria-label={this.props['aria-label']}
 					upward={upward}
 					alignment={alignment}
 					scrollIntoView={scrollIntoView}
