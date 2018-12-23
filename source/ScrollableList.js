@@ -58,6 +58,7 @@ export default class ScrollableList extends PureComponent
 	clearFocus = () => this.list.clearFocus()
 	onListItemsChanged = () => this.list.onListItemsChanged()
 	onKeyDown = (event) => this.list.onKeyDown(event)
+	chooseFocusedItem = () => this.list.chooseFocusedItem()
 	getFocusedItemIndex = () => this.list.getFocusedItemIndex()
 	focusItem = (index) => this.list.focusItem(index)
 

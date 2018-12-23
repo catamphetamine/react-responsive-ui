@@ -691,8 +691,11 @@ export default class Autocomplete extends PureComponent
 			case 13:
 				if (!inputValue)
 				{
+					// If no option is selected and the input value is empty
+					// then set `value` to `undefined`.
 					if (isExpanded && this.list.getFocusedItemIndex() === undefined)
 					{
+						// Don't submit the form.
 						event.preventDefault()
 						this.setValue(undefined)
 
@@ -705,18 +708,25 @@ export default class Autocomplete extends PureComponent
 
 					if (!isExpanded)
 					{
+						// If `value` is `undefined` and input value is empty
+						// then by default it submits the form.
 						if (isEmptyValue(value))
 						{
-							// Submit containing `<form/>`.
-							// If the value is required then expand instead.
+							// If the value is required then expand the options list.
 							if (required)
 							{
+								// Don't submit the form
 								event.preventDefault()
 								this.expand()
 							}
 							return
 						}
 
+						// If the input value has been cleared
+						// and the options list is collapsed
+						// (for example, via Escape key)
+						// then set `value` to `undefined`
+						// and don't submit the form.
 						event.preventDefault()
 						this.setValue(undefined)
 						return
@@ -726,8 +736,10 @@ export default class Autocomplete extends PureComponent
 				// Select the currently focused item (if expanded).
 				if (isExpanded)
 				{
-					this.list.onKeyDown(event)
-					return
+					// Don't submit the form.
+					event.preventDefault()
+					// Choose the focused option.
+					this.list.chooseFocusedItem()
 				}
 
 				return

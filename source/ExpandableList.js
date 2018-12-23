@@ -61,6 +61,7 @@ export default class ExpandableList extends PureComponent
 	preload    = () => this.expandable.preload()
 	onBlur     = (event) => this.expandable.onBlur(event)
 
+	chooseFocusedItem = () => this.list && this.list.chooseFocusedItem()
 	getFocusedItemIndex = () => this.list ? this.list.getFocusedItemIndex() : undefined
 	focusItem = (index) => this.list.focusItem(index)
 	clearFocus = () => this.list.clearFocus()

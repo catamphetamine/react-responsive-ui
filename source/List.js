@@ -114,6 +114,16 @@ export default class List extends PureComponent
 		clearTimeout(this.blurTimer)
 	}
 
+	chooseFocusedItem() {
+		const { focusedItemIndex } = this.state
+		if (focusedItemIndex !== undefined) {
+			const itemRef = this.itemRefs[focusedItemIndex]
+			if (itemRef.click) {
+				itemRef.click()
+			}
+		}
+	}
+
 	getFocusedItemIndex = () => this.state.focusedItemIndex
 	clearFocus = () => this.focusItem()
 	// Deprecated method name.
