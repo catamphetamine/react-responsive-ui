@@ -135,8 +135,9 @@ export default class List extends PureComponent
 		if (focusedItemIndex !== undefined) {
 			return this.focusItem(focusedItemIndex)
 		}
-		// Focus the first focusable list item.
-		this.focusItem(this.getFirstFocusableItemIndex())
+		// // Focus the first focusable list item.
+		// this.focusItem(this.getFirstFocusableItemIndex())
+		this.list.focus()
 	}
 
 	getFirstFocusableItemIndex()
@@ -359,6 +360,9 @@ export default class List extends PureComponent
 		// 	role = undefined
 		// }
 
+		// `tabIndex={ -1 }` makes the `<ul/>` focusable.
+		// So that `<Expandable/>` doesn't collapse on click inside it (top, bottom).
+
 		return (
 			<ul
 				ref={ this.storeListNode }
@@ -369,8 +373,9 @@ export default class List extends PureComponent
 				aria-required={ this.props['aria-required'] }
 				aria-invalid={ this.props['aria-invalid'] }
 				onKeyDown={ this.onKeyDown }
+				tabIndex={ -1 }
 				style={ style }
-				className={ classNames(className, 'rrui__list', {
+				className={ classNames(className, 'rrui__outline', 'rrui__list', {
 					'rrui__list--focus': isFocused
 				}) }>
 

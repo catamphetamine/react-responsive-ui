@@ -490,17 +490,18 @@ export default class Expandable extends PureComponent
 		}
 
 		// `tabIndex={ -1 }` makes the `<div/>` focusable.
-		// Hence the `<Expandable/>` doesn't collapse on click inside it.
+		// So that `<Expandable/>` doesn't collapse on click inside it (top, bottom).
 
 		// `aria-hidden={true/false}` is not set automatically here
 		// because when `<Expandable/>` is collapsed then it's not rendered.
+
+		// tabIndex={ -1 }
 
 		return (
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.onKeyDown }
 				onBlur={ this.onBlur }
-				tabIndex={ -1 }
 				role={ role }
 				aria-hidden={ this.props['aria-hidden'] }
 				aria-label={ this.props['aria-label'] }
@@ -508,9 +509,6 @@ export default class Expandable extends PureComponent
 				className={ classNames
 				(
 					className,
-					/* `<Expandable/>` calls `.focus()` on itself to not collapse on clicks inside. */
-					/* This outline doesn't relate to actual accessibilty so it can be muted safely. */
-					'rrui__outline',
 					'rrui__shadow',
 					'rrui__expandable',
 					'rrui__expandable--overlay',
