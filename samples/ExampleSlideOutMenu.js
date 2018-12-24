@@ -12,19 +12,19 @@ window.ExampleSlideOutMenu = class ExampleComponent extends React.Component
 		return (
 			<SlideOutMenu anchor="right" menuRef={this.menuRef} onCollapse={this.onCollapse} onExpand={this.onExpand}>
 				<nav>
-					<List ref={this.setMenuRef} role="menu" className="slideout-menu">
+					<List ref={this.setMenuRef} role="menu" aria-label="Menu" tabbable={this.state.isExpanded} className="slideout-menu">
 						<List.Item role="none">
-							<a role="menuitem" target="_blank" href="https://google.com" className="rrui__slideout-menu__item" tabIndex={this.state.isExpanded ? undefined : -1}>
+							<a role="menuitem" target="_blank" href="https://google.com" className="rrui__slideout-menu__item">
 								Google.com
 							</a>
 						</List.Item>
 						<List.Item role="none">
-							<a role="menuitem" target="_blank" href="https://yandex.ru" className="rrui__slideout-menu__item" tabIndex={this.state.isExpanded ? undefined : -1}>
+							<a role="menuitem" target="_blank" href="https://yandex.ru" className="rrui__slideout-menu__item">
 								Yandex.ru
 							</a>
 						</List.Item>
 						<List.Item role="none">
-							<a role="menuitem" target="_blank" href="https://www.baidu.com" className="rrui__slideout-menu__item" tabIndex={this.state.isExpanded ? undefined : -1}>
+							<a role="menuitem" target="_blank" href="https://www.baidu.com" className="rrui__slideout-menu__item">
 								Baidu.com
 							</a>
 						</List.Item>

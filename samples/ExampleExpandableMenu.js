@@ -14,6 +14,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 			<Example name="expandable-menu" title="Expandable Menu">
 
 				<ExpandableMenu
+					aria-label="Menu"
 					className="column-width"
 					toggler={Toggler}
 					style={{ ...input_style, marginBottom: 0, width: 'auto' }}>

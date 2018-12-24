@@ -62,17 +62,21 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 					const tabIndex = this.state.isExpanded ? undefined : -1
 
 					<PageAndMenu>
-						<SlideOutMenu anchor="right" menuRef={menuRef} onExpand={onExpand} onCollapse={onCollapse}>
+						<SlideOutMenu
+							anchor="right"
+							menuRef={menuRef}
+							onExpand={onExpand}
+							onCollapse={onCollapse}>
 							<nav>
-								<List role="menu">
+								<List role="menu" aria-label="Menu" tabbable={isExpanded}>
 									<List.Item role="presentation">
-										<a href="/1" role="menuitem" tabIndex={tabIndex}> Item 1 </a>
+										<a href="/1" role="menuitem"> Item 1 </a>
 									</List.Item>
 									<List.Item role="presentation">
-										<a href="/2" role="menuitem" tabIndex={tabIndex}> Item 2 </a>
+										<a href="/2" role="menuitem"> Item 2 </a>
 									</List.Item>
 									<List.Item role="presentation">
-										<a href="/3" role="menuitem" tabIndex={tabIndex}> Item 3 </a>
+										<a href="/3" role="menuitem"> Item 3 </a>
 									</List.Item>
 								</List>
 							</nav>
