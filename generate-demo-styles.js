@@ -78,6 +78,10 @@ function transformStyle(filePath)
     /* `<Snackbar/>`. */
     .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
+    /* `<Switch/>`. */
+    .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
+    .replace_all('var(--rrui-switch-knob-border-color)', 'rgba(0,0,0,0.3)')
+    .replace_all('var(--rrui-switch-knob-border-color-focus)', '--rrui-accent-color')
     /* `<Switcher/>`. */
     .replace_all('var(--rrui-switcher-background-color)', 'transparent')
     .replace_all('var(--rrui-switcher-text-color)', 'var(--rrui-accent-color)')

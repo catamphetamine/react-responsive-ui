@@ -149,6 +149,11 @@
   --rrui-snackbar-background-color : var(--rrui-black-color);
   --rrui-snackbar-text-color : var(--rrui-white-color);
 
+  /* `<Switch/>` colors. */
+  --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;
+  --rrui-switch-knob-border-color : rgba(0,0,0,0.3);
+  --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
+
   /* `<Switcher/>` colors. */
   --rrui-switcher-background-color : transparent;
   --rrui-switcher-text-color : var(--rrui-accent-color);
