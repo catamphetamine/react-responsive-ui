@@ -5,6 +5,7 @@ import createRef from 'react-create-ref'
 import createContext from 'create-react-context'
 
 import { Context as PageAndMenuContext } from './PageAndMenu'
+import OnFocusOut from './OnFocusOut'
 
 export const Context = createContext()
 
@@ -23,7 +24,8 @@ export default class ContextAwareSlideoutMenu extends PureComponent {
 						ref={this.slideOutMenu}
 						{...this.props}
 						registerMenu={context.registerMenu}
-						toggleMenu={context.toggleMenu}/>
+						toggleMenu={context.toggleMenu}
+						getTogglerNode={context.getTogglerNode}/>
 					)
 				}
 			</PageAndMenuContext.Consumer>
@@ -71,8 +73,9 @@ class SlideoutMenu extends PureComponent
 		onCollapse : PropTypes.func,
 		onExpand : PropTypes.func,
 
-		toggleMenu   : PropTypes.func.isRequired,
+		toggleMenu : PropTypes.func.isRequired,
 		registerMenu : PropTypes.func.isRequired,
+		getTogglerNode : PropTypes.func.isRequired,
 
 		// CSS style object
 		style : PropTypes.object,
@@ -131,18 +134,17 @@ class SlideoutMenu extends PureComponent
 	// 	}
 	// }
 
-	toggle = (callback) => {
+	toggle = (show, callback) => {
 		const { onCollapse, onExpand } = this.props
-		this.setState((state) => {
-			if (state.show) {
-				onCollapse && onCollapse()
-			} else {
-				onExpand && onExpand()
-			}
-			return {
-				show: !state.show
-			}
-		}, callback)
+		if (show === undefined) {
+			show = !this.state.show
+		}
+		if (show) {
+			onExpand && onExpand()
+		} else {
+			onCollapse && onCollapse()
+		}
+		this.setState({ show }, callback)
 	}
 
 	hide = () =>
@@ -168,14 +170,31 @@ class SlideoutMenu extends PureComponent
 		}
 	}
 
+	onBlur = (event) => this.onFocusOutRef.onBlur(event)
+
+	storeOnFocusOutRef = (ref) => this.onFocusOutRef = ref
+	getContainerNode = () => this.container.current
+
+	onFocusOut = () => {
+		const { toggleMenu } = this.props
+		toggleMenu(false)
+	}
+
 	render()
 	{
 		const {
 			anchor,
 			fullscreen,
-			style,
+			getTogglerNode,
 			className,
-			children
+			children,
+			// rest
+			menuRef,
+			onExpand,
+			onCollapse,
+			toggleMenu,
+			registerMenu,
+			...rest
 		} = this.props
 
 		const { show } = this.state
@@ -183,13 +202,17 @@ class SlideoutMenu extends PureComponent
 		// ARIA menu notes:
 		// https://www.w3.org/TR/wai-aria-practices/examples/menu-button/menu-button-links.html
 
-		return (
+		// `tabIndex="-1"` is for calling `this.container.current.focus()`
+		// when no `menuRef` is supplied.
+
+		const element = (
 			<div
+				{ ...rest }
 				ref={ this.container }
 				aria-hidden={ !show }
 				tabIndex={ -1 }
+				onBlur={ this.onBlur }
 				onKeyDown={ this.onKeyDown }
-				style={ style }
 				className={ classNames(
 					className,
 					/* Developers can define custom `:focus` style for the slideout menu. */
@@ -207,6 +230,16 @@ class SlideoutMenu extends PureComponent
 				) }>
 				{ children }
 			</div>
+		)
+
+		return (
+			<OnFocusOut
+				ref={this.storeOnFocusOutRef}
+				getContainerNode={this.getContainerNode}
+				getTogglerNode={getTogglerNode}
+				onFocusOut={this.onFocusOut}>
+				{element}
+			</OnFocusOut>
 		)
 	}
 }

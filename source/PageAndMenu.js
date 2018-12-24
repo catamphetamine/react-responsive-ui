@@ -9,7 +9,8 @@ export const Context = createContext()
 // 	menuIsExpanded     : PropTypes.bool.isRequired,
 // 	toggleMenu         : PropTypes.func.isRequired,
 // 	registerMenu       : PropTypes.func.isRequired,
-// 	registerMenuButton : PropTypes.func.isRequired
+// 	registerMenuButton : PropTypes.func.isRequired,
+// 	getTogglerNode     : PropTypes.func.isRequired
 // }
 
 export default class PageAndMenu extends Component
@@ -35,7 +36,8 @@ export default class PageAndMenu extends Component
 			menuIsExpanded     : undefined, // false,
 			toggleMenu         : this.toggleMenu,
 			registerMenu       : this.registerMenu,
-			registerMenuButton : this.registerMenuButton
+			registerMenuButton : this.registerMenuButton,
+			getTogglerNode     : this.getTogglerNode
 		}
 	}
 
@@ -51,9 +53,9 @@ export default class PageAndMenu extends Component
 		)
 	}
 
-	toggleMenu = () =>
+	toggleMenu = (show) =>
 	{
-		this.menu.toggle(() => {
+		this.menu.toggle(show, () => {
 			this.setState({
 				menuIsExpanded : this.menu.isShown()
 			})
@@ -101,8 +103,8 @@ export default class PageAndMenu extends Component
 			|| this.menuButton.element().contains(event.target)) {
 			return
 		}
-		if (this.menu.isShown()) {
-			this.toggleMenu()
-		}
+		this.toggleMenu(false)
 	}
+
+	getTogglerNode = () => this.menuButton.element()
 }
