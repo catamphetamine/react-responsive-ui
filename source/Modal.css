@@ -313,8 +313,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__close
 {
-	/* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding */
+	/* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding. */
 	margin-left : 0;
+	/* Prevents the close button from being stretched vertically. */
+	line-height : 0;
 }
 
 .rrui__modal__content--close-button,
