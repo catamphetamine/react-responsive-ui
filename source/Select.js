@@ -287,6 +287,7 @@ export default class Select extends PureComponent
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
 							scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
+							tabbable={false}
 							value={value}
 							onChange={this.setValue}
 							onCollapse={this.onCollapse}
