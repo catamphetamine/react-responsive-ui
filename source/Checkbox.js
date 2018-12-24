@@ -144,6 +144,7 @@ export default class Checkbox extends PureComponent
 						</svg>
 
 						<span className="rrui__checkbox__box-background"/>
+						<span className="rrui__checkbox__focus-ring"/>
 					</span>
 
 					{ children &&

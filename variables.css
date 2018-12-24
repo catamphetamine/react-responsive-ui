@@ -123,6 +123,7 @@
   --rrui-checkbox-fill-color : var(--rrui-white-color);
   --rrui-checkbox-color-focus : var(--rrui-accent-color);
   --rrui-checkbox-color-checked : var(--rrui-accent-color);
+  --rrui-checkbox-color-checked-focus : var(--rrui-checkbox-color-focus);
   --rrui-checkbox-color-active : var(--rrui-accent-color-light);
   --rrui-checkbox-focus-ring-size : 250%;
   --rrui-checkbox-focus-ring-background-color : transparent;
