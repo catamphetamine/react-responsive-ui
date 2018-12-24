@@ -170,7 +170,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__modal__close:focus
 {
-	background-color: var(--rrui-gray-color-lightest);
+	background-color: var(--rrui-modal-close-button-background-color-focus);
 	border-radius: 50%;
 }
 

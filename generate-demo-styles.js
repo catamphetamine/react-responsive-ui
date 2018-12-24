@@ -68,6 +68,7 @@ function transformStyle(filePath)
     /* `<Modal/>` colors. */
     .replace_all('var(--rrui-modal-background-color)', 'var(--rrui-card-background-color)')
     .replace_all('var(--rrui-modal-text-color)', 'var(--rrui-card-text-color)')
+    .replace_all('var(--rrui-modal-close-button-background-color-focus)', 'var(--rrui-gray-color-lightest)')
     /* `<SlideOutMenu/>` :active. */
     .replace_all('var(--rrui-slide-out-menu-background-color-active)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-slide-out-menu-text-color-active)', 'var(--rrui-slide-out-menu-text-color)')
