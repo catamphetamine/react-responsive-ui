@@ -177,7 +177,11 @@ class SlideoutMenu extends PureComponent
 
 	onFocusOut = () => {
 		const { toggleMenu } = this.props
-		toggleMenu(false)
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			toggleMenu(false)
+		}
 	}
 
 	render()
