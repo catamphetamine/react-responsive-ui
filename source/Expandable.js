@@ -4,9 +4,8 @@ import classNames from 'classnames'
 import scrollIntoView from 'scroll-into-view-if-needed'
 
 import Close, { CloseIcon } from './Close'
-
-// import { isInternetExplorer } from './utility/dom'
-import { onBlur } from './utility/focus'
+import OnFocusOut from './OnFocusOut'
+import OnTapOutside from './OnTapOutside'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -101,103 +100,6 @@ export default class Expandable extends PureComponent
 	{
 		clearTimeout(this.scrollIntoViewTimer)
 		clearTimeout(this.removeFromDOMTimer)
-		clearTimeout(this.blurTimer)
-
-		this.stopListeningToTouches()
-	}
-
-	listenToTouches()
-	{
-		document.addEventListener('touchstart', this.onTouchStart)
-		document.addEventListener('touchmove', this.onTouchMove)
-		document.addEventListener('touchend', this.onTouchEnd)
-		document.addEventListener('touchcancel', this.onTouchCancel)
-	}
-
-	stopListeningToTouches()
-	{
-		document.removeEventListener('touchstart', this.onTouchStart)
-		document.removeEventListener('touchmove', this.onTouchMove)
-		document.removeEventListener('touchend', this.onTouchEnd)
-		document.removeEventListener('touchcancel', this.onTouchCancel)
-	}
-
-	// On mobile devices "blur" event isn't triggered
-	// when a user taps outside. This is to allow touch scrolling
-	// while not losing focus on an input field or a button.
-	// Adding a manual "on click" listener to emulate
-	// "on blur" event when user taps outside (to collapse the expandable).
-	onTap = (event) =>
-	{
-		const { getTogglerNode, onTapOutside } = this.props
-
-		if (this.container.contains(event.target)) {
-			return
-		}
-
-		if (getTogglerNode) {
-			if (getTogglerNode().contains(event.target)) {
-				return
-			}
-		}
-
-		if (onTapOutside) {
-			this.focusOut = true
-			onTapOutside()
-			this.focusOut = undefined
-		}
-	}
-
-	onTouchStart = (event) =>
-	{
-		// Ignore multitouch.
-		if (event.touches.length > 1)
-		{
-			// Reset.
-			return this.onTouchCancel()
-		}
-
-		this.initialTouchX = event.changedTouches[0].clientX
-		this.initialTouchY = event.changedTouches[0].clientY
-		this.tapping = true
-	}
-
-	onTouchMove = (event) =>
-	{
-		// Ignore multitouch.
-		if (!this.tapping) {
-			return
-		}
-
-		const deltaX = Math.abs(event.changedTouches[0].clientX - this.initialTouchX)
-		const deltaY = Math.abs(event.changedTouches[0].clientY - this.initialTouchY)
-		const moveThreshold = 5
-
-		if (deltaX > moveThreshold || deltaY > moveThreshold)
-		{
-			// Reset.
-			this.onTouchCancel()
-		}
-	}
-
-	onTouchEnd = (event) =>
-	{
-		// Ignore multitouch.
-		if (!this.tapping) {
-			return
-		}
-
-		// Reset.
-		this.onTouchCancel()
-
-		this.onTap(event)
-	}
-
-	onTouchCancel = () =>
-	{
-		this.initialTouchX = undefined
-		this.initialTouchY = undefined
-		this.tapping = false
 	}
 
 	isExpanded = () => this.state.expanded
@@ -255,7 +157,7 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
-			this.stopListeningToTouches()
+			this.onTapOutside.stopListeningToTouches()
 
 			clearTimeout(this.scrollIntoViewTimer)
 
@@ -309,7 +211,7 @@ export default class Expandable extends PureComponent
 						resolve()
 
 						if (onTapOutside) {
-							this.listenToTouches()
+							this.onTapOutside.listenToTouches()
 						}
 
 						this.isToggling = false
@@ -438,7 +340,13 @@ export default class Expandable extends PureComponent
 		}
 	}
 
+	onBlur = (event) => this.onFocusOutRef && this.onFocusOutRef.onBlur(event)
+
 	storeContainerNode = (node) => this.container = node
+	getContainerNode = () => this.container
+
+	storeOnTapOutsideRef = (ref) => this.onTapOutside = ref
+	storeOnFocusOutRef = (ref) => this.onFocusOutRef = ref
 
 	onFocusOut = (event) =>
 	{
@@ -449,26 +357,15 @@ export default class Expandable extends PureComponent
 		this.focusOut = undefined
 	}
 
-	onBlur = (event) =>
-	{
-		const { getTogglerNode, onFocusOut } = this.props
-
-		if (onFocusOut && this.container)
-		{
-			clearTimeout(this.blurTimer)
-			const result = onBlur(event, this.onFocusOut, () => this.container, getTogglerNode)
-			if (typeof result === 'number') {
-				this.blurTimer = result
-			}
-		}
-	}
-
 	render()
 	{
 		const
 		{
 			alignment,
 			upward,
+			onFocusOut,
+			onTapOutside,
+			getTogglerNode,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
 			role,
@@ -497,7 +394,7 @@ export default class Expandable extends PureComponent
 
 		// tabIndex={ -1 }
 
-		return (
+		let element = (
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.onKeyDown }
@@ -546,5 +443,31 @@ export default class Expandable extends PureComponent
 				}
 			</div>
 		)
+
+		if (onFocusOut) {
+			element = (
+				<OnFocusOut
+					ref={this.storeOnFocusOutRef}
+					getContainerNode={this.getContainerNode}
+					getTogglerNode={getTogglerNode}
+					onFocusOut={this.onFocusOut}>
+					{element}
+				</OnFocusOut>
+			)
+		}
+
+		if (onTapOutside) {
+			element = (
+				<OnTapOutside
+					ref={this.storeOnTapOutsideRef}
+					getContainerNode={this.getContainerNode}
+					getTogglerNode={getTogglerNode}
+					onTapOutside={onTapOutside}>
+					{element}
+				</OnTapOutside>
+			)
+		}
+
+		return element
 	}
 }
