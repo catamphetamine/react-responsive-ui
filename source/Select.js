@@ -144,14 +144,17 @@ export default class Select extends PureComponent
 	state = {}
 
 	focus = () => this.select.focus()
-	// focusToggler = () => this.selectButton.focus()
+
+	// On mobile devices the <button/> is focused instead of <select/>
+	// because when <select/> is focused then native mobile <select/> is expanded.
+	focusToggler = () => this.selectButton.focus()
 
 	onCollapse = ({ focusOut }) =>
 	{
 		this.setState({ isExpanded: false })
 
 		if (!focusOut) {
-			this.focus()
+			this.focusToggler()
 		}
 	}
 
