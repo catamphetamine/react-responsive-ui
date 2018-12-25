@@ -49,6 +49,11 @@ export default class Switch extends PureComponent
 		value : false
 	}
 
+	state = {}
+
+	onFocus = () => this.setState({ isFocused: true })
+	onBlur  = () => this.setState({ isFocused: false })
+
 	onKeyDown = (event) =>
 	{
 		const { onKeyDown } = this.props
@@ -82,13 +87,16 @@ export default class Switch extends PureComponent
 		}
 		= this.props
 
+		const { isFocused } = this.state
+
 		return (
 			<label
 				className={ classNames('rrui__switch',
 				{
 					'rrui__input'            : children,
 					'rrui__switch--label'    : children,
-					'rrui__switch--disabled' : disabled
+					'rrui__switch--disabled' : disabled,
+					'rrui__switch--focus'    : isFocused
 				},
 				className) }
 				style={ style }>
