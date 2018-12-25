@@ -276,6 +276,7 @@
 
 .rrui__checkbox__checkbox {
   position: relative;
+  z-index: 0;
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
@@ -285,6 +286,7 @@
 
 .rrui__checkbox__input {
   position: absolute;
+  z-index: 3;
   left: -40%;
   top: -40%;
   width: 180%;
@@ -294,6 +296,8 @@
 
 .rrui__checkbox__box {
   display: block;
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -311,6 +315,10 @@
 .rrui__checkbox__input:focus + .rrui__checkbox__box {
   color: #03b2cb; }
 
+/* Checkbox color (:focus) (:checked) */
+.rrui__checkbox__input:focus + .rrui__checkbox__box--checked {
+  color: #03b2cb; }
+
 /* Checkbox color (:checked / :active) */
 .rrui__checkbox__input:active + .rrui__checkbox__box {
   color: #2bd7f0; }
@@ -319,7 +327,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 1;
   width: 100%;
   height: 100%;
   background: #ffffff;
@@ -333,20 +341,20 @@
   color: #d30f00; }
 
 /* Focus ring. */
-.rrui__checkbox__input + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+.rrui__checkbox__focus-ring {
   display: block;
-  content: "";
   position: absolute;
   left: calc(-1 * (250% - 100%) / 2);
   top: calc(-1 * (250% - 100%) / 2);
   width: 250%;
   height: 250%;
-  border-radius: 50%; }
+  border-radius: 50%;
+  z-index: 0; }
 
-.rrui__checkbox__input:focus + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+.rrui__checkbox__input:focus + .rrui__checkbox__box + .rrui__checkbox__box-background + .rrui__checkbox__focus-ring {
   background-color: transparent; }
 
-.rrui__checkbox__input:active + .rrui__checkbox__box + .rrui__checkbox__box-background:before {
+.rrui__checkbox__input:active + .rrui__checkbox__box + .rrui__checkbox__box-background + .rrui__checkbox__focus-ring {
   background-color: transparent; }
 
 /*
@@ -1549,8 +1557,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
   margin-bottom: calc(0.6rem * 2); }
 
 .rrui__modal__close {
-  /* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding */
-  margin-left: 0; }
+  /* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding. */
+  margin-left: 0;
+  /* Prevents the close button from being stretched vertically. */
+  line-height: 0; }
 
 .rrui__modal__content--close-button,
 .rrui__modal__title--close-button {
@@ -1952,9 +1962,17 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -o-transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98);
   transition: all 0.4s cubic-bezier(0.17, 0.67, 0.43, 0.98); }
 
+.rrui__switch__input:focus + .rrui__switch__groove {
+  -webkit-box-shadow: inset 0 0 0 0.0625em rgba(0, 0, 0, 0.16), 0 0 0 0 transparent;
+          box-shadow: inset 0 0 0 0.0625em rgba(0, 0, 0, 0.16), 0 0 0 0 transparent; }
+
 .rrui__switch__groove--on {
   -webkit-box-shadow: inset 0 0 0 0.73em currentColor;
           box-shadow: inset 0 0 0 0.73em currentColor; }
+
+.rrui__switch__input:focus + .rrui__switch__groove--on {
+  -webkit-box-shadow: inset 0 0 0 0.73em currentColor, 0 0 0 0 transparent;
+          box-shadow: inset 0 0 0 0.73em currentColor, 0 0 0 0 transparent; }
 
 .rrui__switch__knob {
   position: absolute;
@@ -1964,15 +1982,15 @@ but rather `width: auto` or `left: 0; right: 0;`.
   top: 0.0625em;
   left: 0.0625em;
   background-color: #ffffff;
-  -webkit-box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
-          box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), inset 0 0 0 0.03em transparent, 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), inset 0 0 0 0.03em transparent, 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
   -webkit-transition: all 0.25s ease-out;
   -o-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out; }
 
 .rrui__switch__input:focus + .rrui__switch__groove + .rrui__switch__knob {
-  -webkit-box-shadow: inset 0 0 0 0.03em #03b2cb, 0 0 0.05em #03b2cb, 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
-          box-shadow: inset 0 0 0 0.03em #03b2cb, 0 0 0.05em #03b2cb, 0 0.1em 0.2em rgba(0, 0, 0, 0.2); }
+  -webkit-box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), inset 0 0 0 0.03em #03b2cb, 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+          box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.3), inset 0 0 0 0.03em #03b2cb, 0 0 0.05em rgba(0, 0, 0, 0.05), 0 0.1em 0.2em rgba(0, 0, 0, 0.2); }
 
 .rrui__switch__knob--on {
   left: 0.7125em; }
