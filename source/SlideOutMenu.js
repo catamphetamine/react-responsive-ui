@@ -134,8 +134,11 @@ class SlideoutMenu extends PureComponent
 	// 	}
 	// }
 
-	toggle = (show, callback) => {
+	toggle = (show, onAfterToggle) => {
 		const { onCollapse, onExpand } = this.props
+		if (show === this.state.show) {
+			return
+		}
 		if (show === undefined) {
 			show = !this.state.show
 		}
@@ -144,7 +147,7 @@ class SlideoutMenu extends PureComponent
 		} else {
 			onCollapse && onCollapse()
 		}
-		this.setState({ show }, callback)
+		this.setState({ show }, onAfterToggle)
 	}
 
 	hide = () =>
