@@ -78,12 +78,6 @@ export default class Select extends PureComponent
 		// Is called when an option is selected
 		onChange   : PropTypes.func,
 
-		// Is called when the select is focused.
-		// Can be used for toggling `--focus` CSS class.
-		// Not tested.
-		// `event` argument can be `undefined`.
-		onFocus    : PropTypes.func,
-
 		// Is called when the select is blurred.
 		// This `onBlur` interceptor is a workaround for `redux-form`,
 		// so that it gets the parsed `value` in its `onBlur` handler,
@@ -161,16 +155,7 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onExpand = () =>
-	{
-		const { onFocus } = this.props
-
-		if (onFocus) {
-			onFocus()
-		}
-
-		this.setState({ isExpanded: true })
-	}
+	onExpand = () => this.setState({ isExpanded: true })
 
 	expand     = () => this.list.expand()
 	collapse   = () => this.list.collapse()
@@ -212,7 +197,10 @@ export default class Select extends PureComponent
 		}
 		= this.props
 
-		const { isExpanded } = this.state
+		const {
+			isExpanded,
+			isFocused
+		} = this.state
 
 		const containerStyle = { textAlign: alignment }
 
@@ -225,7 +213,8 @@ export default class Select extends PureComponent
 				(
 					'rrui__select',
 					{
-						'rrui__select--compact'  : compact || icon
+						'rrui__select--compact' : compact || icon,
+						'rrui__select--focus'   : isFocused
 					},
 					className
 				) }>
@@ -293,6 +282,7 @@ export default class Select extends PureComponent
 							onCollapse={this.onCollapse}
 							onExpand={this.onExpand}
 							getTogglerNode={this.getSelectButton}
+							onFocusIn={this.onFocusIn}
 							onFocusOut={this.onFocusOut}
 							onTapOutside={this._onFocusOut}
 							closeButtonIcon={closeButtonIcon}
@@ -331,7 +321,6 @@ export default class Select extends PureComponent
 		{
 			wait,
 			value,
-			onFocus,
 			disabled,
 			required,
 			icon,
@@ -371,8 +360,8 @@ export default class Select extends PureComponent
 				disabled={ disabled }
 				onClick={ this.onClick }
 				onKeyDown={ this.onKeyDown }
-				onFocus={ onFocus }
-				onBlur={ this.onBlur }
+				onFocus={ this.onFocusIn }
+				onBlur={ this.onTogglerBlur }
 				tabIndex={ -1 }
 				title={ title }
 				aria-label={ this.getAriaLabel() }
@@ -436,6 +425,8 @@ export default class Select extends PureComponent
 				onKeyDown={ this.nativeSelectOnKeyDown }
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
+				onFocus={ this.onFocusIn }
+				onBlur={ this.__onFocusOut }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
 				aria-required={ required && isEmptyValue(value) ? true : undefined }
@@ -714,7 +705,7 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onBlur = (event) =>
+	onTogglerBlur = (event) =>
 	{
 		const { onBlur, value } = this.props
 
@@ -722,12 +713,17 @@ export default class Select extends PureComponent
 			this.list.onBlur(event)
 		}
 
+		this.__onFocusOut()
+
 		// When the `<button/>` was focused out
 		// while there was no list being shown.
 		if (onBlur && this.list && this.list.expandable && !this.list.expandable.container) {
 			onBlurForReduxForm(onBlur, event, value)
 		}
 	}
+
+	onFocusIn    = () => this.setState({ isFocused: true })
+	__onFocusOut = () => this.setState({ isFocused: false })
 
 	_onFocusOut = () =>
 	{
@@ -740,6 +736,8 @@ export default class Select extends PureComponent
 				this.collapse()
 			}
 		}
+
+		this.__onFocusOut()
 	}
 
 	onFocusOut = (event) =>

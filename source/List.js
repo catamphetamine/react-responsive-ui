@@ -42,6 +42,7 @@ export default class List extends PureComponent
 		onSelectItem : PropTypes.func,
 		highlightSelectedItem : PropTypes.bool.isRequired,
 
+		onFocusIn : PropTypes.func,
 		onFocusItem : PropTypes.func,
 		onKeyDown : PropTypes.func,
 
@@ -298,6 +299,10 @@ export default class List extends PureComponent
 	}
 
 	onFocusIn = () => {
+		const { onFocusIn } = this.props
+		if (onFocusIn) {
+			onFocusIn()
+		}
 		this.setState({
 			isFocused: true
 		})
@@ -372,6 +377,7 @@ export default class List extends PureComponent
 				aria-hidden={ this.props['aria-hidden'] }
 				aria-required={ this.props['aria-required'] }
 				aria-invalid={ this.props['aria-invalid'] }
+				onFocus={ this.onFocusIn }
 				onKeyDown={ this.onKeyDown }
 				tabIndex={ -1 }
 				style={ style }
