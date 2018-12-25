@@ -27,6 +27,9 @@ function transformStyle(filePath)
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
     .replace_all('var(--rrui-input-field-border-color)', 'var(--rrui-gray-color-light)')
     .replace_all('var(--rrui-input-field-border-color-focus)', 'var(--rrui-accent-color)')
+    /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
+    .replace_all('var(--rrui-input-label-focus-top-offset)', '-70%')
+    .replace_all('var(--rrui-input-label-focus-scale)', '0.8')
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
     .replace_all('var(--rrui-input-field-label-color)', 'var(--rrui-gray-color)')
     .replace_all('var(--rrui-input-field-label-color-focus)', 'var(--rrui-accent-color)')
@@ -80,8 +83,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
     /* `<Switch/>`. */
     .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
-    .replace_all('var(--rrui-switch-knob-border-color)', 'rgba(0,0,0,0.3)')
-    .replace_all('var(--rrui-switch-knob-border-color-focus)', '--rrui-accent-color')
+    .replace_all('var(--rrui-switch-knob-border-color-focus)', 'var(--rrui-accent-color)')
     /* `<Switcher/>`. */
     .replace_all('var(--rrui-switcher-background-color)', 'transparent')
     .replace_all('var(--rrui-switcher-text-color)', 'var(--rrui-accent-color)')

@@ -20,7 +20,7 @@
 	*/
 	color : var(--rrui-input-field-label-color);
 
-	transform        : scale(0.8) translateY(-70%);
+	transform        : scale(var(--rrui-input-label-focus-scale)) translateY(var(--rrui-input-label-focus-top-offset));
 	transform-origin : left top;
 	transition       : color 0.1s ease-out, transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
 }

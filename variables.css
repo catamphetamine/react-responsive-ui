@@ -89,6 +89,10 @@
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
 
+  /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
+  --rrui-input-label-focus-top-offset : -70%;
+  --rrui-input-label-focus-scale : 0.8;
+
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
   --rrui-input-field-label-color : var(--rrui-gray-color);
   --rrui-input-field-label-color-focus : var(--rrui-accent-color);
@@ -151,7 +155,6 @@
 
   /* `<Switch/>` colors. */
   --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;
-  --rrui-switch-knob-border-color : rgba(0,0,0,0.3);
   --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
 
   /* `<Switcher/>` colors. */
