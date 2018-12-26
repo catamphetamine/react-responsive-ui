@@ -99,9 +99,14 @@ export default class TextInput extends PureComponent
 		indicateInvalid : true
 	}
 
+	state = {}
+
 	storeInputNode = (node) => this.input = node
 
 	focus = () => this.input.focus()
+
+	onFocus = () => this.setState({ isFocused: true })
+	onBlur  = () => this.setState({ isFocused: false })
 
 	render()
 	{
@@ -121,6 +126,8 @@ export default class TextInput extends PureComponent
 		}
 		= this.props
 
+		const { isFocused } = this.state
+
 		// Deprecated.
 		// Use `type="password"` instead.
 		if (password) {
@@ -138,15 +145,20 @@ export default class TextInput extends PureComponent
 				style={ style }
 				className={ classNames
 				(
+					className,
 					'rrui__text-input',
-					className
+					{
+						'rrui__text-input--focus': isFocused
+					}
 				) }>
 
 				<Input
 					{...rest}
 					inputRef={this.storeInputNode}
 					error={error}
-					indicateInvalid={indicateInvalid} />
+					indicateInvalid={indicateInvalid}
+					onFocus={this.onFocus}
+					onBlur={this.onBlur} />
 
 				{/* Error message */}
 				{ indicateInvalid && error &&
