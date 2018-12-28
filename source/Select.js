@@ -154,7 +154,11 @@ export default class Select extends PureComponent
 		this.setState({ isExpanded: false })
 
 		if (!focusOut) {
-			this.focusToggler()
+			if (this.isUsingKeyboard) {
+				this.focus()
+			} else {
+				this.focusToggler()
+			}
 		}
 	}
 
@@ -499,6 +503,8 @@ export default class Select extends PureComponent
 
 	nativeSelectOnKeyDown = (event) =>
 	{
+		this.isUsingKeyboard = true
+
 		if (this.shouldShowOptionsList())
 		{
 			// Native select is the main focusable element now
