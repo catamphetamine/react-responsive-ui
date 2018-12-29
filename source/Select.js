@@ -371,7 +371,7 @@ export default class Select extends PureComponent
 				onBlur={ this.onTogglerBlur }
 				tabIndex={ -1 }
 				title={ title }
-				aria-label={ this.getAriaLabel() }
+				aria-label={ this.getAriaLabel() || (showIconOnly ? selectedOptionLabel : undefined) }
 				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
 				(
