@@ -138,7 +138,7 @@ export default class Button extends PureComponent
 					show={ wait || busy || this.state.wait }
 					fadeOutDuration={300}
 					fadeInClassName="rrui__button__busy--after-show">
-					<div className="rrui__button__busy"/>
+					<span className="rrui__button__busy"/>
 				</FadeInOut>
 
 				{ children }
