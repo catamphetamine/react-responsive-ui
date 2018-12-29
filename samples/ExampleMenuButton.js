@@ -45,6 +45,10 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 				<summary>A more complex example:</summary>
 
 				<Highlight lang="jsx">{`
+					state = {
+						isExpanded: false
+					}
+
 					// \`menuRef\` is an optional property that can be
 					// used for focusing the menu upon expanding.
 					const menuRef = React.createRef()

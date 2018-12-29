@@ -165,6 +165,7 @@
   text-decoration: none; }
 
 .rrui__button__busy {
+  display: block;
   position: absolute;
   left: 0rem;
   bottom: calc(50% - 0.7em);
@@ -225,6 +226,9 @@
     left: 60%; }
   to {
     left: 100%; } }
+
+.rrui__button__busy-status {
+  font-size: 0; }
 
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 .rrui__checkbox .rrui__input {

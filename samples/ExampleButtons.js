@@ -42,20 +42,20 @@ window.ExampleButtons = class ExampleComponent extends React.Component
 				</div>
 
 			<Form
-				busy={this.state.busy}
+				wait={this.state.submitting}
 				submit={() => {
 					console.log('Submitting form...')
-					this.setState({ busy: true })
+					this.setState({ submitting: true })
 					setTimeout(() => {
 						console.log('Form submitted.')
-						this.setState({ busy: false })
+						this.setState({ submitting: false })
 					},
 					3500)
 				}}>
 				<div className="submit-form">
 					<Button
 						submit
-						busy={this.state.busy}
+						wait={this.state.submitting}
 						className="rrui__button--border">
 						Submit Form
 					</Button>
@@ -64,29 +64,30 @@ window.ExampleButtons = class ExampleComponent extends React.Component
 				<div className="submit-form">
 					<Button
 						submit
-						busy={this.state.busy}>
+						wait={this.state.submitting}>
 						SUBMIT
 					</Button>
 				</div>
 
 				<div className="submit-form">
-					Submitting: {this.state.busy ? 'true' : 'false'}
+					Submitting: {this.state.submitting ? 'true' : 'false'}
 				</div>
 			</Form>
 
 <Highlight lang="jsx">{`
-const submit = () => {
+onSubmit = () => {
+  if (this.state.submitting) {
+    return
+  }
   console.log('Submitting form...')
-  this.setState({ busy: true })
+  this.setState({ submitting: true })
   setTimeout(() => {
     console.log('Form submitted.')
-    this.setState({ busy: false })
+    this.setState({ submitting: false })
   }, 3500)
 }
 
-<Form
-  busy={this.state.busy}
-  submit={submit}>
+<form onSubmit={onSubmit}>
   ...
 
   <Button onClick={() => {}}>
@@ -114,11 +115,11 @@ const submit = () => {
 
   <Button
     submit
-    busy={this.state.busy}
+    wait={this.state.submitting}
     className="rrui__button--border">
     Submit Form
   </Button>
-</Form>
+</form>
 `}</Highlight>
 
 <Highlight lang="css">{`
