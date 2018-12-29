@@ -70,7 +70,7 @@ export default class Checkbox extends PureComponent
 			return
 		}
 
-		if (submitFormOnCtrlEnter(event, this.input)) {
+		if (submitFormOnCtrlEnter(event, this.checkbox)) {
 			return
 		}
 	}

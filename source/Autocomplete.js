@@ -10,13 +10,7 @@ import TextInput from './TextInputInput'
 import Ellipsis from './Ellipsis'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-
-import
-{
-	submitFormOnCtrlEnter,
-	submitContainingForm
-}
-from './utility/dom'
+import { submitFormOnCtrlEnter } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
