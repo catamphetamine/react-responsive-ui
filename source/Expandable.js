@@ -157,7 +157,9 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
-			this.onTapOutside.stopListeningToTouches()
+			if (onTapOutside) {
+				this.onTapOutside.stopListeningToTouches()
+			}
 
 			clearTimeout(this.scrollIntoViewTimer)
 
