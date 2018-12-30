@@ -227,9 +227,6 @@
   to {
     left: 100%; } }
 
-.rrui__button__busy-status {
-  font-size: 0; }
-
 /* http://tympanus.net/codrops/2013/10/15/animated-checkboxes-and-radio-buttons-with-svg/ */
 .rrui__checkbox .rrui__input {
   display: -webkit-inline-box;
