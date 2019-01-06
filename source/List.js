@@ -104,7 +104,8 @@ export default class List extends PureComponent
 		if (prevState.items && prevState.items !== items)
 		{
 			this.setState({ items })
-			const selectedItemIndex = highlightSelectedItem && value !== undefined ? findItemIndexByValue(value, children) : undefined
+			// `findItemIndexByValue()` must return `undefined` for "no such item".
+			const selectedItemIndex = highlightSelectedItem ? findItemIndexByValue(value, children) : undefined
 			this.focusItem(selectedItemIndex === undefined ? (highlightFirstItem ? 0 : undefined) : selectedItemIndex)
 		}
 	}
@@ -154,7 +155,6 @@ export default class List extends PureComponent
 	getItemValue(index)
 	{
 		const { children } = this.props
-
 		const item = React.Children.toArray(children)[index]
 		return item.props.value
 	}
