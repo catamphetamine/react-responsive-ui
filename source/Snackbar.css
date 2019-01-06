@@ -21,6 +21,7 @@
 
 .rrui__snackbar
 {
+	position    : relative;
 	display     : flex;
 	align-items : center;
 
@@ -40,4 +41,23 @@
 .rrui__snackbar__text
 {
 	overflow : 'hidden';
+}
+
+.rrui__snackbar__count
+{
+	display          : flex;
+	align-items      : center;
+	justify-content  : center;
+	position         : absolute;
+	right            : 0;
+	bottom           : 0;
+	box-sizing       : border-box;
+	min-width        : var(--rrui-snackbar-notifications-count-size);
+	height           : var(--rrui-snackbar-notifications-count-size);
+	padding-left     : 0.3em;
+	padding-right    : 0.3em;
+	transform        : translateX(50%) translateY(50%);
+	border-radius    : calc(var(--rrui-snackbar-notifications-count-size) / 2);
+	background-color : var(--rrui-snackbar-notifications-count-background-color);
+	color            : var(--rrui-white-color);
 }

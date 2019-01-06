@@ -138,6 +138,8 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-snackbar-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-snackbar-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-snackbar-margin)', 'calc(0.6rem * 2)')
+    .replace_all('var(--rrui-snackbar-notifications-count-size)', '1.3em')
+    .replace_all('var(--rrui-snackbar-notifications-count-background-color)', '#d30f00')
     /* `<Tooltip/>` */
     .replace_all('var(--rrui-tooltip-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-tooltip-height)', 'calc(0.6rem * 4)')

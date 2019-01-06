@@ -57,6 +57,8 @@
   --rrui-snackbar-height       : calc(var(--rrui-unit) * 4);
   --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 1.5);
   --rrui-snackbar-margin       : calc(var(--rrui-unit) * 2);
+  --rrui-snackbar-notifications-count-size : 1.3em;
+  --rrui-snackbar-notifications-count-background-color : #d30f00;
 
   /* `<Tooltip/>` */
   --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 1.5);

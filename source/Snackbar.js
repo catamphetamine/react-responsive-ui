@@ -64,10 +64,10 @@ export default class Snackbar extends PureComponent
 		lengthTimeFactor : 60
 	}
 
-	state =
-	{
-		values: []
-	}
+	state = {}
+
+	status = 'idle'
+	queue = []
 
 	componentWillUnmount()
 	{
@@ -89,17 +89,16 @@ export default class Snackbar extends PureComponent
 	}
 
 	// Adds a notification to the queue
-	push(new_value)
+	push(newValue)
 	{
-		const { values, value } = this.state
-
 		// Add the notification to the queue
-		values.push(new_value)
-
+		this.queue.push(newValue)
+		this.setState({
+			queueSize: this.queue.length
+		})
 		// If the notification queue was empty
 		// then kick-start it.
-		if (!value)
-		{
+		if (this.status === 'idle') {
 			this.next()
 		}
 	}
@@ -107,34 +106,37 @@ export default class Snackbar extends PureComponent
 	// Displays the next notification in the queue
 	next = () =>
 	{
-		const { values } = this.state
-
-		const
-		{
+		const {
 			minTime,
 			lengthTimeFactor
-		}
-		= this.props
+		} = this.props
 
 		// Get the next notification from the queue
 		// (will be `undefined` if the queue is empty)
-		const value = values.shift()
+		const value = this.queue.shift()
 
 		// Reset the notification display
-		this.setState({ value, height: undefined, wide: undefined, hiding: false })
+		this.setState({
+			value,
+			queueSize: this.queue.length,
+			height: undefined,
+			wide: undefined,
+			hiding: false
+		})
 
 		// If the queue is empty, then just exit
-		if (!value)
-		{
+		if (!value) {
+			this.status = 'idle'
 			return
 		}
+
+		this.status = 'active'
 
 		// `state.show` will be set to `true` later,
 		// when the height of the element is measured
 		// (which is after it renders)
 
-		if (value.duration === -1)
-		{
+		if (value.duration === -1) {
 			return
 		}
 
@@ -164,7 +166,7 @@ export default class Snackbar extends PureComponent
 	{
 		let { height, value } = this.state
 
-		// If `value` got updated then push it to the list of `values`.
+		// If `value` got updated then push it to the list of `queue`.
 		this.receiveNewValue(prevProps)
 
 		// The notification DOM element has just been rendered
@@ -199,9 +201,18 @@ export default class Snackbar extends PureComponent
 	render()
 	{
 		const { type } = this.props
-		const { show, value, height, wide, marginBottom, hiding } = this.state
 
-		const container_style = {}
+		const {
+			show,
+			value,
+			height,
+			wide,
+			marginBottom,
+			hiding,
+			queueSize
+		} = this.state
+
+		const containerStyle = {}
 
 		if (!show)
 		{
@@ -211,19 +222,19 @@ export default class Snackbar extends PureComponent
 			// to show the slide-from-bottom animation at the next step.
 			if (height !== undefined)
 			{
-				container_style.transform = `translateY(${height + marginBottom}px)`
+				containerStyle.transform = `translateY(${height + marginBottom}px)`
 			}
 
 			if (!hiding)
 			{
-				container_style.transition = 'none'
+				containerStyle.transition = 'none'
 			}
 		}
 
 		return (
 			<div
 				ref={ this.storeContainerNode }
-				style={ container_style }
+				style={ containerStyle }
 				className={ classNames('rrui__snackbar__container',
 				{
 					'rrui__snackbar__container--hidden' : !show,
@@ -238,6 +249,12 @@ export default class Snackbar extends PureComponent
 						className="rrui__snackbar__text">
 						{ value && (value.content !== undefined ? value.content : this.renderContent(value)) }
 					</div>
+
+					{value && value.duration === -1 && queueSize > 0 &&
+						<div className="rrui__snackbar__count">
+							{queueSize + 1}
+						</div>
+					}
 				</div>
 			</div>
 		)
