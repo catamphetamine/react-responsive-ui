@@ -253,10 +253,12 @@ export default class List extends PureComponent
 	onKeyPress = (event) => {
 		const { resetInputTimeout } = this.props
 		const characters = event.char || String.fromCharCode(event.charCode)
-		this.input += characters
-		this.onInput()
-		clearTimeout(this.resetInputTimer)
-		this.resetInputTimer = setTimeout(this.resetInput, resetInputTimeout)
+		if (characters.trim()) {
+			this.input += characters
+			this.onInput()
+			clearTimeout(this.resetInputTimer)
+			this.resetInputTimer = setTimeout(this.resetInput, resetInputTimeout)
+		}
 	}
 
 	onInput() {
