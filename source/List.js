@@ -121,6 +121,7 @@ export default class List extends PureComponent
 	{
 		this._isMounted = false
 		clearTimeout(this.blurTimer)
+		clearTimeout(this.resetInputTimer)
 	}
 
 	chooseFocusedItem() {
