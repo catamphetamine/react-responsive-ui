@@ -48,7 +48,7 @@ export default class Tooltip extends PureComponent
 	static defaultProps =
 	{
 		inline : true,
-		delay : 200, // in milliseconds
+		delay : 400, // in milliseconds
 		hidingAnimationDuration : 120, // in milliseconds
 		container : () => document.body
 	}
