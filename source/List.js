@@ -57,7 +57,10 @@ export default class List extends PureComponent
 		tabbable : PropTypes.bool.isRequired,
 		shouldFocus : PropTypes.bool.isRequired,
 		highlightFirstItem : PropTypes.bool.isRequired,
-		createButtons : PropTypes.bool.isRequired
+		createButtons : PropTypes.bool.isRequired,
+
+		// For select options list keyboard navigation via typing.
+		resetInputTimeout : PropTypes.number.isRequired
 	}
 
 	static defaultProps =
@@ -66,7 +69,8 @@ export default class List extends PureComponent
 		shouldFocus : true,
 		highlightFirstItem : false,
 		createButtons : true,
-		highlightSelectedItem : true
+		highlightSelectedItem : true,
+		resetInputTimeout : 1000
 	}
 
 	state = {
@@ -75,6 +79,9 @@ export default class List extends PureComponent
 
 	// `ref`s of all items currently rendered.
 	itemRefs = []
+
+	// For select options list keyboard navigation via typing.
+	input = ''
 
 	componentDidMount()
 	{
@@ -242,6 +249,25 @@ export default class List extends PureComponent
 		}
 	}
 
+	onKeyPress = (event) => {
+		const { resetInputTimeout } = this.props
+		const characters = event.char || String.fromCharCode(event.charCode)
+		this.input += characters
+		this.onInput()
+		clearTimeout(this.resetInputTimer)
+		this.resetInputTimer = setTimeout(this.resetInput, resetInputTimeout)
+	}
+
+	onInput() {
+		const { children } = this.props
+		const index = findItemIndexByLabel(this.input, children)
+		if (index !== undefined) {
+			this.focusItem(index)
+		}
+	}
+
+	resetInput = () => this.input = ''
+
 	// Get the previous option (relative to the currently focused option)
 	getPreviousFocusableItemIndex()
 	{
@@ -379,6 +405,7 @@ export default class List extends PureComponent
 				aria-invalid={ this.props['aria-invalid'] }
 				onFocus={ this.onFocusIn }
 				onKeyDown={ this.onKeyDown }
+				onKeyPress={ this.onKeyPress }
 				tabIndex={ -1 }
 				style={ style }
 				className={ classNames(className, 'rrui__outline', 'rrui__list', {
@@ -577,8 +604,7 @@ export class Item extends React.Component
 
 	isSelectable()
 	{
-		const { children } = this.props
-		return children.type !== DividerType
+		return isSelectableItem(this)
 	}
 
 	// Perhaps this is called by `focus()` utility function.
@@ -685,7 +711,7 @@ export class Item extends React.Component
 		if (this.shouldCreateButton())
 		{
 			ItemComponent = 'button'
-			label = this.props.label || (typeof children === 'string' ? children : undefined)
+			label = getItemLabel(this)
 			properties.type = 'button'
 			properties.role = role
 			properties['aria-selected'] = isSelected
@@ -779,12 +805,34 @@ export function findItemIndexByValue(value, children)
 	let i = 0
 	for (const item of items)
 	{
-		if (item.props.value === value) {
+		if (isSelectableItem(item) && item.props.value === value) {
 			return i
 		}
 		i++
 	}
+}
 
-	// The item could be missing due to being trimmed by `maxOptions` in `Autocomplete`.
-	// console.error(`Item with value ${value} not found in a <List/>. Available values: ${items.length > 0 ? items.map(_ => _.props.value).join(', ') : '(none)'}.`)
+function findItemIndexByLabel(value, children)
+{
+	const items = React.Children.toArray(children)
+
+	let i = 0
+	for (const item of items)
+	{
+		if (isSelectableItem(item)) {
+			const itemLabel = getItemLabel(item)
+			if (itemLabel && itemLabel.toLowerCase().indexOf(value.toLowerCase()) === 0) {
+				return i
+			}
+		}
+		i++
+	}
+}
+
+function getItemLabel(item) {
+	return item.props.label || (typeof item.props.children === 'string' ? item.props.children : undefined)
+}
+
+function isSelectableItem(item) {
+	return item.props.children && item.props.children.type !== DividerType
 }
