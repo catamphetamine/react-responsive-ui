@@ -98,7 +98,7 @@ require('react-responsive-ui/style.css')
 require('./src/styles/react-responsive-ui-variables.css')
 ```
 
-Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-css-variables`](https://github.com/MadLittleMods/postcss-css-variables). Check that it actually replaces `var()`s with the actual values in the output CSS.
+Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-custom-properties`](https://github.com/postcss/postcss-custom-properties). Check that it actually replaces `var()`s with the actual values in the output CSS.
 
 An example for Webpack and SCSS:
 
