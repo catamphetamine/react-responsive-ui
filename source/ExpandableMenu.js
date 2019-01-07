@@ -95,7 +95,8 @@ export default class ExpandableMenu extends PureComponent
 			togglerAriaLabel,
 			togglerAriaHasPopup,
 			togglerClassName,
-			children
+			children,
+			...rest
 		}
 		= this.props
 
@@ -142,11 +143,9 @@ export default class ExpandableMenu extends PureComponent
 				{menuToggler}
 
 				<ExpandableList
+					{...rest}
 					ref={this.storeListRef}
 					aria-label={this.props['aria-label']}
-					upward={upward}
-					alignment={alignment}
-					scrollIntoView={scrollIntoView}
 					scrollMaxItems={0}
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}
