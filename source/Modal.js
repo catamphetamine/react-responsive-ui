@@ -197,6 +197,18 @@ class Modal extends Component
 		this.could_not_close_because_busy_animation_timeout = undefined
 	}
 
+	getAppElement() {
+		const {
+			appElement,
+			appElementId
+		} = this.props
+
+		if (appElementId && typeof window !== 'undefined') {
+			return document.getElementById(appElementId)
+		}
+		return appElement
+	}
+
 	storeContentInstance = (ref) => this.content = ref
 
 	render()
@@ -215,8 +227,6 @@ class Modal extends Component
 			title,
 			closeLabel,
 			ariaHideApp,
-			appElement,
-			appElementId,
 			closeButtonIcon,
 			actions,
 			unmount,
@@ -244,8 +254,8 @@ class Modal extends Component
 				onRequestClose={ this.on_request_close }
 				closeTimeoutMS={ closeTimeout }
 				contentLabel={ this.props['aria-label'] || ariaLabel || contentLabel }
-				ariaHideApp={ ariaHideApp }
-				appElement={ appElementId ? (typeof window === 'undefined' ? undefined : document.getElementById(appElementId)) : appElement }
+				ariaHideApp={ (this.getAppElement() || globalAppElement) ? ariaHideApp : false }
+				appElement={ this.getAppElement() }
 				style={ react_modal_style }
 				overlayClassName={ classNames('rrui__modal__overlay',
 				{
@@ -747,6 +757,10 @@ Modal.Title = Title
 Modal.Content = Content
 Modal.Actions = Actions
 
-Modal.setAppElement = ReactModal.setAppElement
+let globalAppElement
+Modal.setAppElement = (element) => {
+	globalAppElement = element
+	ReactModal.setAppElement(element)
+}
 
 export default Modal
