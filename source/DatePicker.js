@@ -91,6 +91,9 @@ export default class DatePicker extends PureComponent
 		// Set to `true` to mark the field as required
 		required : PropTypes.bool.isRequired,
 
+		// HTML `tabIndex` attribute
+		tabIndex : PropTypes.number,
+
 		// HTML `<input/>` `name` attribute
 		name : PropTypes.string,
 
@@ -645,6 +648,7 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
+			tabIndex,
 			waitForKeyboardSlideIn,
 			keyboardSlideInAnimationDuration,
 			buttonAriaLabel,
@@ -709,6 +713,7 @@ export default class DatePicker extends PureComponent
 					label={ label }
 					placeholder={ label ? placeholder : placeholder || formatHint }
 					aria-label={ label ? `${label}: ${placeholder || formatHint}` : undefined }
+					tabIndex={ tabIndex }
 					disabled={ disabled }
 					value={ text_value !== undefined ? text_value : formatDate(value, format) }
 					onKeyDown={ this.onInputKeyDown }
