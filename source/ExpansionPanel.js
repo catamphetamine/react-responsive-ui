@@ -15,7 +15,6 @@ export default class ExpansionPanel extends React.Component {
 	static propTypes = {
 		title: PropTypes.string.isRequired,
 		disabled: PropTypes.bool,
-		headingLevel: PropTypes.number.isRequired,
 		// `isExpanded` can be used for manual control.
 		// For example, when there's a group of expansion panels
 		// and only one of them should be expanded at any given time.
@@ -32,7 +31,6 @@ export default class ExpansionPanel extends React.Component {
 	}
 
 	static defaultProps = {
-		headingLevel: 3,
 		toggleIcon: DownArrow,
 		toggleIconPlacement: 'end',
 		expandContentAnimationDuration: 300
@@ -101,7 +99,6 @@ export default class ExpansionPanel extends React.Component {
 		const {
 			title,
 			disabled,
-			headingLevel,
 			toggleIcon: ToggleIcon,
 			toggleIconPlacement,
 			style,
@@ -115,8 +112,6 @@ export default class ExpansionPanel extends React.Component {
 			expandedHeight
 		} = this.state
 
-		const Heading = `h${headingLevel}`
-
 		// There was a possibility of using `<details/>`/`<summary/>` elements here
 		// but `<summary/>` can only contain any valid paragraph content
 		// which means it can't contain lists, divs, paragraphs, etc.
@@ -129,7 +124,7 @@ export default class ExpansionPanel extends React.Component {
 					'rrui__expansion-panel--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
 					'rrui__expansion-panel--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
 				})}>
-				<Heading style={HEADING_STYLE}>
+				<header style={HEADING_STYLE}>
 					<button
 						type="button"
 						onClick={this.onToggle}
@@ -151,7 +146,7 @@ export default class ExpansionPanel extends React.Component {
 								className="rrui__expansion-panel__icon rrui__expansion-panel__icon--end"/>
 						}
 					</button>
-				</Heading>
+				</header>
 				<div
 					ref={this.content}
 					aria-hidden={!isExpanded}
