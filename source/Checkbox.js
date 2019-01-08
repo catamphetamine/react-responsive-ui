@@ -75,8 +75,21 @@ export default class Checkbox extends PureComponent
 		}
 	}
 
-	onFocus = () => this.setState({ isFocused: true })
-	onBlur  = () => this.setState({ isFocused: false })
+	onFocus = () => {
+		const { onFocus } = this.props
+		if (onFocus) {
+			onFocus(event)
+		}
+		this.setState({ isFocused: true })
+	}
+
+	onBlur  = () => {
+		const { onBlur } = this.props
+		if (onBlur) {
+			onBlur(event)
+		}
+		this.setState({ isFocused: false })
+	}
 
 	storeInstance = (ref) => this.checkbox = ref
 

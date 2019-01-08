@@ -937,7 +937,13 @@ export default class Autocomplete extends PureComponent
 		}
 	}
 
-	onBlur = (event) => this.list && this.list.onBlur(event)
+	onBlur = (event) => {
+		const { onBlur, value } = this.props
+		if (onBlur) {
+			onBlurForReduxForm(onBlur, event, value)
+		}
+		this.list && this.list.onBlur(event)
+	}
 
 	onClick = (event) =>
 	{

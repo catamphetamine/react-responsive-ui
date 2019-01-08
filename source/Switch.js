@@ -51,8 +51,24 @@ export default class Switch extends PureComponent
 
 	state = {}
 
-	onFocus = () => this.setState({ isFocused: true })
-	onBlur  = () => this.setState({ isFocused: false })
+	// // Prevent "blur" event on mouse down.
+	// onMouseDown = (event) => event.preventDefault()
+
+	onFocus = () => {
+		const { onFocus } = this.props
+		if (onFocus) {
+			onFocus(event)
+		}
+		this.setState({ isFocused: true })
+	}
+
+	onBlur = () => {
+		const { onBlur } = this.props
+		if (onBlur) {
+			onBlur(event)
+		}
+   	this.setState({ isFocused: false })
+   }
 
 	onKeyDown = (event) =>
 	{
@@ -91,6 +107,9 @@ export default class Switch extends PureComponent
 
 		return (
 			<label
+				onMouseDown={this.onMouseDown}
+				onFocus={this.onFocus}
+				onBlur={this.onBlur}
 				className={ classNames('rrui__switch',
 				{
 					'rrui__input'            : children,
