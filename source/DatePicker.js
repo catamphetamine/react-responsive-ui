@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import TextInput from './TextInputComponent'
 import Expandable from './Expandable'
 import YearMonthSelect from './YearMonthSelect'
+import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 import { onBlur } from './utility/focus'
@@ -692,15 +693,16 @@ export default class DatePicker extends PureComponent
 		}
 
 		return (
-			<div
-				ref={ this.storeContainerNode }
-				onKeyDown={ this.onContainerKeyDown }
-				onBlur={ this.onBlur }
-				className={ classNames('rrui__date-picker', className,
-				{
+			<WithError
+				setRef={this.storeContainerNode}
+				error={error}
+				indicateInvalid={indicateInvalid}
+				onKeyDown={this.onContainerKeyDown}
+				onBlur={this.onBlur}
+				style={style}
+				className={classNames(className, 'rrui__date-picker', {
 					'rrui__date-picker--disabled' : disabled
-				}) }
-				style={ style }>
+				})}>
 
 				{/* Date input */}
 				<TextInput
@@ -776,14 +778,7 @@ export default class DatePicker extends PureComponent
 							className="rrui__date-picker__calendar" />
 					</Expandable>
 				</TextInput>
-
-				{/* Error message */}
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 }

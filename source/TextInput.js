@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import Input from './TextInputComponent'
+import WithError from './WithError'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -154,16 +155,13 @@ export default class TextInput extends PureComponent
 		}
 
 		return (
-			<div
-				style={ style }
-				className={ classNames
-				(
-					className,
-					'rrui__text-input',
-					{
-						'rrui__text-input--focus': isFocused
-					}
-				) }>
+			<WithError
+				error={error}
+				indicateInvalid={indicateInvalid}
+				style={style}
+				className={classNames(className, 'rrui__text-input', {
+					'rrui__text-input--focus': isFocused
+				})}>
 
 				<Input
 					{...rest}
@@ -172,14 +170,7 @@ export default class TextInput extends PureComponent
 					indicateInvalid={indicateInvalid}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur} />
-
-				{/* Error message */}
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 

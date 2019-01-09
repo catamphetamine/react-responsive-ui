@@ -8,6 +8,7 @@ import List from './List'
 import Label from './TextInputLabel'
 import TextInput from './TextInputInput'
 import Ellipsis from './Ellipsis'
+import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 import { submitFormOnCtrlEnter } from './utility/dom'
@@ -392,18 +393,15 @@ export default class Autocomplete extends PureComponent
 		// value={options.length === 0 ? undefined : (inputValue.trim() === '' ? undefined : value)}
 
 		return (
-			<div
-				id={ id }
-				style={ style ? { ...containerStyle, ...style } : containerStyle }
-				className={ classNames
-				(
-					'rrui__autocomplete',
-					{
-						'rrui__autocomplete--expanded' : isExpanded,
-						'rrui__autocomplete--compact'  : compact || icon
-					},
-					className
-				) }>
+			<WithError
+				id={id}
+				error={error}
+				indicateInvalid={indicateInvalid}
+				style={style ? { ...containerStyle, ...style } : containerStyle}
+				className={classNames(className, 'rrui__autocomplete', {
+					'rrui__autocomplete--expanded' : isExpanded,
+					'rrui__autocomplete--compact'  : compact || icon
+				})}>
 
 				<div
 					ref={ this.storeInputComponentNode }
@@ -470,14 +468,7 @@ export default class Autocomplete extends PureComponent
 						))}
 					</ExpandableList>
 				</div>
-
-				{/* Error message */}
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 

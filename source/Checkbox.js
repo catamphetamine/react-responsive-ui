@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import WithError from './WithError'
+
 import { submitFormOnCtrlEnter } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
@@ -113,17 +115,17 @@ export default class Checkbox extends PureComponent
 		const { isFocused } = this.state
 
 		return (
-			<div
-				className={ classNames('rrui__checkbox',
-				{
+			<WithError
+				error={error}
+				indicateInvalid={indicateInvalid}
+				style={style}
+				className={classNames(className, 'rrui__checkbox', {
 					// 'rrui__checkbox--checked'  : value,
 					'rrui__checkbox--invalid'   : indicateInvalid && error,
 					'rrui__checkbox--disabled'  : disabled,
 					'rrui__checkbox--multiline' : multiline,
 					'rrui__checkbox--focus'     : isFocused
-				},
-				className) }
-				style={ style }>
+				})}>
 
 				<label
 					className={ classNames('rrui__input',
@@ -170,13 +172,7 @@ export default class Checkbox extends PureComponent
 						</span>
 					}
 				</label>
-
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 

@@ -8,6 +8,7 @@ import List from './List'
 import Label from './TextInputLabel'
 import Ellipsis from './Ellipsis'
 import Divider from './Divider'
+import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
 import { submitFormOnCtrlEnter, submitContainingForm } from './utility/dom'
@@ -214,17 +215,14 @@ export default class Select extends PureComponent
 		const label = this.getLabel()
 
 		return (
-			<div
-				style={ style ? { ...containerStyle, ...style } : containerStyle }
-				className={ classNames
-				(
-					'rrui__select',
-					{
-						'rrui__select--compact' : compact || icon,
-						'rrui__select--focus'   : isFocused
-					},
-					className
-				) }>
+			<WithError
+				error={error}
+				indicateInvalid={indicateInvalid}
+				style={style ? { ...containerStyle, ...style } : containerStyle}
+				className={classNames(className, 'rrui__select', {
+					'rrui__select--compact' : compact || icon,
+					'rrui__select--focus'   : isFocused
+				})}>
 
 				<div
 					ref={ this.storeInputComponentNode }
@@ -311,14 +309,7 @@ export default class Select extends PureComponent
 						</ExpandableList>
 					}
 				</div>
-
-				{/* Error message */}
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 

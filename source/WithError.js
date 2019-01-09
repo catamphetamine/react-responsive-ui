@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * .rrui__interaction--pointer {
@@ -10,13 +11,14 @@ import React from 'react'
  */
 export default function WithError(props) {
 	const {
+		setRef,
 		error,
 		indicateInvalid,
 		children,
 		...rest
 	} = props
 	return (
-		<div {...rest}>
+		<div ref={setRef} {...rest}>
 			{children}
 			{/* Error message */}
 			{ indicateInvalid && error &&
@@ -29,6 +31,8 @@ export default function WithError(props) {
 }
 
 WithError.propTypes = {
+	setRef : PropTypes.func,
+
 	// Renders an error message below the `<input/>`
 	error : PropTypes.string,
 
