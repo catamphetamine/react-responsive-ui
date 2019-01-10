@@ -64,6 +64,9 @@ export default class TextInput extends PureComponent
 		// rowsMax : 12
 	}
 
+	initAutoresizeAttempts = 0
+	currentHeight = 0
+
 	hiddenTextArea = createRef()
 	// hiddenTextAreaSingleLine = createRef()
 
@@ -81,22 +84,7 @@ export default class TextInput extends PureComponent
 		// // the first `this.measurements()` call instead.
 
 		if (multiline && autoresize) {
-			const style = getComputedStyle(this.input)
-
-			// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
-			// `style.height` includes borders.
-			this.currentHeight = Math.ceil(parseFloat(style.height))
-			this.minHeight = this.currentHeight
-
-			// this.verticalPadding = Math.ceil(parseFloat(style.paddingTop)) + Math.ceil(parseFloat(style.paddingBottom))
-
-			// Top and bottom borders are extra height,
-			// because `.scrollHeight` doesn't include borders.
-			this.bordersHeight =
-				Math.ceil(parseFloat(style.borderTopWidth)) +
-				Math.ceil(parseFloat(style.borderBottomWidth))
-
-			this.autoresize()
+			this.initAutoresize()
 		}
 
 		if (multiline && autoresize) {
@@ -122,8 +110,76 @@ export default class TextInput extends PureComponent
 		}
 	}
 
+	// Even if padding on <textarea/> has been set
+	// it's still possible that `font-size` hasn't been set yet.
+	// (it happened in a project)
+	// So this function doesn't guarantee anything.
+	haveStylesLoaded() {
+		// The default <textarea/> top/bottom padding in Chrome on Windows is 2px.
+		return this.verticalPadding > 2 * 2
+	}
+
+	// `height` works incorrectly in some weird cases.
+	// For example, when `<textarea/>` is hidden when mounted
+	// or when there's no stylesheet loaded yet.
+	// For example, when stylesheets are included "dynamically"
+	// like Webpack's `style-loader` does (is used in development mode,
+	// or when using "code splitting" when "chunks" are `import()`ed dynamically).
+	//
+	// https://stackoverflow.com/questions/39400038/how-to-ensure-that-hot-css-loads-before-js-in-webpack-dev-server
+	// https://github.com/webpack-contrib/style-loader/issues/269
+	//
+	// An alternative solution would be:
+	//
+	// this.input.minHeight = 0
+	// this.input.minHeight = this.input.scrollHeight + this.bordersHeight
+	//
+	// or:
+	//
+	// this.input.minHeight = this.hiddenTextArea.current.scrollHeight + this.bordersHeight
+	//
+	// which wouldn't ever undersize the <textarea/>
+	// but it would oversize it due to the incorrect
+	// <textarea/> width before styles are loaded.
+	//
+	initAutoresize = () => {
+		this.initAutoresizeAttempts++
+		this.getMeasurements()
+		if (this.haveStylesLoaded()) {
+			this.autoresize()
+		}
+		// Even if padding on <textarea/> has been set
+		// it's still possible that `font-size` hasn't been set yet.
+		// Or it could be another padding in a subsequent stylesheet.
+		// So keep re-initializing <textarea/>, say, for a second.
+		if (this.initAutoresizeAttempts <= 5) {
+			setTimeout(this.initAutoresize, 200)
+		}
+	}
+
+	getMeasurements() {
+		const style = getComputedStyle(this.input)
+
+		// // Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
+		// // `style.height` includes borders.
+		// this.currentHeight = Math.ceil(parseFloat(style.height))
+		// this.minHeight = this.currentHeight
+
+		// Get vertical padding.
+		// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
+		this.verticalPadding = Math.ceil(parseFloat(style.paddingTop)) + Math.ceil(parseFloat(style.paddingBottom))
+
+		// Top and bottom borders are extra height,
+		// because `.scrollHeight` doesn't include borders.
+		// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
+		this.bordersHeight =
+			Math.ceil(parseFloat(style.borderTopWidth)) +
+			Math.ceil(parseFloat(style.borderBottomWidth))
+	}
+
 	// Copy-pasted from Material UI on Oct 24th, 2018.
 	// https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/InputBase/Textarea.js
+	//
 	autoresize = (event) =>
 	{
 		// const { rowsMax } = this.props
@@ -153,20 +209,20 @@ export default class TextInput extends PureComponent
 		// `.style.height` does include borders.
 		height += this.bordersHeight
 
-		if (height <= this.minHeight) {
-			height = this.minHeight
-		}
-		// For some reason Chrome on Windows 10
+		// if (height <= this.minHeight) {
+		// 	height = this.minHeight
+		// }
+		// For some weird reason Chrome on Windows 10
 		// requires an extra pixel been added
 		// to avoid showing vertical scrollbar.
 		// (Oct 24th, 2018)
-		else {
+		// else {
 			height += 1
-		}
+		// }
 
 		// "Need a large enough different to update the height.
 		//  This prevents infinite rendering loop."
-		// Don't know what loop they're talking about.
+		// It's unclear what loop they're talking about.
 		if (Math.abs(this.currentHeight - height) > 1) {
 			this.currentHeight = height
 			// `.style.height` includes borders.
