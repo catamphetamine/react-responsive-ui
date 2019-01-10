@@ -128,8 +128,7 @@ export default class Checkbox extends PureComponent
 				})}>
 
 				<label
-					className={ classNames('rrui__input',
-					{
+					className={ classNames('rrui__input', {
 						'rrui__input--multiline' : multiline
 					}) }>
 

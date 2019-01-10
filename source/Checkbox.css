@@ -8,6 +8,9 @@
 
 .rrui__checkbox .rrui__input--multiline
 {
+	/* IE and Edge have a bug with `inline-flex`:
+	   the multiline content shrinks in width. */
+	display     : flex;
 	align-items : flex-start;
 }
 
