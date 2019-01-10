@@ -239,6 +239,12 @@
           align-items: center; }
 
 .rrui__checkbox .rrui__input--multiline {
+  /* IE and Edge have a bug with `inline-flex`:
+	   the multiline content shrinks in width. */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
@@ -2133,11 +2139,13 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: #ffffff;
   background-color: #000000;
   border-radius: 0.1rem;
-  opacity: 0;
-  -webkit-transform: translateY(0.3em) scale(0.95);
-      -ms-transform: translateY(0.3em) scale(0.95);
-          transform: translateY(0.3em) scale(0.95);
   cursor: default; }
+
+.rrui__tooltip {
+  opacity: 0;
+  -webkit-transform: translateY(0.2em) scale(0.97);
+      -ms-transform: translateY(0.2em) scale(0.97);
+          transform: translateY(0.2em) scale(0.97); }
 
 .rrui__tooltip--after-show {
   opacity: 1;
@@ -2149,9 +2157,9 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__tooltip--before-hide {
   opacity: 0;
   /* transform : scale(0.8); */
-  -webkit-transform: translateY(0.3em) scale(0.92);
-      -ms-transform: translateY(0.3em) scale(0.92);
-          transform: translateY(0.3em) scale(0.92); }
+  -webkit-transform: translateY(0.2em) scale(0.97);
+      -ms-transform: translateY(0.2em) scale(0.97);
+          transform: translateY(0.2em) scale(0.97); }
 
 .rrui__tooltip--after-show {
   -webkit-transition: opacity 90ms ease-out, -webkit-transform 120ms ease-out;
@@ -2161,11 +2169,11 @@ but rather `width: auto` or `left: 0; right: 0;`.
   transition: opacity 90ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out; }
 
 .rrui__tooltip--before-hide {
-  -webkit-transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
-  transition: opacity 120ms ease-out, -webkit-transform 120ms ease-out;
-  -o-transition: opacity 120ms ease-out, transform 120ms ease-out;
-  transition: opacity 120ms ease-out, transform 120ms ease-out;
-  transition: opacity 120ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out; }
+  -webkit-transition: opacity 90ms ease-out, -webkit-transform 120ms ease-out;
+  transition: opacity 90ms ease-out, -webkit-transform 120ms ease-out;
+  -o-transition: opacity 90ms ease-out, transform 120ms ease-out;
+  transition: opacity 90ms ease-out, transform 120ms ease-out;
+  transition: opacity 90ms ease-out, transform 120ms ease-out, -webkit-transform 120ms ease-out; }
 
 /* Prevents entering text selection mode
    on mobile devices when tapping down and holding */
