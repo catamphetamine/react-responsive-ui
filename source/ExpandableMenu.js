@@ -84,11 +84,6 @@ export default class ExpandableMenu extends PureComponent
 	{
 		const
 		{
-			upward,
-			alignment,
-			scrollIntoView,
-			closeButtonIcon,
-			closeLabel,
 			style,
 			className,
 			toggler,
@@ -152,8 +147,6 @@ export default class ExpandableMenu extends PureComponent
 					onTapOutside={this.onFocusOut}
 					onFocusOut={this.onFocusOut}
 					getTogglerNode={this.getTogglerNode}
-					closeButtonIcon={closeButtonIcon}
-					closeLabel={closeLabel}
 					focusSelectedItem={false}
 					className="rrui__shadow">
 					{menuItems}
