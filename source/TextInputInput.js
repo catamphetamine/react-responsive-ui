@@ -75,6 +75,8 @@ export default class TextInput extends PureComponent
 	{
 		const { multiline, autoresize, value } = this.props
 
+		this._isMounted = true
+
 		// Doing `this.measure()` here now
 		// because `<textarea/>` should autoresize
 		// in case its `value` is set up front.
@@ -95,6 +97,8 @@ export default class TextInput extends PureComponent
 	componentWillUnmount()
 	{
 		const { multiline, autoresize } = this.props
+
+		this._isMounted = false
 
 		if (multiline && autoresize) {
 			window.removeEventListener('resize', this.onWindowResize)
@@ -143,6 +147,9 @@ export default class TextInput extends PureComponent
 	// <textarea/> width before styles are loaded.
 	//
 	initAutoresize = () => {
+		if (!this._isMounted) {
+			return
+		}
 		this.initAutoresizeAttempts++
 		this.getMeasurements()
 		if (this.haveStylesLoaded()) {
