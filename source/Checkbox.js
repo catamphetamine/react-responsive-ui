@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import WithError from './WithError'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+import { onBlurForReduxForm } from './utility/redux-form'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -77,7 +78,7 @@ export default class Checkbox extends PureComponent
 		}
 	}
 
-	onFocus = () => {
+	onFocus = (event) => {
 		const { onFocus } = this.props
 		if (onFocus) {
 			onFocus(event)
@@ -85,10 +86,10 @@ export default class Checkbox extends PureComponent
 		this.setState({ isFocused: true })
 	}
 
-	onBlur  = () => {
-		const { onBlur } = this.props
+	onBlur = (event) => {
+		const { onBlur, value } = this.props
 		if (onBlur) {
-			onBlur(event)
+			onBlurForReduxForm(onBlur, event, value)
 		}
 		this.setState({ isFocused: false })
 	}

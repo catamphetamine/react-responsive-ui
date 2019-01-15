@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+import { onBlurForReduxForm } from './utility/redux-form'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -54,7 +55,7 @@ export default class Switch extends PureComponent
 	// // Prevent "blur" event on mouse down.
 	// onMouseDown = (event) => event.preventDefault()
 
-	onFocus = () => {
+	onFocus = (event) => {
 		const { onFocus } = this.props
 		if (onFocus) {
 			onFocus(event)
@@ -62,10 +63,10 @@ export default class Switch extends PureComponent
 		this.setState({ isFocused: true })
 	}
 
-	onBlur = () => {
-		const { onBlur } = this.props
+	onBlur = (event) => {
+		const { onBlur, value } = this.props
 		if (onBlur) {
-			onBlur(event)
+			onBlurForReduxForm(onBlur, event, value)
 		}
    	this.setState({ isFocused: false })
    }

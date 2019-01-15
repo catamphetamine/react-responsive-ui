@@ -5,6 +5,8 @@ import classNames from 'classnames'
 import Input from './TextInputComponent'
 import WithError from './WithError'
 
+import { onBlurForReduxForm } from './utility/redux-form'
+
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
@@ -106,7 +108,7 @@ export default class TextInput extends PureComponent
 
 	focus = () => this.input.focus()
 
-	onFocus = () => {
+	onFocus = (event) => {
 		const { onFocus } = this.props
 		if (onFocus) {
 			onFocus(event)
@@ -115,9 +117,9 @@ export default class TextInput extends PureComponent
 	}
 
 	onBlur = () => {
-		const { onBlur } = this.props
+		const { onBlur, value } = this.props
 		if (onBlur) {
-			onBlur(event)
+			onBlurForReduxForm(onBlur, event, value)
 		}
    	this.setState({ isFocused: false })
    }
