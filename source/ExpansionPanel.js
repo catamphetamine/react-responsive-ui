@@ -119,11 +119,7 @@ export default class ExpansionPanel extends React.Component {
 		return (
 			<section
 				style={style}
-				className={classNames(className, 'rrui__expansion-panel', {
-					'rrui__expansion-panel--expanded': isExpanded,
-					'rrui__expansion-panel--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
-					'rrui__expansion-panel--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
-				})}>
+				className={classNames(className, 'rrui__expansion-panel')}>
 				<header style={HEADING_STYLE}>
 					<button
 						type="button"
@@ -131,11 +127,21 @@ export default class ExpansionPanel extends React.Component {
 						aria-expanded={isExpanded ? true : false}
 						aria-label={this.props['aria-label']}
 						disabled={disabled}
-						className="rrui__button-reset rrui__outline rrui__expansion-panel__header">
+						className={classNames('rrui__button-reset', 'rrui__outline', 'rrui__expansion-panel__header', {
+							// The explicit "modifier" CSS classes on "header" are
+							// to support <Collapsible/>s inside <Collapsible/>s.
+							'rrui__expansion-panel__header--expanded': isExpanded,
+							'rrui__expansion-panel__header--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
+							'rrui__expansion-panel__header--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
+						})}>
 						{ToggleIcon && toggleIconPlacement === 'start' &&
 							<ToggleIcon
 								aria-hidden
-								className="rrui__expansion-panel__icon rrui__expansion-panel__icon--start"/>
+								className={classNames('rrui__expansion-panel__icon', 'rrui__expansion-panel__icon--start', {
+									// The explicit "modifier" CSS class is to
+									// support <Collapsible/>s inside <Collapsible/>s.
+									'rrui__expansion-panel__icon--expanded': isExpanded
+								})}/>
 						}
 						<span className="rrui__expansion-panel__heading">
 							{title}
@@ -143,7 +149,11 @@ export default class ExpansionPanel extends React.Component {
 						{ToggleIcon && toggleIconPlacement === 'end' &&
 							<ToggleIcon
 								aria-hidden
-								className="rrui__expansion-panel__icon rrui__expansion-panel__icon--end"/>
+								className={classNames('rrui__expansion-panel__icon', 'rrui__expansion-panel__icon--end', {
+									// The explicit "modifier" CSS class is to
+									// support <Collapsible/>s inside <Collapsible/>s.
+									'rrui__expansion-panel__icon--expanded': isExpanded
+								})}/>
 						}
 					</button>
 				</header>

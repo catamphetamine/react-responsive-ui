@@ -41,33 +41,35 @@
 	text-align: left;
 }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__header
+.rrui__expansion-panel__header--expanded
 {
 	height: var(--rrui-expansion-panel-heading-height-expanded);
 }
 
-.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header
+.rrui__expansion-panel__header--toggle-icon-end
 {
 	background-color: var(--rrui-gray-color-lightest);
 }
 
-.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header:focus
+.rrui__expansion-panel__header--toggle-icon-end:focus
 {
 	box-shadow: inset 0 0 0 1px var(--rrui-gray-color-light);
 }
 
-.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:focus .rrui__expansion-panel__heading
+/* CSS select specificity is to support <Collapsible/>s inside <Collapsible/>s. */
+.rrui__expansion-panel__header--toggle-icon-start:focus > .rrui__expansion-panel__heading
 {
 	padding-bottom: 0.15em;
 	border-bottom: 1px solid var(--rrui-expansion-panel-border-color-focus);
 }
 
-.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:active .rrui__expansion-panel__heading
+/* CSS select specificity is to support <Collapsible/>s inside <Collapsible/>s. */
+.rrui__expansion-panel__header--toggle-icon-start:active > .rrui__expansion-panel__heading
 {
 	border-bottom: 1px solid var(--rrui-expansion-panel-border-color-active);
 }
 
-.rrui__expansion-panel--toggle-icon-start.rrui__expansion-panel--expanded .rrui__expansion-panel__header
+.rrui__expansion-panel__header--toggle-icon-start.rrui__expansion-panel__header--expanded
 {
 	height: var(--rrui-expansion-panel-heading-height);
 }
@@ -105,7 +107,7 @@
 	transform: translateY(-50%) rotate(0deg);
 }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--end
+.rrui__expansion-panel__icon--expanded.rrui__expansion-panel__icon--end
 {
 	transform: translateY(-50%) rotate(180deg)
 }
@@ -117,7 +119,7 @@
 	transform: translateY(-50%) rotate(-90deg);
 }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--start
+.rrui__expansion-panel__icon--expanded.rrui__expansion-panel__icon--start
 {
 	transform: translateY(-50%) rotate(0deg)
 }
