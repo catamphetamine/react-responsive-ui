@@ -116,7 +116,7 @@ export default class TextInput extends PureComponent
 		this.setState({ isFocused: true })
 	}
 
-	onBlur = () => {
+	onBlur = (event) => {
 		const { onBlur, value } = this.props
 		if (onBlur) {
 			onBlurForReduxForm(onBlur, event, value)
