@@ -109,7 +109,7 @@ export default class OnTapOutside extends React.Component
 
 		if (onTapOutside) {
 			this.focusOut = true
-			onTapOutside()
+			onTapOutside(event)
 			this.focusOut = undefined
 		}
 	}
