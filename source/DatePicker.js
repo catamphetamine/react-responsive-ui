@@ -720,10 +720,12 @@ export default class DatePicker extends PureComponent
 
 					{/* This layer can intercept taps on mobile devices
 					    to prevent the keyboard from showing
-					    when the date picker is in fullscreen mode */}
+					    when the date picker is in fullscreen mode.
+					    `tabIndex={-1}` is to prevent focus-out/focus-in jitter on click. */}
 					<div
 						ref={ this.storeInputOverlayNode }
 						onClick={ this.onToggleButtonClick }
+						tabIndex={ -1 }
 						className="rrui__date-picker__input-overlay"/>
 
 					{/* Calendar icon which toggles the calendar. */}
