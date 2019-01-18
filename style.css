@@ -337,11 +337,14 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background-color: #ffffff;
   border-radius: 10%;
   -webkit-transform: scale(0.9);
       -ms-transform: scale(0.9);
           transform: scale(0.9); }
+
+.rrui__checkbox--invalid .rrui__checkbox__box-background {
+  background-color: #ffffff; }
 
 /* Checkbox color (:invalid) */
 .rrui__checkbox--invalid .rrui__checkbox__box {
@@ -826,24 +829,26 @@
   font-weight: normal;
   text-align: left; }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__header {
+.rrui__expansion-panel__header--expanded {
   height: calc(0.6rem * 5); }
 
-.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header {
+.rrui__expansion-panel__header--toggle-icon-end {
   background-color: #F3F3F3; }
 
-.rrui__expansion-panel--toggle-icon-end .rrui__expansion-panel__header:focus {
+.rrui__expansion-panel__header--toggle-icon-end:focus {
   -webkit-box-shadow: inset 0 0 0 1px #cacaca;
           box-shadow: inset 0 0 0 1px #cacaca; }
 
-.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:focus .rrui__expansion-panel__heading {
+/* CSS select specificity is to support <Collapsible/>s inside <Collapsible/>s. */
+.rrui__expansion-panel__header--toggle-icon-start:focus > .rrui__expansion-panel__heading {
   padding-bottom: 0.15em;
   border-bottom: 1px solid #03b2cb; }
 
-.rrui__expansion-panel--toggle-icon-start .rrui__expansion-panel__header:active .rrui__expansion-panel__heading {
+/* CSS select specificity is to support <Collapsible/>s inside <Collapsible/>s. */
+.rrui__expansion-panel__header--toggle-icon-start:active > .rrui__expansion-panel__heading {
   border-bottom: 1px solid #2bd7f0; }
 
-.rrui__expansion-panel--toggle-icon-start.rrui__expansion-panel--expanded .rrui__expansion-panel__header {
+.rrui__expansion-panel__header--toggle-icon-start.rrui__expansion-panel__header--expanded {
   height: calc(0.6rem * 4); }
 
 .rrui__expansion-panel__content-wrapper {
@@ -877,7 +882,7 @@
       -ms-transform: translateY(-50%) rotate(0deg);
           transform: translateY(-50%) rotate(0deg); }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--end {
+.rrui__expansion-panel__icon--expanded.rrui__expansion-panel__icon--end {
   -webkit-transform: translateY(-50%) rotate(180deg);
       -ms-transform: translateY(-50%) rotate(180deg);
           transform: translateY(-50%) rotate(180deg); }
@@ -889,7 +894,7 @@
       -ms-transform: translateY(-50%) rotate(-90deg);
           transform: translateY(-50%) rotate(-90deg); }
 
-.rrui__expansion-panel--expanded .rrui__expansion-panel__icon--start {
+.rrui__expansion-panel__icon--expanded.rrui__expansion-panel__icon--start {
   -webkit-transform: translateY(-50%) rotate(0deg);
       -ms-transform: translateY(-50%) rotate(0deg);
           transform: translateY(-50%) rotate(0deg); }
@@ -977,11 +982,23 @@ than 100% of the parent if the parent is small enough.
   font-weight: inherit;
   font-style: inherit; }
 
-/* Overrides Chrome autofill yellow background color */
+/* Overrides Chrome autofill yellow background color. */
 .rrui__input-field:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
           box-shadow: 0 0 0 1000px #ffffff inset; }
 
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is focused). */
+.rrui__input-field:focus:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+          box-shadow: 0 0 0 1000px #ffffff inset; }
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
+.rrui__input-field--invalid:-webkit-autofill,
+.rrui__input-field--invalid:focus:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+          box-shadow: 0 0 0 1000px #ffffff inset; }
+
+/* For `<TextInput/>` and alike. */
 .rrui__input-field,
 .rrui__select__button {
   /* Stretches the inputs to full column width by default. */
@@ -992,6 +1009,7 @@ than 100% of the parent if the parent is small enough.
   background-color: #ffffff;
   border-radius: 0rem; }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field,
 .rrui__select__button,
 .rrui__select__native {
@@ -1003,19 +1021,24 @@ than 100% of the parent if the parent is small enough.
   -o-transition: border 0.1s;
   transition: border 0.1s; }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field:focus,
 .rrui__select__button:focus,
 .rrui__select__native:focus + .rrui__select__button,
 .rrui__select__native:focus {
-  border-color: #03b2cb; }
+  border-color: #03b2cb;
+  background-color: #ffffff; }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field--invalid,
 .rrui__input-field--invalid:focus,
 .rrui__select__button--invalid,
 .rrui__select__button--invalid:focus,
+.rrui__select__native--invalid:focus + .rrui__select__button,
 .rrui__select__native--invalid,
-.rrui__select__native:focus + .rrui__select__button--invalid {
-  border-color: #d30f00; }
+.rrui__select__native--invalid:focus {
+  border-color: #d30f00;
+  background-color: #ffffff; }
 
 .rrui__input-field {
   height: 100%;
@@ -1028,12 +1051,12 @@ than 100% of the parent if the parent is small enough.
   height: auto;
   resize: none; }
 
-.rrui__input-field--invalid,
-.rrui__input-field--invalid:focus {
-  border-color: #d30f00; }
-
-.rrui__input-field--disabled {
-  cursor: default;
+/* For `<TextInput/>` and alike. */
+.rrui__input-field--disabled,
+.rrui__select__button--disabled {
+  /* "pointer-events" prevents "cursor: wait" from working. */
+  pointer-events: none;
+  /* cursor : default; */
   background-color: #ffffff; }
 
 .rrui__input-label {
@@ -1633,9 +1656,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__select__button--empty .rrui__select__selected-label {
   color: #888888; }
 
-.rrui__select__button--invalid {
-  border-color: #d30f00; }
-
 /* For `<Select native={false}/>` (default). */
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
 .rrui__select__native:active + .rrui__select__button .rrui__select__arrow,
@@ -1690,11 +1710,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__select--compact .rrui__expandable-list {
   width: auto; }
-
-.rrui__select__button--disabled {
-  /* "pointer-events" prevents "cursor: wait" from working */
-  pointer-events: none;
-  background-color: #ffffff; }
 
 /* Stretches the inputs to full column width by default. */
 /* Because everyone uses CSS grids today. */
