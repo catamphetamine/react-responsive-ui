@@ -111,21 +111,26 @@
 
 .rrui__checkbox__box-background
 {
-	position      : absolute;
-	top           : 0;
-	left          : 0;
-	z-index       : 1;
-	width         : 100%;
-	height        : 100%;
-	background    : var(--rrui-checkbox-fill-color);
-	border-radius : 10%;
-	transform     : scale(0.9);
+	position : absolute;
+	top      : 0;
+	left     : 0;
+	z-index  : 1;
+	width    : 100%;
+	height   : 100%;
+	background-color : var(--rrui-checkbox-fill-color);
+	border-radius    : 10%;
+	transform        : scale(0.9);
+}
+
+.rrui__checkbox--invalid .rrui__checkbox__box-background
+{
+	background-color : var(--rrui-input-field-background-color-error);
 }
 
 /* Checkbox color (:invalid) */
 .rrui__checkbox--invalid .rrui__checkbox__box
 {
-	color : var(--rrui-error-color);
+	color : var(--rrui-input-field-border-color-error);
 }
 
 /* Focus ring. */

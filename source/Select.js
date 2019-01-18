@@ -11,6 +11,7 @@ import Divider from './Divider'
 import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
+import { onBlur } from './utility/focus'
 import { submitFormOnCtrlEnter, submitContainingForm } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
@@ -173,8 +174,14 @@ export default class Select extends PureComponent
 	storeSelectNode = (node) => this.select = node
 	storeSelectButton = (node) => this.selectButton = node
 	storeInputComponentNode = (node) => this.inputComponentNode = node
+	storeContainerNode = (node) => this.container = node
 
 	getSelectButton = () => this.selectButton
+
+	componentWillUnmount()
+	{
+		clearTimeout(this.blurTimer)
+	}
 
 	render()
 	{
@@ -216,6 +223,7 @@ export default class Select extends PureComponent
 
 		return (
 			<WithError
+				setRef={this.storeContainerNode}
 				error={error}
 				indicateInvalid={indicateInvalid}
 				style={style ? { ...containerStyle, ...style } : containerStyle}
@@ -289,7 +297,6 @@ export default class Select extends PureComponent
 							getTogglerNode={this.getSelectButton}
 							onFocusIn={this.onFocusIn}
 							onFocusOut={this.onFocusOut}
-							onTapOutside={this._onFocusOut}
 							closeButtonIcon={closeButtonIcon}
 							closeLabel={closeLabel}
 							className={classNames('rrui__shadow', 'rrui__options-list',
@@ -359,7 +366,7 @@ export default class Select extends PureComponent
 				onClick={ this.onClick }
 				onKeyDown={ this.onKeyDown }
 				onFocus={ this.onFocusIn }
-				onBlur={ this.onTogglerBlur }
+				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
 				aria-label={ this.getAriaLabel() || (showIconOnly ? selectedOptionLabel : undefined) }
@@ -424,7 +431,7 @@ export default class Select extends PureComponent
 				onMouseDown={ this.nativeSelectOnMouseDown }
 				onChange={ this.nativeSelectOnChange }
 				onFocus={ this.onFocusIn }
-				onBlur={ this.__onFocusOut }
+				onBlur={ this.onBlur }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
 				aria-required={ required && isEmptyValue(value) ? true : undefined }
@@ -705,29 +712,15 @@ export default class Select extends PureComponent
 		}
 	}
 
-	onTogglerBlur = (event) =>
+	onBlur = (event) =>
 	{
-		const { onBlur, value } = this.props
-
-		if (this.list) {
-			this.list.onBlur(event)
-		}
-
-		this.__onFocusOut()
-
-		// When the `<button/>` was focused out
-		// while there was no list being shown.
-		if (onBlur && this.list && this.list.expandable && !this.list.expandable.container) {
-			onBlurForReduxForm(onBlur, event, value)
-		}
+		clearTimeout(this.blurTimer)
+		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container)
 	}
 
-	onFocusIn    = () => this.setState({ isFocused: true })
-	__onFocusOut = () => this.setState({ isFocused: false })
-
-	_onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
-		const { native, nativeExpanded } = this.props
+		const { native, nativeExpanded, onBlur, value } = this.props
 
 		if (!native && !nativeExpanded) {
 			// `window.rruiCollapseOnFocusOut` can be used
@@ -737,12 +730,10 @@ export default class Select extends PureComponent
 			}
 		}
 
-		this.__onFocusOut()
-	}
-
-	onFocusOut = (event) =>
-	{
-		const { onBlur, value } = this.props
+		// // Collapse the options `<List/>` if it's expanded.
+		// if (this.list) {
+		// 	this.list.onBlur(event)
+		// }
 
 		this._onFocusOut()
 
@@ -750,6 +741,9 @@ export default class Select extends PureComponent
 			onBlurForReduxForm(onBlur, event, value)
 		}
 	}
+
+	onFocusIn    = () => this.setState({ isFocused: true })
+	_onFocusOut = () => this.setState({ isFocused: false })
 }
 
 // There can be an `undefined` value,

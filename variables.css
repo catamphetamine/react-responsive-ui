@@ -34,7 +34,10 @@
 
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
   --rrui-input-field-background-color : var(--rrui-white-color);
+  --rrui-input-field-background-color-focus : var(--rrui-input-field-background-color);
+  --rrui-input-field-background-color-error : var(--rrui-input-field-background-color);
   --rrui-input-field-background-color-disabled : var(--rrui-input-field-background-color);
+  --rrui-input-field-transition : border 0.1s;
   --rrui-input-field-text-color : var(--rrui-black-color);
   --rrui-input-field-font-size : inherit;
 
@@ -90,6 +93,7 @@
   --rrui-input-field-border-width : 1px;
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
+  --rrui-input-field-border-color-error : var(--rrui-error-color);
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
   --rrui-input-label-focus-top-offset : -70%;
@@ -98,6 +102,7 @@
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label color. */
   --rrui-input-field-label-color : var(--rrui-gray-color);
   --rrui-input-field-label-color-focus : var(--rrui-accent-color);
+  --rrui-input-field-label-color-error : var(--rrui-error-color);
 
   /* `<Select/>` toggler color. */
   --rrui-select-toggler-text-color-active : var(--rrui-accent-color);
@@ -126,7 +131,8 @@
 
   /* `<Checkbox/>` colors. */
   --rrui-checkbox-stroke-color : var(--rrui-black-color);
-  --rrui-checkbox-fill-color : var(--rrui-white-color);
+  --rrui-checkbox-fill-color : var(--rrui-input-field-background-color);
+  --rrui-checkbox-fill-color-error : var(--rrui-input-field-background-color-error);
   --rrui-checkbox-color-focus : var(--rrui-accent-color);
   --rrui-checkbox-color-checked : var(--rrui-accent-color);
   --rrui-checkbox-color-checked-focus : var(--rrui-checkbox-color-focus);

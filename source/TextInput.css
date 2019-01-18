@@ -1,6 +1,6 @@
 .rrui__text-input__label--invalid
 {
-	color : var(--rrui-error-color);
+	color : var(--rrui-input-field-label-color-error);
 }
 
 .rrui__input-field:not(:focus) + .rrui__text-input__label--placeholder

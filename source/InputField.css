@@ -10,13 +10,29 @@
 	font-style    : inherit;
 }
 
-/* Overrides Chrome autofill yellow background color */
+/* Overrides Chrome autofill yellow background color. */
 .rrui__input-field:-webkit-autofill
 {
 	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color) inset;
 }
 
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is focused). */
+.rrui__input-field:focus:-webkit-autofill
+{
+	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-focus) inset;
+}
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
+.rrui__input-field--invalid:-webkit-autofill,
+/* Overrides the corresponding `:focus` CSS rule. */
+.rrui__input-field--invalid:focus:-webkit-autofill
+{
+	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error) inset;
+}
+
+/* For `<TextInput/>` and alike. */
 .rrui__input-field,
+/* For `<Select/>`. */
 .rrui__select__button
 {
 	/* Stretches the inputs to full column width by default. */
@@ -30,17 +46,21 @@
 	border-radius : var(--rrui-input-field-border-radius);
 }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field,
+/* For `<Select/>`. */
 .rrui__select__button,
+/* For `<Select native/>`. */
 .rrui__select__native
 {
 	border-width  : 0;
 	border-bottom-width : var(--rrui-input-field-border-width);
 	border-style  : solid;
 	border-color  : var(--rrui-input-field-border-color);
-	transition    : border 0.1s;
+	transition    : var(--rrui-input-field-transition);
 }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field:focus,
 /* For `<Select/>` when `<button/>` is focused. */
 .rrui__select__button:focus,
@@ -49,17 +69,28 @@
 /* For `<Select native={true}/>`. */
 .rrui__select__native:focus
 {
-	border-color: var(--rrui-input-field-border-color-focus);
+	border-color     : var(--rrui-input-field-border-color-focus);
+	background-color : var(--rrui-input-field-background-color-focus);
 }
 
+/* For `<TextInput/>` and alike. */
 .rrui__input-field--invalid,
+/* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus,
+/* For `<Select/>` when `<button/>` is focused. */
 .rrui__select__button--invalid,
+/* Overrides the corresponding `:focus` CSS rule. */
 .rrui__select__button--invalid:focus,
+/* For `<Select/>` when `<select/>` is focused. */
+/* Overrides the corresponding `:focus` CSS rule. */
+.rrui__select__native--invalid:focus + .rrui__select__button,
+/* For `<Select native={true}/>`. */
 .rrui__select__native--invalid,
-.rrui__select__native:focus + .rrui__select__button--invalid
+/* Overrides the corresponding `:focus` CSS rule. */
+.rrui__select__native--invalid:focus
 {
-	border-color: var(--rrui-error-color);
+	border-color     : var(--rrui-input-field-border-color-error);
+	background-color : var(--rrui-input-field-background-color-error);
 }
 
 .rrui__input-field
@@ -76,15 +107,13 @@
 	resize : none;
 }
 
-.rrui__input-field--invalid,
-.rrui__input-field--invalid:focus
+/* For `<TextInput/>` and alike. */
+.rrui__input-field--disabled,
+/* For `<Select/>`. */
+.rrui__select__button--disabled
 {
-	border-color : var(--rrui-error-color);
-}
-
-.rrui__input-field--disabled
-{
-	cursor : default;
-
+	/* "pointer-events" prevents "cursor: wait" from working. */
+	pointer-events : none;
+	/* cursor : default; */
 	background-color : var(--rrui-input-field-background-color-disabled);
 }

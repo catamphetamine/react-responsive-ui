@@ -50,11 +50,6 @@
 	color: var(--rrui-select-toggler-text-color-empty);
 }
 
-.rrui__select__button--invalid
-{
-	border-color : var(--rrui-error-color);
-}
-
 /* For `<Select native={false}/>` (default). */
 .rrui__select__native:active + .rrui__select__button .rrui__select__selected-label,
 .rrui__select__native:active + .rrui__select__button .rrui__select__arrow,
@@ -119,14 +114,6 @@
 .rrui__select--compact .rrui__expandable-list
 {
 	width : auto;
-}
-
-.rrui__select__button--disabled
-{
-	/* "pointer-events" prevents "cursor: wait" from working */
-	pointer-events : none;
-
-	background-color : var(--rrui-input-field-background-color-disabled);
 }
 
 /* Stretches the inputs to full column width by default. */
