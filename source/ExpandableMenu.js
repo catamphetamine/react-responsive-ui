@@ -144,7 +144,6 @@ export default class ExpandableMenu extends PureComponent
 					scrollMaxItems={0}
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}
-					onTapOutside={this.onFocusOut}
 					onFocusOut={this.onFocusOut}
 					getTogglerNode={this.getTogglerNode}
 					focusSelectedItem={false}

@@ -568,8 +568,10 @@ export default class DatePicker extends PureComponent
 		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, () => this.input, this.preventBlur)
 	}
 
-	_onFocusOut = () =>
+	onFocusOut = (event) =>
 	{
+		const { onBlur, value } = this.props
+
 		// `window.rruiCollapseOnFocusOut` can be used
 		// for debugging expandable contents.
 		if (window.rruiCollapseOnFocusOut !== false) {
@@ -577,13 +579,6 @@ export default class DatePicker extends PureComponent
 			this.collapse()
 			this.focusingOut = undefined
 		}
-	}
-
-	onFocusOut = (event) =>
-	{
-		const { onBlur, value } = this.props
-
-		this._onFocusOut()
 
 		if (onBlur) {
 			onBlurForReduxForm(onBlur, event, value)
@@ -757,7 +752,7 @@ export default class DatePicker extends PureComponent
 						onExpand={ this.onExpand }
 						onExpanded={ this.onExpanded }
 						onCollapse={ this.onCollapse }
-						onTapOutside={ this._onFocusOut }
+						onFocusOut={ this.onBlur }
 						getTogglerNode={ this.getContainerNode }
 						scrollIntoViewDelay={ waitForKeyboardSlideIn ? keyboardSlideInAnimationDuration : undefined }>
 

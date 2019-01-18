@@ -196,7 +196,6 @@ export default class ExpandableList extends PureComponent
 			onPreloadStateChange,
 			getTogglerNode,
 			onFocusOut,
-			onTapOutside,
 			onChange,
 			highlightSelectedItem,
 			closeLabel,
@@ -219,7 +218,6 @@ export default class ExpandableList extends PureComponent
 				onCollapse={ this.onCollapse }
 				getTogglerNode={ getTogglerNode }
 				onFocusOut={ onFocusOut }
-				onTapOutside={ onTapOutside }
 				closeLabel={ closeLabel }
 				closeButtonIcon={ closeButtonIcon }
 				className={ classNames(className, 'rrui__expandable-list',

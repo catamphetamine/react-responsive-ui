@@ -72,7 +72,6 @@ export default class Expandable extends PureComponent
 
 		getTogglerNode : PropTypes.func,
 		onFocusOut : PropTypes.func,
-		onTapOutside : PropTypes.func,
 
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
@@ -94,7 +93,10 @@ export default class Expandable extends PureComponent
 		closeButtonIcon : CloseIcon
 	}
 
-	state = {}
+	state = {
+		// This initialization is required for `if (expand === expanded)`.
+		expanded: false
+	}
 
 	componentWillUnmount()
 	{
@@ -118,7 +120,7 @@ export default class Expandable extends PureComponent
 			preload,
 			onPreloadStateChange,
 			onPreloadError,
-			onTapOutside
+			onFocusOut
 		}
 		= this.props
 
@@ -157,7 +159,7 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
-			if (onTapOutside) {
+			if (onFocusOut) {
 				this.onTapOutside.stopListeningToTouches()
 			}
 
@@ -212,7 +214,7 @@ export default class Expandable extends PureComponent
 						this.scrollIntoView()
 						resolve()
 
-						if (onTapOutside) {
+						if (onFocusOut) {
 							this.onTapOutside.listenToTouches()
 						}
 
@@ -366,7 +368,6 @@ export default class Expandable extends PureComponent
 			alignment,
 			upward,
 			onFocusOut,
-			onTapOutside,
 			getTogglerNode,
 			closeLabel,
 			closeButtonIcon : CloseButtonIcon,
@@ -458,13 +459,13 @@ export default class Expandable extends PureComponent
 			)
 		}
 
-		if (onTapOutside) {
+		if (onFocusOut) {
 			element = (
 				<OnTapOutside
 					ref={this.storeOnTapOutsideRef}
 					getContainerNode={this.getContainerNode}
 					getTogglerNode={getTogglerNode}
-					onTapOutside={onTapOutside}>
+					onTapOutside={onFocusOut}>
 					{element}
 				</OnTapOutside>
 			)
