@@ -59,6 +59,11 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-input-field-font-size)', 'inherit')
     .replace_all('var(--rrui-input-field-border-radius)', '0rem')
     .replace_all('var(--rrui-input-field-border-width)', '1px')
+    /* `<Switch/>`. */
+    .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
+    .replace_all('var(--rrui-switch-knob-border-color-focus)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-switch-background-color)', 'var(--rrui-checkbox-fill-color)')
+    .replace_all('var(--rrui-switch-accent-color)', 'var(--rrui-checkbox-color-checked)')
     /* Checkbox size */
     .replace_all('var(--rrui-checkbox-size)', '0.9em')
     /* Checkbox colors */
@@ -86,11 +91,6 @@ function transformStyle(filePath)
     /* `<Snackbar/>`. */
     .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
-    /* `<Switch/>`. */
-    .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
-    .replace_all('var(--rrui-switch-knob-border-color-focus)', 'var(--rrui-accent-color)')
-    .replace_all('var(--rrui-switch-background-color)', 'var(--rrui-checkbox-fill-color)')
-    .replace_all('var(--rrui-switch-accent-color)', 'var(--rrui-checkbox-color-checked)')
     /* `<Switcher/>`. */
     .replace_all('var(--rrui-switcher-background-color)', 'transparent')
     .replace_all('var(--rrui-switcher-text-color)', 'var(--rrui-accent-color)')
