@@ -253,7 +253,7 @@ export default class List extends PureComponent
 	onKeyPress = (event) => {
 		const { resetInputTimeout } = this.props
 		const characters = event.char || String.fromCharCode(event.charCode)
-		if (characters.trim()) {
+		if (characters) {
 			this.input += characters
 			this.onInput()
 			clearTimeout(this.resetInputTimer)
@@ -270,6 +270,7 @@ export default class List extends PureComponent
 	}
 
 	resetInput = () => this.input = ''
+	getInput = () => this.input
 
 	// Get the previous option (relative to the currently focused option)
 	getPreviousFocusableItemIndex()
@@ -432,6 +433,7 @@ export default class List extends PureComponent
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : i === focusedItemIndex) ? 0 : -1,
 						createButton : createButtons,
+						getInput : this.getInput,
 						onItemFocus : this.onItemFocus,
 						onItemBlur : this.onBlur,
 						onSelectItem : onChange || onSelectItem,
@@ -471,7 +473,29 @@ export class Item extends React.Component
 		highlightSelectedItem : PropTypes.bool,
 		createButton : PropTypes.bool,
 		// Deprecated. Use `createButton` instead.
-		shouldCreateButton : PropTypes.bool
+		shouldCreateButton : PropTypes.bool,
+		// The button won't be pressed on "Space" key
+		// if the user is currently typing.
+		getInput : PropTypes.func
+	}
+
+	onButtonKeyDown = (event) =>
+	{
+		const { getInput } = this.props
+
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+
+		switch (event.keyCode) {
+			// "Spacebar".
+			case 32:
+				// If the user is currently typing.
+				if (getInput()) {
+					// Don't press the option button.
+					event.preventDefault()
+				}
+		}
 	}
 
 	onMouseDown = (event) =>
@@ -720,6 +744,7 @@ export class Item extends React.Component
 			properties['aria-selected'] = isSelected
 			properties['aria-label'] = this.props.label || (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined)
 			properties.disabled = disabled
+			properties.onKeyDown = this.onButtonKeyDown
 			properties.className = classNames(
 				properties.className,
 				'rrui__button-reset',
