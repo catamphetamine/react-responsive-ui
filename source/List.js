@@ -270,7 +270,13 @@ export default class List extends PureComponent
 	}
 
 	resetInput = () => this.input = ''
-	getInput = () => this.input
+	isInputInProgress = () => this.input !== ''
+
+	onInputSpacebar = () => {
+		if (this.input) {
+			this.input += ' '
+		}
+	}
 
 	// Get the previous option (relative to the currently focused option)
 	getPreviousFocusableItemIndex()
@@ -433,7 +439,8 @@ export default class List extends PureComponent
 						disabled  : disabled || item.props.disabled,
 						tabIndex  : tabbable && (focusedItemIndex === undefined ? i === 0 : i === focusedItemIndex) ? 0 : -1,
 						createButton : createButtons,
-						getInput : this.getInput,
+						isInputInProgress : this.isInputInProgress,
+						onInputSpacebar : this.onInputSpacebar,
 						onItemFocus : this.onItemFocus,
 						onItemBlur : this.onBlur,
 						onSelectItem : onChange || onSelectItem,
@@ -476,12 +483,13 @@ export class Item extends React.Component
 		shouldCreateButton : PropTypes.bool,
 		// The button won't be pressed on "Space" key
 		// if the user is currently typing.
-		getInput : PropTypes.func
+		isInputInProgress : PropTypes.func,
+		onInputSpacebar : PropTypes.func
 	}
 
 	onButtonKeyDown = (event) =>
 	{
-		const { getInput } = this.props
+		const { isInputInProgress, onInputSpacebar } = this.props
 
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
 			return
@@ -491,9 +499,11 @@ export class Item extends React.Component
 			// "Spacebar".
 			case 32:
 				// If the user is currently typing.
-				if (getInput()) {
+				if (isInputInProgress()) {
 					// Don't press the option button.
 					event.preventDefault()
+					// Append space character.
+					onInputSpacebar()
 				}
 		}
 	}
