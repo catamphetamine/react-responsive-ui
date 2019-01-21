@@ -1,3 +1,11 @@
+// `react-dnd` is no longer supported and is buggy.
+// It can be replaced with simple native HTML file drag-n-drop.
+// https://medium.com/@650egor/simple-drag-and-drop-file-upload-in-react-2cb409d88929
+//
+// Maybe not required:
+// // Convert from DataTransferItemsList to the native Array:
+// return Array.prototype.slice.call(dataTransferItemsList)
+
 import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
 import { DragDropContext, DragLayer, DropTarget } from 'react-dnd'
 
