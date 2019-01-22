@@ -5,7 +5,7 @@ export class DropFiles extends React.Component {
 	static propTypes = {
 		setDraggedOver: PropTypes.func,
 		onDrop : PropTypes.func.isRequired,
-		multiple : PropTypes.boolean
+		multiple : PropTypes.bool
 	}
 
 	// state = {
@@ -104,9 +104,16 @@ export class DropFiles extends React.Component {
 	}
 
 	render() {
+		const {
+			onDrop,
+			setDraggedOver,
+			multiple,
+			...rest
+		} = this.props
+
 		return React.createElement('div', {
 			ref: this.node,
-			...this.props
+			...rest
 		})
 	}
 }
