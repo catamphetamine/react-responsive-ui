@@ -14,7 +14,6 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 
 		return (
 			<Example name="file-upload" title="File Upload">
-
 				<DropFileUpload onChange={ this.onChange }>
 					{file && file.name}
 					{!file && 'Click here to choose a file or drop a file here'}
@@ -66,7 +65,7 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				<br/>
 
 				<div className="section">
-					The example is for <code className="colored">{'<DropFileUpload/>'}</code>. There are also <code className="colored">{'<MultiDropFileUpload/>'}</code> (multiple file upload) and <code className="colored">{'<FileUpload/>'}</code> (without drag'n'drop feature).
+					The example is for <code className="colored">{'<DropFileUpload/>'}</code>. There's also <code className="colored">{'<MultiDropFileUpload/>'}</code> for multiple file upload.
 				</div>
 			</Example>
 		)
