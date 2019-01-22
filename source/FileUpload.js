@@ -61,6 +61,12 @@ export default class FileUpload extends PureComponent
 	{
 		let { onChange, multiple } = this.props
 
+		// Internet Explorer triggers `onChange` when setting
+		// `event.target.value` manually, so ignore such events.
+		if (this.ieTimer) {
+			return
+		}
+
 		// `action` property is deprecated.
 		onChange = onChange || this.props.action
 
@@ -75,6 +81,9 @@ export default class FileUpload extends PureComponent
 		// `<input multiple/>` attribute is not supported in all browsers.
 		onChange(multiple ? value : value[0])
 
+		// Internet Explorer triggers `onChange` when setting
+		// `event.target.value` manually, hence the cooldown timer.
+		this.ieTimer = setTimeout(() => this.ieTimer = undefined, 0)
 		// Reset the selected file
 		// so that `onChange` is triggered again next time
 		// even if the user selects the same file.
