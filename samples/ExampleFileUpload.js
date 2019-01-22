@@ -22,23 +22,10 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				<br/>
 
 				<Highlight lang="jsx">{`
-					import { DragAndDrop, DropFileUpload } from 'react-responsive-ui'
-
-					@DragAndDrop()
-					export default class App extends React.Component {
-						state = {}
-						onChange = (file) => this.setState({ file })
-
-						render() {
-							const { file } = this.state
-							return (
-								<DropFileUpload onChange={ this.onChange }>
-									{file && file.name}
-									{!file && 'Click here to choose a file or drop a file here'}
-								</DropFileUpload>
-							)
-						}
-					}
+					<DropFileUpload onChange={file => this.setState({ file })}>
+						{ this.state.file && this.state.file.name}
+						{!this.state.file && 'Click here to choose a file or drop a file here'}
+					</DropFileUpload>
 				`}</Highlight>
 
 				<Highlight lang="css">{`
@@ -57,10 +44,6 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 						color            : white;
 					}
 				`}</Highlight>
-
-				<div className="section">
-					Drag'n'drop is implemented internally using <a href="https://github.com/gaearon/react-dnd" target="_blank"><code>react-dnd</code></a>. Use <a href="https://babeljs.io/docs/plugins/transform-decorators/" target="_blank"><code>babel-plugin-transform-decorators-legacy</code></a> for decorators syntax support.
-				</div>
 
 				<br/>
 
