@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { DropFiles, supportsMultipleFileUploadOnInputElement } from './DragAndDrop'
+
 import { submitFormOnCtrlEnter } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
@@ -27,15 +29,6 @@ export default class FileUpload extends PureComponent
 		// `onClick` handler.
 		onClick   : PropTypes.func,
 
-		// `react-dnd` `dropTarget()`.
-		dropTarget : PropTypes.func.isRequired,
-
-		// `react-dnd` `draggedOver`.
-		draggedOver : PropTypes.bool.isRequired,
-
-		// `react-dnd` `canDrop()`.
-		// canDrop : PropTypes.bool.isRequired,
-
 		// Whether choosing a file is required.
 		required : PropTypes.bool,
 
@@ -56,9 +49,12 @@ export default class FileUpload extends PureComponent
 
 	static defaultProps =
 	{
-		dropTarget  : element => element,
-		draggedOver : false,
 		tabIndex : 0
+	}
+
+	state =
+	{
+		draggedOver : false
 	}
 
 	onFileSelect = (event) =>
@@ -74,7 +70,9 @@ export default class FileUpload extends PureComponent
 			throw new Error(`"onChange" handler not passed.`)
 		}
 
-		const value = event.target.files
+		// Convert from `FileList` to an `Array`.
+		const value = Array.prototype.slice.call(event.target.files)
+		// `<input multiple/>` attribute is not supported in all browsers.
 		onChange(multiple ? value : value[0])
 
 		// Reset the selected file
@@ -121,6 +119,8 @@ export default class FileUpload extends PureComponent
 		}
 	}
 
+	setDraggedOver = (draggedOver) => this.setState({ draggedOver })
+
 	storeFileInputNode = (node) => this.fileInput = node
 
 	render()
@@ -130,15 +130,16 @@ export default class FileUpload extends PureComponent
 			required,
 			error,
 			disabled,
-			dropTarget,
-			draggedOver,
-			// canDrop,
 			tabIndex,
+			onChange,
+			multiple,
 			style,
 			className,
 			children
 		}
 		= this.props
+
+		const { draggedOver } = this.state
 
 		return (
 			<div
@@ -148,6 +149,7 @@ export default class FileUpload extends PureComponent
 				{/* Hidden. */}
 				<input
 					type="file"
+					multiple={ supportsMultipleFileUploadOnInputElement ? multiple : undefined }
 					ref={ this.storeFileInputNode }
 					onClick={ this.onClick }
 					onChange={ this.onFileSelect }
@@ -157,30 +159,27 @@ export default class FileUpload extends PureComponent
 					aria-invalid={ error ? true : undefined }
 					style={ HIDDEN }/>
 
-				{/* The actual clickable area. */}
-				{ dropTarget(
-					<div
-						tabIndex={ tabIndex }
-						role="button"
-						aria-label={ this.props['aria-label'] }
-						onClick={ this.onClick }
-						onKeyDown={ this.onKeyDown }
-						className={ classNames(
-							/* Developers should define `:focus` styles for `<FileUpload/>`s. */
-							'rrui__outline',
-							'rrui__file-upload__area',
-							{
-								'rrui__file-upload__area--disabled' : disabled,
-								'rrui__file-upload__area--invalid' : error,
-								'rrui__file-upload__area--dragged-over' : draggedOver,
-								// 'rrui__file-upload__area--can-not-drop' : !canDrop
-							}
-						) }>
-
-						{/* Could be an "UPLOAD" button or something. */}
-						{ children }
-					</div>
-				) }
+				<DropFiles
+					role="button"
+					tabIndex={ tabIndex }
+					aria-label={ this.props['aria-label'] }
+					multiple={ multiple }
+					onDrop={ onChange }
+					onClick={ this.onClick }
+					onKeyDown={ this.onKeyDown }
+					setDraggedOver={ this.setDraggedOver }
+					className={ classNames(
+						/* Developers should define `:focus` styles for `<FileUpload/>`s. */
+						'rrui__outline',
+						'rrui__file-upload__area',
+						{
+							'rrui__file-upload__area--disabled' : disabled,
+							'rrui__file-upload__area--invalid' : error,
+							'rrui__file-upload__area--dragged-over' : draggedOver
+						}
+					) }>
+					{ children }
+				</DropFiles>
 
 				{/* Error message (e.g. "Required"). */}
 				{ error &&

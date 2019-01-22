@@ -1,129 +1,192 @@
-// `react-dnd` is no longer supported and is buggy.
-// It can be replaced with simple native HTML file drag-n-drop.
-// https://medium.com/@650egor/simple-drag-and-drop-file-upload-in-react-2cb409d88929
-//
-// Maybe not required:
-// // Convert from DataTransferItemsList to the native Array:
-// return Array.prototype.slice.call(dataTransferItemsList)
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
-import { DragDropContext, DragLayer, DropTarget } from 'react-dnd'
+export class DropFiles extends React.Component {
+	static propTypes = {
+		setDraggedOver: PropTypes.func,
+		onDrop : PropTypes.func.isRequired,
+		multiple : PropTypes.boolean
+	}
 
-// Usage:
-//
-// import { DragAndDrop, CanDrop, FILE, FILES } from 'react-responsive-ui'
-//
-// @DragAndDrop()
-// class Application extends Component {
-// 	render() {
-// 		const { isDragging, children } = this.props
-// 		return <div>{ children }</div>
-// 	}
+	// state = {
+	// 	isDragging: false
+	// }
+
+	node = React.createRef()
+
+	// Copied from:
+	// https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js
+	dragTargets = []
+
+	setDraggedOver = (draggedOver) => {
+		const { setDraggedOver } = this.props
+		if (setDraggedOver) {
+			setDraggedOver(draggedOver)
+		}
+	}
+
+	// Must be `preventDefault`-ed for some weird reasons.
+	onDragOver = (event) => {
+		event.preventDefault()
+		event.stopPropagation()
+	}
+
+	// `event` is always triggered when gragging from another window to the browser window.
+	onDragEnter = (event) => {
+		event.preventDefault()
+		event.stopPropagation()
+
+		// Copied from:
+		// https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js
+		// Count the dropzone and any children that are entered.
+		if (this.dragTargets.indexOf(event.target) === -1) {
+			this.dragTargets.push(event.target)
+		}
+
+		// `event.dataTransfer.files` are only accessible on "drop" event.
+		// `event.dataTransfer.items` are only accessible in Chrome and FireFox while dragging.
+		// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/items
+		if (isDraggingFiles(event)) {
+			this.setDraggedOver(true)
+		}
+	}
+
+	onDragLeave = (event) => {
+		event.preventDefault()
+		event.stopPropagation()
+
+		// Copied from:
+		// https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js
+		// Only deactivate once the dropzone and all children have been left.
+		this.dragTargets = this.dragTargets.filter(_ => _ !== event.target && this.node.current.contains(_))
+		if (this.dragTargets.length > 0) {
+			return
+		}
+
+		this.setDraggedOver(false)
+	}
+
+	onDrop = (event) => {
+		const { onDrop, multiple } = this.props
+
+		event.preventDefault()
+		event.stopPropagation()
+
+		// Reset.
+		this.dragTargets = []
+
+		this.setDraggedOver(false)
+
+		const files = getFilesFromEvent(event)
+		if (files.length > 0) {
+			onDrop(multiple ? files : files[0])
+			// Not clear why would it be called.
+			// MDN says it's a "no-op".
+			// https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList/clear
+			// event.dataTransfer.clearData()
+		}
+	}
+
+	componentDidMount() {
+		const div = this.node.current
+		div.addEventListener('dragenter', this.onDragEnter)
+		div.addEventListener('dragleave', this.onDragLeave)
+		div.addEventListener('dragover', this.onDragOver)
+		div.addEventListener('drop', this.onDrop)
+	}
+
+	componentWillUnmount() {
+		const div = this.node.current
+		div.removeEventListener('dragenter', this.onDragEnter)
+		div.removeEventListener('dragleave', this.onDragLeave)
+		div.removeEventListener('dragover', this.onDragOver)
+		div.removeEventListener('drop', this.onDrop)
+	}
+
+	render() {
+		return React.createElement('div', {
+			ref: this.node,
+			...this.props
+		})
+	}
+}
+
+// Copied from:
+// https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
+export const supportsMultipleFileUploadOnInputElement =
+	typeof document !== 'undefined' && document && document.createElement
+		? 'multiple' in document.createElement('input')
+		: true
+
+// Copied from:
+// https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
+function isDraggingFiles(event) {
+	// If `event.dataTransfer` is not available then `event.target.files` fallback is used.
+	if (!event.dataTransfer) {
+		return true
+	}
+	// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/types
+	// https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#file
+	return Array.prototype.some.call(
+		event.dataTransfer.types,
+		type => type === 'Files' || type === 'application/x-moz-file'
+	)
+}
+
+// Copied from:
+// https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
+export function getFilesFromEvent(event) {
+	let dataTransferItemsList = []
+	if (event.dataTransfer) {
+		const dt = event.dataTransfer
+		// NOTE: Only the 'drop' event has access to DataTransfer.files,
+		// otherwise it will always be empty
+		if (dt.files && dt.files.length) {
+			dataTransferItemsList = dt.files
+		} else if (dt.items && dt.items.length) {
+			// During the drag even the dataTransfer.files is null
+			// but Chrome implements some drag store, which is accesible via dataTransfer.items
+			dataTransferItemsList = dt.items
+		}
+	} else if (event.target && event.target.files) {
+		dataTransferItemsList = event.target.files
+	}
+	// Convert from DataTransferItemsList to the native Array
+	return Array.prototype.slice.call(dataTransferItemsList)
+}
+
+// // Copied from:
+// // https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
+// // Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
+// // that MIME type will always be accepted
+// function isFileAccepted(file, accept) {
+// 	return this.props.isFileAccepted(file) || (file.type === 'application/x-moz-file' || this.props.isFileTypeAccepted(file))
 // }
-//
-// @CanDrop(FILE, (props, dropped, component) => alert('Uploading file'))
-// class FileDropArea extends Component {
-// 	render() {
-// 		const { dropTarget, draggedOver, canDrop } = this.props
-// 		return dropTarget(<div>Drop files here</div>)
-// 	}
-// }
 
-// Decorate the droppable area component with this decorator
+// Deprecated.
 export function CanDrop(type, drop)
 {
-	if (!type)
-	{
-		throw new Error('Provide a `type` for `@CanDrop()` decorator')
-	}
-
-	return DropTarget(getReactDnDType(type),
-	{
-		drop: (props, monitor, component) => drop(props, getDroppedObject(monitor, type), component),
-
-		// canDrop(props, monitor)
-		// {
-		// 	switch (type)
-		// 	{
-		// 		// // Browser doesn't allow reading "files" until the drop event.
-		// 		// case File:
-		// 		// 	return monitor.getItem().files.length === 1
-		// 		default:
-		// 			return true
-		// 	}
-		// }
-	},
-	(connect, monitor) =>
-	({
-		dropTarget  : connect.dropTarget(),
-		draggedOver : monitor.isOver(),
-		canDrop     : monitor.canDrop()
-	}))
+	throw new Error('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124` due to being buggy and not supported. `react-dnd` has been replaced with simple native HTML file drag-n-drop. Use `<DropFileUpload/>` and `<DropMultiFileUpload/>` components for file upload instead of `DragAndDrop` and `CanDrop` decorators.')
 }
 
-// Decorate the root React application component with this decorator
+// Deprecated.
 export function DragAndDrop()
 {
-	const context = DragDropContext(HTML5Backend)
-
-	const layer = DragLayer((monitor) =>
-	({
-		isDragging : monitor.isDragging(),
-		// item           : monitor.getItem(),
-		// item_type      : monitor.getItemType(),
-		// current_offset : monitor.getSourceClientOffset()
-	}))
-
-	// Doesn't work, breaks `ReactDOM.hydrate()`.
-	// ("Did not expect server HTML to contain ...").
-	//
-	// A workaround to prevent `react-dnd` from breaking server-side rendering.
-	// https://github.com/react-dnd/react-dnd/issues/1192
-	if (typeof window === 'undefined') {
-		return component => component
-	}
-
-	return (component) => context(layer(component))
+	throw new Error('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124` due to being buggy and not supported. `react-dnd` has been replaced with simple native HTML file drag-n-drop. `DragAndDrop` decorator is no longer needed and should be removed. Use `<DropFileUpload/>` and `<DropMultiFileUpload/>` components for file upload.')
 }
 
+// Deprecated.
 // Native file drag'n'drop (single file)
 export const File = 'File'
 
+// Deprecated.
 // Native file drag'n'drop (multiple files)
 export const Files = 'Files'
 
+// Deprecated.
 // Native file drag'n'drop (single file)
 export const FILE = File
 
+// Deprecated.
 // Native file drag'n'drop (multiple files)
 export const FILES = Files
-
-// Gets the corresponding `react-dnd` type
-// for a given droppable object type
-function getReactDnDType(type)
-{
-	switch (type)
-	{
-		case File:
-		case Files:
-			return NativeTypes.FILE
-		default:
-			return type
-	}
-}
-
-// Gets the dropped object from `monitor`
-function getDroppedObject(monitor, type)
-{
-	const dropped = monitor.getItem()
-
-	switch (type)
-	{
-		case File:
-			return dropped.files[0]
-		case Files:
-			return dropped.files
-		default:
-			return dropped
-	}
-}

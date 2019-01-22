@@ -27,6 +27,7 @@ import
 	DropFileUpload,
 	DropMultiFileUpload,
 	Modal,
+	// Deprecated.
 	DragAndDrop,
 	CanDrop,
 	File,
@@ -71,9 +72,10 @@ describe('React Responsive UI', function()
 		expect(DropMultiFileUpload).to.be.a('function')
 		expect(Modal).to.be.a('function')
 
-		// Drag'n'drop
-		expect(DragAndDrop({})).to.be.a('function')
-		expect(CanDrop(File, () => {})).to.be.a('function')
+		// Drag'n'drop.
+		// Deprecated.
+		expect(() => DragAndDrop({})).to.throw('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124`')
+		expect(() => CanDrop(File, () => {})).to.throw('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124`')
 		expect(File).to.be.a('string')
 		expect(FILE).to.be.a('string')
 		expect(Files).to.be.a('string')
@@ -114,9 +116,10 @@ describe('React Responsive UI', function()
 		expect(_.DropMultiFileUpload).to.be.a('function')
 		expect(_.Modal).to.be.a('function')
 
-		// Drag'n'drop
-		expect(_.DragAndDrop({})).to.be.a('function')
-		expect(_.CanDrop(_.File, () => {})).to.be.a('function')
+		// Drag'n'drop.
+		// Deprecated.
+		expect(() => _.DragAndDrop({})).to.throw('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124`')
+		expect(() => _.CanDrop(_.File, () => {})).to.throw('`react-dnd` has been removed from `react-responsive-ui` starting from version `0.14.124`')
 		expect(_.File).to.be.a('string')
 		expect(_.FILE).to.be.a('string')
 		expect(_.Files).to.be.a('string')

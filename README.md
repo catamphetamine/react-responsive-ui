@@ -12,12 +12,7 @@ Responsive React UI components.
 npm install react-responsive-ui --save
 ```
 
-The overall requirement is React >= 16.3, but most of the components only require React >= 0.14, except for a few:
-
-* `<Tooltip/>` (requires "React Portals" from React >= 16).
-* `<DragAndDrop/>` ([`react-dnd`](https://github.com/react-dnd/react-dnd) requires React >= 16.3).
-
-For using components with React < 16.3 import them individually like `import Select from 'react-responsive-ui/modules/Select'` or `import Select from 'react-responsive-ui/commonjs/Select'` instead of `import { Select } from 'react-responsive-ui'` because otherwise it would break due to a [`react-dnd` bug](https://github.com/react-dnd/react-dnd/issues/1113).
+The overall requirement is React >= 16.3, but most of the components only require React >= 0.14, except for `<Tooltip/>` which requires "React Portals" from React >= 16.
 
 ## Use
 

@@ -39,6 +39,13 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
+0.14.124 / 22.01.2018
+====================
+
+  * Removed `react-dnd` from the library because it's buggy and is no longer supported. Replaced with simple native HTML file drag-n-drop.
+
+  * Multiple file upload/drop now passes an `Array` instead of an `DataTransferItemsList` or `FileList` to `onChange()`.
+
 0.14.97 / 20.12.2018
 ====================
 
