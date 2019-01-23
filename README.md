@@ -20,12 +20,30 @@ See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It h
 
 ## CSS
 
-The CSS for this library must be included on a page too.
+The CSS for this library resides in `react-responsive-ui/style.css` file and should be included on a page.
+
+The stylesheet uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden:
+
+```css
+:root {
+  --rrui-unit               : 12px;
+  --rrui-white-color        : white;
+  --rrui-black-color        : black;
+  --rrui-accent-color       : blue;
+  --rrui-accent-color-light : cyan;
+  --rrui-gray-color         : gray;
+}
+```
+
+Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-custom-properties`](https://github.com/postcss/postcss-custom-properties).
 
 #### When using Webpack
 
 ```js
+// React Responsive UI.
 require('react-responsive-ui/style.css')
+// Custom variable values.
+require('./src/styles/react-responsive-ui-custom-variable-values.css')
 ```
 
 And set up a [`postcss-loader`](https://github.com/postcss/postcss-loader) with a [CSS autoprefixer](https://github.com/postcss/autoprefixer) for supporting old web browsers.
@@ -36,7 +54,10 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ```html
 <head>
+  <!-- React Responsive UI -->
   <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
+  <!-- Custom variable values -->
+  <link rel="stylesheet" href="/css/react-responsive-ui-custom-variable-values.css"/>
 </head>
 ```
 
@@ -50,87 +71,50 @@ Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) examp
 /* Main style. */
 @import url(~react-responsive-ui/style.css)
 /* Tweaks `<Modal/>`s for mobile devices a bit. */
-@import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 720px)
+@import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 768px)
 /* Tweaks `<Snackbar/>`s for mobile devices a bit. */
-@import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 720px)
+@import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 768px)
 /* Places a click-capturing overlay above `<DatePicker/>` input. */
-@import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 720px)
+@import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 768px)
 ```
 
+<!--
 SCSS `@import` example:
 
 ```css
 @import "~react-responsive-ui/style";
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   @import "~react-responsive-ui/small-screen/Modal";
   @import "~react-responsive-ui/small-screen/Snackbar";
   @import "~react-responsive-ui/small-screen/DatePicker.InputOverlay";
 }
 ```
+-->
 
-## Variables
+## Validation
 
-This library uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden in a separate `react-responsive-ui-variables.css` file (analogous to the original `variables.css` file).
-
-#### When not using Webpack
-
-```html
-<head>
-  <!-- React Responsive UI -->
-  <link rel="stylesheet" href="/css/react-responsive-ui/style.css"/>
-  <!-- Custom variable values -->
-  <link rel="stylesheet" href="/css/react-responsive-ui-variables.css"/>
-</head>
-```
-
-#### When using Webpack
-
-```js
-// React Responsive UI.
-require('react-responsive-ui/style.css')
-// Custom variable values.
-require('./src/styles/react-responsive-ui-variables.css')
-```
-
-Native CSS variables work in all modern browsers, but older ones like Internet Explorer [wont't support them](https://caniuse.com/#search=var). For compatibility with such older browsers one can use a CSS transformer like [PostCSS](http://postcss.org/) with a "CSS custom properties" plugin like [`postcss-custom-properties`](https://github.com/postcss/postcss-custom-properties). Check that it actually replaces `var()`s with the actual values in the output CSS.
-
-An example for Webpack and SCSS:
-
-```css
-@import "~react-responsive-ui/style";
-
-@media (max-width: 720px) {
-  @import "~react-responsive-ui/small-screen/Modal";
-  @import "~react-responsive-ui/small-screen/Snackbar";
-  @import "~react-responsive-ui/small-screen/DatePicker.InputOverlay";
-}
-
-// Replace the default variable values.
-:root {
-  --rrui-unit               : 12px;
-  --rrui-white-color        : #f0f7ff;
-  --rrui-black-color        : #112233;
-  --rrui-accent-color       : #cc0000;
-  --rrui-accent-color-light : #ee0000;
-  --rrui-gray-color         : #7f7f7f;
-}
-```
-
-[An example for PostCSS](https://github.com/catamphetamine/webpack-react-redux-server-side-render-example/blob/master/src/styles/react-responsive-ui.css)
+Each form component can be passed an `error: String` property. When passed, the component will be styled as "invalid" and the `error` will be displayed under the component.
 
 ## Asterisk on required fields
 
+To show asterisks (`*`) on required fields' labels:
+
 ```css
 /* (when the `value` is empty) */
-/* Required input field label asterisk. */
+/* Required input field labels will have asterisks. */
 .rrui__input-label--required:after,
-.rrui__select__selected-label--required:after
-{
+.rrui__select__selected-label--required:after {
   content     : '*';
   margin-left : 0.2em;
 }
 ```
+
+## Supported Browsers
+
+IE 11, Edge, Firefox, Chrome, Safari (macOS, iOS) — have been tested.
+
+Expandable components (`Select`, `Autocomplete`, `ExpandableMenu`) require `Promise` which is not present in IE 11 and requires a `Promise` polyfill to be included on a page.
 
 ## Reducing footprint
 
@@ -140,7 +124,7 @@ Webpack 4 still can't "tree-shake" simple cases like
 import { Modal, Button, TextInput } from 'react-responsive-ui'
 ```
 
-So if one's using only a small subset of this library it could be imported like so
+So if one's using only a small subset of this library it could be imported like so:
 
 ```js
 import Modal     from 'react-responsive-ui/modules/Modal'
@@ -148,7 +132,7 @@ import Button    from 'react-responsive-ui/modules/Button'
 import TextInput from 'react-responsive-ui/modules/TextInput'
 ```
 
-or for CommonJS
+or for CommonJS:
 
 ```js
 import Modal     from 'react-responsive-ui/commonjs/Modal'
@@ -158,15 +142,11 @@ import TextInput from 'react-responsive-ui/commonjs/TextInput'
 
 Which results in a much smaller bundle size.
 
-The same can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`. There's a catch though: those stylesheets are usually dependent on each other and, for example, the `<Button/>` component actually requires three different stylesheets to be imported:
+Theoretically the same thing can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`, but there's a catch: various components are usually dependent on different styles; for example, a `<Button/>` actually requires three different stylesheets to be imported:
 
 * `react-responsive-ui/styles/Button.css`
 * `react-responsive-ui/styles/ButtonReset.css`
 * `react-responsive-ui/styles/Input.css`
-
-## Validation
-
-Each form component receives an `error : String` error message property.
 
 ## Outline
 
@@ -178,7 +158,7 @@ By default all buttons and inputs have `rrui__outline` CSS class attached to the
 }
 ```
 
-Instead of using the default browser outline which doesn't look pretty by any standards and which nobody uses (not "Google", not "Apple", not anyone else) the default `react-responsive-ui` styles define custom `:focus` styling for most cases (though not for all of them). Still, these default `:focus` styles are quite subtle and if a developer is implementing a [WAI-ARIA](https://developers.google.com/web/fundamentals/accessibility/)-compliant website then they should make sure that those `:focus` styles are pronounced enough and that the few missing `:focus` styles are added.
+Instead of using the default browser outline which doesn't look pretty by any standards and which nobody uses (not "Google", not "Apple", not anyone else) the default `react-responsive-ui` styles define some custom `:focus` styling for most cases (though not for all of them). Still, these out-of-the-box `:focus` styles are quite subtle and if a developer is implementing a [WAI-ARIA](https://developers.google.com/web/fundamentals/accessibility/)-compliant website then they should make sure that those `:focus` styles are more pronounced in each case.
 
 Alternatively, those looking for a very-quick-and-dirty solution can use the same default browser outline, but prettier.
 
@@ -190,17 +170,11 @@ Alternatively, those looking for a very-quick-and-dirty solution can use the sam
 
 If a developer still prefers the default browser outline then they still can manually add `rrui__outline--default` CSS class to buttons and inputs to prevent `outline: none` CSS rule from being applied.
 
-There's also an exported component called `<KeyboardNavigationListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch events reset the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events. It's more of an experimental feature.
+There's also an exported component called `<KeyboardNavigationListener/>` which listens to `keydown` events on `document.body`, and when it detects a `Tab` key being pressed it adds `rrui__tabbing` CSS class to `document.body`. Any further mouse or touch events reset the `rrui__tabbing` CSS class. This way `rrui__outline` can only be shown when the user is actually tabbing. It's still not considered a 100%-formally-correct solution because "screen readers" still emit all kinds of mouse events, or maybe some "screen readers" hypothetically don't emit a "keydown" event for the `Tab` key — who knows. It's more of an experimental feature. There're some other possible ideas like `./source/Interaction.js`.
 
 ## Inspecting Expandables
 
 Expandables are implemented in such a way that they collapse when losing focus. This may present difficulties when trying to inspect expandable content via DevTools because switching to DevTools captures focus causing expandables to collapse. For such cases there's a global debug flag `window.rruiCollapseOnFocusOut` which can be set to `false` to prevent expandables from collapsing when losing focus.
-
-## Supported Browsers
-
-IE 11, Edge, Firefox, Chrome, Safari — have been tested.
-
-Expandable components (`Select`, `Autocomplete`, `ExpandableMenu`, `Expandable`) require `Promise` (get a polyfill for IE 11).
 
 ## Known Issues
 
