@@ -86,7 +86,7 @@
 
   /* "Cards" are `<Modal/>`, `<Select/>`, `<Autocomplete/>`, `<DatePicker/>`. */
   --rrui-card-background-color : var(--rrui-white-color);
-  --rrui-card-text-color : currentColor;
+  --rrui-card-text-color : var(--rrui-black-color);
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border. */
   --rrui-input-field-border-radius : 0rem;

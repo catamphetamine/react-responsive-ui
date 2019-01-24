@@ -115,7 +115,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-expansion-panel-border-color-active)', 'var(--rrui-accent-color-light)')
     /* Card colors. */
     .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
-    .replace_all('var(--rrui-card-text-color)', 'currentColor')
+    .replace_all('var(--rrui-card-text-color)', 'var(--rrui-black-color)')
 
     /*--------------*/
     /* Measurements */
