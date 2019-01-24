@@ -212,6 +212,11 @@ pre
 	background-color: transparent;
 }
 
+.slideout-menu .rrui__list__item
+{
+	color: white;
+}
+
 .slideout-menu .rrui__list__item:hover:not(.rrui__list__item--focus)
 {
 	background-color: transparent;

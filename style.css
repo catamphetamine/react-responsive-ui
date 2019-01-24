@@ -519,7 +519,7 @@
 /* .DayPicker:not(.DayPicker--interactionDisabled) ... */
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
   background-color: #F3F3F3;
-  color: currentColor; }
+  color: #000000; }
 
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active {
   color: #ffffff;
@@ -571,7 +571,7 @@
 .rrui__date-picker .rrui__expandable {
   min-width: 100%;
   background-color: #ffffff;
-  color: currentColor; }
+  color: #000000; }
 
 .rrui__date-picker .rrui__expandable__content {
   /* For compatibility with older versions. */
@@ -1112,7 +1112,7 @@ than 100% of the parent if the parent is small enough.
   padding-bottom: 0.6rem;
   overflow-y: auto;
   background-color: #ffffff;
-  color: currentColor;
+  color: #000000;
   list-style-type: none;
   overflow-x: hidden;
   -webkit-box-sizing: border-box;
@@ -1147,7 +1147,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__list__item:hover {
   background-color: #F3F3F3;
-  color: currentColor; }
+  color: #000000; }
 
 .rrui__list__item:active {
   background-color: #03b2cb;
@@ -1165,7 +1165,7 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__list__item--focus {
   background-color: #F3F3F3;
-  color: currentColor; }
+  color: #000000; }
 
 .rrui__list__item--selected,
 .rrui__list__item--selected:hover {
@@ -1471,7 +1471,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
           flex-basis: auto;
   border-radius: 0.2rem;
   background-color: #ffffff;
-  color: currentColor; }
+  color: #000000; }
 
 .rrui__modal__contents--fullscreen {
   /* Completely cover the screen */
@@ -1843,7 +1843,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   line-height: calc(0.6rem * 4);
   padding-left: calc(0.6rem * 2.5 * 1.5);
   padding-right: calc(0.6rem * 2.5 * 1.5);
-  color: currentColor;
   opacity: 0;
   -webkit-transition: opacity calc(220ms / 2) ease-out;
   -o-transition: opacity calc(220ms / 2) ease-out;
