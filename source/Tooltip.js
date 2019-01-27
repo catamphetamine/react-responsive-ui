@@ -256,7 +256,12 @@ export default class Tooltip extends PureComponent
 		}
 
 		// Otherwise, the tooltip is shown, so hide it.
-		this.hide()
+		//
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			this.hide()
+		}
 	}
 
 	on_touch_start = () =>
