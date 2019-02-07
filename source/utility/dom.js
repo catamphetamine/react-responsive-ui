@@ -53,3 +53,16 @@ export function isInternetExplorer()
 export function isElement(element) {
 	return element instanceof Element || element instanceof HTMLDocument
 }
+
+// http://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+export function getOffset(element) {
+	const rect = element.getBoundingClientRect()
+
+	const client_left = document.clientLeft || document.body.clientLeft || 0
+	const client_top  = document.clientTop || document.body.clientTop || 0
+
+	const top  = rect.top + window.pageYOffset - client_top
+	const left = rect.left + window.pageXOffset - client_left
+
+	return { top, left }
+}

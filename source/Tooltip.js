@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import { getOffset } from './utility/dom'
+
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
@@ -113,9 +115,9 @@ export default class Tooltip extends PureComponent
 
 		const origin_width  = origin.offsetWidth
 
-		const _offset = offset(origin)
+		const _offset = getOffset(origin)
 
-		const top  = _offset.top - height - offset(this.container()).top
+		const top  = _offset.top - height - getOffset(this.container()).top
 		const left = _offset.left + origin_width / 2 - width / 2
 
 		return reposition_within_screen(left, top, width, height)
@@ -344,20 +346,6 @@ function reposition_within_screen(x, y, width, height)
 	}
 
 	return { x, y }
-}
-
-// http://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-function offset(element)
-{
-	const rect = element.getBoundingClientRect()
-
-	const client_left = document.clientLeft || document.body.clientLeft || 0
-	const client_top  = document.clientTop || document.body.clientTop || 0
-
-	const top  = rect.top + window.pageYOffset - client_top
-	const left = rect.left + window.pageXOffset - client_left
-
-	return { top, left }
 }
 
 const inline_style =
