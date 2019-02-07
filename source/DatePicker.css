@@ -239,7 +239,11 @@
 	top      : 0;
 	width    : 100%;
 	height   : 100%;
-	z-index  : 1;
+
+	/* `z-index` could potentially cause a bug
+	   when the overlay would be above other content on a page
+	   resulting in it capturing events like "mousedown" or "click". */
+	/* z-index  : 1; */
 	outline  : none;
 }
 
@@ -264,9 +268,13 @@
 	right    : calc(var(--rrui-unit) / 2);
 	width    : calc(var(--rrui-unit) * 1.5);
 	height   : calc(var(--rrui-unit) * 1.5);
-	z-index  : 1;
 	opacity  : 0.5;
 	color    : var(--rrui-black-color);
+
+	/* `z-index` could potentially cause a bug
+	   when the button would be above other content on a page
+	   resulting in it capturing events like "mousedown" or "click". */
+	/* z-index  : 1; */
 }
 
 .rrui__date-picker__icon--hidden

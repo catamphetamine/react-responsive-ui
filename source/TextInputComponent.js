@@ -32,6 +32,10 @@ export default function TextInputComponent(props)
 				'rrui__input--multiline' : multiline,
 			}) }>
 
+			{/* `children` are placed before the `<input/>`
+			    so that they're above it when having `position: absolute`. */}
+			{children}
+
 			{/* `<input/>` */}
 			<Input {...props}/>
 
@@ -49,8 +53,6 @@ export default function TextInputComponent(props)
 					{ label }
 				</Label>
 			}
-
-			{children}
 		</div>
 	)
 }

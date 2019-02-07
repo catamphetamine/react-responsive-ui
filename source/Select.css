@@ -143,8 +143,17 @@
 .rrui__select__native--overlay
 {
 	position : absolute;
-	z-index  : 1;
-	opacity  : 0;
+
+	/* `z-index` caused a bug when select `<button/>`
+	    would be above other content on a page.
+	    For example, when there were two `<Select/>`s
+	    one below another then mouse down events
+	    from the options list of the top select
+	    would "go through" to the bottom select
+	    expanding it. */
+	/* z-index  : 1; */
+
+	opacity : 0;
 }
 
 .rrui__select__toggler
