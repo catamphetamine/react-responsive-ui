@@ -1,8 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-export default function Divider({ style, className })
-{
+export default function Divider({ style, className }) {
 	return (
 		<div
 			role="separator"
@@ -12,3 +11,7 @@ export default function Divider({ style, className })
 		</div>
 	)
 }
+
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+Divider.displayName = 'Divider'

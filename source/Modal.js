@@ -287,7 +287,7 @@ class Modal extends Component
 				{/* Modal window content */}
 
 				<ModalContext.Provider value={ this.state.context }>
-					<ModalContent
+					<ModalContentWrapper
 						ref={ this.storeContentInstance }
 						closeLabel={ closeLabel }
 						closeButtonIcon={ closeButtonIcon }
@@ -300,7 +300,7 @@ class Modal extends Component
 						wait={ wait || busy }
 						reset={ this.on_after_close }>
 						{ children }
-					</ModalContent>
+					</ModalContentWrapper>
 				</ModalContext.Provider>
 
 				{/* Bottom margin, grows more than top margin */}
@@ -558,17 +558,12 @@ class Modal extends Component
 	}
 }
 
-class ModalContent extends Component
+class ModalContentWrapper extends Component
 {
-	focus()
-	{
-		this.node.focus()
-	}
+	focus = () => this.node.focus()
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		const { reset } = this.props
-
 		if (reset) {
 			reset()
 		}
@@ -591,7 +586,9 @@ class ModalContent extends Component
 		{
 			if (closeButtonIcon && !closeButtonAdded)
 			{
-				if (element.type === ModalTitleType || element.type === ModalContentType)
+				// Workaround for `react-hot-loader`.
+				// https://github.com/gaearon/react-hot-loader#checking-element-types
+				if (element.type.displayName === 'ModalTitle' || element.type.displayName === 'ModalContent')
 				{
 					closeButtonAdded = true
 					return React.cloneElement(element,
@@ -715,7 +712,7 @@ function get_full_width_elements()
 	return full_width_elements
 }
 
-const Title = ({ closeButton, className, children, ...rest }) => (
+const ModalTitle = ({ closeButton, className, children, ...rest }) => (
 	<h2
 		className={classNames('rrui__modal__title', className, {
 			'rrui__modal__title--close-button' : closeButton
@@ -727,7 +724,11 @@ const Title = ({ closeButton, className, children, ...rest }) => (
 	</h2>
 )
 
-const Content = ({ closeButton, className, children, ...rest }) => (
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+ModalTitle.displayName = 'ModalTitle'
+
+const ModalContent = ({ closeButton, className, children, ...rest }) => (
 	<div
 		className={classNames('rrui__modal__content', className, {
 			'rrui__modal__content--close-button' : closeButton
@@ -739,7 +740,11 @@ const Content = ({ closeButton, className, children, ...rest }) => (
 	</div>
 )
 
-const Actions = ({ closeButton, children }) => (
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+ModalContent.displayName = 'ModalContent'
+
+const ModalActions = ({ closeButton, children }) => (
 	<div className="rrui__modal__actions">
 		{closeButton}
 		{children}
@@ -748,14 +753,13 @@ const Actions = ({ closeButton, children }) => (
 
 // Workaround for `react-hot-loader`.
 // https://github.com/gaearon/react-hot-loader#checking-element-types
-const ModalTitleType = <Title/>.type
-const ModalContentType = <Content/>.type
+ModalActions.displayName = 'ModalActions'
 
 Modal = reactLifecyclesCompat(Modal)
 
-Modal.Title = Title
-Modal.Content = Content
-Modal.Actions = Actions
+Modal.Title = ModalTitle
+Modal.Content = ModalContent
+Modal.Actions = ModalActions
 
 let globalAppElement
 Modal.setAppElement = (element) => {

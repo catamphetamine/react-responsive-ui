@@ -83,21 +83,24 @@ export default class Form extends Component
 		if (error)
 		{
 			// Will be set to `null` upon insertion
-			let error_element = <Form.Error key="form-error">{ error }</Form.Error>
+			let error_element = <FormError key="form-error">{ error }</FormError>
 
 			// Show form error above form actions,
 			// so that the error will be visible and won't be overlooked.
 			let index = 0
 			for (const child of form_elements)
 			{
-				if (child.type === FormErrorType)
+				// Workaround for `react-hot-loader`.
+				// https://github.com/gaearon/react-hot-loader#checking-element-types
+				if (child.type.displayName === 'FormError')
 				{
 					form_elements[index] = React.cloneElement(child, { key: 'form-error' }, error)
 					error_element = null
 					break
 				}
-
-				if (child.type === FormActionsType)
+				// Workaround for `react-hot-loader`.
+				// https://github.com/gaearon/react-hot-loader#checking-element-types
+				if (child.type.displayName === 'FormActions')
 				{
 					form_elements.insert_at(index, error_element)
 					error_element = null
@@ -156,8 +159,9 @@ export default class Form extends Component
 	}
 }
 
-Form.Error = function({ children })
-{
+// I guess `<Form.Error/>` isn't used anywhere
+// and is therefore considered deprecated.
+function FormError({ children }) {
 	return (
 		<div className="rrui__form__error">
 			{ children }
@@ -165,56 +169,38 @@ Form.Error = function({ children })
 	)
 }
 
-Form.Actions = function({ children })
-{
-	return (
-		<ModalContext.Consumer>
-			{context => (
-				<Actions context={ context }>
-					{ children }
-				</Actions>
-			)}
-		</ModalContext.Consumer>
-	)
-}
-
 // Workaround for `react-hot-loader`.
 // https://github.com/gaearon/react-hot-loader#checking-element-types
-const FormErrorType = <Form.Error/>.type
-const FormActionsType = <Form.Actions/>.type
+FormError.displayName = 'FormError'
 
-class Actions extends Component
-{
-	componentDidMount()
-	{
+// I guess `<Form.Error/>` isn't used anywhere
+// and is therefore considered deprecated.
+Form.Error = FormError
+
+// I guess `<Form.Actions/>` aren't used anywhere
+// and are therefore considered deprecated.
+class FormActions extends Component {
+	componentDidMount() {
 		const { context } = this.props
-
-		if (context)
-		{
+		if (context) {
 			context.registerForm()
 		}
 	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		const { context } = this.props
-
-		if (context)
-		{
+		if (context) {
 			context.unregisterForm()
 		}
 	}
 
-	render()
-	{
-		const
-		{
+	render() {
+		const {
 			context,
 			children,
 			className,
 			style
-		}
-		= this.props
+		} = this.props
 
 		return (
 			<div
@@ -229,4 +215,22 @@ class Actions extends Component
 			</div>
 		)
 	}
+}
+
+// Workaround for `react-hot-loader`.
+// https://github.com/gaearon/react-hot-loader#checking-element-types
+FormActions.displayName = 'FormActions'
+
+// I guess `<Form.Actions/>` aren't used anywhere
+// and are therefore considered deprecated.
+Form.Actions = function({ children }) {
+	return (
+		<ModalContext.Consumer>
+			{context => (
+				<FormActions context={ context }>
+					{ children }
+				</FormActions>
+			)}
+		</ModalContext.Consumer>
+	)
 }

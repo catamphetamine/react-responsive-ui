@@ -10,10 +10,6 @@ import { onBlur, focus } from './utility/focus'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-// Workaround for `react-hot-loader`.
-// https://github.com/gaearon/react-hot-loader#checking-element-types
-const DividerType = <Divider/>.type
-
 export default class List extends PureComponent
 {
 	static propTypes =
@@ -356,7 +352,7 @@ export default class List extends PureComponent
 
 	isFocusableItemIndex = (index) => this.itemRefs[index] !== undefined
 
-	isFocusableItem = (item) => item.type !== DividerType
+	isFocusableItem = (item) => !isDivider(item)
 
 	// `this.list` is also being accessed from `<ScrollableList/>`.
 	storeListNode = (node) => this.list = node
@@ -424,7 +420,9 @@ export default class List extends PureComponent
 
 				{ React.Children.map(children, (item, i) =>
 				{
-					if (item.type !== ItemType) {
+					// Workaround for `react-hot-loader`.
+					// https://github.com/gaearon/react-hot-loader#checking-element-types
+					if (item.type.displayName !== 'ListItem') {
 						throw new Error(`Only <List.Item/>s can be placed inside a <List/> (and remove any whitespace).`)
 					}
 
@@ -454,7 +452,7 @@ export default class List extends PureComponent
 	}
 }
 
-export class Item extends React.Component
+export class ListItem extends React.Component
 {
 	static propTypes =
 	{
@@ -728,7 +726,7 @@ export class Item extends React.Component
 					'rrui__list__item--focus'    : focused,
 					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
 					'rrui__list__item--disabled' : disabled,
-					'rrui__list__item--divider'  : children.type === DividerType
+					'rrui__list__item--divider'  : isDivider(children)
 				}
 			)
 		}
@@ -798,7 +796,7 @@ export class Item extends React.Component
 
 		return (
 			<li
-				role={this.shouldCreateButton() || children.type === DividerType ? 'presentation' : role}
+				role={this.shouldCreateButton() || isDivider(children) ? 'presentation' : role}
 				aria-selected={this.shouldCreateButton() ? undefined : (role && role !== 'presentation' ? isSelected : undefined)}
 				aria-label={this.shouldCreateButton() ? undefined : label}
 				className="rrui__list__list-item">
@@ -809,11 +807,11 @@ export class Item extends React.Component
 	}
 }
 
-List.Item = Item
-
 // Workaround for `react-hot-loader`.
 // https://github.com/gaearon/react-hot-loader#checking-element-types
-const ItemType = <Item/>.type
+ListItem.displayName = 'ListItem'
+
+List.Item = ListItem
 
 function haveItemsChanged(props, prevProps)
 {
@@ -872,5 +870,11 @@ function getItemLabel(item) {
 }
 
 function isSelectableItem(item) {
-	return item.props.children && item.props.children.type !== DividerType
+	return item.props.children && !isDivider(item.props.children)
+}
+
+function isDivider(element) {
+	// Workaround for `react-hot-loader`.
+	// https://github.com/gaearon/react-hot-loader#checking-element-types
+	return element.type && element.type.displayName === 'Divider'
 }
