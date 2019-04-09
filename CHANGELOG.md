@@ -39,14 +39,23 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
-0.14.127 / 24.01.2018
+0.14.130 / 09.04.2019
+====================
+
+  * Changed `<MenuIcon/>` design.
+
+  * Added `background-color` to `.rrui__input-field`.
+
+  * Added `icon` property to `<TextInput/>`.
+
+0.14.127 / 24.01.2019
 ====================
 
   * `--rrui-card-text-color` default value changed from `currentColor` to `--rrui-black-color` because `currentColor` had some issues in MS Edge (not in IE).
 
   * Removed `color: currentColor` from `.rrui__slideout-menu__item` (that was a weird CSS rule).
 
-0.14.124 / 22.01.2018
+0.14.124 / 22.01.2019
 ====================
 
   * Removed `react-dnd` from the library because it's buggy and is no longer supported. Replaced with simple native HTML file drag-n-drop.
