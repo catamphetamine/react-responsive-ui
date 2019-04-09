@@ -117,6 +117,8 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-card-text-color)', 'var(--rrui-black-color)')
 
+    .replace_all('var(--rrui-menu-icon-bar-thickness)', '2px')
+
     /*--------------*/
     /* Measurements */
     /*--------------*/

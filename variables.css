@@ -194,6 +194,9 @@
   --rrui-expansion-panel-border-color-focus : var(--rrui-accent-color);
   --rrui-expansion-panel-border-color-active : var(--rrui-accent-color-light);
 
+  /* This is for `MenuIcon2.css` and is not being used currently. */
+  --rrui-menu-icon-bar-thickness: 2px;
+
   /* z-index */
   --rrui-z-index-overlay       : 100;
   --rrui-z-index-above-overlay : 101;

@@ -8,8 +8,10 @@ export default function MenuIcon({ expanded, className }) {
 	// (when styles are included on a page via javascript)
 	const activated = expanded !== undefined
 	return (
-		<div className={classNames('rrui__menu-icon', className)}>
-
+		<div className={classNames(className, 'rrui__menu-icon', {
+			'rrui__menu-icon--collapsed': !expanded,
+			'rrui__menu-icon--expanded': expanded
+		})}>
 			<div className={classNames('rrui__menu-icon__bar', {
 				// 'rrui__menu-icon__bar--collapsed': !expanded,
 				'rrui__menu-icon__bar--transition': activated,

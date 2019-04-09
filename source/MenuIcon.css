@@ -1,61 +1,46 @@
-/* https://codepen.io/bennettfeely/pen/twbyA */
-
-.rrui__menu-icon
-{
-	position : relative;
-	width    : 100%;
-	height   : 100%;
+.rrui__menu-icon {
+	position: relative;
+	width: 100%;
+	height: 100%;
 }
 
-.rrui__menu-icon__bar
-{
-	position : absolute;
-	left     : 0;
-	top      : calc((100% - 6%) / 2);
-	width    : 100%;
-	height   : 6%;
-	background-color : currentColor;
+.rrui__menu-icon__bar {
+	width: 100%;
+	background-color: currentColor;
+	position: absolute;
+	height: var(--rrui-menu-icon-bar-thickness);
+	border-radius: 1px; /* calc(var(--rrui-menu-icon-bar-thickness) / 2); */
+	transform-origin: 50% 50%;
 }
 
-.rrui__menu-icon__bar--transition
-{
-	transition : transform var(--rrui-menu-button-animation-duration), opacity var(--rrui-menu-button-animation-duration);
+.rrui__menu-icon--expanded .rrui__menu-icon__bar {
+	width: 100%;
+	top: calc((100% - var(--rrui-menu-icon-bar-thickness)) / 2);
+	transition: width 125ms 0s, top 125ms 0s, transform 125ms 125ms;
 }
 
-.rrui__menu-icon__bar:nth-child(1)
-{
-	transform: translateY(-450%);
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(1),
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(2) {
+	transform: rotate(-45deg);
 }
 
-.rrui__menu-icon__bar:nth-child(3)
-{
-	transform: translateY(450%);
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(3) {
+	transform: rotate(45deg);
 }
 
-/*
-.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(1)
-{
-	transform : translateY(-550%);
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar {
+	transition: transform 125ms 0s, top 125ms 125ms, width 125ms 125ms;
+	transform: rotate(0);
 }
 
-.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(3)
-{
-	transform : translateY(550%);
-}
-*/
-
-.rrui__menu-icon__bar--expanded:nth-child(2)
-{
-	opacity : 0;
-	transform : scale(0.9);
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(1) {
+	top: 17%;
 }
 
-.rrui__menu-icon__bar--expanded:nth-child(1)
-{
-	transform : rotate(-45deg) scale(0.9);
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(2) {
+	top: calc((100% - var(--rrui-menu-icon-bar-thickness)) / 2);
 }
 
-.rrui__menu-icon__bar--expanded:nth-child(3)
-{
-	transform : rotate(45deg) scale(0.9 );
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(3) {
+	top: calc(83% - var(--rrui-menu-icon-bar-thickness));
 }
