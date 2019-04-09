@@ -117,3 +117,23 @@
 	/* cursor : default; */
 	background-color : var(--rrui-input-field-background-color-disabled);
 }
+
+.rrui__select__native {
+	/* "pointer-events" prevents "cursor: wait" from working. */
+	pointer-events : none;
+	/* cursor : default; */
+}
+
+.rrui__input-field__icon {
+	position: absolute;
+	top: calc(1.5 * var(--rrui-unit) / 2);
+	left: 0;
+	width: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
+	height: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
+	pointer-events: none;
+	color: var(--rrui-gray-color);
+}
+
+.rrui__input-field--with-icon {
+	padding-left: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit) / 2);
+}

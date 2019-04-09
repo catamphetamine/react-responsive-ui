@@ -33,6 +33,8 @@
   --rrui-input-field-side-padding : 0rem;
 
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
+  /* Background color is set to white instead of transparent because
+     `box-shadow` is used to disabled Chrome's yellow autocomplete background. */
   --rrui-input-field-background-color : var(--rrui-white-color);
   --rrui-input-field-background-color-focus : var(--rrui-input-field-background-color);
   --rrui-input-field-background-color-error : var(--rrui-input-field-background-color);
