@@ -28,6 +28,7 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 <Highlight lang="jsx">{`
 <TextInput
   placeholder="Enter some text"
+  icon={...}
   value={...}
   onChange={...} />
 `}</Highlight>

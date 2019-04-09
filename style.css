@@ -592,7 +592,10 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  /* `z-index` could potentially cause a bug
+	   when the overlay would be above other content on a page
+	   resulting in it capturing events like "mousedown" or "click". */
+  /* z-index  : 1; */
   outline: none; }
 
 .rrui__date-picker__close {
@@ -611,9 +614,12 @@
   right: calc(0.6rem / 2);
   width: calc(0.6rem * 1.5);
   height: calc(0.6rem * 1.5);
-  z-index: 1;
   opacity: 0.5;
-  color: #000000; }
+  color: #000000;
+  /* `z-index` could potentially cause a bug
+	   when the button would be above other content on a page
+	   resulting in it capturing events like "mousedown" or "click". */
+  /* z-index  : 1; */ }
 
 .rrui__date-picker__icon--hidden {
   display: none; }
@@ -1060,6 +1066,23 @@ than 100% of the parent if the parent is small enough.
   /* cursor : default; */
   background-color: #ffffff; }
 
+.rrui__select__native {
+  /* "pointer-events" prevents "cursor: wait" from working. */
+  pointer-events: none;
+  /* cursor : default; */ }
+
+.rrui__input-field__icon {
+  position: absolute;
+  top: calc(1.5 * 0.6rem / 2);
+  left: 0;
+  width: calc(0.6rem * 3 - 1.5 * 0.6rem);
+  height: calc(0.6rem * 3 - 1.5 * 0.6rem);
+  pointer-events: none;
+  color: #888888; }
+
+.rrui__input-field--with-icon {
+  padding-left: calc(0.6rem * 3 - 1.5 * 0.6rem / 2); }
+
 .rrui__input-label {
   position: absolute;
   left: 0;
@@ -1222,63 +1245,60 @@ than 100% of the parent if the parent is small enough.
 	color : #03b2cb;
 }
 */
-/* https://codepen.io/bennettfeely/pen/twbyA */
 .rrui__menu-icon {
   position: relative;
   width: 100%;
   height: 100%; }
 
 .rrui__menu-icon__bar {
-  position: absolute;
-  left: 0;
-  top: calc((100% - 6%) / 2);
   width: 100%;
-  height: 6%;
-  background-color: currentColor; }
+  background-color: currentColor;
+  position: absolute;
+  height: 2px;
+  border-radius: 1px;
+  /* calc(2px / 2); */
+  -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+          transform-origin: 50% 50%; }
 
-.rrui__menu-icon__bar--transition {
-  -webkit-transition: opacity 0.25s, -webkit-transform 0.25s;
-  transition: opacity 0.25s, -webkit-transform 0.25s;
-  -o-transition: transform 0.25s, opacity 0.25s;
-  transition: transform 0.25s, opacity 0.25s;
-  transition: transform 0.25s, opacity 0.25s, -webkit-transform 0.25s; }
+.rrui__menu-icon--expanded .rrui__menu-icon__bar {
+  width: 100%;
+  top: calc((100% - 2px) / 2);
+  -webkit-transition: width 125ms 0s, top 125ms 0s, -webkit-transform 125ms 125ms;
+  transition: width 125ms 0s, top 125ms 0s, -webkit-transform 125ms 125ms;
+  -o-transition: width 125ms 0s, top 125ms 0s, transform 125ms 125ms;
+  transition: width 125ms 0s, top 125ms 0s, transform 125ms 125ms;
+  transition: width 125ms 0s, top 125ms 0s, transform 125ms 125ms, -webkit-transform 125ms 125ms; }
 
-.rrui__menu-icon__bar:nth-child(1) {
-  -webkit-transform: translateY(-450%);
-      -ms-transform: translateY(-450%);
-          transform: translateY(-450%); }
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(1),
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(2) {
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg); }
 
-.rrui__menu-icon__bar:nth-child(3) {
-  -webkit-transform: translateY(450%);
-      -ms-transform: translateY(450%);
-          transform: translateY(450%); }
+.rrui__menu-icon--expanded .rrui__menu-icon__bar:nth-child(3) {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg); }
 
-/*
-.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(1)
-{
-	transform : translateY(-550%);
-}
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar {
+  -webkit-transition: top 125ms 125ms, width 125ms 125ms, -webkit-transform 125ms 0s;
+  transition: top 125ms 125ms, width 125ms 125ms, -webkit-transform 125ms 0s;
+  -o-transition: transform 125ms 0s, top 125ms 125ms, width 125ms 125ms;
+  transition: transform 125ms 0s, top 125ms 125ms, width 125ms 125ms;
+  transition: transform 125ms 0s, top 125ms 125ms, width 125ms 125ms, -webkit-transform 125ms 0s;
+  -webkit-transform: rotate(0);
+      -ms-transform: rotate(0);
+          transform: rotate(0); }
 
-.rrui__menu-icon:hover .rrui__menu-icon__bar:nth-child(3)
-{
-	transform : translateY(550%);
-}
-*/
-.rrui__menu-icon__bar--expanded:nth-child(2) {
-  opacity: 0;
-  -webkit-transform: scale(0.9);
-      -ms-transform: scale(0.9);
-          transform: scale(0.9); }
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(1) {
+  top: 17%; }
 
-.rrui__menu-icon__bar--expanded:nth-child(1) {
-  -webkit-transform: rotate(-45deg) scale(0.9);
-      -ms-transform: rotate(-45deg) scale(0.9);
-          transform: rotate(-45deg) scale(0.9); }
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(2) {
+  top: calc((100% - 2px) / 2); }
 
-.rrui__menu-icon__bar--expanded:nth-child(3) {
-  -webkit-transform: rotate(45deg) scale(0.9);
-      -ms-transform: rotate(45deg) scale(0.9);
-          transform: rotate(45deg) scale(0.9); }
+.rrui__menu-icon--collapsed .rrui__menu-icon__bar:nth-child(3) {
+  top: calc(83% - 2px); }
 
 /*===========================================================
 = `react-modal`                                             =
@@ -1732,7 +1752,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* opacity  : 0.001; */
 .rrui__select__native--overlay {
   position: absolute;
-  z-index: 1;
+  /* `z-index` caused a bug when select `<button/>`
+	    would be above other content on a page.
+	    For example, when there were two `<Select/>`s
+	    one below another then mouse down events
+	    from the options list of the top select
+	    would "go through" to the bottom select
+	    expanding it. */
+  /* z-index  : 1; */
   opacity: 0; }
 
 .rrui__select__toggler {
