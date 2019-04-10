@@ -12,23 +12,9 @@ export default function MenuIcon({ expanded, className }) {
 			'rrui__menu-icon--collapsed': !expanded,
 			'rrui__menu-icon--expanded': expanded
 		})}>
-			<div className={classNames('rrui__menu-icon__bar', {
-				// 'rrui__menu-icon__bar--collapsed': !expanded,
-				'rrui__menu-icon__bar--transition': activated,
-				'rrui__menu-icon__bar--expanded': activated && expanded
-			})}/>
-
-			<div className={classNames('rrui__menu-icon__bar', {
-				// 'rrui__menu-icon__bar--collapsed': !expanded,
-				'rrui__menu-icon__bar--transition': activated,
-				'rrui__menu-icon__bar--expanded': activated && expanded
-			})}/>
-
-			<div className={classNames('rrui__menu-icon__bar', {
-				// 'rrui__menu-icon__bar--collapsed': !expanded,
-				'rrui__menu-icon__bar--transition': activated,
-				'rrui__menu-icon__bar--expanded': activated && expanded
-			})}/>
+			<div className="rrui__menu-icon__bar"/>
+			<div className="rrui__menu-icon__bar"/>
+			<div className="rrui__menu-icon__bar"/>
 		</div>
 	)
 }
