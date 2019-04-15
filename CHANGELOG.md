@@ -42,11 +42,13 @@
 0.14.130 / 09.04.2019
 ====================
 
-  * Changed `<MenuIcon/>` design.
+  * Added the missing `-webkit-appearance : none` on `.rrui__input-field`.
 
   * Added `background-color` to `.rrui__input-field`.
 
   * Added `icon` property to `<TextInput/>`.
+
+  * Changed `<MenuIcon/>` design (incl. animation).
 
 0.14.127 / 24.01.2019
 ====================
