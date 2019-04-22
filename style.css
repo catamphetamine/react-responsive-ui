@@ -981,9 +981,9 @@ than 100% of the parent if the parent is small enough.
   border-radius: 0;
   /* Some web browsers add <input/> padding by default */
   padding: 0;
+  -moz-appearance: none;
+       appearance: none;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
@@ -1066,7 +1066,7 @@ than 100% of the parent if the parent is small enough.
   /* cursor : default; */
   background-color: #ffffff; }
 
-.rrui__select__native {
+.rrui__select__native[disabled] {
   /* "pointer-events" prevents "cursor: wait" from working. */
   pointer-events: none;
   /* cursor : default; */ }
