@@ -38,10 +38,6 @@ export default function TextInputComponent(props) {
 				<Icon className="rrui__input-field__icon"/>
 			}
 
-			{/* `children` are placed before the `<input/>`
-			    so that they're above it when having `position: absolute`. */}
-			{children}
-
 			{/* `<input/>` */}
 			<Input
 				{...rest}
@@ -63,6 +59,13 @@ export default function TextInputComponent(props) {
 					{label}
 				</Label>
 			}
+
+			{/* `children` are placed after the `<input/>`
+			    so that in cases when they're `position: absolute`
+			    then their default top position is right below the `<input/>`.
+			    For example, this is used in `<DatePicker/>` so that
+			    the list of options is displayed right below the `<input/>`. */}
+			{children}
 		</div>
 	)
 }
