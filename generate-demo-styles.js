@@ -59,6 +59,8 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-input-field-font-size)', 'inherit')
     .replace_all('var(--rrui-input-field-border-radius)', '0rem')
     .replace_all('var(--rrui-input-field-border-width)', '1px')
+    .replace_all('var(--rrui-input-field-icon-size)', 'calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit))')
+    .replace_all('var(--rrui-input-field-icon-margin-right)', 'calc(0.75 * var(--rrui-unit))')
     /* `<Switch/>`. */
     .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
     .replace_all('var(--rrui-switch-knob-border-color-focus)', 'var(--rrui-accent-color)')
@@ -198,7 +200,7 @@ function transformStyle(filePath)
   // Remove nested `calc()`s.
   text = text.split('\n').map((line) => {
     while (/calc(.+)calc/.test(line)) {
-      line = line.replace(/calc(.+)calc\(([^)]*)\)(.*);/, 'calc$1$2$3;')
+      line = line.replace(/calc(.+)calc\(([^)]*)\)(.*);/, 'calc$1($2)$3;')
     }
     return line
   }).join('\n')
