@@ -119,7 +119,7 @@
 	background-color : var(--rrui-input-field-background-color-disabled);
 }
 
-.rrui__select__native {
+.rrui__select__native[disabled] {
 	/* "pointer-events" prevents "cursor: wait" from working. */
 	pointer-events : none;
 	/* cursor : default; */
