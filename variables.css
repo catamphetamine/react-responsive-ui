@@ -42,6 +42,8 @@
   --rrui-input-field-transition : border 0.1s;
   --rrui-input-field-text-color : var(--rrui-black-color);
   --rrui-input-field-font-size : inherit;
+  --rrui-input-field-icon-size : calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
+  --rrui-input-field-icon-margin-right : calc(0.75 * var(--rrui-unit));
 
   /* `<Button/>` */
   --rrui-button-side-padding : 0rem;

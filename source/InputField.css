@@ -127,14 +127,14 @@
 
 .rrui__input-field__icon {
 	position: absolute;
-	top: calc(1.5 * var(--rrui-unit) / 2);
+	top: calc((var(--rrui-input-height) - var(--rrui-input-field-icon-size)) / 2);
 	left: 0;
-	width: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
-	height: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
+	width: var(--rrui-input-field-icon-size);
+	height: var(--rrui-input-field-icon-size);
 	pointer-events: none;
 	color: var(--rrui-gray-color);
 }
 
 .rrui__input-field--with-icon {
-	padding-left: calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit) / 2);
+	padding-left: calc(var(--rrui-input-field-icon-size) + var(--rrui-input-field-icon-margin-right);
 }
