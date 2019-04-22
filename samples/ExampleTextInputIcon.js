@@ -1,4 +1,4 @@
-window.ExampleTextInput = class ExampleComponent extends React.Component
+window.ExampleTextInputIcon = class ExampleComponent extends React.Component
 {
 	constructor()
 	{
@@ -9,12 +9,12 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 	render()
 	{
 		return (
-			<Example name="text-input-placeholder" title="Text input field (placeholder)">
+			<Example name="text-input-icon" title="Text input field (icon)">
 
 				<form>
 					<TextInput
+						icon={Icon}
 						focus={false}
-						autoComplete="tel"
 						style={input_style}
 						className="column-width"
 						name="text_input"
@@ -26,8 +26,17 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 				Value:  {this.state.value}
 
 <Highlight lang="jsx">{`
+function Icon({ className }) {
+	return (
+		<svg viewBox="0 0 100 100" className={className}>
+			<circle cx="40" cy="40" r="30" strokeWidth="8" stroke="#7f7f7f" fill="none"/>
+			<line x1="65" y1="65" x2="90" y2="90" strokeWidth="8" stroke="#7f7f7f"/>
+		</svg>
+	)
+}
 <TextInput
   placeholder="Enter some text"
+  icon={Icon}
   value={...}
   onChange={...} />
 `}</Highlight>
@@ -53,4 +62,13 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 			</Example>
 		)
 	}
+}
+
+function Icon({ className }) {
+	return (
+		<svg viewBox="0 0 100 100" className={className}>
+			<circle cx="40" cy="40" r="30" strokeWidth="8" stroke="#7f7f7f" fill="none"/>
+			<line x1="65" y1="65" x2="90" y2="90" strokeWidth="8" stroke="#7f7f7f"/>
+		</svg>
+	)
 }

@@ -106,7 +106,7 @@
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-  width: calc(100% + (0.6rem * 1.5 - 0rem) * 2);
+  width: calc(100% + ((0.6rem * 1.5) - 0rem) * 2);
   /* Makes `border-bottom` visible on an iPhone */
   margin-top: 1px; }
 
@@ -397,8 +397,8 @@
   stroke: currentColor; }
 
 .rrui__close {
-  padding: calc(0.6rem * 2 / 2);
-  margin: calc(0.6rem * 2 * -1 / 2); }
+  padding: calc((0.6rem * 2) / 2);
+  margin: calc((0.6rem * 2) * -1 / 2); }
 
 /* DayPicker styles (version 7.1.10) */
 .DayPicker {
@@ -610,7 +610,7 @@
 
 .rrui__date-picker__icon {
   position: absolute;
-  top: calc((0.6rem * 3 - 0.6rem * 1.5) / 2);
+  top: calc(((0.6rem * 3) - 0.6rem * 1.5) / 2);
   right: calc(0.6rem / 2);
   width: calc(0.6rem * 1.5);
   height: calc(0.6rem * 1.5);
@@ -794,10 +794,10 @@
   right: 0; }
 
 .rrui__options-list--left-aligned {
-  left: calc((0.6rem * 1.5 - 0rem) * -1); }
+  left: calc(((0.6rem * 1.5) - 0rem) * -1); }
 
 .rrui__options-list--right-aligned {
-  right: calc((0.6rem * 1.5 - 0rem) * -1); }
+  right: calc(((0.6rem * 1.5) - 0rem) * -1); }
 
 /* Styles are from Material UI. */
 /* https://material-ui.com/demos/expansion-panels/ */
@@ -1073,15 +1073,15 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__input-field__icon {
   position: absolute;
-  top: calc(1.5 * 0.6rem / 2);
+  top: calc(((0.6rem * 3) - ((0.6rem * 3) - 1.5 * 0.6rem)) / 2);
   left: 0;
-  width: calc(0.6rem * 3 - 1.5 * 0.6rem);
-  height: calc(0.6rem * 3 - 1.5 * 0.6rem);
+  width: calc((0.6rem * 3) - 1.5 * 0.6rem);
+  height: calc((0.6rem * 3) - 1.5 * 0.6rem);
   pointer-events: none;
   color: #888888; }
 
 .rrui__input-field--with-icon {
-  padding-left: calc(0.6rem * 3 - 1.5 * 0.6rem / 2); }
+  padding-left: calc(((0.6rem * 3) - 1.5 * 0.6rem) + (0.75 * 0.6rem)); }
 
 .rrui__input-label {
   position: absolute;
@@ -1229,8 +1229,8 @@ than 100% of the parent if the parent is small enough.
 .rrui__menu-button {
   position: relative;
   display: inline-block;
-  width: calc(0.6rem * 3 + 0.6rem);
-  height: calc(0.6rem * 3 + 0.6rem);
+  width: calc((0.6rem * 3) + 0.6rem);
+  height: calc((0.6rem * 3) + 0.6rem);
   padding: calc(0.6rem / 2);
   margin: calc(-1 * 0.6rem / 2);
   line-height: 0;
@@ -1648,14 +1648,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	At the same time `<Select/>` options should stretch themselves
 	horizontally to the width of the containing column (when using grid layout).
 	*/
-  width: calc(100% + (0.6rem * 1.5 - 0rem) * 2);
+  width: calc(100% + ((0.6rem * 1.5) - 0rem) * 2);
   /*
 	`margin-top` is constituted by:
 	- `.rrui__select__options` `padding-top`.
 	- `.rrui__input` `height`.
 	- half of the difference between `.rrui__select__option`'s `height`/`line-height` and `.rrui__input` `height`.
 	*/
-  margin-top: calc(-1 * (0.6rem + 0.6rem * 3 + (0.6rem * 4 - 0.6rem * 3) / 2)); }
+  margin-top: calc(-1 * (0.6rem + (0.6rem * 3) + ((0.6rem * 4) - (0.6rem * 3)) / 2)); }
 
 .rrui__select__button {
   height: 100%;
@@ -1868,8 +1868,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   display: block;
   height: calc(0.6rem * 4);
   line-height: calc(0.6rem * 4);
-  padding-left: calc(0.6rem * 2.5 * 1.5);
-  padding-right: calc(0.6rem * 2.5 * 1.5);
+  padding-left: calc((0.6rem * 2.5) * 1.5);
+  padding-right: calc((0.6rem * 2.5) * 1.5);
   opacity: 0;
   -webkit-transition: opacity calc(220ms / 2) ease-out;
   -o-transition: opacity calc(220ms / 2) ease-out;

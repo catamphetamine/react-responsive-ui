@@ -78,7 +78,7 @@
 	width            : 100%;
 	height           : calc(0.6rem * 4);
 	padding-left     : calc(0.6rem * 1.5);
-	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + 0.6rem * 1.5);
+	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + (0.6rem * 1.5));
 	z-index          : 100;
 	background-color : #ffffff;
 }
