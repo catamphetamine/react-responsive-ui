@@ -6,7 +6,6 @@
 	padding-left  : var(--rrui-tooltip-side-padding);
 	padding-right : var(--rrui-tooltip-side-padding);
 	height        : var(--rrui-tooltip-height);
-	margin-top    : calc(var(--rrui-unit) * -1);
 
 	color            : var(--rrui-tooltip-text-color);
 	background-color : var(--rrui-tooltip-background-color);
@@ -19,29 +18,25 @@
 .rrui__tooltip
 {
 	opacity    : 0;
-	transform  : translateY(0.8em) scale(0.97);
+	transform  : translateY(var(--rrui-tooltip-y-hidden));
 }
 
 .rrui__tooltip--after-show
 {
 	opacity   : 1;
-	transform : translateY(0) scale(1);
+	transform : translateY(var(--rrui-tooltip-y-visible));
 }
 
 .rrui__tooltip--before-hide
 {
 	opacity   : 0;
-	transform : translateY(0.8em) scale(0.97);
+	transform : translateY(var(--rrui-tooltip-y-hidden));
 }
 
-.rrui__tooltip--after-show
-{
-	transition : opacity 90ms ease-out, transform 200ms ease-out;
-}
-
+.rrui__tooltip--after-show,
 .rrui__tooltip--before-hide
 {
-	transition : opacity 150ms ease-out, transform 200ms ease-out;
+	transition : opacity var(--rrui-tooltip-animation-duration), transform var(--rrui-tooltip-animation-duration);
 }
 
 /* Prevents entering text selection mode

@@ -39,6 +39,17 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
+0.14.133 / 25.04.2019
+====================
+
+  * Changed `<Tooltip/>`'s top positions: removed `margin-top` and added three CSS variables:
+
+```css
+--rrui-tooltip-animation-duration : 120ms;
+--rrui-tooltip-y-visible : -0.4em;
+--rrui-tooltip-y-hidden  : -0.1em;
+```
+
 0.14.130 / 09.04.2019
 ====================
 

@@ -105,6 +105,9 @@ function transformStyle(filePath)
     /* `<Tooltip/>`. */
     .replace_all('var(--rrui-tooltip-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-tooltip-text-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-tooltip-animation-duration)', '120ms')
+    .replace_all('var(--rrui-tooltip-y-visible)', '-0.4em')
+    .replace_all('var(--rrui-tooltip-y-hidden)', '-0.1em')
     /* `<ExpansionPanel/>`. */
     .replace_all('var(--rrui-expansion-panel-heading-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-expansion-panel-heading-height-expanded)', 'calc(0.6rem * 5)')
