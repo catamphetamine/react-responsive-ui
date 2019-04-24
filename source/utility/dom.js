@@ -54,15 +54,31 @@ export function isElement(element) {
 	return element instanceof Element || element instanceof HTMLDocument
 }
 
-// http://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+/**
+ * Returns the DOM element's `top` and `left` offset relative to the document.
+ * @param  {object} element
+ * @return {object} `{ top: number, left: number, width: number, height: number }`
+ */
 export function getOffset(element) {
-	const rect = element.getBoundingClientRect()
+	// Copied from:
+	// http://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
 
-	const client_left = document.clientLeft || document.body.clientLeft || 0
-	const client_top  = document.clientTop || document.body.clientTop || 0
+	const onScreenCoordinates = element.getBoundingClientRect()
 
-	const top  = rect.top + window.pageYOffset - client_top
-	const left = rect.left + window.pageXOffset - client_left
+	const documentLeftBorderWidth = document.clientLeft || document.body.clientLeft || 0
+	const documentTopBorderWidth  = document.clientTop || document.body.clientTop || 0
 
-	return { top, left }
+	// `window.scrollY` and `window.scrollX` aren't supported in Internet Explorer.
+	const scrollY = window.pageYOffset
+	const scrollX = window.pageXOffset
+
+	const top  = onScreenCoordinates.top + scrollY - documentTopBorderWidth
+	const left = onScreenCoordinates.left + scrollX - documentLeftBorderWidth
+
+	return {
+		top,
+		left,
+		width: onScreenCoordinates.width,
+		height: onScreenCoordinates.height
+	}
 }
