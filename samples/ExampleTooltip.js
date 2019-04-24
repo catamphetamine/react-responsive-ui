@@ -47,18 +47,9 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 					:root {
 						--rrui-tooltip-background-color : black;
 						--rrui-tooltip-text-color : white;
-					}
-
-					.rrui__tooltip {
-						margin-top : -0.5em;
-					}
-
-					.rrui__tooltip--after-show {
-						opacity : 0.85;
-					}
-
-					.rrui__tooltip--before-hide {
-						opacity : 0;
+						--rrui-tooltip-animation-duration : 120ms;
+						--rrui-tooltip-y-visible : -0.4em;
+						--rrui-tooltip-y-hidden  : -0.1em;
 					}
 				`}</Highlight>
 

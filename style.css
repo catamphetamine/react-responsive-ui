@@ -2177,7 +2177,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   padding-left: calc(0.6rem * 1.5);
   padding-right: calc(0.6rem * 1.5);
   height: calc(0.6rem * 4);
-  margin-top: calc(0.6rem * -1);
   color: #ffffff;
   background-color: #000000;
   border-radius: 0.1rem;
@@ -2185,35 +2184,29 @@ but rather `width: auto` or `left: 0; right: 0;`.
 
 .rrui__tooltip {
   opacity: 0;
-  -webkit-transform: translateY(0.8em) scale(0.97);
-      -ms-transform: translateY(0.8em) scale(0.97);
-          transform: translateY(0.8em) scale(0.97); }
+  -webkit-transform: translateY(-0.1em);
+      -ms-transform: translateY(-0.1em);
+          transform: translateY(-0.1em); }
 
 .rrui__tooltip--after-show {
   opacity: 1;
-  -webkit-transform: translateY(0) scale(1);
-      -ms-transform: translateY(0) scale(1);
-          transform: translateY(0) scale(1); }
+  -webkit-transform: translateY(-0.4em);
+      -ms-transform: translateY(-0.4em);
+          transform: translateY(-0.4em); }
 
 .rrui__tooltip--before-hide {
   opacity: 0;
-  -webkit-transform: translateY(0.8em) scale(0.97);
-      -ms-transform: translateY(0.8em) scale(0.97);
-          transform: translateY(0.8em) scale(0.97); }
+  -webkit-transform: translateY(-0.1em);
+      -ms-transform: translateY(-0.1em);
+          transform: translateY(-0.1em); }
 
-.rrui__tooltip--after-show {
-  -webkit-transition: opacity 90ms ease-out, -webkit-transform 200ms ease-out;
-  transition: opacity 90ms ease-out, -webkit-transform 200ms ease-out;
-  -o-transition: opacity 90ms ease-out, transform 200ms ease-out;
-  transition: opacity 90ms ease-out, transform 200ms ease-out;
-  transition: opacity 90ms ease-out, transform 200ms ease-out, -webkit-transform 200ms ease-out; }
-
+.rrui__tooltip--after-show,
 .rrui__tooltip--before-hide {
-  -webkit-transition: opacity 150ms ease-out, -webkit-transform 200ms ease-out;
-  transition: opacity 150ms ease-out, -webkit-transform 200ms ease-out;
-  -o-transition: opacity 150ms ease-out, transform 200ms ease-out;
-  transition: opacity 150ms ease-out, transform 200ms ease-out;
-  transition: opacity 150ms ease-out, transform 200ms ease-out, -webkit-transform 200ms ease-out; }
+  -webkit-transition: opacity 120ms, -webkit-transform 120ms;
+  transition: opacity 120ms, -webkit-transform 120ms;
+  -o-transition: opacity 120ms, transform 120ms;
+  transition: opacity 120ms, transform 120ms;
+  transition: opacity 120ms, transform 120ms, -webkit-transform 120ms; }
 
 /* Prevents entering text selection mode
    on mobile devices when tapping down and holding */
