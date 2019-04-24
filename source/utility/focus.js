@@ -14,7 +14,8 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 		// then don't collapse it.
 		if (
 			focusedNode &&
-			(focusedNode instanceof Element || focusedNode instanceof HTMLDocument) &&
+			// Fixes "Argument 1 of Node.contains does not implement interface Node.".
+			focusedNode instanceof Element &&
 			(
 				getComponentNode().contains(focusedNode) ||
 				(getComponentNode2 && getComponentNode2().contains(focusedNode))
