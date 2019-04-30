@@ -1,21 +1,21 @@
 .rrui__snackbar__container
 {
-	margin : 0;
-	margin-bottom : 0.6rem;
-	-webkit-box-pack : center;
-	-webkit-justify-content : center;
-	    -ms-flex-pack : center;
-	        justify-content : center;
+	margin: 0;
 }
 
-/* Full-width `<Snackbar/>`. */
-.rrui__snackbar__container--wide
+.rrui__snackbar
 {
-	margin-bottom : 0;
+	width: 100%;
+	border-radius: 0;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
-/* Full-width `<Snackbar/>` border radius. */
-.rrui__snackbar__container--wide .rrui__snackbar
+.rrui__snackbar__count
 {
-	border-radius : 0;
+	-webkit-transform: translateY(-100%);
+	    -ms-transform: translateY(-100%);
+	        transform: translateY(-100%);
+	right: 0.3em;
+	top: 0.3em;
 }

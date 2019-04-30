@@ -2,7 +2,7 @@ const NewMessageNotification = ({ from, hide }) => (
 	<div className="new-message-notification">
 		<img src={from.picture} className="new-message-notification__user-picture"/>
 		<div className="new-message-notification__text"> New message from {from.name} </div>
-		<button type="button" onClick={hide} className="new-message-notification__close"> ✕ </button>
+		<button type="button" onClick={hide} className="new-message-notification__close"> OK </button>
 	</div>
 )
 
@@ -26,7 +26,18 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 
 					const pad = number => number < 10 ? '0' + number : number
 
-					this.setState({ snack: { content: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` } })
+					this.setState({
+						snack: {
+							// duration: -1,
+							// close: true,
+							content: `Current time — ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`,
+							// content: `fasd fa dksfadsfkajsdfhlasdkjfhasdjkfhasdkljfhalsd jafdhlkjafhsdlkjfhasdljkf alsdjkfh alskdjfh aljskdfh laksdjhf alsdkj fhlaskdjhflakjsdhflkjasdhflajksdf afds fajlsdh flakjsdhf akjshdfalkjsdh flakjshd flakjsdhf laksjdhf alskdjfhlasdkjfhlaksdjfh lakjh`,
+							action: {
+								title: 'Action',
+								onClick: () => console.log('Clicked')
+							}
+						}
+					})
 				}}>
 					Show a snack
 				</Button>
@@ -34,7 +45,15 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 				<Snackbar value={this.state.snack}/>
 
 <Highlight lang="jsx">{`
-<Button action={ () => this.setState({ snack: { content: "..." } }) }>
+<Button action={() => this.setState({
+	snack: {
+		content: "...",
+		action: {
+			title: "Action",
+			onClick: () => {}
+		}
+	}
+})}>
   Show a snack
 </Button>
 
@@ -58,6 +77,8 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 				<li><code className="colored">length</code> — (optional) Content length. Is used when calculating <code className="colored">duration</code> automatically. Is calculated automatically for string content.</li>
 				<li><code className="colored">type</code> — (optional) Is appended as a BEM modifier to <code className="colored">.rrui__snackbar</code> CSS class. E.g. <code className="colored">.rrui__snackbar--error</code> for <code className="colored">{'{ type: "error" }'}</code>.</li>
 				<li><code className="colored">duration</code> — (optional) How long will the notification stay. <code className="colored">-1</code> means "until manually closed". If not specified will be calculated automatically based on <code className="colored">length</code>.</li>
+				<li><code className="colored">action</code> — (optional) An optional action button on the right side. An object of shape <code className="colored">{'{ title: string, onClick: function }'}</code>.</li>
+				<li><code className="colored">close</code> — (optional) Set to <code className="colored">true</code> to show an "X" (close) button on the right side. The close button is shown automatically if <code className="colored">content</code> is a <code className="colored">string</code> and <code className="colored">duration</code> is <code className="colored">-1</code>.</li>
 			</ul>
 
 			<br/>
@@ -85,7 +106,7 @@ const NewMessageNotification = ({ from, hide }) => (
   <div>
     <img src={from.picture}/>
     <div> New message from {from.name} </div>
-    <button type="button" onClick={hide}> ✕ </button>
+    <button type="button" onClick={hide}> OK </button>
   </div>
 )
 
@@ -94,7 +115,7 @@ const newMessageReceived = (message) => {
     snack: {
       type: 'new-message-notification',
       component: NewMessageNotification,
-      props: message,
+      props: { from: message.from },
       duration: -1
     }
   })

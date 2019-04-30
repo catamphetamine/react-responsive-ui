@@ -158,6 +158,7 @@ pre
 	color      : white;
 	cursor     : pointer;
 	outline    : none;
+	color : #03b2cb;
 }
 
 .new-message-notification__close:active
