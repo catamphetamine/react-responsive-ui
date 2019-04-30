@@ -90,9 +90,6 @@ function transformStyle(filePath)
     /* `<SlideOutMenu/>`. */
     .replace_all('var(--rrui-slide-out-menu-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-slide-out-menu-text-color)', 'var(--rrui-white-color)')
-    /* `<Snackbar/>`. */
-    .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
-    .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
     /* `<Switcher/>`. */
     .replace_all('var(--rrui-switcher-background-color)', 'transparent')
     .replace_all('var(--rrui-switcher-text-color)', 'var(--rrui-accent-color)')
@@ -152,8 +149,11 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-snackbar-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-snackbar-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-snackbar-margin)', 'calc(0.6rem * 2)')
-    .replace_all('var(--rrui-snackbar-notifications-count-size)', '1.3em')
-    .replace_all('var(--rrui-snackbar-notifications-count-background-color)', '#d30f00')
+    .replace_all('var(--rrui-snackbar-notifications-count-border-color)', 'currentColor')
+    .replace_all('var(--rrui-snackbar-notifications-count-background-color)', 'var(--rrui-snackbar-background-color)')
+    .replace_all('var(--rrui-snackbar-notifications-count-size)', '1.4em')
+    .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
+    .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
     /* `<Tooltip/>` */
     .replace_all('var(--rrui-tooltip-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-tooltip-height)', 'calc(0.6rem * 4)')

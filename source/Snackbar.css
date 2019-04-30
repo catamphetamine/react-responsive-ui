@@ -1,5 +1,4 @@
-.rrui__snackbar__container
-{
+.rrui__snackbar__container {
 	display        : flex;
 	position       : fixed;
 	left           : 0;
@@ -13,14 +12,12 @@
 	visibility     : visible;
 }
 
-.rrui__snackbar__container--hidden
-{
+.rrui__snackbar__container--hidden {
 	transition : all 195ms cubic-bezier(0.4, 0, 0.6, 1);
 	visibility : hidden;
 }
 
-.rrui__snackbar
-{
+.rrui__snackbar {
 	position    : relative;
 	display     : flex;
 	align-items : center;
@@ -35,16 +32,24 @@
 
 	padding-left  : var(--rrui-snackbar-side-padding);
 	padding-right : var(--rrui-snackbar-side-padding);
-	height        : var(--rrui-snackbar-height);
+
+	min-height : var(--rrui-snackbar-height);
 }
 
-.rrui__snackbar__text
-{
-	overflow : 'hidden';
+.rrui__snackbar__text {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	flex: 1;
+	/*
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	*/
 }
 
-.rrui__snackbar__count
-{
+.rrui__snackbar__count {
 	display          : flex;
 	align-items      : center;
 	justify-content  : center;
@@ -57,7 +62,51 @@
 	padding-left     : 0.3em;
 	padding-right    : 0.3em;
 	transform        : translateX(50%) translateY(50%);
+	border           : 1px solid var(--rrui-white-color);
 	border-radius    : calc(var(--rrui-snackbar-notifications-count-size) / 2);
 	background-color : var(--rrui-snackbar-notifications-count-background-color);
 	color            : var(--rrui-white-color);
+	font-weight      : lighter;
+	pointer-events   : none;
+}
+
+.rrui__snackbar__actions {
+	display: flex;
+	align-items: center;
+}
+
+.rrui__snackbar__action {
+	font-size: 95%;
+	border-radius: 0.5em;
+	text-transform: uppercase;
+	color: var(--rrui-accent-color);
+}
+
+.rrui__snackbar__action:active {
+	color: var(--rrui-accent-color-light);
+}
+
+.rrui__snackbar__action,
+.rrui__snackbar__close {
+	margin-left: var(--rrui-unit);
+	margin-right: -0.5em;
+	padding: 0.5em;
+}
+
+.rrui__snackbar__close {
+	border-radius: 50%;
+	color: inherit;
+}
+
+.rrui__snackbar__close:hover {
+	color: var(--rrui-gray-color-lightest);
+}
+
+.rrui__snackbar__close:active {
+	color: var(--rrui-gray-color-light);
+}
+
+.rrui__snackbar__close-icon {
+	width: 0.75em;
+	height: 0.75em;
 }

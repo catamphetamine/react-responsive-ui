@@ -1,19 +1,19 @@
 /* Center `<Snackbar/>` on screen. */
 .rrui__snackbar__container
 {
-	margin : 0;
-	margin-bottom : var(--rrui-unit);
-	justify-content : center;
+	margin: 0;
 }
 
-/* Full-width `<Snackbar/>`. */
-.rrui__snackbar__container--wide
+.rrui__snackbar
 {
-	margin-bottom : 0;
+	width: 100%;
+	border-radius: 0;
+	box-sizing: border-box;
 }
 
-/* Full-width `<Snackbar/>` border radius. */
-.rrui__snackbar__container--wide .rrui__snackbar
+.rrui__snackbar__count
 {
-	border-radius : 0;
+	transform: translateY(-100%);
+	right: 0.3em;
+	top: 0.3em;
 }

@@ -64,8 +64,11 @@
   --rrui-snackbar-height       : calc(var(--rrui-unit) * 4);
   --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 1.5);
   --rrui-snackbar-margin       : calc(var(--rrui-unit) * 2);
-  --rrui-snackbar-notifications-count-size : 1.3em;
-  --rrui-snackbar-notifications-count-background-color : #d30f00;
+  --rrui-snackbar-background-color : var(--rrui-black-color);
+  --rrui-snackbar-text-color : var(--rrui-white-color);
+  --rrui-snackbar-notifications-count-size : 1.4em;
+  --rrui-snackbar-notifications-count-border-color : currentColor;
+  --rrui-snackbar-notifications-count-background-color : var(--rrui-snackbar-background-color); /* #d30f00; */
 
   /* `<Tooltip/>` */
   --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 1.5);
@@ -163,10 +166,6 @@
   /* `<SlideOutMenu/>` colors :active. */
   --rrui-slide-out-menu-background-color-active : var(--rrui-accent-color);
   --rrui-slide-out-menu-text-color-active : var(--rrui-slide-out-menu-text-color);
-
-  /* `<Snackbar/>` colors. */
-  --rrui-snackbar-background-color : var(--rrui-black-color);
-  --rrui-snackbar-text-color : var(--rrui-white-color);
 
   /* `<Switch/>` colors. */
   --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;

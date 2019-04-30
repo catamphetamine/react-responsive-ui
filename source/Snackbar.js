@@ -39,7 +39,20 @@ export default class Snackbar extends PureComponent
 
 			// How long does the notification stay.
 			// Pass `-1` for it to stay until it's closed manually.
-			duration : PropTypes.number
+			duration : PropTypes.number,
+
+			// (optional)
+			// Action button on the right side.
+			action: PropTypes.shape({
+				onClick: PropTypes.func.isRequired,
+				title: PropTypes.string.isRequired
+			}),
+
+			// (optional)
+			// Set to `true` to show a close button.
+			// Close button is automatically shown
+			// when `content` is text and `duration` is `-1`.
+			close: PropTypes.bool
 		}),
 
 		// // "Snack" showing CSS animation duration.
@@ -120,7 +133,7 @@ export default class Snackbar extends PureComponent
 			value,
 			queueSize: this.queue.length,
 			height: undefined,
-			wide: undefined,
+			// wide: undefined,
 			hiding: false
 		})
 
@@ -145,8 +158,10 @@ export default class Snackbar extends PureComponent
 		const length = typeof value.content === 'string' ? value.content.length : value.length || 0
 		const duration = value.duration || (minTime + length * lengthTimeFactor)
 
-		// Hide the notification after it expires
-		this.auto_hide_timer = setTimeout(this.hide, duration)
+		// Hide the notification after it expires.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			this.auto_hide_timer = setTimeout(this.hide, duration)
+		}
 	}
 
 	hide = () =>
@@ -177,11 +192,14 @@ export default class Snackbar extends PureComponent
 		if (height === undefined && value)
 		{
 			height = this.snackbar.offsetHeight
-			const wide = this.snackbar.offsetWidth === document.documentElement.clientWidth
+			// const wide = this.snackbar.offsetWidth === document.documentElement.clientWidth
 			const marginBottom = parseInt(getComputedStyle(this.container).marginBottom)
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
-			this.setState({ height, wide, marginBottom }, () =>
-			{
+			this.setState({
+				height,
+				// wide,
+				marginBottom
+			}, () => {
 				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
 			})
 		}
@@ -200,13 +218,15 @@ export default class Snackbar extends PureComponent
 
 	render()
 	{
-		const { type } = this.props
+		const {
+			type
+		} = this.props
 
 		const {
 			show,
 			value,
 			height,
-			wide,
+			// wide,
 			marginBottom,
 			hiding,
 			queueSize
@@ -214,22 +234,20 @@ export default class Snackbar extends PureComponent
 
 		const containerStyle = {}
 
-		if (!show)
-		{
+		if (!show) {
 			// If no snack is being shown,
 			// or if a snack is about to be shown,
 			// then shift it under the screen's bottom border
 			// to show the slide-from-bottom animation at the next step.
-			if (height !== undefined)
-			{
+			if (height !== undefined) {
 				containerStyle.transform = `translateY(${height + marginBottom}px)`
 			}
-
-			if (!hiding)
-			{
+			if (!hiding) {
 				containerStyle.transition = 'none'
 			}
 		}
+
+		const showCloseButton = value && (value.close || (typeof value.content === 'string' && value.duration === -1))
 
 		return (
 			<div
@@ -238,19 +256,40 @@ export default class Snackbar extends PureComponent
 				className={ classNames('rrui__snackbar__container',
 				{
 					'rrui__snackbar__container--hidden' : !show,
-					'rrui__snackbar__container--wide' : wide
+					// 'rrui__snackbar__container--wide' : wide
 				}) }>
 
 				<div
 					ref={ this.storeSnackbarNode }
 					className={ classNames('rrui__snackbar', value && value.type && `rrui__snackbar--${value.type}`) }>
 
-					<div
-						className="rrui__snackbar__text">
+					<p className="rrui__snackbar__text">
 						{ value && (value.content !== undefined ? value.content : this.renderContent(value)) }
-					</div>
+					</p>
 
-					{value && value.duration === -1 && queueSize > 0 &&
+					{(value && value.action || showCloseButton) &&
+						<div className="rrui__snackbar__actions">
+							{value && value.action &&
+								<button
+									type="button"
+									onClick={value.action.onClick}
+									class="rrui__snackbar__action rrui__button-reset">
+									{value.action.title}
+								</button>
+							}
+							{showCloseButton &&
+								<button
+									type="button"
+									onClick={this.hide}
+									className="rrui__snackbar__close rrui__button-reset">
+									<Close/>
+								</button>
+							}
+						</div>
+					}
+
+					{/* value && value.duration === -1 && */}
+					{queueSize > 0 &&
 						<div className="rrui__snackbar__count">
 							{queueSize + 1}
 						</div>
@@ -259,4 +298,13 @@ export default class Snackbar extends PureComponent
 			</div>
 		)
 	}
+}
+
+function Close() {
+	return (
+		<svg className="rrui__snackbar__close-icon" viewBox="0 0 100 100">
+			<line stroke="currentColor" strokeWidth="10" x1="2" y1="2" x2="98" y2="98"/>
+			<line stroke="currentColor" strokeWidth="10" x1="2" y1="98" x2="98" y2="2"/>
+		</svg>
+	)
 }

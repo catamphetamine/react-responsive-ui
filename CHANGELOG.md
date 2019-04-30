@@ -39,6 +39,13 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
+<!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
+
+0.14.134 / 30.04.2019
+====================
+
+  * Changed `<Snackbar/>` styles a bit (stretches to full width on mobile; `min-height` instead of `height` on `.rrui__snackbar`; `<div className="rrui__snackbar__text">` -> `<p className="rrui__snackbar__text" style="margin: 0">`; Added `padding-top` and `padding-bottom` to `.rrui__snackbar__text`). Added `action` and `close` parameters to `<Snackbar/>`.
+
 0.14.133 / 25.04.2019
 ====================
 
