@@ -74,8 +74,8 @@
   --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 1.5);
   --rrui-tooltip-height       : calc(var(--rrui-unit) * 4);
   --rrui-tooltip-animation-duration : 120ms;
-  --rrui-tooltip-y-visible : -0.4em;
-  --rrui-tooltip-y-hidden  : -0.1em;
+  --rrui-tooltip-y-visible : -0.2em;
+  --rrui-tooltip-y-hidden  : -0.5em;
 
   /* `<Switch/>` and `<Checkbox/>` */
   --rrui-control-label-margin : var(--rrui-unit);
