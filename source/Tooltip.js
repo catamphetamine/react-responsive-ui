@@ -13,6 +13,14 @@ export default class Tooltip extends PureComponent
 {
 	static propTypes =
 	{
+		// Tooltip placement.
+		placement : PropTypes.oneOf([
+			'top',
+			'left',
+			'bottom',
+			'right'
+		]).isRequired,
+
 		// Tooltip content.
 		content : PropTypes.node,
 
@@ -49,10 +57,11 @@ export default class Tooltip extends PureComponent
 
 	static defaultProps =
 	{
-		inline : true,
-		delay : 400, // in milliseconds
-		hidingAnimationDuration : 200, // in milliseconds
-		container : () => document.body
+		placement: 'top',
+		inline: true,
+		delay: 400, // in milliseconds
+		hidingAnimationDuration: 200, // in milliseconds
+		container: () => document.body
 	}
 
 	state = {}
@@ -72,7 +81,7 @@ export default class Tooltip extends PureComponent
 
 	create_tooltip()
 	{
-		const { tooltipClassName } = this.props
+		const { tooltipClassName, placement } = this.props
 
 		this.tooltip = document.createElement('div')
 
@@ -81,6 +90,7 @@ export default class Tooltip extends PureComponent
 		this.tooltip.style.top  = 0
 
 		this.tooltip.classList.add('rrui__tooltip')
+		this.tooltip.classList.add(`rrui__tooltip--${placement}`)
 
 		if (tooltipClassName)
 		{
@@ -108,19 +118,56 @@ export default class Tooltip extends PureComponent
 
 	calculate_coordinates()
 	{
+		const { placement } = this.props
+
 		const width  = this.tooltip.offsetWidth
 		const height = this.tooltip.offsetHeight
 
-		const origin = this.origin
+		const origin = getOffset(this.origin)
 
-		const origin_width  = origin.offsetWidth
+		let top
+		let left
 
-		const _offset = getOffset(origin)
+		switch (placement) {
+			case 'top':
+				top = origin.top - height
+				break
+			case 'bottom':
+				top = origin.top + origin.height
+				break
+			case 'left':
+				left = origin.left - width
+				break
+			case 'right':
+				left = origin.left + origin.width
+				break
+		}
 
-		const top  = _offset.top - height - getOffset(this.container()).top
-		const left = _offset.left + origin_width / 2 - width / 2
+		switch (placement) {
+			case 'top':
+			case 'bottom':
+				switch (placement) {
+					// Default: "center".
+					default:
+						left = origin.left + (origin.width - width) / 2
+				}
+				break
+			case 'left':
+			case 'right':
+				switch (placement) {
+					// Default: "center".
+					default:
+						top = origin.top + (origin.height - height) / 2
+				}
+				break
+		}
 
-		return reposition_within_screen(left, top, width, height)
+		return fitOnScreen(
+			left,
+			top - getOffset(this.container()).top,
+			width,
+			height
+		)
 	}
 
 	show = () =>
@@ -323,7 +370,7 @@ export default class Tooltip extends PureComponent
 	}
 }
 
-function reposition_within_screen(x, y, width, height)
+function fitOnScreen(x, y, width, height)
 {
 	const minimal_margin = 4 // in pixels
 

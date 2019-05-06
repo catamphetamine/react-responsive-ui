@@ -17,20 +17,82 @@
 
 .rrui__tooltip
 {
-	opacity    : 0;
-	transform  : translateY(var(--rrui-tooltip-y-hidden));
+	opacity: 0;
 }
 
 .rrui__tooltip--after-show
 {
-	opacity   : 1;
-	transform : translateY(var(--rrui-tooltip-y-visible));
+	opacity: 1;
 }
 
+/* `--before-hide` must be placed after `--after-show`. */
 .rrui__tooltip--before-hide
 {
-	opacity   : 0;
-	transform : translateY(var(--rrui-tooltip-y-hidden));
+	opacity: 0;
+}
+
+.rrui__tooltip--top
+{
+	transform: translateY(calc(-1 * var(--rrui-tooltip-hidden-distance)));
+}
+
+.rrui__tooltip--top.rrui__tooltip--after-show
+{
+	transform: translateY(calc(-1 * var(--rrui-tooltip-visible-distance)));
+}
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--top.rrui__tooltip--before-hide
+{
+	transform: translateY(calc(-1 * var(--rrui-tooltip-hidden-distance)));
+}
+
+.rrui__tooltip--left
+{
+	transform: translateX(calc(-1 * var(--rrui-tooltip-hidden-distance)));
+}
+
+.rrui__tooltip--left.rrui__tooltip--after-show
+{
+	transform: translateX(calc(-1 * var(--rrui-tooltip-visible-distance)));
+}
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--left.rrui__tooltip--before-hide
+{
+	transform: translateX(calc(-1 * var(--rrui-tooltip-hidden-distance)));
+}
+
+.rrui__tooltip--bottom
+{
+	transform: translateY(var(--rrui-tooltip-hidden-distance));
+}
+
+.rrui__tooltip--bottom.rrui__tooltip--after-show
+{
+	transform: translateY(var(--rrui-tooltip-visible-distance));
+}
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--bottom.rrui__tooltip--before-hide
+{
+	transform: translateY(var(--rrui-tooltip-hidden-distance));
+}
+
+.rrui__tooltip--right
+{
+	transform: translateX(var(--rrui-tooltip-hidden-distance));
+}
+
+.rrui__tooltip--right.rrui__tooltip--after-show
+{
+	transform: translateX(var(--rrui-tooltip-visible-distance));
+}
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--right.rrui__tooltip--before-hide
+{
+	transform: translateX(var(--rrui-tooltip-hidden-distance));
 }
 
 .rrui__tooltip--after-show,

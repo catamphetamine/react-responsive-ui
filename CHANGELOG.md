@@ -46,6 +46,13 @@
 
   * Changed `<Snackbar/>` styles a bit (stretches to full width on mobile; `min-height` instead of `height` on `.rrui__snackbar`; `<div className="rrui__snackbar__text">` -> `<p className="rrui__snackbar__text" style="margin: 0">`; Added `padding-top` and `padding-bottom` to `.rrui__snackbar__text`). Added `action` and `close` parameters to `<Snackbar/>`.
 
+0.14.135 / 06.05.2019
+====================
+
+  * Added `placement` to `<Tooltip/>`: "top", "left", "bottom", "right".
+
+  * Renamed CSS variables: `--rrui-tooltip-y-visible` -> `--rrui-tooltip-visible-distance`, `--rrui-tooltip-y-hidden` -> `--rrui-tooltip-hidden-distance`.
+
 0.14.133 / 25.04.2019
 ====================
 
