@@ -48,11 +48,16 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 						--rrui-tooltip-background-color : black;
 						--rrui-tooltip-text-color : white;
 						--rrui-tooltip-animation-duration : 120ms;
-						--rrui-tooltip-y-visible : -0.4em;
-						--rrui-tooltip-y-hidden  : -0.1em;
+						--rrui-tooltip-visible-distance : 0.2em;
+						--rrui-tooltip-hidden-distance : 0.5em;
 					}
 				`}</Highlight>
 
+				<code className="colored">{'<Tooltip/>'}</code> also takes optional properties:
+
+				<ul className="list">
+					<li><code className="colored">placement</code> — One of: <code className="colored">top</code>, <code className="colored">left</code>, <code className="colored">bottom</code>, <code className="colored">right</code>. Is <code className="colored">top</code> by default.</li>
+				</ul>
 			</Example>
 		)
 	}

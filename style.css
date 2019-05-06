@@ -2237,22 +2237,78 @@ but rather `width: auto` or `left: 0; right: 0;`.
   cursor: default; }
 
 .rrui__tooltip {
-  opacity: 0;
-  -webkit-transform: translateY(-0.1em);
-      -ms-transform: translateY(-0.1em);
-          transform: translateY(-0.1em); }
+  opacity: 0; }
 
 .rrui__tooltip--after-show {
-  opacity: 1;
-  -webkit-transform: translateY(-0.4em);
-      -ms-transform: translateY(-0.4em);
-          transform: translateY(-0.4em); }
+  opacity: 1; }
 
+/* `--before-hide` must be placed after `--after-show`. */
 .rrui__tooltip--before-hide {
-  opacity: 0;
-  -webkit-transform: translateY(-0.1em);
-      -ms-transform: translateY(-0.1em);
-          transform: translateY(-0.1em); }
+  opacity: 0; }
+
+.rrui__tooltip--top {
+  -webkit-transform: translateY(calc(-1 * 0.5em));
+      -ms-transform: translateY(calc(-1 * 0.5em));
+          transform: translateY(calc(-1 * 0.5em)); }
+
+.rrui__tooltip--top.rrui__tooltip--after-show {
+  -webkit-transform: translateY(calc(-1 * 0.2em));
+      -ms-transform: translateY(calc(-1 * 0.2em));
+          transform: translateY(calc(-1 * 0.2em)); }
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--top.rrui__tooltip--before-hide {
+  -webkit-transform: translateY(calc(-1 * 0.5em));
+      -ms-transform: translateY(calc(-1 * 0.5em));
+          transform: translateY(calc(-1 * 0.5em)); }
+
+.rrui__tooltip--left {
+  -webkit-transform: translateX(calc(-1 * 0.5em));
+      -ms-transform: translateX(calc(-1 * 0.5em));
+          transform: translateX(calc(-1 * 0.5em)); }
+
+.rrui__tooltip--left.rrui__tooltip--after-show {
+  -webkit-transform: translateX(calc(-1 * 0.2em));
+      -ms-transform: translateX(calc(-1 * 0.2em));
+          transform: translateX(calc(-1 * 0.2em)); }
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--left.rrui__tooltip--before-hide {
+  -webkit-transform: translateX(calc(-1 * 0.5em));
+      -ms-transform: translateX(calc(-1 * 0.5em));
+          transform: translateX(calc(-1 * 0.5em)); }
+
+.rrui__tooltip--bottom {
+  -webkit-transform: translateY(0.5em);
+      -ms-transform: translateY(0.5em);
+          transform: translateY(0.5em); }
+
+.rrui__tooltip--bottom.rrui__tooltip--after-show {
+  -webkit-transform: translateY(0.2em);
+      -ms-transform: translateY(0.2em);
+          transform: translateY(0.2em); }
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--bottom.rrui__tooltip--before-hide {
+  -webkit-transform: translateY(0.5em);
+      -ms-transform: translateY(0.5em);
+          transform: translateY(0.5em); }
+
+.rrui__tooltip--right {
+  -webkit-transform: translateX(0.5em);
+      -ms-transform: translateX(0.5em);
+          transform: translateX(0.5em); }
+
+.rrui__tooltip--right.rrui__tooltip--after-show {
+  -webkit-transform: translateX(0.2em);
+      -ms-transform: translateX(0.2em);
+          transform: translateX(0.2em); }
+
+/* `--before-hide` must be placed after `--after-show`. */
+.rrui__tooltip--right.rrui__tooltip--before-hide {
+  -webkit-transform: translateX(0.5em);
+      -ms-transform: translateX(0.5em);
+          transform: translateX(0.5em); }
 
 .rrui__tooltip--after-show,
 .rrui__tooltip--before-hide {
