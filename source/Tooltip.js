@@ -92,9 +92,10 @@ export default class Tooltip extends PureComponent
 		this.tooltip.classList.add('rrui__tooltip')
 		this.tooltip.classList.add(`rrui__tooltip--${placement}`)
 
-		if (tooltipClassName)
-		{
-			this.tooltip.classList.add(tooltipClassName)
+		if (tooltipClassName) {
+			for (const className of tooltipClassName.split(/\s+/)) {
+				this.tooltip.classList.add(className)
+			}
 		}
 
 		this.container().appendChild(this.tooltip)
