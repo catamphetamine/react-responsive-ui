@@ -16,9 +16,17 @@ export default class Tooltip extends PureComponent
 		// Tooltip placement.
 		placement : PropTypes.oneOf([
 			'top',
+			'top-start',
+			'top-end',
 			'left',
+			'left-start',
+			'left-end',
 			'bottom',
-			'right'
+			'bottom-start',
+			'bottom-end',
+			'right',
+			'right-start',
+			'right-end'
 		]).isRequired,
 
 		// Tooltip content.
@@ -92,7 +100,7 @@ export default class Tooltip extends PureComponent
 		this.tooltip.style.top  = 0
 
 		this.tooltip.classList.add('rrui__tooltip')
-		this.tooltip.classList.add(`rrui__tooltip--${placement}`)
+		this.tooltip.classList.add(`rrui__tooltip--${getEdge(placement)}`)
 
 		if (tooltipClassName) {
 			for (const className of tooltipClassName.split(/\s+/)) {
@@ -138,7 +146,7 @@ export default class Tooltip extends PureComponent
 		let top
 		let left
 
-		switch (placement) {
+		switch (getEdge(placement)) {
 			case 'top':
 				top = origin.top - height
 				break
@@ -153,21 +161,35 @@ export default class Tooltip extends PureComponent
 				break
 		}
 
-		switch (placement) {
+		switch (getEdge(placement)) {
 			case 'top':
 			case 'bottom':
-				switch (placement) {
+				switch (getSide(placement)) {
+					case 'start':
+						left = origin.left
+						break
+					case 'end':
+						left = origin.left + origin.width - width
+						break
 					// Default: "center".
 					default:
 						left = origin.left + (origin.width - width) / 2
+						break
 				}
 				break
 			case 'left':
 			case 'right':
-				switch (placement) {
+				switch (getSide(placement)) {
+					case 'start':
+						top = origin.top
+						break
+					case 'end':
+						top = origin.top + origin.height - height
+						break
 					// Default: "center".
 					default:
 						top = origin.top + (origin.height - height) / 2
+						break
 				}
 				break
 		}
@@ -471,4 +493,28 @@ function fitOnScreen(x, y, width, height)
 const inline_style =
 {
 	display : 'inline-block'
+}
+
+/**
+ * @param  {string} placement
+ * @return {string} One of: "top", "right", "bottom", "left".
+ */
+function getEdge(placement) {
+	const dashIndex = placement.indexOf('-')
+	if (dashIndex >= 0) {
+		return placement.slice(0, dashIndex)
+	}
+	return placement
+}
+
+/**
+ * @param  {string} placement
+ * @return {string} One of: "start", "center", "end".
+ */
+function getSide(placement) {
+	const dashIndex = placement.indexOf('-')
+	if (dashIndex >= 0) {
+		return placement.slice(dashIndex + '-'.length)
+	}
+	return 'center'
 }
