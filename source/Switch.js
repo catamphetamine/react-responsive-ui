@@ -35,6 +35,9 @@ export default class Switch extends PureComponent
 		// The label to the right of the switch
 		rightLabel : PropTypes.string,
 
+		// Set to `true` to output `children` on the right side.
+		rightContent : PropTypes.bool,
+
 		// A label (analogous to `leftLabel`)
 		children  : PropTypes.node,
 
@@ -100,6 +103,7 @@ export default class Switch extends PureComponent
 			className,
 			leftLabel,
 			rightLabel,
+			rightContent,
 			children
 		}
 		= this.props
@@ -113,7 +117,7 @@ export default class Switch extends PureComponent
 				onBlur={this.onBlur}
 				className={ classNames('rrui__switch',
 				{
-					'rrui__input'            : children,
+					// 'rrui__input'            : children,
 					'rrui__switch--label'    : children,
 					'rrui__switch--disabled' : disabled,
 					'rrui__switch--focus'    : isFocused
@@ -122,9 +126,9 @@ export default class Switch extends PureComponent
 				style={ style }>
 
 				{/* Left label */}
-				{ (leftLabel || children) &&
+				{ (leftLabel || (!rightContent && children)) &&
 					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
-						{ leftLabel || children }
+						{ leftLabel || (!rightContent && children) }
 					</span>
 				}
 
@@ -155,9 +159,9 @@ export default class Switch extends PureComponent
 				</span>
 
 				{/* Right label */}
-				{ rightLabel &&
+				{ (rightLabel || (rightContent && children)) &&
 					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
-						{ rightLabel }
+						{ rightLabel || (rightContent && children) }
 					</span>
 				}
 			</label>

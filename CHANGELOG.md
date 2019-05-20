@@ -41,6 +41,13 @@
 
 <!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
 
+0.14.137 / 20.05.2019
+====================
+
+  * (CSS small breaking change) Previously when `<Switch/>` had `children` it also had `.rrui__input` CSS class attached. Now this CSS class is not being attached to such `<Switch/>`.
+
+  * Added `rightContent: true/false` property to `<Switch/>` for placing `children` on the right side of the toggle.
+
 0.14.134 / 30.04.2019
 ====================
 
