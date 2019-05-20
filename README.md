@@ -174,7 +174,7 @@ There's also an exported component called `<KeyboardNavigationListener/>` which 
 
 ## Inspecting Expandables
 
-Expandables are implemented in such a way that they collapse when losing focus. This may present difficulties when trying to inspect expandable content via DevTools because switching to DevTools captures focus causing expandables to collapse. For such cases there's a global debug flag `window.rruiCollapseOnFocusOut` which can be set to `false` to prevent expandables from collapsing when losing focus.
+Expandables are implemented in such a way that they collapse when losing focus. This may present difficulties when trying to inspect expandable content via DevTools because switching to DevTools captures focus causing expandables to collapse. For such cases there's a global debug flag `window.rruiCollapseOnFocusOut` which can be set to `false` to prevent expandables from collapsing when losing focus. This flag affects: `<Select/>`, `<Autocomplete/>`, `<ExpandableMenu/>`, `<SlideOutMenu/>`, `<DatePicker/>`, `<Snackbar/>`, `<Tooltip/>`.
 
 ## Known Issues
 
