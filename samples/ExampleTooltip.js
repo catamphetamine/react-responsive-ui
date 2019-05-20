@@ -58,7 +58,7 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 				<ul className="list">
 					<li><code className="colored">delay</code> — Tooltip appear delay. Is <code className="colored">400</code> milliseconds by default.</li>
 					<li><code className="colored">inline</code> — Whether the wrapped element should be an inline one or a block one. Is <code className="colored">true</code> by default meaning that it will add <code className="colored">display: inline-block</code> CSS rule to the wrapped element.</li>
-					<li><code className="colored">placement</code> — One of: <code className="colored">top</code>, <code className="colored">left</code>, <code className="colored">bottom</code>, <code className="colored">right</code>. Is <code className="colored">top</code> by default.</li>
+					<li><code className="colored">placement</code> — One of: <code className="colored">top-start</code>, <code className="colored">top</code>, <code className="colored">top-end</code>, <code className="colored">left-start</code>, <code className="colored">left</code>, <code className="colored">left-end</code>, <code className="colored">bottom-end</code>, <code className="colored">bottom</code>, <code className="colored">bottom-start</code>, <code className="colored">right-end</code>, <code className="colored">right</code>, <code className="colored">right-start</code>. Is <code className="colored">top</code> by default.</li>
 				</ul>
 			</Example>
 		)
