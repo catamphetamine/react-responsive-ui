@@ -38,6 +38,10 @@ export default class Tooltip extends PureComponent
 		// Is `120` by default.
 		hidingAnimationDuration : PropTypes.number.isRequired,
 
+		// The tooltip waits `hideTimeout` milliseconds before hiding
+		// to support mouseovering over itself.
+		hideTimeout : PropTypes.number.isRequired,
+
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself
 		// (`document.body` by default).
@@ -59,8 +63,9 @@ export default class Tooltip extends PureComponent
 	{
 		placement: 'top',
 		inline: true,
-		delay: 400, // in milliseconds
+		delay: 350, // in milliseconds
 		hidingAnimationDuration: 200, // in milliseconds
+		hideTimeout: 50, // in milliseconds
 		container: () => document.body
 	}
 
@@ -73,9 +78,6 @@ export default class Tooltip extends PureComponent
 
 	componentWillUnmount()
 	{
-		clearTimeout(this.show_timeout)
-		clearTimeout(this.hide_timeout)
-
 		this.destroy_tooltip()
 	}
 
@@ -98,11 +100,18 @@ export default class Tooltip extends PureComponent
 			}
 		}
 
+		this.tooltip.addEventListener('mouseenter', this.on_mouse_enter_tooltip)
+		this.tooltip.addEventListener('mouseleave', this.on_mouse_leave_tooltip)
+
 		this.container().appendChild(this.tooltip)
 	}
 
 	destroy_tooltip()
 	{
+		clearTimeout(this.show_timeout)
+		clearTimeout(this.hide_timeout)
+		clearTimeout(this.hide_on_mouse_leave_timeout)
+
 		if (this.tooltip)
 		{
 			// Won't throw an exception
@@ -173,6 +182,8 @@ export default class Tooltip extends PureComponent
 
 	show = () =>
 	{
+		this.isShown = true
+
 		// Play tooltip showing animation
 		let animate = false
 
@@ -223,6 +234,8 @@ export default class Tooltip extends PureComponent
 
 	hide = () =>
 	{
+		this.isShown = false
+
 		const { hidingAnimationDuration } = this.props
 
 		// If already hiding, or if already hidden, then do nothing.
@@ -246,30 +259,69 @@ export default class Tooltip extends PureComponent
 		hidingAnimationDuration)
 	}
 
+	scheduleHide() {
+		const { hideTimeout } = this.props
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			this.hide_on_mouse_leave_timeout = setTimeout(this.hide, hideTimeout)
+		}
+	}
+
+	cancelHide() {
+		clearTimeout(this.hide_on_mouse_leave_timeout)
+		this.hide_on_mouse_leave_timeout = undefined
+	}
+
+	on_mouse_enter_tooltip = () =>
+	{
+		// mouse enter and mouse leave events
+		// are triggered on mobile devices too
+		if (this.mobile) {
+			return
+		}
+		if (this.isShown) {
+			this.cancelHide()
+		}
+	}
+
+	on_mouse_leave_tooltip = () =>
+	{
+		// mouse enter and mouse leave events
+		// are triggered on mobile devices too
+		if (this.mobile) {
+			return
+		}
+		if (this.isShown) {
+			this.scheduleHide()
+		}
+	}
+
 	on_mouse_enter = () =>
 	{
 		const { content } = this.props
 
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile)
-		{
+		if (this.mobile) {
 			return
+		}
+
+		if (this.isShown) {
+			return this.cancelHide()
 		}
 
 		// If the tooltip has no content
 		// (e.g. `react-time-ago` first render)
 		// or if React Portal API is not available
 		// then don't show the tooltip.
-		if (!content || !ReactDOM.createPortal)
-		{
+		if (!content || !ReactDOM.createPortal) {
 			return
 		}
 
 		// Shouldn't happen, because
 		// `mouse leave` event clears this timeout.
-		if (this.show_timeout)
-		{
+		if (this.show_timeout) {
 			return
 		}
 
@@ -279,8 +331,7 @@ export default class Tooltip extends PureComponent
 		// but rather wait for the user to
 		// "mouse over" it for a short time interval.
 		// (prevents false positives)
-		this.show_timeout = setTimeout(() =>
-		{
+		this.show_timeout = setTimeout(() => {
 			this.show_timeout = undefined
 			this.show()
 		},
@@ -291,26 +342,21 @@ export default class Tooltip extends PureComponent
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile)
-		{
+		if (this.mobile) {
 			return
 		}
 
 		// If tooltip hasn't been shown yet,
 		// then cancel showing it.
-		if (this.show_timeout)
-		{
+		if (this.show_timeout) {
 			clearTimeout(this.show_timeout)
 			this.show_timeout = undefined
 			return
 		}
 
 		// Otherwise, the tooltip is shown, so hide it.
-		//
-		// `window.rruiCollapseOnFocusOut` can be used
-		// for debugging expandable contents.
-		if (window.rruiCollapseOnFocusOut !== false) {
-			this.hide()
+		if (this.isShown) {
+			this.scheduleHide()
 		}
 	}
 
@@ -342,16 +388,42 @@ export default class Tooltip extends PureComponent
 
 		const
 		{
-			content,
+			content
+		}
+		= this.props
+
+		// `ReactDOM.createPortal()` requires React >= 16.
+		// If it's not available then it won't show the tooltip.
+
+		const tooltip = this.tooltip && content && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip)
+
+		// For React >= 16.2.
+		// Disable React portal event bubbling.
+		// https://github.com/facebook/react/issues/11387#issuecomment-340019419
+		if (React.Fragment) {
+			return (
+				<React.Fragment>
+					{this._render()}
+					{tooltip}
+				</React.Fragment>
+			)
+		} else {
+			// Legacy version support.
+			// Can be a bit buggy in some rare cases of mouseentering and mouseleaving.
+			// Will be removed in some future major version release.
+			return this._render(tooltip)
+		}
+	}
+
+	_render(extraChildren) {
+		const
+		{
 			inline,
 			style,
 			className,
 			children
 		}
 		= this.props
-
-		// `ReactDOM.createPortal()` requires React >= 16.
-		// If it's not available then it won't show the tooltip.
 
 		return (
 			<div
@@ -365,7 +437,7 @@ export default class Tooltip extends PureComponent
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames('rrui__tooltip__target', className) }>
 				{ children }
-				{ this.tooltip && content && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip) }
+				{ extraChildren }
 			</div>
 		)
 	}
