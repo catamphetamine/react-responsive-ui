@@ -23,6 +23,9 @@
 	padding-bottom : var(--rrui-multiline-text-input-vertical-padding);
 	padding-left   : var(--rrui-input-field-side-padding);
 	padding-right  : var(--rrui-input-field-side-padding);
+	/* Fixes the spacing bug between `<textarea/>` and its container. */
+	/* https://stackoverflow.com/questions/35906806/how-to-remove-space-between-textarea-and-parent-div */
+	vertical-align : top;
 }
 
 /* Multiline `<TextInput/>`'s label positioning. */
