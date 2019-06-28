@@ -41,6 +41,8 @@
 
 <!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
 
+<!-- (CSS breaking change) Added `color: inherit` to `.rrui__button-reset`. -->
+
 0.14.137 / 20.05.2019
 ====================
 

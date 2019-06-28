@@ -25,6 +25,15 @@
 	outline : none;
 }
 
+/* Firefox is being stubborn with outlines. */
+/* https://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links */
+/* Actually having tab-only outlines is good UX. */
+/*
+.rrui__button-reset:not(.rrui__outline--default)::-moz-focus-inner {
+	border: 0;
+}
+*/
+
 .rrui__button-reset--link:hover
 {
 	text-decoration : none;
