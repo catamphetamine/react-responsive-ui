@@ -168,6 +168,12 @@ from './modules/FileUpload'
 
 export
 {
+	default as FileUploadButton
+}
+from './modules/FileUploadButton'
+
+export
+{
 	default as DropFileUpload
 }
 from './modules/DropFileUpload'

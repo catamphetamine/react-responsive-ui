@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { DropFiles, supportsMultipleFileUploadOnInputElement } from './DragAndDrop'
+import { DropFiles } from './DragAndDrop'
+import FileUploadInput from './FileUploadInput'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 
@@ -57,52 +58,20 @@ export default class FileUpload extends PureComponent
 		draggedOver : false
 	}
 
-	onFileSelect = (event) =>
-	{
-		let { onChange, multiple } = this.props
-
-		// Internet Explorer triggers `onChange` when setting
-		// `event.target.value` manually, so ignore such events.
-		if (this.ieTimer) {
+	onClick = (event) => {
+		const {
+			disabled,
+			onClick
+		} = this.props
+		if (disabled) {
+			if (event) {
+				event.preventDefault()
+			}
 			return
 		}
-
-		// `action` property is deprecated.
-		onChange = onChange || this.props.action
-
-		// This check will be replaced with `onChange : PropTypes.func.isRequired`
-		// when `action` property is removed in some next breaking release.
-		if (!onChange) {
-			throw new Error(`"onChange" handler not passed.`)
-		}
-
-		// Convert from `FileList` to an `Array`.
-		const value = Array.prototype.slice.call(event.target.files)
-		// `<input multiple/>` attribute is not supported in all browsers.
-		onChange(multiple ? value : value[0])
-
-		// Internet Explorer triggers `onChange` when setting
-		// `event.target.value` manually, hence the cooldown timer.
-		this.ieTimer = setTimeout(() => this.ieTimer = undefined, 0)
-		// Reset the selected file
-		// so that `onChange` is triggered again next time
-		// even if the user selects the same file.
-		event.target.value = null
-	}
-
-	onClick = (event) =>
-	{
-		const { disabled, onClick } = this.props
-
-		if (disabled && event) {
-			return event.preventDefault()
-		}
-
 		if (onClick) {
 			onClick()
 		}
-
-		// This is why `onClick` is set on the `<input/>`.
 		this.fileInput.click()
 	}
 
@@ -130,7 +99,7 @@ export default class FileUpload extends PureComponent
 
 	setDraggedOver = (draggedOver) => this.setState({ draggedOver })
 
-	storeFileInputNode = (node) => this.fileInput = node
+	storeFileInputRef = (ref) => this.fileInput = ref
 
 	render()
 	{
@@ -156,17 +125,15 @@ export default class FileUpload extends PureComponent
 				className={ classNames('rrui__file-upload', className) }>
 
 				{/* Hidden. */}
-				<input
-					type="file"
-					multiple={ supportsMultipleFileUploadOnInputElement ? multiple : undefined }
-					ref={ this.storeFileInputNode }
-					onClick={ this.onClick }
-					onChange={ this.onFileSelect }
+				{/* "action" property is deprecated. */}
+				<FileUploadInput
+					ref={ this.storeFileInputRef }
+					multiple={ multiple }
+					onChange={ onChange || this.props.action }
+					error={ error }
+					required={ required }
 					disabled={ disabled }
-					aria-label={ this.props['aria-label'] }
-					aria-required={ required ? true : undefined }
-					aria-invalid={ error ? true : undefined }
-					style={ HIDDEN }/>
+					aria-label={ this.props['aria-label'] }/>
 
 				<DropFiles
 					role="button"
@@ -199,9 +166,4 @@ export default class FileUpload extends PureComponent
 			</div>
 		)
 	}
-}
-
-const HIDDEN =
-{
-	display: 'none'
 }

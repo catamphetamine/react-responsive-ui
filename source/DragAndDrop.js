@@ -120,13 +120,6 @@ export class DropFiles extends React.Component {
 
 // Copied from:
 // https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
-export const supportsMultipleFileUploadOnInputElement =
-	typeof document !== 'undefined' && document && document.createElement
-		? 'multiple' in document.createElement('input')
-		: true
-
-// Copied from:
-// https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
 function isDraggingFiles(event) {
 	// If `event.dataTransfer` is not available then `event.target.files` fallback is used.
 	if (!event.dataTransfer) {
