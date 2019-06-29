@@ -1,11 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import isFileAccepted from './utility/isFileAccepted'
 
 export class DropFiles extends React.Component {
 	static propTypes = {
+		// Will be called with `true` when the drop zone is dragged over.
+		// (and with `false` when it's no longer dragged over)
 		setDraggedOver: PropTypes.func,
-		onDrop : PropTypes.func.isRequired,
-		multiple : PropTypes.bool
+		// Will be called on file(s) drop.
+		// The argument will be the single file when `multiple` is `false` (default)
+		// or the array of files when `multiple` is `true`.
+		onDrop: PropTypes.func.isRequired,
+		// Set to `true` for multi-file drop.
+		multiple: PropTypes.bool,
+		// Can be used to restrict the file MIME-types or extensions available for selection.
+		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
+		accept: PropTypes.string
 	}
 
 	// state = {
@@ -47,6 +57,22 @@ export class DropFiles extends React.Component {
 		// `event.dataTransfer.items` are only accessible in Chrome and FireFox while dragging.
 		// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/items
 		if (isDraggingFiles(event)) {
+			// Filtering dragged files by `isFileAccepted`.
+			// Only MIME-types are available during the "drag" stage,
+			// not file extensions. And won't work in IE11.
+			// // IE11 does not support dataTransfer.items
+			// if (event.dataTransfer.items) {
+			// 	// Only MIME-types are available for `isFileAccepted`
+			// 	// filtering during the "drag" stage, not file extensions.
+			// 	// `.some` is supported starting from IE 9.
+			// 	const areAnyFilesAccepted = Array.prototype.some.call(
+			// 		event.dataTransfer.items,
+			// 		this.isFileAccepted
+			// 	)
+			// 	if (!areAnyFilesAccepted) {
+			// 		return
+			// 	}
+			// }
 			this.setDraggedOver(true)
 		}
 	}
@@ -67,7 +93,11 @@ export class DropFiles extends React.Component {
 	}
 
 	onDrop = (event) => {
-		const { onDrop, multiple } = this.props
+		const {
+			onDrop,
+			multiple,
+			accept
+		} = this.props
 
 		event.preventDefault()
 		event.stopPropagation()
@@ -77,14 +107,38 @@ export class DropFiles extends React.Component {
 
 		this.setDraggedOver(false)
 
-		const files = getFilesFromEvent(event)
+		const files = getFilesFromEvent(event) //.filter(this.isFileAccepted)
 		if (files.length > 0) {
-			onDrop(multiple ? files : files[0])
+			if (multiple) {
+				onDrop(files, {
+					acceptedFiles: accept ? files.filter(this.isFileAccepted) : files,
+					rejectedFiles: accept ? files.filter(_ => !this.isFileAccepted(_)) : []
+				})
+			} else {
+				// If multiple files have been dropped to a non-multiple drop zone
+				// then reduce the files list to just the first file.
+				onDrop(files[0], {
+					isAccepted: this.isFileAccepted(files[0])
+				})
+			}
 			// Not clear why would it be called.
 			// MDN says it's a "no-op".
 			// https://developer.mozilla.org/en-US/docs/Web/API/DataTransferItemList/clear
 			// event.dataTransfer.clearData()
 		}
+	}
+
+	isFileAccepted = (file) => {
+		const { accept } = this.props
+		if (accept) {
+			// Firefox versions prior to 53 return a bogus MIME type for every file drag, so dragovers with
+			// that MIME type will always be accepted
+			if (file.type === 'application/x-moz-file') {
+				return true
+			}
+			return isFileAccepted(file, accept)
+		}
+		return true
 	}
 
 	componentDidMount() {
@@ -127,6 +181,7 @@ function isDraggingFiles(event) {
 	}
 	// https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/types
 	// https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#file
+	// `.some` is supported starting from IE 9.
 	return Array.prototype.some.call(
 		event.dataTransfer.types,
 		type => type === 'Files' || type === 'application/x-moz-file'

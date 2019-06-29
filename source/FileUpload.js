@@ -24,6 +24,10 @@ export default class FileUpload extends PureComponent
 		// Allows choosing multiple files if `true`.
 		multiple  : PropTypes.bool,
 
+		// Can be used to restrict the file MIME-types or extensions available for selection.
+		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
+		accept: PropTypes.string,
+
 		// Disables the file input.
 		disabled  : PropTypes.bool,
 
@@ -101,21 +105,19 @@ export default class FileUpload extends PureComponent
 
 	storeFileInputRef = (ref) => this.fileInput = ref
 
-	render()
-	{
-		const
-		{
+	render() {
+		const {
 			required,
 			error,
 			disabled,
 			tabIndex,
 			onChange,
 			multiple,
+			accept,
 			style,
 			className,
 			children
-		}
-		= this.props
+		} = this.props
 
 		const { draggedOver } = this.state
 
@@ -133,12 +135,14 @@ export default class FileUpload extends PureComponent
 					error={ error }
 					required={ required }
 					disabled={ disabled }
+					accept={ accept }
 					aria-label={ this.props['aria-label'] }/>
 
 				<DropFiles
 					role="button"
 					tabIndex={ tabIndex }
 					aria-label={ this.props['aria-label'] }
+					accept={ accept }
 					multiple={ multiple }
 					onDrop={ onChange }
 					onClick={ this.onClick }

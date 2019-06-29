@@ -11,7 +11,8 @@ export default class FileUploadButton extends React.Component {
 		multiple: PropTypes.bool,
 		disabled: PropTypes.bool,
 		error: PropTypes.string,
-		required: PropTypes.bool
+		required: PropTypes.bool,
+		accept: PropTypes.string
 	}
 
 	onClick = () => {
@@ -28,6 +29,7 @@ export default class FileUploadButton extends React.Component {
 			disabled,
 			error,
 			required,
+			accept,
 			...rest
 		} = this.props
 
@@ -39,7 +41,8 @@ export default class FileUploadButton extends React.Component {
 					multiple={multiple}
 					disabled={disabled}
 					error={error}
-					required={required}/>
+					required={required}
+					accept={accept}/>
 				<Component
 					{...rest}
 					disabled={disabled}
