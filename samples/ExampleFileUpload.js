@@ -50,6 +50,15 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				<div className="section">
 					The example is for <code className="colored">{'<DropFileUpload/>'}</code>. There's also <code className="colored">{'<MultiDropFileUpload/>'}</code> for multiple file upload.
 				</div>
+
+				<br/>
+
+				Properties:
+
+				<ul className="list">
+					<li><code className="colored">onChange(file/files)</code> — "On file(s) chosen" handler.</li>
+					<li><code className="colored">multiple</code> — (optional) Pass <code className="colored">true</code> for multi-file upload. Is <code className="colored">false</code> by default.</li>
+				</ul>
 			</Example>
 		)
 	}

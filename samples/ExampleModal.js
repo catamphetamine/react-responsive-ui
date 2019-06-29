@@ -72,7 +72,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 
   <Modal.Title>
     An example modal
-  <Modal.Title>
+  </Modal.Title>
 
   <Modal.Content>
     ...

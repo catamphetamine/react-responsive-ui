@@ -33,6 +33,14 @@
 .rrui__button-reset:not(.rrui__outline--default) {
   outline: none; }
 
+/* Firefox is being stubborn with outlines. */
+/* https://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links */
+/* Actually having tab-only outlines is good UX. */
+/*
+.rrui__button-reset:not(.rrui__outline--default)::-moz-focus-inner {
+	border: 0;
+}
+*/
 .rrui__button-reset--link:hover {
   text-decoration: none; }
 
@@ -2197,11 +2205,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-transform: translateX(0rem) translateY(0) scale(1);
           transform: translateX(0rem) translateY(0) scale(1);
   /* Introducing a return animation delay */
-  /* Because when a user clicks/taps on an option */
-  /* Then the input loses focus */
-  /* Causing the return animation to start playing */
+  /* because when a user clicks/taps on an option in */
+  /* a <Select/> it loses :focus for a moment */
+  /* causing the return animation to start playing */
   /* and then revert back as the click finishes */
-  /* returning focus to the input. */
+  /* returning focus to the input, so there should be */
+  /* a slight delay to prevent visual jitter. */
   -webkit-transition-delay: 100ms;
        -o-transition-delay: 100ms;
           transition-delay: 100ms; }
@@ -2212,7 +2221,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
   padding-top: 0.6rem;
   padding-bottom: 0.6rem;
   padding-left: 0rem;
-  padding-right: 0rem; }
+  padding-right: 0rem;
+  /* Fixes the spacing bug between `<textarea/>` and its container. */
+  /* https://stackoverflow.com/questions/35906806/how-to-remove-space-between-textarea-and-parent-div */
+  vertical-align: top; }
 
 /* Multiline `<TextInput/>`'s label positioning. */
 /* Must be same as `padding-top`/`padding-bottom`. */
