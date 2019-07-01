@@ -35,8 +35,13 @@ export default class Switch extends PureComponent
 		// The label to the right of the switch
 		rightLabel : PropTypes.string,
 
+		// (deprecated, use `placement="left"`)
 		// Set to `true` to output `children` on the right side.
 		rightContent : PropTypes.bool,
+
+		// Determines the placement of the toggle relative to `children`.
+		// Is "right" by default.
+		placement : PropTypes.oneOf(['left', 'right']),
 
 		// A label (analogous to `leftLabel`)
 		children  : PropTypes.node,
@@ -50,7 +55,11 @@ export default class Switch extends PureComponent
 
 	static defaultProps =
 	{
-		value : false
+		value: false,
+
+		// Determines the placement of the toggle relative to `children`.
+		// Is "right" by default.
+		placement: 'right'
 	}
 
 	state = {}
@@ -104,11 +113,14 @@ export default class Switch extends PureComponent
 			leftLabel,
 			rightLabel,
 			rightContent,
+			placement,
 			children
 		}
 		= this.props
 
 		const { isFocused } = this.state
+
+		const isRightSideContent = placement === 'left' || rightContent
 
 		return (
 			<label
@@ -126,9 +138,9 @@ export default class Switch extends PureComponent
 				style={ style }>
 
 				{/* Left label */}
-				{ (leftLabel || (!rightContent && children)) &&
+				{ (leftLabel || (!isRightSideContent && children)) &&
 					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
-						{ leftLabel || (!rightContent && children) }
+						{ leftLabel || (!isRightSideContent && children) }
 					</span>
 				}
 
@@ -159,9 +171,9 @@ export default class Switch extends PureComponent
 				</span>
 
 				{/* Right label */}
-				{ (rightLabel || (rightContent && children)) &&
+				{ (rightLabel || (isRightSideContent && children)) &&
 					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
-						{ rightLabel || (rightContent && children) }
+						{ rightLabel || (isRightSideContent && children) }
 					</span>
 				}
 			</label>
