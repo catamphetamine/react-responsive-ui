@@ -6,7 +6,10 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 		this.state = {}
 	}
 
-	onChange = (file) => this.setState({ file })
+	onChange = (file, secondArgument) => {
+		this.setState({ file })
+		console.log(secondArgument)
+	}
 
 	render()
 	{
@@ -58,6 +61,7 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 				<ul className="list">
 					<li><code className="colored">onChange(file/files)</code> — "On file(s) chosen" handler.</li>
 					<li><code className="colored">multiple</code> — (optional) Pass <code className="colored">true</code> for multi-file upload. Is <code className="colored">false</code> by default.</li>
+					<li><code className="colored">accept</code> — (optional) Can be used to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept" target="_blank">restrict the file MIME-types or extensions</a> available for selection. If <code className="colored">accept</code> is set then <code className="colored">onChange()</code> will receive the second argument having shape <code className="colored">{'{ isAccepted: boolean }'}</code> in case of <code className="colored">multiple=false</code> and <code className="colored">{'{ acceptedFiles: File[], rejectedFiles: File[] }'}</code> in case of <code className="colored">multiple=true</code>.</li>
 				</ul>
 			</Example>
 		)

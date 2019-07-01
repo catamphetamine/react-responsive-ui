@@ -34,6 +34,12 @@ window.ExampleSwitch = class ExampleComponent extends React.Component
 					/* All \`<Checkbox/>\` customizations also apply here. */
 				`}</Highlight>
 
+				Properties:
+
+				<ul className="list">
+					<li><code className="colored">onChange(true/false)</code>.</li>
+					<li><code className="colored">placement</code> — (optional) Set to <code className="colored">"left"</code> to render the toggle to the left of <code className="colored">children</code>. Is historically <code className="colored">"right"</code> by default.</li>
+				</ul>
 			</Example>
 		)
 	}

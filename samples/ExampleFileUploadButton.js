@@ -39,6 +39,7 @@ window.ExampleFileUploadButton = class ExampleComponent extends React.Component
 				<ul className="list">
 					<li><code className="colored">onChange(file/files)</code> — "On file(s) chosen" handler.</li>
 					<li><code className="colored">multiple</code> — (optional) Pass <code className="colored">true</code> for multi-file upload. Is <code className="colored">false</code> by default.</li>
+					<li><code className="colored">accept</code> — (optional) Can be used to <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept" target="_blank">restrict the file MIME-types or extensions</a> available for selection.</li>
 				</ul>
 			</Example>
 		)
