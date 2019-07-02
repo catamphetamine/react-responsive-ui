@@ -744,8 +744,8 @@ const ModalContent = ({ closeButton, className, children, ...rest }) => (
 // https://github.com/gaearon/react-hot-loader#checking-element-types
 ModalContent.displayName = 'ModalContent'
 
-const ModalActions = ({ closeButton, children }) => (
-	<div className="rrui__modal__actions">
+const ModalActions = ({ closeButton, className, children }) => (
+	<div className={classNames(className, 'rrui__modal__actions')}>
 		{closeButton}
 		{children}
 	</div>
