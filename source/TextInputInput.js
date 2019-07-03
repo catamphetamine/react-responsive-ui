@@ -304,6 +304,7 @@ export default class TextInput extends PureComponent
 			value,
 			multiline,
 			inputComponent,
+			// `focus` property is deprecated. Use `autoFocus` instead.
 			focus,
 			onChange,
 			disabled,
@@ -338,34 +339,35 @@ export default class TextInput extends PureComponent
 
 		const properties =
 		{
+			// Placed `autoFocus` before `...rest` so that
+			// it doesn't override an already passed `autoFocus`.
+			// `focus` property is deprecated. Use `autoFocus` instead.
+			autoFocus: focus,
 			...rest,
 			id,
-			ref : this.storeInputNode,
-			value : isEmptyValue(value) ? '' : value,
+			ref: this.storeInputNode,
+			value: isEmptyValue(value) ? '' : value,
 			disabled,
 			'aria-label'    : rest['aria-label'] || (id && label ? undefined : label),
 			'aria-required' : rest['aria-required'] || (required ? true : undefined),
 			'aria-invalid'  : rest['aria-invalid'] || (error && indicateInvalid ? true : undefined),
 			placeholder,
-			onChange    : this.onChange,
-			onKeyDown   : this.onKeyDown,
-			className   : classNames
-			(
+			onChange: this.onChange,
+			onKeyDown: this.onKeyDown,
+			style: inputStyle,
+			className: classNames(
+				className,
 				// `<TextInput/>` has `border-color` to indicate its `:focus` state.
 				// Therefore the `outline` can be safely removed.
 				'rrui__outline',
 				'rrui__input-element',
-				'rrui__input-field',
-				{
+				'rrui__input-field', {
 					// CSS selector performance optimization
 					'rrui__input-field--invalid'   : indicateInvalid && error,
 					'rrui__input-field--disabled'  : disabled,
 					'rrui__input-field--multiline' : multiline
-				},
-				className
-			),
-			style       : inputStyle,
-			autoFocus   : focus
+				}
+			)
 		}
 
 		// In case of `multiline` set to `true`

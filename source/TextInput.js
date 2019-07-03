@@ -62,7 +62,8 @@ export default class TextInput extends PureComponent
 		// Sets HTML input `type` attribute to `password`
 		password         : PropTypes.bool,
 
-		// Autofocuses the input field
+		// Autofocuses the input field.
+		// Deprecated. Use `autoFocus` instead.
 		focus            : PropTypes.bool,
 
 		// HTML `tabindex` attribute

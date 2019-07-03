@@ -128,6 +128,9 @@ export default class Autocomplete extends PureComponent
 		// HTML `tabindex` attribute
 		tabIndex   : PropTypes.number,
 
+		// HTML `autoFocus` attribute
+		autoFocus  : PropTypes.bool,
+
 		// If set to `true`, autocomple will show all
 		// matching options instead of just `maxItems`.
 		showAllMatchingOptions : PropTypes.bool,
@@ -484,6 +487,7 @@ export default class Autocomplete extends PureComponent
 			indicateInvalid,
 			error,
 			tabIndex,
+			autoFocus,
 			inputClassName
 		}
 		= this.props
@@ -525,6 +529,7 @@ export default class Autocomplete extends PureComponent
 				aria-activedescendant={ id && (focusedOptionIndex !== undefined) ? `${id}__list-item-${focusedOptionIndex}` : undefined }
 				required={ required }
 				tabIndex={ tabIndex }
+				autoFocus={ autoFocus }
 				disabled={ isFetchingInitiallySelectedOption || disabled }
 				indicateInvalid={ indicateInvalid || (matches === false) }
 				error={ error || (matches === false ? 'no-match' : undefined) }
