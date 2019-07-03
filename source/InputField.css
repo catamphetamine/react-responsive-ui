@@ -139,3 +139,24 @@
 .rrui__input-field--with-icon {
 	padding-left: calc(var(--rrui-input-field-icon-size) + var(--rrui-input-field-icon-margin-right));
 }
+
+/* `<input/>` placeholder color. */
+/* https://www.w3schools.com/howto/howto_css_placeholder.asp */
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+/* Won't work for some reason if combined with the IE rules below. */
+.rrui__input-field::placeholder {
+	color: var(--rrui-input-field-label-color);
+	/* Firefox */
+	opacity: 1;
+}
+
+/* Internet Explorer 10-11 */
+.rrui__input-field:-ms-input-placeholder {
+	color: var(--rrui-input-field-label-color);
+}
+
+/* Microsoft Edge */
+.rrui__input-field::-ms-input-placeholder {
+	color: var(--rrui-input-field-label-color);
+}
