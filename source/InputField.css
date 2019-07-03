@@ -137,5 +137,5 @@
 }
 
 .rrui__input-field--with-icon {
-	padding-left: calc(var(--rrui-input-field-icon-size) + var(--rrui-input-field-icon-margin-right);
+	padding-left: calc(var(--rrui-input-field-icon-size) + var(--rrui-input-field-icon-margin-right));
 }
