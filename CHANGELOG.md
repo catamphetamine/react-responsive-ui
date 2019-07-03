@@ -43,6 +43,11 @@
 
 <!-- (CSS breaking change) Added `color: inherit` to `.rrui__button-reset`. -->
 
+0.14.146 / 03.07.2019
+====================
+
+  * Fixed `--rrui-input-field-text-color` CSS variable not previously being applied: it applies `color` to `<input/>`s and is `--rrui-black-color` by default.
+
 0.14.137 / 20.05.2019
 ====================
 

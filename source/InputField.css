@@ -9,6 +9,7 @@
 	font-family   : inherit;
 	font-weight   : inherit;
 	font-style    : inherit;
+	color: var(--rrui-input-field-text-color);
 }
 
 /* Overrides Chrome autofill yellow background color. */
