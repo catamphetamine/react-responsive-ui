@@ -1,24 +1,13 @@
-/* `<Modal/>` margin. */
-.rrui__modal__title,
-.rrui__modal__actions,
-.rrui__modal__content
-{
-  /* Using `margin` instead of `padding` here
-    to leverage the "margin collapse" CSS feature. */
-  margin : calc(var(--rrui-unit) * 2);
-}
-
-/* `<Modal/>` content goes full-screen wide and high */
-.rrui__modal__actions
-{
-  margin-top    : var(--rrui-unit);
-  margin-bottom : var(--rrui-unit);
+:root {
+	/* Smaller spacing. */
+	--rrui-modal-padding: calc(var(--rrui-unit) * 1.5);
+	--rrui-modal-padding--horizontal: var(--rrui-modal-padding);
+	--rrui-modal-padding--vertical: var(--rrui-modal-padding);
 }
 
 /* Center the `<Modal/>` vertically. */
 .rrui__modal__vertical-margin--top,
-.rrui__modal__vertical-margin--bottom
-{
-	flex-grow  : 1;
-	flex-basis : auto;
+.rrui__modal__vertical-margin--bottom {
+	flex-grow: 1;
+	flex-basis: auto;
 }

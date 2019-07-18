@@ -296,19 +296,32 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	justify-content : flex-end;
 }
 
+/* Using `margin` instead of `padding` for "padding"
+   to leverage the "margin collapse" CSS feature. */
+
 .rrui__modal__title,
-.rrui__modal__actions,
-.rrui__modal__content
-{
-  /* Using `margin` instead of `padding` here
-    to leverage the "margin collapse" CSS feature. */
-  margin : var(--rrui-modal-padding);
+.rrui__modal__content,
+.rrui__modal__actions {
+  margin-left: var(--rrui-modal-padding--horizontal);
+  margin-right: var(--rrui-modal-padding--horizontal);
 }
 
-.rrui__modal__actions
-{
-  margin-top    : calc(var(--rrui-unit) * 2);
-  margin-bottom : calc(var(--rrui-unit) * 2);
+.rrui__modal__title {
+  margin-top: var(--rrui-modal-padding--vertical);
+  margin-bottom: 0;
+}
+
+.rrui__modal__content {
+  margin-top: var(--rrui-modal-padding);
+  margin-bottom: var(--rrui-modal-padding--vertical);
+}
+
+.rrui__modal__actions {
+  margin-bottom: var(--rrui-modal-padding--vertical);
+}
+
+.rrui__modal__title + .rrui__modal__content {
+  margin-top: calc(var(--rrui-modal-padding--vertical) - var(--rrui-unit) * 0.5);
 }
 
 .rrui__modal__close

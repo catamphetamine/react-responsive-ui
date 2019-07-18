@@ -630,7 +630,7 @@ class ModalContentWrapper extends Component
 		= this.props
 
 		return (
-			<div
+			<section
 				ref={ this.storeNode }
 				className={ classNames('rrui__modal__contents',
 				{
@@ -644,7 +644,7 @@ class ModalContentWrapper extends Component
 				style={ style }>
 
 				{ this.transformChildren() }
-			</div>
+			</section>
 		)
 	}
 
@@ -713,7 +713,7 @@ function get_full_width_elements()
 }
 
 const ModalTitle = ({ closeButton, className, children, ...rest }) => (
-	<h2
+	<h1
 		className={classNames('rrui__modal__title', className, {
 			'rrui__modal__title--close-button' : closeButton
 		})}
@@ -721,7 +721,7 @@ const ModalTitle = ({ closeButton, className, children, ...rest }) => (
 		{closeButton && <span className="rrui__modal__title-itself">{children}</span>}
 		{!closeButton && children}
 		{closeButton}
-	</h2>
+	</h1>
 )
 
 // Workaround for `react-hot-loader`.

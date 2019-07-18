@@ -63,18 +63,20 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ## Small Screen
 
-The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. E.g. `<Select/>`s, `<Autocomplete/>`s, `<ExpandableMenu/>`s, `<DatePicker/>`s and `<Modal/>`s can open in fullscreen and `<Snackbar/>` are expanded in full screen (not neccessarily a good idea though).
+The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. For example, `<Select/>`s, `<Autocomplete/>`s, `<ExpandableMenu/>`s, `<DatePicker/>`s can open in fullscreen (not neccessarily a good idea though). `<Modal/>`s have less padding and `<Snackbar/>`s are full-width. These CSS files may also use [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d).
 
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 
 ```css
 /* Main style. */
 @import url(~react-responsive-ui/style.css)
-/* Tweaks `<Modal/>`s for mobile devices a bit. */
+/* Less padding on `<Modal/>`s on mobile devices. */
 @import url(~react-responsive-ui/small-screen/Modal.css) (max-width: 768px)
-/* Tweaks `<Snackbar/>`s for mobile devices a bit. */
+/* Full-width `<Snackbar/>`s on mobile devices. */
 @import url(~react-responsive-ui/small-screen/Snackbar.css) (max-width: 768px)
-/* Places a click-capturing overlay above `<DatePicker/>` input. */
+/* Places a click-capturing overlay above `<DatePicker/>` input
+   so that the `<input/>` is not focused on touch meaning that the
+   keyboard won't slide in when the user taps the `<DatePicker/>` input. */
 @import url(~react-responsive-ui/small-screen/DatePicker.InputOverlay.css) (max-width: 768px)
 ```
 

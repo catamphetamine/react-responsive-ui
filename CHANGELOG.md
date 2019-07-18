@@ -43,6 +43,11 @@
 
 <!-- (CSS breaking change) Added `color: inherit` to `.rrui__button-reset`. -->
 
+0.14.148 / 18.07.2019
+=====================
+
+  * Adjusted `<Modal/>` padding.
+
 0.14.146 / 03.07.2019
 ====================
 

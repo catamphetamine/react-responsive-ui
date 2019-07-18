@@ -152,7 +152,9 @@
   --rrui-checkbox-focus-ring-background-color-active : transparent;
 
   /* `<Modal/>`. */
-  --rrui-modal-padding : calc(var(--rrui-unit) * 3);
+  --rrui-modal-padding: calc(var(--rrui-unit) * 2.5);
+  --rrui-modal-padding--horizontal: var(--rrui-modal-padding);
+  --rrui-modal-padding--vertical: calc(var(--rrui-modal-padding) - var(--rrui-unit) * 0.5);
 
   /* `<Modal/>` colors. */
   --rrui-modal-background-color : var(--rrui-card-background-color);
