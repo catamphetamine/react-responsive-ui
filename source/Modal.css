@@ -118,7 +118,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__fixed-full-width
 {
 	position : fixed;
-	top      : 0;
 	left     : 0;
 	right    : 0;
 	width    : auto;
