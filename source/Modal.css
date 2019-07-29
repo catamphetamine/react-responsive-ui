@@ -311,7 +311,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 }
 
 .rrui__modal__content {
-  margin-top: var(--rrui-modal-padding);
+  margin-top: var(--rrui-modal-padding--vertical);
   margin-bottom: var(--rrui-modal-padding--vertical);
 }
 
