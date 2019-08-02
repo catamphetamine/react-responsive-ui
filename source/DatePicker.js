@@ -32,6 +32,10 @@ export default class DatePicker extends PureComponent
 		// `<input/>` placeholder
 		placeholder : PropTypes.string,
 
+		// Expandable calendar alignment.
+		// Is "left" by default.
+		alignment : PropTypes.string,
+
 		// First day of week.
 		// `0` means "Sunday", `1` means "Monday", etc.
 		// (is `0` by default)
@@ -145,6 +149,8 @@ export default class DatePicker extends PureComponent
 
 	static defaultProps =
 	{
+		alignment : 'left',
+
 		// Default US format
 		format : 'MM/DD/YYYY',
 
@@ -647,6 +653,7 @@ export default class DatePicker extends PureComponent
 			required,
 			label,
 			placeholder,
+			alignment,
 			tabIndex,
 			autoFocus,
 			waitForKeyboardSlideIn,
@@ -677,9 +684,7 @@ export default class DatePicker extends PureComponent
 		const formatHint = typeof format === 'string' ? format : undefined
 
 		let captionElement
-
-		if (selectYearsIntoPast || selectYearsIntoFuture)
-		{
+		if (selectYearsIntoPast || selectYearsIntoFuture) {
 			captionElement = (
 				<YearMonthSelect
 					focus={ this.focusCalendar }
@@ -756,6 +761,7 @@ export default class DatePicker extends PureComponent
 					{/* <DayPicker/> doesn't support `style` property */}
 					<Expandable
 						ref={ this.storeExpandableRef }
+						alignment={alignment}
 						onExpand={ this.onExpand }
 						onExpanded={ this.onExpanded }
 						onCollapse={ this.onCollapse }

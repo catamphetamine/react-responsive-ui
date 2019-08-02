@@ -55,6 +55,10 @@ export default class Select extends PureComponent
 		// Placeholder (like "Choose")
 		placeholder : PropTypes.string,
 
+		// Options list alignment.
+		// Is "left" by default.
+		alignment : PropTypes.string,
+
 		// Whether to use native `<select/>`
 		native      : PropTypes.bool.isRequired,
 
@@ -217,8 +221,6 @@ export default class Select extends PureComponent
 			isFocused
 		} = this.state
 
-		const containerStyle = { textAlign: alignment }
-
 		const label = this.getLabel()
 
 		return (
@@ -226,7 +228,7 @@ export default class Select extends PureComponent
 				setRef={this.storeContainerNode}
 				error={error}
 				indicateInvalid={indicateInvalid}
-				style={style ? { ...containerStyle, ...style } : containerStyle}
+				style={style}
 				className={classNames(className, 'rrui__select', {
 					'rrui__select--compact' : compact || icon,
 					'rrui__select--focus'   : isFocused
