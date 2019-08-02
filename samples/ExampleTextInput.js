@@ -13,7 +13,6 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 
 				<form>
 					<TextInput
-						focus={false}
 						autoComplete="tel"
 						style={input_style}
 						className="column-width"

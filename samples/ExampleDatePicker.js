@@ -44,6 +44,7 @@ window.ExampleDatePicker = class ExampleComponent extends React.Component
 					<li><code className="colored">weekdaysLong</code> — <a target="_blank" href="http://react-day-picker.js.org/docs/localization/">long week day labels</a>.</li>
 					<li><code className="colored">locale</code> — <a target="_blank" href="http://react-day-picker.js.org/docs/localization/"><code>locale</code> for <code>localeUtils</code></a>.</li>
 					<li><code className="colored">localeUtils</code> — <a target="_blank" href="http://react-day-picker.js.org/docs/localization/">month and weekday labels for all supported locales</a>.</li>
+					<li><code className="colored">alignment</code> — is <code className="colored">"left"</code> by default. Can be set to <code className="colored">"right"</code> to align the expandable calendar to the right side of the input.</li>
 				</ul>
 			</Example>
 		)

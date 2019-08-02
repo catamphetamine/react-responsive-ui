@@ -995,7 +995,8 @@ than 100% of the parent if the parent is small enough.
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
-  font-style: inherit; }
+  font-style: inherit;
+  color: #000000; }
 
 /* Overrides Chrome autofill yellow background color. */
 .rrui__input-field:-webkit-autofill {
@@ -1090,6 +1091,35 @@ than 100% of the parent if the parent is small enough.
 
 .rrui__input-field--with-icon {
   padding-left: calc(((0.6rem * 3) - 1.5 * 0.6rem) + (0.75 * 0.6rem)); }
+
+/* `<input/>` placeholder color. */
+/* https://www.w3schools.com/howto/howto_css_placeholder.asp */
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+/* Won't work for some reason if combined with the IE rules below. */
+.rrui__input-field::-webkit-input-placeholder {
+  color: #888888;
+  /* Firefox */
+  opacity: 1; }
+.rrui__input-field:-ms-input-placeholder {
+  color: #888888;
+  /* Firefox */
+  opacity: 1; }
+.rrui__input-field::-ms-input-placeholder {
+  color: #888888;
+  /* Firefox */
+  opacity: 1; }
+.rrui__input-field::placeholder {
+  color: #888888;
+  /* Firefox */
+  opacity: 1; }
+
+/* Internet Explorer 10-11 */
+.rrui__input-field:-ms-input-placeholder {
+  color: #888888; }
+
+/* Microsoft Edge */
+.rrui__input-field::-ms-input-placeholder {
+  color: #888888; }
 
 .rrui__input-label {
   position: absolute;
@@ -1417,7 +1447,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
 */
 .rrui__fixed-full-width {
   position: fixed;
-  top: 0;
   left: 0;
   right: 0;
   width: auto; }
@@ -1604,16 +1633,27 @@ but rather `width: auto` or `left: 0; right: 0;`.
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
+/* Using `margin` instead of `padding` for "padding"
+   to leverage the "margin collapse" CSS feature. */
 .rrui__modal__title,
-.rrui__modal__actions,
+.rrui__modal__content,
+.rrui__modal__actions {
+  margin-left: calc(0.6rem * 3);
+  margin-right: calc(0.6rem * 3); }
+
+.rrui__modal__title {
+  margin-top: calc((0.6rem * 3) - 0.6rem * 0.5);
+  margin-bottom: 0; }
+
 .rrui__modal__content {
-  /* Using `margin` instead of `padding` here
-    to leverage the "margin collapse" CSS feature. */
-  margin: calc(0.6rem * 3); }
+  margin-top: calc((0.6rem * 3) - 0.6rem * 0.5);
+  margin-bottom: calc((0.6rem * 3) - 0.6rem * 0.5); }
 
 .rrui__modal__actions {
-  margin-top: calc(0.6rem * 2);
-  margin-bottom: calc(0.6rem * 2); }
+  margin-bottom: calc((0.6rem * 3) - 0.6rem * 0.5); }
+
+.rrui__modal__title + .rrui__modal__content {
+  margin-top: calc(((0.6rem * 3) - 0.6rem * 0.5) - 0.6rem * 0.5); }
 
 .rrui__modal__close {
   /* Prevents `<Modal.Title/>` overlapping with `<Close/>` padding. */
