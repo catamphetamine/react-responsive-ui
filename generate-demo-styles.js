@@ -80,7 +80,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-checkbox-focus-ring-background-color-active)', 'transparent')
     /* `<Modal/>`. */
     .replace_all('var(--rrui-modal-padding--horizontal)', 'var(--rrui-modal-padding)')
-    .replace_all('var(--rrui-modal-padding--vertical)', 'var(--rrui-modal-padding)')
+    .replace_all('var(--rrui-modal-padding--vertical)', 'calc(var(--rrui-modal-padding) - var(--rrui-unit) * 0.5)')
     .replace_all('var(--rrui-modal-padding)', 'calc(0.6rem * 3)')
     /* `<Modal/>` colors. */
     .replace_all('var(--rrui-modal-background-color)', 'var(--rrui-card-background-color)')
