@@ -424,7 +424,6 @@ const HIDDEN_TEXTAREA_STYLE = {
 	// Visibility needed to hide the extra `<textarea/>` on iPads.
 	visibility: 'hidden',
 	position: 'absolute',
-	height: 'auto',
 	// Don't know why is it here.
 	whiteSpace: 'pre-wrap'
 }
