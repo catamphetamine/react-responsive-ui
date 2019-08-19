@@ -64,6 +64,7 @@
   --rrui-snackbar-height       : calc(var(--rrui-unit) * 4);
   --rrui-snackbar-side-padding : calc(var(--rrui-unit) * 1.5);
   --rrui-snackbar-margin       : calc(var(--rrui-unit) * 2);
+  --rrui-snackbar-border-radius : var(--rrui-border-radius-small);
   --rrui-snackbar-background-color : var(--rrui-black-color);
   --rrui-snackbar-text-color : var(--rrui-white-color);
   --rrui-snackbar-notifications-count-size : 1.4em;
@@ -76,6 +77,7 @@
   --rrui-tooltip-animation-duration : 120ms;
   --rrui-tooltip-visible-distance : 0.2em;
   --rrui-tooltip-hidden-distance  : 0.5em;
+  --rrui-tooltip-border-radius : var(--rrui-border-radius-small);
 
   /* `<Switch/>` and `<Checkbox/>` */
   --rrui-control-label-margin : var(--rrui-unit);
@@ -155,6 +157,7 @@
   --rrui-modal-padding: calc(var(--rrui-unit) * 2.5);
   --rrui-modal-padding--horizontal: var(--rrui-modal-padding);
   --rrui-modal-padding--vertical: calc(var(--rrui-modal-padding) - var(--rrui-unit) * 0.5);
+  --rrui-modal-border-radius: var(--rrui-border-radius-big);
 
   /* `<Modal/>` colors. */
   --rrui-modal-background-color : var(--rrui-card-background-color);
@@ -174,6 +177,9 @@
   --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
   --rrui-switch-background-color : var(--rrui-checkbox-fill-color);
   --rrui-switch-accent-color : var(--rrui-checkbox-color-checked);
+
+  /* `<Switcher/>`. */
+  --rrui-switcher-border-radius : var(--rrui-border-radius-big);
 
   /* `<Switcher/>` colors. */
   --rrui-switcher-background-color : transparent;

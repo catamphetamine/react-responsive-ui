@@ -10,7 +10,7 @@
 	color            : var(--rrui-tooltip-text-color);
 	background-color : var(--rrui-tooltip-background-color);
 
-	border-radius : var(--rrui-border-radius-small);
+	border-radius : var(--rrui-tooltip-border-radius);
 
 	cursor : default;
 }

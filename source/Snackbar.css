@@ -28,7 +28,7 @@
 	background : var(--rrui-snackbar-background-color);
 	color      : var(--rrui-snackbar-text-color);
 
-	border-radius : var(--rrui-border-radius-small);
+	border-radius : var(--rrui-snackbar-border-radius);
 
 	padding-left  : var(--rrui-snackbar-side-padding);
 	padding-right : var(--rrui-snackbar-side-padding);

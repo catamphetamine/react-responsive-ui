@@ -190,7 +190,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 	flex-shrink : 1;
 	flex-basis  : auto;
 
-	border-radius : var(--rrui-border-radius-big);
+	border-radius : var(--rrui-modal-border-radius);
 	background-color : var(--rrui-modal-background-color);
 	color : var(--rrui-modal-text-color);
 }
