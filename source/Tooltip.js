@@ -118,8 +118,8 @@ export default class Tooltip extends PureComponent
 			}
 		}
 
-		this.tooltip.addEventListener('mouseenter', this.on_mouse_enter_tooltip)
-		this.tooltip.addEventListener('mouseleave', this.on_mouse_leave_tooltip)
+		this.tooltip.addEventListener('mouseenter', this.onMouseEnterTooltip)
+		this.tooltip.addEventListener('mouseleave', this.onMouseLeaveTooltip)
 
 		this.container().appendChild(this.tooltip)
 	}
@@ -257,9 +257,12 @@ export default class Tooltip extends PureComponent
 			// Play tooltip showing animation
 			// (doing it after setting position because
 			//  setting position applies `display: block`)
-			if (animate)
-			{
+			if (animate) {
 				this.tooltip.classList.add('rrui__tooltip--after-show')
+			}
+
+			if (this.mobile) {
+				document.addEventListener('touchstart', this.hideOnDocumentTouchDown)
 			}
 		})
 	}
@@ -272,9 +275,12 @@ export default class Tooltip extends PureComponent
 
 		// If already hiding, or if already hidden, then do nothing.
 		// if (this.hide_timeout || this.tooltip.style.display === 'none')
-		if (this.hide_timeout || !this.tooltip)
-		{
+		if (this.hide_timeout || !this.tooltip) {
 			return
+		}
+
+		if (this.mobile) {
+			document.removeEventListener('touchstart', this.hideOnDocumentTouchDown)
 		}
 
 		// Play tooltip hiding animation
@@ -291,6 +297,15 @@ export default class Tooltip extends PureComponent
 		hidingAnimationDuration)
 	}
 
+	hideOnDocumentTouchDown = (event) => {
+		if (this.isShown) {
+			if (!this.tooltip.contains(event.target) &&
+				!this.origin.contains(event.target)) {
+				this.hide()
+			}
+		}
+	}
+
 	scheduleHide() {
 		const { hideTimeout, hideDelay } = this.props
 		// `window.rruiCollapseOnFocusOut` can be used
@@ -305,7 +320,7 @@ export default class Tooltip extends PureComponent
 		this.hide_on_mouse_leave_timeout = undefined
 	}
 
-	on_mouse_enter_tooltip = () =>
+	onMouseEnterTooltip = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -317,7 +332,7 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
-	on_mouse_leave_tooltip = () =>
+	onMouseLeaveTooltip = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -329,7 +344,7 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
-	on_mouse_enter = () =>
+	onMouseEnter = () =>
 	{
 		const content = this.renderContent()
 
@@ -370,7 +385,7 @@ export default class Tooltip extends PureComponent
 		delay)
 	}
 
-	on_mouse_leave = () =>
+	onMmouseLeave = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -392,7 +407,7 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
-	on_touch_start = () =>
+	onTouchStart = () =>
 	{
 		const content = this.renderContent()
 
@@ -403,13 +418,18 @@ export default class Tooltip extends PureComponent
 		// (e.g. `react-time-ago` first render)
 		// or if React Portal API is not available
 		// then don't show the tooltip.
-		if (!content || !ReactDOM.createPortal)
-		{
+		if (!content || !ReactDOM.createPortal) {
 			return
 		}
 
-		this.show()
+		if (this.isShown) {
+			this.hide()
+		} else {
+			this.show()
+		}
 	}
+
+	onTouchEnd = () => {}
 
 	storeOriginNode = (ref) => this.origin = ref
 
@@ -476,14 +496,14 @@ export default class Tooltip extends PureComponent
 		return (
 			<div
 				ref={ this.storeOriginNode }
-				onMouseEnter={ this.on_mouse_enter }
-				onMouseLeave={ this.on_mouse_leave }
-				onTouchStart={ this.on_touch_start }
+				onMouseEnter={ this.onMouseEnter }
+				onMouseLeave={ this.onMouseLeave }
+				onTouchStart={ this.onTouchStart }
 				onTouchMove={ this.hide }
-				onTouchEnd={ this.hide }
+				onTouchEnd={ this.onTouchEnd }
 				onTouchCancel={ this.hide }
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
-				className={ classNames('rrui__tooltip__target', className) }>
+				className={ classNames(className, 'rrui__tooltip__target') }>
 				{ children }
 				{ extraChildren }
 			</div>
