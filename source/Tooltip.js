@@ -51,9 +51,14 @@ export default class Tooltip extends PureComponent
 		// Is `120` by default.
 		hidingAnimationDuration : PropTypes.number.isRequired,
 
+		// (`hideTimeout` is deprecated, use `hideDelay` instead)
 		// The tooltip waits `hideTimeout` milliseconds before hiding
 		// to support mouseovering over itself.
-		hideTimeout : PropTypes.number.isRequired,
+		hideTimeout : PropTypes.number,
+
+		// The tooltip waits `hideDelay` milliseconds before hiding
+		// to support mouseovering over itself.
+		hideDelay : PropTypes.number.isRequired,
 
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself
@@ -78,7 +83,7 @@ export default class Tooltip extends PureComponent
 		inline: true,
 		delay: 350, // in milliseconds
 		hidingAnimationDuration: 200, // in milliseconds
-		hideTimeout: 50, // in milliseconds
+		hideDelay: 50, // in milliseconds
 		container: () => document.body
 	}
 
@@ -287,11 +292,11 @@ export default class Tooltip extends PureComponent
 	}
 
 	scheduleHide() {
-		const { hideTimeout } = this.props
+		const { hideTimeout, hideDelay } = this.props
 		// `window.rruiCollapseOnFocusOut` can be used
 		// for debugging expandable contents.
 		if (window.rruiCollapseOnFocusOut !== false) {
-			this.hide_on_mouse_leave_timeout = setTimeout(this.hide, hideTimeout)
+			this.hide_on_mouse_leave_timeout = setTimeout(this.hide, hideTimeout || hideDelay)
 		}
 	}
 

@@ -45,6 +45,7 @@
 =====================
 
   * (CSS change, shouldn't be a "breaking" one) Added `color: inherit` to `.rrui__button-reset` (that means "to all buttons").
+  * `<Tooltip/>`'s `hideTimeout` property was renamed to `hideDelay`. `hideTimeout` still works but is deprecated.
 
 0.14.148 / 18.07.2019
 =====================
