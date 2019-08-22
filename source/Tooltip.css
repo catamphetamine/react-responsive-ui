@@ -12,7 +12,8 @@
 
 	border-radius : var(--rrui-tooltip-border-radius);
 
-	cursor : default;
+	cursor: default;
+	outline: none;
 }
 
 .rrui__tooltip
@@ -101,9 +102,13 @@
 	transition : opacity var(--rrui-tooltip-animation-duration), transform var(--rrui-tooltip-animation-duration);
 }
 
-/* Prevents entering text selection mode
-   on mobile devices when tapping down and holding */
 .rrui__tooltip__target
 {
-	user-select : none;
+	/* Prevents entering text selection mode
+	   on mobile devices when tapping down and holding */
+	user-select: none;
+	/* Resets `cursor: pointer` set by `interactive={true}`'s `.rrui__button-reset`. */
+	cursor: inherit;
+	/* Resets `white-space : nowrap` set by `interactive={true}`'s `.rrui__button-reset`. */
+	white-space: initial;
 }

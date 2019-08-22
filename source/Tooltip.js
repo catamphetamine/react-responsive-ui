@@ -41,6 +41,15 @@ export default class Tooltip extends PureComponent
 		// (is `true` by default)
 		inline : PropTypes.bool.isRequired,
 
+		// If `true` then the tooltip will be accessible via keyboard.
+		// The tooltipped element will be wrapped in a focusable `<button/>`
+		// that will show/hide the tooltip on click.
+		// Tooltip contents will be focused upon being shown.
+		// The tooltip will be closeable via `Esc` key.
+		// The tooltip will still be shown/hidden on mouseover.
+		// (is `false` by default)
+		accessible : PropTypes.bool,
+
 		// The delay before the tooltip is shown (in milliseconds)
 		delay : PropTypes.number.isRequired,
 
@@ -101,13 +110,24 @@ export default class Tooltip extends PureComponent
 
 	create_tooltip()
 	{
-		const { tooltipClassName, placement } = this.props
+		const {
+			tooltipClassName,
+			placement,
+			accessible
+		} = this.props
 
 		this.tooltip = document.createElement('div')
 
 		this.tooltip.style.position = 'absolute'
 		this.tooltip.style.left = 0
 		this.tooltip.style.top  = 0
+
+		if (accessible) {
+			// An "accessible" tooltip is focused upon being shown.
+			this.tooltip.setAttribute('tabIndex', -1)
+			this.tooltip.classList.add('rrui__outline')
+			this.tooltip.addEventListener('focusout', this.onFocusOut)
+		}
 
 		this.tooltip.classList.add('rrui__tooltip')
 		this.tooltip.classList.add(`rrui__tooltip--${getEdge(placement)}`)
@@ -120,6 +140,7 @@ export default class Tooltip extends PureComponent
 
 		this.tooltip.addEventListener('mouseenter', this.onMouseEnterTooltip)
 		this.tooltip.addEventListener('mouseleave', this.onMouseLeaveTooltip)
+		this.tooltip.addEventListener('keydown', this.onKeyDown)
 
 		this.container().appendChild(this.tooltip)
 	}
@@ -247,23 +268,27 @@ export default class Tooltip extends PureComponent
 
 		// Now that `this.tooltip` has been created,
 		// re-render the component so that `ReactDOM.createPortal()` is called.
-		this.setState({ isShown: true }, () =>
-		{
-			const { x, y } = this.calculate_coordinates()
+		return new Promise((resolve) => {
+			this.setState({ isShown: true }, () => {
+				const { accessible } = this.props
+				const { x, y } = this.calculate_coordinates()
 
-			this.tooltip.style.left = `${x}px`
-			this.tooltip.style.top  = `${y}px`
+				this.tooltip.style.left = `${x}px`
+				this.tooltip.style.top  = `${y}px`
 
-			// Play tooltip showing animation
-			// (doing it after setting position because
-			//  setting position applies `display: block`)
-			if (animate) {
-				this.tooltip.classList.add('rrui__tooltip--after-show')
-			}
+				// Play tooltip showing animation
+				// (doing it after setting position because
+				//  setting position applies `display: block`)
+				if (animate) {
+					this.tooltip.classList.add('rrui__tooltip--after-show')
+				}
 
-			if (this.mobile) {
-				document.addEventListener('touchstart', this.hideOnDocumentTouchDown)
-			}
+				if (this.isTouchDevice) {
+					document.addEventListener('touchstart', this.hideOnTouchOutside)
+				}
+
+				resolve()
+			})
 		})
 	}
 
@@ -279,25 +304,27 @@ export default class Tooltip extends PureComponent
 			return
 		}
 
-		if (this.mobile) {
-			document.removeEventListener('touchstart', this.hideOnDocumentTouchDown)
+		if (this.isTouchDevice) {
+			document.removeEventListener('touchstart', this.hideOnTouchOutside)
 		}
 
 		// Play tooltip hiding animation
 		this.tooltip.classList.add('rrui__tooltip--before-hide')
 
-		// Set the tooltip to `display: none`
-		// after its hiding animation finishes.
-		this.hide_timeout = setTimeout(() =>
-		{
-			this.hide_timeout = undefined
-			this.destroy_tooltip()
-			this.setState({ isShown: false })
-		},
-		hidingAnimationDuration)
+		return new Promise((resolve) => {
+			// Set the tooltip to `display: none`
+			// after its hiding animation finishes.
+			this.hide_timeout = setTimeout(() =>
+			{
+				this.hide_timeout = undefined
+				this.destroy_tooltip()
+				this.setState({ isShown: false }, resolve)
+			},
+			hidingAnimationDuration)
+		})
 	}
 
-	hideOnDocumentTouchDown = (event) => {
+	hideOnTouchOutside = (event) => {
 		if (this.isShown) {
 			if (!this.tooltip.contains(event.target) &&
 				!this.origin.contains(event.target)) {
@@ -320,11 +347,22 @@ export default class Tooltip extends PureComponent
 		this.hide_on_mouse_leave_timeout = undefined
 	}
 
+	onClick = () => {
+		if (this.isShown) {
+			this.hide()
+		} else {
+			this.show().then(() => {
+				// An "accessible" tooltip is focused upon being shown.
+				this.tooltip.focus()
+			})
+		}
+	}
+
 	onMouseEnterTooltip = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile) {
+		if (this.isTouchDevice) {
 			return
 		}
 		if (this.isShown) {
@@ -336,7 +374,7 @@ export default class Tooltip extends PureComponent
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile) {
+		if (this.isTouchDevice) {
 			return
 		}
 		if (this.isShown) {
@@ -350,7 +388,7 @@ export default class Tooltip extends PureComponent
 
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile) {
+		if (this.isTouchDevice) {
 			return
 		}
 
@@ -385,11 +423,11 @@ export default class Tooltip extends PureComponent
 		delay)
 	}
 
-	onMmouseLeave = () =>
+	onMouseLeave = () =>
 	{
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
-		if (this.mobile) {
+		if (this.isTouchDevice) {
 			return
 		}
 
@@ -407,12 +445,14 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
+	onTouchStartSetTouchDevice = () => this.isTouchDevice = true
+
 	onTouchStart = () =>
 	{
 		const content = this.renderContent()
 
 		// mouse enter events won't be processed from now on
-		this.mobile = true
+		this.isTouchDevice = true
 
 		// If the tooltip has no content
 		// (e.g. `react-time-ago` first render)
@@ -430,6 +470,37 @@ export default class Tooltip extends PureComponent
 	}
 
 	onTouchEnd = () => {}
+
+	// Is used on the tooltip itself in "accessible" mode.
+	onFocusOut = (event) => {
+		if (!this.tooltip.contains(event.relatedTarget) &&
+			!this.origin.contains(event.relatedTarget)) {
+			this.hide()
+		}
+	}
+
+	// This handler is used both on tooltip toggle button
+	// and the tooltip itself.
+	onKeyDown = (event) => {
+		if (event.defaultPrevented) {
+			return
+		}
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+		switch (event.keyCode) {
+			// Hide on "Escape".
+			case 27:
+				event.preventDefault()
+				// Hide (if not already hidden).
+				this.hide()
+				const { accessible } = this.props
+				if (accessible) {
+					this.origin.focus()
+				}
+				return
+		}
+	}
 
 	storeOriginNode = (ref) => this.origin = ref
 
@@ -486,27 +557,56 @@ export default class Tooltip extends PureComponent
 	_render(extraChildren) {
 		const
 		{
+			accessible,
 			inline,
 			style,
 			className,
-			children
+			children,
+			// Rest.
+			placement,
+			content,
+			container,
+			component,
+			componentProps,
+			delay,
+			hideDelay,
+			hideTimeout,
+			hidingAnimationDuration,
+			tooltipClassName,
+			...rest
 		}
 		= this.props
 
+		const { isShown } = this.state
+
+		const Component = accessible ? 'button' : 'div'
+
+		// There's no WAI-ARIA example of an `aria-role="tooltip"` widget.
+		// https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip
+		//
+		// `aria-haspopup`:
+		// https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup
+		// WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="..."`.
+
 		return (
-			<div
+			<Component
+				{...rest}
 				ref={ this.storeOriginNode }
 				onMouseEnter={ this.onMouseEnter }
 				onMouseLeave={ this.onMouseLeave }
-				onTouchStart={ this.onTouchStart }
-				onTouchMove={ this.hide }
-				onTouchEnd={ this.onTouchEnd }
-				onTouchCancel={ this.hide }
+				onClick={ accessible ? this.onClick : undefined }
+				onTouchStart={ accessible ? this.onTouchStartSetTouchDevice : this.onTouchStart }
+				onTouchEnd={ accessible ? undefined : this.onTouchEnd }
+				onTouchMove={ accessible ? undefined : this.hide }
+				onTouchCancel={ accessible ? undefined : this.hide }
+				aria-expanded={ accessible ? isShown : undefined}
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
-				className={ classNames(className, 'rrui__tooltip__target') }>
+				className={ classNames(className, 'rrui__tooltip__target', {
+					'rrui__button-reset': accessible
+				}) }>
 				{ children }
 				{ extraChildren }
-			</div>
+			</Component>
 		)
 	}
 }
