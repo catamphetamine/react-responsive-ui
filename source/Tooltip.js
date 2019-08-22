@@ -98,13 +98,12 @@ export default class Tooltip extends PureComponent
 
 	state = {}
 
-	// componentDidMount()
-	// {
-	// 	this.create_tooltip()
-	// }
+	componentDidMount() {
+		this._isMounted = true
+	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
+		this._isMounted = false
 		this.destroy_tooltip()
 	}
 
@@ -314,13 +313,13 @@ export default class Tooltip extends PureComponent
 		return new Promise((resolve) => {
 			// Set the tooltip to `display: none`
 			// after its hiding animation finishes.
-			this.hide_timeout = setTimeout(() =>
-			{
+			this.hide_timeout = setTimeout(() => {
 				this.hide_timeout = undefined
 				this.destroy_tooltip()
-				this.setState({ isShown: false }, resolve)
-			},
-			hidingAnimationDuration)
+				if (this._isMounted) {
+					this.setState({ isShown: false }, resolve)
+				}
+			}, hidingAnimationDuration)
 		})
 	}
 
