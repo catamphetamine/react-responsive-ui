@@ -599,6 +599,7 @@ export default class Tooltip extends PureComponent
 				onTouchMove={ accessible ? undefined : this.hide }
 				onTouchCancel={ accessible ? undefined : this.hide }
 				aria-expanded={ accessible ? isShown : undefined}
+				type={ accessible ? 'button' : undefined }
 				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
 				className={ classNames(className, 'rrui__tooltip__target', {
 					'rrui__button-reset': accessible
