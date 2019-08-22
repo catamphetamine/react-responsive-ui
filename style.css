@@ -15,6 +15,7 @@
           appearance: none;
   border: none;
   background: none;
+  color: inherit;
   cursor: pointer;
   font-size: inherit;
   font-family: inherit;
@@ -2286,7 +2287,8 @@ but rather `width: auto` or `left: 0; right: 0;`.
   color: #ffffff;
   background-color: #000000;
   border-radius: 0.1rem;
-  cursor: default; }
+  cursor: default;
+  outline: none; }
 
 .rrui__tooltip {
   opacity: 0; }
@@ -2370,10 +2372,14 @@ but rather `width: auto` or `left: 0; right: 0;`.
   transition: opacity 120ms, transform 120ms;
   transition: opacity 120ms, transform 120ms, -webkit-transform 120ms; }
 
-/* Prevents entering text selection mode
-   on mobile devices when tapping down and holding */
 .rrui__tooltip__target {
+  /* Prevents entering text selection mode
+	   on mobile devices when tapping down and holding */
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
-          user-select: none; }
+          user-select: none;
+  /* Resets `cursor: pointer` set by `interactive={true}`'s `.rrui__button-reset`. */
+  cursor: inherit;
+  /* Resets `white-space : nowrap` set by `interactive={true}`'s `.rrui__button-reset`. */
+  white-space: initial; }
