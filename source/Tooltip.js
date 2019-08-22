@@ -32,6 +32,11 @@ export default class Tooltip extends PureComponent
 		// Tooltip content.
 		content : PropTypes.node,
 
+		// Tooltip content component.
+		// Will have access to `hide()` property.
+		component : PropTypes.func,
+		componentProps : PropTypes.object,
+
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
 		inline : PropTypes.bool.isRequired,
@@ -321,7 +326,7 @@ export default class Tooltip extends PureComponent
 
 	on_mouse_enter = () =>
 	{
-		const { content } = this.props
+		const content = this.renderContent()
 
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
@@ -384,7 +389,7 @@ export default class Tooltip extends PureComponent
 
 	on_touch_start = () =>
 	{
-		const { content } = this.props
+		const content = this.renderContent()
 
 		// mouse enter events won't be processed from now on
 		this.mobile = true
@@ -403,21 +408,37 @@ export default class Tooltip extends PureComponent
 
 	storeOriginNode = (ref) => this.origin = ref
 
+	renderContent() {
+		const {
+			content,
+			component: Component,
+			componentProps
+		} = this.props
+		if (content) {
+			return content
+		}
+		if (Component) {
+			return (
+				<Component
+					{...componentProps}
+					hide={this.hide}/>
+			)
+		}
+		return null
+	}
+
 	render()
 	{
 		// Shows tooltip on mouse over when on desktop.
 		// Shows tooltip on touch when on mobile.
 
-		const
-		{
-			content
-		}
-		= this.props
-
 		// `ReactDOM.createPortal()` requires React >= 16.
 		// If it's not available then it won't show the tooltip.
 
-		const tooltip = this.tooltip && content && ReactDOM.createPortal && ReactDOM.createPortal(content, this.tooltip)
+		const content = this.renderContent()
+
+		const tooltip = this.tooltip && content && ReactDOM.createPortal &&
+			ReactDOM.createPortal(content, this.tooltip)
 
 		// For React >= 16.2.
 		// Disable React portal event bubbling.
