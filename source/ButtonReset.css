@@ -7,6 +7,7 @@
 	appearance  : none;
 	border      : none;
 	background  : none;
+	color       : inherit;
 	cursor      : pointer;
 	font-size   : inherit;
 	font-family : inherit;
