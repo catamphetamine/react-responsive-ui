@@ -1014,7 +1014,7 @@ class Counter
 }
 
 // `MAX_SAFE_INTEGER` is not supported by older browsers
-const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || Math.pow(2, 53) - 1
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || (Math.pow(2, 53) - 1)
 
 // Can only override "older" options.
 // (not "newer" ones)
