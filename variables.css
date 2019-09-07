@@ -174,9 +174,10 @@
 
   /* `<Switch/>` colors. */
   --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;
-  --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
   --rrui-switch-background-color : var(--rrui-checkbox-fill-color);
   --rrui-switch-accent-color : var(--rrui-checkbox-color-checked);
+  --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
+  --rrui-switch-knob-background-color : var(--rrui-switch-background-color);
 
   /* `<Switcher/>`. */
   --rrui-switcher-border-radius : var(--rrui-border-radius-big);

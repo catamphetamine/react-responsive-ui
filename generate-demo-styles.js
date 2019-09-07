@@ -64,6 +64,7 @@ function transformStyle(filePath)
     /* `<Switch/>`. */
     .replace_all('var(--rrui-switch-focus-outline-shadow)', '0 0 0 0 transparent')
     .replace_all('var(--rrui-switch-knob-border-color-focus)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-switch-knob-background-color)', 'var(--rrui-switch-background-color)')
     .replace_all('var(--rrui-switch-background-color)', 'var(--rrui-checkbox-fill-color)')
     .replace_all('var(--rrui-switch-accent-color)', 'var(--rrui-checkbox-color-checked)')
     /* Checkbox size */
