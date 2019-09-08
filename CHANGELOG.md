@@ -41,6 +41,11 @@
 
 <!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
 
+0.14.158 / 08.09.2019
+=====================
+
+  * (CSS change) Added `.rrui__input` CSS class to `<Switch/>` that makes it height equal to input height. Also `<Switch/>` label is now limited to a single line (not multi-line).
+
 0.14.153 / 22.08.2019
 =====================
 

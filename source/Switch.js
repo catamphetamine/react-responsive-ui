@@ -121,6 +121,7 @@ export default class Switch extends PureComponent
 		const { isFocused } = this.state
 
 		const isRightSideContent = placement === 'left' || rightContent
+		const hasLabel = children || leftLabel || rightLabel || rightContent
 
 		return (
 			<label
@@ -129,7 +130,7 @@ export default class Switch extends PureComponent
 				onBlur={this.onBlur}
 				className={ classNames('rrui__switch',
 				{
-					// 'rrui__input'            : children,
+					'rrui__input'            : hasLabel,
 					'rrui__switch--label'    : children,
 					'rrui__switch--disabled' : disabled,
 					'rrui__switch--focus'    : isFocused

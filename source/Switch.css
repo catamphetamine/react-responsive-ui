@@ -3,6 +3,12 @@
 	display     : inline-flex;
 	align-items : center;
 
+	/* The label is `display: inline-flex`
+	   so it behaves like an "inline" element
+	   and so its width is not limited to `100%`
+	   when `overflow: hidden`. */
+	max-width : 100%;
+
 	cursor      : pointer;
 	user-select : none;
 
@@ -37,6 +43,12 @@
 	width  : 160%;
 	height : 180%;
 	cursor : pointer;
+}
+
+.rrui__switch__label {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .rrui__switch__label--left
