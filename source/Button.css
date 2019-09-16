@@ -45,7 +45,7 @@
 	left       : var(--rrui-button-side-padding);
 	bottom     : calc(50% - 0.7em);
 	width      : calc(100% - 2 * var(--rrui-button-side-padding));
-	height     : 0.1em;
+	height     : var(--rrui-button-busy-indicator-width);
 	overflow   : hidden;
 	opacity    : 0;
 	transition : opacity 300ms ease-out 0ms;
