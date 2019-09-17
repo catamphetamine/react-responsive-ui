@@ -32,10 +32,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 
 				<Highlight lang="jsx">{`
 					const MenuButton = React.forwardRef((props, ref) => (
-						<Button
-							{...props}
-							ref={ref}
-							className="rrui__button--border">
+						<Button {...props} ref={ref}>
 							MENU
 						</Button>
 					))
