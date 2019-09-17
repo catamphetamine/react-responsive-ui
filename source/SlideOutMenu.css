@@ -103,8 +103,8 @@
 	display       : block;
 	height        : var(--rrui-list-item-height);
 	line-height   : var(--rrui-list-item-height);
-	padding-left  : calc(var(--rrui-collapsible-menu-item-side-padding) * 1.5);
-	padding-right : calc(var(--rrui-collapsible-menu-item-side-padding) * 1.5);
+	padding-left  : calc(var(--rrui-expandable-menu-item-side-padding) * 1.5);
+	padding-right : calc(var(--rrui-expandable-menu-item-side-padding) * 1.5);
 
 	opacity    : 0;
 	transition : opacity calc(var(--rrui-slideout-menu-animation-duration) / 2) ease-out;

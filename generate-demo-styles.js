@@ -154,6 +154,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-list-item-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-list-item-icon-margin)', '0.6rem')
     /* `<Select menu/>` */
+    .replace_all('var(--rrui-expandable-menu-item-side-padding)', 'var(--rrui-collapsible-menu-item-side-padding)')
     .replace_all('var(--rrui-collapsible-menu-item-side-padding)', 'calc(0.6rem * 2.5)')
     /* `<Snackbar/>` */
     .replace_all('var(--rrui-snackbar-height)', 'calc(0.6rem * 4)')

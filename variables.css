@@ -59,7 +59,10 @@
   --rrui-button-text-color-active : var(--rrui-accent-color-light);
 
   /* `<ExpandableMenu/>` */
+  /* `--rrui-collapsible-menu-item-side-padding` name is deprecated,
+     use `--rrui-expandable-menu-item-side-padding` name instead. */
   --rrui-collapsible-menu-item-side-padding : calc(var(--rrui-unit) * 2.5);
+  --rrui-expandable-menu-item-side-padding  : var(--rrui-collapsible-menu-item-side-padding);
 
   /* `<Snackbar/>` */
   --rrui-snackbar-height       : calc(var(--rrui-unit) * 4);

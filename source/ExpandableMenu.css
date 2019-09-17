@@ -13,8 +13,8 @@
 
 .rrui__menu .rrui__list__item
 {
-	padding-left  : var(--rrui-collapsible-menu-item-side-padding);
-	padding-right : var(--rrui-collapsible-menu-item-side-padding);
+	padding-left  : var(--rrui-expandable-menu-item-side-padding);
+	padding-right : var(--rrui-expandable-menu-item-side-padding);
 }
 
 .rrui__menu .rrui__list__item--divider
