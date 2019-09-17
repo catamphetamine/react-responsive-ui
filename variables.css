@@ -47,8 +47,10 @@
 
   /* `<Button/>` */
   --rrui-button-side-padding: 0rem;
+  --rrui-button-border: none;
   --rrui-button-border-radius: 0rem;
   --rrui-button-busy-indicator-width: 0.1em;
+  --rrui-button-busy-indicator-bottom: calc(50% - 0.7em);
 
   /* `<Button/>` colors. */
   --rrui-button-background-color : transparent;

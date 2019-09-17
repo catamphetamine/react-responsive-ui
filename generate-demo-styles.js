@@ -167,8 +167,10 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-multiline-text-input-vertical-padding)', '0.6rem')
     /* `<Button/>` */
     .replace_all('var(--rrui-button-side-padding)', '0rem')
+    .replace_all('var(--rrui-button-border)', 'none')
     .replace_all('var(--rrui-button-border-radius)', '0rem')
     .replace_all('var(--rrui-button-busy-indicator-width)', '0.1em')
+    .replace_all('var(--rrui-button-busy-indicator-bottom)', 'calc(50% - 0.7em)')
     /* `<Select/>` */
     .replace_all('var(--rrui-list-vertical-padding)', '0.6rem')
     .replace_all('var(--rrui-list-item-side-padding)', 'calc(0.6rem * 1.5)')

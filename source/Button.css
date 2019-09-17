@@ -12,6 +12,7 @@
 	background-color : var(--rrui-button-background-color);
 	color            : var(--rrui-button-text-color);
 	border-radius    : var(--rrui-button-border-radius);
+	border           : var(--rrui-button-border);
 }
 
 .rrui__button:active
@@ -43,7 +44,7 @@
 	display    : block;
 	position   : absolute;
 	left       : var(--rrui-button-side-padding);
-	bottom     : calc(50% - 0.7em);
+	bottom     : var(--rrui-button-busy-indicator-bottom);
 	width      : calc(100% - 2 * var(--rrui-button-side-padding));
 	height     : var(--rrui-button-busy-indicator-width);
 	overflow   : hidden;
