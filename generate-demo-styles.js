@@ -70,7 +70,10 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-expandable-transform-show)', 'scaleY(1)')
     .replace_all('var(--rrui-expandable-transform-origin)', '50% top 0px')
     .replace_all('var(--rrui-expandable-transform-origin-upward)', '50% bottom 0px')
+    .replace_all('var(--rrui-expandable-content-transition)', 'opacity 100ms ease-out')
+    .replace_all('var(--rrui-expandable-content-opacity-hide)', '0')
     .replace_all('var(--rrui-expandable-margin)', '1em')
+    .replace_all('var(--rrui-expandable-fade-distance)', '0.5em')
     /* `<Switch/>`. */
     // IE11 doesn't know how to `calc()` inside `transform`, so it's precalculated.
     // .replace_all('var(--rrui-switch-knob-translate-on)', 'calc(var(--rrui-switch-width) - var(--rrui-switch-knob-size) - (var(--rrui-switch-height) - var(--rrui-switch-knob-size)))')

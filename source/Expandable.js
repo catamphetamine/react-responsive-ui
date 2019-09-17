@@ -31,6 +31,9 @@ export default class Expandable extends PureComponent
 {
 	static propTypes =
 	{
+		// The default animation could be called "expand".
+		animation: PropTypes.oneOf(['fade-up']),
+
 		// Can optionally preload `<Expandable/>` contents before expanding it.
 		// Must return a `Promise`.
 		preload : PropTypes.func,
@@ -396,6 +399,7 @@ export default class Expandable extends PureComponent
 	{
 		const
 		{
+			animation,
 			alignment,
 			upward,
 			onFocusOut,
@@ -443,6 +447,8 @@ export default class Expandable extends PureComponent
 					'rrui__shadow',
 					'rrui__expandable',
 					'rrui__expandable--overlay',
+					animation && `rrui__expandable--${animation}`,
+					animation && expanded && `rrui__expandable--expanded--${animation}`,
 					{
 						'rrui__expandable--expanded'      : expanded,
 						'rrui__expandable--left-aligned'  : alignment === 'left',
@@ -459,6 +465,7 @@ export default class Expandable extends PureComponent
 						(
 							child.props.className,
 							'rrui__expandable__content',
+							animation && `rrui__expandable__content--${animation}`,
 							{
 								'rrui__expandable__content--expanded' : expanded
 							}

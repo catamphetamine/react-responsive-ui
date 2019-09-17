@@ -29,6 +29,8 @@ export default class ExpandableList extends PureComponent
 		focusOnExpand : PropTypes.bool.isRequired,
 		focusSelectedItem : PropTypes.bool.isRequired,
 
+		animation : PropTypes.string,
+
 		className : PropTypes.string
 	}
 
@@ -189,6 +191,7 @@ export default class ExpandableList extends PureComponent
 	{
 		const
 		{
+			animation,
 			alignment,
 			upward,
 			scrollIntoView,
@@ -209,6 +212,7 @@ export default class ExpandableList extends PureComponent
 		return (
 			<Expandable
 				ref={ this.storeExpandableRef }
+				animation={ animation }
 				alignment={ alignment }
 				upward={ upward }
 				scrollIntoView={ scrollIntoView }

@@ -22,6 +22,17 @@
 	transition : var(--rrui-expandable-transition-show);
 }
 
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable--fade-up {
+	transform: translateY(var(--rrui-expandable-fade-distance));
+	transition: var(--rrui-expandable-transition-show);
+}
+
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable--expanded--fade-up {
+	transform: translateY(0);
+}
+
 .rrui__expandable--overlay
 {
 	position : absolute;
@@ -36,10 +47,16 @@
 	This is done to fade out the inner block when the dropdown is collapsed
 	therefore hiding an otherwise bizarre and unwanted visual clutter
 	*/
-	opacity: 0;
+	opacity: var(--rrui-expandable-content-opacity-hide);
 
 	/* Mitigates inner content overlapping with itself creating a feeling of a mess */
-	transition: opacity 100ms ease-out;
+	transition: var(--rrui-expandable-content-transition);
+}
+
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable__content--fade-up {
+	opacity: 1;
+	transition: none;
 }
 
 .rrui__expandable__content--expanded

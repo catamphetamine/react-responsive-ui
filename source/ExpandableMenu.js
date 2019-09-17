@@ -149,6 +149,7 @@ export default class ExpandableMenu extends PureComponent
 
 				<ExpandableList
 					{...rest}
+					animation="fade-up"
 					ref={this.storeListRef}
 					aria-label={this.props['aria-label']}
 					scrollMaxItems={0}

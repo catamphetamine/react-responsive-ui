@@ -129,7 +129,10 @@
   --rrui-expandable-transform-show: scaleY(1);
   --rrui-expandable-transform-origin: 50% top 0px;
   --rrui-expandable-transform-origin-upward: 50% bottom 0px;
+  --rrui-expandable-content-transition: opacity 100ms ease-out;
+  --rrui-expandable-content-opacity-hide: 0;
   --rrui-expandable-margin: 1em;
+  --rrui-expandable-fade-distance: 0.5em;
 
   /* `<Select/>` toggler color. */
   --rrui-select-toggler-text-color-active : var(--rrui-accent-color);

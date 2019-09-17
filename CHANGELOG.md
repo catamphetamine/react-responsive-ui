@@ -41,6 +41,13 @@
 
 <!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
 
+<!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
+
+0.14.164 / 18.09.2019
+=====================
+
+  * (CSS change) Changed the animation of `<ExpandableMenu/>`: it's now "fade upwards" rather than "expand".
+
 0.14.158 / 08.09.2019
 =====================
 
