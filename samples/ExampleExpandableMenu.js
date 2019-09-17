@@ -63,7 +63,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 
 				<ul className="list">
 					<li><code className="colored">button</code> — Menu button component that will receive props: <code className="colored">onClick</code>, <code className="colored">onKeyDown</code>, <code className="colored">onBlur</code>, <code className="colored">aria-expanded</code>, etc. Must use <code className="colored">React.forwardRef()</code> to forward the <code className="colored">ref</code> to the <code className="colored">&lt;button/&gt;</code> DOM Element.</li>
-					<li><code className="colored">togglerButtonProps</code> — (optional) Additional toggler <code className="colored">&lt;button/&gt;</code> properties. Example: <code className="colored">{'{ "title": "Menu" }'}</code>.</li>
+					<li><code className="colored">buttonProps</code> — (optional) Additional properties for the <code className="colored">button</code> component. Example: <code className="colored">{'{ "title": "Menu" }'}</code>.</li>
 					{/*
 					<li><code className="colored">togglerAriaLabel</code> — (optional) <code className="colored">aria-label</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
 					<li><code className="colored">togglerAriaHasPopup</code> — (optional) <code className="colored">aria-haspopup</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
