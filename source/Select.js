@@ -39,6 +39,7 @@ export default class Select extends PureComponent
 					PropTypes.node,
 					PropTypes.func
 				]),
+				// (deprecated, use `optionComponent` instead)
 				// Render custom content (a React component).
 				// Receives `{ value, label }` properties.
 				content : PropTypes.func
