@@ -19,7 +19,7 @@
 
 /* Resets `white-space: nowrap` set by `.rrui__button-reset`. */
 .rrui__button-reset--wrap {
-	white-space: initial;
+	white-space: normal;
 }
 
 /* This CSS class can be used on its own in applications. */
