@@ -748,6 +748,21 @@
   -o-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
   transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1); }
 
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable--fade-up {
+  -webkit-transform: translateY(0.5em);
+      -ms-transform: translateY(0.5em);
+          transform: translateY(0.5em);
+  -webkit-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  -o-transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 150ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable--expanded--fade-up {
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0); }
+
 .rrui__expandable--overlay {
   position: absolute;
   z-index: 1; }
@@ -764,6 +779,13 @@
   -webkit-transition: opacity 100ms ease-out;
   -o-transition: opacity 100ms ease-out;
   transition: opacity 100ms ease-out; }
+
+/* A small "hack" for "fade up" animation of `<ExpandableMenu/>`. */
+.rrui__expandable__content--fade-up {
+  opacity: 1;
+  -webkit-transition: none;
+  -o-transition: none;
+  transition: none; }
 
 .rrui__expandable__content--expanded {
   opacity: 1; }
@@ -2128,10 +2150,10 @@ but rather `width: auto` or `left: 0; right: 0;`.
   line-height: 0; }
 
 .rrui__switch__input {
-  left: calc(0.6rem * -1);
-  right: calc(0.6rem * -1);
-  width: calc(100% + 0.6rem * 2);
-  height: calc(100% + 0.6rem * 2);
+  left: calc((0.6rem / 2) * -1);
+  right: calc((0.6rem / 2) * -1);
+  width: calc(100% + (0.6rem / 2) * 2);
+  height: calc(100% + (0.6rem / 2) * 2);
   cursor: pointer; }
 
 .rrui__switch__label {
