@@ -712,10 +712,11 @@ export class ListItem extends React.Component
 		}
 
 		const isSelected = this.shouldCreateButton() && value === selectedItemValue
+		const isDividerItem = !Component && isDivider(children)
 
 		const properties =
 		{
-			ref          : this.storeRef,
+			ref          : isDividerItem ? undefined : this.storeRef,
 			onMouseDown  : this.onMouseDown,
 			onClick      : this.onClick,
 			onFocus      : this.onFocus,
@@ -730,7 +731,7 @@ export class ListItem extends React.Component
 					'rrui__list__item--focus'    : focused,
 					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
 					'rrui__list__item--disabled' : disabled,
-					'rrui__list__item--divider'  : !Component && isDivider(children)
+					'rrui__list__item--divider'  : isDividerItem
 				}
 			)
 		}
