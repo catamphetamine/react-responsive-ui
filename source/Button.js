@@ -148,7 +148,16 @@ export default class Button extends PureComponent
 
 	storeInstance = (ref) => this.button = ref
 
+	// Mimicks DOM `.focus()` method.
+	// The correct way would be wrapping the `Button`
+	// component in `React.forwardRef()` instead.
 	focus = () => this.button.focus()
+
+	// Mimicks DOM `.contains()` method.
+	// The correct way would be wrapping the `Button`
+	// component in `React.forwardRef()` instead.
+	// Is used in `onBlur()` in `./utility/focus.js`.
+	contains = (node) => this.button.contains(node)
 
 	linkOnClick = (event) =>
 	{

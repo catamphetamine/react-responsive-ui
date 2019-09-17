@@ -29,11 +29,21 @@ export default class ExpandableMenu extends PureComponent
 		// in fullscreen mode on mobile devices.
 		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
 
+		// Must accept a `ref`.
+		// Receives properties: `onClick`, `onKeyDown`, `onBlur`, `aria-expanded`.
+		button : PropTypes.elementType,
+		buttonProps : PropTypes.object,
+
+		// (deprecated, use `button` component instead)
 		toggler : PropTypes.func,
-		togglerButtonProps : PropTypes.object,
-		togglerElement : PropTypes.node,
+
+		// (deprecated, use `buttonProps` instead)
 		togglerAriaLabel : PropTypes.string,
+
+		// (deprecated, use `buttonProps` instead)
 		togglerAriaHasPopup : PropTypes.string,
+
+		// (deprecated, use `buttonProps` instead)
 		togglerClassName : PropTypes.string
 	}
 
@@ -89,8 +99,8 @@ export default class ExpandableMenu extends PureComponent
 			style,
 			className,
 			toggler,
-			togglerButtonProps,
-			togglerElement: togglerElement_,
+			button,
+			buttonProps,
 			togglerAriaLabel,
 			togglerAriaHasPopup,
 			togglerClassName,
@@ -99,32 +109,28 @@ export default class ExpandableMenu extends PureComponent
 		}
 		= this.props
 
-		let { togglerElement } = this.props
-
 		const { isExpanded } = this.state
 
 		let menuToggler
 		let menuItems
 
-		if (toggler) {
-			togglerElement = React.createElement(toggler)
-		}
-
-		if (togglerElement) {
+		if (toggler || button) {
+			const TogglerButton = button || DefaultTogglerButton
+			const togglerElement = toggler ? React.createElement(toggler) : null
 			menuItems = children
 			menuToggler = (
-				<button
-					{...togglerButtonProps}
+				<TogglerButton
+					aria-haspopup={ togglerAriaHasPopup }
+					aria-label={ togglerAriaLabel }
+					className={ togglerClassName }
+					{...buttonProps}
 					ref={ this.storeTogglerNode }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
-					aria-haspopup={ togglerAriaHasPopup }
-					aria-label={ togglerAriaLabel }
-					aria-expanded={ isExpanded ? true : false }
-					className={ togglerClassName }>
+					aria-expanded={ isExpanded ? true : false }>
 					{ togglerElement }
-				</button>
+				</TogglerButton>
 			)
 		} else {
 			menuItems = React.Children.toArray(children)
@@ -211,3 +217,7 @@ export default class ExpandableMenu extends PureComponent
 		}
 	}
 }
+
+const DefaultTogglerButton = (props) => (
+	<button type="button" {...props}/>
+)
