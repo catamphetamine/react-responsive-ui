@@ -120,6 +120,15 @@
   --rrui-input-field-label-color-focus : var(--rrui-accent-color);
   --rrui-input-field-label-color-error : var(--rrui-error-color);
 
+  /* `<Expandable/>`. */
+  --rrui-expandable-transition-hide: all 150ms ease-out; /* 250ms - too slow for short lists */
+  --rrui-expandable-transition-show: all 150ms cubic-bezier(0.23, 1, 0.32, 1);
+  --rrui-expandable-transform-hide: scaleY(0.8);
+  --rrui-expandable-transform-show: scaleY(1);
+  --rrui-expandable-transform-origin: 50% top 0px;
+  --rrui-expandable-transform-origin-upward: 50% bottom 0px;
+  --rrui-expandable-margin: 1em;
+
   /* `<Select/>` toggler color. */
   --rrui-select-toggler-text-color-active : var(--rrui-accent-color);
   --rrui-select-toggler-text-color-empty : var(--rrui-gray-color);
