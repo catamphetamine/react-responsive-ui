@@ -46,7 +46,7 @@
 0.14.164 / 18.09.2019
 =====================
 
-  * (CSS change) Changed the animation of `<ExpandableMenu/>`: it's now "fade upwards" rather than "expand".
+  * (CSS change) Changed the animation of `<ExpandableMenu/>`: it's now "fade upwards" rather than "expand". Added `button` property for the toggler button component (demo example has been updated).
 
 0.14.158 / 08.09.2019
 =====================
