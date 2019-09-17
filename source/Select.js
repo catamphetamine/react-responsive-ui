@@ -55,6 +55,31 @@ export default class Select extends PureComponent
 		// Placeholder (like "Choose")
 		placeholder : PropTypes.string,
 
+		// Selected option component.
+		// (when `<Select/>` is not expanded).
+		// Receives properties:
+		// `{ ...option }` — All properties of the selected `option` such as `value`, `label`, etc. Each `option` must have a `value` and a `label` (`value` may be `undefined`).
+		// `wait` — Passed through `wait` property of the `<Select/>` component. `<Autocomplete/>` renders a `<Select/>` internally and passes `wait={true}` when it's loading options.
+		// Can only contain "inline" elements like `<span/>`,
+		// not `<div/>`s, `<section/`>s, `<h1/>`s or `<p/>`s,
+		// because `<button/>`s can't contain "block" elements.
+		// `display: block` can still be set on `<span/>`s and other "inline" elements.
+		// The containing DOM element (for example, a `<span/>`) must be `display: block`.
+		selectedOptionComponent : PropTypes.elementType,
+
+		// Option component.
+		// (when `<Select/>` is expanded).
+		// Receives properties:
+		// * `{ ...option }` — All properties of the `option` such as `value`, `label`, etc. Each `option` must have a `value` and a `label` (`value` may be `undefined`).
+		// * `selected: boolean` — If this option is selected.
+		// * `focused: boolean` — If this option is focused.
+		// * `disabled: boolean` — If this option is disabled. Seems to be not used for now.
+		// Can only contain "inline" elements like `<span/>`,
+		// not `<div/>`s, `<section/`>s, `<h1/>`s or `<p/>`s,
+		// because `<button/>`s can't contain "block" elements.
+		// `display: block` can still be set on `<span/>`s and other "inline" elements.
+		optionComponent : PropTypes.elementType,
+
 		// Options list alignment.
 		// Is "left" by default.
 		alignment : PropTypes.string,
@@ -99,7 +124,17 @@ export default class Select extends PureComponent
 		className  : PropTypes.string,
 
 		// `<button/>` toggler CSS class
+		// (deprecated name, use `selectedOptionClassName` property name instead)
 		toggleClassName : PropTypes.string,
+
+		// Selected option `<button/>` CSS class.
+		selectedOptionClassName : PropTypes.string,
+
+		// Selected option `<button/>` CSS class when `error` property is passed.
+		selectedOptionInvalidClassName : PropTypes.string,
+
+		// Selected option `<button/>` CSS class when `disabled` property is passed.
+		selectedOptionDisabledClassName : PropTypes.string,
 
 		// CSS style object
 		style      : PropTypes.object,
@@ -210,6 +245,8 @@ export default class Select extends PureComponent
 			error,
 			closeButtonIcon,
 			closeLabel,
+			optionComponent,
+			selectedOptionComponent,
 			wait,
 			style,
 			className
@@ -221,7 +258,7 @@ export default class Select extends PureComponent
 			isFocused
 		} = this.state
 
-		const label = this.getLabel()
+		const topLabel = this.getTopLabel()
 
 		return (
 			<WithError
@@ -236,7 +273,7 @@ export default class Select extends PureComponent
 
 				<div
 					ref={ this.storeInputComponentNode }
-					className="rrui__input">
+					className={selectedOptionComponent ? undefined : 'rrui__input'}>
 
 					{ wait && <Ellipsis/> }
 
@@ -262,21 +299,21 @@ export default class Select extends PureComponent
 					{/* The currently selected option */}
 					{ !native && this.renderSelectButton() }
 
-					{/* Label */}
+					{/* Top Label */}
 					{/* (this label is placed after the "selected" button
 					     to utilize the CSS `+` selector) */}
 					{/* If the `placeholder` wasn't specified
 					    but `label` was and no option is currently selected
 					    then the `label` becomes the `placeholder`
 					    until something is selected */}
-					{ label &&
+					{ topLabel &&
 						<Label
 							aria-hidden
 							value={ value }
 							required={ required }
 							invalid={ indicateInvalid && error }
 							floats={ false }>
-							{ label }
+							{ topLabel }
 						</Label>
 					}
 
@@ -311,8 +348,12 @@ export default class Select extends PureComponent
 								<List.Item
 									key={i}
 									value={option.value}
-									icon={option.divider || saveOnIcons ? undefined : option.icon}>
-									{option.divider ? <Divider/> : (option.content ? option.content(option) : option.label)}
+									icon={option.divider || saveOnIcons ? undefined : option.icon}
+									component={option.divider ? undefined : optionComponent}
+									item={option.divider ? undefined : (optionComponent ? option : undefined)}>
+									{option.divider ? <Divider/> :
+										(optionComponent ? undefined : (option.content ? option.content(option) : option.label))
+									}
 								</List.Item>
 							))}
 						</ExpandableList>
@@ -335,8 +376,12 @@ export default class Select extends PureComponent
 			native,
 			nativeExpanded,
 			toggleClassName,
+			selectedOptionClassName,
+			selectedOptionInvalidClassName,
+			selectedOptionDisabledClassName,
 			indicateInvalid,
-			error
+			error,
+			selectedOptionComponent: SelectedOptionComponent
 		}
 		= this.props
 
@@ -375,33 +420,35 @@ export default class Select extends PureComponent
 				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
 				(
-					'rrui__input-element',
 					'rrui__button-reset',
 					'rrui__outline',
 					'rrui__select__button',
 					toggleClassName,
+					selectedOptionClassName,
+					selectedOptionInvalidClassName && SelectedOptionComponent && indicateInvalid && error,
+					selectedOptionDisabledClassName && SelectedOptionComponent && disabled,
 					{
-						'rrui__select__button--empty'    : isEmptyValue(value) && !this.hasEmptyOption(),
-						'rrui__select__button--invalid'  : indicateInvalid && error,
-						'rrui__select__button--disabled' : disabled
+						// Resets `white-space: nowrap` set by `.rrui__button-reset`.
+						'rrui__button-reset--wrap': SelectedOptionComponent,
+						'rrui__input-element': !SelectedOptionComponent,
+						'rrui__select__button--empty'    : !SelectedOptionComponent && isEmptyValue(value) && !this.hasEmptyOption(),
+						'rrui__select__button--invalid'  : !SelectedOptionComponent && indicateInvalid && error,
+						'rrui__select__button--disabled' : !SelectedOptionComponent && disabled
 					}
 				) }>
-
-				{/* http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers */}
-				<span className="rrui__select__selected-content">
-
-					{/* Selected option label (or icon) */}
-					<span
-						className={ classNames('rrui__select__selected-label',
-						{
-							'rrui__select__selected-label--required' : !this.getLabel() && required && isEmptyValue(value)
-						}) }>
-						{ showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : selectedOptionLabel }
-					</span>
-
-					{/* An arrow */}
-					{ !wait && <span className="rrui__select__arrow"/> }
-				</span>
+				{SelectedOptionComponent
+					?
+					<SelectedOptionComponent
+						wait={wait}
+						{...selected}/>
+					:
+					<DefaultSelectedOptionComponent
+						indicateRequired={!this.getTopLabel() && required && isEmptyValue(value)}
+						wait={wait}
+						value={value}
+						label={selectedOptionLabel}
+						icon={showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : undefined}/>
+				}
 			</button>
 		)
 	}
@@ -676,7 +723,7 @@ export default class Select extends PureComponent
 		return this.props['aria-label'] || ariaLabel || label
 	}
 
-	getLabel()
+	getTopLabel()
 	{
 		const { label, placeholder, value } = this.props
 
@@ -758,4 +805,36 @@ function getOptionKey(value)
 function isEmptyValue(value)
 {
 	return value === null || value === undefined
+}
+
+function DefaultSelectedOptionComponent({
+	value,
+	label,
+	icon,
+	indicateRequired,
+	wait
+}) {
+	// The `<span/>` wrapper is required for vertical centering.
+	// http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers
+	return (
+		<span className="rrui__select__selected-content">
+			{/* Selected option label (or icon) */}
+			<span
+				className={classNames('rrui__select__selected-label', {
+					'rrui__select__selected-label--required': indicateRequired
+				})}>
+				{icon || label}
+			</span>
+			{/* An arrow */}
+			{!wait && <span className="rrui__select__arrow"/>}
+		</span>
+	)
+}
+
+DefaultSelectedOptionComponent.propTypes = {
+	value: PropTypes.any,
+	label: PropTypes.string,
+	icon: PropTypes.node,
+	indicateRequired: PropTypes.bool,
+	wait: PropTypes.bool
 }

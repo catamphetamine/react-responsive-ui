@@ -120,6 +120,7 @@
   /* `<Select/>` toggler color. */
   --rrui-select-toggler-text-color-active : var(--rrui-accent-color);
   --rrui-select-toggler-text-color-empty : var(--rrui-gray-color);
+  --rrui-select-toggler-transition : color 30ms ease-out;
 
   /* `<Select/>` */
   --rrui-list-vertical-padding  : var(--rrui-unit);

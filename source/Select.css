@@ -26,18 +26,15 @@
 
 .rrui__select__button
 {
-	height     : 100%;
-	box-sizing : border-box;
-
-	color : inherit;
-
+	height: 100%;
+	box-sizing: border-box;
+	color: inherit;
+	/* Because Chrome adds `text-align: center` for all buttons */
+	text-align: left;
 	/* Not introducing an animation on `.rrui__select__option`
 	   because it would introduce a little clutter due to
 	   focused option animation in autocomplete mode */
-	transition : color 30ms ease-out;
-
-	/* Because Chrome adds `text-align: center` for all buttons */
-	text-align : left;
+	transition: var(--rrui-select-toggler-transition);
 }
 
 .rrui__select__button--expanded

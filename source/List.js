@@ -689,6 +689,7 @@ export class ListItem extends React.Component
 			id,
 			value,
 			icon,
+			item,
 			role,
 			focused,
 			disabled,
@@ -696,6 +697,7 @@ export class ListItem extends React.Component
 			tabIndex,
 			highlightSelectedItem,
 			selectedItemValue,
+			component: Component,
 			children
 		}
 		= this.props
@@ -703,8 +705,10 @@ export class ListItem extends React.Component
 		// Throws an error for some weird reason.
 		// React.Children.only(children)
 
-		if (React.Children.count(children) !== 1) {
-			throw new Error(`Each <List.Item/> must have a single child (and remove any whitespace).`)
+		if (!Component) {
+			if (React.Children.count(children) !== 1) {
+				throw new Error(`Each <List.Item/> must have a single child (and remove any whitespace).`)
+			}
 		}
 
 		const isSelected = this.shouldCreateButton() && value === selectedItemValue
@@ -726,7 +730,7 @@ export class ListItem extends React.Component
 					'rrui__list__item--focus'    : focused,
 					'rrui__list__item--selected' : isSelected && highlightSelectedItem,
 					'rrui__list__item--disabled' : disabled,
-					'rrui__list__item--divider'  : isDivider(children)
+					'rrui__list__item--divider'  : !Component && isDivider(children)
 				}
 			)
 		}
@@ -750,48 +754,36 @@ export class ListItem extends React.Component
 			properties.type = 'button'
 			properties.role = role
 			properties['aria-selected'] = isSelected
-			properties['aria-label'] = this.props.label || (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined)
+			properties['aria-label'] = this.props.label || (Component ? undefined : (typeof children !== 'string' && children && children.props ? children.props['aria-label'] : undefined))
 			properties.disabled = disabled
 			properties.onKeyDown = this.onButtonKeyDown
 			properties.className = classNames(
 				properties.className,
 				'rrui__button-reset',
 				'rrui__outline',
-				'rrui__list__item--button'
+				// Resets `white-space: nowrap` set by `.rrui__button-reset`.
+				Component && 'rrui__button-reset--wrap',
+				// Resets `white-space: nowrap` set by `.rrui__list__item`.
+				Component && 'rrui__list__item--wrap',
+				// `.rrui__list__item--button` only sets the fixed `height`.
+				!Component && 'rrui__list__item--button'
 			)
 
-			// Replace `itemChildren` array with `<React.Fragment/>`
-			// in some future when React >= 16.2.0 is common.
-			//
-			// <React.Fragment>
-			// 	{/* Icon. */}
-			// 	{ icon &&
-			// 		<div className="rrui__list__item-icon">
-			// 			{ React.createElement(icon, { value, label }) }
-			// 		</div>
-			// 	}
-			//
-			// 	{/* Label (or content). */}
-			// 	{ children }
-			// </React.Fragment>
-
-			// Label (or content).
-			itemChildren = React.Children.toArray(children)
-
-			// Icon.
-			if (icon)
-			{
-				itemChildren.unshift((
-					<span key="icon" aria-hidden className="rrui__list__item-icon">
-						{ React.createElement(icon, { value, label }) }
-					</span>
-				))
-			}
+			itemChildren = Component ?
+				<Component
+					{...item}
+					selected={isSelected && highlightSelectedItem}
+					focused={focused}
+					disabled={disabled}/> :
+				renderListItemComponent({ value, label, icon, children })
 		}
 		else
 		{
 			// Don't overwrite `className` already defined on the `children`.
-			properties.className = classNames(properties.className, children.props && children.props.className)
+			properties.className = classNames(
+				properties.className,
+				children.props && children.props.className
+			)
 		}
 
 		return (
@@ -812,6 +804,39 @@ export class ListItem extends React.Component
 ListItem.displayName = 'ListItem'
 
 List.Item = ListItem
+
+
+// Replace `itemChildren` array with `<React.Fragment/>`
+// in some future when React >= 16.2.0 is common.
+//
+// <React.Fragment>
+// 	{/* Icon. */}
+// 	{icon &&
+// 		<div className="rrui__list__item-icon">
+// 			{ React.createElement(icon, { value, label }) }
+// 		</div>
+// 	}
+// 	{/* Label (or content). */}
+// 	{children}
+// </React.Fragment>
+function renderListItemComponent({
+	value,
+	label,
+	icon,
+	children
+}) {
+	// Label (or content).
+	const itemChildren = React.Children.toArray(children)
+	// Icon.
+	if (icon) {
+		itemChildren.unshift((
+			<span key="icon" aria-hidden className="rrui__list__item-icon">
+				{React.createElement(icon, { value, label })}
+			</span>
+		))
+	}
+	return itemChildren
+}
 
 function haveItemsChanged(props, prevProps)
 {
@@ -870,7 +895,7 @@ function getItemLabel(item) {
 }
 
 function isSelectableItem(item) {
-	return item.props.children && !isDivider(item.props.children)
+	return item.props.component ? true : (item.props.children && !isDivider(item.props.children))
 }
 
 function isDivider(element) {

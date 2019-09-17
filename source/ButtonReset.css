@@ -17,6 +17,11 @@
 	/* box-sizing  : border-box; */
 }
 
+/* Resets `white-space: nowrap` set by `.rrui__button-reset`. */
+.rrui__button-reset--wrap {
+	white-space: initial;
+}
+
 /* This CSS class can be used on its own in applications. */
 /* Because of that, `outline: none` is added here too. */
 /* Developers should define `:focus` styles for buttons. */

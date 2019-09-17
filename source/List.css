@@ -37,6 +37,11 @@
 	white-space : nowrap;
 }
 
+/* Resets `white-space: nowrap` set by `.rrui__list__item`. */
+.rrui__list__item--wrap {
+	white-space: initial;
+}
+
 .rrui__list__item:hover
 {
 	background-color : var(--rrui-list-item-background-color-focus);

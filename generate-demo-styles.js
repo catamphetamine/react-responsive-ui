@@ -38,6 +38,8 @@ function transformStyle(filePath)
     /* `<Select/>` toggler. */
     .replace_all('var(--rrui-select-toggler-text-color-active)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-select-toggler-text-color-empty)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-select-toggler-transition)', 'color 30ms ease-out')
+    /* `<List/>` */
     .replace_all('var(--rrui-list-item-background-color-selected)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-list-item-text-color-selected)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-list-item-background-color-focus)', 'var(--rrui-gray-color-lightest)')
