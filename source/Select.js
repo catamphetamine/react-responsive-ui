@@ -65,7 +65,6 @@ export default class Select extends PureComponent
 		// not `<div/>`s, `<section/`>s, `<h1/>`s or `<p/>`s,
 		// because `<button/>`s can't contain "block" elements.
 		// `display: block` can still be set on `<span/>`s and other "inline" elements.
-		// The containing DOM element (for example, a `<span/>`) must be `display: block`.
 		selectedOptionComponent : PropTypes.elementType,
 
 		// Option component.

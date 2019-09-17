@@ -26,6 +26,11 @@
 
 .rrui__select__button
 {
+	/* `display: flex` fixes the incorrect toggler `<button/>` height
+	   in cases when custom `selectedOptionComponent` is used.
+	   It also removes the requirement for the `selectedOptionComponent`
+	   containing `<span/>` to be `display: block`. */
+	display: flex;
 	height: 100%;
 	box-sizing: border-box;
 	color: inherit;
