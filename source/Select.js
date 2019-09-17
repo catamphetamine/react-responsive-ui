@@ -272,7 +272,8 @@ export default class Select extends PureComponent
 				})}>
 
 				<div
-					ref={ this.storeInputComponentNode }
+					ref={this.storeInputComponentNode}
+					style={selectedOptionComponent && DISPLAY_FLEX}
 					className={selectedOptionComponent ? undefined : 'rrui__input'}>
 
 					{ wait && <Ellipsis/> }
@@ -837,4 +838,12 @@ DefaultSelectedOptionComponent.propTypes = {
 	icon: PropTypes.node,
 	indicateRequired: PropTypes.bool,
 	wait: PropTypes.bool
+}
+
+/* `display: flex` fixes the incorrect toggler `<button/>` height
+   in cases when custom `selectedOptionComponent` is used.
+   It also removes the requirement for the `selectedOptionComponent`
+   containing `<span/>` to be `display: block`. */
+const DISPLAY_FLEX = {
+	display: 'flex'
 }
