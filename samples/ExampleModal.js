@@ -87,11 +87,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 `}</Highlight>
 
 <Highlight lang="css">{`
-:root {
-  --rrui-modal-background-color : white;
-  --rrui-modal-text-color : black;
-  --rrui-modal-padding : 20px;
-}
+	/* See \`--rrui-modal-...\` variables in \`variables.css\` for customization. */
 `}</Highlight>
 
 <code className="colored">{'<Modal/>'}</code> also takes optional properties:

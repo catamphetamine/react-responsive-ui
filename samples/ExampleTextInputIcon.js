@@ -40,25 +40,6 @@ function Icon({ className }) {
   value={...}
   onChange={...} />
 `}</Highlight>
-
-<Highlight lang="css">{`
-/* See \`variables.css\` for customization. */
-:root {
-	--rrui-input-height : 60px;
-	--rrui-input-field-font-size : 16px;
-	--rrui-input-field-side-padding : 15px;
-	--rrui-input-field-border-width : 1px;
-	--rrui-input-field-border-radius : 0px;
-	--rrui-input-field-border-color : black;
-	--rrui-input-field-border-color-focus : blue;
-}
-
-/* Adds a border around \`<TextInput/>\` and \`<Select/>\`. */
-.rrui__input-field,
-.rrui__select__button {
-	border-width : var(--rrui-input-field-border-width);
-}
-`}</Highlight>
 			</Example>
 		)
 	}

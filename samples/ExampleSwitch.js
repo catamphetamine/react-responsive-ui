@@ -31,7 +31,7 @@ window.ExampleSwitch = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					/* All \`<Checkbox/>\` customizations also apply here. */
+					/* See \`--rrui-switch-...\` variables in \`variables.css\` for customization. */
 				`}</Highlight>
 
 				Properties:

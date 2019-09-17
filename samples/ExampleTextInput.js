@@ -32,21 +32,13 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 `}</Highlight>
 
 <Highlight lang="css">{`
-/* See \`variables.css\` for customization. */
-:root {
-	--rrui-input-height : 60px;
-	--rrui-input-field-font-size : 16px;
-	--rrui-input-field-side-padding : 15px;
-	--rrui-input-field-border-width : 1px;
-	--rrui-input-field-border-radius : 0px;
-	--rrui-input-field-border-color : black;
-	--rrui-input-field-border-color-focus : blue;
-}
+/* See \`--rrui-input-...\` variables in \`variables.css\` for customization. */
 
-/* Adds a border around \`<TextInput/>\` and \`<Select/>\`. */
+/* Historically \`--rrui-input-field-border-width\` only means \`border-bottom-width\`. */
+/* To add a border around \`<TextInput/>\` and \`<Select/>\`: */
 .rrui__input-field,
 .rrui__select__button {
-	border-width : var(--rrui-input-field-border-width);
+	border-width: var(--rrui-input-field-border-width);
 }
 `}</Highlight>
 			</Example>

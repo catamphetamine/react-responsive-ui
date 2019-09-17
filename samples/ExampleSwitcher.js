@@ -29,14 +29,7 @@ window.ExampleSwitcher = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					:root {
-						--rrui-switcher-background-color : white;
-						--rrui-switcher-text-color : blue;
-						--rrui-switcher-background-color-active : cyan;
-						--rrui-switcher-text-color-active : white;
-						--rrui-switcher-background-color-selected : blue;
-						--rrui-switcher-text-color-selected : white;
-					}
+					/* See \`--rrui-switcher-...\` variables in \`variables.css\` for customization. */
 				`}</Highlight>
 
 			</Example>

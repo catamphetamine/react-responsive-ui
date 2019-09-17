@@ -59,18 +59,7 @@ window.ExampleList = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					:root {
-						--rrui-list-vertical-padding: 15px;
-						--rrui-list-item-height: 60px;
-						--rrui-list-item-side-padding: 20px;
-						--rrui-list-item-icon-margin: 15px
-						--rrui-list-item-background-color: white;
-						--rrui-list-item-text-color: black;
-						--rrui-list-item-background-color-focus: gray;
-						--rrui-list-item-text-color-focus: black;
-						--rrui-list-item-background-color-active: blue;
-						--rrui-list-item-text-color-active: white;
-					}
+					/* See \`--rrui-list-...\` variables in \`variables.css\` for customization. */
 				`}</Highlight>
 
 				<p>

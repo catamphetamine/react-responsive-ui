@@ -49,15 +49,7 @@ window.ExampleCheckbox = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					:root {
-						--rrui-control-label-margin : 15px;
-						--rrui-checkbox-size : 0.9em;
-						--rrui-checkbox-stroke-color : black;
-						--rrui-checkbox-fill-color : white;
-						--rrui-checkbox-color-focus : cyan;
-						--rrui-checkbox-color-checked : blue;
-						--rrui-checkbox-color-active : blue;
-					}
+					/* See \`--rrui-checkbox-...\` variables in \`variables.css\` for customization. */
 				`}</Highlight>
 
 			</Example>

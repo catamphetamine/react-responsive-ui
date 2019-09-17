@@ -44,13 +44,7 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 				`}</Highlight>
 
 				<Highlight lang="css">{`
-					:root {
-						--rrui-tooltip-background-color : black;
-						--rrui-tooltip-text-color : white;
-						--rrui-tooltip-animation-duration : 120ms;
-						--rrui-tooltip-visible-distance : 0.2em;
-						--rrui-tooltip-hidden-distance : 0.5em;
-					}
+					/* See \`--rrui-tooltip-...\` variables in \`variables.css\` for customization. */
 				`}</Highlight>
 
 				<code className="colored">{'<Tooltip/>'}</code> also takes optional properties:

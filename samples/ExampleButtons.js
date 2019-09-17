@@ -123,22 +123,7 @@ onSubmit = () => {
 `}</Highlight>
 
 <Highlight lang="css">{`
-	:root {
-		--rrui-button-side-padding : 15px;
-		--rrui-button-border-radius : 5px;
-		--rrui-button-background-color : transparent;
-		--rrui-button-text-color : blue;
-		--rrui-button-background-color-active : blue;
-		--rrui-button-text-color-active : white;
-	}
-
-	.rrui__button--border {
-		border : 2px solid blue;
-	}
-
-	.rrui__button--border .rrui__button__busy {
-		bottom : 8px;
-	}
+	/* See \`--rrui-button-...\` variables in \`variables.css\` for customization. */
 `}</Highlight>
 
 			</Example>
