@@ -30,6 +30,8 @@ export default class ExpandableMenu extends PureComponent
 		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
 
 		toggler : PropTypes.func,
+		togglerButtonProps : PropTypes.object,
+		togglerElement : PropTypes.node,
 		togglerAriaLabel : PropTypes.string,
 		togglerAriaHasPopup : PropTypes.string,
 		togglerClassName : PropTypes.string
@@ -87,6 +89,8 @@ export default class ExpandableMenu extends PureComponent
 			style,
 			className,
 			toggler,
+			togglerButtonProps,
+			togglerElement: togglerElement_,
 			togglerAriaLabel,
 			togglerAriaHasPopup,
 			togglerClassName,
@@ -95,16 +99,22 @@ export default class ExpandableMenu extends PureComponent
 		}
 		= this.props
 
+		let { togglerElement } = this.props
+
 		const { isExpanded } = this.state
 
 		let menuToggler
 		let menuItems
 
 		if (toggler) {
+			togglerElement = React.createElement(toggler)
+		}
+
+		if (togglerElement) {
 			menuItems = children
-			const togglerElement = React.createElement(toggler)
 			menuToggler = (
 				<button
+					{...togglerButtonProps}
 					ref={ this.storeTogglerNode }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
