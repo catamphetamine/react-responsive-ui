@@ -191,7 +191,7 @@
   /* `<Switch/>`. */
   --rrui-switch-width: 1.65em;
   --rrui-switch-height: 1em;
-  --rrui-switch-clickable-padding: var(--rrui-unit);
+  --rrui-switch-clickable-padding: calc(var(--rrui-unit) / 2);
   --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;
   --rrui-switch-background-color : var(--rrui-checkbox-fill-color);
   --rrui-switch-accent-color : var(--rrui-checkbox-color-checked);
