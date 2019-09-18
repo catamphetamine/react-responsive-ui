@@ -109,7 +109,8 @@
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border. */
   --rrui-input-field-border-radius : 0rem;
-  --rrui-input-field-border-width : 1px;
+  --rrui-input-field-border-width : 0px;
+  --rrui-input-field-border-bottom-width : 1px;
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
   --rrui-input-field-border-color-error : var(--rrui-error-color);

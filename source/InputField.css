@@ -55,11 +55,9 @@
 /* For `<Select native/>`. */
 .rrui__select__native
 {
-	border-width  : 0;
-	border-bottom-width : var(--rrui-input-field-border-width);
-	border-style  : solid;
-	border-color  : var(--rrui-input-field-border-color);
-	transition    : var(--rrui-input-field-transition);
+	border: var(--rrui-input-field-border-width) solid var(--rrui-input-field-border-color);
+	border-bottom-width: var(--rrui-input-field-border-bottom-width);
+	transition: var(--rrui-input-field-transition);
 }
 
 /* For `<TextInput/>` and alike. */
