@@ -9,6 +9,8 @@
 	display: flex;
 	justify-content: center;
 	padding: calc(var(--rrui-unit) * 2);
+	/* A colored line at the bottom of the calendar
+	   to indicate that it's focused (when focused). */
 	border-bottom: 0.1em solid transparent;
 }
 

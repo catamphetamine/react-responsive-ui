@@ -48,6 +48,14 @@
 
   * (CSS breaking change) Renamed `--rrui-input-field-border-width` CSS variable to `--rrui-input-field-border-bottom-width`. `--rrui-input-field-border-width` CSS variable is now named correctly.
 
+  * (CSS breaking change) Renamed `--rrui-expansion-panel-heading-height` CSS variable to `--rrui-expansion-panel-header-height` ("heading" -> "header").
+
+  * (CSS breaking change) Renamed `--rrui-expansion-panel-heading-height-expanded` CSS variable to `--rrui-expansion-panel-header-height-expanded` ("heading" -> "header").
+
+  * (CSS breaking change) Renamed `--rrui-expansion-panel-border-color-focus` CSS variable to `--rrui-expansion-panel-icon-start-border-color-focus` (added "-icon-start").
+
+  * (CSS breaking change) Renamed `--rrui-expansion-panel-border-color-active` CSS variable to `--rrui-expansion-panel-icon-start-border-color-active` (added "-icon-start").
+
 0.14.164 / 18.09.2019
 =====================
 

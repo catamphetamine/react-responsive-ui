@@ -233,15 +233,18 @@
   --rrui-tooltip-text-color : var(--rrui-white-color);
 
   /* `<ExpansionPanel/>` */
-  --rrui-expansion-panel-heading-height : calc(var(--rrui-unit) * 4);
-  --rrui-expansion-panel-heading-height-expanded : calc(var(--rrui-unit) * 5);
+  --rrui-expansion-panel-header-height : calc(var(--rrui-unit) * 4);
+  --rrui-expansion-panel-header-height-expanded : calc(var(--rrui-unit) * 5);
   --rrui-expansion-panel-animation-duration : 210ms;
   --rrui-expansion-panel-icon-size : var(--rrui-unit);
   --rrui-expansion-panel-side-padding : calc(var(--rrui-unit) * 2);
   --rrui-expansion-panel-content-padding-top : calc(var(--rrui-unit) * 2);
   --rrui-expansion-panel-content-padding-bottom : calc(var(--rrui-unit) * 2);
-  --rrui-expansion-panel-border-color-focus : var(--rrui-accent-color);
-  --rrui-expansion-panel-border-color-active : var(--rrui-accent-color-light);
+  --rrui-expansion-panel-icon-end-border-width : 1px;
+  --rrui-expansion-panel-icon-end-border-color-focus : var(--rrui-gray-color-light);
+  --rrui-expansion-panel-icon-start-border-bottom-width : 1px;
+  --rrui-expansion-panel-icon-start-border-color-focus : var(--rrui-accent-color);
+  --rrui-expansion-panel-icon-start-border-color-active : var(--rrui-accent-color-light);
 
   /* This is for `MenuIcon2.css` and is not being used currently. */
   --rrui-menu-icon-bar-thickness: 2px;
