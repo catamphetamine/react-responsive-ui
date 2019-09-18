@@ -12,7 +12,7 @@
 	background-color : var(--rrui-button-background-color);
 	color            : var(--rrui-button-text-color);
 	border-radius    : var(--rrui-button-border-radius);
-	border           : var(--rrui-button-border);
+	border           : var(--rrui-button-border-width) solid var(--rrui-button-border-color);
 }
 
 .rrui__button:active
