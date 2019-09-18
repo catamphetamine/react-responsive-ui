@@ -115,11 +115,15 @@ export default class ExpandableMenu extends PureComponent
 		let menuItems
 
 		if (toggler || button) {
-			const TogglerButton = button || DefaultTogglerButton
+			// "button" string is used instead of a `DefaultTogglerButton`
+			// so that the `ref` is the `<button/>` DOM Element.
+			// (`.focus()`, `.contains()`).
+			const TogglerButton = button || 'button'
 			const togglerElement = toggler ? React.createElement(toggler) : null
 			menuItems = children
 			menuToggler = (
 				<TogglerButton
+					type={button ? undefined : 'button'}
 					aria-haspopup={ togglerAriaHasPopup }
 					aria-label={ togglerAriaLabel }
 					className={ togglerClassName }
@@ -217,7 +221,3 @@ export default class ExpandableMenu extends PureComponent
 		}
 	}
 }
-
-const DefaultTogglerButton = (props) => (
-	<button type="button" {...props}/>
-)
