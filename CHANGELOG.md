@@ -43,7 +43,7 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
-0.14.166 / 18.09.2019
+0.14.167 / 18.09.2019
 =====================
 
   * (CSS breaking change) Renamed `--rrui-input-field-border-width` CSS variable to `--rrui-input-field-border-bottom-width`. `--rrui-input-field-border-width` CSS variable is now named correctly.
