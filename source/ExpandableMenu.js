@@ -49,7 +49,7 @@ export default class ExpandableMenu extends PureComponent
 		// (deprecated, use `buttonProps` instead)
 		togglerClassName : PropTypes.string,
 
-		title: PropTypes.string,
+		buttonTitle: PropTypes.string,
 		disabled: PropTypes.bool
 	}
 
@@ -101,7 +101,7 @@ export default class ExpandableMenu extends PureComponent
 	{
 		const
 		{
-			title,
+			buttonTitle,
 			disabled,
 			style,
 			className,
@@ -145,7 +145,7 @@ export default class ExpandableMenu extends PureComponent
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
 					aria-expanded={ isExpanded ? true : false }
-					title={ title }
+					title={ buttonTitle }
 					disabled={ disabled }>
 					{ togglerElement }
 				</TogglerButton>
