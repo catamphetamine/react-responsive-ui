@@ -10,7 +10,7 @@ import { submitFormOnCtrlEnter } from './utility/dom'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-export default class FileUpload extends PureComponent
+class FileUpload extends PureComponent
 {
 	static propTypes =
 	{
@@ -49,7 +49,12 @@ export default class FileUpload extends PureComponent
 		className : PropTypes.string,
 
 		// CSS style object
-		style     : PropTypes.object
+		style     : PropTypes.object,
+
+		// A hack for `React.forwardRef()`.
+		// Could be rewritten in "hooks" instead.
+		// A hack for providing `.focus()` method on `<DropFileUpload/>`.
+		ref_: PropTypes.object
 	}
 
 	static defaultProps =
@@ -107,6 +112,7 @@ export default class FileUpload extends PureComponent
 
 	render() {
 		const {
+			ref_,
 			required,
 			error,
 			disabled,
@@ -139,6 +145,7 @@ export default class FileUpload extends PureComponent
 					aria-label={ this.props['aria-label'] }/>
 
 				<DropFiles
+					ref={ref_}
 					role="button"
 					tabIndex={ tabIndex }
 					aria-label={ this.props['aria-label'] }
@@ -171,3 +178,8 @@ export default class FileUpload extends PureComponent
 		)
 	}
 }
+
+// A hack for providing `.focus()` method on `<DropFileUpload/>`.
+export default React.forwardRef((props, ref) => (
+	<FileUpload ref_={ref} {...props}/>
+))

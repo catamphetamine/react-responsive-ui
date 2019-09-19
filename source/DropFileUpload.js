@@ -1,5 +1,1 @@
-import FileUpload from './FileUpload'
-
-const DropFileUpload = FileUpload
-
-export default DropFileUpload
+export { default as default } from './FileUpload'

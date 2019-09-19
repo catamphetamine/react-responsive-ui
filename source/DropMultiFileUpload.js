@@ -1,7 +1,6 @@
+import React from 'react'
 import FileUpload from './FileUpload'
 
-const MultiFileUpload = (props) => <FileUpload {...props} multiple/>
-
-const DropMultiFileUpload = MultiFileUpload
-
-export default DropMultiFileUpload
+export default React.forwardRef((props, ref) => (
+	<FileUpload ref={ref} {...props} multiple/>
+))

@@ -43,6 +43,11 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.14.169 / 19.09.2019
+=====================
+
+  * (breaking change) React >= 16.3 is required now.
+
 0.14.167 / 18.09.2019
 =====================
 

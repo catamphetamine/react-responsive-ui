@@ -12,7 +12,7 @@ Responsive React UI components.
 npm install react-responsive-ui --save
 ```
 
-The overall requirement is React >= 16.2, but most of the components only require React >= 0.14, except for `<Tooltip/>` which requires "React Portals" from React >= 16 and "React Fragments" from React >= 16.2.
+React >= 16.3 is required.
 
 ## Use
 

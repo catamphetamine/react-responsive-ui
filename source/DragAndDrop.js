@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import isFileAccepted from './utility/isFileAccepted'
 
-export class DropFiles extends React.Component {
+class DropFiles_ extends React.Component {
 	static propTypes = {
 		// Will be called with `true` when the drop zone is dragged over.
 		// (and with `false` when it's no longer dragged over)
@@ -15,7 +15,11 @@ export class DropFiles extends React.Component {
 		multiple: PropTypes.bool,
 		// Can be used to restrict the file MIME-types or extensions available for selection.
 		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
-		accept: PropTypes.string
+		accept: PropTypes.string,
+		// A hack for `React.forwardRef()`.
+		// Could be rewritten in "hooks" instead.
+		// A hack for providing `.focus()` method on `<DropFileUpload/>`.
+		ref_: PropTypes.object
 	}
 
 	// state = {
@@ -27,6 +31,15 @@ export class DropFiles extends React.Component {
 	// Copied from:
 	// https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js
 	dragTargets = []
+
+	setRef = (ref) => {
+		this.node.current = ref
+		// A hack for providing `.focus()` method on `<DropFileUpload/>`.
+		const { ref_ } = this.props
+		if (ref_) {
+			ref_.current = ref
+		}
+	}
 
 	setDraggedOver = (draggedOver) => {
 		const { setDraggedOver } = this.props
@@ -162,15 +175,21 @@ export class DropFiles extends React.Component {
 			onDrop,
 			setDraggedOver,
 			multiple,
+			ref_,
 			...rest
 		} = this.props
 
 		return React.createElement('div', {
-			ref: this.node,
+			ref: this.setRef,
 			...rest
 		})
 	}
 }
+
+// A hack for providing `.focus()` method on `<DropFileUpload/>`.
+export const DropFiles = React.forwardRef((props, ref) => (
+	<DropFiles_ ref_={ref} {...props}/>
+))
 
 // Copied from:
 // https://github.com/react-dropzone/react-dropzone/blob/master/src/utils/index.js
