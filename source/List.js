@@ -50,9 +50,27 @@ export default class List extends PureComponent
 		// `.rrui__list:not(.rrui__list--focus)` is only for standalone lists.
 		expandable : PropTypes.bool,
 
+		// If `tabbable` is `true` (default behavior)
+		// then the first item of the list
+		// (or the last focused item of the list)
+		// will be focused when the list gets focused.
 		tabbable : PropTypes.bool.isRequired,
+
+		// If `shouldFocus` is set to `false`
+		// (which is not the default behavior)
+		// then the list items won't actually
+		// be `.focus()`ed (though they'll be
+		// indicated as if they're focused).
+		// This feature is used in `<Autocomplete/>`
+		// that always keeps the actual focus on the `<input/>`.
 		shouldFocus : PropTypes.bool.isRequired,
+
+		// If `highlightFirstItem` is `true`
+		// then by default the first item of the list
+		// will be focused every time it's items change.
+		// (and also when it's mounted)
 		highlightFirstItem : PropTypes.bool.isRequired,
+
 		createButtons : PropTypes.bool.isRequired,
 
 		// For select options list keyboard navigation via typing.
@@ -141,8 +159,6 @@ export default class List extends PureComponent
 		if (focusedItemIndex !== undefined) {
 			return this.focusItem(focusedItemIndex)
 		}
-		// // Focus the first focusable list item.
-		// this.focusItem(this.getFirstFocusableItemIndex())
 		this.list.focus()
 	}
 

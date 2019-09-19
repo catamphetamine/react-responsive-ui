@@ -33,6 +33,9 @@ export default class ExpandableMenu extends PureComponent
 		// Receives properties: `onClick`, `onKeyDown`, `onBlur`, `aria-expanded`.
 		button : PropTypes.elementType,
 		buttonProps : PropTypes.object,
+		buttonClassName : PropTypes.string,
+
+		toggleElement : PropTypes.node,
 
 		// (deprecated, use `button` component instead)
 		toggler : PropTypes.func,
@@ -44,7 +47,10 @@ export default class ExpandableMenu extends PureComponent
 		togglerAriaHasPopup : PropTypes.string,
 
 		// (deprecated, use `buttonProps` instead)
-		togglerClassName : PropTypes.string
+		togglerClassName : PropTypes.string,
+
+		title: PropTypes.string,
+		disabled: PropTypes.bool
 	}
 
 	static defaultProps =
@@ -58,8 +64,7 @@ export default class ExpandableMenu extends PureComponent
 
 	onExpand = () => this.setState({ isExpanded: true })
 
-	onCollapse = ({ focusOut }) =>
-	{
+	onCollapse = ({ focusOut }) => {
 		if (!focusOut) {
 			this.focus()
 		}
@@ -96,11 +101,15 @@ export default class ExpandableMenu extends PureComponent
 	{
 		const
 		{
+			title,
+			disabled,
 			style,
 			className,
 			toggler,
 			button,
 			buttonProps,
+			buttonClassName,
+			toggleElement,
 			togglerAriaLabel,
 			togglerAriaHasPopup,
 			togglerClassName,
@@ -114,25 +123,30 @@ export default class ExpandableMenu extends PureComponent
 		let menuToggler
 		let menuItems
 
-		if (toggler || button) {
+		if (toggler || button || toggleElement) {
 			// "button" string is used instead of a `DefaultTogglerButton`
 			// so that the `ref` is the `<button/>` DOM Element.
 			// (`.focus()`, `.contains()`).
 			const TogglerButton = button || 'button'
-			const togglerElement = toggler ? React.createElement(toggler) : null
+			const togglerElement = toggleElement || (toggler ? React.createElement(toggler) : null)
 			menuItems = children
 			menuToggler = (
 				<TogglerButton
 					type={button ? undefined : 'button'}
 					aria-haspopup={ togglerAriaHasPopup }
 					aria-label={ togglerAriaLabel }
-					className={ togglerClassName }
+					className={ classNames(togglerClassName, buttonClassName, {
+						'rrui__button-reset': toggleElement,
+						'rrui__outline': toggleElement
+					}) }
 					{...buttonProps}
 					ref={ this.storeTogglerNode }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
-					aria-expanded={ isExpanded ? true : false }>
+					aria-expanded={ isExpanded ? true : false }
+					title={ title }
+					disabled={ disabled }>
 					{ togglerElement }
 				</TogglerButton>
 			)
@@ -162,6 +176,7 @@ export default class ExpandableMenu extends PureComponent
 					animation="fade-up"
 					ref={this.storeListRef}
 					aria-label={this.props['aria-label']}
+					tabbable={false}
 					scrollMaxItems={0}
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}
@@ -177,23 +192,10 @@ export default class ExpandableMenu extends PureComponent
 
 	onBlur = (event) => this.list && this.list.onBlur(event)
 
-	onClick = (event) =>
-	{
-		const { disabled } = this.props
-
-		if (!disabled) {
-			this.toggle()
-		}
-	}
+	onClick = (event) => this.toggle()
 
 	onKeyDown = (event) =>
 	{
-		const { disabled } = this.props
-
-		if (disabled) {
-			return
-		}
-
 		if (event.defaultPrevented) {
 			return
 		}

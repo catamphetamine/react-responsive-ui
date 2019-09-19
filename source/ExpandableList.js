@@ -41,19 +41,17 @@ export default class ExpandableList extends PureComponent
 		focusSelectedItem : true
 	}
 
-	static getDerivedStateFromProps(props, state)
-	{
+	static getDerivedStateFromProps(props, state) {
 		// Using `!state.hasOwnProperty()` as "not initialized"
 		// because when there's an empty option `props.value` is `undefined`.
-		if (!state.hasOwnProperty('selectedItemValue') || state.selectedItemValue !== props.value)
-		{
+		if (props.focusSelectedItem &&
+			(!state.hasOwnProperty('selectedItemValue') || state.selectedItemValue !== props.value)) {
 			return {
 				selectedItemValue : props.value,
 				// `findItemIndexByValue()` must return `undefined` for "no such item".
 				selectedItemIndex : findItemIndexByValue(props.value, props.children)
 			}
 		}
-
 		return null
 	}
 
