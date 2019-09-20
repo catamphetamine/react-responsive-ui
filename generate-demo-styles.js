@@ -170,6 +170,8 @@ function transformStyle(filePath)
     /* Everything */
     .replace_all('var(--rrui-input-height)', 'calc(0.6rem * 3)')
     .replace_all('var(--rrui-fullscreen-input-height)', 'calc(0.6rem * 4)')
+      /* `<Select/>`, `<Autocomplete/>` options list side padding. */
+    .replace_all('var(--rrui-options-list-negative-side-margin)', 'calc(var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding))')
     /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
     .replace_all('var(--rrui-input-field-side-padding)', '0rem')
     /* `<TextInput multiline/>` */

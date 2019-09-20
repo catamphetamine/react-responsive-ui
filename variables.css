@@ -32,6 +32,9 @@
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>` input side padding. */
   --rrui-input-field-side-padding : 0rem;
 
+  /* `<Select/>`, `<Autocomplete/>` options list side padding. */
+  --rrui-options-list-negative-side-margin : calc(var(--rrui-list-item-side-padding) - var(--rrui-input-field-side-padding));
+
   /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
   /* Background color is set to white instead of transparent because
      `box-shadow` is used to disabled Chrome's yellow autocomplete background. */
