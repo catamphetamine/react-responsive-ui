@@ -545,7 +545,6 @@ export default class Autocomplete extends PureComponent
 					inputRef={ this.storeInput }
 					value={ inputValue }
 					label={ label }
-					icon={ typeof icon === 'boolean' ? undefined : icon}
 					placeholder={ placeholder }
 					onChange={ this.onInputValueChange }
 					onKeyDown={ this.onKeyDown }
