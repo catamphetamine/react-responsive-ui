@@ -79,7 +79,7 @@ export default class Select extends PureComponent
 		// Option component.
 		// (when `<Select/>` is expanded).
 		// Receives properties:
-		// * `{ ...option }` — All properties of the `option` such as `value`, `label`, etc. Each `option` must have a `value` and a `label` (`value` may be `undefined`).
+		// * `{ ...option }` — All properties of an `option` such as `value`, `label`, etc. Each `option` must have a `value` and a `label` (`value` may be `undefined`).
 		// * `selected: boolean` — If this option is selected.
 		// * `focused: boolean` — If this option is focused.
 		// * `disabled: boolean` — If this option is disabled. Seems to be not used for now.

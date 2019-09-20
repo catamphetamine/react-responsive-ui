@@ -76,6 +76,19 @@ export default class Autocomplete extends PureComponent
 		// Throttle `async getOptions()` invocations.
 		minCharactersToStartThrottling : PropTypes.number.isRequired,
 
+		// Option component.
+		// (when `<Autocomplete/>` is expanded).
+		// Receives properties:
+		// * `{ ...option }` — All properties of an `option` such as `value`, `label`, etc. Each `option` must have a `value` and a `label` (`value` may be `undefined`).
+		// * `selected: boolean` — If this option is selected.
+		// * `focused: boolean` — If this option is focused.
+		// * `disabled: boolean` — If this option is disabled. Seems to be not used for now.
+		// Can only contain "inline" elements like `<span/>`,
+		// not `<div/>`s, `<section/`>s, `<h1/>`s or `<p/>`s,
+		// because `<button/>`s can't contain "block" elements.
+		// `display: block` can still be set on `<span/>`s and other "inline" elements.
+		optionComponent : PropTypes.elementType,
+
 		// HTML form input `name` attribute
 		name       : PropTypes.string,
 
@@ -374,6 +387,7 @@ export default class Autocomplete extends PureComponent
 			alignment,
 			saveOnIcons,
 			highlightFirstOption,
+			optionComponent,
 			required,
 			label,
 			placeholder,
@@ -481,8 +495,9 @@ export default class Autocomplete extends PureComponent
 								key={i}
 								id={id ? `${id}__list-item-${i}` : undefined}
 								value={option.value}
+								component={optionComponent}
 								icon={saveOnIcons ? undefined : option.icon}>
-								{option.content ? option.content(option) : option.label}
+								{optionComponent ? undefined : (option.content ? option.content(option) : option.label)}
 							</List.Item>
 						))}
 					</ExpandableList>
