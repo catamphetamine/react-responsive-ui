@@ -495,6 +495,7 @@ export default class Autocomplete extends PureComponent
 								key={i}
 								id={id ? `${id}__list-item-${i}` : undefined}
 								value={option.value}
+								item={optionComponent ? option : undefined}
 								component={optionComponent}
 								icon={saveOnIcons ? undefined : option.icon}>
 								{optionComponent ? undefined : (option.content ? option.content(option) : option.label)}
