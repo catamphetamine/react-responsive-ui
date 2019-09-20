@@ -30,6 +30,15 @@ export default class Autocomplete extends PureComponent
 			({
 				// Option value (may be `undefined`)
 				value : PropTypes.any,
+				// Could restrict it to stringifiable types
+				// but I guess this is not required
+				// and one could even use `object`s as `value`s.
+				// // Option value (may be `undefined`)
+				// value : PropTypes.oneOfType([
+				// 	PropTypes.string,
+				// 	PropTypes.number,
+				// 	PropTypes.bool
+				// ]),
 				// Option label (may be `undefined`)
 				label : PropTypes.string,
 				// Option icon
@@ -112,11 +121,17 @@ export default class Autocomplete extends PureComponent
 		// CSS style object
 		style      : PropTypes.object,
 
-		// If this flag is set to `true`,
+		// If the `icon` flag is set to `true`,
 		// and `icon` is specified for a selected option,
 		// then the selected option will be displayed
-		// as icon only, without the label.
-		icon       : PropTypes.bool,
+		// as icon only, without the label
+		// (was used in early versions of `react-phone-number-input`).
+		// Otherwise, if it's a React component
+		// then it's passed to `<TextInput/>` as its `icon`.
+		icon: PropTypes.oneOfType([
+			PropTypes.elementType,
+			PropTypes.bool
+		]),
 
 		// If this flag is set to `true`,
 		// then it makes `<Autocomplete/>` not stretch itself
@@ -130,6 +145,11 @@ export default class Autocomplete extends PureComponent
 
 		// HTML `autoFocus` attribute
 		autoFocus  : PropTypes.bool,
+
+		// HTML `autocomplete` attribute.
+		// Set to "off" to disable any autocompletion in a web browser.
+		// https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
+		autoComplete : PropTypes.string,
 
 		// If set to `true`, autocomple will show all
 		// matching options instead of just `maxItems`.
@@ -403,7 +423,7 @@ export default class Autocomplete extends PureComponent
 				style={style ? { ...containerStyle, ...style } : containerStyle}
 				className={classNames(className, 'rrui__autocomplete', {
 					'rrui__autocomplete--expanded' : isExpanded,
-					'rrui__autocomplete--compact'  : compact || icon
+					'rrui__autocomplete--compact'  : compact || (icon === true)
 				})}>
 
 				<div
@@ -481,6 +501,7 @@ export default class Autocomplete extends PureComponent
 		{
 			value,
 			label,
+			icon,
 			placeholder,
 			disabled,
 			required,
@@ -488,6 +509,7 @@ export default class Autocomplete extends PureComponent
 			error,
 			tabIndex,
 			autoFocus,
+			autoComplete,
 			inputClassName
 		}
 		= this.props
@@ -511,29 +533,40 @@ export default class Autocomplete extends PureComponent
 		// https://www.w3.org/TR/wai-aria-practices/#combobox
 		// https://www.levelaccess.com/differences-aria-1-0-1-1-changes-rolecombobox/
 
+		const Icon = typeof icon === 'boolean' ? undefined : icon
+
 		return (
-			<TextInput
-				id={ id ? `${id}__input` : undefined }
-				inputRef={ this.storeInput }
-				value={ inputValue }
-				label={ label }
-				placeholder={ placeholder }
-				onChange={ this.onInputValueChange }
-				onKeyDown={ this.onKeyDown }
-				onBlur={ this.onBlur }
-				role="combobox"
-				aria-autocomplete="list"
-				aria-expanded={ isExpanded ? true : false }
-				aria-haspopup={ true }
-				aria-owns={ id && isExpanded ? `${id}__list` : undefined }
-				aria-activedescendant={ id && (focusedOptionIndex !== undefined) ? `${id}__list-item-${focusedOptionIndex}` : undefined }
-				required={ required }
-				tabIndex={ tabIndex }
-				autoFocus={ autoFocus }
-				disabled={ isFetchingInitiallySelectedOption || disabled }
-				indicateInvalid={ indicateInvalid || (matches === false) }
-				error={ error || (matches === false ? 'no-match' : undefined) }
-				className={ classNames('rrui__autocomplete__input', inputClassName) }/>
+			<React.Fragment>
+				{Icon &&
+					<Icon className="rrui__input-field__icon"/>
+				}
+				<TextInput
+					id={ id ? `${id}__input` : undefined }
+					inputRef={ this.storeInput }
+					value={ inputValue }
+					label={ label }
+					icon={ typeof icon === 'boolean' ? undefined : icon}
+					placeholder={ placeholder }
+					onChange={ this.onInputValueChange }
+					onKeyDown={ this.onKeyDown }
+					onBlur={ this.onBlur }
+					role="combobox"
+					aria-autocomplete="list"
+					aria-expanded={ isExpanded ? true : false }
+					aria-haspopup={ true }
+					aria-owns={ id && isExpanded ? `${id}__list` : undefined }
+					aria-activedescendant={ id && (focusedOptionIndex !== undefined) ? `${id}__list-item-${focusedOptionIndex}` : undefined }
+					required={ required }
+					tabIndex={ tabIndex }
+					autoFocus={ autoFocus }
+					autoComplete={ autoComplete }
+					disabled={ isFetchingInitiallySelectedOption || disabled }
+					indicateInvalid={ indicateInvalid || (matches === false) }
+					error={ error || (matches === false ? 'no-match' : undefined) }
+					className={ classNames('rrui__autocomplete__input', inputClassName, {
+						'rrui__input-field--with-icon': Icon
+					}) }/>
+			</React.Fragment>
 		)
 	}
 
@@ -971,13 +1004,6 @@ export default class Autocomplete extends PureComponent
 			onBlurForReduxForm(onBlur, event, value)
 		}
 	}
-}
-
-// There can be an `undefined` value,
-// so just `{ value }` won't do here.
-function getOptionKey(value)
-{
-	return isEmptyValue(value) ? '@@rrui/empty' : value
 }
 
 function isEmptyValue(value)

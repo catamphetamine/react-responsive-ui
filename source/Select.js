@@ -31,6 +31,15 @@ export default class Select extends PureComponent
 			({
 				// Option value (may be `undefined`)
 				value : PropTypes.any,
+				// Could restrict it to stringifiable types
+				// but I guess this is not required
+				// and one could even use `object`s as `value`s.
+				// // Option value (may be `undefined`)
+				// value : PropTypes.oneOfType([
+				// 	PropTypes.string,
+				// 	PropTypes.number,
+				// 	PropTypes.bool
+				// ]),
 				// Option label (may be `undefined`)
 				label : PropTypes.string,
 				// Option icon
@@ -512,7 +521,7 @@ export default class Select extends PureComponent
 
 		let empty_option_present = false
 
-		const rendered_options = options.map((option) =>
+		const rendered_options = options.map((option, i) =>
 		{
 			let { value, label, divider } = option
 
@@ -522,22 +531,22 @@ export default class Select extends PureComponent
 				value = empty_value_option_value
 			}
 
-			return this.renderNativeSelectOption(value, label, divider === true, divider)
+			return this.renderNativeSelectOption(i, value, label, divider === true, divider)
 		})
 
 		if (isEmptyValue(value) && !empty_option_present)
 		{
-			rendered_options.unshift(this.renderNativeSelectOption(undefined, placeholder, true))
+			rendered_options.unshift(this.renderNativeSelectOption(-1, undefined, placeholder, true))
 		}
 
 		return rendered_options
 	}
 
-	renderNativeSelectOption(value, label, nonSelectable, isDivider)
+	renderNativeSelectOption(key, value, label, nonSelectable, isDivider)
 	{
 		return (
 			<option
-				key={ getOptionKey(value) }
+				key={ key }
 				value={ isEmptyValue(value) ? '' : value }
 				hidden={ nonSelectable && !isDivider ? true : undefined }
 				disabled={ nonSelectable ? true : undefined }
@@ -796,12 +805,12 @@ export default class Select extends PureComponent
 	_onFocusOut = () => this.setState({ isFocused: false })
 }
 
-// There can be an `undefined` value,
-// so just `{ value }` won't do here.
-function getOptionKey(value)
-{
-	return isEmptyValue(value) ? '@@rrui/empty' : value
-}
+// Using indexes instead for keys.
+// // There can be an `undefined` value,
+// // so just `{ value }` won't do here.
+// function getOptionKey(value) {
+// 	return isEmptyValue(value) ? '@@rrui/empty' : value
+// }
 
 function isEmptyValue(value)
 {

@@ -44,6 +44,8 @@
   --rrui-input-field-font-size : inherit;
   --rrui-input-field-icon-size : calc(var(--rrui-input-height) - 1.5 * var(--rrui-unit));
   --rrui-input-field-icon-margin-right : calc(0.75 * var(--rrui-unit));
+  --rrui-input-field-icon-margin-left : 0px;
+  --rrui-input-field-icon-color : var(--rrui-gray-color);
 
   /* `<Button/>` */
   --rrui-button-side-padding: 0rem;
