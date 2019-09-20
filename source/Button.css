@@ -8,7 +8,7 @@
 	padding-left     : var(--rrui-button-side-padding);
 	padding-right    : var(--rrui-button-side-padding);
 	box-sizing       : border-box;
-	transition       : background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out;
+	transition       : var(--rrui-button-transition);
 	background-color : var(--rrui-button-background-color);
 	color            : var(--rrui-button-text-color);
 	border-radius    : var(--rrui-button-border-radius);
