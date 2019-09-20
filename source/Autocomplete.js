@@ -151,10 +151,6 @@ export default class Autocomplete extends PureComponent
 		// https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
 		autoComplete : PropTypes.string,
 
-		// If set to `true`, autocomple will show all
-		// matching options instead of just `maxItems`.
-		showAllMatchingOptions : PropTypes.bool,
-
 		// `<Autocomplete/>` loads `async getOptions()` after it has been mounted.
 		// Until then `<Autocomplete/>` doesn't display any selected option.
 		// One may supply an already pre-loaded currently selected option
