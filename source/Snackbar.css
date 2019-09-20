@@ -42,11 +42,6 @@
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	flex: 1;
-	/*
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	*/
 }
 
 .rrui__snackbar__count {

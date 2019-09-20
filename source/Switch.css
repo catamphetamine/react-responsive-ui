@@ -45,12 +45,6 @@
 	cursor : pointer;
 }
 
-.rrui__switch__label {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 .rrui__switch__label--left
 {
 	margin-right : var(--rrui-control-label-margin);

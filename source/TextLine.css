@@ -1,0 +1,5 @@
+.rrui__text-line {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

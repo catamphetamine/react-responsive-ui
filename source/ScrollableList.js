@@ -167,6 +167,7 @@ export default class ScrollableList extends PureComponent
 
 		// Adding vertical padding here so that it shows `scrollMaxItems` items fully.
 		// Also gives a peek on the `scrollMaxItems + 1`th item by showing a half of it.
+		// Assumes items having equal height.
 		return (height - 2 * verticalPadding) * ((scrollMaxItems + 0.5) / React.Children.count(children)) + verticalPadding
 	}
 

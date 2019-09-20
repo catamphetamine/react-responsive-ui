@@ -18,9 +18,6 @@
 	align-items : center;
 	width       : 100%;
 
-	overflow      : hidden;
-	text-overflow : ellipsis;
-
 	/*
 	This side padding is also connected to
 	`.rrui__select__options--left-aligned`'s `left`,
@@ -34,12 +31,6 @@
 
 	box-sizing  : border-box;
 	text-align  : left;
-	white-space : nowrap;
-}
-
-/* Resets `white-space: nowrap` set by `.rrui__list__item`. */
-.rrui__list__item--wrap {
-	white-space: normal;
 }
 
 .rrui__list__item:hover

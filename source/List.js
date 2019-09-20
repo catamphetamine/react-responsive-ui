@@ -741,6 +741,7 @@ export class ListItem extends React.Component
 			(
 				className,
 				'rrui__list__item',
+				'rrui__text-line',
 				{
 					/* `--focused` modifier is deprecated, use `--focus` instead. */
 					'rrui__list__item--focused'  : focused,
@@ -778,10 +779,6 @@ export class ListItem extends React.Component
 				properties.className,
 				'rrui__button-reset',
 				'rrui__outline',
-				// Resets `white-space: nowrap` set by `.rrui__button-reset`.
-				Component && 'rrui__button-reset--wrap',
-				// Resets `white-space: nowrap` set by `.rrui__list__item`.
-				Component && 'rrui__list__item--wrap',
 				// `.rrui__list__item--button` only sets the fixed `height`.
 				!Component && 'rrui__list__item--button'
 			)
@@ -843,7 +840,18 @@ function renderListItemComponent({
 	children
 }) {
 	// Label (or content).
-	const itemChildren = React.Children.toArray(children)
+	let itemChildren
+	if (typeof children === 'string') {
+		// `text-overflow: ellipsis` doesn't work on `<button/>`s.
+		// https://stackoverflow.com/questions/9905409/is-it-possible-to-use-text-overflow-ellipsis-on-a-button-element
+		itemChildren = [
+			<span key="label" className="rrui__text-line">
+				{children}
+			</span>
+		]
+	} else {
+		itemChildren = React.Children.toArray(children)
+	}
 	// Icon.
 	if (icon) {
 		itemChildren.unshift((

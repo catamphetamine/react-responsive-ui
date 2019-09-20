@@ -438,8 +438,6 @@ export default class Select extends PureComponent
 					selectedOptionInvalidClassName && SelectedOptionComponent && indicateInvalid && error,
 					selectedOptionDisabledClassName && SelectedOptionComponent && disabled,
 					{
-						// Resets `white-space: nowrap` set by `.rrui__button-reset`.
-						'rrui__button-reset--wrap': SelectedOptionComponent,
 						'rrui__input-element': !SelectedOptionComponent,
 						'rrui__select__button--empty'    : !SelectedOptionComponent && isEmptyValue(value) && !this.hasEmptyOption(),
 						'rrui__select__button--invalid'  : !SelectedOptionComponent && indicateInvalid && error,
@@ -830,7 +828,7 @@ function DefaultSelectedOptionComponent({
 		<span className="rrui__select__selected-content">
 			{/* Selected option label (or icon) */}
 			<span
-				className={classNames('rrui__select__selected-label', {
+				className={classNames('rrui__select__selected-label', 'rrui__text-line', {
 					'rrui__select__selected-label--required': indicateRequired
 				})}>
 				{icon || label}

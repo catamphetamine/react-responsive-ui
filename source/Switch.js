@@ -140,7 +140,7 @@ export default class Switch extends PureComponent
 
 				{/* Left label */}
 				{ (leftLabel || (!isRightSideContent && children)) &&
-					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--left') }>
+					<span className={ classNames('rrui__text-line', 'rrui__switch__label--left') }>
 						{ leftLabel || (!isRightSideContent && children) }
 					</span>
 				}
@@ -173,7 +173,7 @@ export default class Switch extends PureComponent
 
 				{/* Right label */}
 				{ (rightLabel || (isRightSideContent && children)) &&
-					<span className={ classNames('rrui__switch__label', 'rrui__switch__label--right') }>
+					<span className={ classNames('rrui__text-line', 'rrui__switch__label--right') }>
 						{ rightLabel || (isRightSideContent && children) }
 					</span>
 				}
