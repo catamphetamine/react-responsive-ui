@@ -8,7 +8,12 @@ window.ExampleFileUpload = class ExampleComponent extends React.Component
 
 	onChange = (file, secondArgument) => {
 		this.setState({ file })
-		console.log(secondArgument)
+		// `secondArgument` is only present when dropping files
+		// and is either `{ acceptedFiles, rejectedFiles }`
+		// or `{ isAccepted }`.
+		if (secondArgument) {
+			console.log(secondArgument)
+		}
 	}
 
 	render()

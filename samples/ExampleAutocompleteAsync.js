@@ -16,6 +16,7 @@ window.ExampleAutocompleteAsync = class ExampleAutocompleteAsync extends React.C
 					style={input_style}
 					className="column-width"
 					name="dropdown"
+					autoComplete="off"
 					value={this.state.value}
 					getOptions={(query) => {
 						return new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200)).then(() => {

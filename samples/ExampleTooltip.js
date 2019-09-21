@@ -26,14 +26,14 @@ window.ExampleTooltip = class ExampleComponent extends React.Component
 			<Example name="tooltip" title="Tooltip">
 
 				<Tooltip content={this.state.content} tooltipClassName="example-tooltip">
-					Hover this element (or touch down on mobile devices)
+					Hover this element (or tap on mobile devices)
 				</Tooltip>
 
 				<Highlight lang="jsx">{`
 					<Tooltip
 						content={ <div> <img/> Testing testing </div> }
 						tooltipClassName="example-tooltip">
-						Hover this element (or touch down on mobile devices)
+						Hover this element (or tap on mobile devices)
 					</Tooltip>
 
 					// \u0060container: () => DOMElement\u0060 property is optional
