@@ -3,6 +3,10 @@ import PropTypes from 'prop-types'
 
 import { onBlur } from './utility/focus'
 
+/**
+ * This "component" is only used to call its
+ * `.onBlur()` method manually through a `ref`.
+ */
 export default class OnFocusOut extends React.Component
 {
 	static propTypes = {

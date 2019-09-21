@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import scrollIntoView from 'scroll-into-view-if-needed'
+import createRef from 'react-create-ref'
 
 import Close, { CloseIcon } from './Close'
-import OnFocusOut from './OnFocusOut'
-import OnTapOutside from './OnTapOutside'
+import OnFocusOutOrTapOutside from './OnFocusOutOrTapOutside'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -76,8 +76,6 @@ export default class Expandable extends PureComponent
 		getTogglerNode : PropTypes.func,
 		onFocusOut : PropTypes.func,
 
-		onTapOutsideDelay : PropTypes.number.isRequired,
-
 		// `aria-label` for the "Close" button
 		// (which is an "x" visible in fullscreen mode).
 		closeLabel : PropTypes.string,
@@ -93,10 +91,6 @@ export default class Expandable extends PureComponent
 		expandAnimationDuration : 150,
 		scrollIntoViewDelay : 0,
 
-		// `onFocusOut` is triggered right after `onTapOutside`.
-		// This workaround prevents duplicate `onFocusOut` call.
-		onTapOutsideDelay : 30,
-
 		// The "x" button icon that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
 		closeButtonIcon : CloseIcon
@@ -107,11 +101,12 @@ export default class Expandable extends PureComponent
 		expanded: false
 	}
 
+	onFocusOutRef = createRef()
+
 	componentWillUnmount()
 	{
 		clearTimeout(this.scrollIntoViewTimer)
 		clearTimeout(this.removeFromDOMTimer)
-		clearTimeout(this.onTapOutsideTimer)
 	}
 
 	isExpanded = () => this.state.expanded
@@ -168,8 +163,8 @@ export default class Expandable extends PureComponent
 		// Collapse.
 		if (!expand)
 		{
-			if (this.onTapOutsideRef) {
-				this.onTapOutsideRef.stopListeningToTouches()
+			if (this.onFocusOutRef.current) {
+				this.onFocusOutRef.current.stopListeningToTouches()
 			}
 
 			clearTimeout(this.scrollIntoViewTimer)
@@ -223,8 +218,8 @@ export default class Expandable extends PureComponent
 						this.scrollIntoView()
 						resolve()
 
-						if (this.onTapOutsideRef) {
-							this.onTapOutsideRef.listenToTouches()
+						if (this.onFocusOutRef.current) {
+							this.onFocusOutRef.current.listenToTouches()
 						}
 
 						this.isToggling = false
@@ -353,42 +348,13 @@ export default class Expandable extends PureComponent
 		}
 	}
 
-	onBlur = (event) => this.onFocusOutRef && this.onFocusOutRef.onBlur(event)
-
 	storeContainerNode = (node) => this.container = node
 	getContainerNode = () => this.container
 
-	storeOnTapOutsideRef = (ref) => this.onTapOutsideRef = ref
-	storeOnFocusOutRef = (ref) => this.onFocusOutRef = ref
+	// This function is called from outside in `<ExpandableList/>`.
+	onBlur = (event) => this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
 
-	onFocusOut = (event) =>
-	{
-		// `onFocusOut` is triggered right after `onTapOutside`.
-		// This workaround prevents duplicate `onFocusOut` call.
-		if (this.onTapOutsideTimer) {
-			clearTimeout(this.onTapOutsideTimer)
-			this.onTapOutsideTimer = undefined
-		}
-
-		this._onFocusOut(event)
-	}
-
-	onTapOutside = (event) =>
-	{
-		const { onTapOutsideDelay } = this.props
-
-		clearTimeout(this.onTapOutsideTimer)
-		this.onTapOutsideTimer = setTimeout(() => {
-			// `onFocusOut` is triggered right after `onTapOutside`.
-			// This workaround prevents duplicate `onFocusOut` call.
-			if (this.onTapOutsideTimer) {
-				this._onFocusOut(event)
-			}
-			this.onTapOutsideTimer = undefined
-		}, onTapOutsideDelay)
-	}
-
-	_onFocusOut(event) {
+	onFocusOut = (event) => {
 		const { onFocusOut } = this.props
 		this.focusOut = true
 		onFocusOut(event)
@@ -436,7 +402,6 @@ export default class Expandable extends PureComponent
 			<div
 				ref={ this.storeContainerNode }
 				onKeyDown={ this.onKeyDown }
-				onBlur={ this.onBlur }
 				role={ role }
 				aria-hidden={ this.props['aria-hidden'] }
 				aria-label={ this.props['aria-label'] }
@@ -486,26 +451,15 @@ export default class Expandable extends PureComponent
 		)
 
 		if (onFocusOut) {
+			// `<OnFocusOutOrTapOutside/>` sets `onBlur` on the `<div/>`.
 			element = (
-				<OnFocusOut
-					ref={this.storeOnFocusOutRef}
+				<OnFocusOutOrTapOutside
+					ref={this.onFocusOutRef}
 					getContainerNode={this.getContainerNode}
 					getTogglerNode={getTogglerNode}
 					onFocusOut={this.onFocusOut}>
 					{element}
-				</OnFocusOut>
-			)
-		}
-
-		if (onFocusOut) {
-			element = (
-				<OnTapOutside
-					ref={this.storeOnTapOutsideRef}
-					getContainerNode={this.getContainerNode}
-					getTogglerNode={getTogglerNode}
-					onTapOutside={this.onTapOutside}>
-					{element}
-				</OnTapOutside>
+				</OnFocusOutOrTapOutside>
 			)
 		}
 

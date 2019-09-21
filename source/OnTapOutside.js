@@ -1,6 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+/**
+ * This "component" is only used to call its
+ * `.listenToTouches()` and `.stopListeningToTouches()`
+ * methods manually through a `ref`.
+ */
 export default class OnTapOutside extends React.Component
 {
 	static propTypes = {

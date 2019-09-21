@@ -5,7 +5,7 @@ import createRef from 'react-create-ref'
 import createContext from 'create-react-context'
 
 import { Context as PageAndMenuContext } from './PageAndMenu'
-import OnFocusOut from './OnFocusOut'
+import OnFocusOutOrTapOutside from './OnFocusOutOrTapOutside'
 
 export const Context = createContext()
 
@@ -116,23 +116,10 @@ class SlideoutMenu extends PureComponent
 		// window.addEventListener('popstate', this.hide)
 	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		this.unregister()
-
 		// window.removeEventListener('popstate', this.hide)
 	}
-
-	// componentDidUpdate(prevProps)
-	// {
-	// 	const { isOpen } = this.props
-
-	// 	if (prevProps.isOpen && !isOpen) {
-	// 		this.hide()
-	// 	} else if (!prevProps.isOpen && isOpen) {
-	// 		this.show()
-	// 	}
-	// }
 
 	toggle = (show, onAfterToggle) => {
 		const { onCollapse, onExpand } = this.props
@@ -150,11 +137,9 @@ class SlideoutMenu extends PureComponent
 		this.setState({ show }, onAfterToggle)
 	}
 
-	hide = () =>
-	{
+	hide = () => {
 		const { toggleMenu } = this.props
 		const { show } = this.state
-
 		if (show) {
 			toggleMenu()
 		}
@@ -173,11 +158,6 @@ class SlideoutMenu extends PureComponent
 		}
 	}
 
-	onBlur = (event) => this.onFocusOutRef.onBlur(event)
-
-	storeOnFocusOutRef = (ref) => this.onFocusOutRef = ref
-	getContainerNode = () => this.container.current
-
 	onFocusOut = () => {
 		const { toggleMenu } = this.props
 		// `window.rruiCollapseOnFocusOut` can be used
@@ -186,6 +166,8 @@ class SlideoutMenu extends PureComponent
 			toggleMenu(false)
 		}
 	}
+
+	getContainerNode = () => this.container.current
 
 	render()
 	{
@@ -212,41 +194,36 @@ class SlideoutMenu extends PureComponent
 		// `tabIndex="-1"` is for calling `this.container.current.focus()`
 		// when no `menuRef` is supplied.
 
-		const element = (
-			<div
-				{ ...rest }
-				ref={ this.container }
-				aria-hidden={ !show }
-				tabIndex={ -1 }
-				onBlur={ this.onBlur }
-				onKeyDown={ this.onKeyDown }
-				className={ classNames(
-					className,
-					/* Developers can define custom `:focus` style for the slideout menu. */
-					/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
-					'rrui__outline',
-					'rrui__slideout-menu',
-					{
-						'rrui__slideout-menu--left'       : anchor === 'left',
-						'rrui__slideout-menu--right'      : anchor === 'right',
-						'rrui__slideout-menu--top'        : anchor === 'top',
-						'rrui__slideout-menu--bottom'     : anchor === 'bottom',
-						'rrui__slideout-menu--fullscreen' : fullscreen,
-						'rrui__slideout-menu--expanded'   : show
-					}
-				) }>
-				{ children }
-			</div>
-		)
-
+		// `<OnFocusOutOrTapOutside/>` sets `onBlur` on the `<div/>`.
 		return (
-			<OnFocusOut
-				ref={this.storeOnFocusOutRef}
+			<OnFocusOutOrTapOutside
 				getContainerNode={this.getContainerNode}
 				getTogglerNode={getTogglerNode}
 				onFocusOut={this.onFocusOut}>
-				{element}
-			</OnFocusOut>
+				<div
+					{ ...rest }
+					ref={ this.container }
+					aria-hidden={ !show }
+					tabIndex={ -1 }
+					onKeyDown={ this.onKeyDown }
+					className={ classNames(
+						className,
+						/* Developers can define custom `:focus` style for the slideout menu. */
+						/* (or better add `menuRef` property pointing to a component having `.focus()` method). */
+						'rrui__outline',
+						'rrui__slideout-menu',
+						{
+							'rrui__slideout-menu--left'       : anchor === 'left',
+							'rrui__slideout-menu--right'      : anchor === 'right',
+							'rrui__slideout-menu--top'        : anchor === 'top',
+							'rrui__slideout-menu--bottom'     : anchor === 'bottom',
+							'rrui__slideout-menu--fullscreen' : fullscreen,
+							'rrui__slideout-menu--expanded'   : show
+						}
+					) }>
+					{ children }
+				</div>
+			</OnFocusOutOrTapOutside>
 		)
 	}
 }

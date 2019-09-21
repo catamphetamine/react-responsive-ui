@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import createRef from 'react-create-ref'
+
 import isFileAccepted from './utility/isFileAccepted'
 
 class DropFiles_ extends React.Component {
@@ -26,7 +28,7 @@ class DropFiles_ extends React.Component {
 	// 	isDragging: false
 	// }
 
-	node = React.createRef()
+	node = createRef()
 
 	// Copied from:
 	// https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js
