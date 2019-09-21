@@ -27,10 +27,6 @@
           user-select: none;
   /* box-sizing  : border-box; */ }
 
-/* Resets `white-space: nowrap` set by `.rrui__button-reset`. */
-.rrui__button-reset--wrap {
-  white-space: normal; }
-
 /* This CSS class can be used on its own in applications. */
 /* Because of that, `outline: none` is added here too. */
 /* Developers should define `:focus` styles for buttons. */
@@ -362,6 +358,10 @@
 
 /* Checkbox color (:invalid) */
 .rrui__checkbox--invalid .rrui__checkbox__box {
+  color: #d30f00; }
+
+/* Checkbox color (:invalid) :focus */
+.rrui__checkbox--invalid .rrui__checkbox__box:focus {
   color: #d30f00; }
 
 /* Focus ring. */
@@ -1035,7 +1035,12 @@ than 100% of the parent if the parent is small enough.
           box-shadow: 0 0 0 1000px #ffffff inset; }
 
 /* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
-.rrui__input-field--invalid:-webkit-autofill,
+.rrui__input-field--invalid:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+          box-shadow: 0 0 0 1000px #ffffff inset; }
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
+/* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
           box-shadow: 0 0 0 1000px #ffffff inset; }
@@ -1071,11 +1076,16 @@ than 100% of the parent if the parent is small enough.
 
 /* For `<TextInput/>` and alike. */
 .rrui__input-field--invalid,
-.rrui__input-field--invalid:focus,
 .rrui__select__button--invalid,
+.rrui__select__native--invalid {
+  border-color: #d30f00;
+  background-color: #ffffff; }
+
+/* For `<TextInput/>` and alike. */
+/* Overrides the corresponding `:focus` CSS rule. */
+.rrui__input-field--invalid:focus,
 .rrui__select__button--invalid:focus,
 .rrui__select__native--invalid:focus + .rrui__select__button,
-.rrui__select__native--invalid,
 .rrui__select__native--invalid:focus {
   border-color: #d30f00;
   background-color: #ffffff; }
@@ -1107,14 +1117,14 @@ than 100% of the parent if the parent is small enough.
 .rrui__input-field__icon {
   position: absolute;
   top: calc(((0.6rem * 3) - ((0.6rem * 3) - 1.5 * 0.6rem)) / 2);
-  left: 0;
+  left: 0px;
   width: calc((0.6rem * 3) - 1.5 * 0.6rem);
   height: calc((0.6rem * 3) - 1.5 * 0.6rem);
   pointer-events: none;
   color: #888888; }
 
 .rrui__input-field--with-icon {
-  padding-left: calc(((0.6rem * 3) - 1.5 * 0.6rem) + (0.75 * 0.6rem)); }
+  padding-left: calc(0px + ((0.6rem * 3) - 1.5 * 0.6rem) + (0.75 * 0.6rem)); }
 
 /* `<input/>` placeholder color. */
 /* https://www.w3schools.com/howto/howto_css_placeholder.asp */
@@ -1213,9 +1223,6 @@ than 100% of the parent if the parent is small enough.
       -ms-flex-align: center;
           align-items: center;
   width: 100%;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis;
   /*
 	This side padding is also connected to
 	`.rrui__select__options--left-aligned`'s `left`,
@@ -1227,12 +1234,7 @@ than 100% of the parent if the parent is small enough.
   color: inherit;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  text-align: left;
-  white-space: nowrap; }
-
-/* Resets `white-space: nowrap` set by `.rrui__list__item`. */
-.rrui__list__item--wrap {
-  white-space: normal; }
+  text-align: left; }
 
 .rrui__list__item:hover {
   background-color: #F3F3F3;
@@ -1773,10 +1775,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -webkit-box-flex: 1;
   -webkit-flex: 1 1 auto;
       -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis; }
+          flex: 1 1 auto; }
 
 .rrui__select .rrui__ellipsis {
   position: absolute;
@@ -2020,12 +2019,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
-          flex: 1;
-  /*
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	*/ }
+          flex: 1; }
 
 .rrui__snackbar__count {
   display: -webkit-box;
@@ -2155,12 +2149,6 @@ but rather `width: auto` or `left: 0; right: 0;`.
   width: calc(100% + (0.6rem / 2) * 2);
   height: calc(100% + (0.6rem / 2) * 2);
   cursor: pointer; }
-
-.rrui__switch__label {
-  white-space: nowrap;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-     text-overflow: ellipsis; }
 
 .rrui__switch__label--left {
   margin-right: 0.6rem; }
@@ -2317,6 +2305,12 @@ but rather `width: auto` or `left: 0; right: 0;`.
 /* Must be same as `padding-top`/`padding-bottom`. */
 .rrui__text-input__label--multiline {
   top: 0.6rem; }
+
+.rrui__text-line {
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis; }
 
 .rrui__tooltip {
   display: -webkit-box;
