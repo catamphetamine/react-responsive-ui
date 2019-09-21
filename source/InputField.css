@@ -25,11 +25,16 @@
 }
 
 /* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
-.rrui__input-field--invalid:-webkit-autofill,
+.rrui__input-field--invalid:-webkit-autofill
+{
+	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error) inset;
+}
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error) inset;
+	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error-focus) inset;
 }
 
 /* For `<TextInput/>` and alike. */
@@ -75,22 +80,31 @@
 
 /* For `<TextInput/>` and alike. */
 .rrui__input-field--invalid,
+/* For `<Select/>` when `<button/>` is focused. */
+.rrui__select__button--invalid,
+/* For `<Select native={true}/>`. */
+.rrui__select__native--invalid
+{
+	border-color     : var(--rrui-input-field-border-color-error);
+	background-color : var(--rrui-input-field-background-color-error);
+}
+
+
+/* For `<TextInput/>` and alike. */
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus,
 /* For `<Select/>` when `<button/>` is focused. */
-.rrui__select__button--invalid,
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__select__button--invalid:focus,
 /* For `<Select/>` when `<select/>` is focused. */
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__select__native--invalid:focus + .rrui__select__button,
 /* For `<Select native={true}/>`. */
-.rrui__select__native--invalid,
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__select__native--invalid:focus
 {
-	border-color     : var(--rrui-input-field-border-color-error);
-	background-color : var(--rrui-input-field-background-color-error);
+	border-color     : var(--rrui-input-field-border-color-error-focus);
+	background-color : var(--rrui-input-field-background-color-error-focus);
 }
 
 .rrui__input-field

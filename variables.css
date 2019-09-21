@@ -41,6 +41,7 @@
   --rrui-input-field-background-color : var(--rrui-white-color);
   --rrui-input-field-background-color-focus : var(--rrui-input-field-background-color);
   --rrui-input-field-background-color-error : var(--rrui-input-field-background-color);
+  --rrui-input-field-background-color-error-focus : var(--rrui-input-field-background-color-error);
   --rrui-input-field-background-color-disabled : var(--rrui-input-field-background-color);
   --rrui-input-field-transition : border 0.1s;
   --rrui-input-field-text-color : var(--rrui-black-color);
@@ -118,6 +119,7 @@
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
   --rrui-input-field-border-color-error : var(--rrui-error-color);
+  --rrui-input-field-border-color-error-focus : var(--rrui-input-field-border-color-error);
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
   --rrui-input-label-focus-top-offset : -70%;

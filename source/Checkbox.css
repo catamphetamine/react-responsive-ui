@@ -133,6 +133,12 @@
 	color : var(--rrui-input-field-border-color-error);
 }
 
+/* Checkbox color (:invalid) :focus */
+.rrui__checkbox--invalid .rrui__checkbox__box:focus
+{
+	color : var(--rrui-input-field-border-color-error-focus);
+}
+
 /* Focus ring. */
 
 .rrui__checkbox__focus-ring

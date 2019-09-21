@@ -27,6 +27,7 @@ function transformStyle(filePath)
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
     .replace_all('var(--rrui-input-field-border-color)', 'var(--rrui-gray-color-light)')
     .replace_all('var(--rrui-input-field-border-color-focus)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-input-field-border-color-error-focus)', 'var(--rrui-input-field-border-color-error)')
     .replace_all('var(--rrui-input-field-border-color-error)', 'var(--rrui-error-color)')
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
     .replace_all('var(--rrui-input-label-focus-top-offset)', '-70%')
@@ -55,6 +56,7 @@ function transformStyle(filePath)
     /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
     .replace_all('var(--rrui-input-field-background-color-disabled)', 'var(--rrui-input-field-background-color)')
     .replace_all('var(--rrui-input-field-background-color-focus)', 'var(--rrui-input-field-background-color)')
+    .replace_all('var(--rrui-input-field-background-color-error-focus)', 'var(--rrui-input-field-background-color-error)')
     .replace_all('var(--rrui-input-field-background-color-error)', 'var(--rrui-input-field-background-color)')
     .replace_all('var(--rrui-input-field-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-input-field-transition)', 'border 0.1s')
