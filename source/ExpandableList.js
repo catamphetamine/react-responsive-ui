@@ -172,17 +172,24 @@ export default class ExpandableList extends PureComponent
 			onExpand()
 		}
 
-		if (focusOnExpand)
-		{
+		// Re-calculate `<ScrollableList/>` height.
+		// Because `<ScrollableList/>` is always mounted,
+		// even when collapsed, so its height should be
+		// re-calculated after it's actually expanded.
+		// Re-calculating `<ScrollableList/>` height
+		// before focusing the list because otherwise
+		// a long list wouldn't have its `max-height` set
+		// and focusing it (`this.list.focus()`) could
+		// result in scroll position "jump".
+		this.list.calculateHeight()
+
+		if (focusOnExpand) {
 			if (selectedItemIndex === undefined) {
 				this.list.focus()
 			} else {
 				this.list.focusItem(selectedItemIndex)
 			}
 		}
-
-		// Re-calculate `<ScrollableList/>` height.
-		this.list.calculateHeight()
 	}
 
 	render()

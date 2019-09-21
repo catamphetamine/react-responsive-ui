@@ -156,6 +156,8 @@ export default class ScrollableList extends PureComponent
 		// Calculate the appropriate list height.
 		if (this.isOverflown()) {
 			state.maxHeight = this.calculateScrollableListHeight(height, verticalPadding)
+			// Update `max-height` immediately, without waiting for the next React render cycle.
+			this.list.getDOMNode().style.maxHeight = state.maxHeight + 'px'
 		}
 
 		this.setState(state)

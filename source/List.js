@@ -373,6 +373,10 @@ export default class List extends PureComponent
 	// `this.list` is also being accessed from `<ScrollableList/>`.
 	storeListNode = (node) => this.list = node
 
+	// Is only used by `<ScrollableList/>` so set `max-height` immediately,
+	// without waiting for the next React render cycle.
+	getDOMNode = () => this.list
+
 	storeItemRef = (ref, i) => this.itemRefs[i] = ref
 
 	render()
