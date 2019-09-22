@@ -45,10 +45,7 @@ export default class PageAndMenu extends Component
 	{
 		return (
 			<Context.Provider value={ this.state }>
-				<div
-					onTouchStart={ this.hideMenu }
-					onMouseDown={ this.hideMenu }
-					{ ...this.props }/>
+				<div {...this.props}/>
 			</Context.Provider>
 		)
 	}
@@ -92,18 +89,6 @@ export default class PageAndMenu extends Component
 
 		// Return `.unregister()`.
 		return () => this.menuButton = undefined
-	}
-
-	hideMenu = (event) => {
-		if (!this.menu || !this.menuButton) {
-			return
-		}
-		// Hide the menu only if clicked outside
-		if (this.menu.element().contains(event.target)
-			|| this.menuButton.element().contains(event.target)) {
-			return
-		}
-		this.toggleMenu(false)
 	}
 
 	getTogglerNode = () => this.menuButton.element()
