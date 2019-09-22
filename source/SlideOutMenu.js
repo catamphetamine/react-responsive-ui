@@ -97,6 +97,7 @@ class SlideoutMenu extends PureComponent
 	}
 
 	container = createRef()
+	onFocusOutRef = createRef()
 
 	componentDidMount()
 	{
@@ -130,8 +131,10 @@ class SlideoutMenu extends PureComponent
 			show = !this.state.show
 		}
 		if (show) {
+			this.onFocusOutRef.current.listenToTouches()
 			onExpand && onExpand()
 		} else {
+			this.onFocusOutRef.current.stopListeningToTouches()
 			onCollapse && onCollapse()
 		}
 		this.setState({ show }, onAfterToggle)
@@ -198,9 +201,11 @@ class SlideoutMenu extends PureComponent
 		// `<OnFocusOutOrTapOutside/>` sets `onBlur` on the `<div/>`.
 		return (
 			<OnFocusOutOrTapOutside
+				ref={this.onFocusOutRef}
 				getContainerNode={this.getContainerNode}
 				getTogglerNode={getTogglerNode}
-				onFocusOut={this.onFocusOut}>
+				onFocusOut={this.onFocusOut}
+				listenToTouches={false}>
 				<div
 					{ ...rest }
 					ref={ this.container }

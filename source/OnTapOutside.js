@@ -50,7 +50,6 @@ export default class OnTapOutside extends React.Component
 		this.initialTouchX = touch.clientX
 		this.initialTouchY = touch.clientY
 		this.touchId = touch.identifier
-		this.touchTarget = touch.target
 		this.tapping = true
 	}
 
@@ -97,7 +96,8 @@ export default class OnTapOutside extends React.Component
 				// Reset.
 				this.onTouchCancel()
 				// Handle the tap.
-				this.onTap(event)
+				// https://developer.mozilla.org/en-US/docs/Web/API/Touch
+				this.onTap(event, touch.target)
 				break
 			}
 		}
@@ -108,7 +108,6 @@ export default class OnTapOutside extends React.Component
 		this.initialTouchX = undefined
 		this.initialTouchY = undefined
 		this.touchId = undefined
-		this.touchTarget = undefined
 		this.tapping = false
 	}
 
@@ -117,7 +116,7 @@ export default class OnTapOutside extends React.Component
 	// while not losing focus on an input field or a button.
 	// Adding a manual "on click" listener to emulate
 	// "on blur" event when user taps outside (to collapse the expandable).
-	onTap = (event) =>
+	onTap = (event, target) =>
 	{
 		const {
 			getContainerNode,
@@ -125,12 +124,12 @@ export default class OnTapOutside extends React.Component
 			onTapOutside
 		} = this.props
 
-		if (getContainerNode().contains(this.touchTarget)) {
+		if (getContainerNode().contains(target)) {
 			return
 		}
 
 		if (getTogglerNode) {
-			if (getTogglerNode().contains(this.touchTarget)) {
+			if (getTogglerNode().contains(target)) {
 				return
 			}
 		}
