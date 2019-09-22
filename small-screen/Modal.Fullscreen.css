@@ -1,3 +1,4 @@
+/* Without this line a long `<Modal/>` won't be scrollable to its beginning. */
 .rrui__modal__overlay
 {
 	display : block;
