@@ -13,6 +13,13 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 	onFocusOutRef = createRef()
 	onTapOutsideRef = createRef()
 
+	componentDidMount() {
+		const { listenToTouches } = this.props
+		if (listenToTouches) {
+			this.listenToTouches()
+		}
+	}
+
 	componentWillUnmount() {
 		clearTimeout(this.onTapOutsideTimer)
 	}
@@ -82,14 +89,16 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 
 OnFocusOutOrTapOutside.propTypes = {
 	getContainerNode: PropTypes.func.isRequired,
-	getTogglerNode: PropTypes.func.isRequired,
+	getTogglerNode: PropTypes.func,
 	onFocusOut: PropTypes.func.isRequired,
 	onTapOutsideDelay: PropTypes.number.isRequired,
+	listenToTouches: PropTypes.bool.isRequired,
 	children: PropTypes.node.isRequired
 }
 
 OnFocusOutOrTapOutside.defaultProps = {
 	// `onFocusOut` is triggered right after `onTapOutside`.
 	// This workaround prevents duplicate `onFocusOut` call.
-	onTapOutsideDelay: 30
+	onTapOutsideDelay: 30,
+	listenToTouches: true
 }

@@ -158,6 +158,7 @@ class SlideoutMenu extends PureComponent
 		}
 	}
 
+	// Hide the menu on focus out.
 	onFocusOut = () => {
 		const { toggleMenu } = this.props
 		// `window.rruiCollapseOnFocusOut` can be used

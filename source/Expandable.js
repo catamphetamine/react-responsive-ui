@@ -452,12 +452,14 @@ export default class Expandable extends PureComponent
 
 		if (onFocusOut) {
 			// `<OnFocusOutOrTapOutside/>` sets `onBlur` on the `<div/>`.
+ 			// `<Expandable/>` calls `.listenToTouches()` / `.stopListeningToTouches()` manually.
 			element = (
 				<OnFocusOutOrTapOutside
 					ref={this.onFocusOutRef}
 					getContainerNode={this.getContainerNode}
 					getTogglerNode={getTogglerNode}
-					onFocusOut={this.onFocusOut}>
+					onFocusOut={this.onFocusOut}
+					listenToTouches={false}>
 					{element}
 				</OnFocusOutOrTapOutside>
 			)
