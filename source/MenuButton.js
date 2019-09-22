@@ -22,10 +22,8 @@ const ContextAwareMenuButton = (props) => (
 
 export default ContextAwareMenuButton
 
-class MenuButton extends PureComponent
-{
-	static propTypes =
-	{
+class MenuButton extends PureComponent {
+	static propTypes = {
 		// Context.
 		registerMenuButton : PropTypes.func.isRequired,
 		toggleMenu : PropTypes.func.isRequired,
@@ -50,49 +48,55 @@ class MenuButton extends PureComponent
 		style       : PropTypes.object
 	}
 
-	static defaultProps =
-	{
+	static defaultProps = {
 		icon : MenuIcon
 	}
 
-	componentDidMount()
-	{
+	componentDidMount() {
 		const { registerMenuButton } = this.props
-
 		this.unregister = registerMenuButton({
-			element : () => this.button
+			element: () => this.button,
+			setCooldown: this.setCooldown
 		})
 	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		this.unregister()
+		clearTimeout(this.cooldownTimer)
 	}
 
-	onClick = (event) =>
-	{
-		const { toggleMenu } = this.props
+	onClick = (event) => {
 		event.preventDefault()
-		toggleMenu()
+		const { toggleMenu } = this.props
+		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		if (!this.cooldown) {
+			toggleMenu()
+		}
+	}
+
+	setCooldown = () => {
+		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		// Sets a small "cooldown" on hide on focus out.
+		this.cooldown = true
+		this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
 	}
 
 	storeButtonNode = (node) => this.button = node
 
-	render()
-	{
-		const
-		{
+	render() {
+		const {
 			link,
 			className,
-			icon : MenuButtonIcon,
+			icon: MenuButtonIcon,
 			menuIsExpanded,
 
 			// Getting "rest" properties.
 			toggleMenu,
 			registerMenuButton,
 			...rest
-		}
-		= this.props
+		} = this.props
 
 		const properties = {
 			ref: this.storeButtonNode,

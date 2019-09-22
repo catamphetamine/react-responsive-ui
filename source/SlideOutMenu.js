@@ -25,6 +25,7 @@ export default class ContextAwareSlideoutMenu extends PureComponent {
 						{...this.props}
 						registerMenu={context.registerMenu}
 						toggleMenu={context.toggleMenu}
+						setTogglerCooldown={context.setTogglerCooldown}
 						getTogglerNode={context.getTogglerNode}/>
 					)
 				}
@@ -73,9 +74,10 @@ class SlideoutMenu extends PureComponent
 		onCollapse : PropTypes.func,
 		onExpand : PropTypes.func,
 
-		toggleMenu : PropTypes.func.isRequired,
-		registerMenu : PropTypes.func.isRequired,
-		getTogglerNode : PropTypes.func.isRequired,
+		toggleMenu: PropTypes.func.isRequired,
+		registerMenu: PropTypes.func.isRequired,
+		setTogglerCooldown: PropTypes.func.isRequired,
+		getTogglerNode: PropTypes.func.isRequired,
 
 		// CSS style object
 		style : PropTypes.object,
@@ -92,7 +94,8 @@ class SlideoutMenu extends PureComponent
 	}
 
 	state = {
-		// show: this.props.isOpen
+		// Should not be `undefined` because it's compared to
+		// `show` argument in `.toggle(show)`.
 		show: false
 	}
 
@@ -163,11 +166,12 @@ class SlideoutMenu extends PureComponent
 
 	// Hide the menu on focus out.
 	onFocusOut = () => {
-		const { toggleMenu } = this.props
+		const { toggleMenu, setTogglerCooldown } = this.props
 		// `window.rruiCollapseOnFocusOut` can be used
 		// for debugging expandable contents.
 		if (window.rruiCollapseOnFocusOut !== false) {
 			toggleMenu(false)
+			setTogglerCooldown()
 		}
 	}
 
