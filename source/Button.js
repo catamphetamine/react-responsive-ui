@@ -8,80 +8,22 @@ import FadeInOut from './FadeInOut'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-export default class Button extends PureComponent
-{
-	static propTypes =
-	{
-		// onClick handler.
-		// Doesn't receive `event` by default.
-		// Can be `async`/`await` or return a `Promise`
-		// in which case it will show "wait" animation.
-		onClick         : PropTypes.func,
-
-		// onClick handler.
-		// (deprecated, use `onClick(event)` instead)
-		action          : PropTypes.func,
-
-		// If `wait` is `true` then the button
-		// will be disabled and a spinner will be shown.
-		wait            : PropTypes.bool,
-
-		// (deprecated)
-		// (use `wait` instead)
-		// If `busy` is `true` then the button
-		// will be disabled and a spinner will be shown.
-		busy            : PropTypes.bool,
-
-		// Disables the button
-		disabled        : PropTypes.bool,
-
-		// When `true`, the button will submit an enclosing form.
-		submit          : PropTypes.bool,
-
-		// If `link` is set, then the button is gonna be an <a/> tag.
-		link            : PropTypes.oneOfType([ PropTypes.string, PropTypes.bool ]),
-
-		// Custom React component for the button.
-		component       : PropTypes.func,
-
-		// HTML `title` attribute
-		title           : PropTypes.string,
-
-		// Set to `true` to stretch the button to full width
-		stretch         : PropTypes.bool.isRequired,
-
-		// CSS class name
-		className       : PropTypes.string,
-
-		// CSS style object for the button container
-		style           : PropTypes.object
-	}
-
-	static defaultProps =
-	{
-		// Set to `true` to stretch the button to full width
-		stretch : false
-	}
-
+class Button_ extends PureComponent {
 	state = {}
 
-	componentDidMount()
-	{
+	componentDidMount() {
 		this._isMounted = true
 	}
 
-	componentWillUnmount()
-	{
+	componentWillUnmount() {
 		this._isMounted = false
 	}
 
-	render()
-	{
-		const
-		{
+	render() {
+		const {
+			buttonRef,
 			component,
 			link,
-			title,
 			wait,
 			busy,
 			disabled,
@@ -93,35 +35,27 @@ export default class Button extends PureComponent
 			className,
 			children,
 			...rest
-		}
-		= this.props
+		} = this.props
 
-		const properties =
-		{
+		const properties = {
 			...rest,
-			ref : this.storeInstance,
-			title,
+			ref: buttonRef,
 			style,
-			className : classNames('rrui__input', 'rrui__button-reset', 'rrui__outline', 'rrui__button',
-			{
+			className: classNames(className, 'rrui__input', 'rrui__button-reset', 'rrui__outline', 'rrui__button', {
 				'rrui__button--busy'       : wait || busy || this.state.wait,
 				'rrui__button--disabled'   : disabled,
 				'rrui__button--stretch'    : stretch,
 				'rrui__button-reset--link' : link
-			},
-			className)
+			})
 		}
 
-		if (link)
-		{
+		if (link) {
 			const LinkComponent = component || 'a'
-
 			return (
 				<LinkComponent
 					href={ component ? undefined : link }
 					onClick={ this.linkOnClick }
 					{ ...properties }>
-
 					{ children }
 				</LinkComponent>
 			)
@@ -133,43 +67,25 @@ export default class Button extends PureComponent
 				disabled={ wait || busy || this.state.wait || disabled }
 				onClick={ this.buttonOnClick }
 				{ ...properties }>
-
 				<FadeInOut
 					show={ wait || busy || this.state.wait }
 					fadeOutDuration={300}
 					fadeInClassName="rrui__button__busy--after-show">
 					<span className="rrui__button__busy"/>
 				</FadeInOut>
-
 				{ children }
 			</button>
 		)
 	}
 
-	storeInstance = (ref) => this.button = ref
-
-	// Mimicks DOM `.focus()` method.
-	// The correct way would be wrapping the `Button`
-	// component in `React.forwardRef()` instead.
-	focus = () => this.button.focus()
-
-	// Mimicks DOM `.contains()` method.
-	// The correct way would be wrapping the `Button`
-	// component in `React.forwardRef()` instead.
-	// Is used in `onBlur()` in `./utility/focus.js`.
-	contains = (node) => this.button.contains(node)
-
-	linkOnClick = (event) =>
-	{
-		const
-		{
+	linkOnClick = (event) => {
+		const {
 			wait,
 			busy,
 			disabled,
 			action,
 			onClick
-		}
-		= this.props
+		} = this.props
 
 		// Only handle left mouse button clicks
 		// ignoring those ones with a modifier key pressed.
@@ -177,13 +93,11 @@ export default class Button extends PureComponent
 			|| event.shiftKey
 			|| event.altKey
 			|| event.ctrlKey
-			|| event.metaKey)
-		{
+			|| event.metaKey) {
 			return
 		}
 
-		if (wait || busy || this.state.wait || disabled)
-		{
+		if (wait || busy || this.state.wait || disabled) {
 			return
 		}
 
@@ -201,8 +115,7 @@ export default class Button extends PureComponent
 		this.buttonOnClick()
 	}
 
-	buttonOnClick = (event) =>
-	{
+	buttonOnClick = (event) => {
 		const { action, onClick } = this.props
 
 		let result
@@ -223,3 +136,52 @@ export default class Button extends PureComponent
 		}
 	}
 }
+
+const Button = React.forwardRef((props, ref) => (
+	<Button_ {...props} buttonRef={ref}/>
+))
+
+Button.propTypes = {
+	// onClick handler.
+	// Doesn't receive `event` by default.
+	// Can be `async`/`await` or return a `Promise`
+	// in which case it will show "wait" animation.
+	onClick: PropTypes.func,
+
+	// onClick handler.
+	// (deprecated, use `onClick(event)` instead)
+	action: PropTypes.func,
+
+	// If `wait` is `true` then the button
+	// will be disabled and a spinner will be shown.
+	wait: PropTypes.bool,
+
+	// (deprecated)
+	// (use `wait` instead)
+	// If `busy` is `true` then the button
+	// will be disabled and a spinner will be shown.
+	busy: PropTypes.bool,
+
+	// Disables the button
+	disabled: PropTypes.bool,
+
+	// When `true`, the button will submit an enclosing form.
+	submit: PropTypes.bool,
+
+	// If `link` is set, then the button is gonna be an <a/> tag.
+	link: PropTypes.oneOfType([ PropTypes.string, PropTypes.bool ]),
+
+	// Custom React component for the button.
+	component: PropTypes.func,
+
+	// Set to `true` to stretch the button to full width.
+	stretch: PropTypes.bool,
+
+	// CSS style object for the button container
+	style: PropTypes.object,
+
+	// CSS class name
+	className: PropTypes.string
+}
+
+export default Button
