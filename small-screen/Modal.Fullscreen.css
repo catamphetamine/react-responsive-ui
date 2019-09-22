@@ -1,5 +1,3 @@
-/* `<Modal/>` goes full-screen wide and high. */
-
 /* Without this line a long `<Modal/>` won't be scrollable to its beginning. */
 .rrui__modal__overlay
 {
@@ -15,10 +13,19 @@
 /* Centers `<Modal/>` content (body) horizontally and vertically */
 .rrui__modal__container
 {
+	display          : -webkit-box;
+	display          : -webkit-flex;
+	display          : -ms-flexbox;
 	display          : flex;
-	align-items      : center;
-	justify-content  : center;
-	background-color : var(--rrui-white-color);
+	-webkit-box-align      : center;
+	-webkit-align-items      : center;
+	    -ms-flex-align      : center;
+	        align-items      : center;
+	-webkit-box-pack  : center;
+	-webkit-justify-content  : center;
+	    -ms-flex-pack  : center;
+	        justify-content  : center;
+	background-color : #ffffff;
 }
 
 .ReactModal__Overlay--before-close .rrui__modal__container
@@ -50,23 +57,33 @@
 	Therefore not using `scale()`s above `1`, only downscaling.
 	transform: scale(1.07);
 	*/
-	transform : scale(0.995);
+	-webkit-transform : scale(0.995);
+	    -ms-transform : scale(0.995);
+	        transform : scale(0.995);
 }
 
 /* This rule is required for closing animation */
 .ReactModal__Content--before-close .rrui__modal__contents
 {
-	transform : scale(0.995);
+	-webkit-transform : scale(0.995);
+	    -ms-transform : scale(0.995);
+	        transform : scale(0.995);
 }
 
 /* The styles for an open `<Modal/>` */
 .ReactModal__Content--after-open .rrui__modal__contents
 {
-	transform : scale(1);
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
 }
 
 /* Shortening `<Modal/>` animation duration */
 .rrui__modal__contents
 {
+	-webkit-transition : -webkit-transform 100ms ease-out;
+	transition : -webkit-transform 100ms ease-out;
+	-o-transition : transform 100ms ease-out;
 	transition : transform 100ms ease-out;
+	transition : transform 100ms ease-out, -webkit-transform 100ms ease-out;
 }

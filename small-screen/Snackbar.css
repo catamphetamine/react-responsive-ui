@@ -1,4 +1,3 @@
-/* Center `<Snackbar/>` on screen. */
 .rrui__snackbar__container
 {
 	margin: 0;
@@ -8,12 +7,15 @@
 {
 	width: 100%;
 	border-radius: 0;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 .rrui__snackbar__count
 {
-	transform: translateY(-100%);
+	-webkit-transform: translateY(-100%);
+	    -ms-transform: translateY(-100%);
+	        transform: translateY(-100%);
 	right: 0.3em;
 	top: 0.3em;
 }

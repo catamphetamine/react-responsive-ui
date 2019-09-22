@@ -1,4 +1,3 @@
-/* `<Select/>` goes fullscreen when expanded. */
 /* Same as for `<DatePicker/>`. */
 .rrui__expandable
 {
@@ -8,17 +7,29 @@
 	right    : 0;
 	left     : 0;
 	margin   : 0;
-	z-index  : var(--rrui-z-index-overlay);
+	z-index  : 100;
 
-	transform-origin : center center;
-	transform        : scale(0.95);
+	-webkit-transform-origin : center center;
+
+	    -ms-transform-origin : center center;
+
+	        transform-origin : center center;
+	-webkit-transform        : scale(0.95);
+	    -ms-transform        : scale(0.95);
+	        transform        : scale(0.95);
 	opacity          : 0;
+	-webkit-transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	transition       : opacity 60ms ease-out, -webkit-transform 120ms ease-out;
+	-o-transition       : transform 120ms ease-out, opacity 60ms ease-out;
 	transition       : transform 120ms ease-out, opacity 60ms ease-out;
+	transition       : transform 120ms ease-out, opacity 60ms ease-out, -webkit-transform 120ms ease-out;
 }
 
 .rrui__expandable.rrui__expandable--expanded
 {
-	transform : scale(1);
+	-webkit-transform : scale(1);
+	    -ms-transform : scale(1);
+	        transform : scale(1);
 	opacity   : 1;
 }
 
@@ -46,7 +57,7 @@
    visual clutter for the collapse animation. */
 .rrui__expandable .rrui__list__item:hover
 {
-	color : var(--rrui-black-color);
+	color : #000000;
 	background-color : transparent;
 }
 
@@ -55,7 +66,7 @@
 .rrui__expandable__close
 {
 	display : block;
-	z-index : var(--rrui-z-index-overlay);
+	z-index : 100;
 }
 
 /* `<Select autocomplete/>` goes fullscreen when expanded */
@@ -65,28 +76,35 @@
 	top              : 0;
 	left             : 0;
 	width            : 100%;
-	height           : var(--rrui-fullscreen-input-height);
-	padding-left     : var(--rrui-list-item-side-padding);
-	padding-right    : calc(var(--rrui-unit) * 2 + var(--rrui-unit) * 3 + var(--rrui-list-item-side-padding));
-	z-index          : var(--rrui-z-index-overlay);
-	background-color : var(--rrui-white-color);
+	height           : calc(0.6rem * 4);
+	padding-left     : calc(0.6rem * 1.5);
+	padding-right    : calc(0.6rem * 2 + 0.6rem * 3 + (0.6rem * 1.5));
+	z-index          : 100;
+	background-color : #ffffff;
 }
 
 /* `<Select autocomplete/>` ellipsis when fullscreen-expanded */
 .rrui__autocomplete--expanded .rrui__ellipsis
 {
 	position    : fixed;
-	right       : var(--rrui-list-item-side-padding);
+	right       : calc(0.6rem * 1.5);
 	top         : 0;
-	z-index     : var(--rrui-z-index-above-overlay);
-	height      : var(--rrui-fullscreen-input-height);
+	z-index     : 101;
+	height      : calc(0.6rem * 4);
+	display     : -webkit-box;
+	display     : -webkit-flex;
+	display     : -ms-flexbox;
 	display     : flex;
-	align-items : center;
+	-webkit-box-align : center;
+	-webkit-align-items : center;
+	    -ms-flex-align : center;
+	        align-items : center;
 }
 
 /* `<Select autocomplete/>` options when fullscreen-expanded */
 .rrui__autocomplete .rrui__list
 {
-	margin-top : var(--rrui-fullscreen-input-height);
-	box-shadow : none;
+	margin-top : calc(0.6rem * 4);
+	-webkit-box-shadow : none;
+	        box-shadow : none;
 }
