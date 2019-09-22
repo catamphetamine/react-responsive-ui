@@ -44,6 +44,17 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 		return setTimeout(() => getComponentNode() && _onBlur(document.activeElement), 30)
 	}
 
+	// // Safari (both macOS and iOS) has a bug: `<button/>`s not getting focus.
+	// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+	// if (!event.relatedTarget) {
+	// 	if (getComponentNode2 && getComponentNode2().tagName.toLowerCase() === 'button') {
+	// 		// The `<button/>` could be the actual `relatedTarget` in Safari.
+	// 		// The Internet Explorer workaround won't work here too
+	// 		// because `document.activeElement` is also `undefined`.
+	// 		// No workaround here.
+	// 	}
+	// }
+
 	// There was an error in Firefox 52:
 	// "Argument 1 of Node.contains does not implement interface Node".
 	// To prevent such errors `event.relatedTarget` is validated manually here.
