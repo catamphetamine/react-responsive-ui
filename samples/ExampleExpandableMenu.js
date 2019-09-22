@@ -19,11 +19,6 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 		return (
 			<Example name="expandable-menu" title="Expandable Menu">
 
-				<textarea id="log" style={{ width: '100%' }} rows={10}></textarea>
-
-				<br/>
-				<br/>
-
 				<ExpandableMenu
 					aria-label="Menu"
 					className="column-width"
