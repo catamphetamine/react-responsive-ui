@@ -40,17 +40,17 @@ export default class OnTapOutside extends React.Component
 		this.stopListeningToTouches()
 	}
 
-	onTouchStart = (event) =>
-	{
+	onTouchStart = (event) => {
 		// Ignore multitouch.
-		if (event.touches.length > 1)
-		{
+		if (event.touches.length > 1) {
 			// Reset.
 			return this.onTouchCancel()
 		}
-
-		this.initialTouchX = event.changedTouches[0].clientX
-		this.initialTouchY = event.changedTouches[0].clientY
+		const touch = event.changedTouches[0]
+		this.initialTouchX = touch.clientX
+		this.initialTouchY = touch.clientY
+		this.touchId = touch.identifier
+		this.touchTarget = touch.target
 		this.tapping = true
 	}
 
@@ -58,38 +58,57 @@ export default class OnTapOutside extends React.Component
 	{
 		const { moveThreshold } = this.props
 
-		// Ignore multitouch.
 		if (!this.tapping) {
 			return
 		}
 
-		const deltaX = Math.abs(event.changedTouches[0].clientX - this.initialTouchX)
-		const deltaY = Math.abs(event.changedTouches[0].clientY - this.initialTouchY)
+		let x
+		let y
+		for (const touch of event.changedTouches) {
+			if (touch.identifier === this.touchId) {
+				x = touch.clientX
+				y = touch.clientY
+				break
+			}
+		}
 
-		if (deltaX > moveThreshold || deltaY > moveThreshold)
-		{
-			// Reset.
+		// If not the touch.
+		if (x === undefined) {
+			return
+		}
+
+		const deltaX = Math.abs(x - this.initialTouchX)
+		const deltaY = Math.abs(y - this.initialTouchY)
+
+		// Reset on touch move.
+		if (deltaX > moveThreshold || deltaY > moveThreshold) {
 			this.onTouchCancel()
 		}
 	}
 
 	onTouchEnd = (event) =>
 	{
-		// Ignore multitouch.
 		if (!this.tapping) {
 			return
 		}
 
-		// Reset.
-		this.onTouchCancel()
-
-		this.onTap(event)
+		for (const touch of event.changedTouches) {
+			if (touch.identifier === this.touchId) {
+				// Reset.
+				this.onTouchCancel()
+				// Handle the tap.
+				this.onTap(event)
+				break
+			}
+		}
 	}
 
 	onTouchCancel = () =>
 	{
 		this.initialTouchX = undefined
 		this.initialTouchY = undefined
+		this.touchId = undefined
+		this.touchTarget = undefined
 		this.tapping = false
 	}
 
@@ -100,14 +119,18 @@ export default class OnTapOutside extends React.Component
 	// "on blur" event when user taps outside (to collapse the expandable).
 	onTap = (event) =>
 	{
-		const { getContainerNode, getTogglerNode, onTapOutside } = this.props
+		const {
+			getContainerNode,
+			getTogglerNode,
+			onTapOutside
+		} = this.props
 
-		if (getContainerNode().contains(event.target)) {
+		if (getContainerNode().contains(this.touchTarget)) {
 			return
 		}
 
 		if (getTogglerNode) {
-			if (getTogglerNode().contains(event.target)) {
+			if (getTogglerNode().contains(this.touchTarget)) {
 				return
 			}
 		}
