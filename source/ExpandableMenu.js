@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import createRef from 'react-create-ref'
 
 import ExpandableList from './ExpandableList'
 import List from './List'
@@ -62,6 +63,10 @@ export default class ExpandableMenu extends PureComponent
 
 	state = {}
 
+	// The DOM Element reference is only used to determine
+	// whether the focus is "inside" the component or "outside" of it.
+	button = createRef()
+
 	onExpand = () => this.setState({ isExpanded: true })
 
 	onCollapse = ({ focusOut }) => {
@@ -92,10 +97,7 @@ export default class ExpandableMenu extends PureComponent
 	// Is used to focus legacy togglers.
 	storeTogglerRef = (ref) => this.toggler = ref
 
-	// `this.togglerNode` is only used to determine
-	// whether the focus is "inside" the component or "outside" of it.
-	storeTogglerNode = (node) => this.togglerNode = node
-	getTogglerNode = () => this.togglerNode
+	getButton = () => this.button.current
 
 	render()
 	{
@@ -140,7 +142,7 @@ export default class ExpandableMenu extends PureComponent
 						'rrui__outline': toggleElement
 					}) }
 					{...buttonProps}
-					ref={ this.storeTogglerNode }
+					ref={ this.button }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
@@ -151,11 +153,12 @@ export default class ExpandableMenu extends PureComponent
 				</TogglerButton>
 			)
 		} else {
+			// Legacy way: the first child was the toggler.
 			menuItems = React.Children.toArray(children)
 			menuToggler = menuItems.shift()
 			menuToggler = (
 				<div
-					ref={ this.storeTogglerNode }
+					ref={ this.button }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }>
@@ -181,7 +184,7 @@ export default class ExpandableMenu extends PureComponent
 					onCollapse={this.onCollapse}
 					onExpand={this.onExpand}
 					onFocusOut={this.onFocusOut}
-					getTogglerNode={this.getTogglerNode}
+					getTogglerNode={this.getButton}
 					focusSelectedItem={false}
 					className="rrui__shadow">
 					{menuItems}
