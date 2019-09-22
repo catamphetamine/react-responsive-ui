@@ -142,7 +142,7 @@ export default class Expandable extends PureComponent
 
 		// Don't collapse if already collapsed.
 		// Don't expand if already expanded
-		// until manually forcing a refresh of content.
+		// unless manually forcing a refresh of content.
 
 		let refreshingExpanded
 

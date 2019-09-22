@@ -67,6 +67,10 @@ export default class ExpandableMenu extends PureComponent
 	// whether the focus is "inside" the component or "outside" of it.
 	button = createRef()
 
+	componentWillUnmount() {
+		clearTimeout(this.cooldownTimer)
+	}
+
 	onExpand = () => this.setState({ isExpanded: true })
 
 	onCollapse = ({ focusOut }) => {
@@ -74,6 +78,10 @@ export default class ExpandableMenu extends PureComponent
 			this.focus()
 		}
 		this.setState({ isExpanded: false })
+		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		this.cooldown = true
+		this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
 	}
 
 	// `this.toggler` is deprecated.
@@ -99,10 +107,43 @@ export default class ExpandableMenu extends PureComponent
 
 	getButton = () => this.button.current
 
-	render()
-	{
-		const
-		{
+	onBlur = (event) => this.list && this.list.onBlur(event)
+
+	onClick = (event) => {
+		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		if (!this.cooldown) {
+			this.toggle()
+		}
+	}
+
+	onKeyDown = (event) => {
+		if (event.defaultPrevented) {
+			return
+		}
+		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
+			return
+		}
+		switch (event.keyCode) {
+			// "Up" arrow.
+			// Select the previous item (if present).
+			case 38:
+			// "Down" arrow.
+			// Select the next item (if present).
+			case 40:
+				return this.list.onKeyDown(event)
+
+			// "Enter".
+			case 13:
+				// Submit containing `<form/>`.
+				// Expand otherwise.
+				this.expand()
+				return event.preventDefault()
+		}
+	}
+
+	render() {
+		const {
 			buttonTitle,
 			disabled,
 			style,
@@ -117,8 +158,7 @@ export default class ExpandableMenu extends PureComponent
 			togglerClassName,
 			children,
 			...rest
-		}
-		= this.props
+		} = this.props
 
 		const { isExpanded } = this.state
 
@@ -191,38 +231,5 @@ export default class ExpandableMenu extends PureComponent
 				</ExpandableList>
 			</div>
 		)
-	}
-
-	onBlur = (event) => this.list && this.list.onBlur(event)
-
-	onClick = (event) => this.toggle()
-
-	onKeyDown = (event) =>
-	{
-		if (event.defaultPrevented) {
-			return
-		}
-
-		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
-			return
-		}
-
-		switch (event.keyCode)
-		{
-			// "Up" arrow.
-			// Select the previous item (if present).
-			case 38:
-			// "Down" arrow.
-			// Select the next item (if present).
-			case 40:
-				return this.list.onKeyDown(event)
-
-			// "Enter".
-			case 13:
-				// Submit containing `<form/>`.
-				// Expand otherwise.
-				this.expand()
-				return event.preventDefault()
-		}
 	}
 }
