@@ -1,29 +1,6 @@
-.rrui__snackbar__container {
-	display        : flex;
-	position       : fixed;
-	left           : 0;
-	right          : 0;
-	bottom         : 0;
-	pointer-events : none;
-	z-index        : 1;
-	margin         : var(--rrui-snackbar-margin);
-	transition     : all 225ms cubic-bezier(0, 0, 0.2, 1);
-	transform      : translateY(0);
-	visibility     : visible;
-}
-
-.rrui__snackbar__container--hidden {
-	transition : all 195ms cubic-bezier(0.4, 0, 0.6, 1);
-	visibility : hidden;
-}
-
 .rrui__snackbar {
-	position    : relative;
 	display     : flex;
 	align-items : center;
-
-	flex-grow      : 0;
-	pointer-events : auto;
 
 	background : var(--rrui-snackbar-background-color);
 	color      : var(--rrui-snackbar-text-color);
@@ -34,14 +11,29 @@
 	padding-right : var(--rrui-snackbar-side-padding);
 
 	min-height : var(--rrui-snackbar-height);
+
+	position       : fixed;
+	left           : 0;
+	bottom         : 0;
+	margin         : var(--rrui-snackbar-margin);
+	z-index        : 1;
+	transition     : all 225ms cubic-bezier(0, 0, 0.2, 1);
+	transform      : translateY(0);
+	visibility     : visible;
+}
+
+.rrui__snackbar--hidden {
+	transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+	visibility: hidden;
+	pointer-events: none;
 }
 
 .rrui__snackbar__text {
+	flex: auto;
 	margin-top: 0;
 	margin-bottom: 0;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-	flex: 1;
 }
 
 .rrui__snackbar__count {

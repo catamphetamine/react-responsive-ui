@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
+import createRef from 'react-create-ref'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -78,6 +79,8 @@ export default class Snackbar extends PureComponent
 	}
 
 	state = {}
+
+	snackbar = createRef()
 
 	status = 'idle'
 	queue = []
@@ -191,9 +194,9 @@ export default class Snackbar extends PureComponent
 		// its target Y-position for the CSS `translate` transform.
 		if (height === undefined && value)
 		{
-			height = this.snackbar.offsetHeight
-			// const wide = this.snackbar.offsetWidth === document.documentElement.clientWidth
-			const marginBottom = parseInt(getComputedStyle(this.container).marginBottom)
+			height = this.snackbar.current.offsetHeight
+			// const wide = this.snackbar.current.offsetWidth === document.documentElement.clientWidth
+			const marginBottom = parseInt(getComputedStyle(this.snackbar.current).marginBottom)
 			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
 			this.setState({
 				height,
@@ -203,17 +206,6 @@ export default class Snackbar extends PureComponent
 				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
 			})
 		}
-	}
-
-	storeContainerNode = (node) => this.container = node
-	storeSnackbarNode  = (node) => this.snackbar = node
-
-	renderContent(value)
-	{
-		if (value.component) {
-			return value.component({ ...value.props, hide: this.hide })
-		}
-		return null
 	}
 
 	render()
@@ -232,7 +224,7 @@ export default class Snackbar extends PureComponent
 			queueSize
 		} = this.state
 
-		const containerStyle = {}
+		const style = {}
 
 		if (!show) {
 			// If no snack is being shown,
@@ -240,10 +232,10 @@ export default class Snackbar extends PureComponent
 			// then shift it under the screen's bottom border
 			// to show the slide-from-bottom animation at the next step.
 			if (height !== undefined) {
-				containerStyle.transform = `translateY(${height + marginBottom}px)`
+				style.transform = `translateY(${height + marginBottom}px)`
 			}
 			if (!hiding) {
-				containerStyle.transition = 'none'
+				style.transition = 'none'
 			}
 		}
 
@@ -251,50 +243,57 @@ export default class Snackbar extends PureComponent
 
 		return (
 			<div
-				ref={ this.storeContainerNode }
-				style={ containerStyle }
-				className={ classNames('rrui__snackbar__container',
-				{
-					'rrui__snackbar__container--hidden' : !show,
-					// 'rrui__snackbar__container--wide' : wide
-				}) }>
+				ref={this.snackbar}
+				style={style}
+				className={classNames(
+					'rrui__snackbar',
+					value && value.type && `rrui__snackbar--${value.type}`, {
+						'rrui__snackbar--hidden': !show
+					}
+				)}>
 
-				<div
-					ref={ this.storeSnackbarNode }
-					className={ classNames('rrui__snackbar', value && value.type && `rrui__snackbar--${value.type}`) }>
-
+				{/* Render the default content component. */}
+				{value && !value.component &&
 					<p className="rrui__snackbar__text">
-						{ value && (value.content !== undefined ? value.content : this.renderContent(value)) }
+						{value.content}
 					</p>
+				}
 
-					{(value && value.action || showCloseButton) &&
-						<div className="rrui__snackbar__actions">
-							{value && value.action &&
-								<button
-									type="button"
-									onClick={value.action.onClick}
-									class="rrui__snackbar__action rrui__button-reset">
-									{value.action.title}
-								</button>
-							}
-							{showCloseButton &&
-								<button
-									type="button"
-									onClick={this.hide}
-									className="rrui__snackbar__close rrui__button-reset">
-									<Close/>
-								</button>
-							}
-						</div>
-					}
+				{/* Render a custom content component. */}
+				{value && value.component &&
+					React.createElement(value.component, {
+						...value.props,
+						hide: this.hide
+					})
+				}
 
-					{/* value && value.duration === -1 && */}
-					{queueSize > 0 &&
-						<div className="rrui__snackbar__count">
-							{queueSize + 1}
-						</div>
-					}
-				</div>
+				{(value && value.action || showCloseButton) &&
+					<div className="rrui__snackbar__actions">
+						{value && value.action &&
+							<button
+								type="button"
+								onClick={value.action.onClick}
+								class="rrui__snackbar__action rrui__button-reset">
+								{value.action.title}
+							</button>
+						}
+						{showCloseButton &&
+							<button
+								type="button"
+								onClick={this.hide}
+								className="rrui__snackbar__close rrui__button-reset">
+								<Close/>
+							</button>
+						}
+					</div>
+				}
+
+				{/* value && value.duration === -1 && */}
+				{queueSize > 0 &&
+					<div className="rrui__snackbar__count">
+						{queueSize + 1}
+					</div>
+				}
 			</div>
 		)
 	}

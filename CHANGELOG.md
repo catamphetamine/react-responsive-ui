@@ -43,6 +43,11 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.14.176 / 23.09.2019
+=====================
+
+  * (CSS breaking change) `<Snackbar/>` markup simplified: there's no `rrui__snackbar__container` now and if `component` property is passed then it's not wrapped in `rrui__snackbar__text`. `<Snackbar/>` CSS styles changed a bit.
+
 0.14.169 / 19.09.2019
 =====================
 
