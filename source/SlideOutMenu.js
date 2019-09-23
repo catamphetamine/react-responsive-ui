@@ -191,6 +191,7 @@ class SlideoutMenu extends PureComponent
 			onCollapse,
 			toggleMenu,
 			registerMenu,
+			setTogglerCooldown,
 			...rest
 		} = this.props
 
