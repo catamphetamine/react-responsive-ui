@@ -1963,34 +1963,7 @@ but rather `width: auto` or `left: 0; right: 0;`.
 .rrui__slideout-menu--fullscreen .rrui__slideout-menu__item {
   text-align: center; }
 
-.rrui__snackbar__container {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 1;
-  margin: calc(0.6rem * 2);
-  -webkit-transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
-  -o-transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
-  transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
-  -webkit-transform: translateY(0);
-      -ms-transform: translateY(0);
-          transform: translateY(0);
-  visibility: visible; }
-
-.rrui__snackbar__container--hidden {
-  -webkit-transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
-  -o-transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
-  transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
-  visibility: hidden; }
-
 .rrui__snackbar {
-  position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1999,27 +1972,41 @@ but rather `width: auto` or `left: 0; right: 0;`.
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-flex: 0;
-  -webkit-flex-grow: 0;
-      -ms-flex-positive: 0;
-          flex-grow: 0;
-  pointer-events: auto;
   background: #000000;
   color: #ffffff;
   border-radius: 0.1rem;
   padding-left: calc(0.6rem * 1.5);
   padding-right: calc(0.6rem * 1.5);
-  min-height: calc(0.6rem * 4); }
+  min-height: calc(0.6rem * 4);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin: calc(0.6rem * 2);
+  z-index: 1;
+  -webkit-transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
+  -o-transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
+  transition: all 225ms cubic-bezier(0, 0, 0.2, 1);
+  -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+          transform: translateY(0);
+  visibility: visible; }
+
+.rrui__snackbar--hidden {
+  -webkit-transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+  -o-transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+  transition: all 195ms cubic-bezier(0.4, 0, 0.6, 1);
+  visibility: hidden;
+  pointer-events: none; }
 
 .rrui__snackbar__text {
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+      -ms-flex: auto;
+          flex: auto;
   margin-top: 0;
   margin-bottom: 0;
   padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1; }
+  padding-bottom: 0.5em; }
 
 .rrui__snackbar__count {
   display: -webkit-box;

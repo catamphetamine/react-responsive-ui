@@ -131,9 +131,7 @@ newMessageReceived({
 
 <Highlight lang="css">{`
 .rrui__snackbar--new-message-notification {
-  height : 200px;
-  padding : 0;
-  line-height : 1.35em;
+  padding: 0;
 }
 `}</Highlight>
 

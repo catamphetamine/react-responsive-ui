@@ -129,11 +129,11 @@ pre
 
 .new-message-notification
 {
+	width         : 100%;
 	height        : 100%;
 	display       : flex;
 	align-items   : center;
-	padding-left  : calc(0.3rem * 3);
-	padding-right : calc(0.3rem * 3);
+	padding       : calc(0.3rem * 3);
 }
 
 .new-message-notification__user-picture
@@ -146,9 +146,10 @@ pre
 
 .new-message-notification__text
 {
-	flex          : 1;
+	flex          : auto;
 	padding-left  : calc(0.3rem * 4);
 	padding-right : calc(0.3rem * 3);
+	line-height   : 1.35em;
 }
 
 .new-message-notification__close
@@ -168,9 +169,7 @@ pre
 
 .rrui__snackbar--new-message-notification
 {
-	height  : calc(0.3rem * 20);
 	padding : 0;
-	line-height : 1.35em;
 }
 
 /* Responsive */
