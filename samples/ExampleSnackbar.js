@@ -61,10 +61,7 @@ window.ExampleSnackbar = class ExampleComponent extends React.Component
 `}</Highlight>
 
 <Highlight lang="css">{`
-	:root {
-		--rrui-snackbar-background-color : black;
-		--rrui-snackbar-text-color : white;
-	}
+	/* See \`--rrui-snackbar-\` CSS variables in \`variables.css\` */
 `}</Highlight>
 
 			<div>
