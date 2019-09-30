@@ -215,7 +215,7 @@
     doesn't know how to handle `calc()` inside `transofrm`. */
   /* https://stackoverflow.com/questions/21469350/not-possible-to-use-css-calc-with-transformtranslatex-in-ie */
   --rrui-switch-knob-translate-on: calc(var(--rrui-switch-width) - var(--rrui-switch-knob-size) - (var(--rrui-switch-height) - var(--rrui-switch-knob-size)));
-  --rrui-switch-knob-transition: transform 0.25s ease-out;
+  --rrui-switch-knob-transition: all 0.25s ease-out;
   --rrui-switch-knob-box-shadow: inset 0 0 0 0.03em rgba(0,0,0,0.3), 0 0 0.05em rgba(0,0,0,0.05), 0 0.1em 0.2em rgba(0,0,0,0.2);
   --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
   --rrui-switch-knob-background-color : var(--rrui-switch-background-color);

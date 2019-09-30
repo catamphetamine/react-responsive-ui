@@ -109,15 +109,11 @@
 
 .rrui__switch__knob--on
 {
-	background-color : var(--rrui-switch-knob-background-color-on);
+	background-color: var(--rrui-switch-knob-background-color-on);
+	transform: translateX(var(--rrui-switch-knob-translate-on));
 }
 
 .rrui__switch__input:focus + .rrui__switch__groove + .rrui__switch__knob
 {
-	box-shadow : var(--rrui-switch-knob-box-shadow), inset 0 0 0 0.03em var(--rrui-switch-knob-border-color-focus);
-}
-
-.rrui__switch__knob--on
-{
-	transform : translateX(var(--rrui-switch-knob-translate-on));
+	box-shadow: var(--rrui-switch-knob-box-shadow), inset 0 0 0 0.03em var(--rrui-switch-knob-border-color-focus);
 }

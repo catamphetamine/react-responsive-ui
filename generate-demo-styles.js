@@ -99,7 +99,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-switch-groove-border-width)', '0.0625em')
     .replace_all('var(--rrui-switch-groove-transition)', 'all 0.40s cubic-bezier(.17,.67,.43,.98)')
     .replace_all('var(--rrui-switch-knob-size)', '0.875em')
-    .replace_all('var(--rrui-switch-knob-transition)', 'transform 0.25s ease-out')
+    .replace_all('var(--rrui-switch-knob-transition)', 'all 0.25s ease-out')
     .replace_all('var(--rrui-switch-knob-box-shadow)', 'inset 0 0 0 0.03em rgba(0,0,0,0.3), 0 0 0.05em rgba(0,0,0,0.05), 0 0.1em 0.2em rgba(0,0,0,0.2)')
     /* Checkbox size */
     .replace_all('var(--rrui-checkbox-size)', '0.9em')
