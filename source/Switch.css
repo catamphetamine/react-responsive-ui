@@ -45,6 +45,11 @@
 	cursor : pointer;
 }
 
+.rrui__switch__label--on
+{
+	color : var(--rrui-switch-label-color-on);
+}
+
 .rrui__switch__label--left
 {
 	margin-right : var(--rrui-control-label-margin);
@@ -100,6 +105,11 @@
 	    doesn't know how to handle `calc()` inside `transofrm`. */
 	/* https://stackoverflow.com/questions/21469350/not-possible-to-use-css-calc-with-transformtranslatex-in-ie */
 	transition    : var(--rrui-switch-knob-transition);
+}
+
+.rrui__switch__knob--on
+{
+	background-color : var(--rrui-switch-knob-background-color-on);
 }
 
 .rrui__switch__input:focus + .rrui__switch__groove + .rrui__switch__knob

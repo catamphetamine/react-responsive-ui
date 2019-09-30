@@ -206,6 +206,7 @@
   --rrui-switch-focus-outline-shadow : 0 0 0 0 transparent;
   --rrui-switch-background-color : var(--rrui-checkbox-fill-color);
   --rrui-switch-accent-color : var(--rrui-checkbox-color-checked);
+  --rrui-switch-label-color-on : initial;
   --rrui-switch-groove-border-color : rgba(0,0,0,0.16);
   --rrui-switch-groove-border-width : 0.0625em;
   --rrui-switch-groove-transition : all 0.40s cubic-bezier(.17,.67,.43,.98);
@@ -218,6 +219,7 @@
   --rrui-switch-knob-box-shadow: inset 0 0 0 0.03em rgba(0,0,0,0.3), 0 0 0.05em rgba(0,0,0,0.05), 0 0.1em 0.2em rgba(0,0,0,0.2);
   --rrui-switch-knob-border-color-focus : var(--rrui-accent-color);
   --rrui-switch-knob-background-color : var(--rrui-switch-background-color);
+  --rrui-switch-knob-background-color-on: var(--rrui-switch-knob-background-color);
 
   /* `<Switcher/>`. */
   --rrui-switcher-border-radius : var(--rrui-border-radius-big);

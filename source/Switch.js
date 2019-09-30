@@ -128,53 +128,60 @@ export default class Switch extends PureComponent
 				onMouseDown={this.onMouseDown}
 				onFocus={this.onFocus}
 				onBlur={this.onBlur}
-				className={ classNames('rrui__switch',
-				{
+				style={style}
+				className={classNames(className, 'rrui__switch', {
 					'rrui__input'            : hasLabel,
 					'rrui__switch--label'    : children,
 					'rrui__switch--disabled' : disabled,
-					'rrui__switch--focus'    : isFocused
-				},
-				className) }
-				style={ style }>
+					'rrui__switch--focus'    : isFocused,
+					'rrui__switch--on'       : value
+				})}>
 
 				{/* Left label */}
-				{ (leftLabel || (!isRightSideContent && children)) &&
-					<span className={ classNames('rrui__text-line', 'rrui__switch__label--left') }>
-						{ leftLabel || (!isRightSideContent && children) }
+				{(leftLabel || (!isRightSideContent && children)) &&
+					<span className={classNames(
+						'rrui__text-line',
+						'rrui__switch__label',
+						'rrui__switch__label--left', {
+							'rrui__switch__label--on': value
+						})}>
+						{leftLabel || (!isRightSideContent && children)}
 					</span>
 				}
 
 				{/* The switch */}
 				<span className="rrui__switch__switch">
 					<input
-						ref={ this.storeInputComponent }
+						ref={this.storeInputComponent}
 						type="checkbox"
-						value={ value }
-						onKeyDown={ this.onKeyDown }
-						onChange={ this.toggle }
+						value={value}
+						onKeyDown={this.onKeyDown}
+						onChange={this.toggle}
 						className="rrui__switch__input"
-						style={ inputStyle }/>
+						style={inputStyle}/>
 
 					<span
-						className={ classNames('rrui__switch__groove',
-						{
+						className={classNames('rrui__switch__groove', {
 							// CSS selector performance optimization
 							'rrui__switch__groove--on' : value
-						}) }/>
+						})}/>
 
 					<span
-						className={ classNames('rrui__switch__knob',
-						{
+						className={classNames('rrui__switch__knob', {
 							// CSS selector performance optimization
 							'rrui__switch__knob--on' : value
-						}) }/>
+						})}/>
 				</span>
 
 				{/* Right label */}
-				{ (rightLabel || (isRightSideContent && children)) &&
-					<span className={ classNames('rrui__text-line', 'rrui__switch__label--right') }>
-						{ rightLabel || (isRightSideContent && children) }
+				{(rightLabel || (isRightSideContent && children)) &&
+					<span className={classNames(
+						'rrui__text-line',
+						'rrui__switch__label',
+						'rrui__switch__label--right', {
+							'rrui__switch__label--on': value
+						})}>
+						{rightLabel || (isRightSideContent && children)}
 					</span>
 				}
 			</label>
