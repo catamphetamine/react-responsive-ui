@@ -50,7 +50,7 @@ function transformStyle(filePath)
     /* Button colors */
     .replace_all('var(--rrui-button-background-color-active)', 'var(--rrui-button-background-color)')
     .replace_all('var(--rrui-button-background-color)', 'transparent')
-    .replace_all('var(--rrui-button-transition)', 'background-color 30ms ease-out, color 30ms ease-out, border-color 30ms ease-out')
+    .replace_all('var(--rrui-button-transition)', 'none')
     .replace_all('var(--rrui-button-text-color)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-button-text-color-active)', 'var(--rrui-accent-color-light)')
     /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
