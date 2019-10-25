@@ -14,7 +14,7 @@
 .rrui__autocomplete .rrui__ellipsis
 {
 	position : absolute;
-	right    : calc(var(--rrui-unit) / 3);
+	right    : calc(var(--rrui-unit) / 3 + var(--rrui-input-field-side-padding));
 	top      : calc(50% - var(--rrui-unit) / 6);
 
 	pointer-events : none;
