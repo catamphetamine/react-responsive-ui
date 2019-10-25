@@ -51,8 +51,7 @@ export default class Autocomplete extends PureComponent
 				// Receives `{ value, label }` properties.
 				content : PropTypes.func
 			})
-		)
-		.isRequired,
+		),
 
 		// An alternative way of getting `options`.
 		// If it's an `autocomplete` then this function
