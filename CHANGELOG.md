@@ -43,6 +43,11 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.14.180 / 13.11.2019
+=====================
+
+  * `<TextInput/>` now does `React.forwardRef()`.
+
 0.14.176 / 23.09.2019
 =====================
 

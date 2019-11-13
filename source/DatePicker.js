@@ -712,7 +712,7 @@ export default class DatePicker extends PureComponent
 				<TextInput
 					id={ id }
 					containerRef={ this.storeInputContainerNode }
-					inputRef={ this.storeInputNode }
+					ref={ this.storeInputNode }
 					required={ required }
 					error={ error }
 					indicateInvalid={ indicateInvalid }

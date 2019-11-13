@@ -6,7 +6,7 @@ import Input from './TextInputInput'
 import Label from './TextInputLabel'
 
 // `<input/>` and its `<label/>`.
-export default function TextInputComponent(props) {
+function TextInputComponent(props, ref) {
 	const {
 		id,
 		value,
@@ -41,6 +41,7 @@ export default function TextInputComponent(props) {
 			{/* `<input/>` */}
 			<Input
 				{...rest}
+				ref={ref}
 				className={classNames(className, {
 					'rrui__input-field--with-icon': Icon
 				})}/>
@@ -70,6 +71,8 @@ export default function TextInputComponent(props) {
 	)
 }
 
+TextInputComponent = React.forwardRef(TextInputComponent)
+
 TextInputComponent.propTypes = {
 	// Set to `true` to mark the field as required.
 	required : PropTypes.bool.isRequired,
@@ -88,3 +91,5 @@ TextInputComponent.defaultProps = {
 	// Labels float by default.
 	floatingLabel : true
 }
+
+export default TextInputComponent

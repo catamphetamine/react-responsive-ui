@@ -1,8 +1,15 @@
 import React from 'react'
 import classNames from 'classnames'
 
-export default function TextInputLabel({ inputId, value, required, invalid, floats, children, ...rest })
-{
+export default function TextInputLabel({
+	inputId,
+	value,
+	required,
+	invalid,
+	floats,
+	children,
+	...rest
+}) {
 	return (
 		<label
 			{...rest}

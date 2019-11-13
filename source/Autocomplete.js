@@ -553,7 +553,7 @@ export default class Autocomplete extends PureComponent
 				}
 				<TextInput
 					id={ id ? `${id}__input` : undefined }
-					inputRef={ this.storeInput }
+					ref={ this.storeInput }
 					value={ inputValue }
 					label={ label }
 					placeholder={ placeholder }
