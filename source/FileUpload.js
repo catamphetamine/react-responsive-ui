@@ -28,6 +28,9 @@ class FileUpload extends PureComponent
 		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
 		accept: PropTypes.string,
 
+		// `acceptExtensions` will be transformed to `accept`.
+		acceptExtensions: PropTypes.arrayOf(PropTypes.string),
+
 		// Disables the file input.
 		disabled  : PropTypes.bool,
 
@@ -51,6 +54,8 @@ class FileUpload extends PureComponent
 		// CSS style object
 		style     : PropTypes.object,
 
+		// Deprecated.
+		// Rewrite this component in hooks instead.
 		// A hack for `React.forwardRef()`.
 		// Could be rewritten in "hooks" instead.
 		// A hack for providing `.focus()` method on `<DropFileUpload/>`.
@@ -120,6 +125,7 @@ class FileUpload extends PureComponent
 			onChange,
 			multiple,
 			accept,
+			acceptExtensions,
 			style,
 			className,
 			children
@@ -141,7 +147,7 @@ class FileUpload extends PureComponent
 					error={ error }
 					required={ required }
 					disabled={ disabled }
-					accept={ accept }
+					accept={ accept || (acceptExtensions && acceptExtensions.map(ext => '.' + ext).join(',')) }
 					aria-label={ this.props['aria-label'] }/>
 
 				<DropFiles
