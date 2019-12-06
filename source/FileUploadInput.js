@@ -79,3 +79,17 @@ export const supportsMultipleFileUploadOnInputElement =
 	typeof document !== 'undefined' && document && document.createElement
 		? 'multiple' in document.createElement('input')
 		: true
+
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
+ * @param  {(string|string[])} [ext]
+ * @return {string} [accept]
+ */
+export function getAcceptFromExt(ext) {
+	if (typeof ext === 'string') {
+		return '.' + ext
+	}
+	if (Array.isArray(ext)) {
+		return ext.map(ext => '.' + ext).join(',')
+	}
+}

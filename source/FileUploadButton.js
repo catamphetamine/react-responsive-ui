@@ -2,17 +2,37 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import FileUploadInput from './FileUploadInput'
+import FileUploadInput, { getAcceptFromExt } from './FileUploadInput'
 
 export default class FileUploadButton extends React.Component {
 	static propTypes = {
 		component: PropTypes.elementType,
+
+		// On file(s) chosen.
 		onChange: PropTypes.func.isRequired,
+
+		// Allows choosing multiple files if `true`.
 		multiple: PropTypes.bool,
+
+		// Disables the file input.
 		disabled: PropTypes.bool,
+
+		// Renders an error message below the `<input/>`.
 		error: PropTypes.string,
+
+		// Whether choosing a file (or files) is required.
+		// Sets `aria-required` on the file `<input/>`.
 		required: PropTypes.bool,
-		accept: PropTypes.string
+
+		// Can be used to restrict the file MIME-types or extensions available for selection.
+		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
+		accept: PropTypes.string,
+
+		// Will be transformed to `accept`.
+		ext: PropTypes.oneOfType([
+			PropTypes.arrayOf(PropTypes.string),
+			PropTypes.string
+		])
 	}
 
 	onClick = () => {
@@ -30,6 +50,7 @@ export default class FileUploadButton extends React.Component {
 			error,
 			required,
 			accept,
+			ext,
 			...rest
 		} = this.props
 
@@ -42,7 +63,7 @@ export default class FileUploadButton extends React.Component {
 					disabled={disabled}
 					error={error}
 					required={required}
-					accept={accept}/>
+					accept={accept || (ext && getAcceptFromExt(ext))}/>
 				<Component
 					{...rest}
 					disabled={disabled}

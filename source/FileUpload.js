@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { DropFiles } from './DragAndDrop'
-import FileUploadInput from './FileUploadInput'
+import FileUploadInput, { getAcceptFromExt } from './FileUploadInput'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 
@@ -28,8 +28,11 @@ class FileUpload extends PureComponent
 		// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#attr-accept
 		accept: PropTypes.string,
 
-		// `acceptExtensions` will be transformed to `accept`.
-		acceptExtensions: PropTypes.arrayOf(PropTypes.string),
+		// Will be transformed to `accept`.
+		ext: PropTypes.oneOfType([
+			PropTypes.arrayOf(PropTypes.string),
+			PropTypes.string
+		]),
 
 		// Disables the file input.
 		disabled  : PropTypes.bool,
@@ -37,7 +40,7 @@ class FileUpload extends PureComponent
 		// `onClick` handler.
 		onClick   : PropTypes.func,
 
-		// Whether choosing a file is required.
+		// Whether choosing a file (or files) is required.
 		required : PropTypes.bool,
 
 		// Renders an error message below the `<input/>`.
@@ -115,6 +118,22 @@ class FileUpload extends PureComponent
 
 	storeFileInputRef = (ref) => this.fileInput = ref
 
+	onFileInputChange = (value) => {
+		const { multiple } = this.props
+		// `action` property is deprecated.
+		const onChange = this.props.onChange || this.props.action
+		if (multiple) {
+			onChange(value, {
+				acceptedFiles: value,
+				rejectedFiles: []
+			})
+		} else {
+			onChange(value, {
+				isAccepted: true
+			})
+		}
+	}
+
 	render() {
 		const {
 			ref_,
@@ -125,13 +144,15 @@ class FileUpload extends PureComponent
 			onChange,
 			multiple,
 			accept,
-			acceptExtensions,
+			ext,
 			style,
 			className,
 			children
 		} = this.props
 
 		const { draggedOver } = this.state
+
+		const _accept = accept || (ext && getAcceptFromExt(ext))
 
 		return (
 			<div
@@ -143,11 +164,11 @@ class FileUpload extends PureComponent
 				<FileUploadInput
 					ref={ this.storeFileInputRef }
 					multiple={ multiple }
-					onChange={ onChange || this.props.action }
+					onChange={ this.onFileInputChange }
 					error={ error }
 					required={ required }
 					disabled={ disabled }
-					accept={ accept || (acceptExtensions && acceptExtensions.map(ext => '.' + ext).join(',')) }
+					accept={ _accept }
 					aria-label={ this.props['aria-label'] }/>
 
 				<DropFiles
@@ -155,7 +176,7 @@ class FileUpload extends PureComponent
 					role="button"
 					tabIndex={ tabIndex }
 					aria-label={ this.props['aria-label'] }
-					accept={ accept }
+					accept={ _accept }
 					multiple={ multiple }
 					onDrop={ onChange }
 					onClick={ this.onClick }
