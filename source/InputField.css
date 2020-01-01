@@ -15,26 +15,26 @@
 /* Overrides Chrome autofill yellow background color. */
 .rrui__input-field:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color) inset;
+	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color--autofill) inset;
 }
 
 /* Overrides Chrome autofill yellow background color (when `<TextInput/>` is focused). */
 .rrui__input-field:focus:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-focus) inset;
+	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-focus--autofill) inset;
 }
 
 /* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
 .rrui__input-field--invalid:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error) inset;
+	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-error--autofill) inset;
 }
 
 /* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus:-webkit-autofill
 {
-	box-shadow : 0 0 0 1000px var(--rrui-input-field-background-color-error-focus) inset;
+	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-error-focus--autofill) inset;
 }
 
 /* For `<TextInput/>` and alike. */
