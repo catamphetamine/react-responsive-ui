@@ -28,6 +28,12 @@ export default class Checkbox extends PureComponent
 		// Disables the checkbox
 		disabled  : PropTypes.bool.isRequired,
 
+		// Indicates that the input is invalid.
+		error: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
+
 		// `onChange` handler
 		onChange  : PropTypes.func,
 

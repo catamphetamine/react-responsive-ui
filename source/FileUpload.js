@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import { DropFiles } from './DragAndDrop'
 import FileUploadInput, { getAcceptFromExt } from './FileUploadInput'
+import WithError from './WithError'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
 
@@ -43,8 +44,11 @@ class FileUpload extends PureComponent
 		// Whether choosing a file (or files) is required.
 		required : PropTypes.bool,
 
-		// Renders an error message below the `<input/>`.
-		error     : PropTypes.string,
+		// Indicates that the input is invalid.
+		error : PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
 
 		tabIndex  : PropTypes.number.isRequired,
 
@@ -155,9 +159,10 @@ class FileUpload extends PureComponent
 		const _accept = accept || (ext && getAcceptFromExt(ext))
 
 		return (
-			<div
-				style={ style }
-				className={ classNames('rrui__file-upload', className) }>
+			<WithError
+				error={error}
+				style={style}
+				className={classNames('rrui__file-upload', className)}>
 
 				{/* Hidden. */}
 				{/* "action" property is deprecated. */}
@@ -194,14 +199,7 @@ class FileUpload extends PureComponent
 					) }>
 					{ children }
 				</DropFiles>
-
-				{/* Error message (e.g. "Required"). */}
-				{ error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 }

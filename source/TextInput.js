@@ -98,8 +98,11 @@ TextInput.propTypes =
 	// Disables the text field
 	disabled         : PropTypes.bool,
 
-	// Renders an error message below the `<input/>`
-	error            : PropTypes.string,
+	// Indicates that the input is invalid.
+	error: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool
+	]),
 
 	// If this flag is `true` then the `error` is shown.
 	// If this flag is `false` then the `error` is not shown (even if passed).

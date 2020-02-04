@@ -21,9 +21,9 @@ export default function WithError(props) {
 		<div ref={setRef} {...rest}>
 			{children}
 			{/* Error message */}
-			{ indicateInvalid && error &&
+			{indicateInvalid && error && typeof error === 'string' &&
 				<div className="rrui__input-error">
-					{ error }
+					{error}
 				</div>
 			}
 		</div>
@@ -34,7 +34,10 @@ WithError.propTypes = {
 	setRef : PropTypes.func,
 
 	// Renders an error message below the `<input/>`
-	error : PropTypes.string,
+	error : PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool
+	]),
 
 	// Deprecated.
 	// If this flag is `true` then the `error` is shown.

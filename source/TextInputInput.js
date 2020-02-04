@@ -228,7 +228,13 @@ TextInput.propTypes =
 
 	// A custom input component.
 	// (is `<input/>` by default)
-	inputComponent   : PropTypes.elementType.isRequired
+	inputComponent   : PropTypes.elementType.isRequired,
+
+	// Indicates that the input is invalid.
+	error: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool
+	]),
 }
 
 TextInput.defaultProps =

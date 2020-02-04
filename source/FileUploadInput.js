@@ -6,7 +6,11 @@ export default class FileUploadInput extends React.Component {
 	static propTypes = {
 		onChange: PropTypes.func.isRequired,
 		multiple: PropTypes.bool,
-		error: PropTypes.string,
+		// Indicates that the input is invalid.
+		error: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
 		required: PropTypes.bool
 	}
 

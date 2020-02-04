@@ -107,6 +107,12 @@ export default class Autocomplete extends PureComponent
 		// Set to `true` to mark the field as required
 		required   : PropTypes.bool.isRequired,
 
+		// Indicates that the input is invalid.
+		error : PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
+
 		// Selected option value
 		value      : PropTypes.any,
 

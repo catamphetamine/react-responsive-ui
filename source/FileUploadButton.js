@@ -17,8 +17,11 @@ export default class FileUploadButton extends React.Component {
 		// Disables the file input.
 		disabled: PropTypes.bool,
 
-		// Renders an error message below the `<input/>`.
-		error: PropTypes.string,
+		// Indicates that the input is invalid.
+		error: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
 
 		// Whether choosing a file (or files) is required.
 		// Sets `aria-required` on the file `<input/>`.

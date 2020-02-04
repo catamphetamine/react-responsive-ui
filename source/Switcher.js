@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import { submitFormOnCtrlEnter } from './utility/dom'
+import WithError from './WithError'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -31,6 +32,12 @@ export default class Switcher extends PureComponent
 
 		// If `true` then will be disabled
 		disabled     : PropTypes.bool,
+
+		// Indicates that the input is invalid.
+		error: PropTypes.oneOfType([
+			PropTypes.string,
+			PropTypes.bool
+		]),
 
 		// The selected option value
 		value        : PropTypes.any,
@@ -71,15 +78,15 @@ export default class Switcher extends PureComponent
 		= this.props
 
 		return (
-			<div
-				ref={ this.storeContainerComponent }
-				onKeyDown={ this.onKeyDown }
-				className={ classNames('rrui__switcher',
-				{
+			<WithError
+				error={error}
+				indicateInvalid={indicateInvalid}
+				setRef={this.storeContainerComponent}
+				onKeyDown={this.onKeyDown}
+				style={style}
+				className={classNames(className, 'rrui__switcher', {
 					'rrui__switcher--disabled' : disabled
-				},
-				className) }
-				style={ style }>
+				})}>
 
 				<div
 					className="rrui__input"
@@ -88,13 +95,7 @@ export default class Switcher extends PureComponent
 					aria-invalid={ indicateInvalid && error ? true : undefined }>
 					{ options.map((option, index) => this.render_button(option, index)) }
 				</div>
-
-				{ indicateInvalid && error &&
-					<div className="rrui__input-error">
-						{ error }
-					</div>
-				}
-			</div>
+			</WithError>
 		)
 	}
 
