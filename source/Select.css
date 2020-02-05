@@ -116,13 +116,18 @@
 .rrui__select__button,
 .rrui__select__native
 {
-	width : 100%;
+	width: 100%;
 }
 
 .rrui__select__native
 {
-	height  : 100%;
-	cursor  : pointer;
+	height: 100%;
+	cursor: pointer;
+}
+
+.rrui__select__native--disabled
+{
+	cursor: default;
 }
 
 /* Something from stackoverflow. */

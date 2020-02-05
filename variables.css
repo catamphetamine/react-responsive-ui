@@ -122,6 +122,7 @@
   --rrui-input-field-border-width : 0px;
   --rrui-input-field-border-bottom-width : 1px;
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
+  --rrui-input-field-border-color-disabled : var(--rrui-input-field-border-color);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
   --rrui-input-field-border-color-error : var(--rrui-error-color);
   --rrui-input-field-border-color-error-focus : var(--rrui-input-field-border-color-error);

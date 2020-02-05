@@ -504,6 +504,7 @@ export default class Select extends PureComponent
 					'rrui__outline',
 					'rrui__select__native', {
 						'rrui__select__native--overlay' : !native,
+						'rrui__select__native--disabled' : disabled,
 						'rrui__select__native--invalid' : indicateInvalid && error
 					}
 				) }>

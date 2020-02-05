@@ -89,6 +89,16 @@
 	background-color : var(--rrui-input-field-background-color-error);
 }
 
+/* For `<TextInput/>` and alike. */
+.rrui__input-field--disabled,
+/* For `<Select/>` when `<button/>` is focused. */
+.rrui__select__button--disabled,
+/* For `<Select native={true}/>`. */
+.rrui__select__native--disabled
+{
+	border-color     : var(--rrui-input-field-border-color-disabled);
+	background-color : var(--rrui-input-field-background-color-disabled);
+}
 
 /* For `<TextInput/>` and alike. */
 /* Overrides the corresponding `:focus` CSS rule. */
@@ -119,23 +129,6 @@
 {
 	height : auto;
 	resize : none;
-}
-
-/* For `<TextInput/>` and alike. */
-.rrui__input-field--disabled,
-/* For `<Select/>`. */
-.rrui__select__button--disabled
-{
-	/* "pointer-events" prevents "cursor: wait" from working. */
-	pointer-events : none;
-	/* cursor : default; */
-	background-color : var(--rrui-input-field-background-color-disabled);
-}
-
-.rrui__select__native[disabled] {
-	/* "pointer-events" prevents "cursor: wait" from working. */
-	pointer-events : none;
-	/* cursor : default; */
 }
 
 .rrui__input-field__icon {
