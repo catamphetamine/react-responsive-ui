@@ -102,13 +102,25 @@ Each form component can be passed an `error: String` property. When passed, the 
 
 To show asterisks (`*`) on required fields' labels:
 
+When field `value` is empty:
+
 ```css
 /* (when the `value` is empty) */
 /* Required input field labels will have asterisks. */
-.rrui__input-label--required:after,
-.rrui__select__selected-label--required:after {
-  content     : '*';
-  margin-left : 0.2em;
+.rrui__input-label--required:after {
+  content: '*';
+  margin-left: 0.2em;
+}
+```
+
+Regardless of whether the field `value` is empty or not:
+
+```css
+/* (regardless of whether the `value` is empty or not) */
+/* Required input field labels will have asterisks. */
+.rrui__input-label--required-field:after {
+  content: '*';
+  margin-left: 0.2em;
 }
 ```
 

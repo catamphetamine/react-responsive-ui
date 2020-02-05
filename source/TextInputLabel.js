@@ -17,6 +17,7 @@ export default function TextInputLabel({
 			className={classNames('rrui__input-label',
 			{
 				'rrui__input-label--required'          : required && isEmptyOrBlank(value),
+				'rrui__input-label--required-field'    : required,
 				'rrui__input-label--invalid'           : invalid,
 				'rrui__input-label--floating'          : floats,
 				'rrui__text-input__label--placeholder' : floats && isEmptyOrBlank(value)

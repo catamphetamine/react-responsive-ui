@@ -453,12 +453,11 @@ export default class Select extends PureComponent
 				{SelectedOptionComponent
 					?
 					<SelectedOptionComponent
-						wait={wait}
 						{...selected}/>
 					:
 					<DefaultSelectedOptionComponent
+						required={!this.getTopLabel() && required}
 						indicateRequired={!this.getTopLabel() && required && isEmptyValue(value)}
-						wait={wait}
 						value={value}
 						label={selectedOptionLabel}
 						icon={showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : undefined}/>
@@ -825,8 +824,8 @@ function DefaultSelectedOptionComponent({
 	value,
 	label,
 	icon,
-	indicateRequired,
-	wait
+	required,
+	indicateRequired
 }) {
 	// The `<span/>` wrapper is required for vertical centering.
 	// http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers
@@ -835,12 +834,16 @@ function DefaultSelectedOptionComponent({
 			{/* Selected option label (or icon) */}
 			<span
 				className={classNames('rrui__select__selected-label', 'rrui__text-line', {
-					'rrui__select__selected-label--required': indicateRequired
+					// Deprecated.
+					// Use `.rrui__input-label--required` instead.
+					'rrui__select__selected-label--required': indicateRequired,
+					'rrui__input-label--required': indicateRequired,
+					'rrui__input-label--required-field': required
 				})}>
 				{icon || label}
 			</span>
 			{/* An arrow */}
-			{!wait && <span className="rrui__select__arrow"/>}
+			<span className="rrui__select__arrow"/>
 		</span>
 	)
 }
@@ -849,8 +852,8 @@ DefaultSelectedOptionComponent.propTypes = {
 	value: PropTypes.any,
 	label: PropTypes.string,
 	icon: PropTypes.node,
-	indicateRequired: PropTypes.bool,
-	wait: PropTypes.bool
+	required: PropTypes.bool,
+	indicateRequired: PropTypes.bool
 }
 
 /* `display: flex` fixes the incorrect toggler `<button/>` height
