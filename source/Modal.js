@@ -233,7 +233,8 @@ class Modal extends Component
 			style,
 			className,
 			overlayClassName,
-			children
+			children,
+			...rest
 		}
 		= this.props
 
@@ -249,6 +250,7 @@ class Modal extends Component
 
 		return (
 			<ReactModal
+				{...rest}
 				isOpen={ unmount ? isOpen : true }
 				onAfterOpen={ unmount ? this.on_after_open : undefined }
 				onRequestClose={ this.on_request_close }
