@@ -64,7 +64,8 @@ export default class ExpandableMenu extends PureComponent
 	state = {}
 
 	// The DOM Element reference is only used to determine
-	// whether the focus is "inside" the component or "outside" of it.
+	// whether the focus is "inside" the component or "outside" of it,
+	// and also for focusing the `<button/>` when closing expandable menu.
 	button = createRef()
 
 	componentWillUnmount() {
@@ -85,7 +86,7 @@ export default class ExpandableMenu extends PureComponent
 	}
 
 	// `this.toggler` is deprecated.
-	focus = () => focus(this.toggler || this.togglerNode)
+	focus = () => focus(this.toggler || this.button.current)
 
 	expand   = () => this.list.expand()
 	collapse = () => this.list.collapse()
