@@ -4,22 +4,9 @@
 
 <!-- `scroll-into-view-if-needed` bug: https://github.com/stipsan/scroll-into-view-if-needed/issues/359 -->
 
-<!-- `List.js`: replace `<div></div>` with `<React.Fragment></React.Fragment>` in some future when React >= 16.2.0 is common -->
-
-<!-- Remove <FileUpload/> action property -->
-
 <!-- Rename `ActivityIndicator` -> `Spinner` + CSS class names -->
 
 <!-- Rename `--busy`/`__busy` CSS classes to `--wait`/`__wait` -->
-
-<!-- (breaking change) Add `background-color: transparent;` to `TextInput`:
-
-.rrui__input-field
-{
-  background-color: transparent;
-  color: inherit;
-}
--->
 
 <!-- (breaking change) `<Page/>` component was removed. `<PageAndMenu/>` was renamed to `<App/>` (or something). -->
 
@@ -39,9 +26,30 @@
 
 <!-- (CSS breaking change) Maybe wrap <TextInputComponent/>'s <input/> and <textarea/>, <Autocomplete/>'s <input/>, <DatePicker/>'s <input/> and <Select/>'s <select/> in `<labels/>`. For that, the `--focus` classes will be required to style things (like `<Select/>`'s `<button/>`). Also maybe the second `<textarea/>` has to be moved out from such `<label/>` in `<TextInput multiline/>`. -->
 
-<!-- (CSS breaking change) `.rrui__snackbar__text` is only added for textual `value.content`. -->
-
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
+
+0.15.0 / 12.08.2021
+===================
+
+* `<DatePicker/>`: `utc` is `true` by default, `noon` is `false` by default.
+
+* Updated `react` and `react-dom` version requirement from `16.3` to `16.8`.
+
+* Removed deprecated `<FileUpload/>` `action` property.
+
+* `<Snackbar/>` wraps the message content in a `<p class="rrui__snackbar__text"/>` only if the message content is a string (not a React element).
+
+* (misc) `<DatePicker/>` doesn't expand the calendar on programmatic focus or focus via `Tab` key.
+
+0.14.199 / 25.01.2021
+=====================
+
+  * (CSS breaking change) The `<ExpansionPanel/>` component has some breaking changes in this version: renamed some CSS class names, removed some CSS variables.
+
+0.14.192 / 31.07.2020
+=====================
+
+  * Refactored `<Expandable/>` `.toggle()`.
 
 0.14.180 / 13.11.2019
 =====================

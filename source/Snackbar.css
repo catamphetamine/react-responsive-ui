@@ -86,11 +86,11 @@
 }
 
 .rrui__snackbar__close:hover {
-	color: var(--rrui-gray-color-lightest);
+	color: var(--rrui-snackbar-close-button-color);
 }
 
 .rrui__snackbar__close:active {
-	color: var(--rrui-gray-color-light);
+	color: var(--rrui-snackbar-close-button-color-active);
 }
 
 .rrui__snackbar__close-icon {

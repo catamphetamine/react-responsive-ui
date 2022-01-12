@@ -23,7 +23,7 @@
 
 .rrui__tooltip--after-show
 {
-	opacity: 1;
+	opacity: var(--rrui-tooltip-opacity);
 }
 
 /* `--before-hide` must be placed after `--after-show`. */
@@ -111,4 +111,8 @@
 	cursor: inherit;
 	/* Resets `white-space : nowrap` set by `interactive={true}`'s `.rrui__button-reset`. */
 	white-space: initial;
+}
+
+.rrui__tooltip__target--inline {
+	display: inline-block;
 }

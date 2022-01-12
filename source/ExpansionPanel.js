@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
-import createRef from 'react-create-ref'
 import classNames from 'classnames'
+
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
 
 const DownArrow = (props) => (
 	<svg viewBox="0 0 12 7" {...props}>
@@ -11,166 +16,179 @@ const DownArrow = (props) => (
 	</svg>
 )
 
-export default class ExpansionPanel extends React.Component {
-	static propTypes = {
-		title: PropTypes.string.isRequired,
-		disabled: PropTypes.bool,
-		// `isExpanded` can be used for manual control.
-		// For example, when there's a group of expansion panels
-		// and only one of them should be expanded at any given time.
-		isExpanded: PropTypes.bool,
-		onToggle: PropTypes.func,
-		toggleIcon: PropTypes.oneOfType([
-			PropTypes.func,
-			PropTypes.bool
-		]).isRequired,
-		toggleIconPlacement: PropTypes.oneOf(['start', 'end']).isRequired,
-		expandContentAnimationDuration: PropTypes.number.isRequired,
-		style: PropTypes.object,
-		className: PropTypes.string
-	}
+// The delay prevents Chrome from optimizing two immediate
+// CSS style changes to a single one: first one setting
+// <ExpansionPanel/>'s content `height` to `auto`,
+// and the second one setting content `height` to `0`,
+// so that the minimize animation is displayed.
+const MINIMIZE_TIMER_DELAY = 20
 
-	static defaultProps = {
-		toggleIcon: DownArrow,
-		toggleIconPlacement: 'end',
-		expandContentAnimationDuration: 300
-	}
+function ExpansionPanel({
+	isExpandedInitially,
+	isExpanded: isExpandedExternallyControlled,
+	onToggle,
+	title,
+	'aria-label': ariaLabel,
+	disabled,
+	toggleIcon: ToggleIcon,
+	toggleIconPlacement,
+	animationDuration,
+	style,
+	className,
+	children
+}, ref) {
+	const _isExpandedInitially = (isExpandedInitially === undefined ? isExpandedExternallyControlled : isExpandedInitially) || false
 
-	state = {
-		height: this.props.isExpanded ? undefined : 0,
-		isExpanded: this.props.isExpanded
-	}
+	const [isExpanded, setExpanded] = useState(_isExpandedInitially)
+	const [height, setHeight] = useState(_isExpandedInitially ? undefined : 0)
+	const [expandedHeight, setExpandedHeight] = useState()
 
-	content = createRef()
+	const content = useRef()
+	const resetHeightTimer = useRef()
 
-	toggle = (expand = !this.state.isExpanded) => {
-		const { onToggle } = this.props
+	const toggle = useCallback((expand) => {
+		if (expand === isExpanded) {
+			// The expansion panel is already in the requested state. Do nothing.
+			return
+		}
+		if (expand === undefined) {
+			expand = !isExpanded
+		}
 		if (onToggle) {
 			onToggle(expand)
 		}
-		clearTimeout(this.resetHeightTimer)
-		this.setState((state) => {
-			const isExpanded = expand
-			return {
-				isExpanded,
-				height: isExpanded ? null : undefined,
-				expandedHeight: isExpanded ? null : this.content.current.scrollHeight
-			}
-		})
-	}
+		clearTimeout(resetHeightTimer.current)
+		setExpanded(expand)
+		setHeight(expand ? null : undefined)
+		setExpandedHeight(expand ? null : content.current.scrollHeight)
+	}, [
+		isExpanded,
+		onToggle
+	])
 
-	onToggle = () => this.toggle()
+	const onToggleClick = useCallback((event) => toggle(), [toggle])
 
-	componentDidUpdate(prevProps, prevState) {
-		const { expandContentAnimationDuration } = this.props
-		if (this.props.isExpanded !== prevProps.isExpanded) {
-			this.toggle(this.props.isExpanded)
+	const isFirstUseEffect = useRef(true)
+	const isFirstUseLayoutEffect = useRef(true)
+
+	useEffect(() => {
+		if (isFirstUseEffect.current) {
+			return
 		}
-		if (this.state.isExpanded !== prevState.isExpanded) {
-			// If `<ExpansionPanel/>` is being expanded then measure its content height.
-			if (this.state.height === null) {
-				this.setState({
-					height: this.content.current.scrollHeight
-				})
-				this.resetHeightTimer = setTimeout(() => {
-					this.setState((state) => ({
-						height: undefined
-					}))
-				}, expandContentAnimationDuration)
-			} else {
-				// Added a timeout here so that React doesn't
-				// optimize two `setState()`s into a single one.
-				// Added a `10` timeout here so that the browser doesn't
-				// optimize two `setState()`s into a single one.
-				this.resetHeightTimer = setTimeout(() => {
-					this.setState({
-						height: 0
-					})
-				}, 20)
-			}
+		toggle(isExpanded)
+	}, [isExpandedExternallyControlled])
+
+	useLayoutEffect(() => {
+		if (isFirstUseLayoutEffect.current) {
+			return
 		}
-	}
+		if (isExpanded) {
+			// If `<ExpansionPanel/>` is being expanded
+			// then measure its content height.
+			if (height === null) {
+				setHeight(content.current.scrollHeight)
+			}
+			resetHeightTimer.current = setTimeout(() => {
+				setHeight(undefined)
+			}, animationDuration)
+		} else {
+			// Added a timeout here so that the browser doesn't
+			// optimize two `setState()`s into a single one.
+			resetHeightTimer.current = setTimeout(() => {
+				setHeight(0)
+			}, MINIMIZE_TIMER_DELAY)
+		}
+	}, [isExpanded])
 
-	componentWillUnmount() {
-		clearTimeout(this.resetHeightTimer)
-	}
+	useEffect(() => {
+		isFirstUseEffect.current = false
+	}, [])
 
-	render() {
-		const {
-			title,
-			disabled,
-			toggleIcon: ToggleIcon,
-			toggleIconPlacement,
-			style,
-			className,
-			children
-		} = this.props
+	useLayoutEffect(() => {
+		isFirstUseLayoutEffect.current = false
+		return () => {
+			clearTimeout(resetHeightTimer.current)
+		}
+	}, [])
 
-		const {
-			isExpanded,
-			height,
-			expandedHeight
-		} = this.state
+	// There was a possibility of using `<details/>`/`<summary/>` elements here
+	// but `<summary/>` can only contain any valid paragraph content
+	// which means it can't contain lists, divs, paragraphs, etc.
 
-		// There was a possibility of using `<details/>`/`<summary/>` elements here
-		// but `<summary/>` can only contain any valid paragraph content
-		// which means it can't contain lists, divs, paragraphs, etc.
-
-		return (
-			<section
-				style={style}
-				className={classNames(className, 'rrui__expansion-panel')}>
-				<header style={HEADING_STYLE}>
-					<button
-						type="button"
-						onClick={this.onToggle}
-						aria-expanded={isExpanded ? true : false}
-						aria-label={this.props['aria-label']}
-						disabled={disabled}
-						className={classNames('rrui__button-reset', 'rrui__outline', 'rrui__expansion-panel__header', {
-							// The explicit "modifier" CSS classes on "header" are
-							// to support <Collapsible/>s inside <Collapsible/>s.
-							'rrui__expansion-panel__header--expanded': isExpanded,
-							'rrui__expansion-panel__header--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
-							'rrui__expansion-panel__header--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
-						})}>
-						{ToggleIcon && toggleIconPlacement === 'start' &&
-							<ToggleIcon
-								aria-hidden
-								className={classNames('rrui__expansion-panel__icon', 'rrui__expansion-panel__icon--start', {
-									// The explicit "modifier" CSS class is to
-									// support <Collapsible/>s inside <Collapsible/>s.
-									'rrui__expansion-panel__icon--expanded': isExpanded
-								})}/>
-						}
-						<span className="rrui__expansion-panel__heading">
-							{title}
-						</span>
-						{ToggleIcon && toggleIconPlacement === 'end' &&
-							<ToggleIcon
-								aria-hidden
-								className={classNames('rrui__expansion-panel__icon', 'rrui__expansion-panel__icon--end', {
-									// The explicit "modifier" CSS class is to
-									// support <Collapsible/>s inside <Collapsible/>s.
-									'rrui__expansion-panel__icon--expanded': isExpanded
-								})}/>
-						}
-					</button>
-				</header>
-				<div
-					ref={this.content}
-					aria-hidden={!isExpanded}
-					style={{ height: isExpanded ? (height === null ? 0 : (height === undefined ? 'auto' : `${height}px`)) : (height === undefined ? expandedHeight : 0) }}
-					className="rrui__expansion-panel__content-wrapper">
-					<div className="rrui__expansion-panel__content">
-						{children}
-					</div>
+	return (
+		<section
+			style={style}
+			className={classNames(className, 'rrui__expansion-panel', {
+				'rrui__expansion-panel--expanded': isExpanded,
+				'rrui__expansion-panel--toggle-icon-start': ToggleIcon && toggleIconPlacement === 'start',
+				'rrui__expansion-panel--toggle-icon-end': ToggleIcon && toggleIconPlacement === 'end'
+			})}>
+			<header style={HEADING_STYLE}>
+				<button
+					ref={ref}
+					type="button"
+					onClick={onToggleClick}
+					aria-expanded={isExpanded ? true : false}
+					aria-label={ariaLabel}
+					disabled={disabled}
+					className={classNames('rrui__button-reset', 'rrui__outline', 'rrui__expansion-panel__header')}>
+					{ToggleIcon && toggleIconPlacement === 'start' &&
+						<ToggleIcon
+							aria-hidden
+							className={classNames('rrui__expansion-panel__toggle-icon', 'rrui__expansion-panel__toggle-icon--start')}/>
+					}
+					<span className="rrui__expansion-panel__heading">
+						{title}
+					</span>
+					{ToggleIcon && toggleIconPlacement === 'end' &&
+						<ToggleIcon
+							aria-hidden
+							className={classNames('rrui__expansion-panel__toggle-icon', 'rrui__expansion-panel__toggle-icon--end')}/>
+					}
+				</button>
+			</header>
+			<div
+				ref={content}
+				aria-hidden={!isExpanded}
+				style={{ height: isExpanded ? (height === null ? 0 : (height === undefined ? 'auto' : `${height}px`)) : (height === undefined ? expandedHeight : 0) }}
+				className="rrui__expansion-panel__content-wrapper">
+				<div className="rrui__expansion-panel__content">
+					{children}
 				</div>
-			</section>
-		)
-	}
+			</div>
+		</section>
+	)
 }
 
 const HEADING_STYLE = {
 	margin: 0
 }
+
+ExpansionPanel = React.forwardRef(ExpansionPanel)
+
+ExpansionPanel.propTypes = {
+	title: PropTypes.string.isRequired,
+	disabled: PropTypes.bool,
+	// `isExpanded` can be used for manual control.
+	// For example, when there's a group of expansion panels
+	// and only one of them should be expanded at any given time.
+	isExpanded: PropTypes.bool,
+	isExpandedInitially: PropTypes.bool,
+	onToggle: PropTypes.func,
+	toggleIcon: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.bool
+	]).isRequired,
+	toggleIconPlacement: PropTypes.oneOf(['start', 'end']).isRequired,
+	animationDuration: PropTypes.number.isRequired,
+	style: PropTypes.object,
+	className: PropTypes.string
+}
+
+ExpansionPanel.defaultProps = {
+	toggleIcon: DownArrow,
+	toggleIconPlacement: 'start',
+	animationDuration: 300
+}
+
+export default ExpansionPanel

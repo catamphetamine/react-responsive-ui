@@ -15,7 +15,7 @@
 }
 
 .DayPicker-wrapper:focus {
-	border-bottom-color: var(--rrui-input-field-border-color-focus);
+	border-bottom-color: var(--rrui-date-picker-calendar-border-color-focus);
 }
 
 .DayPicker-NavButton {
@@ -67,7 +67,7 @@
 	padding: 0.5em;
 	font-size: 0.875em;
 	text-align: center;
-	color: var(--rrui-gray-color);
+	color: var(--rrui-date-picker-calendar-weekday-color);
 }
 
 .DayPicker-Weekday abbr[title] {
@@ -92,10 +92,6 @@
 	border-radius: 50%;
 }
 
-.DayPicker-Day:focus {
-	background-color: #f7f7f7;
-}
-
 .DayPicker--interactionDisabled .DayPicker-Day {
 	cursor: default;
 }
@@ -104,48 +100,39 @@
 
 .DayPicker-Day--today:not(.DayPicker-Day--selected):not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
 {
-	/*
-	color: var(--rrui-accent-color);
-	font-weight: 700;
-	*/
-	/* border: 1px solid var(--rrui-gray-color-lightest); */
-	/*
-	border-radius: 50%;
-	box-shadow: 0 0 1px var(--rrui-black-color);
-	*/
-	color: #d0021b;
-	font-weight: 700;
+	color: var(--rrui-date-picker-calendar-day-color--today);
+	font-weight: var(--rrui-date-picker-calendar-day-font-weight--today);
 }
 
 .DayPicker-Day--outside
 {
 	cursor: default;
-	color: var(--rrui-gray-color);
+	color: var(--rrui-date-picker-calendar-day-color-outside);
 }
 
 .DayPicker-Day--disabled
 {
-	color: var(--rrui-gray-color-light);
+	color: var(--rrui-date-picker-calendar-day-color-disabled);
 	cursor: default;
 }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
 {
-	color: var(--rrui-white-color);
-	background-color: var(--rrui-accent-color);
+	color: var(--rrui-date-picker-calendar-day-color-selected);
+	background-color: var(--rrui-date-picker-calendar-day-background-color-selected);
 }
 
 /* .DayPicker:not(.DayPicker--interactionDisabled) ... */
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover
 {
-	background-color : var(--rrui-list-item-background-color-focus);
-	color            : var(--rrui-list-item-text-color-focus);
+	color: var(--rrui-date-picker-calendar-day-color-focus);
+	background-color: var(--rrui-date-picker-calendar-day-background-color-focus);
 }
 
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active
 {
-	color: var(--rrui-white-color);
-	background-color: var(--rrui-accent-color-light);
+	color: var(--rrui-date-picker-calendar-day-color-active);
+	background-color: var(--rrui-date-picker-calendar-day-background-color-active);
 }
 
 /* =============================== */

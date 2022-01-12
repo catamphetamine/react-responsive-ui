@@ -153,7 +153,13 @@ export default class ExpandableList extends PureComponent
 			})
 		}
 
-		this.list && this.list.clearFocus()
+		this.setState({
+			selectedItemIndex: undefined
+		})
+
+		if (this.list) {
+			this.list.clearFocus()
+		}
 	}
 
 	onExpand = () =>

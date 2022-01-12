@@ -4,7 +4,11 @@
 
 Responsive React UI components.
 
-[See Demo](https://catamphetamine.github.io/react-responsive-ui/)
+[See Demo](https://catamphetamine.gitlab.io/react-responsive-ui/)
+
+## GitHub
+
+On March 9th, 2020, GitHub, Inc. silently [banned](https://medium.com/@catamphetamine/how-github-blocked-me-and-all-my-libraries-c32c61f061d3) my account (and all my libraries) without any notice. I opened a support ticked but they didn't answer. Because of that, I had to move all my libraries to [GitLab](https://gitlab.com/catamphetamine).
 
 ## Install
 
@@ -16,13 +20,13 @@ React >= 16.3 is required.
 
 ## Use
 
-See the [demo page](https://catamphetamine.github.io/react-responsive-ui/). It has code examples for every component.
+See the [demo page](https://catamphetamine.gitlab.io/react-responsive-ui/). It has code examples for every component.
 
 ## CSS
 
 The CSS for this library resides in `react-responsive-ui/style.css` file and should be included on a page.
 
-The stylesheet uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://github.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden:
+The stylesheet uses [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d) for easier styling. See [`variables.css`](https://gitlab.com/catamphetamine/react-responsive-ui/blob/master/variables.css) for the list of all available variables. These variables have some sensible defaults which can be overridden:
 
 ```css
 :root {
@@ -63,7 +67,7 @@ Get the `style.css` file from this package, process it with a [CSS autoprefixer]
 
 ## Small Screen
 
-The [`small-screen`](https://github.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. For example, `<Select/>`s, `<Autocomplete/>`s, `<ExpandableMenu/>`s, `<DatePicker/>`s can open in fullscreen (not neccessarily a good idea though). `<Modal/>`s have less padding and `<Snackbar/>`s are full-width. These CSS files may also use [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d).
+The [`small-screen`](https://gitlab.com/catamphetamine/react-responsive-ui/tree/master/small-screen) directory contains "small screen" ("mobile devices") styles for some of the components. For example, `<Select/>`s, `<Autocomplete/>`s, `<ExpandableMenu/>`s, `<DatePicker/>`s can open in fullscreen (not neccessarily a good idea though). `<Modal/>`s have less padding and `<Snackbar/>`s are full-width. These CSS files may also use [native CSS variables](https://medium.freecodecamp.org/learn-css-variables-in-5-minutes-80cf63b4025d).
 
 Native CSS [`@import`](https://developer.mozilla.org/docs/Web/CSS/@import) example:
 

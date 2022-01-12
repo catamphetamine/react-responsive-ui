@@ -12,7 +12,13 @@ import { onBlurForReduxForm } from './utility/redux-form'
 import { onBlur } from './utility/focus'
 import { isInternetExplorer } from './utility/dom'
 
-import { parseDate, formatDate, trimInvalidPart, normalizeDate } from './utility/date'
+import {
+	parseDate,
+	formatDate,
+	trimInvalidPart,
+	normalizeDate,
+	getSameDateAndTimeInUtc0TimeZone
+} from './utility/date'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -170,10 +176,10 @@ export default class DatePicker extends PureComponent
 		indicateInvalid : true,
 
 		// Whether dates being selected should be in UTC+0 timezone
-		utc : false,
+		utc : true,
 
 		// Whether to set time to 12:00 for dates being selected
-		noon : true,
+		noon : false,
 
 		// A sensible default.
 		selectYearsIntoPast : 100,
@@ -208,17 +214,14 @@ export default class DatePicker extends PureComponent
 		this.userHasJustChangedYearOrMonthTimer = setTimeout(() => this._userHasJustChangedYearOrMonth = false, 50)
 	}
 
-	onInputFocus = (event) =>
-	{
+	onInputFocus = (event) => {
 		const { onFocus } = this.props
-
 		if (onFocus) {
 			onFocus(event)
 		}
-
-		if (!this.focusAfterDaySelected) {
-			this.expand()
-		}
+		// if (!this.focusAfterDaySelected) {
+		// 	this.expand()
+		// }
 	}
 
 	onExpand = () =>
@@ -227,7 +230,8 @@ export default class DatePicker extends PureComponent
 		{
 			value,
 			format,
-			onToggle
+			onToggle,
+			utc
 		}
 		= this.props
 
@@ -238,7 +242,7 @@ export default class DatePicker extends PureComponent
 
 			// Must re-calculate `text_value` on each "expand"
 			// because it's being reset on each "collapse".
-			text_value : formatDate(value, format),
+			text_value : formatDate(value, format, { utc }),
 
 			// For `aria-expanded`.
 			isExpanded : true
@@ -292,7 +296,7 @@ export default class DatePicker extends PureComponent
 	// Cancels textual date editing.
 	onCollapse = ({ focusOut }) =>
 	{
-		if (!focusOut && !this.focusingOut) {
+		if (!focusOut && !this.focusingOut && !this.hasDayJustBeenSelected) {
 			this.focus()
 		}
 
@@ -308,7 +312,7 @@ export default class DatePicker extends PureComponent
 		// therefore, say, if `value` was not set
 		// and a user selects a day in the calendar
 		// then the `value` is technically still `undefined`
-		// so can't just set `state.text_value = formatDate(value)` here.
+		// so can't just set `state.text_value = formatDate(value, ...)` here.
 		//
 		// Analogous, `setState({ text_value })` has been called
 		// in calendar day `onClick` handler but `state.text_value`
@@ -520,7 +524,7 @@ export default class DatePicker extends PureComponent
 		if (utc)
 		{
 			// Converts timezone to UTC while preserving the same time
-			selected_day = convert_to_utc_timezone(selected_day)
+			selected_day = getSameDateAndTimeInUtc0TimeZone(selected_day)
 		}
 
 		// `onChange` fires but the `value`
@@ -534,21 +538,28 @@ export default class DatePicker extends PureComponent
 		}
 
 		// Hide the calendar
+		this.hasDayJustBeenSelected = true
 		this.collapse()
+		this.hasDayJustBeenSelected = false
 
 		// Focus the `<input/>`.
 		// (if not in "input overlay" mode for mobile devices).
 		if (getComputedStyle(this.inputOverlay).display === 'none')
 		{
-			this.focusAfterDaySelected = true
+			// `this.focusAfterDaySelected` flag was used to find out the reason
+			// why the text input was being focused: if it was being focused
+			// after a calendar day was selected, then it didn't expand the calendar.
+			// Previously, this component used to expand the calendar on focus.
+			// Now it doesn't, so `this.focusAfterDaySelected` flag is no longer used.
+			// this.focusAfterDaySelected = true
 			this.input.focus()
 
-			// For some reason in IE 11 `onFocus` on `<input/>` is not called immediately.
-			if (isInternetExplorer()) {
-				setTimeout(() => this.focusAfterDaySelected = false, 0)
-			} else {
-				this.focusAfterDaySelected = false
-			}
+			// // For some reason in IE 11 `onFocus` on `<input/>` is not called immediately.
+			// if (isInternetExplorer()) {
+			// 	setTimeout(() => this.focusAfterDaySelected = false, 0)
+			// } else {
+			// 	this.focusAfterDaySelected = false
+			// }
 		}
 	}
 
@@ -643,6 +654,7 @@ export default class DatePicker extends PureComponent
 		{
 			id,
 			format,
+			utc,
 			value,
 			error,
 			indicateInvalid,
@@ -728,7 +740,7 @@ export default class DatePicker extends PureComponent
 					tabIndex={ tabIndex }
 					disabled={ disabled }
 					autoFocus={ autoFocus }
-					value={ text_value !== undefined ? text_value : formatDate(value, format) }
+					value={ text_value !== undefined ? text_value : formatDate(value, format, { utc }) }
 					onKeyDown={ this.onInputKeyDown }
 					onChange={ this.onInputChange }
 					onFocus={ this.onInputFocus }

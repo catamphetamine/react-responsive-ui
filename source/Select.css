@@ -81,17 +81,17 @@
 	width  : 0;
 	height : 0;
 
-	margin-left   : calc(var(--rrui-unit) * 2 / 3);
-	margin-right  : calc(var(--rrui-unit) * 2 / 3);
-	margin-top    : 0.1em;
+	margin-left   : var(--rrui-select-arrow-margin-left);
+	margin-right  : var(--rrui-select-arrow-margin-right);
+	margin-top    : var(--rrui-select-arrow-margin-top);
 
-	opacity : 0.6;
-	color   : var(--rrui-gray-color);
+	opacity : var(--rrui-select-arrow-opacity);
+	color   : var(--rrui-select-arrow-color);
 
 	/*transition : opacity 100ms ease-out;*/
 
 	/* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
-	border-width : 0.35em 0.22em 0 0.22em;
+	border-width : var(--rrui-select-arrow-border-width);
 
 	border-style       : solid;
 	border-left-color  : transparent;

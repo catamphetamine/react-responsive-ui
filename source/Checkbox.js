@@ -16,6 +16,9 @@ export default class Checkbox extends PureComponent
 {
 	static propTypes =
 	{
+		// HTML `id` attribute.
+		id : PropTypes.string,
+
 		// HTML form field "name"
 		name : PropTypes.string,
 
@@ -33,6 +36,9 @@ export default class Checkbox extends PureComponent
 			PropTypes.string,
 			PropTypes.bool
 		]),
+
+		// `onClick` handler
+		onClick : PropTypes.func,
 
 		// `onChange` handler
 		onChange  : PropTypes.func,
@@ -106,6 +112,7 @@ export default class Checkbox extends PureComponent
 	{
 		const
 		{
+			id,
 			value,
 			error,
 			indicateInvalid,
@@ -115,7 +122,8 @@ export default class Checkbox extends PureComponent
 			ariaLabel,
 			children,
 			style,
-			className
+			className,
+			onClick
 		}
 		= this.props
 
@@ -127,7 +135,7 @@ export default class Checkbox extends PureComponent
 				indicateInvalid={indicateInvalid}
 				style={style}
 				className={classNames(className, 'rrui__checkbox', {
-					// 'rrui__checkbox--checked'  : value,
+					'rrui__checkbox--checked'  : value,
 					'rrui__checkbox--invalid'   : indicateInvalid && error,
 					'rrui__checkbox--disabled'  : disabled,
 					'rrui__checkbox--multiline' : multiline,
@@ -141,14 +149,16 @@ export default class Checkbox extends PureComponent
 
 					<span className="rrui__checkbox__checkbox">
 						<input
+							id={ id }
 							ref={ this.storeInstance }
 							type="checkbox"
 							aria-label={ this.props['aria-label'] || ariaLabel }
 							aria-invalid={ indicateInvalid && error ? true : undefined }
 							checked={ value }
 							disabled={ disabled }
-							onKeyDown={ this.onKeyDown }
+							onClick={ onClick }
 							onChange={ this.toggle }
+							onKeyDown={ this.onKeyDown }
 							onFocus={ this.onFocus }
 							onBlur={ this.onBlur }
 							className="rrui__checkbox__input"/>

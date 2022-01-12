@@ -4,6 +4,12 @@ import classNames from 'classnames'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import createRef from 'react-create-ref'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 import Close, { CloseIcon } from './Close'
 import OnFocusOutOrTapOutside from './OnFocusOutOrTapOutside'
 
@@ -103,10 +109,10 @@ export default class Expandable extends PureComponent
 
 	onFocusOutRef = createRef()
 
-	componentWillUnmount()
-	{
-		clearTimeout(this.scrollIntoViewTimer)
-		clearTimeout(this.removeFromDOMTimer)
+	componentWillUnmount() {
+		if (this.cancelProcess) {
+			this.cancelProcess()
+		}
 	}
 
 	isExpanded = () => this.state.expanded
@@ -116,28 +122,20 @@ export default class Expandable extends PureComponent
 
 	toggle = (expand, parameters = {}) =>
 	{
-		const
-		{
+		const {
 			onExpand,
 			onExpanded,
 			onCollapse,
-			onCollapsed,
-			preload,
-			onPreloadStateChange,
-			onPreloadError
-		}
-		= this.props
+			onCollapsed
+		} = this.props
 
-		const
-		{
-			expanded,
-			isPreloading
-		}
-		= this.state
+		const { expanded } = this.state
 
 		// If no `expand` argument provided then just toggle.
+		const isExpandedState = (expanded && this.process !== 'unexpand') ||
+			(this.process === 'expand')
 		if (expand === undefined) {
-			expand = !expanded
+			expand = !isExpandedState
 		}
 
 		// Don't collapse if already collapsed.
@@ -145,89 +143,147 @@ export default class Expandable extends PureComponent
 		// unless manually forcing a refresh of content.
 
 		let refreshingExpanded
-
-		if (expand && expanded && parameters.refresh) {
+		if (expand && isExpandedState && parameters.refresh) {
 			refreshingExpanded = true
 		}
 
-		if (expand === expanded && !refreshingExpanded) {
+		if (expand === isExpandedState && !refreshingExpanded) {
 			return Promise.resolve()
 		}
 
-		if (this.isToggling && !refreshingExpanded) {
-			return Promise.resolve()
+		// if (this.isToggling && !refreshingExpanded) {
+		// 	return Promise.resolve()
+		// }
+
+		if (this.cancelProcess) {
+			this.cancelProcess()
 		}
 
-		this.isToggling = true
+		let cancelled
 
-		// Collapse.
-		if (!expand)
-		{
+		const reset = () => {
+			this.process = undefined
+			this.processPhase = undefined
+			this.cancelProcess = undefined
+		}
+
+		const nextPhase = (phase) => {
+			if (!cancelled) {
+				this.processPhase = phase
+				return true
+			}
+		}
+
+		function endProcess() {
+			nextPhase()
+			reset()
+		}
+
+		const phaseCancellers = {}
+		function onCancelPhase(phase, handler) {
+			phaseCancellers[phase] = handler
+		}
+
+		this.cancelProcess = () => {
+			if (phaseCancellers[this.processPhase]) {
+				phaseCancellers[this.processPhase]()
+			}
+			cancelled = true
+			reset()
+		}
+
+		if (expand) {
+			// Expand.
+			this.process = 'expand'
+			onCancelPhase('scheduleExpand', () => clearTimeout(this.expandTimeout))
+			onCancelPhase('expanded', () => clearTimeout(this.scrollIntoViewTimer))
+			nextPhase('preload')
+			return this.preload().then(() => new Promise((resolve) => {
+				if (!nextPhase('render')) {
+					return
+				}
+				this.setState({
+					shouldRender: true
+				},
+				// Without an artificial delay for some reason the CSS "expand" animation won't play.
+				// Perhaps a browser decides to optimize two subsequent renders
+				// and doesn't render "pre-expanded" and "expanded" states separately.
+				// Even with a 0ms delay it would randomly play/not-play the expand animation.
+				() => {
+					if (!nextPhase('scheduleExpand')) {
+						return
+					}
+					if (onExpand) {
+						onExpand()
+					}
+					// Using `requestAnimationFrame()` instead of `setTimeout()`
+					// because otherwise there would be a weird and strange delay.
+					this.expandTimeout = setTimeout(() => {
+						if (!nextPhase('expand')) {
+							return
+						}
+						this.expandTimeout = undefined
+						this.setState({ expanded: true }, () => {
+							if (!nextPhase('expanded')) {
+								return
+							}
+							if (onExpanded) {
+								onExpanded()
+							}
+							if (this.onFocusOutRef.current) {
+								this.onFocusOutRef.current.listenToTouches()
+							}
+							this.scrollIntoView().then(endProcess)
+							// `resolve()` doesn't wait for `scrollIntoView`
+							// because other components use it like `.toggle().then(focus)`
+							// where it shouldn't wait for the final phases like "scroll into view".
+							resolve()
+						})
+					}, 0)
+				})
+			}))
+		} else {
+			// Un-Expand.
+			this.process = 'unexpand'
+			onCancelPhase('unexpand', () => clearTimeout(this.scrollIntoViewTimer))
+			onCancelPhase('unexpanded', () => clearTimeout(this.waitUnForExpandAnimationTimer))
+			nextPhase('unexpand')
 			if (this.onFocusOutRef.current) {
 				this.onFocusOutRef.current.stopListeningToTouches()
 			}
-
-			clearTimeout(this.scrollIntoViewTimer)
-
 			if (onCollapse) {
 				onCollapse({ focusOut: this.focusOut })
 			}
-
 			// Set `expanded` to `false` to play the collapse CSS animation.
 			// Once that animation is finished remove
 			// the contents of the `<Expanded/>` from DOM.
 			return new Promise((resolve) => {
-				this.setState({ expanded : false }, () => {
-					if (onCollapsed) {
-						onCollapsed();
+				this.setState({ expanded: false }, () => {
+					if (!nextPhase('unexpanded')) {
+						return
 					}
-					this.removeFromDOMAfterCollapsed()
-					this.isToggling = false
+					if (onCollapsed) {
+						onCollapsed()
+					}
+					const waitForUnExpandAnimation = () => {
+						const { expandAnimationDuration } = this.props
+						return new Promise((resolve) => {
+							this.waitUnForExpandAnimationTimer = setTimeout(resolve, expandAnimationDuration * 1.1)
+						})
+					}
+					waitForUnExpandAnimation().then(() => {
+						if (!nextPhase('unrender')) {
+							return
+						}
+						this.setState({ shouldRender: false }, endProcess)
+					})
+					// `resolve()` doesn't wait for `removeFromDOMAfterCollapsed`
+					// because other components use it like `.toggle().then(focus)`
+					// where it shouldn't wait for the final phases like "scroll into view".
 					resolve()
 				})
 			})
 		}
-
-		// Expand.
-		return this.preload().then(() => new Promise((resolve) =>
-		{
-			clearTimeout(this.removeFromDOMTimer)
-
-			this.setState
-			({
-				shouldRender : true
-			},
-			// Without the 10ms delay for some reason the CSS "expand" animation won't play.
-			// Perhaps a browser decides to optimize two subsequent renders
-			// and doesn't render "pre-expanded" and "expanded" states separately.
-			// Even with a 0ms delay it would randomly play/not-play the expand animation.
-			() =>
-			{
-				if (onExpand) {
-					onExpand()
-				}
-
-				setTimeout(() =>
-				{
-					this.setState({ expanded : true }, () =>
-					{
-						if (onExpanded) {
-							onExpanded()
-						}
-
-						this.scrollIntoView()
-						resolve()
-
-						if (this.onFocusOutRef.current) {
-							this.onFocusOutRef.current.listenToTouches()
-						}
-
-						this.isToggling = false
-					})
-				},
-				10)
-			})
-		}))
 	}
 
 	// Preload `<Expanded/>` content (if required).
@@ -235,12 +291,10 @@ export default class Expandable extends PureComponent
 	{
 		const { preload, onPreloadStateChange } = this.props
 
-		if (preload)
-		{
+		if (preload) {
 			this.setState({
-				isPreloading : true
+				isPreloading: true
 			})
-
 			if (onPreloadStateChange) {
 				onPreloadStateChange(true)
 			}
@@ -252,80 +306,47 @@ export default class Expandable extends PureComponent
 				if (onPreloadStateChange) {
 					onPreloadStateChange(false)
 				}
-
 				this.setState({
-					isPreloading : false
+					isPreloading: false
 				})
 			},
 			(error) =>
 			{
 				console.error(error)
-
 				// if (onPreloadError) {
 				// 	onPreloadError(error)
 				// }
-
 				if (onPreloadStateChange) {
 					onPreloadStateChange(false)
 				}
-
 				this.setState({
-					isPreloading : false
+					isPreloading: false
 				})
 			})
 	}
 
-	scrollIntoView()
-	{
-		const
-		{
-			scrollIntoView : shouldScrollIntoView,
+	scrollIntoView() {
+		const {
+			scrollIntoView: shouldScrollIntoView,
 			scrollIntoViewDelay,
 			expandAnimationDuration
+		} = this.props
+		if (!shouldScrollIntoView) {
+			return Promise.resolve()
 		}
-		= this.props
-
-		// // For some reason in IE 11 "scroll into view" scrolls
-		// // to the top of the page, therefore turn it off for IE.
-		// if (!isInternetExplorer() && shouldScrollIntoView)
-		if (shouldScrollIntoView)
-		{
-			this.scrollIntoViewTimer = setTimeout(() =>
-			{
-				const { expanded } = this.state
-
-				// If still expanded and there are any options
-				// then scroll into view.
-				if (expanded)
-				{
-					// https://github.com/stipsan/scroll-into-view-if-needed/issues/359
-					// scrollIntoView(this.container, false, { duration: 300 })
-
-					scrollIntoView(this.container,
-					{
-						scrollMode : 'if-needed',
-						behavior   : 'smooth',
-						block      : 'nearest',
-						inline     : 'nearest'
-					})
-				}
-			},
-			Math.max(scrollIntoViewDelay, expandAnimationDuration) * 1.1)
-		}
-	}
-
-	removeFromDOMAfterCollapsed = () =>
-	{
-		const { expandAnimationDuration } = this.props
-
-		// For some reason in IE 11 "scroll into view" scrolls
-		// to the top of the page, therefore turn it off for IE.
-		this.removeFromDOMTimer = setTimeout(() =>
-		{
-			// Re-render to remove the options DOM nodes.
-			this.setState({ shouldRender : false })
-		},
-		expandAnimationDuration * 1.1)
+		return new Promise((resolve) => {
+			this.scrollIntoViewTimer = setTimeout(() => {
+				// https://github.com/stipsan/scroll-into-view-if-needed/issues/359
+				// scrollIntoView(this.container, false, { duration: 300 })
+				scrollIntoView(this.container, {
+					scrollMode: 'if-needed',
+					behavior: 'smooth',
+					block: 'nearest',
+					inline: 'nearest'
+				})
+				resolve()
+			}, Math.max(scrollIntoViewDelay, expandAnimationDuration) * 1.1)
+		})
 	}
 
 	onKeyDown = (event) =>
@@ -352,7 +373,9 @@ export default class Expandable extends PureComponent
 	getContainerNode = () => this.container
 
 	// This function is called from outside in `<ExpandableList/>`.
-	onBlur = (event) => this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
+	onBlur = (event) => {
+		return this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
+	}
 
 	onFocusOut = (event) => {
 		const { onFocusOut } = this.props

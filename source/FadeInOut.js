@@ -2,6 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 export default class FadeInOut extends React.Component {
 	static propTypes = {
 		show: PropTypes.bool.isRequired,
@@ -151,6 +157,7 @@ export default class FadeInOut extends React.Component {
 			return this.getFadeOutStyle()
 		}
 
+		// On first render.
 		// If `show={true}` and hasn't faded in/out yet, then just show.
 		if (show && fadeIn === undefined && !fadeInInitially) {
 			return SHOWN_STYLE
@@ -173,15 +180,22 @@ export default class FadeInOut extends React.Component {
 		} = this.state
 
 		if (show || fadeOut) {
+			const style = children.props.style
+				? { ...children.props.style, ...this.getStyle() }
+				: this.getStyle()
+
 			if (fadeInClassName) {
 				return React.cloneElement(children, {
+					// Set `opacity` correctly on first render
+					// if `fadeInInitially` is not `true`.
+					style: fadeIn === undefined ? style : undefined,
 					className: classNames(children.props.className, {
 						[fadeInClassName]: fadeIn
 					})
 				})
 			} else {
 				return React.cloneElement(children, {
-					style: children.props.style ? { ...children.props.style, ...this.getStyle() } : this.getStyle()
+					style
 				})
 			}
 			// return children

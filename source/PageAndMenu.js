@@ -32,27 +32,39 @@ export default class PageAndMenu extends Component {
 	}
 
 	render() {
+		const { as: Component, ...rest } = this.props;
 		return (
 			<Context.Provider value={this.state}>
-				<div {...this.props}/>
+				<Component {...rest}/>
 			</Context.Provider>
 		)
 	}
 
 	toggleMenu = (show) => {
 		this.menu.toggle(show, () => {
-			this.setState({
-				menuIsExpanded: this.menu.isShown()
-			})
-			// Focus the menu when it's expanded.
-			// Focus the menu button when menu is collapsed.
-			if (this.menu.isShown()) {
-				const menu = this.menu.menu()
-				menu && menu.focus && menu.focus()
-			} else {
+			this._onDidShowMenu(this.menu.isShown())
+		})
+	}
+
+	_onDidShowMenu = (isShown) => {
+		this.setState({
+			menuIsExpanded: isShown
+		})
+		// Focus the menu when it's expanded.
+		// Focus the menu button when menu is collapsed.
+		if (isShown) {
+			const menu = this.menu.menu()
+			// If the menu element supports focus.
+			// (for example, via `tabIndex={-1}`).
+			if (menu && menu.focus) {
+				menu.focus()
+			}
+		} else {
+			// The menu button might get unmounted when the menu is unmounted.
+			if (this.menuButton) {
 				this.menuButton.element().focus()
 			}
-		})
+		}
 	}
 
 	registerMenu = (menu) => {
@@ -61,7 +73,10 @@ export default class PageAndMenu extends Component {
 		}
 		this.menu = menu
 		// Return `.unregister()`.
-		return () => this.menu = undefined
+		return () => {
+			this.menu = undefined
+			this._onDidShowMenu(false)
+		}
 	}
 
 	registerMenuButton = (menuButton) => {
@@ -70,9 +85,19 @@ export default class PageAndMenu extends Component {
 		}
 		this.menuButton = menuButton
 		// Return `.unregister()`.
-		return () => this.menuButton = undefined
+		return () => {
+			this.menuButton = undefined
+		}
 	}
 
 	setTogglerCooldown = () => this.menuButton.setCooldown()
 	getTogglerNode = () => this.menuButton.element()
 }
+
+PageAndMenu.propTypes = {
+	as: PropTypes.elementType.isRequired
+};
+
+PageAndMenu.defaultProps = {
+	as: 'div'
+};

@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import createRef from 'react-create-ref'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
@@ -120,13 +126,7 @@ export default class Snackbar extends PureComponent
 	}
 
 	// Displays the next notification in the queue
-	next = () =>
-	{
-		const {
-			minTime,
-			lengthTimeFactor
-		} = this.props
-
+	next = () => {
 		// Get the next notification from the queue
 		// (will be `undefined` if the queue is empty)
 		const value = this.queue.shift()
@@ -140,27 +140,27 @@ export default class Snackbar extends PureComponent
 			hiding: false
 		})
 
-		// If the queue is empty, then just exit
-		if (!value) {
+		if (value) {
+			this.status = 'active'
+			// `state.show` will be set to `true` later,
+			// when the height of the element is measured
+			// (which is after it renders)
+		} else {
+			// If the queue is empty, then just exit
 			this.status = 'idle'
-			return
 		}
+	}
 
-		this.status = 'active'
-
-		// `state.show` will be set to `true` later,
-		// when the height of the element is measured
-		// (which is after it renders)
-
+	scheduleAutoHide() {
+		const { minTime, lengthTimeFactor } = this.props
+		const { value } = this.state
 		if (value.duration === -1) {
 			return
 		}
-
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
 		const length = typeof value.content === 'string' ? value.content.length : value.length || 0
 		const duration = value.duration || (minTime + length * lengthTimeFactor)
-
 		// Hide the notification after it expires.
 		if (window.rruiCollapseOnFocusOut !== false) {
 			this.auto_hide_timer = setTimeout(this.hide, duration)
@@ -180,9 +180,9 @@ export default class Snackbar extends PureComponent
 		this.show_next_snack_timeout = setTimeout(this.next, hideAnimationDuration)
 	}
 
-	componentDidUpdate(prevProps)
-	{
+	componentDidUpdate(prevProps, prevState) {
 		let { height, value } = this.state
+		const { show } = this.state
 
 		// If `value` got updated then push it to the list of `queue`.
 		this.receiveNewValue(prevProps)
@@ -192,19 +192,31 @@ export default class Snackbar extends PureComponent
 		// Calculate the notification container DOM element height
 		// so that the slide-from-bottom animation knows
 		// its target Y-position for the CSS `translate` transform.
-		if (height === undefined && value)
-		{
-			height = this.snackbar.current.offsetHeight
-			// const wide = this.snackbar.current.offsetWidth === document.documentElement.clientWidth
-			const marginBottom = parseInt(getComputedStyle(this.snackbar.current).marginBottom)
-			const anti_lag_timeout = 100 // Otherwise it would jump to fully shown in Chrome when there's a queue of snacks waiting to be shown
-			this.setState({
-				height,
-				// wide,
-				marginBottom
-			}, () => {
-				this.show_snack_timeout = setTimeout(() => this.setState({ show: true }), anti_lag_timeout)
-			})
+		if (value) {
+			if (height === undefined) {
+				height = this.snackbar.current.offsetHeight
+				// const wide = this.snackbar.current.offsetWidth === document.documentElement.clientWidth
+				const marginBottom = parseInt(getComputedStyle(this.snackbar.current).marginBottom)
+				this.setState({
+					height,
+					// wide,
+					marginBottom
+				})
+			} else if (prevState.height === undefined) {
+				// An "anti-lag" timeout added in order to set `show: true`
+				// after the web browser has re-rendered.
+				// Otherwise it would jump to fully shown in Chrome when
+				// there's a queue of snacks waiting to be shown
+				const anti_lag_timeout = 100
+				// Handle the changed state (due to the `.setState()` call above).
+				this.show_snack_timeout = setTimeout(() => {
+					// Sometimes (for example, when the browser tab was in background)
+					// this timer hasn't fired until the timeout
+					this.setState({ show: true })
+				}, anti_lag_timeout)
+			} else if (!prevState.show && show) {
+				this.scheduleAutoHide()
+			}
 		}
 	}
 
@@ -254,9 +266,16 @@ export default class Snackbar extends PureComponent
 
 				{/* Render the default content component. */}
 				{value && !value.component &&
-					<p className="rrui__snackbar__text">
-						{value.content}
-					</p>
+					<React.Fragment>
+						{typeof value.content === 'string' &&
+							<p className="rrui__snackbar__text">
+								{value.content}
+							</p>
+						}
+						{typeof value.content !== 'string' &&
+							value.content
+						}
+					</React.Fragment>
 				}
 
 				{/* Render a custom content component. */}
@@ -273,7 +292,7 @@ export default class Snackbar extends PureComponent
 							<button
 								type="button"
 								onClick={value.action.onClick}
-								class="rrui__snackbar__action rrui__button-reset">
+								className="rrui__snackbar__action rrui__button-reset">
 								{value.action.title}
 							</button>
 						}

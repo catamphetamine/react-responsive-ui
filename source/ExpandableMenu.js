@@ -68,9 +68,9 @@ export default class ExpandableMenu extends PureComponent
 	// and also for focusing the `<button/>` when closing expandable menu.
 	button = createRef()
 
-	componentWillUnmount() {
-		clearTimeout(this.cooldownTimer)
-	}
+	// componentWillUnmount() {
+	// 	clearTimeout(this.cooldownTimer)
+	// }
 
 	onExpand = () => this.setState({ isExpanded: true })
 
@@ -79,10 +79,10 @@ export default class ExpandableMenu extends PureComponent
 			this.focus()
 		}
 		this.setState({ isExpanded: false })
-		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
-		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
-		this.cooldown = true
-		this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
+		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		// this.cooldown = true
+		// this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
 	}
 
 	// `this.toggler` is deprecated.
@@ -111,11 +111,11 @@ export default class ExpandableMenu extends PureComponent
 	onBlur = (event) => this.list && this.list.onBlur(event)
 
 	onClick = (event) => {
-		// A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
-		// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
-		if (!this.cooldown) {
+		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
+		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+		// if (!this.cooldown) {
 			this.toggle()
-		}
+		// }
 	}
 
 	onKeyDown = (event) => {

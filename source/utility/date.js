@@ -42,10 +42,10 @@ export function parseDate(text_value, format, noon, utc)
 
 // (Moment.js)
 // Formats a `Date` into a text value provided a `format`
-export function formatDate(date, format)
+export function formatDate(date, format, { utc } = {})
 {
 	// Custom
-	return formatDateCustom(date, format)
+	return formatDateCustom(date, format, { utc })
 
 	// // Using `date-fns`
 	// return format_date_date_fns(date, format)
@@ -114,7 +114,7 @@ export function parseDateCustom(string, format, noon, utc)
 	if (utc)
 	{
 		// Converts timezone to UTC while preserving the same time
-		date = convertToUtcTimezone(date)
+		date = getSameDateAndTimeInUtc0TimeZone(date)
 	}
 
 	// If `new Date()` returns "Invalid Date"
@@ -178,7 +178,7 @@ export function correspondsToTemplate(string, template)
 	return true
 }
 
-export function formatDateCustom(date, format)
+export function formatDateCustom(date, format, { utc } = {})
 {
 	// Someone may accidentally pass a timestamp, or a string.
 	// Or `date` could be `undefined`.
@@ -189,6 +189,10 @@ export function formatDateCustom(date, format)
 	// Check if `date` is "Invalid Date".
 	if (isNaN(date.getTime())) {
 		return ''
+	}
+
+	if (utc) {
+		date = getSameDateAndTimeFromUtc0TimeZone(date)
 	}
 
 	const day   = date.getDate()
@@ -277,14 +281,24 @@ export function trimInvalidPart(value, format)
 	return value.slice(0, i)
 }
 
-// Converts timezone to UTC while preserving the same time
-function convertToUtcTimezone(date)
-{
-	// Doesn't account for leap seconds but I guess that's ok
-	// given that javascript's own `Date()` does not either.
-	// https://www.timeanddate.com/time/leap-seconds-background.html
-	//
-	// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-	//
-	return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
+// Converts timezone to UTC+0 while preserving the same time.
+export function getSameDateAndTimeInUtc0TimeZone(date) {
+  // Doesn't account for leap seconds but I guess that's ok
+  // given that javascript's own `Date()` does not either.
+  // https://www.timeanddate.com/time/leap-seconds-background.html
+  //
+  // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+  //
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000)
+}
+
+// Converts timezone from UTC+0 while preserving the same time.
+export function getSameDateAndTimeFromUtc0TimeZone(date) {
+  // Doesn't account for leap seconds but I guess that's ok
+  // given that javascript's own `Date()` does not either.
+  // https://www.timeanddate.com/time/leap-seconds-background.html
+  //
+  // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+  //
+  return new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000)
 }

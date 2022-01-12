@@ -2,11 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 import { Context } from './PageAndMenu'
 import MenuIcon from './MenuIcon'
-
-// `PureComponent` is only available in React >= 15.3.0.
-const PureComponent = React.PureComponent || React.Component
 
 const ContextAwareMenuButton = (props) => (
 	<Context.Consumer>
@@ -22,7 +25,7 @@ const ContextAwareMenuButton = (props) => (
 
 export default ContextAwareMenuButton
 
-class MenuButton extends PureComponent {
+class MenuButton extends React.PureComponent {
 	static propTypes = {
 		// Context.
 		registerMenuButton : PropTypes.func.isRequired,
@@ -38,18 +41,22 @@ class MenuButton extends PureComponent {
 		// HTML `title` attribute.
 		title       : PropTypes.string,
 
+		// Menu button component.
+		component   : PropTypes.elementType,
+
 		// Menu button icon component.
-		icon        : PropTypes.func.isRequired,
+		icon        : PropTypes.func,
 
 		// CSS class.
 		className   : PropTypes.string,
 
 		// CSS style object.
-		style       : PropTypes.object
-	}
+		style       : PropTypes.object,
 
-	static defaultProps = {
-		icon : MenuIcon
+		children    : PropTypes.oneOfType([
+			PropTypes.node,
+			PropTypes.func
+		])
 	}
 
 	componentDidMount() {
@@ -85,30 +92,65 @@ class MenuButton extends PureComponent {
 
 	storeButtonNode = (node) => this.button = node
 
+	getChildren() {
+		const {
+			menuIsExpanded,
+			children,
+			icon
+		} = this.props;
+
+		if (children) {
+			if (typeof children === 'function') {
+				return children({ expanded: menuIsExpanded })
+			}
+			return children
+		}
+
+		return React.createElement(icon || MenuIcon, { expanded: menuIsExpanded })
+	}
+
+	getButtonProps() {
+		const { menuIsExpanded } = this.props
+		return {
+			ref: this.storeButtonNode,
+			onClick: this.onClick,
+			// 'aria-label': 'Menu',
+			// 'aria-haspopup': 'menu',
+			// `menuIsExpanded` property can be `undefined` to differentiate
+			// between "has been toggled yet"/"has not been toggled yet"
+			// to workaround the CSS animation bug.
+			'aria-expanded': menuIsExpanded ? true : false,
+		}
+	}
+
 	render() {
 		const {
 			link,
 			className,
-			icon: MenuButtonIcon,
-			menuIsExpanded,
+			component,
 
 			// Getting "rest" properties.
+			icon: MenuButtonIcon,
+			children,
+			menuIsExpanded,
 			toggleMenu,
 			registerMenuButton,
 			...rest
 		} = this.props
 
 		const properties = {
-			ref: this.storeButtonNode,
-			onClick: this.onClick,
-			// 'aria-label': 'Menu',
-			// 'aria-haspopup': 'menu',
-			'aria-expanded': menuIsExpanded ? true : false, // can be `undefined` to differentiate between "has been toggled yet"/"has not been toggled yet" to workaround the CSS animation bug.
-			className: classNames('rrui__button-reset', 'rrui__outline', 'rrui__menu-button', className),
-			...rest
+			...rest,
+			...this.getButtonProps()
 		}
 
-		const children = <MenuButtonIcon expanded={menuIsExpanded}/>
+		if (component) {
+			return React.createElement(component, properties)
+		}
+
+		properties.className = classNames('rrui__button-reset', 'rrui__outline', className, {
+			// Only when using an `icon` component.
+			'rrui__menu-button': !component && !children
+		})
 
 		// A link.
 		if (link) {
@@ -118,7 +160,7 @@ class MenuButton extends PureComponent {
 					...properties,
 					href: link
 				},
-				children
+				this.getChildren()
 			)
 		}
 
@@ -129,7 +171,7 @@ class MenuButton extends PureComponent {
 				...properties,
 				type: 'button'
 			},
-			children
+			this.getChildren()
 		)
 	}
 }

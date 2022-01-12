@@ -146,6 +146,7 @@ function TextInput({
 			'rrui__outline',
 			'rrui__input-element',
 			'rrui__input-field', {
+				'rrui__input-field--empty': isEmptyValue(value),
 				// CSS selector performance optimization
 				'rrui__input-field--invalid'   : indicateInvalid && error,
 				'rrui__input-field--disabled'  : disabled,

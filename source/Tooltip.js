@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 import { getOffset } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
@@ -69,6 +75,10 @@ export default class Tooltip extends PureComponent
 		// to support mouseovering over itself.
 		hideDelay : PropTypes.number.isRequired,
 
+		screenMargin : PropTypes.number.isRequired,
+		// When passing `offsetTop`, also set `--rrui-tooltip-visible-distance` to `0px`.
+		offsetTop : PropTypes.number.isRequired,
+
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself
 		// (`document.body` by default).
@@ -93,6 +103,8 @@ export default class Tooltip extends PureComponent
 		delay: 350, // in milliseconds
 		hidingAnimationDuration: 200, // in milliseconds
 		hideDelay: 50, // in milliseconds
+		screenMargin: 4, // in pixels
+		offsetTop: 0, // in pixels
 		container: () => document.body
 	}
 
@@ -105,9 +117,13 @@ export default class Tooltip extends PureComponent
 	componentWillUnmount() {
 		this._isMounted = false
 		this.destroy_tooltip()
+		clearTimeout(this.show_timeout)
+		// The `mousemove` listener might have, or might have not,
+		// been added, so remove it (if it has been added).
+		document.removeEventListener('mousemove', this.onMouseMove)
 	}
 
-	create_tooltip()
+	createTooltip()
 	{
 		const {
 			tooltipClassName,
@@ -146,7 +162,6 @@ export default class Tooltip extends PureComponent
 
 	destroy_tooltip()
 	{
-		clearTimeout(this.show_timeout)
 		clearTimeout(this.hide_timeout)
 		clearTimeout(this.hide_on_mouse_leave_timeout)
 
@@ -166,7 +181,7 @@ export default class Tooltip extends PureComponent
 
 	calculate_coordinates()
 	{
-		const { placement } = this.props
+		const { placement, screenMargin, offsetTop } = this.props
 
 		const width  = this.tooltip.offsetWidth
 		const height = this.tooltip.offsetHeight
@@ -226,9 +241,10 @@ export default class Tooltip extends PureComponent
 
 		return fitOnScreen(
 			left,
-			top - getOffset(this.container()).top,
+			top + offsetTop - getOffset(this.container()).top,
 			width,
-			height
+			height,
+			screenMargin
 		)
 	}
 
@@ -258,7 +274,7 @@ export default class Tooltip extends PureComponent
 			// therefore create it here.
 			if (!this.tooltip)
 			{
-				this.create_tooltip()
+				this.createTooltip()
 			}
 
 			// Play tooltip showing animation
@@ -278,6 +294,8 @@ export default class Tooltip extends PureComponent
 				// Play tooltip showing animation
 				// (doing it after setting position because
 				//  setting position applies `display: block`)
+				// (whatever that meant, the animation won't work
+				//  if this is done before setting `left` and `top`)
 				if (animate) {
 					this.tooltip.classList.add('rrui__tooltip--after-show')
 				}
@@ -325,9 +343,14 @@ export default class Tooltip extends PureComponent
 
 	hideOnTouchOutside = (event) => {
 		if (this.isShown) {
-			if (!this.tooltip.contains(event.target) &&
-				!this.origin.contains(event.target)) {
-				this.hide()
+			// `this.tooltip` can be `undefined` when `this.isShown` is `true`
+			// because `this.destroy_tooltip()` method is called before
+			// `this.setState({ isShown: false })`, and also on "will unmount".
+			if (this.tooltip) {
+				if (!this.tooltip.contains(event.target) &&
+					!this.origin.contains(event.target)) {
+					this.hide()
+				}
 			}
 		}
 	}
@@ -357,6 +380,11 @@ export default class Tooltip extends PureComponent
 		}
 	}
 
+	onMouseMove = () => {
+		document.removeEventListener('mousemove', this.onMouseMove)
+		this.onMouseEnter()
+	}
+
 	onMouseEnterTooltip = () =>
 	{
 		// mouse enter and mouse leave events
@@ -364,6 +392,9 @@ export default class Tooltip extends PureComponent
 		if (this.isTouchDevice) {
 			return
 		}
+
+		this.isPointerInsideTooltip = true
+
 		if (this.isShown) {
 			this.cancelHide()
 		}
@@ -376,6 +407,13 @@ export default class Tooltip extends PureComponent
 		if (this.isTouchDevice) {
 			return
 		}
+
+		this.isPointerInsideTooltip = false
+
+		if (this.isPointerInsideElement) {
+			return
+		}
+
 		if (this.isShown) {
 			this.scheduleHide()
 		}
@@ -383,17 +421,38 @@ export default class Tooltip extends PureComponent
 
 	onMouseEnter = () =>
 	{
-		const content = this.renderContent()
-
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
 		if (this.isTouchDevice) {
 			return
 		}
 
+		if (DocumentMouseMove.wasMouseMoved) {
+			this._onMouseEnter()
+		} else {
+			// This code handles the case when a user has scrolled
+			// and the mouse pointer got placed over the minimized quote
+			// but that didn't trigger the "expand" action (intentionally)
+			// and then the user moves the mouse and that should expand
+			// the minimized quote.
+			document.addEventListener('mousemove', this.onMouseMove)
+		}
+	}
+
+	_onMouseEnter() {
+		// mouse enter and mouse leave events
+		// are triggered on mobile devices too
+		if (this.isTouchDevice) {
+			return
+		}
+
+		this.isPointerInsideElement = true
+
 		if (this.isShown) {
 			return this.cancelHide()
 		}
+
+		const content = this.renderContent()
 
 		// If the tooltip has no content
 		// (e.g. `react-time-ago` first render)
@@ -407,6 +466,12 @@ export default class Tooltip extends PureComponent
 		// `mouse leave` event clears this timeout.
 		if (this.show_timeout) {
 			return
+		}
+
+		// If the tooltip hiding animation is currently playing,
+		// then cancel it and re-show the tooltip.
+		if (this.hide_timeout) {
+			return this.show()
 		}
 
 		const { delay } = this.props
@@ -427,6 +492,16 @@ export default class Tooltip extends PureComponent
 		// mouse enter and mouse leave events
 		// are triggered on mobile devices too
 		if (this.isTouchDevice) {
+			return
+		}
+
+		// The `mousemove` listener might have, or might have not,
+		// been added, so remove it (if it has been added).
+		document.removeEventListener('mousemove', this.onMouseMove)
+
+		this.isPointerInsideElement = false
+
+		if (this.isPointerInsideTooltip) {
 			return
 		}
 
@@ -571,6 +646,8 @@ export default class Tooltip extends PureComponent
 			hideDelay,
 			hideTimeout,
 			hidingAnimationDuration,
+			screenMargin,
+			offsetTop,
 			tooltipClassName,
 			...rest
 		}
@@ -600,9 +677,10 @@ export default class Tooltip extends PureComponent
 				onTouchCancel={ accessible ? undefined : this.hide }
 				aria-expanded={ accessible ? isShown : undefined}
 				type={ accessible ? 'button' : undefined }
-				style={ inline ? (style ? { ...inline_style, ...style } : inline_style) : style }
+				style={ style }
 				className={ classNames(className, 'rrui__tooltip__target', {
-					'rrui__button-reset': accessible
+					'rrui__button-reset': accessible,
+					'rrui__tooltip__target--inline': inline
 				}) }>
 				{ children }
 				{ extraChildren }
@@ -611,10 +689,8 @@ export default class Tooltip extends PureComponent
 	}
 }
 
-function fitOnScreen(x, y, width, height)
+function fitOnScreen(x, y, width, height, minimal_margin)
 {
-	const minimal_margin = 4 // in pixels
-
 	if (x < minimal_margin)
 	{
 		x = minimal_margin
@@ -634,11 +710,6 @@ function fitOnScreen(x, y, width, height)
 	}
 
 	return { x, y }
-}
-
-const inline_style =
-{
-	display : 'inline-block'
 }
 
 /**
@@ -663,4 +734,25 @@ function getSide(placement) {
 		return placement.slice(dashIndex + '-'.length)
 	}
 	return 'center'
+}
+
+const DocumentMouseMove = {
+	wasMouseMoved: false
+}
+
+function onDocumentMouseMove() {
+	DocumentMouseMove.wasMouseMoved = true
+}
+
+function onDocumentScroll() {
+	DocumentMouseMove.wasMouseMoved = false
+}
+
+// There could be several thousand minimized post link quotes on a page
+// (when not using `<VirtualScroller/>`). So, in order not to add
+// several thousand `mousemove` and `scroll` listeners,
+// a single one for each of these two events is added instead.
+if (typeof document !== 'undefined') {
+	document.addEventListener('mousemove', onDocumentMouseMove)
+	document.addEventListener('scroll', onDocumentScroll)
 }

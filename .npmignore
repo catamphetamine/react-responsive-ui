@@ -20,9 +20,6 @@
 # npm errors
 npm-debug.log
 
-# github pages
-/gh-pages/
-
 # for OS X users
 .DS_Store
 
@@ -57,3 +54,5 @@ npm-debug.log
 
 # This is for GitHub Pages only.
 /generate-demo-styles.js
+
+/website/

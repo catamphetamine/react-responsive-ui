@@ -2,6 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import createRef from 'react-create-ref'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 import OnFocusOut from './OnFocusOut'
 import OnTapOutside from './OnTapOutside'
 
@@ -27,7 +33,7 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 	// These're called from outside in `<Expandable/>`.
 	stopListeningToTouches = () => this.onTapOutsideRef.current.stopListeningToTouches()
 	listenToTouches = () => this.onTapOutsideRef.current.listenToTouches()
-	onBlur = (event) => this.onFocusOutRef.current.onBlur(event)
+	onBlur = (event) => this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
 
 	onFocusOut = (event) => {
 		// `onFocusOut` is triggered right after `onTapOutside`.
@@ -36,10 +42,6 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 			clearTimeout(this.onTapOutsideTimer)
 			this.onTapOutsideTimer = undefined
 		}
-		this.onBlur(event)
-	}
-
-	onBlur = (event) => {
 		const { onFocusOut } = this.props
 		onFocusOut(event)
 	}
@@ -52,7 +54,8 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 			// This workaround prevents duplicate `onFocusOut` call.
 			if (this.onTapOutsideTimer) {
 				this.onTapOutsideTimer = undefined
-				this.onBlur(event)
+				const { onFocusOut } = this.props
+				onFocusOut(event)
 			}
 		}, onTapOutsideDelay)
 	}
@@ -62,7 +65,7 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 		let { children } = this.props
 
 		children = React.cloneElement(children, {
-			onBlur: this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur
+			onBlur: this.onBlur
 		})
 
 		children = (

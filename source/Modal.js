@@ -5,6 +5,12 @@ import ReactModal from 'react-modal'
 import createContext from 'create-react-context'
 import { polyfill as reactLifecyclesCompat } from 'react-lifecycles-compat'
 
+// For some weird reason, in Chrome, `setTimeout()` would lag up to a second (or more) behind.
+// Turns out, Chrome developers have deprecated `setTimeout()` API entirely without asking anyone.
+// Replacing `setTimeout()` with `requestAnimationFrame()` can work around that Chrome bug.
+// https://github.com/bvaughn/react-virtualized/issues/722
+import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
+
 import Form from './Form'
 import Button from './Button'
 import Close, { CloseIcon } from './Close'

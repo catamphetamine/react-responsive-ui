@@ -18,10 +18,6 @@ class FileUpload extends PureComponent
 		// On file(s) chosen.
 		onChange  : PropTypes.func,
 
-		// (deprecated, use `onChange` instead).
-		// On file(s) chosen.
-		action    : PropTypes.func,
-
 		// Allows choosing multiple files if `true`.
 		multiple  : PropTypes.bool,
 
@@ -123,9 +119,7 @@ class FileUpload extends PureComponent
 	storeFileInputRef = (ref) => this.fileInput = ref
 
 	onFileInputChange = (value) => {
-		const { multiple } = this.props
-		// `action` property is deprecated.
-		const onChange = this.props.onChange || this.props.action
+		const { multiple, onChange } = this.props
 		if (multiple) {
 			onChange(value, {
 				acceptedFiles: value,
@@ -165,7 +159,6 @@ class FileUpload extends PureComponent
 				className={classNames('rrui__file-upload', className)}>
 
 				{/* Hidden. */}
-				{/* "action" property is deprecated. */}
 				<FileUploadInput
 					ref={ this.storeFileInputRef }
 					multiple={ multiple }

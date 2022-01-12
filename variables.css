@@ -7,14 +7,9 @@
   --rrui-accent-color-light : #2bd7f0;
   --rrui-error-color        : #d30f00;
 
-  /* Gray is used as `<TextInput/>` `label` placeholder color. */
-  --rrui-gray-color : #888888;
-
-  /* `<DatePicker/>` disabled day color. */
-  --rrui-gray-color-light : #cacaca;
-
-  /* Lightest Gray is used as `<DatePicker/>`'s currently mouse-overed calendar day. */
-  --rrui-gray-color-lightest : #f3f3f3;
+  --rrui-gray-color: #888888;
+  --rrui-gray-color-light: #cacaca;
+  --rrui-gray-color-lightest: #f3f3f3;
 
   /* Modular grid unit. */
   --rrui-unit : 0.6rem;
@@ -87,14 +82,25 @@
   --rrui-snackbar-notifications-count-size : 1.4em;
   --rrui-snackbar-notifications-count-border-color : currentColor;
   --rrui-snackbar-notifications-count-background-color : var(--rrui-snackbar-background-color); /* #d30f00; */
+  --rrui-snackbar-close-button-color: var(--rrui-gray-color-lightest);
+  --rrui-snackbar-close-button-color-active: var(--rrui-gray-color-light);
 
   /* `<Tooltip/>` */
   --rrui-tooltip-side-padding : calc(var(--rrui-unit) * 1.5);
   --rrui-tooltip-height       : calc(var(--rrui-unit) * 4);
   --rrui-tooltip-animation-duration : 120ms;
+  /* `--rrui-tooltip-visible-distance` is deprecated,
+     pass `offsetTop` property (in pixels) instead
+     and set `--rrui-tooltip-visible-distance` to `0px`. */
   --rrui-tooltip-visible-distance : 0.2em;
+  /* `--rrui-tooltip-hidden-distance` may be renamed into
+     something like `--rrui-tooltip-translateY--hidden` in some future. */
   --rrui-tooltip-hidden-distance  : 0.5em;
   --rrui-tooltip-border-radius : var(--rrui-border-radius-small);
+  /* `<Tooltip/>` colors. */
+  --rrui-tooltip-background-color : var(--rrui-black-color);
+  --rrui-tooltip-text-color : var(--rrui-white-color);
+  --rrui-tooltip-opacity : 1;
 
   /* `<Switch/>` and `<Checkbox/>` */
   --rrui-control-label-margin : var(--rrui-unit);
@@ -171,6 +177,14 @@
   --rrui-list-item-background-color-selected : var(--rrui-accent-color);
   --rrui-list-item-text-color-selected : var(--rrui-white-color);
 
+  /* `<Select/>` arrow. */
+  --rrui-select-arrow-color: var(--rrui-gray-color);
+  --rrui-select-arrow-opacity: 0.6;
+  --rrui-select-arrow-border-width: 0.35em 0.22em 0 0.22em;
+  --rrui-select-arrow-margin-top: 0.1em;
+  --rrui-select-arrow-margin-left: calc(var(--rrui-unit) * 2 / 3);
+  --rrui-select-arrow-margin-right: calc(var(--rrui-unit) * 2 / 3);
+
   /* `<Checkbox/>` size. */
   --rrui-checkbox-size : 0.9em;
 
@@ -242,23 +256,34 @@
   --rrui-switcher-background-color-selected : var(--rrui-accent-color);
   --rrui-switcher-text-color-selected : var(--rrui-white-color);
 
-  /* `<Tooltip/>` colors. */
-  --rrui-tooltip-background-color : var(--rrui-black-color);
-  --rrui-tooltip-text-color : var(--rrui-white-color);
+  /* `<DatePicker/>`. */
+  --rrui-date-picker-calendar-day-color-outside: var(--rrui-gray-color);
+  --rrui-date-picker-calendar-day-color-disabled: var(--rrui-gray-color-light);
+  --rrui-date-picker-calendar-day-color-active: var(--rrui-white-color);
+  --rrui-date-picker-calendar-day-background-color-active: var(--rrui-accent-color-light);
+  --rrui-date-picker-calendar-day-color-selected: var(--rrui-white-color);
+  --rrui-date-picker-calendar-day-background-color-selected: var(--rrui-accent-color);
+  --rrui-date-picker-calendar-day-color-focus: var(--rrui-list-item-text-color-focus);
+  --rrui-date-picker-calendar-day-background-color-focus: var(--rrui-list-item-background-color-focus);
+  --rrui-date-picker-calendar-border-color-focus: var(--rrui-input-field-border-color-focus);
+  --rrui-date-picker-calendar-weekday-color: var(--rrui-gray-color);
+  --rrui-date-picker-calendar-day-color--today: #d0021b;
+  --rrui-date-picker-calendar-day-font-weight--today: 700;
 
   /* `<ExpansionPanel/>` */
-  --rrui-expansion-panel-header-height : calc(var(--rrui-unit) * 4);
-  --rrui-expansion-panel-header-height-expanded : calc(var(--rrui-unit) * 5);
-  --rrui-expansion-panel-animation-duration : 210ms;
-  --rrui-expansion-panel-icon-size : var(--rrui-unit);
-  --rrui-expansion-panel-side-padding : calc(var(--rrui-unit) * 2);
-  --rrui-expansion-panel-content-padding-top : calc(var(--rrui-unit) * 2);
-  --rrui-expansion-panel-content-padding-bottom : calc(var(--rrui-unit) * 2);
-  --rrui-expansion-panel-icon-end-border-width : 1px;
-  --rrui-expansion-panel-icon-end-border-color-focus : var(--rrui-gray-color-light);
-  --rrui-expansion-panel-icon-start-border-bottom-width : 1px;
-  --rrui-expansion-panel-icon-start-border-color-focus : var(--rrui-accent-color);
-  --rrui-expansion-panel-icon-start-border-color-active : var(--rrui-accent-color-light);
+  --rrui-expansion-panel-background-color: var(--rrui-white-color);
+  --rrui-expansion-panel-header-height: auto;
+  --rrui-expansion-panel-header-height-expanded: var(--rrui-expansion-panel-header-height);
+  --rrui-expansion-panel-animation-duration: 210ms;
+  --rrui-expansion-panel-animation-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --rrui-expansion-panel-padding-left: 0px;
+  --rrui-expansion-panel-padding-right: 0px;
+  --rrui-expansion-panel-content-padding-top: calc(var(--rrui-unit) * 2);
+  --rrui-expansion-panel-content-padding-bottom: calc(var(--rrui-unit) * 2);
+  --rrui-expansion-panel-toggle-icon-width: 0.65em;
+  --rrui-expansion-panel-toggle-icon-rotate: -90deg;
+  --rrui-expansion-panel-toggle-icon-rotate-expanded: 0deg;
+  --rrui-expansion-panel-toggle-icon-margin: 0.5em;
 
   /* This is for `MenuIcon2.css` and is not being used currently. */
   --rrui-menu-icon-bar-thickness: 2px;

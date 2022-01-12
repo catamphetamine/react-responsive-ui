@@ -1,4 +1,4 @@
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
 
 var autoprefixer = require('autoprefixer')
@@ -18,11 +18,25 @@ String.prototype.replace_all = function (what, with_what)
 
 function transformStyle(filePath)
 {
-  let text = fs.readFileSync(path.join(__dirname, filePath), 'utf8')
+  let text = fs.readFileSync(path.join(filePath), 'utf8')
 
     /*--------*/
     /* Colors */
     /*--------*/
+
+    /* `<DatePicker/>`. */
+    .replace_all('var(--rrui-date-picker-calendar-day-color-outside)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-date-picker-calendar-day-color-disabled)', 'var(--rrui-gray-color-light)')
+    .replace_all('var(--rrui-date-picker-calendar-day-color-active)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-date-picker-calendar-day-background-color-active)', 'var(--rrui-accent-color-light)')
+    .replace_all('var(--rrui-date-picker-calendar-day-color-selected)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-date-picker-calendar-day-background-color-selected)', 'var(--rrui-accent-color)')
+    .replace_all('var(--rrui-date-picker-calendar-day-color-focus)', 'var(--rrui-list-item-text-color-focus)')
+    .replace_all('var(--rrui-date-picker-calendar-day-background-color-focus)', 'var(--rrui-list-item-background-color-focus)')
+    .replace_all('var(--rrui-date-picker-calendar-border-color-focus)', 'var(--rrui-input-field-border-color-focus)')
+    .replace_all('var(--rrui-date-picker-calendar-weekday-color)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-date-picker-calendar-day-color--today)', '#d0021b')
+    .replace_all('var(--rrui-date-picker-calendar-day-font-weight--today)', '700')
 
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
     .replace_all('var(--rrui-input-field-border-color-disabled)', 'var(--rrui-input-field-border-color)')
@@ -41,6 +55,15 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-select-toggler-text-color-active)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-select-toggler-text-color-empty)', 'var(--rrui-gray-color)')
     .replace_all('var(--rrui-select-toggler-transition)', 'color 30ms ease-out')
+
+    /* `<Select/>` arrow. */
+    .replace_all('var(--rrui-select-arrow-color)', 'var(--rrui-gray-color)')
+    .replace_all('var(--rrui-select-arrow-opacity)', '0.6')
+    .replace_all('var(--rrui-select-arrow-border-width)', '0.35em 0.22em 0 0.22em')
+    .replace_all('var(--rrui-select-arrow-margin-top)', '0.1em')
+    .replace_all('var(--rrui-select-arrow-margin-left)', 'calc(var(--rrui-unit) * 2 / 3)')
+    .replace_all('var(--rrui-select-arrow-margin-right)', 'calc(var(--rrui-unit) * 2 / 3)')
+
     /* `<List/>` */
     .replace_all('var(--rrui-list-item-background-color-selected)', 'var(--rrui-accent-color)')
     .replace_all('var(--rrui-list-item-text-color-selected)', 'var(--rrui-white-color)')
@@ -152,23 +175,25 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-tooltip-visible-distance)', '0.2em')
     .replace_all('var(--rrui-tooltip-hidden-distance)', '0.5em')
     .replace_all('var(--rrui-tooltip-border-radius)', 'var(--rrui-border-radius-small)')
+
     /* `<ExpansionPanel/>`. */
-    .replace_all('var(--rrui-expansion-panel-header-height)', 'calc(0.6rem * 4)')
-    .replace_all('var(--rrui-expansion-panel-header-height-expanded)', 'calc(0.6rem * 5)')
+    .replace_all('var(--rrui-expansion-panel-background-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-expansion-panel-header-height-expanded)', 'var(--rrui-expansion-panel-header-height)')
+    .replace_all('var(--rrui-expansion-panel-header-height)', 'auto')
     .replace_all('var(--rrui-expansion-panel-animation-duration)', '210ms')
-    .replace_all('var(--rrui-expansion-panel-icon-size)', '0.6rem')
-    .replace_all('var(--rrui-expansion-panel-side-padding)', 'calc(0.6rem * 2)')
-    .replace_all('var(--rrui-expansion-panel-content-padding-top)', 'calc(0.6rem * 2)')
-    .replace_all('var(--rrui-expansion-panel-content-padding-bottom)', 'calc(0.6rem * 2)')
-    .replace_all('var(--rrui-expansion-panel-icon-end-border-width)', '1px')
-    .replace_all('var(--rrui-expansion-panel-icon-end-border-color-focus)', 'var(--rrui-gray-color-light)')
-    .replace_all('var(--rrui-expansion-panel-icon-start-border-bottom-width)', '1px')
-    .replace_all('var(--rrui-expansion-panel-icon-start-border-color-focus)', 'var(--rrui-accent-color)')
-    .replace_all('var(--rrui-expansion-panel-icon-start-border-color-active)', 'var(--rrui-accent-color-light)')
+    .replace_all('var(--rrui-expansion-panel-animation-easing)', 'cubic-bezier(0.4, 0, 0.2, 1)')
+    .replace_all('var(--rrui-expansion-panel-padding-left)', '0px')
+    .replace_all('var(--rrui-expansion-panel-padding-right)', '0px')
+    .replace_all('var(--rrui-expansion-panel-content-padding-top)', 'calc(var(--rrui-unit) * 2)')
+    .replace_all('var(--rrui-expansion-panel-content-padding-bottom)', 'calc(var(--rrui-unit) * 2)')
+    .replace_all('var(--rrui-expansion-panel-toggle-icon-width)', '0.65em')
+    .replace_all('var(--rrui-expansion-panel-toggle-icon-rotate)', '-90deg')
+    .replace_all('var(--rrui-expansion-panel-toggle-icon-rotate-expanded)', '0deg')
+    .replace_all('var(--rrui-expansion-panel-toggle-icon-margin)', '0.5em')
+
     /* Card colors. */
     .replace_all('var(--rrui-card-background-color)', 'var(--rrui-white-color)')
     .replace_all('var(--rrui-card-text-color)', 'var(--rrui-black-color)')
-
     .replace_all('var(--rrui-menu-icon-bar-thickness)', '2px')
 
     /*--------------*/
@@ -202,6 +227,7 @@ function transformStyle(filePath)
     /* `<Select menu/>` */
     .replace_all('var(--rrui-expandable-menu-item-side-padding)', 'var(--rrui-collapsible-menu-item-side-padding)')
     .replace_all('var(--rrui-collapsible-menu-item-side-padding)', 'calc(0.6rem * 2.5)')
+
     /* `<Snackbar/>` */
     .replace_all('var(--rrui-snackbar-height)', 'calc(0.6rem * 4)')
     .replace_all('var(--rrui-snackbar-side-padding)', 'calc(0.6rem * 1.5)')
@@ -212,9 +238,12 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-snackbar-notifications-count-size)', '1.4em')
     .replace_all('var(--rrui-snackbar-background-color)', 'var(--rrui-black-color)')
     .replace_all('var(--rrui-snackbar-text-color)', 'var(--rrui-white-color)')
+    .replace_all('var(--rrui-snackbar-close-button-color)', 'var(--rrui-gray-color-lightest)')
+    .replace_all('var(--rrui-snackbar-close-button-color-active)', 'var(--rrui-gray-color-light)')
     /* `<Tooltip/>` */
     .replace_all('var(--rrui-tooltip-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-tooltip-height)', 'calc(0.6rem * 4)')
+    .replace_all('var(--rrui-tooltip-opacity)', '1')
     /* `<Switch/>` and `<Checkbox/>` */
     .replace_all('var(--rrui-control-label-margin)', '0.6rem')
     /* Close icon */
@@ -255,6 +284,8 @@ function transformStyle(filePath)
   }
 
   if (text.indexOf('var(--') >= 0) {
+    // Debug:
+    // fs.outputFileSync(path.join('bundle', filePath), text)
     throw new Error(`Not all vars provided for substitution: ${text.slice(text.indexOf('var(--'), text.indexOf(')', text.indexOf('var(--')) + 1)}.`)
   }
 
@@ -275,11 +306,11 @@ function transformStyle(filePath)
   return postcss([ autoprefixer({ browsers: 'last 4 versions, iOS >= 7, Android >= 4'.split(', ') }) ]).process(text, { from: undefined }).then((result) =>
   {
     result.warnings().forEach((warn) => console.warn(warn.toString()))
-    fs.writeFileSync(path.join(__dirname, 'bundle', filePath), result.css)
+    fs.outputFileSync(path.join('bundle', filePath), result.css)
   })
 }
 
-readFiles(path.join(__dirname, 'small-screen')).then((files) =>
+readFiles(path.join('small-screen')).then((files) =>
 {
   const styles = ['style.css']
   for (const file of files) {
