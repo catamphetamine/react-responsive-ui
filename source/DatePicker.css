@@ -84,12 +84,32 @@
 }
 
 .DayPicker-Day {
+	position: relative;
 	display: table-cell;
-	padding: 0.5em;
+	padding: var(--rrui-date-picker-calendar-day-padding);
 	text-align: center;
 	cursor: pointer;
 	vertical-align: middle;
+}
+
+.DayPicker-Day:before {
+	display: block;
+	content: '';
+	position: absolute;
+	left: calc((100% - var(--rrui-date-picker-calendar-day-highlight-width)) / 2);
+	top: calc((100% - var(--rrui-date-picker-calendar-day-highlight-width)) / 2);
+	z-index: -1;
+	width: var(--rrui-date-picker-calendar-day-highlight-width);
+	height: var(--rrui-date-picker-calendar-day-highlight-width);
 	border-radius: 50%;
+}
+
+.DayPicker-Day:focus {
+	color: var(--rrui-date-picker-calendar-day-color-focus);
+}
+
+.DayPicker-Day:focus:before {
+	background-color: var(--rrui-date-picker-calendar-day-background-color-focus);
 }
 
 .DayPicker--interactionDisabled .DayPicker-Day {
@@ -119,19 +139,31 @@
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside)
 {
 	color: var(--rrui-date-picker-calendar-day-color-selected);
+}
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):before
+{
 	background-color: var(--rrui-date-picker-calendar-day-background-color-selected);
 }
 
 /* .DayPicker:not(.DayPicker--interactionDisabled) ... */
-.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--today):not(.DayPicker-Day--outside):not(:active):hover
 {
 	color: var(--rrui-date-picker-calendar-day-color-focus);
+}
+
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):not(:active):hover:before
+{
 	background-color: var(--rrui-date-picker-calendar-day-background-color-focus);
 }
 
 .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active
 {
 	color: var(--rrui-date-picker-calendar-day-color-active);
+}
+
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active:before
+{
 	background-color: var(--rrui-date-picker-calendar-day-background-color-active);
 }
 

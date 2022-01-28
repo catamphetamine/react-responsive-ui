@@ -136,13 +136,15 @@ Expandable components (`Select`, `Autocomplete`, `ExpandableMenu`) require `Prom
 
 ## Reducing footprint
 
-Webpack 4 still can't "tree-shake" simple cases like
+### Code
+
+For a "tree-shaking" bundler (should work, but check it yourself just in case):
 
 ```js
 import { Modal, Button, TextInput } from 'react-responsive-ui'
 ```
 
-So if one's using only a small subset of this library it could be imported like so:
+For "ECMAScript modules" imports:
 
 ```js
 import Modal     from 'react-responsive-ui/modules/Modal'
@@ -150,7 +152,7 @@ import Button    from 'react-responsive-ui/modules/Button'
 import TextInput from 'react-responsive-ui/modules/TextInput'
 ```
 
-or for CommonJS:
+For CommonJS imports:
 
 ```js
 import Modal     from 'react-responsive-ui/commonjs/Modal'
@@ -158,13 +160,28 @@ import Button    from 'react-responsive-ui/commonjs/Button'
 import TextInput from 'react-responsive-ui/commonjs/TextInput'
 ```
 
-Which results in a much smaller bundle size.
+### Styles
 
-Theoretically the same thing can be done for CSS: instead of importing the whole `react-responsive-ui/style.css` bundle one could import only the necessary styles from `react-responsive-ui/styles/` like `react-responsive-ui/styles/Button.css`, but there's a catch: various components are usually dependent on different styles; for example, a `<Button/>` actually requires three different stylesheets to be imported:
+The CSS styles could also be imported selectively (theoretically): instead of importing the whole `react-responsive-ui/style.css` bundle, one could import just the necessary styles from the `react-responsive-ui/styles/` folder. But there's a catch: some components' styles may also require some other styles to be loaded.
+
+For example, the `<Button/>` component requires the following stylesheets to be loaded:
 
 * `react-responsive-ui/styles/Button.css`
 * `react-responsive-ui/styles/ButtonReset.css`
 * `react-responsive-ui/styles/Input.css`
+
+And the `<DatePicker/>` component requires the following stylesheets to be loaded (didn't check):
+
+* `react-responsive-ui/styles/DatePicker.css`
+* `react-responsive-ui/styles/ButtonReset.css`
+* `react-responsive-ui/styles/Input.css`
+* `react-responsive-ui/styles/TextInput.css`
+* `react-responsive-ui/styles/Expandable.css`
+* `react-responsive-ui/styles/Close.css`
+
+And don't forget about also including `react-responsive-ui/variables.css` when going with the selective styles import approach.
+
+So it might be easier to just import the whole `react-responsive-ui/style.css` file.
 
 ## Outline
 

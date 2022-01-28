@@ -28,6 +28,29 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.15.12 / 27.01.2022
+===================
+
+* Renamed `<DatePicker/>`'s `defaultMonthDate` property to `initialCalendarDate`.
+* Fixed `<DatePicker/>`'s `aria-label` stuff:
+  * Supports `aria-describedby` property.
+  * Supports `aria-label` property.
+  * Removed `getAriaLabel()` property.
+* Removed the default format `placeholder` on `<DatePicker/>`. Pass a `placeholder` manually to show it.
+
+0.15.9 / 26.01.2022
+===================
+
+* Refactored `<DatePicker/>` component.
+* Added `defaultMonthDate` property on `<DatePicker/>`.
+* (could be a "breaking" change for some, but not significant) Moved `background-color` and `border-radius` from `.DayPicker-Day` to `.DayPicker-Day:before`.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `noon` property.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `localeUtils` property.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `months` property.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `weekdaysLong` property.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `weekdaysShort` property.
+* (could be a "breaking" change for some, but not significant) Removed `<DatePicker/>`'s `firstDayOfWeek` property.
+
 0.15.0 / 12.08.2021
 ===================
 

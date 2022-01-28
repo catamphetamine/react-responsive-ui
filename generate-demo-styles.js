@@ -25,6 +25,8 @@ function transformStyle(filePath)
     /*--------*/
 
     /* `<DatePicker/>`. */
+    .replace_all('var(--rrui-date-picker-calendar-day-highlight-width)', '2em')
+    .replace_all('var(--rrui-date-picker-calendar-day-padding)', '0.5em')
     .replace_all('var(--rrui-date-picker-calendar-day-color-outside)', 'var(--rrui-gray-color)')
     .replace_all('var(--rrui-date-picker-calendar-day-color-disabled)', 'var(--rrui-gray-color-light)')
     .replace_all('var(--rrui-date-picker-calendar-day-color-active)', 'var(--rrui-white-color)')

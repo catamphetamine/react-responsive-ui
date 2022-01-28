@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useMemo, useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import DayPicker, { ModifiersUtils } from 'react-day-picker'
+import DayPicker, { ModifiersUtils, LocaleUtils } from 'react-day-picker'
 import classNames from 'classnames'
 
 import TextInput from './TextInputComponent'
@@ -9,250 +9,152 @@ import YearMonthSelect from './YearMonthSelect'
 import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-import { onBlur } from './utility/focus'
+import { onBlur as handleBlurEvent } from './utility/focus'
 import { isInternetExplorer } from './utility/dom'
 
-import {
-	parseDate,
-	formatDate,
-	trimInvalidPart,
-	normalizeDate,
-	getSameDateAndTimeInUtc0TimeZone
-} from './utility/date'
+import getFirstDayOfWeek from './utility/getFirstDayOfWeek'
+import getDateForDayOfWeek from './utility/getDateForDayOfWeek'
+import getDateForMonth from './utility/getDateForMonth'
+import formatDate from './utility/formatDate'
+import ignoreInvalidDateObjects from './utility/ignoreInvalidDateObjects'
+import transformDateInputAccordingToTemplate from './utility/transformDateInputAccordingToTemplate'
+import parseDate, { getSameDateAndTimeInUtc0TimeZone } from './utility/parseDate'
 
-// `PureComponent` is only available in React >= 15.3.0.
-const PureComponent = React.PureComponent || React.Component
-
-// Derived from `react-day-picker` example
-// http://react-day-picker.js.org/examples/?overlay
-export default class DatePicker extends PureComponent
+let DatePicker = function({
+	id,
+	format,
+	// noon,
+	utc,
+	value,
+	error,
+	indicateInvalid,
+	disabledDays,
+	selectYearsIntoPast,
+	selectYearsIntoFuture,
+	initialCalendarDate,
+	locale,
+	disabled,
+	required,
+	label,
+	placeholder,
+	['aria-label']: ariaLabel,
+	['aria-labelledby']: ariaLabelledBy,
+	['aria-describedby']: ariaDescribedBy,
+	alignment,
+	tabIndex,
+	autoFocus,
+	waitForKeyboardSlideIn,
+	keyboardSlideInAnimationDuration,
+	buttonAriaLabel,
+	closeLabel,
+	closeButtonIcon : CloseButtonIcon,
+	icon,
+	className,
+	style,
+	onChange,
+	onBlur,
+	onToggle,
+	onFocus,
+	onKeyDown
+}, ref)
 {
-	static propTypes =
-	{
-		// (optional) HTML `id` attribute.
-		id : PropTypes.string,
+	const [isExpanded_, setExpanded] = useState()
+	const [month, setMonth] = useState()
+	const [textValue, setTextValue] = useState()
 
-		// An optional label placed on top of the input field
-		label : PropTypes.string,
+	const userHasJustChangedYearOrMonthTimer = useRef()
+	const _userHasJustChangedYearOrMonth = useRef()
+	const hasDayJustBeenSelected = useRef()
+	const isFocusingOut = useRef()
+	const blurTimer = useRef()
 
-		// `<input/>` placeholder
-		placeholder : PropTypes.string,
+	const container = useRef()
+	const expandable = useRef()
+	const input = useRef()
+	const inputOverlay = useRef()
+	const calendar = useRef()
 
-		// Expandable calendar alignment.
-		// Is "left" by default.
-		alignment : PropTypes.string,
+	const hasMounted = useRef()
 
-		// First day of week.
-		// `0` means "Sunday", `1` means "Monday", etc.
-		// (is `0` by default)
-		// http://react-day-picker.js.org/docs/localization/
-		firstDayOfWeek : PropTypes.number.isRequired,
+	// `format` should be in lower case.
+	format = format.toLowerCase()
 
-		// `react-day-picker` `locale`.
-		// http://react-day-picker.js.org/docs/localization/
-		locale : PropTypes.string,
+	useEffect(() => {
+		if (hasMounted.current) {
+			if (value) {
+				if (calendar.current) {
+					calendar.current.showMonth(value)
+				}
+			}
+		}
+	}, [value])
 
-		// `react-day-picker` `localeUtils`.
-		// http://react-day-picker.js.org/docs/localization/
-		localeUtils : PropTypes.object,
+	useEffect(() => {
+		hasMounted.current = true
+		return () => {
+			clearTimeout(userHasJustChangedYearOrMonthTimer.current)
+			clearTimeout(blurTimer.current)
+		}
+	}, [])
 
-		// Month labels.
-		// http://react-day-picker.js.org/docs/localization/
-		months : PropTypes.arrayOf(PropTypes.string),
+	const expand     = useCallback(() => expandable.current.expand(), [])
+	const collapse   = useCallback(() => expandable.current.collapse(), [])
+	const toggle     = useCallback(() => expandable.current.toggle(), [])
+	const isExpanded = useCallback(() => expandable.current.isExpanded(), [])
 
-		// Long weekday labels.
-		// http://react-day-picker.js.org/docs/localization/
-		weekdaysLong : PropTypes.arrayOf(PropTypes.string),
+	const focus = useCallback(() => {
+		input.current.focus()
+	}, [])
 
-		// Short weekday labels.
-		// http://react-day-picker.js.org/docs/localization/
-		weekdaysShort : PropTypes.arrayOf(PropTypes.string),
+	const focusCalendar = useCallback(() => {
+		if (calendar.current) {
+			if (calendar.current.dayPicker) {
+				calendar.current.dayPicker.firstChild.focus()
+			}
+		}
+	}, [])
 
-		// Date format. Only supports `DD`, `MM`, `YY` and `YYYY` for now (to reduce bundle size).
-		// Can support custom localized formats, perhaps, when `date-fns@2` is released.
-		// (is US `MM/DD/YYYY` by default)
-		format : PropTypes.string.isRequired,
-		// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+	const userHasJustChangedYearOrMonth = useCallback(() => {
+		_userHasJustChangedYearOrMonth.current = true
+		clearTimeout(userHasJustChangedYearOrMonthTimer.current)
+		userHasJustChangedYearOrMonthTimer.current = setTimeout(() => {
+			_userHasJustChangedYearOrMonth.current = false
+		}, 50)
+	}, [])
 
-		// Internationalization
-		// locale : PropTypes.string,
-
-		// The Date `value`
-		value : PropTypes.instanceOf(Date),
-
-		// Writes new `value`.
-		// The `value` is in the user's time zone and the time is `00:00`.
-		onChange : PropTypes.func.isRequired,
-
-		// Is called when the date picker is either collapsed or expanded
-		onToggle : PropTypes.func,
-
-		// Is called when the input is focused
-		onFocus : PropTypes.func,
-
-		// Is called when the input is blurred.
-		// This `onBlur` interceptor is a workaround for `redux-form`,
-		// so that it gets the parsed `value` in its `onBlur` handler,
-		// not the formatted text.
-		onBlur : PropTypes.func,
-
-		// Disables the input
-		disabled : PropTypes.bool,
-
-		// Set to `true` to mark the field as required
-		required : PropTypes.bool.isRequired,
-
-		// Indicates that the input is invalid.
-		error : PropTypes.oneOfType([
-			PropTypes.string,
-			PropTypes.bool
-		]),
-
-		// HTML `autoFocus` attribute
-		autoFocus : PropTypes.bool,
-
-		// HTML `tabIndex` attribute
-		tabIndex : PropTypes.number,
-
-		// HTML `<input/>` `name` attribute
-		name : PropTypes.string,
-
-		// `react-day-picker`'s `disabledDays`.
-		// http://react-day-picker.js.org/examples/disabled
-		disabledDays : PropTypes.oneOfType
-		([
-			PropTypes.object,
-			PropTypes.func,
-			PropTypes.array
-		]),
-
-		// How much years back can a user navigate using the year `<select/>`
-		selectYearsIntoPast : PropTypes.number.isRequired,
-
-		// How much years forward can a user navigate using the year `<select/>`
-		selectYearsIntoFuture : PropTypes.number.isRequired,
-
-		// Whether dates being selected should be in UTC+0 timezone.
-		// (is `false` by default)
-		utc : PropTypes.bool.isRequired,
-
-		// Whether to set time to 12:00 for dates being selected.
-		// (is `true` by default)
-		noon : PropTypes.bool.isRequired,
-
-		// The calendar icon.
-		icon : PropTypes.oneOfType([
-			PropTypes.func,
-			PropTypes.bool
-		]),
-
-		// `aria-label` attribute for the toggle calendar button.
-		buttonAriaLabel : PropTypes.string,
-
-		waitForKeyboardSlideIn : PropTypes.bool.isRequired,
-		keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
-
-		// CSS class
-		className : PropTypes.string,
-
-		// CSS style object
-		style : PropTypes.object
-	}
-
-	static defaultProps =
-	{
-		alignment : 'left',
-
-		// Default US format
-		format : 'MM/DD/YYYY',
-
-		// locale: 'en-US',
-		firstDayOfWeek : 0,
-
-		// Set to `true` to mark the field as required
-		required : false,
-
-		// Show `error` (if passed).
-		indicateInvalid : true,
-
-		// Whether dates being selected should be in UTC+0 timezone
-		utc : true,
-
-		// Whether to set time to 12:00 for dates being selected
-		noon : false,
-
-		// A sensible default.
-		selectYearsIntoPast : 100,
-		selectYearsIntoFuture : 100,
-
-		waitForKeyboardSlideIn : true,
-		keyboardSlideInAnimationDuration : 300
-	}
-
-	state =
-	{
-		selected_day : null
-	}
-
-	componentWillUnmount()
-	{
-		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
-	}
-
-	expand     = () => this.expandable.expand()
-	collapse   = () => this.expandable.collapse()
-	toggle     = () => this.expandable.toggle()
-	isExpanded = () => this.expandable.isExpanded()
-
-	focus = () => this.input.focus()
-	focusCalendar = () => this.calendar && this.calendar.dayPicker && this.calendar.dayPicker.firstChild.focus()
-
-	userHasJustChangedYearOrMonth = () =>
-	{
-		this._userHasJustChangedYearOrMonth = true
-		clearTimeout(this.userHasJustChangedYearOrMonthTimer)
-		this.userHasJustChangedYearOrMonthTimer = setTimeout(() => this._userHasJustChangedYearOrMonth = false, 50)
-	}
-
-	onInputFocus = (event) => {
-		const { onFocus } = this.props
+	const onInputFocus = useCallback((event) => {
 		if (onFocus) {
 			onFocus(event)
 		}
-		// if (!this.focusAfterDaySelected) {
-		// 	this.expand()
+		// if (!focusAfterDaySelected) {
+		// 	expand()
 		// }
-	}
+	}, [
+		onFocus
+	])
 
-	onExpand = () =>
-	{
-		const
-		{
-			value,
-			format,
-			onToggle,
-			utc
-		}
-		= this.props
+	const onExpand = useCallback(() => {
+		// Reset the month previously selected via the month `<select/>`.
+		// `month` could previously be set to some value via the month `<select/>`,
+		// and, since that value wasn't been cleared, it would be "stuck"
+		// and the calendar would open at that previously selected month again,
+		// even though `value` or `initialCalendarDate` are defined and correspond to
+		// a different month.
+		setMonth()
 
-		this.setState
-		({
-			// Reset month for some unknown reason.
-			month : undefined,
+		// Must re-calculate `textValue` on each "expand"
+		// because it's being reset on each "collapse".
+		setTextValue(formatDate(value, format, { utc }))
 
-			// Must re-calculate `text_value` on each "expand"
-			// because it's being reset on each "collapse".
-			text_value : formatDate(value, format, { utc }),
+		// For `aria-expanded`.
+		setExpanded(true)
+	}, [
+		value,
+		format,
+		utc
+	])
 
-			// For `aria-expanded`.
-			isExpanded : true
-		})
-	}
-
-	onExpanded = () =>
-	{
-		const { value } = this.props
-
+	const onExpanded = useCallback(() => {
 		// Set "previous" and "next" buttons untabbable
 		// so that a Tab out of the `<input/>` field
 		// moves cursor not inside to these buttons
@@ -268,14 +170,14 @@ export default class DatePicker extends PureComponent
 		//
 		// https://github.com/gpbl/react-day-picker/issues/848
 		//
-		for (const button of [].slice.call(this.container.querySelectorAll('.DayPicker-NavButton'))) {
+		for (const button of [].slice.call(container.current.querySelectorAll('.DayPicker-NavButton'))) {
 			button.setAttribute('tabindex', '-1')
 		}
 
 		// A workaround for a bug where `tabIndex` of the "wrapper" div is `0`
 		// and at the same time there's no `aria-label`.
 		// https://github.com/gpbl/react-day-picker/issues/848
-		this.container.querySelector('.DayPicker-wrapper').setAttribute('tabindex', -1)
+		container.current.querySelector('.DayPicker-wrapper').setAttribute('tabindex', -1)
 		// Could also potentially update `aria-label` attribute to (month + year)
 		// on expand and on month/year change in the expanded calendar.
 		// But that would be too much hassle.
@@ -284,46 +186,44 @@ export default class DatePicker extends PureComponent
 		// in order for iOS scroll not to get "janky"
 		// when `<DatePicker/>` gets focused.
 		// (for some unknown reason)
-		setTimeout(() =>
-		{
-			this.setState
-			({
-				month : value ? normalizeDate(value) : new Date()
-			})
+		setTimeout(() => {
+			setMonth(value ? ignoreInvalidDateObjects(value) : (initialCalendarDate || new Date()))
 		}, 0)
-	}
+	}, [
+		value,
+		initialCalendarDate
+	])
 
 	// Cancels textual date editing.
-	onCollapse = ({ focusOut }) =>
+	const onCollapse = useCallback(({ focusOut }) =>
 	{
-		if (!focusOut && !this.focusingOut && !this.hasDayJustBeenSelected) {
-			this.focus()
+		if (!focusOut && !isFocusingOut.current && !hasDayJustBeenSelected.current) {
+			focus()
 		}
 
-		this.setState
-		({
-			text_value : undefined,
-			// For `aria-expanded`.
-			isExpanded : false
-		})
+		setTextValue()
+		// For `aria-expanded`.
+		setExpanded(false)
 
 		// `onChange` fires on calendar day `click`
 		// but the `value` hasn't neccessarily been updated yet,
 		// therefore, say, if `value` was not set
 		// and a user selects a day in the calendar
 		// then the `value` is technically still `undefined`
-		// so can't just set `state.text_value = formatDate(value, ...)` here.
+		// so can't just set `state.textValue = formatDate(value, ...)` here.
 		//
-		// Analogous, `setState({ text_value })` has been called
-		// in calendar day `onClick` handler but `state.text_value`
+		// Analogous, `setState({ textValue })` has been called
+		// in calendar day `onClick` handler but `state.textValue`
 		// hasn't neccessarily been updated yet.
 		//
-		// Still must validate (recompute) `text_value`
+		// Still must validate (recompute) `textValue`
 		// upon expanding the `<DatePicker/>`, for example, on `<input/>` blur
 		// in cases when a user manually typed in an incomplete date and then tabbed away.
-	}
+	}, [
+		focus
+	])
 
-	onContainerKeyDown = (event) =>
+	const onContainerKeyDown = useCallback((event) =>
 	{
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
 			return
@@ -342,7 +242,7 @@ export default class DatePicker extends PureComponent
 			case 27:
 				event.preventDefault()
 				// Collapse the list if it's expanded.
-				return this.collapse()
+				return collapse()
 
 			// On "Up" arrow.
 			case 38:
@@ -350,12 +250,24 @@ export default class DatePicker extends PureComponent
 			case 40:
 				return event.preventDefault()
 		}
-	}
+	}, [
+		collapse
+	])
 
-	onInputKeyDown = (event) =>
+	const onToggleButtonClick = useCallback((event) => {
+		toggle().then(() => {
+			if (isExpanded_) {
+				focusCalendar()
+			}
+		})
+	}, [
+		isExpanded_,
+		toggle,
+		focusCalendar
+	])
+
+	const onInputKeyDown = useCallback((event) =>
 	{
-		const { onKeyDown } = this.props
-
 		if (onKeyDown) {
 			onKeyDown(event)
 		}
@@ -372,27 +284,27 @@ export default class DatePicker extends PureComponent
 		{
 			// On "Enter".
 			case 13:
-				if (this.isExpanded())
+				if (isExpanded())
 				{
 					// Don't "prevent default" here
 					// in order for a user to be able
 					// to submit an enclosing form on "Enter".
-					this.collapse()
+					collapse()
 				}
 				return
 
 			// On Spacebar.
 			case 32:
 				event.preventDefault()
-				return this.onToggleButtonClick()
+				return onToggleButtonClick()
 
 			// On "Up" arrow.
 			case 38:
 				// Collapse the calendar (if expanded).
-				if (this.isExpanded())
+				if (isExpanded())
 				{
 					event.preventDefault()
-					this.collapse()
+					collapse()
 				}
 				return
 
@@ -400,131 +312,111 @@ export default class DatePicker extends PureComponent
 			case 40:
 				event.preventDefault()
 				// Expand the calendar (if collapsed).
-				if (this.isExpanded()) {
-					this.focusCalendar()
+				if (isExpanded()) {
+					focusCalendar()
 				} else {
-					this.expand().then(this.focusCalendar)
+					expand().then(focusCalendar)
 				}
 				return
 		}
-	}
+	}, [
+		onKeyDown,
+		isExpanded,
+		collapse,
+		expand,
+		focusCalendar,
+		onToggleButtonClick
+	])
 
-	onInputChange = (event) =>
+	const onInputChange = useCallback((event) =>
 	{
-		const
-		{
-			onChange,
-			value: previous_value,
-			format,
-			noon,
-			utc,
-			disabledDays
-		}
-		= this.props
-
 		// Extract `value` from the argument
 		// of this `onChange` listener
 		// (for convenience)
 
-		let value = event
-
-		if (event.target !== undefined)
-		{
-			value = event.target.value
+		let newTextValue = event
+		if (event.target !== undefined) {
+			newTextValue = event.target.value
 		}
 
-		value = value.trim()
+		newTextValue = newTextValue.trim()
 
 		// When the date is erased, reset it.
-		if (!value)
-		{
-			// Call `onChange` only if `value` did actually change
-			if (previous_value)
-			{
+		if (!newTextValue) {
+			// Call `onChange` only if `value` did actually change from non-`undefined` to `undefined`.
+			if (value) {
 				onChange(undefined)
 			}
-
-			return this.setState({ text_value: '' })
+			// `textValue` is set to an empty string instead of just `undefined` here
+			// because there's a `textValue !== undefined` condition when passing
+			// `value` property to `<TextInput/>`.
+			// So an empty string has a different behavior than just `undefined`.
+			return setTextValue('')
 		}
 
-		value = trimInvalidPart(value, format)
+		newTextValue = transformDateInputAccordingToTemplate(newTextValue, format)
 
-		const selected_day = parseDate(value, format, noon, utc)
+		// const selectedDate = parseDate(newTextValue, format, noon, utc)
+		const selectedDate = parseDate(newTextValue, format, utc)
 
 		// If the date input is unparseable,
-		// or if it's one of the disabled days,
 		// then don't change the selected date.
-		if (!selected_day ||
-			disabledDays && ModifiersUtils.dayMatchesModifier(selected_day, disabledDays))
-		{
-			return this.setState({ text_value: value })
+		if (selectedDate) {
+			// If the date being input is one of the disabled days,
+			// then don't change the selected date.
+			if (!ModifiersUtils.dayMatchesModifier(selectedDate, disabledDays)) {
+				// Call `onChange` only if `value` did actually change
+				if (!value || value.getTime() !== selectedDate.getTime()) {
+					onChange(selectedDate)
+				}
+			}
 		}
 
-		// Call `onChange` only if `value` did actually change
-		if (!previous_value || previous_value.getTime() !== selected_day.getTime())
-		{
-			onChange(selected_day)
-		}
+		setTextValue(newTextValue)
+	}, [
+		value,
+		onChange,
+		format,
+		// noon,
+		utc,
+		disabledDays
+	])
 
-		this.setState
-		({
-			text_value: value
-		},
-		() => this.calendar && this.calendar.showMonth(selected_day))
-	}
-
-	onDayClick = (selected_day, { disabled }) =>
+	const onDayClick = useCallback((selectedDay, { disabled }) =>
 	{
-		const
-		{
-			format,
-			onChange,
-			value: previous_value,
-			noon,
-			utc
-		}
-		= this.props
-
 		// If the day clicked is disabled then do nothing.
-		if (disabled)
-		{
+		if (disabled) {
 			return
 		}
 
+		// Fixes the time being `12:00` on the selected day.
 		// https://github.com/gpbl/react-day-picker/issues/473
-		// By default the `selected_day` has time
-		// set to `12:00` of the current time zone.
-		// These extra 12 hours do make sense and
-		// do help make things less weird.
+		// Sets it to be proper time `00:00`.
 		//
-		// These extra 12 hours are a hack to make things
-		// a little bit less weird when rendering parsed dates.
-		// E.g. if a date `Jan 1st, 2017` gets parsed as
-		// `Jan 1st, 2017, 00:00 UTC+0` (England) then when displayed in the US
-		// it would show up as `Dec 31st, 2016, 19:00 UTC-05` (Austin, Texas).
-		// That would be weird for a website user.
-		// Therefore this extra 12-hour padding is added
-		// to compensate for the most weird cases like this
-		// for adjacent countries / neighbours / same continent countries.
+		// They set the time of `selectedDay` to `12:00` in the current time zone.
+		// They intended those extra 12 hours to make things less weird with timezone conversions.
+		// But it doesn't work in all cases and is a really lame workaround.
 		//
-		// So `selected_day` is in the user's time zone and the time is `12:00`.
+		// Maybe they'll change it in `react-day-picker@8`.
 
-		if (!noon)
-		{
-			// Here I strip those 12 hours from the `selected_day`
+		// if (!noon) {
+			// Here I strip those 12 hours from the `selectedDay`
 			// so the time becomes `00:00` in the user's time zone.
 			//
-			// (`selected_day` is the date in the user's time zone)
-			// (`selected_day.getDate()` returns the day in the user's time zone)
+			// (`selectedDay` is the date in the user's time zone)
+			// (`selectedDay.getDate()` returns the day in the user's time zone)
 			// (`new Date(year, month, day)` creates a date in the user's time zone)
 			//
-			selected_day = new Date(selected_day.getFullYear(), selected_day.getMonth(), selected_day.getDate())
-		}
+			selectedDay = new Date(
+				selectedDay.getFullYear(),
+				selectedDay.getMonth(),
+				selectedDay.getDate()
+			)
+		// }
 
-		if (utc)
-		{
+		if (utc) {
 			// Converts timezone to UTC while preserving the same time
-			selected_day = getSameDateAndTimeInUtc0TimeZone(selected_day)
+			selectedDay = getSameDateAndTimeInUtc0TimeZone(selectedDay)
 		}
 
 		// `onChange` fires but the `value`
@@ -532,19 +424,18 @@ export default class DatePicker extends PureComponent
 		//
 		// Call `onChange` only if `value` did actually change.
 		//
-		if (!previous_value || previous_value.getTime() !== selected_day.getTime())
-		{
-			onChange(selected_day)
+		if (!value || value.getTime() !== selectedDay.getTime()) {
+			onChange(selectedDay)
 		}
 
 		// Hide the calendar
-		this.hasDayJustBeenSelected = true
-		this.collapse()
-		this.hasDayJustBeenSelected = false
+		hasDayJustBeenSelected.current = true
+		collapse()
+		hasDayJustBeenSelected.current = false
 
 		// Focus the `<input/>`.
 		// (if not in "input overlay" mode for mobile devices).
-		if (getComputedStyle(this.inputOverlay).display === 'none')
+		if (getComputedStyle(inputOverlay.current).display === 'none')
 		{
 			// `this.focusAfterDaySelected` flag was used to find out the reason
 			// why the text input was being focused: if it was being focused
@@ -552,7 +443,7 @@ export default class DatePicker extends PureComponent
 			// Previously, this component used to expand the calendar on focus.
 			// Now it doesn't, so `this.focusAfterDaySelected` flag is no longer used.
 			// this.focusAfterDaySelected = true
-			this.input.focus()
+			input.current.focus()
 
 			// // For some reason in IE 11 `onFocus` on `<input/>` is not called immediately.
 			// if (isInternetExplorer()) {
@@ -561,9 +452,16 @@ export default class DatePicker extends PureComponent
 			// 	this.focusAfterDaySelected = false
 			// }
 		}
-	}
+	}, [
+		format,
+		onChange,
+		value,
+		// noon,
+		utc,
+		collapse
+	])
 
-	// onCalendarKeyDown = (event) =>
+	// const onCalendarKeyDown = (event) =>
 	// {
 	// 	switch (event)
 	// 	{
@@ -583,35 +481,11 @@ export default class DatePicker extends PureComponent
 	// 	}
 	// }
 
-	onMonthChange = (month) =>
-	{
-		this.setState({ month })
-	}
+	const onMonthChange = useCallback((month) => {
+		setMonth(month)
+	}, [])
 
-	onBlur = (event) =>
-	{
-		clearTimeout(this.blurTimer)
-		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container, () => this.input, this.preventBlur)
-	}
-
-	onFocusOut = (event) =>
-	{
-		const { onBlur, value } = this.props
-
-		// `window.rruiCollapseOnFocusOut` can be used
-		// for debugging expandable contents.
-		if (window.rruiCollapseOnFocusOut !== false) {
-			this.focusingOut = true
-			this.collapse()
-			this.focusingOut = undefined
-		}
-
-		if (onBlur) {
-			onBlurForReduxForm(onBlur, event, value)
-		}
-	}
-
-	preventBlur = () =>
+	const preventBlur = useCallback(() =>
 	{
 		// A hack for iOS when it collapses
 		// the calendar after selecting a year/month.
@@ -619,195 +493,421 @@ export default class DatePicker extends PureComponent
 		// iOS triggers `blur` event on the corresponding `<select/>`
 		// which in turn causes the calendar to collapse.
 		// This workaround prevents that by re-focusing the calendar.
-		if (this._userHasJustChangedYearOrMonth)
-		{
-			this.focusCalendar()
+		if (_userHasJustChangedYearOrMonth.current) {
+			focusCalendar()
 			return true
 		}
-	}
+	}, [
+		focusCalendar
+	])
 
-	onToggleButtonClick = (event) => {
-		this.toggle().then(() => {
-			const { isExpanded } = this.state
-			if (isExpanded) {
-				this.focusCalendar()
+	const onBlur_ = useCallback((event) =>
+	{
+		clearTimeout(blurTimer.current)
+		const result = handleBlurEvent(
+			event,
+			onFocusOut,
+			() => container.current,
+			() => input.current,
+			preventBlur
+		)
+		if (typeof result !== 'boolean') {
+			blurTimer.current = result
+		}
+	}, [
+		onFocusOut,
+		preventBlur
+	])
+
+	const onFocusOut = useCallback((event) =>
+	{
+		// `window.rruiCollapseOnFocusOut` can be used
+		// for debugging expandable contents.
+		if (window.rruiCollapseOnFocusOut !== false) {
+			isFocusingOut.current = true
+			collapse()
+			isFocusingOut.current = undefined
+		}
+
+		if (onBlur) {
+			onBlurForReduxForm(onBlur, event, value)
+		}
+	}, [
+		collapse,
+		onBlur,
+		value
+	])
+
+	const getContainerNode = useCallback(() => container.current, [])
+	const setContainerNode = useCallback((node) => container.current = node, [])
+
+	const setInputRef = useCallback((inputRef) => {
+		if (ref) {
+			ref.current = inputRef
+		}
+		input.current = inputRef
+	}, [])
+
+	const dayFormatter = useMemo(() => {
+		if (typeof Intl !== 'undefined') {
+			return new Intl.DateTimeFormat(locale, {
+				weekday: 'long',
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			})
+		}
+	}, [
+		locale
+	])
+
+	const monthFormatter = useMemo(() => {
+		if (typeof Intl !== 'undefined') {
+			return new Intl.DateTimeFormat(locale, {
+				month: 'long'
+			})
+		}
+	}, [
+		locale
+	])
+
+	const weekdayFormatter = useMemo(() => {
+		if (typeof Intl !== 'undefined') {
+			return new Intl.DateTimeFormat(locale, {
+				weekday: 'long'
+			})
+		}
+	}, [
+		locale
+	])
+
+	const weekdayShortFormatter = useMemo(() => {
+		if (typeof Intl !== 'undefined') {
+			return new Intl.DateTimeFormat(locale, {
+				weekday: 'short'
+			})
+		}
+	}, [
+		locale
+	])
+
+	const firstDayOfWeek = useMemo(() => {
+		// Default: country — US, first day of week — Sunday (0).
+		return locale && getFirstDayOfWeek(locale) || 0
+	}, [
+		locale
+	])
+
+	const localeUtils = useMemo(() => ({
+		// Fixes calendar day `aria-label` to be a proper one instead of
+		// a weird one (`Mon Jan 03 2022`).
+		formatDay(date) {
+			if (dayFormatter) {
+				return dayFormatter.format(date)
 			}
-		})
-	}
-
-	componentWillUnmount()
-	{
-		clearTimeout(this.blurTimer)
-	}
-
-	getContainerNode = () => this.container
-	storeContainerNode = (node) => this.container = node
-	storeExpandableRef = (ref) => this.expandable = ref
-	storeCalendarComponent = (ref) => this.calendar = ref
-	storeInputOverlayNode = (node) => this.inputOverlay = node
-	storeInputNode = (node) => this.input = node
-	storeInputContainerNode = (node) => this.inputContainer = node
-
-	render()
-	{
-		const
-		{
-			id,
-			format,
-			utc,
-			value,
-			error,
-			indicateInvalid,
-			disabledDays,
-			selectYearsIntoPast,
-			selectYearsIntoFuture,
-			locale,
-			localeUtils,
-			months,
-			weekdaysShort,
-			weekdaysLong,
-			firstDayOfWeek,
-			disabled,
-			required,
-			label,
-			placeholder,
-			alignment,
-			tabIndex,
-			autoFocus,
-			waitForKeyboardSlideIn,
-			keyboardSlideInAnimationDuration,
-			buttonAriaLabel,
-			closeLabel,
-			closeButtonIcon : CloseButtonIcon,
-			icon,
-			className,
-			style
+			// A generic non-localized date formatter.
+			// https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Date/toDateString
+			// Same as `date.toString()` but without time.
+			return date.toDateString()
+		},
+		formatMonthTitle(date) {
+			if (monthFormatter) {
+				return monthFormatter.format(date)
+			}
+			// Returns month and year (in English).
+			return LocaleUtils.formatMonthTitle(date)
+		},
+		formatWeekdayShort(i) {
+			if (weekdayShortFormatter) {
+				return weekdayShortFormatter.format(getDateForDayOfWeek(i))
+			}
+			// Returns short weekday (in English).
+			return LocaleUtils.formatWeekdayShort(i)
+		},
+		formatWeekdayLong(i) {
+			if (weekdayFormatter) {
+				return weekdayFormatter.format(getDateForDayOfWeek(i))
+			}
+			// Returns long weekday (in English).
+			return LocaleUtils.formatWeekdayLong(i)
+		},
+		getFirstDayOfWeek() {
+			return firstDayOfWeek
+		},
+		getMonths() {
+			const months = []
+			let i = 0
+			while (i < 12) {
+				months.push(monthFormatter.format(getDateForMonth(i)))
+				i++
+			}
+			return months
 		}
-		= this.props
+	}), [
+		locale,
+		dayFormatter,
+		monthFormatter,
+		weekdayFormatter,
+		weekdayShortFormatter,
+		firstDayOfWeek
+	])
 
-		const
-		{
-			text_value,
-			isExpanded,
-			month
-		}
-		= this.state
+	// `<input type="date"/>` renders a browser-specific date picker
+	// which can not be turned off using a simple HTML attribute
+	// and also date format is not customizable,
+	// therefore just using `<input type="text"/>` here
 
-		// `<input type="date"/>` renders a browser-specific date picker
-		// which can not be turned off using a simple HTML attribute
-		// and also date format is not customizable,
-		// therefore just using `<input type="text"/>` here
-
-		// "MM/DD/YYYY"
-		const formatHint = typeof format === 'string' ? format : undefined
-
-		let captionElement
-		if (selectYearsIntoPast || selectYearsIntoFuture) {
-			captionElement = (
-				<YearMonthSelect
-					focus={ this.focusCalendar }
-					userHasJustChangedYearOrMonth={ this.userHasJustChangedYearOrMonth }
-					selectedDay={ value }
-					onChange={ this.onMonthChange }
-					selectYearsIntoPast={ selectYearsIntoPast }
-					selectYearsIntoFuture={ selectYearsIntoFuture } />
-			)
-		}
-
-		return (
-			<WithError
-				setRef={this.storeContainerNode}
-				error={error}
-				indicateInvalid={indicateInvalid}
-				onKeyDown={this.onContainerKeyDown}
-				onBlur={this.onBlur}
-				style={style}
-				className={classNames(className, 'rrui__date-picker', {
-					'rrui__date-picker--disabled' : disabled
-				})}>
-
-				{/* Date input */}
-				<TextInput
-					id={ id }
-					containerRef={ this.storeInputContainerNode }
-					ref={ this.storeInputNode }
-					required={ required }
-					error={ error }
-					indicateInvalid={ indicateInvalid }
-					label={ label }
-					placeholder={ label ? placeholder : placeholder || formatHint }
-					aria-label={ label ? `${label}: ${placeholder || formatHint}` : undefined }
-					tabIndex={ tabIndex }
-					disabled={ disabled }
-					autoFocus={ autoFocus }
-					value={ text_value !== undefined ? text_value : formatDate(value, format, { utc }) }
-					onKeyDown={ this.onInputKeyDown }
-					onChange={ this.onInputChange }
-					onFocus={ this.onInputFocus }
-					onClick={ this.expand }>
-
-					{/* This layer can intercept taps on mobile devices
-					    to prevent the keyboard from showing
-					    when the date picker is in fullscreen mode.
-					    `tabIndex={-1}` is to prevent focus-out/focus-in jitter on click. */}
-					<div
-						ref={ this.storeInputOverlayNode }
-						onClick={ this.onToggleButtonClick }
-						tabIndex={ -1 }
-						className="rrui__date-picker__input-overlay"/>
-
-					{/* Calendar icon which toggles the calendar. */}
-					{/* `aria-haspopup`: https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup */}
-					{/* WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="grid"`. */}
-					<button
-						type="button"
-						onClick={this.onToggleButtonClick}
-						tabIndex={buttonAriaLabel ? undefined : -1}
-						aria-haspopup={undefined && 'grid'}
-						aria-expanded={isExpanded ? true : false}
-						aria-label={buttonAriaLabel}
-						className={classNames(
-							'rrui__button-reset',
-							'rrui__outline',
-							'rrui__date-picker__icon', {
-								'rrui__date-picker__icon--hidden': !buttonAriaLabel && !icon
-							}
-						)}>
-						{typeof icon === 'function' ? icon() : DEFAULT_CALENDAR_ICON()}
-					</button>
-
-					{/* <DayPicker/> doesn't support `style` property */}
-					<Expandable
-						ref={ this.storeExpandableRef }
-						alignment={alignment}
-						onExpand={ this.onExpand }
-						onExpanded={ this.onExpanded }
-						onCollapse={ this.onCollapse }
-						onFocusOut={ this.onBlur }
-						getTogglerNode={ this.getContainerNode }
-						scrollIntoViewDelay={ waitForKeyboardSlideIn ? keyboardSlideInAnimationDuration : undefined }>
-
-						<DayPicker
-							ref={ this.storeCalendarComponent }
-							month={ month }
-							onMonthChange={ this.onMonthChange }
-							locale={ locale }
-							localeUtils={ localeUtils }
-							months={ months }
-							weekdaysLong={ weekdaysLong }
-							weekdaysShort={ weekdaysShort }
-							firstDayOfWeek={ firstDayOfWeek }
-							onDayClick={ this.onDayClick }
-							selectedDays={ normalizeDate(value) }
-							disabledDays={ disabledDays }
-							captionElement={ captionElement }
-							className="rrui__date-picker__calendar" />
-					</Expandable>
-				</TextInput>
-			</WithError>
+	let captionElement
+	if (selectYearsIntoPast || selectYearsIntoFuture) {
+		captionElement = (
+			<YearMonthSelect
+				focus={focusCalendar}
+				userHasJustChangedYearOrMonth={userHasJustChangedYearOrMonth}
+				selectedDay={value}
+				onChange={onMonthChange}
+				selectYearsIntoPast={selectYearsIntoPast}
+				selectYearsIntoFuture={selectYearsIntoFuture}
+			/>
 		)
 	}
+
+	return (
+		<WithError
+			setRef={setContainerNode}
+			error={error}
+			indicateInvalid={indicateInvalid}
+			onKeyDown={onContainerKeyDown}
+			onBlur={onBlur_}
+			style={style}
+			className={classNames(className, 'rrui__date-picker', {
+				'rrui__date-picker--disabled': disabled
+			})}>
+
+			{/* Date input */}
+			<TextInput
+				id={ id }
+				ref={ setInputRef }
+				required={ required }
+				error={ error }
+				indicateInvalid={ indicateInvalid }
+				label={ label }
+				placeholder={ placeholder }
+				aria-label={ ariaLabel }
+				aria-labelledby={ ariaLabelledBy }
+				aria-describedby={ ariaDescribedBy }
+				tabIndex={ tabIndex }
+				disabled={ disabled }
+				autoFocus={ autoFocus }
+				value={ textValue !== undefined ? textValue : formatDate(value, format, { utc }) }
+				onKeyDown={ onInputKeyDown }
+				onChange={ onInputChange }
+				onFocus={ onInputFocus }
+				onClick={ expand }>
+
+				{/* This layer can intercept taps on mobile devices
+				    to prevent the keyboard from showing
+				    when the date picker is in fullscreen mode.
+				    `tabIndex={-1}` is to prevent focus-out/focus-in jitter on click. */}
+				<div
+					ref={ inputOverlay }
+					onClick={ onToggleButtonClick }
+					tabIndex={ -1 }
+					className="rrui__date-picker__input-overlay"/>
+
+				{/* Calendar icon which toggles the calendar. */}
+				{/* `aria-haspopup`: https://www.w3.org/TR/wai-aria-1.1/#aria-haspopup */}
+				{/* WAI-ARIA 1.1 is not yet supported, so not using `aria-haspopup="grid"`. */}
+				<button
+					type="button"
+					onClick={onToggleButtonClick}
+					tabIndex={buttonAriaLabel ? undefined : -1}
+					aria-haspopup={undefined && 'grid'}
+					aria-expanded={isExpanded_ ? true : false}
+					aria-label={buttonAriaLabel}
+					className={classNames(
+						'rrui__button-reset',
+						'rrui__outline',
+						'rrui__date-picker__icon', {
+							'rrui__date-picker__icon--hidden': !buttonAriaLabel && !icon
+						}
+					)}>
+					{typeof icon === 'function' ? icon() : DEFAULT_CALENDAR_ICON()}
+				</button>
+
+				{/* <DayPicker/> doesn't support `style` property */}
+				<Expandable
+					ref={expandable}
+					alignment={alignment}
+					onExpand={onExpand}
+					onExpanded={onExpanded}
+					onCollapse={onCollapse}
+					onFocusOut={onBlur_}
+					getTogglerNode={getContainerNode}
+					scrollIntoViewDelay={waitForKeyboardSlideIn ? keyboardSlideInAnimationDuration : undefined}>
+
+					<DayPicker
+						ref={calendar}
+						month={month}
+						onMonthChange={onMonthChange}
+						locale={locale}
+						localeUtils={localeUtils}
+						firstDayOfWeek={firstDayOfWeek}
+						onDayClick={onDayClick}
+						selectedDays={ignoreInvalidDateObjects(value)}
+						disabledDays={disabledDays}
+						captionElement={captionElement}
+						className="rrui__date-picker__calendar"
+					/>
+				</Expandable>
+			</TextInput>
+		</WithError>
+	)
 }
+
+DatePicker = React.forwardRef(DatePicker)
+
+DatePicker.propTypes =
+{
+	// (optional) HTML `id` attribute.
+	id : PropTypes.string,
+
+	// An optional label placed on top of the input field
+	label : PropTypes.string,
+
+	// `<input/>` placeholder
+	placeholder : PropTypes.string,
+
+	// Expandable calendar alignment.
+	// Is "left" by default.
+	alignment : PropTypes.string,
+
+	// A "BCP47" "language tag".
+	// Example: "en-US".
+	locale : PropTypes.string,
+
+	// Date format. Only supports `dd`, `mm`, `yy` and `yyyy` for now.
+	// Can support custom localized formats, perhaps, when `date-fns@2` is released.
+	// (is US `mm/dd/yyyy` by default)
+	format : PropTypes.string.isRequired,
+	// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+
+	// Internationalization
+	// locale : PropTypes.string,
+
+	// The Date `value`
+	value : PropTypes.instanceOf(Date),
+
+	// Writes new `value`.
+	// The `value` is in the user's time zone and the time is `00:00`.
+	onChange : PropTypes.func.isRequired,
+
+	// Is called when the date picker is either collapsed or expanded
+	onToggle : PropTypes.func,
+
+	// Is called when the input is focused
+	onFocus : PropTypes.func,
+
+	// Is called when the input is blurred.
+	// This `onBlur` interceptor is a workaround for `redux-form`,
+	// so that it gets the parsed `value` in its `onBlur` handler,
+	// not the formatted text.
+	onBlur : PropTypes.func,
+
+	// Disables the input
+	disabled : PropTypes.bool,
+
+	// Set to `true` to mark the field as required
+	required : PropTypes.bool.isRequired,
+
+	// Indicates that the input is invalid.
+	error : PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.bool
+	]),
+
+	// HTML `autoFocus` attribute
+	autoFocus : PropTypes.bool,
+
+	// HTML `tabIndex` attribute
+	tabIndex : PropTypes.number,
+
+	// HTML `<input/>` `name` attribute
+	name : PropTypes.string,
+
+	// `react-day-picker`'s `disabledDays`.
+	// http://react-day-picker.js.org/examples/disabled
+	disabledDays : PropTypes.oneOfType
+	([
+		PropTypes.object,
+		PropTypes.func,
+		PropTypes.array
+	]),
+
+	// How much years back can a user navigate using the year `<select/>`
+	selectYearsIntoPast : PropTypes.number.isRequired,
+
+	// How much years forward can a user navigate using the year `<select/>`
+	selectYearsIntoFuture : PropTypes.number.isRequired,
+
+	// A `date`` from which the initially shown month of the calendar will be derived
+	// when no `value` is selected. Is the current month by default.
+	initialCalendarDate : PropTypes.instanceOf(Date),
+
+	// Whether dates being selected should be in UTC+0 timezone.
+	// (is `false` by default)
+	utc : PropTypes.bool.isRequired,
+
+	// // Whether to set time to 12:00 for dates being selected.
+	// // (is `true` by default)
+	// noon : PropTypes.bool.isRequired,
+
+	// The calendar icon.
+	icon : PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.bool
+	]),
+
+	// `aria-label` attribute for the toggle calendar button.
+	buttonAriaLabel : PropTypes.string,
+
+	waitForKeyboardSlideIn : PropTypes.bool.isRequired,
+	keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
+
+	// CSS class
+	className : PropTypes.string,
+
+	// CSS style object
+	style : PropTypes.object
+}
+
+DatePicker.defaultProps =
+{
+	alignment : 'left',
+
+	// Default US format
+	format : 'mm/dd/yyyy',
+
+	// Set to `true` to mark the field as required
+	required : false,
+
+	// Show `error` (if passed).
+	indicateInvalid : true,
+
+	// Whether dates being selected should be in UTC+0 timezone
+	utc : true,
+
+	// // Whether to set time to 12:00 for dates being selected
+	// noon : false,
+
+	// A sensible default.
+	selectYearsIntoPast : 100,
+	selectYearsIntoFuture : 100,
+
+	waitForKeyboardSlideIn : true,
+	keyboardSlideInAnimationDuration : 300
+}
+
+export default DatePicker
 
 const iconStyle = {
 	width  : '100%',

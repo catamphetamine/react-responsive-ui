@@ -84,7 +84,7 @@ p
 .country-icon
 {
 	width  : 1em;
-	height : 0.75em;
+	height : calc(1em * 2/3);
 	border : 1px solid #5f5f5f;
 }
 

@@ -8,7 +8,6 @@ import { getModularGridUnit } from './utility/grid'
 import { submitFormOnCtrlEnter } from './utility/dom'
 
 function TextInput({
-	id,
 	value,
 	multiline,
 	inputComponent,
@@ -127,15 +126,30 @@ function TextInput({
 		// it doesn't override an already passed `autoFocus`.
 		// `focus` property is deprecated. Use `autoFocus` instead.
 		autoFocus: focus,
+		placeholder,
+		disabled,
 		...rest,
-		id,
+
+		// Set `aria-label`, if none passed.
+		'aria-label': rest['aria-label'] === undefined
+			? (rest['aria-labelledby'] || rest['aria-describedby']
+				? undefined
+				: label
+			)
+			: rest['aria-label'],
+
+		// Set `aria-required`, if none passed.
+		'aria-required': rest['aria-required'] === undefined
+			? (required ? true : undefined)
+			: rest['aria-required'],
+
+		// Set `aria-invalid`, if none passed.
+		'aria-invalid': rest['aria-invalid'] === undefined
+			? (error && indicateInvalid ? true : undefined)
+			: rest['aria-invalid'],
+
 		ref: storeInputNode,
 		value: isEmptyValue(value) ? '' : value,
-		disabled,
-		'aria-label'    : rest['aria-label'] || (id && label ? undefined : label),
-		'aria-required' : rest['aria-required'] || (required ? true : undefined),
-		'aria-invalid'  : rest['aria-invalid'] || (error && indicateInvalid ? true : undefined),
-		placeholder,
 		onChange: _onChange,
 		onKeyDown: _onKeyDown,
 		style: inputStyle,
@@ -203,9 +217,6 @@ TextInput = React.forwardRef(TextInput)
 
 TextInput.propTypes =
 {
-	// (optional) HTML `id` attribute.
-	id : PropTypes.string,
-
 	// `<input type/>` attribute.
 	type : PropTypes.string,
 

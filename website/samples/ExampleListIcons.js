@@ -1,7 +1,7 @@
 const ListIcon = ({ value, label, className }) => (
 	<img
 		className={`${className} country-icon`}
-		src={`https://lipis.github.io/flag-icon-css/flags/4x3/${value.toLowerCase()}.svg`}/>
+		src={`https://catamphetamine.gitlab.io/country-flag-icons/3x2/${value}.svg`}/>
 )
 
 window.ExampleListIcons = class ExampleComponent extends React.Component

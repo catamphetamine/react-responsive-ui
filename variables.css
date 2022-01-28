@@ -257,6 +257,8 @@
   --rrui-switcher-text-color-selected : var(--rrui-white-color);
 
   /* `<DatePicker/>`. */
+  --rrui-date-picker-calendar-day-highlight-width: 2em;
+  --rrui-date-picker-calendar-day-padding: 0.5em;
   --rrui-date-picker-calendar-day-color-outside: var(--rrui-gray-color);
   --rrui-date-picker-calendar-day-color-disabled: var(--rrui-gray-color-light);
   --rrui-date-picker-calendar-day-color-active: var(--rrui-white-color);
