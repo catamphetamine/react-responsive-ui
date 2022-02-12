@@ -28,6 +28,63 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.15.13 / 12.02.2022
+===================
+
+* (Minor CSS breaking change) Removed `--rrui-input-field-border-bottom-width` CSS variable and CSS rule. Now, only `--rrui-input-field-border-width` variable is used, which is `1px` by default.
+
+* (Might potentially be a minor CSS breaking change) Added `--rrui-input-field-box-shadow` CSS variable.
+
+* (Might potentially be a minor CSS breaking change) Renamed `--rrui-input-field-shadow-radius--autofill` CSS variable to `--rrui-input-field-box-shadow-radius--autofill`.
+
+* (Might potentially be a minor CSS breaking change) Removed `.rrui__date-picker--disabled` CSS class (seems to be not used).
+
+* Removed the workaround for removing Chrome `<input/>` autofill background color:
+
+```css
+:root {
+  --rrui-input-field-background-color--autofill : var(--rrui-input-field-background-color);
+  --rrui-input-field-background-color-focus--autofill : var(--rrui-input-field-background-color-focus);
+  --rrui-input-field-background-color-error--autofill : var(--rrui-input-field-background-color-error);
+  --rrui-input-field-background-color-error-focus--autofill : var(--rrui-input-field-background-color-error-focus);
+  --rrui-input-field-box-shadow-radius--autofill : 1000px;
+}
+
+/* Overrides Chrome autofill yellow background color. */
+.rrui__input-field:-webkit-autofill
+{
+  box-shadow : 0 0 0 var(--rrui-input-field-box-shadow-radius--autofill) var(--rrui-input-field-background-color--autofill) inset;
+}
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is focused). */
+.rrui__input-field:focus:-webkit-autofill
+{
+  box-shadow : 0 0 0 var(--rrui-input-field-box-shadow-radius--autofill) var(--rrui-input-field-background-color-focus--autofill) inset;
+}
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
+.rrui__input-field--invalid:-webkit-autofill
+{
+  box-shadow : 0 0 0 var(--rrui-input-field-box-shadow-radius--autofill) var(--rrui-input-field-background-color-error--autofill) inset;
+}
+
+/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
+/* Overrides the corresponding `:focus` CSS rule. */
+.rrui__input-field--invalid:focus:-webkit-autofill
+{
+  box-shadow : 0 0 0 var(--rrui-input-field-box-shadow-radius--autofill) var(--rrui-input-field-background-color-error-focus--autofill) inset;
+}
+```
+
+<!-- `generate-demo-styles.js`:
+
+    // .replace_all('var(--rrui-input-field-background-color--autofill)', 'var(--rrui-input-field-background-color)')
+    // .replace_all('var(--rrui-input-field-background-color-focus--autofill)', 'var(--rrui-input-field-background-color-focus)')
+    // .replace_all('var(--rrui-input-field-background-color-error--autofill)', 'var(--rrui-input-field-background-color-error)')
+    // .replace_all('var(--rrui-input-field-background-color-error-focus--autofill)', 'var(--rrui-input-field-background-color-error-focus)')
+    // .replace_all('var(--rrui-input-field-box-shadow-radius--autofill)', '1000px')
+-->
+
 0.15.12 / 27.01.2022
 ===================
 

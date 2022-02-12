@@ -22,7 +22,7 @@ import parseDate, { getSameDateAndTimeInUtc0TimeZone } from './utility/parseDate
 
 let DatePicker = function({
 	id,
-	format,
+	format: formatAnyCase,
 	// noon,
 	utc,
 	value,
@@ -34,6 +34,7 @@ let DatePicker = function({
 	initialCalendarDate,
 	locale,
 	disabled,
+	readOnly,
 	required,
 	label,
 	placeholder,
@@ -77,7 +78,7 @@ let DatePicker = function({
 	const hasMounted = useRef()
 
 	// `format` should be in lower case.
-	format = format.toLowerCase()
+	const format = useMemo(() => formatAnyCase.toLowerCase(), [formatAnyCase])
 
 	useEffect(() => {
 		if (hasMounted.current) {
@@ -201,8 +202,10 @@ let DatePicker = function({
 			focus()
 		}
 
+		// Reset any custom `textValue` and use the formatted `value` instead.
 		setTextValue()
-		// For `aria-expanded`.
+
+		// Set `aria-expanded` attribute to `false`.
 		setExpanded(false)
 
 		// `onChange` fires on calendar day `click`
@@ -350,7 +353,10 @@ let DatePicker = function({
 			// `textValue` is set to an empty string instead of just `undefined` here
 			// because there's a `textValue !== undefined` condition when passing
 			// `value` property to `<TextInput/>`.
-			// So an empty string has a different behavior than just `undefined`.
+			// So an empty string has a different behavior than just `undefined`:
+			// * Setting `textValue` to `undefined` simply discards any custom `textValue`
+			//   and uses the formatted `value` instead of it.
+			// * Setting `textValue` to an empty string specifically clears the `<input/>` field.
 			return setTextValue('')
 		}
 
@@ -543,10 +549,14 @@ let DatePicker = function({
 
 	const setInputRef = useCallback((inputRef) => {
 		if (ref) {
-			ref.current = inputRef
+			if (typeof ref === 'function') {
+				ref(inputRef)
+			} else {
+				ref.current = inputRef
+			}
 		}
 		input.current = inputRef
-	}, [])
+	}, [input, ref]);
 
 	const dayFormatter = useMemo(() => {
 		if (typeof Intl !== 'undefined') {
@@ -679,9 +689,7 @@ let DatePicker = function({
 			onKeyDown={onContainerKeyDown}
 			onBlur={onBlur_}
 			style={style}
-			className={classNames(className, 'rrui__date-picker', {
-				'rrui__date-picker--disabled': disabled
-			})}>
+			className={classNames(className, 'rrui__date-picker')}>
 
 			{/* Date input */}
 			<TextInput
@@ -697,6 +705,7 @@ let DatePicker = function({
 				aria-describedby={ ariaDescribedBy }
 				tabIndex={ tabIndex }
 				disabled={ disabled }
+				readOnly={ readOnly }
 				autoFocus={ autoFocus }
 				value={ textValue !== undefined ? textValue : formatDate(value, format, { utc }) }
 				onKeyDown={ onInputKeyDown }
@@ -815,6 +824,9 @@ DatePicker.propTypes =
 
 	// Disables the input
 	disabled : PropTypes.bool,
+
+	// HTML `readonly` attribute
+	readOnly : PropTypes.bool,
 
 	// Set to `true` to mark the field as required
 	required : PropTypes.bool.isRequired,

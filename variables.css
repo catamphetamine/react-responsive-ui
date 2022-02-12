@@ -34,14 +34,9 @@
   /* Background color is set to white instead of transparent because
      `box-shadow` is used to disabled Chrome's yellow autocomplete background. */
   --rrui-input-field-background-color : var(--rrui-white-color);
-  --rrui-input-field-background-color--autofill : var(--rrui-input-field-background-color);
   --rrui-input-field-background-color-focus : var(--rrui-input-field-background-color);
-  --rrui-input-field-background-color-focus--autofill : var(--rrui-input-field-background-color-focus);
   --rrui-input-field-background-color-error : var(--rrui-input-field-background-color);
-  --rrui-input-field-background-color-error--autofill : var(--rrui-input-field-background-color-error);
   --rrui-input-field-background-color-error-focus : var(--rrui-input-field-background-color-error);
-  --rrui-input-field-background-color-error-focus--autofill : var(--rrui-input-field-background-color-error-focus);
-  --rrui-input-field-shadow-radius--autofill : 1000px;
   --rrui-input-field-background-color-disabled : var(--rrui-input-field-background-color);
   --rrui-input-field-transition : border 0.1s;
   --rrui-input-field-text-color : var(--rrui-black-color);
@@ -125,13 +120,18 @@
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border. */
   --rrui-input-field-border-radius : 0rem;
-  --rrui-input-field-border-width : 0px;
-  --rrui-input-field-border-bottom-width : 1px;
+  --rrui-input-field-border-width : 1px;
   --rrui-input-field-border-color : var(--rrui-gray-color-light);
   --rrui-input-field-border-color-disabled : var(--rrui-input-field-border-color);
   --rrui-input-field-border-color-focus : var(--rrui-accent-color);
   --rrui-input-field-border-color-error : var(--rrui-error-color);
   --rrui-input-field-border-color-error-focus : var(--rrui-input-field-border-color-error);
+
+  /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` box-shadow. */
+  --rrui-input-field-box-shadow: none;
+  --rrui-input-field-box-shadow-focus: var(--rrui-input-field-box-shadow);
+  --rrui-input-field-box-shadow-error: var(--rrui-input-field-box-shadow);
+  --rrui-input-field-box-shadow-error-focus: var(--rrui-input-field-box-shadow-focus);
 
   /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` label. */
   --rrui-input-label-focus-top-offset : -70%;
@@ -271,6 +271,7 @@
   --rrui-date-picker-calendar-weekday-color: var(--rrui-gray-color);
   --rrui-date-picker-calendar-day-color--today: #d0021b;
   --rrui-date-picker-calendar-day-font-weight--today: 700;
+  --rrui-date-picker-calendar-day-border-radius: 50%;
 
   /* `<ExpansionPanel/>` */
   --rrui-expansion-panel-background-color: var(--rrui-white-color);

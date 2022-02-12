@@ -35,7 +35,7 @@
 	width : calc(100% + var(--rrui-options-list-negative-side-margin) * 2);
 
 	/* Makes `border-bottom` visible on an iPhone */
-	margin-top : var(--rrui-input-field-border-bottom-width);
+	margin-top : var(--rrui-input-field-border-width);
 }
 
 .rrui__autocomplete--compact

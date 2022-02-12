@@ -101,7 +101,7 @@
 	z-index: -1;
 	width: var(--rrui-date-picker-calendar-day-highlight-width);
 	height: var(--rrui-date-picker-calendar-day-highlight-width);
-	border-radius: 50%;
+	border-radius: var(--rrui-date-picker-calendar-day-border-radius);
 }
 
 .DayPicker-Day:focus {
@@ -162,7 +162,7 @@
 	color: var(--rrui-date-picker-calendar-day-color-active);
 }
 
-.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):active:before
+.DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):active:before
 {
 	background-color: var(--rrui-date-picker-calendar-day-background-color-active);
 }

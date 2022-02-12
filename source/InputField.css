@@ -9,32 +9,7 @@
 	font-family   : inherit;
 	font-weight   : inherit;
 	font-style    : inherit;
-	color: var(--rrui-input-field-text-color);
-}
-
-/* Overrides Chrome autofill yellow background color. */
-.rrui__input-field:-webkit-autofill
-{
-	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color--autofill) inset;
-}
-
-/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is focused). */
-.rrui__input-field:focus:-webkit-autofill
-{
-	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-focus--autofill) inset;
-}
-
-/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
-.rrui__input-field--invalid:-webkit-autofill
-{
-	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-error--autofill) inset;
-}
-
-/* Overrides Chrome autofill yellow background color (when `<TextInput/>` is invalid). */
-/* Overrides the corresponding `:focus` CSS rule. */
-.rrui__input-field--invalid:focus:-webkit-autofill
-{
-	box-shadow : 0 0 0 var(--rrui-input-field-shadow-radius--autofill) var(--rrui-input-field-background-color-error-focus--autofill) inset;
+	color         : var(--rrui-input-field-text-color);
 }
 
 /* For `<TextInput/>` and alike. */
@@ -51,6 +26,7 @@
 
 	background-color : var(--rrui-input-field-background-color);
 	border-radius : var(--rrui-input-field-border-radius);
+	box-shadow : var(--rrui-input-field-box-shadow);
 }
 
 /* For `<TextInput/>` and alike. */
@@ -60,9 +36,8 @@
 /* For `<Select native/>`. */
 .rrui__select__native
 {
-	border: var(--rrui-input-field-border-width) solid var(--rrui-input-field-border-color);
-	border-bottom-width: var(--rrui-input-field-border-bottom-width);
-	transition: var(--rrui-input-field-transition);
+	border     : var(--rrui-input-field-border-width) solid var(--rrui-input-field-border-color);
+	transition : var(--rrui-input-field-transition);
 }
 
 /* For `<TextInput/>` and alike. */
@@ -76,6 +51,7 @@
 {
 	border-color     : var(--rrui-input-field-border-color-focus);
 	background-color : var(--rrui-input-field-background-color-focus);
+	box-shadow       : var(--rrui-input-field-box-shadow-focus);
 }
 
 /* For `<TextInput/>` and alike. */
@@ -87,6 +63,7 @@
 {
 	border-color     : var(--rrui-input-field-border-color-error);
 	background-color : var(--rrui-input-field-background-color-error);
+	box-shadow       : var(--rrui-input-field-box-shadow-error);
 }
 
 /* For `<TextInput/>` and alike. */
@@ -115,6 +92,7 @@
 {
 	border-color     : var(--rrui-input-field-border-color-error-focus);
 	background-color : var(--rrui-input-field-background-color-error-focus);
+	box-shadow       : var(--rrui-input-field-box-shadow-error-focus);
 }
 
 .rrui__input-field
