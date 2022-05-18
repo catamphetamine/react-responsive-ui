@@ -103,13 +103,14 @@ export default class Expandable extends PureComponent
 	}
 
 	state = {
-		// This initialization is required for `if (expand === expanded)`.
+		// Initializing it to `false` is required for `if (expand === expanded)`.
 		expanded: false
 	}
 
 	onFocusOutRef = createRef()
 
 	componentWillUnmount() {
+		this._isBeingUnmounted = true
 		if (this.cancelProcess) {
 			this.cancelProcess()
 		}
@@ -122,6 +123,8 @@ export default class Expandable extends PureComponent
 
 	toggle = (expand, parameters = {}) =>
 	{
+		// This code is also copy-pasted in `source/SlideOutMenu.js`.
+
 		const {
 			onExpand,
 			onExpanded,
@@ -378,6 +381,13 @@ export default class Expandable extends PureComponent
 	}
 
 	onFocusOut = (event) => {
+		// In some scenarios, selecting a value in a `<Select/>` may hide that select.
+		// In that case, it won't be mounted anymore, so it won't make any difference
+		// whether its `onFocusOut()` handler is called or not because it's UI-related
+		// and `onChange()` has already been processed.
+		if (this._isBeingUnmounted) {
+			return
+		}
 		const { onFocusOut } = this.props
 		this.focusOut = true
 		onFocusOut(event)

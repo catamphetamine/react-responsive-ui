@@ -4,6 +4,17 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 {
 	function _onBlur(focusedNode)
 	{
+		// If the component is already unmounted then don't do anything.
+		//
+		// In some scenarios, selecting a value in a `<Select/>` may hide that select.
+		// In that case, it won't be mounted anymore, so it won't make any difference
+		// whether its `onBlur()` handler is called or not because it's UI-related
+		// and `onChange()` has already been processed.
+		//
+		if (!getComponentNode()) {
+			return false
+		}
+
 		if (preventBlur) {
 			if (preventBlur() === true) {
 				return false
@@ -41,7 +52,7 @@ export function onBlur(event, onFocusOut, getComponentNode, getComponentNode2, p
 	// Until Internet Explorer is no longer a supported browser.
 	//
 	if (isInternetExplorer()) {
-		return setTimeout(() => getComponentNode() && _onBlur(document.activeElement), 30)
+		return setTimeout(() => _onBlur(document.activeElement), 30)
 	}
 
 	// // Safari (both macOS and iOS) has a bug: `<button/>`s not getting focus.

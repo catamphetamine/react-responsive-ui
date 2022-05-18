@@ -40,9 +40,14 @@ export default class PageAndMenu extends Component {
 		)
 	}
 
-	toggleMenu = (show) => {
-		this.menu.toggle(show, () => {
-			this._onDidShowMenu(this.menu.isShown())
+	toggleMenu = (expand) => {
+		this.menu.toggle(expand, {
+			onCollapsed: () => {
+				this._onDidShowMenu(false)
+			},
+			onExpanded: () => {
+				this._onDidShowMenu(true)
+			}
 		})
 	}
 

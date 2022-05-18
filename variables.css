@@ -100,9 +100,6 @@
   /* `<Switch/>` and `<Checkbox/>` */
   --rrui-control-label-margin : var(--rrui-unit);
 
-  /* `<SlideOutMenu/>` */
-  --rrui-slideout-menu-animation-duration : 220ms;
-
   /* Close icon */
   --rrui-close-margin : calc(var(--rrui-unit) * 2);
   --rrui-close-size   : calc(var(--rrui-unit) * 2);
@@ -180,7 +177,12 @@
   /* `<Select/>` arrow. */
   --rrui-select-arrow-color: var(--rrui-gray-color);
   --rrui-select-arrow-opacity: 0.6;
-  --rrui-select-arrow-border-width: 0.35em 0.22em 0 0.22em;
+  --rrui-select-arrow-width: 0.45em;
+  --rrui-select-arrow-height: 0.35em;
+  --rrui-select-arrow-border-left-width: calc(var(--rrui-select-arrow-width) / 2);
+  --rrui-select-arrow-border-right-width: calc(var(--rrui-select-arrow-width) / 2);
+  --rrui-select-arrow-border-top-width: var(--rrui-select-arrow-height);
+  --rrui-select-arrow-border-bottom-width: 0px;
   --rrui-select-arrow-margin-top: 0.1em;
   --rrui-select-arrow-margin-left: calc(var(--rrui-unit) * 2 / 3);
   --rrui-select-arrow-margin-right: calc(var(--rrui-unit) * 2 / 3);
@@ -210,6 +212,12 @@
   --rrui-modal-background-color : var(--rrui-card-background-color);
   --rrui-modal-text-color : var(--rrui-card-text-color);
   --rrui-modal-close-button-background-color-focus : var(--rrui-gray-color-lightest);
+
+  /* `<SlideOutMenu/>`. */
+  --rrui-slide-out-menu-vertical-padding : calc(var(--rrui-list-vertical-padding) * 2.5);
+  --rrui-slide-out-menu-box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
+  --rrui-slide-out-menu-opacity : 1;
+  --rrui-slide-out-menu-animation-duration : 220ms;
 
   /* `<SlideOutMenu/>` colors. */
   --rrui-slide-out-menu-background-color : var(--rrui-black-color);

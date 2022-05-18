@@ -2,16 +2,16 @@
 {
 	position         : fixed;
 	z-index          : var(--rrui-z-index-overlay);
-	padding-top      : calc(var(--rrui-list-vertical-padding) * 2.5);
-	padding-bottom   : calc(var(--rrui-list-vertical-padding) * 2.5);
+	padding-top      : var(--rrui-slide-out-menu-vertical-padding);
+	padding-bottom   : var(--rrui-slide-out-menu-vertical-padding);
 	/* `box-sizing` is for padding to not glitch when overflown vertically. */
 	box-sizing       : border-box;
 	overflow-y       : auto;
-	opacity          : 0.9;
+	opacity          : var(--rrui-slide-out-menu-opacity);
 	background-color : var(--rrui-slide-out-menu-background-color);
 	color            : var(--rrui-slide-out-menu-text-color);
 	transform        : translate3d(-100%, 0, 0);
-	transition       : transform var(--rrui-slideout-menu-animation-duration) ease-out, box-shadow var(--rrui-slideout-menu-animation-duration) ease-out;
+	transition       : transform var(--rrui-slide-out-menu-animation-duration) ease-out, box-shadow var(--rrui-slide-out-menu-animation-duration) ease-out;
 }
 
 .rrui__slideout-menu--fullscreen
@@ -23,7 +23,7 @@
 
 .rrui__slideout-menu--expanded
 {
-	box-shadow : 0 0 0.2em rgba(0, 0, 0, 0.4);
+	box-shadow : var(--rrui-slide-out-menu-box-shadow);
 }
 
 .rrui__slideout-menu--left
@@ -107,7 +107,7 @@
 	padding-right : calc(var(--rrui-expandable-menu-item-side-padding) * 1.5);
 
 	opacity    : 0;
-	transition : opacity calc(var(--rrui-slideout-menu-animation-duration) / 2) ease-out;
+	transition : opacity calc(var(--rrui-slide-out-menu-animation-duration) / 2) ease-out;
 }
 
 .rrui__slideout-menu--expanded .rrui__slideout-menu__item

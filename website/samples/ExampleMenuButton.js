@@ -6,16 +6,25 @@ window.ExampleMenuButton = class ExampleComponent extends React.Component
 			<Example name="slideout-menu" title="Slideout Menu">
 				<MenuButton aria-label="Menu" aria-haspopup="menu"/>
 
-				<p>
-					<br/>
-					<code className="colored">{'<SlideOutMenu/>'}</code> takes an optional <code className="colored">anchor</code> property which can be one of: <code className="colored">"left"</code>, <code className="colored">"right"</code>, <code className="colored">"top"</code>, <code className="colored">"bottom"</code>.
-					<br/>
-					<br/>
-					<code className="colored">{'<SlideOutMenu/>'}</code> also takes an optional <code className="colored">fullscreen: true/false</code> property.
-					<br/>
-					<br/>
-					<code className="colored">{'<SlideOutMenu/>'}</code> component instance also provides <code className="colored">.hide()</code> and <code className="colored">.show()</code> methods.
-				</p>
+				<br/>
+				<br/>
+				<br/>
+
+				<code className="colored">{'<SlideOutMenu/>'}</code> accepts optional properties:
+
+				<ul className="list">
+					<li><code className="colored">anchor</code> — One of: <code className="colored">"left"</code>, <code className="colored">"right"</code>, <code className="colored">"top"</code>, <code className="colored">"bottom"</code>.</li>
+					<li><code className="colored">fullscreen</code> — <code className="colored">true</code> or <code className="colored">false</code>.</li>
+					<li><code className="colored">expandAnimationDuration</code> — The animation duration. By default, it's <code className="colored">220ms</code>. When changing the <code className="colored">--rrui-slide-out-menu-animation-duration</code> CSS variable value, also pass that value as this property.</li>
+				</ul>
+
+				<br/>
+
+				<code className="colored">{'<SlideOutMenu/>'}</code> component instance also provides <code className="colored">.hide()</code> and <code className="colored">.show()</code> methods.
+
+				<br/>
+				<br/>
+				<br/>
 
 				<p>
 					Simple Example:

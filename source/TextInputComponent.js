@@ -6,7 +6,12 @@ import Input from './TextInputInput'
 import Label from './TextInputLabel'
 
 // `<input/>` and its `<label/>`.
-function TextInputComponent(props, ref) {
+function TextInputComponent({
+	icon: Icon,
+	className,
+	children,
+	...rest
+}, ref) {
 	const {
 		id,
 		value,
@@ -18,14 +23,7 @@ function TextInputComponent(props, ref) {
 		error,
 		indicateInvalid,
 		containerRef
-	} = props
-
-	const {
-		icon: Icon,
-		className,
-		children,
-		...rest
-	} = props
+	} = rest
 
 	return (
 		<div

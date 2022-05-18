@@ -91,7 +91,13 @@
 	/*transition : opacity 100ms ease-out;*/
 
 	/* border-width: arrow_height arrow_width/2 0 arrow_width/2 */
-	border-width : var(--rrui-select-arrow-border-width);
+	/* A "combined" `border-width` CSS property wasn't supported in Next.js 12:
+	   it forcefully and incorrectly split it into individual borders when compiling
+	   a production build. */
+	border-left-width : var(--rrui-select-arrow-border-left-width);
+	border-right-width : var(--rrui-select-arrow-border-right-width);
+	border-top-width : var(--rrui-select-arrow-border-top-width);
+	border-bottom-width : var(--rrui-select-arrow-border-bottom-width);
 
 	border-style       : solid;
 	border-left-color  : transparent;

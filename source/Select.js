@@ -56,6 +56,9 @@ export default class Select extends PureComponent
 		)
 		.isRequired,
 
+		// HTML `id` attribute for the `<select/>` element.
+		id         : PropTypes.string,
+
 		// HTML form input `name` attribute
 		name       : PropTypes.string,
 
@@ -75,6 +78,9 @@ export default class Select extends PureComponent
 		// because `<button/>`s can't contain "block" elements.
 		// `display: block` can still be set on `<span/>`s and other "inline" elements.
 		selectedOptionComponent : PropTypes.elementType,
+
+		// Dropdown arrow component.
+		arrowComponent : PropTypes.elementType,
 
 		// Option component.
 		// (when `<Select/>` is expanded).
@@ -339,8 +345,8 @@ export default class Select extends PureComponent
 						<ExpandableList
 							ref={this.storeListRef}
 							aria-label={this.getAriaLabel()}
-							aria-required={required && isEmptyValue(value) ? true : undefined}
-							aria-invalid={error && indicateInvalid ? true : undefined}
+							aria-required={this.getAriaRequired()}
+							aria-invalid={this.getAriaInvalid()}
 							upward={upward}
 							alignment={alignment}
 							scrollIntoView={scrollIntoView}
@@ -398,7 +404,8 @@ export default class Select extends PureComponent
 			selectedOptionDisabledClassName,
 			indicateInvalid,
 			error,
-			selectedOptionComponent: SelectedOptionComponent
+			selectedOptionComponent: SelectedOptionComponent,
+			arrowComponent
 		}
 		= this.props
 
@@ -433,6 +440,7 @@ export default class Select extends PureComponent
 				onBlur={ this.onBlur }
 				tabIndex={ -1 }
 				title={ title }
+				aria-hidden
 				aria-label={ this.getAriaLabel() || (showIconOnly ? selectedOptionLabel : undefined) }
 				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
@@ -453,15 +461,16 @@ export default class Select extends PureComponent
 				) }>
 				{SelectedOptionComponent
 					?
-					<SelectedOptionComponent
-						{...selected}/>
+					<SelectedOptionComponent {...selected}/>
 					:
 					<DefaultSelectedOptionComponent
 						required={!this.getTopLabel() && required}
 						indicateRequired={!this.getTopLabel() && required && isEmptyValue(value)}
 						value={value}
 						label={selectedOptionLabel}
-						icon={showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : undefined}/>
+						icon={showIconOnly ? React.createElement(selected.icon, { value, label: selectedOptionLabel }) : undefined}
+						arrowComponent={arrowComponent}
+					/>
 				}
 			</button>
 		)
@@ -471,6 +480,7 @@ export default class Select extends PureComponent
 	{
 		const
 		{
+			id,
 			name,
 			value,
 			label,
@@ -487,6 +497,7 @@ export default class Select extends PureComponent
 		return (
 			<select
 				ref={ this.storeSelectNode }
+				id={ id }
 				name={ name }
 				value={ isEmptyValue(value) ? empty_value_option_value : value }
 				disabled={ disabled }
@@ -497,8 +508,8 @@ export default class Select extends PureComponent
 				onBlur={ this.onBlur }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
-				aria-required={ required && isEmptyValue(value) ? true : undefined }
-				aria-invalid={ error && indicateInvalid ? true : undefined }
+				aria-required={ this.getAriaRequired() }
+				aria-invalid={ this.getAriaInvalid() }
 				className={ classNames(
 					// `:focus` style is implemented via border color
 					// so outline can be muted safely here.
@@ -731,12 +742,38 @@ export default class Select extends PureComponent
 	getAriaLabel()
 	{
 		const {
-			// Deprecated, use `aria-label` instead.
+			// Deprecated property, use `aria-label` instead.
 			ariaLabel,
 			label
 		} = this.props
 
-		return this.props['aria-label'] || ariaLabel || label
+		return this.props['aria-label'] === undefined
+			? (ariaLabel || label)
+			: this.props['aria-label']
+	}
+
+	getAriaRequired()
+	{
+		const {
+			required,
+			value
+		} = this.props
+
+		return this.props['aria-required'] === undefined
+			? (required && isEmptyValue(value) ? true : undefined)
+			: this.props['aria-required']
+	}
+
+	getAriaInvalid()
+	{
+		const {
+			error,
+			indicateInvalid
+		} = this.props
+
+		return this.props['aria-invalid'] === undefined
+  			? (error && indicateInvalid ? true : undefined)
+  			: this.props['aria-invalid']
 	}
 
 	getTopLabel()
@@ -780,7 +817,11 @@ export default class Select extends PureComponent
 	onBlur = (event) =>
 	{
 		clearTimeout(this.blurTimer)
-		this.blurTimer = onBlur(event, this.onFocusOut, () => this.container)
+
+		const result = onBlur(event, this.onFocusOut, () => this.container)
+		if (typeof result === 'number') {
+			this.blurTimer = result
+		}
 	}
 
 	onFocusOut = (event) =>
@@ -828,7 +869,8 @@ function DefaultSelectedOptionComponent({
 	label,
 	icon,
 	required,
-	indicateRequired
+	indicateRequired,
+	arrowComponent: ArrowComponent
 }) {
 	// The `<span/>` wrapper is required for vertical centering.
 	// http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers
@@ -846,7 +888,7 @@ function DefaultSelectedOptionComponent({
 				{icon || label}
 			</span>
 			{/* An arrow */}
-			<span className="rrui__select__arrow"/>
+			<ArrowComponent/>
 		</span>
 	)
 }
@@ -856,7 +898,16 @@ DefaultSelectedOptionComponent.propTypes = {
 	label: PropTypes.string,
 	icon: PropTypes.node,
 	required: PropTypes.bool,
-	indicateRequired: PropTypes.bool
+	indicateRequired: PropTypes.bool,
+	arrowComponent: PropTypes.elementType.isRequired
+}
+
+DefaultSelectedOptionComponent.defaultProps = {
+	arrowComponent: ArrowComponent
+}
+
+function ArrowComponent() {
+	return <span className="rrui__select__arrow"/>
 }
 
 /* `display: flex` fixes the incorrect toggler `<button/>` height

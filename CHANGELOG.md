@@ -28,6 +28,26 @@
 
 <!-- (CSS breaking change) Added `.rrui__button-reset` CSS class to `<ExpandableMenu/>` `<button className/>`. -->
 
+0.15.27 / 01.04.2022
+===================
+
+* (Might potentially be a minor CSS breaking change) Replaced `<Select/>`'s CSS variable `--rrui-select-arrow-border-width` with four separate side-specific border width. The reason was Next.js 12 incorrectly handling a "combined" `border-width` CSS property.
+
+* Added `arrowComponent` property on `<Select/>` component.
+
+0.15.23 / 18.02.2022
+===================
+
+* (Might potentially be a minor CSS breaking change) Added `expandAnimationDuration` property on `<SlideOutMenu/>` component. By default it's `220ms`. When changing the `--rrui-slideout-menu-animation-duration` CSS variable value, also pass that value as this property.
+
+* (Might potentially be a minor CSS breaking change) Renamed `--rrui-slideout-menu-animation-duration` CSS variable to `--rrui-slide-out-menu-animation-duration` (with a dash between "slide" and "out").
+
+* Added some CSS variable on `<SlideOutMenu/>`:
+
+  * `--rrui-slide-out-menu-vertical-padding`
+  * `--rrui-slide-out-menu-box-shadow`
+  * `--rrui-slide-out-menu-opacity` (which is `1` by default)
+
 0.15.13 / 12.02.2022
 ===================
 

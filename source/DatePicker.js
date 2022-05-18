@@ -21,7 +21,6 @@ import transformDateInputAccordingToTemplate from './utility/transformDateInputA
 import parseDate, { getSameDateAndTimeInUtc0TimeZone } from './utility/parseDate'
 
 let DatePicker = function({
-	id,
 	format: formatAnyCase,
 	// noon,
 	utc,
@@ -34,16 +33,8 @@ let DatePicker = function({
 	initialCalendarDate,
 	locale,
 	disabled,
-	readOnly,
-	required,
 	label,
-	placeholder,
-	['aria-label']: ariaLabel,
-	['aria-labelledby']: ariaLabelledBy,
-	['aria-describedby']: ariaDescribedBy,
 	alignment,
-	tabIndex,
-	autoFocus,
 	waitForKeyboardSlideIn,
 	keyboardSlideInAnimationDuration,
 	buttonAriaLabel,
@@ -56,7 +47,8 @@ let DatePicker = function({
 	onBlur,
 	onToggle,
 	onFocus,
-	onKeyDown
+	onKeyDown,
+	...rest
 }, ref)
 {
 	const [isExpanded_, setExpanded] = useState()
@@ -109,8 +101,17 @@ let DatePicker = function({
 
 	const focusCalendar = useCallback(() => {
 		if (calendar.current) {
-			if (calendar.current.dayPicker) {
-				calendar.current.dayPicker.firstChild.focus()
+			const { dayPicker } = calendar.current
+			if (dayPicker) {
+				const selectedDay = dayPicker.querySelector('.DayPicker-Day[aria-disabled=false][aria-selected=true]')
+				if (selectedDay) {
+					return selectedDay.focus()
+				}
+				const anyDay = dayPicker.querySelector('.DayPicker-Day[aria-disabled=false]')
+				if (anyDay) {
+					return anyDay.focus()
+				}
+				return dayPicker.firstChild.focus()
 			}
 		}
 	}, [])
@@ -141,7 +142,13 @@ let DatePicker = function({
 		// and the calendar would open at that previously selected month again,
 		// even though `value` or `initialCalendarDate` are defined and correspond to
 		// a different month.
-		setMonth()
+		//
+		// `setMonth()` should be called in `onExpand()` rather than in `onExpanded()`
+		// with `setTimeout()` because by the time the calendar is expanded, the correct
+		// month has to be already selected in order to `focusCalendar()` to focus
+		// a correct day. Otherwise, it would focus some day of some month, and then
+		// the correct month would be automatically selected and the focus would be "lost".
+		setMonth(value ? ignoreInvalidDateObjects(value) : (initialCalendarDate || new Date()))
 
 		// Must re-calculate `textValue` on each "expand"
 		// because it's being reset on each "collapse".
@@ -152,7 +159,8 @@ let DatePicker = function({
 	}, [
 		value,
 		format,
-		utc
+		utc,
+		initialCalendarDate
 	])
 
 	const onExpanded = useCallback(() => {
@@ -182,18 +190,7 @@ let DatePicker = function({
 		// Could also potentially update `aria-label` attribute to (month + year)
 		// on expand and on month/year change in the expanded calendar.
 		// But that would be too much hassle.
-
-		// Toggling the calendar in a timeout
-		// in order for iOS scroll not to get "janky"
-		// when `<DatePicker/>` gets focused.
-		// (for some unknown reason)
-		setTimeout(() => {
-			setMonth(value ? ignoreInvalidDateObjects(value) : (initialCalendarDate || new Date()))
-		}, 0)
-	}, [
-		value,
-		initialCalendarDate
-	])
+	}, [])
 
 	// Cancels textual date editing.
 	const onCollapse = useCallback(({ focusOut }) =>
@@ -517,7 +514,7 @@ let DatePicker = function({
 			() => input.current,
 			preventBlur
 		)
-		if (typeof result !== 'boolean') {
+		if (typeof result === 'number') {
 			blurTimer.current = result
 		}
 	}, [
@@ -693,20 +690,12 @@ let DatePicker = function({
 
 			{/* Date input */}
 			<TextInput
-				id={ id }
+				{...rest}
 				ref={ setInputRef }
-				required={ required }
 				error={ error }
 				indicateInvalid={ indicateInvalid }
 				label={ label }
-				placeholder={ placeholder }
-				aria-label={ ariaLabel }
-				aria-labelledby={ ariaLabelledBy }
-				aria-describedby={ ariaDescribedBy }
-				tabIndex={ tabIndex }
 				disabled={ disabled }
-				readOnly={ readOnly }
-				autoFocus={ autoFocus }
 				value={ textValue !== undefined ? textValue : formatDate(value, format, { utc }) }
 				onKeyDown={ onInputKeyDown }
 				onChange={ onInputChange }
@@ -777,14 +766,8 @@ DatePicker = React.forwardRef(DatePicker)
 
 DatePicker.propTypes =
 {
-	// (optional) HTML `id` attribute.
-	id : PropTypes.string,
-
 	// An optional label placed on top of the input field
 	label : PropTypes.string,
-
-	// `<input/>` placeholder
-	placeholder : PropTypes.string,
 
 	// Expandable calendar alignment.
 	// Is "left" by default.
@@ -825,11 +808,8 @@ DatePicker.propTypes =
 	// Disables the input
 	disabled : PropTypes.bool,
 
-	// HTML `readonly` attribute
-	readOnly : PropTypes.bool,
-
 	// Set to `true` to mark the field as required
-	required : PropTypes.bool.isRequired,
+	required : PropTypes.bool,
 
 	// Indicates that the input is invalid.
 	error : PropTypes.oneOfType([
@@ -837,11 +817,8 @@ DatePicker.propTypes =
 		PropTypes.bool
 	]),
 
-	// HTML `autoFocus` attribute
-	autoFocus : PropTypes.bool,
-
-	// HTML `tabIndex` attribute
-	tabIndex : PropTypes.number,
+	// Set to `true` to mark the field as invalid when there's an `error`.
+	indicateInvalid : PropTypes.bool,
 
 	// HTML `<input/>` `name` attribute
 	name : PropTypes.string,
@@ -898,9 +875,6 @@ DatePicker.defaultProps =
 
 	// Default US format
 	format : 'mm/dd/yyyy',
-
-	// Set to `true` to mark the field as required
-	required : false,
 
 	// Show `error` (if passed).
 	indicateInvalid : true,
