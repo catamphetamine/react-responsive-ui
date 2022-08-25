@@ -18,8 +18,7 @@ const PureComponent = React.PureComponent || React.Component
 
 const empty_value_option_value = ''
 
-@reactLifecyclesCompat
-export default class Autocomplete extends PureComponent
+class Autocomplete extends PureComponent
 {
 	static propTypes =
 	{
@@ -1023,6 +1022,8 @@ export default class Autocomplete extends PureComponent
 		}
 	}
 }
+
+export default reactLifecyclesCompat(Autocomplete)
 
 function isEmptyValue(value)
 {

@@ -19,8 +19,7 @@ const PureComponent = React.PureComponent || React.Component
 
 const empty_value_option_value = ''
 
-@reactLifecyclesCompat
-export default class Select extends PureComponent
+class Select extends PureComponent
 {
 	static propTypes =
 	{
@@ -851,6 +850,8 @@ export default class Select extends PureComponent
 	onFocusIn    = () => this.setState({ isFocused: true })
 	_onFocusOut = () => this.setState({ isFocused: false })
 }
+
+export default reactLifecyclesCompat(Select)
 
 // Using indexes instead for keys.
 // // There can be an `undefined` value,

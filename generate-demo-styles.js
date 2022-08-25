@@ -317,7 +317,11 @@ function transformStyle(filePath)
     }
   })
 
-  return postcss([ autoprefixer({ browsers: 'last 4 versions, iOS >= 7, Android >= 4'.split(', ') }) ]).process(text, { from: undefined }).then((result) =>
+  return postcss([
+    autoprefixer({
+      overrideBrowserslist: 'last 4 versions, iOS >= 7, Android >= 4'.split(', ')
+    })
+  ]).process(text, { from: undefined }).then((result) =>
   {
     result.warnings().forEach((warn) => console.warn(warn.toString()))
     fs.outputFileSync(path.join('bundle', filePath), result.css)

@@ -10,8 +10,7 @@ import { findItemIndexByValue } from './List'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-@reactLifecyclesCompat
-export default class ExpandableList extends PureComponent
+class ExpandableList extends PureComponent
 {
 	static propTypes =
 	{
@@ -254,3 +253,5 @@ export default class ExpandableList extends PureComponent
 		)
 	}
 }
+
+export default reactLifecyclesCompat(ExpandableList)
