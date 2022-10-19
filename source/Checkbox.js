@@ -153,6 +153,8 @@ export default class Checkbox extends PureComponent
 							ref={ this.storeInstance }
 							type="checkbox"
 							aria-label={ this.props['aria-label'] || ariaLabel }
+							aria-labelledby={ this.props['aria-labelledby'] }
+							aria-describedby={ this.props['aria-describedby'] }
 							aria-invalid={ indicateInvalid && error ? true : undefined }
 							checked={ value }
 							disabled={ disabled }
