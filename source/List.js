@@ -432,6 +432,8 @@ export default class List extends PureComponent
 				id={ id }
 				role={ role }
 				aria-label={ this.props['aria-label'] }
+				aria-labelledby={ this.props['aria-labelledby'] }
+				aria-describedby={ this.props['aria-describedby'] }
 				aria-hidden={ this.props['aria-hidden'] }
 				aria-required={ this.props['aria-required'] }
 				aria-invalid={ this.props['aria-invalid'] }

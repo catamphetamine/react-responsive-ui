@@ -344,6 +344,8 @@ class Select extends PureComponent
 						<ExpandableList
 							ref={this.storeListRef}
 							aria-label={this.getAriaLabel()}
+							aria-labelledby={this.props['aria-labelledby']}
+							aria-describedby={this.props['aria-describedby']}
 							aria-required={this.getAriaRequired()}
 							aria-invalid={this.getAriaInvalid()}
 							upward={upward}
@@ -441,6 +443,8 @@ class Select extends PureComponent
 				title={ title }
 				aria-hidden
 				aria-label={ this.getAriaLabel() || (showIconOnly ? selectedOptionLabel : undefined) }
+				aria-labelledby={this.props['aria-labelledby']}
+				aria-describedby={this.props['aria-describedby']}
 				aria-expanded={ isExpanded ? true : false }
 				className={ classNames
 				(
@@ -507,6 +511,8 @@ class Select extends PureComponent
 				onBlur={ this.onBlur }
 				tabIndex={ tabIndex }
 				aria-label={ this.getAriaLabel() }
+				aria-labelledby={ this.props['aria-labelledby'] }
+				aria-describedby={ this.props['aria-describedby'] }
 				aria-required={ this.getAriaRequired() }
 				aria-invalid={ this.getAriaInvalid() }
 				className={ classNames(
