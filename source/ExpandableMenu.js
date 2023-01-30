@@ -50,6 +50,9 @@ export default class ExpandableMenu extends PureComponent
 		// (deprecated, use `buttonProps` instead)
 		togglerClassName : PropTypes.string,
 
+		// A `ref` for the toggle button
+		buttonRef: PropTypes.object,
+
 		buttonTitle: PropTypes.string,
 		disabled: PropTypes.bool
 	}
@@ -67,6 +70,18 @@ export default class ExpandableMenu extends PureComponent
 	// whether the focus is "inside" the component or "outside" of it,
 	// and also for focusing the `<button/>` when closing expandable menu.
 	button = createRef()
+
+	setToggleButtonRef = (instance) => {
+		this.button.current = instance
+		const { buttonRef } = this.props
+		if (buttonRef) {
+			if (typeof buttonRef === 'function') {
+				buttonRef(instance)
+			} else {
+				buttonRef.current = instance
+			}
+		}
+	}
 
 	// componentWillUnmount() {
 	// 	clearTimeout(this.cooldownTimer)
@@ -183,7 +198,7 @@ export default class ExpandableMenu extends PureComponent
 						'rrui__outline': toggleElement
 					}) }
 					{...buttonProps}
-					ref={ this.button }
+					ref={ this.setToggleButtonRef }
 					onClick={ this.onClick }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
