@@ -165,8 +165,11 @@ const ScrollableList = React.forwardRef(({
 		// Calculate the appropriate list height.
 		if (isOverflown()) {
 			const maxHeight = calculateScrollableListHeight(height, verticalPadding)
-			// Update `max-height` immediately, without waiting for the next React render cycle.
-			list.current.getDOMNode().style.maxHeight = maxHeight + 'px'
+
+			if (!ScrollableContainer) {
+				// Update `max-height` immediately, without waiting for the next React render cycle.
+				list.current.getDOMNode().style.maxHeight = maxHeight + 'px'
+			}
 
 			setMaxHeight(maxHeight)
 		}
