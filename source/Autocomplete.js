@@ -181,7 +181,9 @@ class Autocomplete extends PureComponent
 		// it would be more convenient for them if the first option was automatically focused.
 		// Hence this property.
 		// (is `false` by default for WAI-ARIA compliancy)
-		highlightFirstOption : PropTypes.bool.isRequired
+		highlightFirstOption : PropTypes.bool.isRequired,
+
+		ScrollableContainer : PropTypes.elementType
 	}
 
 	static defaultProps =
@@ -401,6 +403,7 @@ class Autocomplete extends PureComponent
 			error,
 			closeButtonIcon,
 			closeLabel,
+			ScrollableContainer,
 			style,
 			className
 		}
@@ -485,6 +488,7 @@ class Autocomplete extends PureComponent
 						tabbable={false}
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
+						ScrollableContainer={ScrollableContainer}
 						closeButtonIcon={closeButtonIcon}
 						closeLabel={closeLabel}
 						aria-label={this.props['aria-label'] || label}

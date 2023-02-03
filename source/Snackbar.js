@@ -62,6 +62,16 @@ export default class Snackbar extends PureComponent
 			close: PropTypes.bool
 		}),
 
+		// Snackbar placement.
+		placement: PropTypes.oneOf([
+			'top',
+			'top-start',
+			'top-end',
+			'bottom',
+			'bottom-start',
+			'bottom-end'
+		]).isRequired,
+
 		// // "Snack" showing CSS animation duration.
 		// // Is 225 milliseconds by default.
 		// showAnimationDuration : PropTypes.number.isRequired,
@@ -78,6 +88,7 @@ export default class Snackbar extends PureComponent
 
 	static defaultProps =
 	{
+		placement: 'bottom-start',
 		// showAnimationDuration : 225,
 		hideAnimationDuration : 195,
 		minTime : 1200,
@@ -223,7 +234,8 @@ export default class Snackbar extends PureComponent
 	render()
 	{
 		const {
-			type
+			type,
+			placement
 		} = this.props
 
 		const {
@@ -238,13 +250,23 @@ export default class Snackbar extends PureComponent
 
 		const style = {}
 
-		if (!show) {
+		if (show) {
+			let transform = `translateY(0)`
+			if (getAlignment(placement) === 'center') {
+				transform = `translateX(-50%) ${transform}`
+			}
+			style.transform = transform
+		} else {
 			// If no snack is being shown,
 			// or if a snack is about to be shown,
 			// then shift it under the screen's bottom border
 			// to show the slide-from-bottom animation at the next step.
 			if (height !== undefined) {
-				style.transform = `translateY(${height + marginBottom}px)`
+				let transform = `translateY(${height + marginBottom}px)`
+				if (getAlignment(placement) === 'center') {
+					transform = `translateX(-50%) ${transform}`
+				}
+				style.transform = transform
 			}
 			if (!hiding) {
 				style.transition = 'none'
@@ -259,7 +281,13 @@ export default class Snackbar extends PureComponent
 				style={style}
 				className={classNames(
 					'rrui__snackbar',
-					value && value.type && `rrui__snackbar--${value.type}`, {
+					value && value.type && `rrui__snackbar--${value.type}`,
+					{
+						'rrui__snackbar--top': getEdge(placement) === 'top',
+						'rrui__snackbar--bottom': getEdge(placement) === 'bottom',
+						'rrui__snackbar--left': getAlignment(placement) === 'start',
+						'rrui__snackbar--right': getAlignment(placement) === 'end',
+						'rrui__snackbar--center': getAlignment(placement) === 'center',
 						'rrui__snackbar--hidden': !show
 					}
 				)}>
@@ -325,4 +353,28 @@ function Close() {
 			<line stroke="currentColor" strokeWidth="10" x1="2" y1="98" x2="98" y2="2"/>
 		</svg>
 	)
+}
+
+/**
+ * @param  {string} placement
+ * @return {string} One of: "top", "bottom".
+ */
+function getEdge(placement) {
+	const dashIndex = placement.indexOf('-')
+	if (dashIndex >= 0) {
+		return placement.slice(0, dashIndex)
+	}
+	return placement
+}
+
+/**
+ * @param  {string} placement
+ * @return {string} One of: "left", "right", "center".
+ */
+function getAlignment(placement) {
+	const dashIndex = placement.indexOf('-')
+	if (dashIndex >= 0) {
+		return placement.slice(dashIndex + '-'.length)
+	}
+	return 'center'
 }

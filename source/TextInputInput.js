@@ -22,6 +22,8 @@ function TextInput({
 	autoresize,
 	indicateInvalid,
 	error,
+	initialHeight,
+	onHeightChange,
 	inputStyle: originalInputStyle,
 	className,
 
@@ -40,7 +42,11 @@ function TextInput({
 		if (multiline && autoresize) {
 			return new Autoresize(
 				() => input.current,
-				() => hiddenTextArea.current
+				() => hiddenTextArea.current,
+				{
+					initialHeight,
+					onHeightChange
+				}
 			)
 		}
 	}, [])
@@ -121,6 +127,16 @@ function TextInput({
 		return originalInputStyle
 	}, [multiline, autoresize, originalInputStyle])
 
+	const inputStyleAutoHeight = useMemo(() => {
+		if (multiline && autoresize) {
+			return {
+				height: autoResize.getHeight(),
+				...inputStyle
+			}
+		}
+		return inputStyle
+	}, [multiline, autoresize, inputStyle, autoResize])
+
 	const properties = {
 		// Placed `autoFocus` before `...rest` so that
 		// it doesn't override an already passed `autoFocus`.
@@ -152,7 +168,7 @@ function TextInput({
 		value: isEmptyValue(value) ? '' : value,
 		onChange: _onChange,
 		onKeyDown: _onKeyDown,
-		style: inputStyle,
+		style: inputStyleAutoHeight,
 		className: classNames(
 			className,
 			// `<TextInput/>` has `border-color` to indicate its `:focus` state.
@@ -224,6 +240,9 @@ TextInput.propTypes =
 	// (is `true` by default)
 	autoresize : PropTypes.bool.isRequired,
 
+	initialHeight: PropTypes.number,
+	onHeightChange: PropTypes.func,
+
 	// In order for this to work properly
 	// `<textarea/>` vertical padding should be `0`
 	// and instead the padding should be defined on `<textarea/>` parent `<div/>`
@@ -284,61 +303,90 @@ function isEmptyValue(value) {
 }
 
 class Autoresize {
-	currentHeight = 0
-	verticalPadding = 0
-	bordersHeight = 0
-
-	initAttempts = 0
-
-	constructor(getInput, getHiddenTextArea) {
+	constructor(getInput, getHiddenTextArea, {
+		initialHeight,
+		onHeightChange
+	}) {
 		this.getInput = getInput
 		this.getHiddenTextArea = getHiddenTextArea
+		this.onHeightChange = onHeightChange
+
+		this.currentHeight = initialHeight
+		this.verticalPadding = 0
+		this.bordersHeight = 0
+
+		this.initAttempts = 0
+	}
+
+	getHeight() {
+		return this.currentHeight
 	}
 
 	// Copy-pasted from Material UI on Oct 24th, 2018.
 	// https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/InputBase/Textarea.js
+	// There's a newer version of it (didn't copy-paste):
+	// https://github.com/mui/material-ui/blob/master/packages/mui-base/src/TextareaAutosize/TextareaAutosize.js
 	resize() {
 		const hiddenTextArea = this.getHiddenTextArea()
-		// Guarding for **broken** shallow rendering method that call componentDidMount
-		// but doesn't handle refs correctly.
-		// To remove once the shallow rendering has been fixed.
+
+		// "Guarding for **broken** shallow rendering method that call componentDidMount
+		//  but doesn't handle refs correctly.
+		//  To remove once the shallow rendering has been fixed."
 		if (!hiddenTextArea) {
 			return
 		}
+
 		// const lineHeight = this.hiddenTextAreaSingleLine.current.scrollHeight - verticalPadding.current
 		let height = hiddenTextArea.scrollHeight
-		// Guarding for jsdom, where scrollHeight isn't present.
-		// See https://github.com/tmpvar/jsdom/issues/1013
+
+		// "Guarding for jsdom, where scrollHeight isn't present.
+		//  See https://github.com/tmpvar/jsdom/issues/1013"
 		if (height === undefined) {
 			return
 		}
-		// It would have to first subtract `paddingTop` and `paddingBottom`,
-		// then it would calculate `rowsMax * lineHeight` and
-		// then it would re-add `paddingTop` and `paddingBottom`.
-		// height = Math.min(rowsMax * lineHeight + verticalPadding.current, height)
-		//
+
 		// `.scrollHeight` doesn't include borders.
 		// `.style.height` does include borders.
 		height += this.bordersHeight
-		//
+
+		// `.scrollHeight` doesn't support fractional pixels precision ("retina" screens):
+		// https://stackoverflow.com/questions/21666892/fractional-scrollheight
+		// That would sometimes result in weird sub-pixel changes of height where they aren't required.
+		// For example, when initially rendering a "stub" single-row `<textarea/>`
+		// and then, after measuring it, rendering the "real" one that is `0.5px` higher.
+		// Libraries like `virtual-scroller` wouldn't like such "unmotivated" changes in the height.
+		const nonScrollHeight = hiddenTextArea.getBoundingClientRect().height
+		if (Math.abs(height - nonScrollHeight) < 1) {
+			// `nonScrollHeight` has fractional pixel precision.
+			height = nonScrollHeight
+		}
+
 		// if (height <= this.minHeight) {
 		// 	height = this.minHeight
 		// }
-		// For some weird reason Chrome on Windows 10
-		// requires an extra pixel been added
-		// to avoid showing vertical scrollbar.
-		// (Oct 24th, 2018)
-		// else {
-			height += 1
-		// }
+
+		// This seems no longer relevant:
 		//
+		// // For some weird reason Chrome on Windows 10
+		// // requires an extra pixel been added
+		// // to avoid showing vertical scrollbar.
+		// // (Oct 24th, 2018)
+		// // else {
+		// 	height += 1
+		// // }
+
 		// "Need a large enough different to update the height.
 		//  This prevents infinite rendering loop."
-		// It's unclear what loop they're talking about.
-		if (Math.abs(this.currentHeight - height) > 1) {
+		// By that, they were referring to the `> 1` condition below.
+		// It's unclear what exact cause of the issue they were talking about.
+		if (this.currentHeight === undefined || Math.abs(this.currentHeight - height) > 1) {
 			this.currentHeight = height
 			// `.style.height` includes borders.
 			this.getInput().style.height = height + 'px'
+
+			if (this.onHeightChange) {
+				this.onHeightChange(height)
+			}
 		}
 	}
 
@@ -390,19 +438,19 @@ class Autoresize {
 
 		// // Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
 		// // `style.height` includes borders.
-		// currentHeight.current = Math.ceil(parseFloat(style.height))
+		// currentHeight.current = parseFloat(style.height)
 		// this.minHeight = currentHeight.current
 
 		// Get vertical padding.
 		// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
-		this.verticalPadding = Math.ceil(parseFloat(style.paddingTop)) + Math.ceil(parseFloat(style.paddingBottom))
+		this.verticalPadding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
 
 		// Top and bottom borders are extra height,
 		// because `.scrollHeight` doesn't include borders.
 		// Measurements can be in `em`s/`rem`s/`pt`s which can give fractional pixel sizes.
 		this.bordersHeight =
-			Math.ceil(parseFloat(style.borderTopWidth)) +
-			Math.ceil(parseFloat(style.borderBottomWidth))
+			parseFloat(style.borderTopWidth) +
+			parseFloat(style.borderBottomWidth)
 	}
 
 	// Even if padding on <textarea/> has been set

@@ -132,6 +132,11 @@ newMessageReceived({
 }
 `}</Highlight>
 
+				<code className="colored">{'<Snackbar/>'}</code> also receives optional properties:
+
+				<ul className="list">
+					<li><code className="colored">placement</code> — One of: <code className="colored">top-start</code>, <code className="colored">top</code>, <code className="colored">top-end</code>, <code className="colored">bottom-end</code>, <code className="colored">bottom</code>, <code className="colored">bottom-start</code>. Is <code className="colored">bottom-start</code> by default.</li>
+				</ul>
 			</Example>
 		)
 	}

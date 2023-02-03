@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -7,51 +7,7 @@ import List from './List'
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
 
-export default class ScrollableList extends PureComponent
-{
-	static propTypes =
-	{
-		// // A list of items.
-		// items : PropTypes.arrayOf
-		// (
-		// 	PropTypes.shape
-		// 	({
-		// 		// Item value (may be `undefined`).
-		// 		value : PropTypes.any,
-		// 		// Item label (may be `undefined`).
-		// 		label : PropTypes.string,
-		// 		// Item icon component.
-		// 		icon  : PropTypes.func,
-		// 		// Render custom content (a React component).
-		// 		// Receives `{ value, label }` properties.
-		// 		content : PropTypes.func
-		// 	})
-		// ),
-
-		// Maximum items fitting the list height (scrollable).
-		// Set to `0` to disable overflow.
-		// Is `6` by default.
-		scrollMaxItems : PropTypes.number.isRequired,
-
-		// Whether should add `margin-right` for scrollbar width on overflow.
-		// Is `true` by default.
-		scrollBarPadding : PropTypes.bool,
-
-		className : PropTypes.string
-	}
-
-	static defaultProps =
-	{
-		scrollMaxItems : 6,
-		scrollBarPadding : true
-	}
-
-	state =
-	{
-		// Is initialized during the first `componentDidUpdate()` call.
-		verticalPadding : 0
-	}
-
+export default class ScrollableList_ extends PureComponent {
 	// Proxy `<List/>` methods.
 	focusItem = (index) => this.list.focusItem(index)
 	focus = () => this.list.focus()
@@ -62,161 +18,240 @@ export default class ScrollableList extends PureComponent
 	getFocusedItemIndex = () => this.list.getFocusedItemIndex()
 	focusItem = (index) => this.list.focusItem(index)
 
-	onFocusItem = (index, options) => {
-		const { onFocusItem } = this.props
-		if (onFocusItem) {
-			onFocusItem(index, options)
-		}
-		// When `<List/>` calls `.focusItem()` in `componentDidMount()`
-		// `this.list` doesn't exist yet, hence the check.
-		if (index !== undefined && this.list) {
-			this.showItem(index)
-		}
+	// Re-calculates `<ScrollableList/>` `height`/`maxHeight`/`verticalPadding`.
+	state = {}
+	onExpand = () => {
+		this.setState({
+			calculateLayoutTrigger: {}
+		})
 	}
 
-	getListNode = () => this.list.list
+	storeListRef = (ref) => this.list = ref
 
-	// Fully shows an option having the `value` (scrolls to it if neccessary)
-	showItem(index, edge = 'top')
-	{
-		const { children } = this.props
-
-		const itemElement = this.list.itemRefs[index]
-
-		const isFirstItem = index === 0
-		const isLastItem  = index === React.Children.count(children) - 1
-
-		if (isFirstItem) {
-			return this.showTopLine(itemElement, true)
-		} else if (isLastItem) {
-			return this.showBottomLine(itemElement, true)
-		}
-
-		switch (edge)
-		{
-			case 'top':
-				return this.showTopLine(itemElement)
-			case 'bottom':
-				return this.showBottomLine(itemElement)
-		}
+	render() {
+		return (
+			<ScrollableList
+				listRef={this.storeListRef}
+				calculateLayoutTrigger={this.state.calculateLayoutTrigger}
+				{...this.props}
+			/>
+		)
 	}
+}
 
-	showTopLine(itemElement, isFirstItem)
+const ScrollableList = React.forwardRef(({
+	listRef,
+	onFocusItem: onFocusItem_,
+	scrollBarPadding,
+	scrollMaxItems,
+	ScrollableContainer,
+	calculateLayoutTrigger,
+	className,
+	children,
+	...rest
+}, ref) => {
+	const list = useRef()
+
+	const storeListRef = useCallback((instance) => {
+		if (listRef) {
+			if (typeof listRef === 'function') {
+				listRef(instance)
+			} else {
+				listRef.current = instance
+			}
+		}
+		list.current = instance
+	}, [])
+
+	// Is initialized during the first `componentDidUpdate()` call.
+	const [verticalPadding, setVerticalPadding] = useState(0)
+
+	const [height, setHeight] = useState()
+	const [maxHeight, setMaxHeight] = useState()
+
+	const getListNode = useCallback(() => list.current.list, [])
+
+	const showTopLine = useCallback((itemElement, isFirstItem) =>
 	{
-		const { verticalPadding } = this.state
-
 		let topLine = itemElement.offsetTop
 
 		if (isFirstItem) {
 			topLine -= verticalPadding
 		}
 
-		if (topLine < this.getListNode().scrollTop) {
-			this.getListNode().scrollTop = topLine
+		if (topLine < getListNode().scrollTop) {
+			getListNode().scrollTop = topLine
 		}
-	}
+	}, [
+		verticalPadding,
+		getListNode
+	])
 
-	showBottomLine(itemElement, isLastItem)
+	const showBottomLine = useCallback((itemElement, isLastItem) =>
 	{
-		const { verticalPadding } = this.state
-
 		let bottomLine = itemElement.offsetTop + itemElement.offsetHeight
 
 		if (isLastItem) {
 			bottomLine += verticalPadding
 		}
 
-		if (bottomLine > this.getListNode().scrollTop + this.getListNode().offsetHeight) {
-			this.getListNode().scrollTop = bottomLine - this.getListNode().offsetHeight
+		if (bottomLine > getListNode().scrollTop + getListNode().offsetHeight) {
+			getListNode().scrollTop = bottomLine - getListNode().offsetHeight
 		}
-	}
+	}, [
+		verticalPadding,
+		getListNode
+	])
 
-	storeListRef = (ref) => this.list = ref
-
-	itemOnClick(value, event)
+	// Fully shows an option having the `value` (scrolls to it if neccessary)
+	const showItem = useCallback((index, edge = 'top') =>
 	{
-		// Collapse the `<Select/>`.
-		// Doing `setValue` in a callback
-		// because otherwise `setValue()` would result in
-		// updating props and calling `getDerivedStateFromProps()`
-		// which reads `autocomplete_value` which is being reset inside `.toggle()`.
-		this.expandable.collapse().then(() => this.setValue(value))
-	}
+		const itemElement = list.current.itemRefs[index]
 
-	// Calculates height of the item list.
-	calculateHeight()
-	{
-		const { children } = this.props
+		const isFirstItem = index === 0
+		const isLastItem  = index === React.Children.count(children) - 1
 
-		const height = this.getListNode().scrollHeight
-		const verticalPadding = parseInt(window.getComputedStyle(this.getListNode()).paddingTop)
-
-		const state = { height, verticalPadding }
-
-		// Calculate the appropriate list height.
-		if (this.isOverflown()) {
-			state.maxHeight = this.calculateScrollableListHeight(height, verticalPadding)
-			// Update `max-height` immediately, without waiting for the next React render cycle.
-			this.list.getDOMNode().style.maxHeight = state.maxHeight + 'px'
+		if (isFirstItem) {
+			return showTopLine(itemElement, true)
+		} else if (isLastItem) {
+			return showBottomLine(itemElement, true)
 		}
 
-		this.setState(state)
+		switch (edge) {
+			case 'top':
+				return showTopLine(itemElement)
+			case 'bottom':
+				return showBottomLine(itemElement)
+		}
+	}, [
+		showTopLine,
+		showBottomLine,
+		children
+	])
+
+	const onFocusItem = useCallback((index, options) => {
+		if (onFocusItem_) {
+			onFocusItem_(index, options)
+		}
+		// When `<List/>` calls `.focusItem()` in `componentDidMount()`
+		// `list.current` doesn't exist yet, hence the check.
+		if (index !== undefined && list.current) {
+			showItem(index)
+		}
+	}, [
+		onFocusItem_,
+		showItem
+	])
+
+	const isOverflown = () =>
+	{
+		return scrollMaxItems > 0 && React.Children.count(children) > scrollMaxItems
 	}
 
-	calculateScrollableListHeight(height, verticalPadding)
+	const calculateScrollableListHeight = (height, verticalPadding) =>
 	{
-		const { scrollMaxItems, children } = this.props
-
 		// Adding vertical padding here so that it shows `scrollMaxItems` items fully.
 		// Also gives a peek on the `scrollMaxItems + 1`th item by showing a half of it.
 		// Assumes items having equal height.
 		return (height - 2 * verticalPadding) * ((scrollMaxItems + 0.5) / React.Children.count(children)) + verticalPadding
 	}
 
-	isOverflown()
+	// Calculates height of the item list.
+	const calculateLayout = () =>
 	{
-		const { scrollMaxItems, children } = this.props
-		return scrollMaxItems > 0 && React.Children.count(children) > scrollMaxItems
-	}
+		const height = getListNode().scrollHeight
+		const verticalPadding = parseInt(window.getComputedStyle(getListNode()).paddingTop)
 
-	componentDidMount()
-	{
-		this.calculateHeight()
-	}
+		// Calculate the appropriate list height.
+		if (isOverflown()) {
+			const maxHeight = calculateScrollableListHeight(height, verticalPadding)
+			// Update `max-height` immediately, without waiting for the next React render cycle.
+			list.current.getDOMNode().style.maxHeight = maxHeight + 'px'
 
-	render()
-	{
-		const
-		{
-			scrollBarPadding,
-			className,
-			children,
-			...rest
-		}
-		= this.props
-
-		const { maxHeight } = this.state
-
-		let listStyle
-
-		// Makes the list scrollable if it's max height is constrained.
-		if (maxHeight !== undefined)
-		{
-			listStyle = { maxHeight: `${maxHeight}px` }
+			setMaxHeight(maxHeight)
 		}
 
+		setHeight(height)
+		setVerticalPadding(verticalPadding)
+	}
+
+	useEffect(() => {
+		calculateLayout()
+	}, [calculateLayoutTrigger])
+
+	const maxHeightStyle = useMemo(() => {
+		if (maxHeight !== undefined) {
+			// Makes the list scrollable if it's max height is constrained.
+			return {
+				maxHeight: `${maxHeight}px`
+			}
+		}
+	}, [maxHeight])
+
+	const listElement = (
+		<List
+			{...rest}
+			ref={storeListRef}
+			onFocusItem={onFocusItem}
+			style={ScrollableContainer ? undefined : maxHeightStyle}
+			className={classNames(className, {
+				'rrui__scrollable': ScrollableContainer ? undefined : isOverflown()
+			})}>
+			{children}
+		</List>
+	)
+
+	if (ScrollableContainer) {
 		return (
-			<List
-				{...rest}
-				ref={ this.storeListRef }
-				onFocusItem={ this.onFocusItem }
-				style={ listStyle }
-				className={ classNames(className,
-				{
-					'rrui__scrollable' : this.isOverflown()
-				}) }>
-				{ children }
-			</List>
+			<ScrollableContainer style={maxHeightStyle} maxHeight={maxHeight}>
+				{listElement}
+			</ScrollableContainer>
 		)
 	}
+
+	return listElement
+})
+
+ScrollableList.propTypes =
+{
+	// // A list of items.
+	// items : PropTypes.arrayOf
+	// (
+	// 	PropTypes.shape
+	// 	({
+	// 		// Item value (may be `undefined`).
+	// 		value : PropTypes.any,
+	// 		// Item label (may be `undefined`).
+	// 		label : PropTypes.string,
+	// 		// Item icon component.
+	// 		icon  : PropTypes.func,
+	// 		// Render custom content (a React component).
+	// 		// Receives `{ value, label }` properties.
+	// 		content : PropTypes.func
+	// 	})
+	// ),
+
+	// Maximum items fitting the list height (scrollable).
+	// Set to `0` to disable overflow.
+	// Is `6` by default.
+	scrollMaxItems : PropTypes.number.isRequired,
+
+	// Whether should add `margin-right` for scrollbar width on overflow.
+	// Is `true` by default.
+	scrollBarPadding : PropTypes.bool,
+
+	ScrollableContainer : PropTypes.elementType,
+
+	listRef : PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object
+	]),
+
+	className : PropTypes.string
+}
+
+ScrollableList.defaultProps =
+{
+	scrollMaxItems : 6,
+	scrollBarPadding : true
 }

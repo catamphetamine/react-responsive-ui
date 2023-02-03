@@ -20,7 +20,19 @@ React >= 16.3 is required.
 
 ## Use
 
-See the [demo page](https://catamphetamine.gitlab.io/react-responsive-ui/). It has code examples for every component.
+See the [demo page](#demo). It has code examples for every component.
+
+## Demo
+
+[Online demo page](https://catamphetamine.gitlab.io/react-responsive-ui/).
+
+To run the demo page locally:
+
+```
+npm run demo
+```
+
+And then go to http://localhost:8080
 
 ## CSS
 

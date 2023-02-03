@@ -38,6 +38,11 @@ window.ExampleScrollableList = class ExampleScrollableList extends React.Compone
 					Value: {this.state.value}
 				`}</Highlight>
 
+				Optional properties:
+
+				<ul className="list">
+					<li><code className="colored">ScrollableContainer</code> — A container element that receives properties: <code className="colored">style</code> (<code className="colored">undefined</code> or <code className="colored">{'{ maxHeight: "12345px" }'}</code>), <code className="colored">maxHeight</code> (<code className="colored">undefined</code> or a number), <code className="colored">children</code>. Can be used to replace a system-default vertical scrollbar with a custom-design one like <code className="colored">react-simplebar</code>.</li>
+				</ul>
 			</Example>
 		)
 	}

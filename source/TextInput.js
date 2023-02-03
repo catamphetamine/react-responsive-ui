@@ -117,6 +117,10 @@ TextInput.propTypes =
 	// `<textarea/>` instead of an `<input type="text"/>`
 	multiline        : PropTypes.bool,
 
+	// Autoresize state saving/restoring for a `multiline` text input:
+	initialHeight: PropTypes.number,
+	onHeightChange: PropTypes.func,
+
 	// Deprecated.
 	// Use `type="email"` instead.
 	// Sets HTML input `type` attribute to `email`

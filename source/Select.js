@@ -177,7 +177,9 @@ class Select extends PureComponent
 
 		// `aria-label` for the `<Select/>`'s `<button/>`.
 		// Deprecated, use `aria-label` instead.
-		ariaLabel : PropTypes.string
+		ariaLabel : PropTypes.string,
+
+		ScrollableContainer : PropTypes.elementType
 	}
 
 	static defaultProps =
@@ -267,6 +269,7 @@ class Select extends PureComponent
 			closeLabel,
 			optionComponent,
 			selectedOptionComponent,
+			ScrollableContainer,
 			wait,
 			style,
 			className
@@ -360,6 +363,7 @@ class Select extends PureComponent
 							getTogglerNode={this.getSelectButton}
 							onFocusIn={this.onFocusIn}
 							onFocusOut={this.onFocusOut}
+							ScrollableContainer={ScrollableContainer}
 							closeButtonIcon={closeButtonIcon}
 							closeLabel={closeLabel}
 							className={classNames('rrui__shadow', 'rrui__options-list',

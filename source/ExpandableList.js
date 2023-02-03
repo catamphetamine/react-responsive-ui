@@ -186,7 +186,7 @@ class ExpandableList extends PureComponent
 		// a long list wouldn't have its `max-height` set
 		// and focusing it (`this.list.focus()`) could
 		// result in scroll position "jump".
-		this.list.calculateHeight()
+		this.list.onExpand()
 
 		if (focusOnExpand) {
 			if (selectedItemIndex === undefined) {
