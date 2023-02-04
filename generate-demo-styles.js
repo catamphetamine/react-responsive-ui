@@ -42,6 +42,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-date-picker-calendar-day-border-radius)', '50%')
 
     /* `<TextInput/>`, `<Select/>` and `<DatePicker/>` border color. */
+    .replace_all('var(--rrui-input-field-border-color-disabled-focus)', 'var(--rrui-input-field-border-color-disabled)')
     .replace_all('var(--rrui-input-field-border-color-disabled)', 'var(--rrui-input-field-border-color)')
     .replace_all('var(--rrui-input-field-border-color)', 'var(--rrui-gray-color-light)')
     .replace_all('var(--rrui-input-field-border-color-focus)', 'var(--rrui-accent-color)')
@@ -94,6 +95,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-button-text-color-active)', 'var(--rrui-accent-color-light)')
 
     /* `<TextInput/>`, `<Select/>`, `<Autocomplete/>`, etc. */
+    .replace_all('var(--rrui-input-field-background-color-disabled-focus)', 'var(--rrui-input-field-background-color-disabled)')
     .replace_all('var(--rrui-input-field-background-color-disabled)', 'var(--rrui-input-field-background-color)')
     .replace_all('var(--rrui-input-field-background-color-focus)', 'var(--rrui-input-field-background-color)')
     .replace_all('var(--rrui-input-field-background-color-error-focus)', 'var(--rrui-input-field-background-color-error)')

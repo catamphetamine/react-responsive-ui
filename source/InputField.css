@@ -77,6 +77,19 @@
 	background-color : var(--rrui-input-field-background-color-disabled);
 }
 
+/* Passing `readOnly` property applies the `--disabled` styles. */
+/* A DOM Element with `readOnly` attribute can still be focused. */
+/* For `<TextInput/>` and alike. */
+.rrui__input-field--disabled:focus,
+/* For `<Select native={true}/>`. */
+.rrui__select__native--disabled:focus
+/* For `<Select/>` when `<select/>` is focused. */
+.rrui__select__native--disabled:focus + .rrui__select__button
+{
+	border-color     : var(--rrui-input-field-border-color-disabled-focus);
+	background-color : var(--rrui-input-field-background-color-disabled-focus);
+}
+
 /* For `<TextInput/>` and alike. */
 /* Overrides the corresponding `:focus` CSS rule. */
 .rrui__input-field--invalid:focus,
