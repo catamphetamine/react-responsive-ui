@@ -1,7 +1,9 @@
 import React, { useMemo, useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import DayPicker, { ModifiersUtils, LocaleUtils } from 'react-day-picker'
 import classNames from 'classnames'
+
+// https://github.com/gpbl/react-day-picker/tree/v7/src
+import DayPicker, { ModifiersUtils, LocaleUtils } from 'react-day-picker'
 
 import TextInput from './TextInputComponent'
 import Expandable from './Expandable'
@@ -32,7 +34,6 @@ let DatePicker = function({
 	selectYearsIntoFuture,
 	initialCalendarDate,
 	locale,
-	disabled,
 	label,
 	alignment,
 	waitForKeyboardSlideIn,
@@ -695,7 +696,6 @@ let DatePicker = function({
 				error={ error }
 				indicateInvalid={ indicateInvalid }
 				label={ label }
-				disabled={ disabled }
 				value={ textValue !== undefined ? textValue : formatDate(value, format, { utc }) }
 				onKeyDown={ onInputKeyDown }
 				onChange={ onInputChange }
@@ -804,9 +804,6 @@ DatePicker.propTypes =
 	// so that it gets the parsed `value` in its `onBlur` handler,
 	// not the formatted text.
 	onBlur : PropTypes.func,
-
-	// Disables the input
-	disabled : PropTypes.bool,
 
 	// Set to `true` to mark the field as required
 	required : PropTypes.bool,

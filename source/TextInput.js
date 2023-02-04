@@ -95,9 +95,6 @@ TextInput.propTypes =
 		PropTypes.string
 	]),
 
-	// Disables the text field
-	disabled         : PropTypes.bool,
-
 	// Indicates that the input is invalid.
 	error: PropTypes.oneOfType([
 		PropTypes.string,

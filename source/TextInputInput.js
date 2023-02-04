@@ -16,6 +16,7 @@ function TextInput({
 	onChange,
 	onKeyDown,
 	disabled,
+	readOnly,
 	label,
 	placeholder,
 	type,
@@ -144,6 +145,7 @@ function TextInput({
 		autoFocus: focus,
 		placeholder,
 		disabled,
+		readOnly,
 		...rest,
 
 		// Set `aria-label`, if none passed.
@@ -179,7 +181,7 @@ function TextInput({
 				'rrui__input-field--empty': isEmptyValue(value),
 				// CSS selector performance optimization
 				'rrui__input-field--invalid'   : indicateInvalid && error,
-				'rrui__input-field--disabled'  : disabled,
+				'rrui__input-field--disabled'  : disabled || readOnly,
 				'rrui__input-field--multiline' : multiline
 			}
 		)

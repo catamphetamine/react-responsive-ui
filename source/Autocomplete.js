@@ -103,6 +103,9 @@ class Autocomplete extends PureComponent
 		// Disables this control
 		disabled   : PropTypes.bool,
 
+		// HTML `readOnly` attribute
+		readOnly   : PropTypes.bool,
+
 		// Set to `true` to mark the field as required
 		required   : PropTypes.bool.isRequired,
 
@@ -524,6 +527,7 @@ class Autocomplete extends PureComponent
 			icon,
 			placeholder,
 			disabled,
+			readOnly,
 			required,
 			indicateInvalid,
 			error,
@@ -579,7 +583,8 @@ class Autocomplete extends PureComponent
 					tabIndex={ tabIndex }
 					autoFocus={ autoFocus }
 					autoComplete={ autoComplete }
-					disabled={ isFetchingInitiallySelectedOption || disabled }
+					disabled={ disabled }
+					readOnly={ isFetchingInitiallySelectedOption || readOnly }
 					indicateInvalid={ indicateInvalid || (matches === false) }
 					error={ error || (matches === false ? 'no-match' : undefined) }
 					className={ classNames('rrui__autocomplete__input', inputClassName, {
@@ -636,10 +641,10 @@ class Autocomplete extends PureComponent
 
 	onKeyDown = (event) =>
 	{
-		const { disabled, value, required, highlightFirstOption } = this.props
+		const { disabled, readOnly, value, required, highlightFirstOption } = this.props
 		const { options, isExpanded, inputValue, focusedOptionIndex } = this.state
 
-		if (disabled) {
+		if (disabled || readOnly) {
 			return
 		}
 
@@ -997,9 +1002,9 @@ class Autocomplete extends PureComponent
 
 	onClick = (event) =>
 	{
-		const { disabled } = this.props
+		const { disabled, readOnly } = this.props
 
-		if (!disabled) {
+		if (!(disabled || readOnly)) {
 			this.expandOnFocus()
 		}
 	}
