@@ -1004,9 +1004,11 @@ class Autocomplete extends PureComponent
 	{
 		const { disabled, readOnly } = this.props
 
-		if (!(disabled || readOnly)) {
-			this.expandOnFocus()
+		if (disabled || readOnly) {
+			return
 		}
+
+		this.expandOnFocus()
 	}
 
 	onFocusOut = (event) =>
