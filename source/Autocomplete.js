@@ -166,6 +166,12 @@ class Autocomplete extends PureComponent
 		// HTML `autoFocus` attribute
 		autoFocus  : PropTypes.bool,
 
+		// `onKeyDown()` doesn't get called in all cases.
+		// Currently it's only called in cases:
+		// * Pressed `Esc` when the options list is not expanded.
+		// * Pressed `Enter` when the input is empty.
+		onKeyDown : PropTypes.func,
+
 		// HTML `autocomplete` attribute.
 		// Set to "off" to disable any autocompletion in a web browser.
 		// https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion
@@ -641,7 +647,7 @@ class Autocomplete extends PureComponent
 
 	onKeyDown = (event) =>
 	{
-		const { disabled, readOnly, value, required, highlightFirstOption } = this.props
+		const { disabled, readOnly, value, required, highlightFirstOption, onKeyDown } = this.props
 		const { options, isExpanded, inputValue, focusedOptionIndex } = this.state
 
 		if (disabled || readOnly) {
@@ -730,14 +736,24 @@ class Autocomplete extends PureComponent
 			// "Escape".
 			// Collapse.
 			case 27:
-				event.preventDefault()
-				this.collapse()
+				if (isExpanded) {
+					event.preventDefault()
+					this.collapse()
+				} else {
+					if (onKeyDown) {
+						onKeyDown(event)
+					}
+				}
 				return
 
 			// "Enter".
 			case 13:
 				if (!inputValue)
 				{
+					if (onKeyDown) {
+						onKeyDown(event)
+					}
+
 					// If no option is selected and the input value is empty
 					// then set `value` to `undefined`.
 					if (isExpanded && this.list.getFocusedItemIndex() === undefined)
