@@ -11,7 +11,7 @@ function TextInput({
 	value,
 	onFocus,
 	onBlur,
-	indicateInvalid,
+	showErrorMessage,
 	error,
 	style,
 	className,
@@ -53,8 +53,7 @@ function TextInput({
 
 	return (
 		<WithError
-			error={error}
-			indicateInvalid={indicateInvalid}
+			error={showErrorMessage ? error : undefined}
 			style={style}
 			className={classNames(className, 'rrui__text-input', {
 				'rrui__text-input--focus': isFocused
@@ -65,7 +64,6 @@ function TextInput({
 				ref={ref}
 				value={value}
 				error={error}
-				indicateInvalid={indicateInvalid}
 				onFocus={_onFocus}
 				onBlur={_onBlur} />
 		</WithError>
@@ -101,9 +99,9 @@ TextInput.propTypes =
 		PropTypes.bool
 	]),
 
-	// If this flag is `true` then the `error` is shown.
+	// If this flag is `true` then the `error` is shown (if passed).
 	// If this flag is `false` then the `error` is not shown (even if passed).
-	indicateInvalid  : PropTypes.bool,
+	showErrorMessage  : PropTypes.bool,
 
 	// Set to `true` to mark the field as required
 	required         : PropTypes.bool,
@@ -166,7 +164,7 @@ TextInput.propTypes =
 TextInput.defaultProps =
 {
 	// Show `error` (if passed).
-	indicateInvalid : true
+	showErrorMessage : true
 }
 
 export default TextInput

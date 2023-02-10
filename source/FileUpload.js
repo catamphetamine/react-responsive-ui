@@ -46,6 +46,8 @@ class FileUpload extends PureComponent
 			PropTypes.bool
 		]),
 
+		showErrorMessage : PropTypes.bool,
+
 		tabIndex  : PropTypes.number.isRequired,
 
 		// The clickable area, like "Click here to choose a file".
@@ -67,7 +69,8 @@ class FileUpload extends PureComponent
 
 	static defaultProps =
 	{
-		tabIndex : 0
+		tabIndex : 0,
+		showErrorMessage : true
 	}
 
 	state =
@@ -137,6 +140,7 @@ class FileUpload extends PureComponent
 			ref_,
 			required,
 			error,
+			showErrorMessage,
 			disabled,
 			tabIndex,
 			onChange,
@@ -154,7 +158,7 @@ class FileUpload extends PureComponent
 
 		return (
 			<WithError
-				error={error}
+				error={showErrorMessage ? error : undefined}
 				style={style}
 				className={classNames('rrui__file-upload', className)}>
 

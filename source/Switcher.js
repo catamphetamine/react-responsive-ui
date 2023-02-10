@@ -39,6 +39,8 @@ export default class Switcher extends PureComponent
 			PropTypes.bool
 		]),
 
+		showErrorMessage : PropTypes.bool,
+
 		// The selected option value
 		value        : PropTypes.any,
 
@@ -59,7 +61,7 @@ export default class Switcher extends PureComponent
 	static defaultProps =
 	{
 		// Show `error` (if passed).
-		indicateInvalid : true
+		showErrorMessage : true
 	}
 
 	render()
@@ -68,7 +70,7 @@ export default class Switcher extends PureComponent
 		{
 			disabled,
 			options,
-			indicateInvalid,
+			showErrorMessage,
 			error,
 			// Deprecated, use `aria-label` instead.
 			ariaLabel,
@@ -79,8 +81,7 @@ export default class Switcher extends PureComponent
 
 		return (
 			<WithError
-				error={error}
-				indicateInvalid={indicateInvalid}
+				error={showErrorMessage ? error : undefined}
 				setRef={this.storeContainerComponent}
 				onKeyDown={this.onKeyDown}
 				style={style}
@@ -92,7 +93,7 @@ export default class Switcher extends PureComponent
 					className="rrui__input"
 					role="radiogroup"
 					aria-label={ this.props['aria-label'] || ariaLabel }
-					aria-invalid={ indicateInvalid && error ? true : undefined }>
+					aria-invalid={ error ? true : undefined }>
 					{ options.map((option, index) => this.render_button(option, index)) }
 				</div>
 			</WithError>

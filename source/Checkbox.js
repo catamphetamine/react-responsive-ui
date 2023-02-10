@@ -37,6 +37,8 @@ export default class Checkbox extends PureComponent
 			PropTypes.bool
 		]),
 
+		showErrorMessage : PropTypes.bool,
+
 		// `onClick` handler
 		onClick : PropTypes.func,
 
@@ -68,7 +70,7 @@ export default class Checkbox extends PureComponent
 		focus     : false,
 
 		// Show `error` (if passed).
-		indicateInvalid : true
+		showErrorMessage : true
 	}
 
 	state = {}
@@ -115,7 +117,7 @@ export default class Checkbox extends PureComponent
 			id,
 			value,
 			error,
-			indicateInvalid,
+			showErrorMessage,
 			multiline,
 			disabled,
 			// Deprecated, use `aria-label` instead.
@@ -131,12 +133,11 @@ export default class Checkbox extends PureComponent
 
 		return (
 			<WithError
-				error={error}
-				indicateInvalid={indicateInvalid}
+				error={showErrorMessage ? error : undefined}
 				style={style}
 				className={classNames(className, 'rrui__checkbox', {
 					'rrui__checkbox--checked'  : value,
-					'rrui__checkbox--invalid'   : indicateInvalid && error,
+					'rrui__checkbox--invalid'   : error,
 					'rrui__checkbox--disabled'  : disabled,
 					'rrui__checkbox--multiline' : multiline,
 					'rrui__checkbox--focus'     : isFocused
@@ -155,7 +156,7 @@ export default class Checkbox extends PureComponent
 							aria-label={ this.props['aria-label'] || ariaLabel }
 							aria-labelledby={ this.props['aria-labelledby'] }
 							aria-describedby={ this.props['aria-describedby'] }
-							aria-invalid={ indicateInvalid && error ? true : undefined }
+							aria-invalid={ error ? true : undefined }
 							checked={ value }
 							disabled={ disabled }
 							onClick={ onClick }

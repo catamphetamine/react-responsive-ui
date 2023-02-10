@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import ExpandableList from './ExpandableList'
 import List from './List'
 import Label from './TextInputLabel'
-import TextInput from './TextInputInput'
+import TextInputInput from './TextInputInput'
 import Ellipsis from './Ellipsis'
 import WithError from './WithError'
 
@@ -115,6 +115,8 @@ class Autocomplete extends PureComponent
 			PropTypes.bool
 		]),
 
+		showErrorMessage : PropTypes.bool,
+
 		// Selected option value
 		value      : PropTypes.any,
 
@@ -147,7 +149,7 @@ class Autocomplete extends PureComponent
 		// as icon only, without the label
 		// (was used in early versions of `react-phone-number-input`).
 		// Otherwise, if it's a React component
-		// then it's passed to `<TextInput/>` as its `icon`.
+		// then it's passed to `<TextInputInput/>` as its `icon`.
 		icon: PropTypes.oneOfType([
 			PropTypes.elementType,
 			PropTypes.bool
@@ -201,7 +203,7 @@ class Autocomplete extends PureComponent
 		required : false,
 
 		// Show `error` (if passed).
-		indicateInvalid : true,
+		showErrorMessage : true,
 
 		// Set to `true` to display the loading indicator
 		loading : false,
@@ -408,7 +410,7 @@ class Autocomplete extends PureComponent
 			placeholder,
 			value,
 			onChange,
-			indicateInvalid,
+			showErrorMessage,
 			error,
 			closeButtonIcon,
 			closeLabel,
@@ -444,8 +446,7 @@ class Autocomplete extends PureComponent
 		return (
 			<WithError
 				id={id}
-				error={error}
-				indicateInvalid={indicateInvalid}
+				error={showErrorMessage ? error : undefined}
 				style={style ? { ...containerStyle, ...style } : containerStyle}
 				className={classNames(className, 'rrui__autocomplete', {
 					'rrui__autocomplete--expanded' : isExpanded,
@@ -470,7 +471,7 @@ class Autocomplete extends PureComponent
 							inputId={ id ? `${id}__input` : undefined }
 							value={ value }
 							required={ required }
-							invalid={ indicateInvalid && error }>
+							invalid={ error }>
 							{ label }
 						</Label>
 					}
@@ -535,7 +536,6 @@ class Autocomplete extends PureComponent
 			disabled,
 			readOnly,
 			required,
-			indicateInvalid,
 			error,
 			tabIndex,
 			autoFocus,
@@ -570,7 +570,7 @@ class Autocomplete extends PureComponent
 				{Icon &&
 					<Icon className="rrui__input-field__icon"/>
 				}
-				<TextInput
+				<TextInputInput
 					id={ id ? `${id}__input` : undefined }
 					ref={ this.storeInput }
 					value={ inputValue }
@@ -591,7 +591,6 @@ class Autocomplete extends PureComponent
 					autoComplete={ autoComplete }
 					disabled={ disabled }
 					readOnly={ isFetchingInitiallySelectedOption || readOnly }
-					indicateInvalid={ indicateInvalid || (matches === false) }
 					error={ error || (matches === false ? 'no-match' : undefined) }
 					className={ classNames('rrui__autocomplete__input', inputClassName, {
 						'rrui__input-field--with-icon': Icon

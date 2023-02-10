@@ -21,7 +21,6 @@ function TextInputComponent({
 		placeholder,
 		multiline,
 		error,
-		indicateInvalid,
 		containerRef
 	} = rest
 
@@ -53,7 +52,7 @@ function TextInputComponent({
 					inputId={id}
 					value={value}
 					required={required}
-					invalid={indicateInvalid && error}
+					invalid={error}
 					floats={floatingLabel && !placeholder}>
 					{label}
 				</Label>

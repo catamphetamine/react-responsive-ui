@@ -28,7 +28,7 @@ let DatePicker = function({
 	utc,
 	value,
 	error,
-	indicateInvalid,
+	showErrorMessage,
 	disabledDays,
 	selectYearsIntoPast,
 	selectYearsIntoFuture,
@@ -682,8 +682,7 @@ let DatePicker = function({
 	return (
 		<WithError
 			setRef={setContainerNode}
-			error={error}
-			indicateInvalid={indicateInvalid}
+			error={showErrorMessage ? error : undefined}
 			onKeyDown={onContainerKeyDown}
 			onBlur={onBlur_}
 			style={style}
@@ -694,7 +693,6 @@ let DatePicker = function({
 				{...rest}
 				ref={ setInputRef }
 				error={ error }
-				indicateInvalid={ indicateInvalid }
 				label={ label }
 				value={ textValue !== undefined ? textValue : formatDate(value, format, { utc }) }
 				onKeyDown={ onInputKeyDown }
@@ -814,8 +812,8 @@ DatePicker.propTypes =
 		PropTypes.bool
 	]),
 
-	// Set to `true` to mark the field as invalid when there's an `error`.
-	indicateInvalid : PropTypes.bool,
+	// Set to `false` to not show error message.
+	showErrorMessage : PropTypes.bool,
 
 	// HTML `<input/>` `name` attribute
 	name : PropTypes.string,
@@ -874,7 +872,7 @@ DatePicker.defaultProps =
 	format : 'mm/dd/yyyy',
 
 	// Show `error` (if passed).
-	indicateInvalid : true,
+	showErrorMessage : true,
 
 	// Whether dates being selected should be in UTC+0 timezone
 	utc : true,

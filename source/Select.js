@@ -120,6 +120,8 @@ class Select extends PureComponent
 			PropTypes.bool
 		]),
 
+		showErrorMessage : PropTypes.bool,
+
 		// Set to `true` to display the loading indicator
 		wait       : PropTypes.bool.isRequired,
 
@@ -193,7 +195,7 @@ class Select extends PureComponent
 		required : false,
 
 		// Show `error` (if passed).
-		indicateInvalid : true,
+		showErrorMessage : true,
 
 		// Set to `true` to display the loading indicator
 		wait : false,
@@ -263,7 +265,7 @@ class Select extends PureComponent
 			options,
 			value,
 			onChange,
-			indicateInvalid,
+			showErrorMessage,
 			error,
 			closeButtonIcon,
 			closeLabel,
@@ -286,8 +288,7 @@ class Select extends PureComponent
 		return (
 			<WithError
 				setRef={this.storeContainerNode}
-				error={error}
-				indicateInvalid={indicateInvalid}
+				error={showErrorMessage ? error : undefined}
 				style={style}
 				className={classNames(className, 'rrui__select', {
 					'rrui__select--empty': isEmptyValue(value),
@@ -336,7 +337,7 @@ class Select extends PureComponent
 							aria-hidden
 							value={ value }
 							required={ required }
-							invalid={ indicateInvalid && error }
+							invalid={ error }
 							floats={ false }>
 							{ topLabel }
 						</Label>
@@ -407,7 +408,6 @@ class Select extends PureComponent
 			selectedOptionClassName,
 			selectedOptionInvalidClassName,
 			selectedOptionDisabledClassName,
-			indicateInvalid,
 			error,
 			selectedOptionComponent: SelectedOptionComponent,
 			arrowComponent
@@ -457,12 +457,12 @@ class Select extends PureComponent
 					'rrui__select__button',
 					toggleClassName,
 					selectedOptionClassName,
-					selectedOptionInvalidClassName && SelectedOptionComponent && indicateInvalid && error,
+					selectedOptionInvalidClassName && SelectedOptionComponent && error,
 					selectedOptionDisabledClassName && SelectedOptionComponent && disabled,
 					{
 						'rrui__input-element': !SelectedOptionComponent,
 						'rrui__select__button--empty'    : !SelectedOptionComponent && isEmptyValue(value) && !this.hasEmptyOption(),
-						'rrui__select__button--invalid'  : !SelectedOptionComponent && indicateInvalid && error,
+						'rrui__select__button--invalid'  : !SelectedOptionComponent && error,
 						'rrui__select__button--disabled' : !SelectedOptionComponent && disabled
 					}
 				) }>
@@ -496,7 +496,6 @@ class Select extends PureComponent
 			native,
 			nativeExpanded,
 			error,
-			indicateInvalid,
 			tabIndex
 		}
 		= this.props
@@ -527,7 +526,7 @@ class Select extends PureComponent
 						'rrui__select__native--empty' : isEmptyValue(value),
 						'rrui__select__native--overlay' : !native,
 						'rrui__select__native--disabled' : disabled,
-						'rrui__select__native--invalid' : indicateInvalid && error
+						'rrui__select__native--invalid' : error
 					}
 				) }>
 				{this.renderNativeSelectOptions()}
@@ -775,13 +774,10 @@ class Select extends PureComponent
 
 	getAriaInvalid()
 	{
-		const {
-			error,
-			indicateInvalid
-		} = this.props
+		const { error } = this.props
 
 		return this.props['aria-invalid'] === undefined
-  			? (error && indicateInvalid ? true : undefined)
+  			? (error ? true : undefined)
   			: this.props['aria-invalid']
 	}
 

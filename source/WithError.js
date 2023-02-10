@@ -13,7 +13,6 @@ export default function WithError(props) {
 	const {
 		setRef,
 		error,
-		indicateInvalid,
 		children,
 		...rest
 	} = props
@@ -21,7 +20,7 @@ export default function WithError(props) {
 		<div ref={setRef} {...rest}>
 			{children}
 			{/* Error message */}
-			{indicateInvalid && error && typeof error === 'string' &&
+			{error && typeof error === 'string' &&
 				<div className="rrui__input-error">
 					{error}
 				</div>
@@ -39,11 +38,6 @@ WithError.propTypes = {
 		PropTypes.bool
 	]),
 
-	// Deprecated.
-	// If this flag is `true` then the `error` is shown.
-	// If this flag is `false` then the `error` is not shown (even if passed).
-	indicateInvalid : PropTypes.bool,
-
 	// CSS style object
 	style : PropTypes.object,
 
@@ -51,10 +45,4 @@ WithError.propTypes = {
 	className : PropTypes.string,
 
 	children : PropTypes.node.isRequired
-}
-
-WithError.defaultProps = {
-	// Deprecated.
-	// Show `error` (if passed).
-	indicateInvalid : true
 }

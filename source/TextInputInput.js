@@ -21,7 +21,6 @@ function TextInput({
 	placeholder,
 	type,
 	autoresize,
-	indicateInvalid,
 	error,
 	initialHeight,
 	onHeightChange,
@@ -163,7 +162,7 @@ function TextInput({
 
 		// Set `aria-invalid`, if none passed.
 		'aria-invalid': rest['aria-invalid'] === undefined
-			? (error && indicateInvalid ? true : undefined)
+			? (error ? true : undefined)
 			: rest['aria-invalid'],
 
 		ref: storeInputNode,
@@ -180,7 +179,7 @@ function TextInput({
 			'rrui__input-field', {
 				'rrui__input-field--empty': isEmptyValue(value),
 				// CSS selector performance optimization
-				'rrui__input-field--invalid'   : indicateInvalid && error,
+				'rrui__input-field--invalid'   : error,
 				'rrui__input-field--disabled'  : disabled || readOnly,
 				'rrui__input-field--multiline' : multiline
 			}
