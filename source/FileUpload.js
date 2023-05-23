@@ -18,6 +18,9 @@ class FileUpload extends PureComponent
 		// On file(s) chosen.
 		onChange  : PropTypes.func,
 
+		// Whether the area should be focusable/clickable.
+		clickable : PropTypes.bool,
+
 		// Allows choosing multiple files if `true`.
 		multiple  : PropTypes.bool,
 
@@ -48,9 +51,10 @@ class FileUpload extends PureComponent
 
 		showErrorMessage : PropTypes.bool,
 
-		tabIndex  : PropTypes.number.isRequired,
+		tabIndex  : PropTypes.number,
 
-		// The clickable area, like "Click here to choose a file".
+		// The contents of the file drop area.
+		// Example: "Click here to choose a file".
 		children  : PropTypes.node,
 
 		// CSS class
@@ -69,7 +73,7 @@ class FileUpload extends PureComponent
 
 	static defaultProps =
 	{
-		tabIndex : 0,
+		clickable : true,
 		showErrorMessage : true
 	}
 
@@ -144,6 +148,7 @@ class FileUpload extends PureComponent
 			disabled,
 			tabIndex,
 			onChange,
+			clickable,
 			multiple,
 			accept,
 			ext,
@@ -155,6 +160,16 @@ class FileUpload extends PureComponent
 		const { draggedOver } = this.state
 
 		const _accept = accept || (ext && getAcceptFromExt(ext))
+
+		let dropFilesElementProps
+		if (clickable) {
+			dropFilesElementProps = {
+				role: 'button',
+				tabIndex: tabIndex === undefined ? 0 : tabIndex,
+				onClick: this.onClick,
+				onKeyDown: this.onKeyDown
+			}
+		}
 
 		return (
 			<WithError
@@ -175,14 +190,11 @@ class FileUpload extends PureComponent
 
 				<DropFiles
 					ref={ref_}
-					role="button"
-					tabIndex={ tabIndex }
+					{...dropFilesElementProps}
 					aria-label={ this.props['aria-label'] }
 					accept={ _accept }
 					multiple={ multiple }
 					onDrop={ onChange }
-					onClick={ this.onClick }
-					onKeyDown={ this.onKeyDown }
 					setDraggedOver={ this.setDraggedOver }
 					className={ classNames(
 						/* Developers should define `:focus` styles for `<FileUpload/>`s. */

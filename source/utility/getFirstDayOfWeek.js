@@ -207,6 +207,7 @@ const languagesByFirstDayOfWeek = [
     "om",
     "or",
     "pa",
+    "pi",
     "pt",
     "qu",
     "sa",
