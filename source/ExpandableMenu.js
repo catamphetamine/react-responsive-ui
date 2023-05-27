@@ -148,7 +148,7 @@ export default function ExpandableMenu(props) {
 		// so that the `ref` is the `<button/>` DOM Element.
 		// (`.focus()`, `.contains()`).
 		const TogglerButton = ButtonComponent || 'button'
-		const togglerElement = toggleElement || (toggler ? React.createElement(toggler) : null)
+		const togglerElement = toggleElement || (buttonProps ? buttonProps.children : null) || (toggler ? React.createElement(toggler) : null)
 		menuItems = children
 		menuToggler = (
 			<TogglerButton
