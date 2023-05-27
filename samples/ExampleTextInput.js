@@ -41,6 +41,13 @@ window.ExampleTextInput = class ExampleComponent extends React.Component
 	border-width: var(--rrui-input-field-border-width);
 }
 `}</Highlight>
+
+				<code className="colored">{'<TextInput/>'}</code> also receives optional properties:
+
+				<ul className="list">
+					<li><code className="colored">initialHeight</code> — The initial height for a <code className="colored">multiline</code> text input.</li>
+					<li><code className="colored">onHeightChange(height)</code> — Is called when the height of a <code className="colored">multiline</code> text input changes.</li>
+				</ul>
 			</Example>
 		)
 	}

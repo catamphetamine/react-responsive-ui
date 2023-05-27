@@ -61,3 +61,11 @@
 	text-transform : uppercase;
 	letter-spacing : 0.13em;
 }
+
+.rrui__input-field,
+.rrui__select__button,
+.rrui__select__native
+{
+	border-width: 0;
+	border-bottom-width: 1px;
+}
