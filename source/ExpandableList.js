@@ -56,12 +56,23 @@ class ExpandableList extends PureComponent
 
 	state = {}
 
+	// Returns a `Promise`.
 	toggle     = () => this.expandable.toggle()
+
+	// Returns a `Promise`.
 	expand     = (parameters) => this.expandable.expand(parameters)
+
+	// Returns a `Promise`.
 	collapse   = () => this.expandable.collapse()
+
 	isExpanded = () => this.expandable.isExpanded()
+
+	// Returns a `Promise`.
 	preload    = () => this.expandable.preload()
-	onBlur     = (event) => this.expandable.onBlur(event)
+
+	onBlur     = (event) => {
+		this.expandable.onBlur(event)
+	}
 
 	chooseFocusedItem = () => this.list && this.list.chooseFocusedItem()
 	getFocusedItemIndex = () => this.list ? this.list.getFocusedItemIndex() : undefined

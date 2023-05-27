@@ -118,9 +118,13 @@ export default class Expandable extends PureComponent
 
 	isExpanded = () => this.state.expanded
 
+	// Returns a `Promise`.
 	expand   = (parameters) => this.toggle(true, parameters)
+
+	// Returns a `Promise`.
 	collapse = () => this.toggle(false)
 
+	// Returns a `Promise`.
 	toggle = (expand, parameters = {}) =>
 	{
 		// This code is also copy-pasted in `source/SlideOutMenu.js`.
@@ -290,6 +294,7 @@ export default class Expandable extends PureComponent
 	}
 
 	// Preload `<Expanded/>` content (if required).
+	// Returns a `Promise`.
 	preload()
 	{
 		const { preload, onPreloadStateChange } = this.props
@@ -377,7 +382,9 @@ export default class Expandable extends PureComponent
 
 	// This function is called from outside in `<ExpandableList/>`.
 	onBlur = (event) => {
-		return this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
+		if (this.onFocusOutRef.current) {
+			this.onFocusOutRef.current.onBlur(event)
+		}
 	}
 
 	onFocusOut = (event) => {

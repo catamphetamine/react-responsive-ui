@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import createRef from 'react-create-ref'
@@ -7,133 +7,91 @@ import ExpandableList from './ExpandableList'
 import List from './List'
 import Close, { CloseIcon } from './Close'
 
-import { focus } from './utility/focus'
+import { focus as focusElement } from './utility/focus'
 
-// `PureComponent` is only available in React >= 15.3.0.
-const PureComponent = React.PureComponent || React.Component
-
-export default class ExpandableMenu extends PureComponent
-{
-	static propTypes =
-	{
-		// Component CSS class
-		className  : PropTypes.string,
-
-		// CSS style object
-		style      : PropTypes.object,
-
-		// `aria-label` for the "Close" button
-		// (which is an "x" visible in fullscreen mode).
-		closeLabel : PropTypes.string,
-
-		// The "x" button icon that closes the `<Select/>`
-		// in fullscreen mode on mobile devices.
-		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
-
-		// Must accept a `ref`.
-		// Receives properties: `onClick`, `onKeyDown`, `onBlur`, `aria-expanded`.
-		button : PropTypes.elementType,
-		buttonProps : PropTypes.object,
-		buttonClassName : PropTypes.string,
-
-		toggleElement : PropTypes.node,
-
-		// (deprecated, use `button` component instead)
-		toggler : PropTypes.func,
-
-		// (deprecated, use `buttonProps` instead)
-		togglerAriaLabel : PropTypes.string,
-
-		// (deprecated, use `buttonProps` instead)
-		togglerAriaHasPopup : PropTypes.string,
-
-		// (deprecated, use `buttonProps` instead)
-		togglerClassName : PropTypes.string,
-
-		// A `ref` for the toggle button
-		buttonRef: PropTypes.object,
-
-		buttonTitle: PropTypes.string,
-		disabled: PropTypes.bool
-	}
-
-	static defaultProps =
-	{
-		// The "x" button icon that closes the `<Select/>`
-		// in fullscreen mode on mobile devices.
-		closeButtonIcon : CloseIcon
-	}
-
-	state = {}
+export default function ExpandableMenu(props) {
+	const [isExpanded, setExpanded] = useState(false)
 
 	// The DOM Element reference is only used to determine
 	// whether the focus is "inside" the component or "outside" of it,
 	// and also for focusing the `<button/>` when closing expandable menu.
-	button = createRef()
+	const buttonRef = useRef()
 
-	setToggleButtonRef = (instance) => {
-		this.button.current = instance
-		const { buttonRef } = this.props
-		if (buttonRef) {
-			if (typeof buttonRef === 'function') {
-				buttonRef(instance)
+	const listRef = useRef()
+
+	// (legacy) (deprecated)
+	// Is used to focus legacy togglers.
+	const togglerRef = useRef()
+
+	const { buttonRef: buttonRefExternal } = props
+
+	const setToggleButtonRef = useCallback((instance) => {
+		buttonRef.current = instance
+		if (buttonRefExternal) {
+			if (typeof buttonRefExternal === 'function') {
+				buttonRefExternal(instance)
 			} else {
-				buttonRef.current = instance
+				buttonRefExternal.current = instance
 			}
 		}
-	}
+	}, [buttonRefExternal])
 
-	// componentWillUnmount() {
-	// 	clearTimeout(this.cooldownTimer)
-	// }
+	const focus = useCallback(() => {
+		// `togglerRef` is deprecated.
+		focusElement(togglerRef.current || buttonRef.current)
+	}, [])
 
-	onExpand = () => this.setState({ isExpanded: true })
+	// Returns a `Promise`.
+	const expand = useCallback(() => listRef.current.expand(), [listRef])
 
-	onCollapse = ({ focusOut }) => {
+	// Returns a `Promise`.
+	const collapse = useCallback(() => listRef.current.collapse(), [listRef])
+
+	// Returns a `Promise`.
+	const toggle = useCallback(() => listRef.current.toggle(), [listRef])
+
+	const onExpand = useCallback(() => {
+		setExpanded(true)
+	}, [])
+
+	const onCollapse = useCallback(({ focusOut }) => {
 		if (!focusOut) {
-			this.focus()
+			focus()
 		}
-		this.setState({ isExpanded: false })
+		setExpanded(false)
 		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
 		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
 		// this.cooldown = true
 		// this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
-	}
+	}, [focus])
 
-	// `this.toggler` is deprecated.
-	focus = () => focus(this.toggler || this.button.current)
-
-	expand   = () => this.list.expand()
-	collapse = () => this.list.collapse()
-	toggle   = () => this.list.toggle()
-
-	onFocusOut = () => {
+	const onFocusOut = useCallback(() => {
 		// `window.rruiCollapseOnFocusOut` can be used
 		// for debugging expandable contents.
 		if (window.rruiCollapseOnFocusOut !== false) {
-			this.collapse()
+			collapse()
 		}
-	}
+	}, [collapse])
 
-	storeListRef = (ref) => this.list = ref
+	const getButtonElement = useCallback(() => buttonRef.current, [])
 
-	// (legacy) (deprecated)
-	// Is used to focus legacy togglers.
-	storeTogglerRef = (ref) => this.toggler = ref
+	const onBlur = useCallback((event) => {
+		if (listRef.current) {
+			listRef.current.onBlur(event)
+		}
+	}, [])
 
-	getButton = () => this.button.current
-
-	onBlur = (event) => this.list && this.list.onBlur(event)
-
-	onClick = (event) => {
+	const onClick = useCallback((event) => {
 		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
 		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
 		// if (!this.cooldown) {
-			this.toggle()
+			toggle()
 		// }
-	}
+	}, [
+		toggle
+	])
 
-	onKeyDown = (event) => {
+	const onKeyDown = useCallback((event) => {
 		if (event.defaultPrevented) {
 			return
 		}
@@ -147,105 +105,163 @@ export default class ExpandableMenu extends PureComponent
 			// "Down" arrow.
 			// Select the next item (if present).
 			case 40:
-				return this.list.onKeyDown(event)
+				return listRef.current.onKeyDown(event)
 
 			// "Enter".
 			case 13:
 				// Submit containing `<form/>`.
 				// Expand otherwise.
-				this.expand()
+				expand()
 				return event.preventDefault()
 		}
-	}
+	}, [
+		expand
+	])
 
-	render() {
-		const {
-			buttonTitle,
-			disabled,
-			style,
-			className,
-			toggler,
-			button,
-			buttonProps,
-			buttonClassName,
-			toggleElement,
-			togglerAriaLabel,
-			togglerAriaHasPopup,
-			togglerClassName,
-			children,
-			...rest
-		} = this.props
+	const {
+		buttonTitle,
+		disabled,
+		style,
+		className,
+		button,
+		buttonComponent,
+		buttonProps,
+		buttonClassName,
+		toggleElement,
+		toggler,
+		togglerAriaLabel,
+		togglerAriaHasPopup,
+		togglerClassName,
+		children,
+		...rest
+	} = props
 
-		const { isExpanded } = this.state
+	// `button` is a legacy property name.
+	// `buttonComponent` is a new property name.
+	const ButtonComponent = buttonComponent || button
 
-		let menuToggler
-		let menuItems
+	let menuToggler
+	let menuItems
 
-		if (toggler || button || toggleElement) {
-			// "button" string is used instead of a `DefaultTogglerButton`
-			// so that the `ref` is the `<button/>` DOM Element.
-			// (`.focus()`, `.contains()`).
-			const TogglerButton = button || 'button'
-			const togglerElement = toggleElement || (toggler ? React.createElement(toggler) : null)
-			menuItems = children
-			menuToggler = (
-				<TogglerButton
-					type={button ? undefined : 'button'}
-					aria-haspopup={ togglerAriaHasPopup }
-					aria-label={ togglerAriaLabel }
-					className={ classNames(togglerClassName, buttonClassName, {
-						'rrui__button-reset': toggleElement,
-						'rrui__outline': toggleElement
-					}) }
-					{...buttonProps}
-					ref={ this.setToggleButtonRef }
-					onClick={ this.onClick }
-					onKeyDown={ this.onKeyDown }
-					onBlur={ this.onBlur }
-					aria-expanded={ isExpanded ? true : false }
-					title={ buttonTitle }
-					disabled={ disabled }>
-					{ togglerElement }
-				</TogglerButton>
-			)
-		} else {
-			// Legacy way: the first child was the toggler.
-			menuItems = React.Children.toArray(children)
-			menuToggler = menuItems.shift()
-			menuToggler = (
-				<div
-					ref={ this.button }
-					onClick={ this.onClick }
-					onKeyDown={ this.onKeyDown }
-					onBlur={ this.onBlur }>
-					{ React.cloneElement(menuToggler, { ref : this.storeTogglerRef }) }
-				</div>
-			)
-		}
-
-		return (
+	if (ButtonComponent || toggleElement || toggler) {
+		// "button" string is used instead of a `DefaultTogglerButton`
+		// so that the `ref` is the `<button/>` DOM Element.
+		// (`.focus()`, `.contains()`).
+		const TogglerButton = ButtonComponent || 'button'
+		const togglerElement = toggleElement || (toggler ? React.createElement(toggler) : null)
+		menuItems = children
+		menuToggler = (
+			<TogglerButton
+				type={ButtonComponent ? undefined : 'button'}
+				aria-haspopup={ togglerAriaHasPopup }
+				aria-label={ togglerAriaLabel }
+				title={ buttonTitle }
+				disabled={ disabled }
+				className={ classNames(togglerClassName, buttonClassName, {
+					'rrui__button-reset': toggleElement,
+					'rrui__outline': toggleElement
+				}) }
+				{...buttonProps}
+				ref={ setToggleButtonRef }
+				onClick={ onClick }
+				onKeyDown={ onKeyDown }
+				onBlur={ onBlur }
+				aria-expanded={ isExpanded }>
+				{ togglerElement }
+			</TogglerButton>
+		)
+	} else {
+		// Legacy way: the first child was the toggler.
+		menuItems = React.Children.toArray(children)
+		menuToggler = menuItems.shift()
+		menuToggler = (
 			<div
-				style={ style }
-				className={ classNames('rrui__menu', className) }>
-
-				{menuToggler}
-
-				<ExpandableList
-					{...rest}
-					animation="fade-up"
-					ref={this.storeListRef}
-					aria-label={this.props['aria-label']}
-					tabbable={false}
-					scrollMaxItems={0}
-					onCollapse={this.onCollapse}
-					onExpand={this.onExpand}
-					onFocusOut={this.onFocusOut}
-					getTogglerNode={this.getButton}
-					focusSelectedItem={false}
-					className="rrui__shadow">
-					{menuItems}
-				</ExpandableList>
+				ref={ buttonRef }
+				onClick={ onClick }
+				onKeyDown={ onKeyDown }
+				onBlur={ onBlur }>
+				{ React.cloneElement(menuToggler, { ref: togglerRef }) }
 			</div>
 		)
 	}
+
+	return (
+		<div
+			style={ style }
+			className={ classNames('rrui__menu', className) }>
+
+			{menuToggler}
+
+			<ExpandableList
+				{...rest}
+				animation="fade-up"
+				ref={listRef}
+				aria-label={props['aria-label']}
+				tabbable={false}
+				scrollMaxItems={0}
+				onCollapse={onCollapse}
+				onExpand={onExpand}
+				onFocusOut={onFocusOut}
+				getTogglerNode={getButtonElement}
+				focusSelectedItem={false}
+				className="rrui__shadow">
+				{menuItems}
+			</ExpandableList>
+		</div>
+	)
+}
+
+ExpandableMenu.propTypes =
+{
+	// Component CSS class
+	className  : PropTypes.string,
+
+	// CSS style object
+	style      : PropTypes.object,
+
+	// `aria-label` for the "Close" button
+	// (which is an "x" visible in fullscreen mode).
+	closeLabel : PropTypes.string,
+
+	// The "x" button icon that closes the `<Select/>`
+	// in fullscreen mode on mobile devices.
+	closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
+
+	// Must accept a `ref`.
+	// Receives properties: `onClick`, `onKeyDown`, `onBlur`, `aria-expanded`.
+	buttonComponent : PropTypes.elementType,
+	// `button` is a legacy property name.
+	// `buttonComponent` is a new property name.
+	button : PropTypes.elementType,
+
+	buttonProps : PropTypes.object,
+	buttonClassName : PropTypes.string,
+
+	toggleElement : PropTypes.node,
+
+	// (deprecated, use `button` component instead)
+	toggler : PropTypes.func,
+
+	// (deprecated, use `buttonProps` instead)
+	togglerAriaLabel : PropTypes.string,
+
+	// (deprecated, use `buttonProps` instead)
+	togglerAriaHasPopup : PropTypes.string,
+
+	// (deprecated, use `buttonProps` instead)
+	togglerClassName : PropTypes.string,
+
+	// A `ref` for the toggle button
+	buttonRef: PropTypes.object,
+
+	buttonTitle: PropTypes.string,
+
+	disabled: PropTypes.bool
+}
+
+ExpandableMenu.defaultProps =
+{
+	// The "x" button icon that closes the `<Select/>`
+	// in fullscreen mode on mobile devices.
+	closeButtonIcon : CloseIcon
 }

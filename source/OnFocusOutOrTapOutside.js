@@ -33,7 +33,12 @@ export default class OnFocusOutOrTapOutside extends React.Component {
 	// These're called from outside in `<Expandable/>`.
 	stopListeningToTouches = () => this.onTapOutsideRef.current.stopListeningToTouches()
 	listenToTouches = () => this.onTapOutsideRef.current.listenToTouches()
-	onBlur = (event) => this.onFocusOutRef.current && this.onFocusOutRef.current.onBlur(event)
+
+	onBlur = (event) => {
+		if (this.onFocusOutRef.current) {
+			this.onFocusOutRef.current.onBlur(event)
+		}
+	}
 
 	onFocusOut = (event) => {
 		// `onFocusOut` is triggered right after `onTapOutside`.
