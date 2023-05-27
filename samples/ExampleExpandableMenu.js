@@ -22,7 +22,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				<ExpandableMenu
 					aria-label="Menu"
 					className="column-width"
-					button={MenuButton}
+					buttonComponent={MenuButton}
 					style={{ ...input_style, marginBottom: 0, width: 'auto' }}>
 					<List.Item onClick={() => alert('Google')}>Google</List.Item>
 					<List.Item onClick={() => alert('Yandex')}>Yandex</List.Item>
@@ -37,7 +37,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 						</Button>
 					))
 
-					<ExpandableMenu button={MenuButton}>
+					<ExpandableMenu buttonComponent={MenuButton}>
 						<List.Item onClick={() => alert('Google')}>
 							Google
 						</List.Item>
@@ -59,10 +59,11 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				<code className="colored">{'<ExpandableMenu/>'}</code> receives optional properties:
 
 				<ul className="list">
-					<li><code className="colored">button</code> — Menu button component that will receive props: <code className="colored">onClick</code>, <code className="colored">onKeyDown</code>, <code className="colored">onBlur</code>, <code className="colored">aria-expanded</code>, etc. Must use <code className="colored">React.forwardRef()</code> to forward the <code className="colored">ref</code> to the <code className="colored">&lt;button/&gt;</code> DOM Element.</li>
-					<li><code className="colored">buttonProps</code> — Additional properties for the <code className="colored">button</code> component. Example: <code className="colored">{'{ "title": "Menu" }'}</code>.</li>
-					<li><code className="colored">buttonClassName</code> — Menu button element <code className="colored">className</code>.</li>
-					<li><code className="colored">toggleElement</code> — Instead of specifying <code className="colored">button</code> and <code className="colored">buttonProps</code> one could specify <code className="colored">toggleElement</code> instead (a simpler approach): <code className="colored">toggleElement</code> would be the <code className="colored">children</code> of the default button element (a regular <code className="colored">&lt;button type="button" className="rrui__button-reset rrui__outline {'${buttonClassName}'}"/&gt;</code>).</li>
+					<li><code className="colored">buttonComponent</code> — Menu button component that will receive props: <code className="colored">onClick</code>, <code className="colored">onKeyDown</code>, <code className="colored">onBlur</code>, <code className="colored">aria-expanded</code>, etc. Must use <code className="colored">React.forwardRef()</code> to forward the <code className="colored">ref</code> to the <code className="colored">&lt;button/&gt;</code> DOM Element.</li>
+					<li><code className="colored">buttonProps</code> — Additional properties for the <code className="colored">buttonComponent</code>.</li>
+					<li><code className="colored">buttonTitle</code> — Menu button <code className="colored">title</code>.</li>
+					<li><code className="colored">buttonClassName</code> — Menu button <code className="colored">className</code>.</li>
+					<li><code className="colored">toggleElement</code> — Instead of specifying <code className="colored">buttonComponent</code>, one could specify <code className="colored">toggleElement</code> instead (a simpler approach). In that case, the <code className="colored">buttonComponent</code> will be a default one — <code className="colored">&lt;button type="button" className="rrui__button-reset rrui__outline {'${buttonClassName}'}" {'{...buttonProps}'}/&gt;</code> — and <code className="colored">toggleElement</code> will be the <code className="colored">children</code> of it.</li>
 					<li><code className="colored">ScrollableContainer</code> — A container element that receives properties: <code className="colored">style</code> (<code className="colored">undefined</code> or <code className="colored">{'{ maxHeight: "12345px" }'}</code>), <code className="colored">maxHeight</code> (<code className="colored">undefined</code> or a number), <code className="colored">children</code>. Can be used to replace a system-default vertical scrollbar with a custom-design one like <code className="colored">react-simplebar</code>.</li>
 
 					{/*
