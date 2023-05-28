@@ -72,6 +72,20 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 					<li><code className="colored">togglerClassName</code> — <code className="colored">className</code> for the toggler-wrapping <code className="colored">&lt;button/&gt;</code>.</li>
 					*/}
 				</ul>
+
+				<div>
+					The <code className="colored">children</code> should be <code className="colored">&lt;List.Item/&gt;</code>s. <code className="colored">&lt;List.Item/&gt;</code>s could be clickable or non-clickable.
+				</div>
+
+				<br/>
+
+				<code className="colored">{'<List.Item/>'}</code> receives optional properties:
+
+				<ul className="list">
+					<li><code className="colored">onClick</code> — <code className="colored">onClick</code> property for the <code className="colored">&lt;button/&gt;</code>.</li>
+					<li><code className="colored">label</code> — <code className="colored">aria-label</code> property for the <code className="colored">&lt;button/&gt;</code>.</li>
+					<li><code className="colored">value</code> — Will mark the item as <code className="colored">aria-selected</code> when the <code className="colored">&lt;ExpandableMenu/&gt;</code>'s <code className="colored">value</code> is equal to the item's <code className="colored">value</code>. To highlight the selected <code className="colored">&lt;List.Item/&gt;</code>, set <code className="colored">highlightSelectedItem</code> property on the <code className="colored">&lt;ExpandableMenu/&gt;</code>.</li>
+				</ul>
 			</Example>
 		)
 	}
