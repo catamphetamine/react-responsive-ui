@@ -138,37 +138,38 @@ export default function ExpandableMenu(props) {
 
 	// `button` is a legacy property name.
 	// `buttonComponent` is a new property name.
-	const ButtonComponent = buttonComponent || button
+	const CustomButtonComponent = buttonComponent || button
 
 	let menuToggler
 	let menuItems
 
-	if (ButtonComponent || toggleElement || toggler) {
-		// "button" string is used instead of a `DefaultTogglerButton`
-		// so that the `ref` is the `<button/>` DOM Element.
-		// (`.focus()`, `.contains()`).
-		const TogglerButton = ButtonComponent || 'button'
-		const togglerElement = toggleElement || (buttonProps ? buttonProps.children : null) || (toggler ? React.createElement(toggler) : null)
+	if (CustomButtonComponent || buttonProps || toggleElement || toggler) {
 		menuItems = children
+
+		const DefaultButtonComponent = 'button'
+		const defaultButtonComponentClassNames = 'rrui__button-reset' + ' ' + 'rrui__outline'
+		const defaultButtonComponentProps = { type: 'button' }
+
+		const isDefaultButtonComponent = !CustomButtonComponent
+
+		const ButtonComponent = isDefaultButtonComponent ? 'button' : CustomButtonComponent
+		const buttonComponentChildren = toggleElement || (buttonProps ? buttonProps.children : null) || (toggler ? React.createElement(toggler) : null)
+
 		menuToggler = (
-			<TogglerButton
-				type={ButtonComponent ? undefined : 'button'}
+			<ButtonComponent
 				aria-haspopup={ togglerAriaHasPopup }
 				aria-label={ togglerAriaLabel }
 				title={ buttonTitle }
 				disabled={ disabled }
-				className={ classNames(togglerClassName, buttonClassName, {
-					'rrui__button-reset': toggleElement,
-					'rrui__outline': toggleElement
-				}) }
-				{...buttonProps}
+				className={ classNames(togglerClassName, buttonClassName, isDefaultButtonComponent ? defaultButtonComponentClassNames : undefined) }
+				{...(isDefaultButtonComponent ? defaultButtonComponentProps : buttonProps)}
 				ref={ setToggleButtonRef }
 				onClick={ onClick }
 				onKeyDown={ onKeyDown }
 				onBlur={ onBlur }
 				aria-expanded={ isExpanded }>
-				{ togglerElement }
-			</TogglerButton>
+				{ buttonComponentChildren }
+			</ButtonComponent>
 		)
 	} else {
 		// Legacy way: the first child was the toggler.
