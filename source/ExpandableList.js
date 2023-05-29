@@ -28,6 +28,8 @@ class ExpandableList extends PureComponent
 		focusOnExpand : PropTypes.bool.isRequired,
 		focusSelectedItem : PropTypes.bool.isRequired,
 
+		alignment : PropTypes.oneOf(['left', 'right']),
+
 		animation : PropTypes.string,
 
 		className : PropTypes.string

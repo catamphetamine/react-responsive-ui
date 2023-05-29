@@ -74,7 +74,7 @@ window.ExampleExpandableMenu = class ExampleComponent extends React.Component
 				</ul>
 
 				<div>
-					The <code className="colored">children</code> should be <code className="colored">&lt;List.Item/&gt;</code>s. <code className="colored">&lt;List.Item/&gt;</code>s could be clickable or non-clickable.
+					The <code className="colored">children</code> should be <code className="colored">&lt;List.Item/&gt;</code>s. <code className="colored">&lt;List.Item/&gt;</code>s could be clickable or non-clickable. <code className="colored">&lt;List.Item/&gt;</code>s height is <code className="colored">--rrui-list-item-height</code> by default, and the padding is <code className="colored">--rrui-list-item-side-padding</code>.
 				</div>
 
 				<br/>

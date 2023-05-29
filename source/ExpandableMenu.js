@@ -257,6 +257,8 @@ ExpandableMenu.propTypes =
 
 	buttonTitle: PropTypes.string,
 
+	alignment : PropTypes.oneOf(['left', 'right']),
+
 	disabled: PropTypes.bool
 }
 
