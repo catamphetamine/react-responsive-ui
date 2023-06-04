@@ -57,6 +57,9 @@ class FileUpload extends PureComponent
 		// Example: "Click here to choose a file".
 		children  : PropTypes.node,
 
+		// CSS class when dragged over.
+		draggedOverClassName : PropTypes.string,
+
 		// CSS class
 		className : PropTypes.string,
 
@@ -87,15 +90,18 @@ class FileUpload extends PureComponent
 			disabled,
 			onClick
 		} = this.props
+
 		if (disabled) {
 			if (event) {
 				event.preventDefault()
 			}
 			return
 		}
+
 		if (onClick) {
 			onClick()
 		}
+
 		this.fileInput.click()
 	}
 
@@ -103,6 +109,7 @@ class FileUpload extends PureComponent
 		if (event.ctrlKey || event.altKey || event.shiftKey || event.metaKey) {
 			return
 		}
+
 		switch (event.keyCode) {
 			// "Enter".
 			case 13:
@@ -153,6 +160,7 @@ class FileUpload extends PureComponent
 			accept,
 			ext,
 			style,
+			draggedOverClassName,
 			className,
 			children
 		} = this.props
@@ -201,10 +209,12 @@ class FileUpload extends PureComponent
 						'rrui__outline',
 						'rrui__file-upload__area',
 						{
+							'rrui__file-upload__area--clickable' : clickable,
 							'rrui__file-upload__area--disabled' : disabled,
 							'rrui__file-upload__area--invalid' : error,
 							'rrui__file-upload__area--dragged-over' : draggedOver
-						}
+						},
+						draggedOver && draggedOverClassName
 					) }>
 					{ children }
 				</DropFiles>
