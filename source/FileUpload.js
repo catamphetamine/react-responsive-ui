@@ -183,7 +183,7 @@ class FileUpload extends PureComponent
 			<WithError
 				error={showErrorMessage ? error : undefined}
 				style={style}
-				className={classNames('rrui__file-upload', className)}>
+				className={classNames('rrui__file-upload', className, draggedOver && draggedOverClassName)}>
 
 				{/* Hidden. */}
 				<FileUploadInput
@@ -213,8 +213,7 @@ class FileUpload extends PureComponent
 							'rrui__file-upload__area--disabled' : disabled,
 							'rrui__file-upload__area--invalid' : error,
 							'rrui__file-upload__area--dragged-over' : draggedOver
-						},
-						draggedOver && draggedOverClassName
+						}
 					) }>
 					{ children }
 				</DropFiles>
