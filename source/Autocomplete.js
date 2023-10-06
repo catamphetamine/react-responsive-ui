@@ -61,7 +61,7 @@ class Autocomplete extends PureComponent
 
 		// Can be supplied when supplying `options` prop.
 		// By default filters by substring inclusion (case-insensitive).
-		filterOptions : PropTypes.func.isRequired,
+		filterOptions : PropTypes.func,
 
 		// The maximum number of options to be rendered
 		// in the options list when it's expanded.
@@ -116,6 +116,19 @@ class Autocomplete extends PureComponent
 		]),
 
 		showErrorMessage : PropTypes.bool,
+
+		// When `acceptsAnyValue` is `true`, the user is not required to select any of the options.
+		// That could be used when the list of options is not a full one.
+		// * `<input/>` value won't be reset when focusing out of the `<input/>`
+		//   after not having selected any option.
+		// * `onChange()` will be called for every change of the `<input/>` value,
+		//   not just when the user has selected some option.
+		acceptsAnyValue : PropTypes.bool,
+
+		// When `findOptions()` property function is not provided,
+		// the default one will match options by `<input/>` value
+		// case-insensitive by default.
+		caseSensitive : PropTypes.bool,
 
 		// Selected option value
 		value      : PropTypes.any,
@@ -219,9 +232,6 @@ class Autocomplete extends PureComponent
 		// `async getOptions()` throttle threshold (in characters).
 		minCharactersToStartThrottling : 4,
 
-		// Filters options by substring inclusion (case-insensitive).
-		filterOptions,
-
 		// The maximum number of options to be rendered
 		// in the options list when it's expanded.
 		// The rationale is that otherwise the UI could
@@ -241,7 +251,7 @@ class Autocomplete extends PureComponent
 		// to prevent "race condition" inconsistency.
 		// Older options can only be overwritten with newer ones.
 		optionsCounter : 0,
-		matchesCounter : 0,
+		hasAnyMatchingOptionsCounter : 0,
 
 		inputValue : '',
 		options: [],
@@ -258,7 +268,7 @@ class Autocomplete extends PureComponent
 	counter = new Counter()
 
 	// Handles changing `value` externally for an `<Autocomplete/>`.
-	static getDerivedStateFromProps({ value, options }, state)
+	static getDerivedStateFromProps({ acceptsAnyValue, value, options }, state)
 	{
 		const newState =
 		{
@@ -277,8 +287,8 @@ class Autocomplete extends PureComponent
 			// is stored in a special `selectedOption.label` variable in `state`.
 			if (value !== state.props.value)
 			{
-				newState.selectedOption = options.filter(_ => _.value === value)[0]
-				newState.inputValue = newState.selectedOption ? newState.selectedOption.label : ''
+				newState.selectedOption = getOptionByValue(value, options)
+				newState.inputValue = (newState.selectedOption ? newState.selectedOption.label : (acceptsAnyValue ? value : undefined)) || ''
 			}
 		}
 
@@ -287,7 +297,7 @@ class Autocomplete extends PureComponent
 
 	componentDidMount()
 	{
-		const { value, getOptions, getOption } = this.props
+		const { value, getOptions, getOption, acceptsAnyValue } = this.props
 
 		// Generate unique ID.
 		let id = `rrui-autocomplete`
@@ -314,7 +324,7 @@ class Autocomplete extends PureComponent
 				this.setState
 				({
 					selectedOption : option,
-					inputValue : option ? option.label : '',
+					inputValue : (option ? option.label : (acceptsAnyValue ? value : undefined)) || '',
 					isFetchingInitiallySelectedOption : false
 				})
 			},
@@ -333,26 +343,38 @@ class Autocomplete extends PureComponent
 		clearTimeout(this.nextFetchOptionsCallTimeout)
 	}
 
-	onPreloadStateChange = (isPreloading) => this.setState({ isFetchingOptions : isPreloading })
+	onPreloadStateChange = (isPreloading) =>
+	{
+		this.setState({ isFetchingOptions : isPreloading })
+	}
 
-	focus = () => this.input.focus()
+	focus = () =>
+	{
+		this.input.focus()
+	}
 
 	onCollapse = ({ collapsedDueToItemBeingSelected, focusOut }) =>
 	{
-		const { options, selectedOption } = this.state
+		const { acceptsAnyValue } = this.props
+		const { options, selectedOption, hasAnyMatchingOptions } = this.state
 
 		this.setState
 		({
 			isExpanded : false,
-			matches : undefined
+			hasAnyMatchingOptions : undefined,
+			hadAnyMatchingOptionsBeforeCollapsed : hasAnyMatchingOptions
 		})
 
 		if (!collapsedDueToItemBeingSelected && !this.collapsedDueToEmptyValueOnEnter)
 		{
-			this.setState
-			({
-				inputValue : selectedOption ? selectedOption.label : ''
-			})
+			if (!acceptsAnyValue)
+			{
+				// Reset `inputValue` to the selected option's label.
+				this.setState
+				({
+					inputValue : (selectedOption ? selectedOption.label : undefined) || ''
+				})
+			}
 		}
 
 		if (!focusOut)
@@ -368,7 +390,8 @@ class Autocomplete extends PureComponent
 		this.setState({ isExpanded: true })
 	}
 
-	onFocusItem = (i, options) => {
+	onFocusItem = (i, options) =>
+	{
 		if (options.interaction) {
 			this.setState({ focusedOptionIndex: i })
 		} else {
@@ -378,17 +401,47 @@ class Autocomplete extends PureComponent
 
 	expand = () =>
 	{
-		// Reset the "matches" state before expanding.
-		this.setState({ matches: true }, this._expand)
+		const { acceptsAnyValue } = this.props
+		const { inputValue, hadAnyMatchingOptionsBeforeCollapsed } = this.state
+
+		// Reset `hasAnyMatchingOptions` state property before expanding.
+		//
+		// `hasAnyMatchingOptions` should be `true` when no value has been input or selected.
+		// The reason is because when `hasAnyMatchingOptions` is `false`, the input is considered invalid,
+		// and logically it can't be classified as invalid when there's no input yet.
+		//
+		// When `acceptsAnyValue` is `false` and there's some `inputValue`
+		// then it means that the `inputValue` corresponds to one of the selected options
+		// so `hasAnyMatchingOptions` is `true` in that case.
+		//
+		const hasAnyMatchingOptions = inputValue === '' ? true : (
+			acceptsAnyValue ? hadAnyMatchingOptionsBeforeCollapsed : true
+		)
+		this.setState({ hasAnyMatchingOptions }, this._expand)
 	}
 
-	_expand  = (parameters) => this.list.expand(parameters)
-	collapse = () => this.list.collapse()
-	toggle   = () => this.list.toggle()
+	_expand = (parameters) =>
+	{
+		this.list.expand(parameters)
+	}
 
-	storeListRef = (ref) => this.list = ref
-	storeInput = (node) => this.input = node
-	storeInputComponentNode = (node) => this.inputComponentNode = node
+	// Returns a `Promise`.
+	collapse = () => this.list.collapse()
+
+	// Returns a `Promise`.
+	toggle = () => this.list.toggle()
+
+	storeListRef = (ref) => {
+		this.list = ref
+	}
+
+	storeInput = (node) => {
+		this.input = node
+	}
+
+	storeInputComponentNode = (node) => {
+		this.inputComponentNode = node
+	}
 
 	getInputNode = () => this.input
 
@@ -410,6 +463,7 @@ class Autocomplete extends PureComponent
 			placeholder,
 			value,
 			onChange,
+			acceptsAnyValue,
 			showErrorMessage,
 			error,
 			closeButtonIcon,
@@ -482,7 +536,7 @@ class Autocomplete extends PureComponent
 						id={id ? `${id}__list` : undefined}
 						items={options}
 						value={options.length === 0 ? undefined : value}
-						highlightFirstItem={highlightFirstOption && inputValue.trim() !== ''}
+						highlightFirstItem={!acceptsAnyValue && highlightFirstOption && inputValue.trim() !== ''}
 						alignment={alignment}
 						scrollIntoView={scrollIntoView}
 						preload={this.refreshOptions}
@@ -540,6 +594,7 @@ class Autocomplete extends PureComponent
 			tabIndex,
 			autoFocus,
 			autoComplete,
+			acceptsAnyValue,
 			inputClassName
 		}
 		= this.props
@@ -549,7 +604,7 @@ class Autocomplete extends PureComponent
 			id,
 			isExpanded,
 			inputValue,
-			matches,
+			hasAnyMatchingOptions,
 			isFetchingInitiallySelectedOption,
 			focusedOptionIndex
 		}
@@ -591,7 +646,7 @@ class Autocomplete extends PureComponent
 					autoComplete={ autoComplete }
 					disabled={ disabled }
 					readOnly={ isFetchingInitiallySelectedOption || readOnly }
-					error={ error || (matches === false ? 'no-match' : undefined) }
+					error={ error || (hasAnyMatchingOptions === false && !acceptsAnyValue ? 'no-match' : undefined) }
 					className={ classNames('rrui__autocomplete__input', inputClassName, {
 						'rrui__input-field--with-icon': Icon
 					}) }/>
@@ -621,12 +676,13 @@ class Autocomplete extends PureComponent
 
 		if (!isExpanded)
 		{
-			this.setState({ matches: true }, this.expand)
+			this.expand()
 		}
 	}
 
 	onInputValueChange = (value) =>
 	{
+		const { acceptsAnyValue, onChange } = this.props
 		const { isExpanded } = this.state
 
 		// Rewrite this somehow.
@@ -635,6 +691,10 @@ class Autocomplete extends PureComponent
 		// this is a special case when the first option is not highlighted.
 		if (!value && isExpanded) {
 			this.list.focusItem(undefined)
+		}
+
+		if (acceptsAnyValue) {
+			onChange(value)
 		}
 
 		this.setState({
@@ -838,18 +898,25 @@ class Autocomplete extends PureComponent
 		}
 	}
 
+	filterOptions = (options, inputValue) => {
+		const { filterOptions, caseSensitive } = this.props
+		if (filterOptions) {
+			return filterOptions(options, inputValue)
+		}
+		return getOptionsByInputValue(options, inputValue, { caseSensitive })
+	}
+
 	fetchDefaultOptions = () =>
 	{
 		const
 		{
-			getOptions,
-			filterOptions
+			getOptions
 		}
 		= this.props
 
 		return Promise.resolve().then(() =>
 		{
-			return getOptions ? getOptions('') : filterOptions(this.props.options, '')
+			return getOptions ? getOptions('') : this.filterOptions(this.props.options, '')
 		})
 		.then((options) =>
 		{
@@ -861,8 +928,7 @@ class Autocomplete extends PureComponent
 	{
 		const
 		{
-			getOptions,
-			filterOptions
+			getOptions
 		}
 		= this.props
 
@@ -895,7 +961,7 @@ class Autocomplete extends PureComponent
 				})
 			}
 
-			const newOptions = filterOptions(this.props.options, inputValue)
+			const newOptions = this.filterOptions(this.props.options, inputValue)
 			this.handleNewOptions(newOptions, null, resolve)
 		})
 	}
@@ -931,7 +997,7 @@ class Autocomplete extends PureComponent
 
 		const {
 			isExpanded,
-			matchesCounter,
+			hasAnyMatchingOptionsCounter,
 			optionsCounter,
 			fetchingOptionsCounter
 		} = this.state
@@ -941,10 +1007,10 @@ class Autocomplete extends PureComponent
 		if (getOptions)
 		{
 			// Can only override "older" matching state.
-			if (isCounterAfter(counter, matchesCounter))
+			if (isCounterAfter(counter, hasAnyMatchingOptionsCounter))
 			{
-				newState.matches = options.length > 0
-				newState.matchesCounter = counter
+				newState.hasAnyMatchingOptions = options.length > 0
+				newState.hasAnyMatchingOptionsCounter = counter
 			}
 
 			// Update options.
@@ -968,7 +1034,7 @@ class Autocomplete extends PureComponent
 		}
 		else
 		{
-			newState.matches = options.length > 0
+			newState.hasAnyMatchingOptions = options.length > 0
 
 			// Autocomplete should always display some options.
 			if (options.length > 0)
@@ -977,7 +1043,7 @@ class Autocomplete extends PureComponent
 			}
 		}
 
-		if (newState.matches === false && !highlightFirstOption) {
+		if (newState.hasAnyMatchingOptions === false && !highlightFirstOption) {
 			if (isExpanded) {
 				this.list.clearFocus()
 			}
@@ -996,7 +1062,7 @@ class Autocomplete extends PureComponent
 		this.setState
 		({
 			selectedOption,
-			inputValue : selectedOption ? selectedOption.label : ''
+			inputValue : (selectedOption ? selectedOption.label : undefined) || ''
 		})
 
 		// Call `onChange` only if the `value` did change.
@@ -1057,16 +1123,32 @@ function isEmptyValue(value)
 }
 
 // Filters options by substring inclusion (case-insensitive).
-function filterOptions(options, value)
+function getOptionsByInputValue(options, value, { caseSensitive })
 {
 	// If the input value is `undefined` or empty.
 	if (!value) {
 		return options
 	}
 
-	value = value.toLowerCase()
+	if (!caseSensitive) {
+		value = value.toLowerCase()
+	}
 
-	return options.filter(({ label }) => label.toLowerCase().indexOf(value) >= 0)
+	return options.filter((option) => {
+		let label = option.label
+		if (typeof label === 'string') {
+			if (!caseSensitive) {
+				label = label.toLowerCase()
+			}
+			return label.indexOf(value) >= 0
+		} else {
+			return false
+		}
+	})
+}
+
+function getOptionByValue(value, options) {
+	return options.filter(option => option.value === value)[0]
 }
 
 class Counter
