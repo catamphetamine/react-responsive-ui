@@ -1,3 +1,5 @@
+const DEBUG_AUTOCOMPLETE_ASYNC = true
+
 window.ExampleAutocompleteAsync = class ExampleAutocompleteAsync extends React.Component
 {
 	constructor()
@@ -30,7 +32,31 @@ window.ExampleAutocompleteAsync = class ExampleAutocompleteAsync extends React.C
 					}}
 					onChange={ value => this.setState({ value }) }/>
 
-				Value: {this.state.value ? this.state.value : '(empty)'}
+				{DEBUG_AUTOCOMPLETE_ASYNC && (
+					<React.Fragment>
+						<div>
+							Set value externally
+						</div>
+
+						<br/>
+
+						<button
+							type="button"
+							onClick={() => {
+								this.setState({ value: 'C' })
+							}}>
+							Set value to C
+						</button>
+
+						<br/>
+						<br/>
+						<br/>
+					</React.Fragment>
+				)}
+
+				<div>
+					Value: {this.state.value ? this.state.value : '(empty)'}
+				</div>
 
 				<Highlight lang="jsx">{`
 					<Autocomplete
