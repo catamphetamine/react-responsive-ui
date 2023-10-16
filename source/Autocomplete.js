@@ -214,7 +214,10 @@ class Autocomplete extends PureComponent
 		//
 		highlightFirstOption : PropTypes.bool,
 
-		ScrollableContainer : PropTypes.elementType
+		ScrollableContainer : PropTypes.elementType,
+		getScrollableContainerHeight : PropTypes.func,
+		getScrollableContainerScrollY : PropTypes.func,
+		setScrollableContainerScrollY : PropTypes.func
 	}
 
 	static defaultProps =
@@ -536,6 +539,9 @@ class Autocomplete extends PureComponent
 			closeButtonIcon,
 			closeLabel,
 			ScrollableContainer,
+			getScrollableContainerHeight,
+			getScrollableContainerScrollY,
+			setScrollableContainerScrollY,
 			style,
 			className
 		}
@@ -622,6 +628,9 @@ class Autocomplete extends PureComponent
 						getTogglerNode={this.getInputNode}
 						onFocusOut={this.onFocusOut}
 						ScrollableContainer={ScrollableContainer}
+						getScrollableContainerHeight={getScrollableContainerHeight}
+						getScrollableContainerScrollY={getScrollableContainerScrollY}
+						setScrollableContainerScrollY={setScrollableContainerScrollY}
 						closeButtonIcon={closeButtonIcon}
 						closeLabel={closeLabel}
 						aria-label={this.props['aria-label'] || label}

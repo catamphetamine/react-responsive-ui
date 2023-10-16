@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useRef, useState, useLayoutEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
@@ -45,6 +45,9 @@ const ScrollableList = React.forwardRef(({
 	scrollBarPadding,
 	scrollMaxItems,
 	ScrollableContainer,
+	getScrollableContainerHeight,
+	getScrollableContainerScrollY,
+	setScrollableContainerScrollY,
 	calculateLayoutTrigger,
 	className,
 	children,
@@ -70,62 +73,81 @@ const ScrollableList = React.forwardRef(({
 	const [maxHeight, setMaxHeight] = useState()
 
 	const getListNode = useCallback(() => list.current.list, [])
+	const scrollableContainer = useRef()
 
-	const showTopLine = useCallback((itemElement, isFirstItem) =>
-	{
-		let topLine = itemElement.offsetTop
-
-		if (isFirstItem) {
-			topLine -= verticalPadding
-		}
-
-		if (topLine < getListNode().scrollTop) {
-			getListNode().scrollTop = topLine
+	const getListHeight = useCallback(() => {
+		if (getScrollableContainerHeight) {
+			return getScrollableContainerHeight(scrollableContainer.current)
+		} else {
+			return getListNode().offsetHeight
 		}
 	}, [
-		verticalPadding,
+		getScrollableContainerHeight,
 		getListNode
 	])
 
-	const showBottomLine = useCallback((itemElement, isLastItem) =>
-	{
-		let bottomLine = itemElement.offsetTop + itemElement.offsetHeight
+	const getListScrollY = useCallback(() => {
+		if (getScrollableContainerScrollY) {
+			return getScrollableContainerScrollY(scrollableContainer.current)
+		} else {
+			return getListNode().scrollTop
+		}
+	}, [
+		getScrollableContainerScrollY,
+		getListNode
+	])
 
-		if (isLastItem) {
-			bottomLine += verticalPadding
+	const setListScrollY = useCallback((scrollY) => {
+		if (setScrollableContainerScrollY) {
+			setScrollableContainerScrollY(scrollableContainer.current, scrollY)
+		} else {
+			getListNode().scrollTop = scrollY
+		}
+	}, [
+		setScrollableContainerScrollY,
+		getListNode
+	])
+
+	const showElement = useCallback((itemElement, { isFirstItem, isLastItem }) =>
+	{
+		let topEdge = itemElement.offsetTop
+		let bottomEdge = itemElement.offsetTop + itemElement.offsetHeight
+
+		if (isFirstItem) {
+			topEdge -= verticalPadding
 		}
 
-		if (bottomLine > getListNode().scrollTop + getListNode().offsetHeight) {
-			getListNode().scrollTop = bottomLine - getListNode().offsetHeight
+		if (isLastItem) {
+			bottomEdge += verticalPadding
+		}
+
+		const listScrollY = getListScrollY()
+		const listHeight = getListHeight()
+
+		// Show the top edge if it's hidden.
+		if (topEdge < listScrollY) {
+			setListScrollY(topEdge)
+		}
+
+		// Show the bottom edge if it's hidden.
+		if (bottomEdge > listScrollY + listHeight) {
+			setListScrollY(bottomEdge - listHeight)
 		}
 	}, [
 		verticalPadding,
-		getListNode
+		getListNode,
+		getListHeight
 	])
 
 	// Fully shows an option having the `value` (scrolls to it if neccessary)
-	const showItem = useCallback((index, edge = 'top') =>
+	const showItem = useCallback((index) =>
 	{
-		const itemElement = list.current.itemRefs[index]
-
-		const isFirstItem = index === 0
-		const isLastItem  = index === React.Children.count(children) - 1
-
-		if (isFirstItem) {
-			return showTopLine(itemElement, true)
-		} else if (isLastItem) {
-			return showBottomLine(itemElement, true)
-		}
-
-		switch (edge) {
-			case 'top':
-				return showTopLine(itemElement)
-			case 'bottom':
-				return showBottomLine(itemElement)
-		}
+		showElement(list.current.itemRefs[index], {
+			isFirstItem: index === 0,
+			isLastItem: index === React.Children.count(children) - 1
+		})
 	}, [
-		showTopLine,
-		showBottomLine,
+		showElement,
 		children
 	])
 
@@ -178,7 +200,7 @@ const ScrollableList = React.forwardRef(({
 		setVerticalPadding(verticalPadding)
 	}
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		calculateLayout()
 	}, [calculateLayoutTrigger])
 
@@ -206,7 +228,10 @@ const ScrollableList = React.forwardRef(({
 
 	if (ScrollableContainer) {
 		return (
-			<ScrollableContainer style={maxHeightStyle} maxHeight={maxHeight}>
+			<ScrollableContainer
+				ref={scrollableContainer}
+				style={maxHeightStyle}
+				maxHeight={maxHeight}>
 				{listElement}
 			</ScrollableContainer>
 		)
@@ -244,6 +269,9 @@ ScrollableList.propTypes =
 	scrollBarPadding : PropTypes.bool,
 
 	ScrollableContainer : PropTypes.elementType,
+	getScrollableContainerHeight : PropTypes.func,
+	getScrollableContainerScrollY : PropTypes.func,
+	setScrollableContainerScrollY : PropTypes.func,
 
 	listRef : PropTypes.oneOfType([
 		PropTypes.func,

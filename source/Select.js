@@ -181,7 +181,10 @@ class Select extends PureComponent
 		// Deprecated, use `aria-label` instead.
 		ariaLabel : PropTypes.string,
 
-		ScrollableContainer : PropTypes.elementType
+		ScrollableContainer : PropTypes.elementType,
+		getScrollableContainerHeight : PropTypes.func,
+		getScrollableContainerScrollY : PropTypes.func,
+		setScrollableContainerScrollY : PropTypes.func
 	}
 
 	static defaultProps =
@@ -272,6 +275,9 @@ class Select extends PureComponent
 			optionComponent,
 			selectedOptionComponent,
 			ScrollableContainer,
+			getScrollableContainerHeight,
+			getScrollableContainerScrollY,
+			setScrollableContainerScrollY,
 			wait,
 			style,
 			className
@@ -365,6 +371,9 @@ class Select extends PureComponent
 							onFocusIn={this.onFocusIn}
 							onFocusOut={this.onFocusOut}
 							ScrollableContainer={ScrollableContainer}
+							getScrollableContainerHeight={getScrollableContainerHeight}
+							getScrollableContainerScrollY={getScrollableContainerScrollY}
+							setScrollableContainerScrollY={setScrollableContainerScrollY}
 							closeButtonIcon={closeButtonIcon}
 							closeLabel={closeLabel}
 							className={classNames('rrui__shadow', 'rrui__options-list',
