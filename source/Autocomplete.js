@@ -939,10 +939,17 @@ class Autocomplete extends PureComponent
 				// Select the currently focused item (if expanded).
 				if (isExpanded)
 				{
-					// Don't submit the form.
-					event.preventDefault()
-					// Choose the focused option.
-					this.list.chooseFocusedItem()
+					if (this.list.getFocusedItemIndex() === undefined)  {
+						// If the list is expanded and no option is focused
+						// then it means that `acceptsAnyValue` is `true`.
+						// In that case, it will automatically submit the form.
+						this.collapse()
+					} else {
+						// Don't submit the form.
+						event.preventDefault()
+						// Choose the focused option.
+						this.list.chooseFocusedItem()
+					}
 				}
 
 				return
