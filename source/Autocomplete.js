@@ -11,7 +11,7 @@ import Ellipsis from './Ellipsis'
 import WithError from './WithError'
 
 import { onBlurForReduxForm } from './utility/redux-form'
-import { submitFormOnCtrlEnter } from './utility/dom'
+import { submitFormOnCtrlEnter, submitContainingForm } from './utility/dom'
 
 // `PureComponent` is only available in React >= 15.3.0.
 const PureComponent = React.PureComponent || React.Component
@@ -122,6 +122,9 @@ class Autocomplete extends PureComponent
 		// * `onChange()` will be called for every change of the `<input/>` value,
 		//   not just when the user has selected some option.
 		acceptsAnyValue : PropTypes.bool,
+
+		// Pass `true` to submit the form when selecting an option.
+		submitOnSelectOption : PropTypes.bool,
 
 		// When `findOptions()` property function is not provided,
 		// the default one will match options by `<input/>` value
@@ -619,7 +622,7 @@ class Autocomplete extends PureComponent
 						onFocusItem={this.onFocusItem}
 						scrollMaxItems={scroll === false ? 0 : scrollMaxItems}
 						shouldFocus={false}
-						onChange={this.setValue}
+						onChange={this.setValueOnChooseOption}
 						onCollapse={this.onCollapse}
 						onExpand={this.onExpand}
 						focusOnExpand={false}
@@ -785,7 +788,7 @@ class Autocomplete extends PureComponent
 
 	onKeyDown = (event) =>
 	{
-		const { disabled, readOnly, value, emptyValue, required, onKeyDown } = this.props
+		const { disabled, readOnly, value, emptyValue, required, onKeyDown, submitOnSelectOption } = this.props
 		const { options, isExpanded, inputValue, focusedOptionIndex } = this.state
 
 		if (disabled || readOnly) {
@@ -945,10 +948,20 @@ class Autocomplete extends PureComponent
 						// In that case, it will automatically submit the form.
 						this.collapse()
 					} else {
-						// Don't submit the form.
-						event.preventDefault()
+						if (!submitOnSelectOption) {
+							// Don't submit the form.
+							event.preventDefault()
+						}
 						// Choose the focused option.
+						// The `.chooseFocusedItem()` function imitates a `click` event
+						// on an option's element, which would cause the form to be submitted
+						// if `submitOnSelectOption` flag is `true`. But if that flag is `true`,
+						// the form is already being submitted due to the `Enter` key,
+						// so set a utility flag to temporarily ignore `submitOnSelectOption` flag
+						// in the `click` event handler.
+						this.dontSubmitFormOnOptionSelect = true
 						this.list.chooseFocusedItem()
+						this.dontSubmitFormOnOptionSelect = false
 					}
 				}
 
@@ -1159,6 +1172,18 @@ class Autocomplete extends PureComponent
 		this.setState(newState, callback)
 	}
 
+	setValueOnChooseOption = (newValue) => {
+		this.setValue(newValue)
+
+		// Submit the form if `submitOnSelectOption: true` property was passed.
+		const { submitOnSelectOption } = this.props
+		if (submitOnSelectOption) {
+			if (!this.dontSubmitFormOnOptionSelect) {
+				submitContainingForm(this.input)
+			}
+		}
+	}
+
 	setValue = (newValue) =>
 	{
 		const { value, onChange, acceptsAnyValue } = this.props
@@ -1167,13 +1192,17 @@ class Autocomplete extends PureComponent
 		const selectedOption = options.filter(_ => _.value === newValue)[0]
 		const inputValue = getLabelForOption(selectedOption, { acceptsAnyValue }) || ''
 
-		this.setState
-		({
+		const newState = {
 			selectedOption,
-			options: [selectedOption],
 			inputValue,
 			inputValueForLastSelectedOption: selectedOption ? inputValue : undefined
-		})
+		}
+
+		if (selectedOption) {
+			newState.options = [selectedOption]
+		}
+
+		this.setState(newState)
 
 		// Call `onChange` only if the `value` did change.
 		if (newValue !== value) {

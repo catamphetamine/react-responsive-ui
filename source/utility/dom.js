@@ -1,6 +1,7 @@
 // Submits the form on `Ctrl` + `Enter` (or `Cmd` + `Enter`).
 export function submitFormOnCtrlEnter(event, component)
 {
+	// `keyCode === 13` means "Enter" key.
 	if ((event.ctrlKey || event.metaKey) && event.keyCode === 13)
 	{
 		if (submitContainingForm(component))
