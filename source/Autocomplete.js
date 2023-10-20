@@ -132,13 +132,14 @@ class Autocomplete extends PureComponent
 		caseSensitive : PropTypes.bool,
 
 		// Selected option value
-		value      : PropTypes.any,
+		value : PropTypes.any,
 
 		// `value` for cases when the input gets cleared.
 		emptyValue : PropTypes.any,
 
 		// Is called when an option is selected
-		onChange   : PropTypes.func,
+		onChange : PropTypes.func,
+		onInputValueChange : PropTypes.func,
 
 		// Is called when the select is blurred.
 		// This `onBlur` interceptor is a workaround for `redux-form`,
@@ -763,7 +764,7 @@ class Autocomplete extends PureComponent
 
 	onInputValueChange = (value) =>
 	{
-		const { acceptsAnyValue, onChange } = this.props
+		const { acceptsAnyValue, onChange, onInputValueChange } = this.props
 		const { isExpanded } = this.state
 
 		// Rewrite this somehow.
@@ -777,6 +778,10 @@ class Autocomplete extends PureComponent
 
 		if (acceptsAnyValue) {
 			onChange(value)
+		}
+
+		if (onInputValueChange) {
+			onInputValueChange(value)
 		}
 
 		this.setState({
