@@ -430,13 +430,19 @@ export default class Expandable extends PureComponent
 			return null
 		}
 
-		// `tabIndex={ -1 }` makes the `<div/>` focusable.
-		// So that `<Expandable/>` doesn't collapse on click inside it (top, bottom).
+		// `tabIndex={-1}` was prevously used to make the `<div/>` focusable,
+		// so that `<Expandable/>` didn't collapse on a click somewhere inside it
+		// when the click didn't focus some `<button/>` inside it but rather
+		// was pointed at a non-interactive space inside it (for example, top or bottom padding).
+		//
+		// But then, in Dec 2018, that workaround was removed:
+		// https://github.com/catamphetamine/react-responsive-ui/commit/569a7f9ab725787e1b6c4c8e16183e15865da06b
+		//
+		// Currently, that workaround doesn't seem to be required and, for example,
+		// an `<ExpandableMenu/>` doesn't close when clicking on a non-interactive part of it.
 
-		// `aria-hidden={true/false}` is not set automatically here
-		// because when `<Expandable/>` is collapsed then it's not rendered.
-
-		// tabIndex={ -1 }
+		// It doesn't set `aria-hidden={true/false}` property on the `<div/>`.
+		// The rationale is that when `<Expandable/>` is collapsed, the `<div/>` is not rendered.
 
 		let element = (
 			<div

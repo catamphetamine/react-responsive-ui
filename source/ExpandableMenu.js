@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import createRef from 'react-create-ref'
@@ -8,6 +8,24 @@ import List from './List'
 import Close, { CloseIcon } from './Close'
 
 import { focus as focusElement } from './utility/focus'
+
+// `ignoreClicksOnTheToggleButtonDuration` is a workaround for Safari (both macOS and iOS) bug:
+// When closing an expanded list by tapping on the toggler `<button/>`,
+// that `<button/>` doesn't receive focus (`document.activeElement` is `<body/>`).
+// The tap on the toggler button triggers a "blur" event on the expanded list
+// (which is an `<Expandable/>`'s `<div/>`).
+// That "blur" event calls `onBlur` function in this component,
+// which, in turn, calls `onBlur` of `<OnFocusOut/>`,
+// which calls `onBlur()` function from `source/utility/focus.js`.
+// That function examines `event.relatedTarget` which is `null` in case of Safari:
+// https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
+// That results in the click on the toggler button to unexpand the expanded menu,
+// after which `onClick()` function of the toggler button is called, which calls `toggle()`,
+// and that results in the menu to re-expand again. The result is that the user is unable
+// to close the expanded menu by clicking on the toggle button.
+// To work around that bug of Safari, a special timer is used
+// to skip executing the `onClick()` handler.
+const ignoreClicksOnTheToggleButtonDuration = 30
 
 export default function ExpandableMenu(props) {
 	const [isExpanded, setExpanded] = useState(false)
@@ -41,6 +59,18 @@ export default function ExpandableMenu(props) {
 		focusElement(togglerRef.current || buttonRef.current)
 	}, [])
 
+	// A workaround for Safari (both macOS and iOS) bug.
+	// See the notes on the `ignoreClicksOnTheToggleButtonDuration` variable for more info.
+	const ignoreClicksOnTheToggleButton = useRef(false)
+	const ignoreClicksOnTheToggleButtonEndTimer = useRef()
+	useEffect(() => {
+		return () => {
+			if (ignoreClicksOnTheToggleButtonEndTimer.current) {
+				clearTimeout(ignoreClicksOnTheToggleButtonEndTimer.current)
+			}
+		}
+	}, [])
+
 	// Returns a `Promise`.
 	const expand = useCallback(() => listRef.current.expand(), [listRef])
 
@@ -59,10 +89,13 @@ export default function ExpandableMenu(props) {
 			focus()
 		}
 		setExpanded(false)
-		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
-		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
-		// this.cooldown = true
-		// this.cooldownTimer = setTimeout(() => this.cooldown = false, 30)
+		// A workaround for Safari (both macOS and iOS) bug.
+		// See the notes on the `ignoreClicksOnTheToggleButtonDuration` variable for more info.
+		ignoreClicksOnTheToggleButton.current = true
+		ignoreClicksOnTheToggleButtonEndTimer.current = setTimeout(() => {
+			ignoreClicksOnTheToggleButtonEndTimer.current = undefined
+			ignoreClicksOnTheToggleButton.current = false
+		}, ignoreClicksOnTheToggleButtonDuration)
 	}, [focus])
 
 	const onFocusOut = useCallback(() => {
@@ -82,11 +115,11 @@ export default function ExpandableMenu(props) {
 	}, [])
 
 	const onClick = useCallback((event) => {
-		// // A workaround for Safari (both macOS and iOS) bug: `<button/>`s not getting focus.
-		// // https://stackoverflow.com/questions/20359962/jquery-mobile-focusout-event-for-relatedtarget-returns-incorrect-result-in-safar
-		// if (!this.cooldown) {
+		// A workaround for Safari (both macOS and iOS) bug.
+		// See the notes on the `ignoreClicksOnTheToggleButtonDuration` variable for more info.
+		if (!ignoreClicksOnTheToggleButton.current) {
 			toggle()
-		// }
+		}
 	}, [
 		toggle
 	])

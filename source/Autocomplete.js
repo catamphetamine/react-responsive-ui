@@ -91,6 +91,9 @@ class Autocomplete extends PureComponent
 		// Label which is placed above the select
 		label      : PropTypes.string,
 
+		// HTML form input `type` attribute
+		type : PropTypes.string,
+
 		// Placeholder (like "Choose")
 		placeholder : PropTypes.string,
 
@@ -667,6 +670,7 @@ class Autocomplete extends PureComponent
 		{
 			value,
 			label,
+			type,
 			icon,
 			placeholder,
 			disabled,
@@ -716,6 +720,7 @@ class Autocomplete extends PureComponent
 					onChange={ this.onInputValueChange }
 					onKeyDown={ this.onKeyDown }
 					onBlur={ this.onBlur }
+					type={ type }
 					role="combobox"
 					aria-autocomplete="list"
 					aria-expanded={ isExpanded ? true : false }
@@ -731,7 +736,8 @@ class Autocomplete extends PureComponent
 					error={ error || (acceptsAnyValue ? undefined : (hasAnyMatchingOptions === false ? 'no-match' : undefined)) }
 					className={ classNames('rrui__autocomplete__input', inputClassName, {
 						'rrui__input-field--with-icon': Icon
-					}) }/>
+					}) }
+				/>
 			</React.Fragment>
 		)
 	}
