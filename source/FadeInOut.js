@@ -10,8 +10,8 @@ import { setTimeout, clearTimeout } from 'request-animation-frame-timeout'
 
 export default class FadeInOut extends React.Component {
 	static propTypes = {
-		show: PropTypes.bool.isRequired,
-		fadeInInitially: PropTypes.bool.isRequired,
+		show: PropTypes.bool,
+		fadeInInitially: PropTypes.bool,
 		fadeInDuration: PropTypes.number,
 		fadeOutDuration: PropTypes.number,
 		fadeInClassName: PropTypes.string,

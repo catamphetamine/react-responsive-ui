@@ -165,6 +165,9 @@ export default function ExpandableMenu(props) {
 		togglerAriaLabel,
 		togglerAriaHasPopup,
 		togglerClassName,
+		// The "x" button icon that closes the `<Select/>`
+		// in fullscreen mode on mobile devices.
+		closeButtonIcon = CloseIcon,
 		children,
 		...rest
 	} = props
@@ -238,6 +241,7 @@ export default function ExpandableMenu(props) {
 				onFocusOut={onFocusOut}
 				getTogglerNode={getButtonElement}
 				focusSelectedItem={false}
+				closeButtonIcon={closeButtonIcon}
 				className="rrui__shadow">
 				{menuItems}
 			</ExpandableList>
@@ -259,7 +263,7 @@ ExpandableMenu.propTypes =
 
 	// The "x" button icon that closes the `<Select/>`
 	// in fullscreen mode on mobile devices.
-	closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired,
+	closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]),
 
 	// Must accept a `ref`.
 	// Receives properties: `onClick`, `onKeyDown`, `onBlur`, `aria-expanded`.
@@ -293,11 +297,4 @@ ExpandableMenu.propTypes =
 	alignment : PropTypes.oneOf(['left', 'right']),
 
 	disabled: PropTypes.bool
-}
-
-ExpandableMenu.defaultProps =
-{
-	// The "x" button icon that closes the `<Select/>`
-	// in fullscreen mode on mobile devices.
-	closeButtonIcon : CloseIcon
 }

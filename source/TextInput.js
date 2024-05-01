@@ -11,7 +11,8 @@ function TextInput({
 	value,
 	onFocus,
 	onBlur,
-	showErrorMessage,
+	// Show `error` (if passed).
+	showErrorMessage = true,
 	error,
 	style,
 	className,
@@ -159,12 +160,6 @@ TextInput.propTypes =
 
 	// CSS style object for `<input/>`
 	inputStyle       : PropTypes.object
-}
-
-TextInput.defaultProps =
-{
-	// Show `error` (if passed).
-	showErrorMessage : true
 }
 
 export default TextInput

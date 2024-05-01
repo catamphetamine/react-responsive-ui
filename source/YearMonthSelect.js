@@ -14,7 +14,7 @@ export default class YearMonthSelect extends PureComponent
 		date : PropTypes.instanceOf(Date),
 		onChange : PropTypes.func.isRequired,
 		localeUtils : PropTypes.object,
-		tabbable : PropTypes.bool.isRequired
+		tabbable : PropTypes.bool
 	}
 
 	static defaultProps =

@@ -42,7 +42,7 @@ export default class List extends PureComponent
 
 		// Legacy method, use `onChange` instead.
 		onSelectItem : PropTypes.func,
-		highlightSelectedItem : PropTypes.bool.isRequired,
+		highlightSelectedItem : PropTypes.bool,
 
 		onFocusIn : PropTypes.func,
 		onFocusItem : PropTypes.func,
@@ -60,7 +60,7 @@ export default class List extends PureComponent
 		// then the first item of the list
 		// (or the last focused item of the list)
 		// will be focused when the list gets focused.
-		tabbable : PropTypes.bool.isRequired,
+		tabbable : PropTypes.bool,
 
 		// If `shouldFocus` is set to `false`
 		// (which is not the default behavior)
@@ -69,18 +69,18 @@ export default class List extends PureComponent
 		// indicated as if they're focused).
 		// This feature is used in `<Autocomplete/>`
 		// that always keeps the actual focus on the `<input/>`.
-		shouldFocus : PropTypes.bool.isRequired,
+		shouldFocus : PropTypes.bool,
 
 		// If `highlightFirstItem` is `true`
 		// then by default the first item of the list
 		// will be focused every time it's items change.
 		// (and also when it's mounted)
-		highlightFirstItem : PropTypes.bool.isRequired,
+		highlightFirstItem : PropTypes.bool,
 
-		createButtons : PropTypes.bool.isRequired,
+		createButtons : PropTypes.bool,
 
 		// For select options list keyboard navigation via typing.
-		resetInputTimeout : PropTypes.number.isRequired
+		resetInputTimeout : PropTypes.number
 	}
 
 	static defaultProps =

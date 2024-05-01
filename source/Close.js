@@ -6,7 +6,7 @@ export default function Close(props)
 {
 	const {
 		onClick,
-		closeLabel,
+		closeLabel = 'Close',
 		className,
 		children
 	} = props
@@ -37,12 +37,7 @@ export const CloseIcon = () => (
 Close.propTypes =
 {
 	onClick : PropTypes.func.isRequired,
-	closeLabel : PropTypes.string.isRequired,
+	closeLabel : PropTypes.string,
 	className : PropTypes.string,
 	children : PropTypes.node.isRequired
-}
-
-Close.defaultProps =
-{
-	closeLabel : 'Close'
 }

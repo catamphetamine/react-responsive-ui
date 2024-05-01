@@ -63,11 +63,11 @@ class SlideoutMenu extends PureComponent
 			'right',
 			'top',
 			'bottom'
-		]).isRequired,
+		]),
 
-		// isOpen : PropTypes.bool.isRequired,
+		// isOpen : PropTypes.bool,
 
-		fullscreen : PropTypes.bool.isRequired,
+		fullscreen : PropTypes.bool,
 
 		// A result of `React.createRef()`.
 		// Will be focused when the menu is opened.
@@ -83,7 +83,7 @@ class SlideoutMenu extends PureComponent
 
 		// If `scrollIntoView` is `true` (which is the default)
 		// then these two are gonna define the delay after which it scrolls into view.
-		expandAnimationDuration : PropTypes.number.isRequired,
+		expandAnimationDuration : PropTypes.number,
 
 		// CSS style object
 		style : PropTypes.object,

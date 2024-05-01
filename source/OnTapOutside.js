@@ -12,7 +12,7 @@ export default class OnTapOutside extends React.Component
 		onTapOutside: PropTypes.func.isRequired,
 		getTogglerNode: PropTypes.func,
 		getContainerNode: PropTypes.func.isRequired,
-		moveThreshold: PropTypes.number.isRequired
+		moveThreshold: PropTypes.number
 	}
 
 	static defaultProps = {

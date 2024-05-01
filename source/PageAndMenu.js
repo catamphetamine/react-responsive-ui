@@ -100,7 +100,7 @@ export default class PageAndMenu extends Component {
 }
 
 PageAndMenu.propTypes = {
-	as: PropTypes.elementType.isRequired
+	as: PropTypes.elementType
 };
 
 PageAndMenu.defaultProps = {

@@ -67,10 +67,10 @@ class Autocomplete extends PureComponent
 		maxOptions : PropTypes.number,
 
 		// Throttle `async getOptions()` invocations.
-		throttle : PropTypes.number.isRequired,
+		throttle : PropTypes.number,
 
 		// Throttle `async getOptions()` invocations.
-		minCharactersToStartThrottling : PropTypes.number.isRequired,
+		minCharactersToStartThrottling : PropTypes.number,
 
 		// Option component.
 		// (when `<Autocomplete/>` is expanded).
@@ -108,7 +108,7 @@ class Autocomplete extends PureComponent
 		readOnly   : PropTypes.bool,
 
 		// Set to `true` to mark the field as required
-		required   : PropTypes.bool.isRequired,
+		required   : PropTypes.bool,
 
 		// Indicates that the input is invalid.
 		error : PropTypes.oneOfType([
@@ -153,7 +153,7 @@ class Autocomplete extends PureComponent
 		// If `scroll` is `false`, then options list
 		// is not limited in height.
 		// Is `true` by default (scrollable).
-		scroll     : PropTypes.bool.isRequired,
+		scroll     : PropTypes.bool,
 
 		// Component CSS class
 		className  : PropTypes.string,

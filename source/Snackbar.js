@@ -70,7 +70,7 @@ export default class Snackbar extends PureComponent
 			'bottom',
 			'bottom-start',
 			'bottom-end'
-		]).isRequired,
+		]),
 
 		// // "Snack" showing CSS animation duration.
 		// // Is 225 milliseconds by default.
@@ -78,12 +78,12 @@ export default class Snackbar extends PureComponent
 
 		// "Snack" hiding CSS animation duration.
 		// Is 195 milliseconds by default.
-		hideAnimationDuration : PropTypes.number.isRequired,
+		hideAnimationDuration : PropTypes.number,
 
 		// The total display duration (in milliseconds) of a snack
 		// is `minTime + message.length * lengthTimeFactor`
-		minTime          : PropTypes.number.isRequired,
-		lengthTimeFactor : PropTypes.number.isRequired
+		minTime          : PropTypes.number,
+		lengthTimeFactor : PropTypes.number
 	}
 
 	static defaultProps =

@@ -30,9 +30,9 @@ function ExpansionPanel({
 	title,
 	'aria-label': ariaLabel,
 	disabled,
-	toggleIcon: ToggleIcon,
-	toggleIconPlacement,
-	animationDuration,
+	toggleIcon: ToggleIcon = DownArrow,
+	toggleIconPlacement = 'start',
+	animationDuration = 300,
 	style,
 	className,
 	children
@@ -178,17 +178,11 @@ ExpansionPanel.propTypes = {
 	toggleIcon: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.bool
-	]).isRequired,
-	toggleIconPlacement: PropTypes.oneOf(['start', 'end']).isRequired,
-	animationDuration: PropTypes.number.isRequired,
+	]),
+	toggleIconPlacement: PropTypes.oneOf(['start', 'end']),
+	animationDuration: PropTypes.number,
 	style: PropTypes.object,
 	className: PropTypes.string
-}
-
-ExpansionPanel.defaultProps = {
-	toggleIcon: DownArrow,
-	toggleIconPlacement: 'start',
-	animationDuration: 300
 }
 
 export default ExpansionPanel

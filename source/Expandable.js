@@ -71,13 +71,13 @@ export default class Expandable extends PureComponent
 		// If `scrollIntoView` is `true` (which is the default)
 		// then the browser will automatically scroll
 		// so that the expanded content fits on the screen.
-		scrollIntoView : PropTypes.bool.isRequired,
+		scrollIntoView : PropTypes.bool,
 
 		// If `scrollIntoView` is `true` (which is the default)
 		// then these two are gonna define the delay after which it scrolls into view.
-		expandAnimationDuration : PropTypes.number.isRequired,
+		expandAnimationDuration : PropTypes.number,
 
-		scrollIntoViewDelay : PropTypes.number.isRequired,
+		scrollIntoViewDelay : PropTypes.number,
 
 		getTogglerNode : PropTypes.func,
 		onFocusOut : PropTypes.func,
@@ -88,7 +88,7 @@ export default class Expandable extends PureComponent
 
 		// The "x" button icon that closes the `<Select/>`
 		// in fullscreen mode on mobile devices.
-		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])]).isRequired
+		closeButtonIcon : PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([false])])
 	}
 
 	static defaultProps =

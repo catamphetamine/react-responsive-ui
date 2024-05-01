@@ -25,8 +25,8 @@ class ExpandableList extends PureComponent
 		preload : PropTypes.func,
 
 		// Whether the list items should be focused upon expand.
-		focusOnExpand : PropTypes.bool.isRequired,
-		focusSelectedItem : PropTypes.bool.isRequired,
+		focusOnExpand : PropTypes.bool,
+		focusSelectedItem : PropTypes.bool,
 
 		alignment : PropTypes.oneOf(['left', 'right']),
 

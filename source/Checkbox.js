@@ -23,13 +23,13 @@ export default class Checkbox extends PureComponent
 		name : PropTypes.string,
 
 		// `true`/`false`
-		value : PropTypes.bool.isRequired,
+		value : PropTypes.bool,
 
 		// Set to `true` to enable multiline label
-		multiline : PropTypes.bool.isRequired,
+		multiline : PropTypes.bool,
 
 		// Disables the checkbox
-		disabled  : PropTypes.bool.isRequired,
+		disabled  : PropTypes.bool,
 
 		// Indicates that the input is invalid.
 		error: PropTypes.oneOfType([
@@ -46,7 +46,7 @@ export default class Checkbox extends PureComponent
 		onChange  : PropTypes.func,
 
 		// When `true` autofocuses the checkbox
-		focus     : PropTypes.bool.isRequired,
+		focus     : PropTypes.bool,
 
 		// `aria-label` attribute.
 		// Deprecated, use `aria-label` instead.

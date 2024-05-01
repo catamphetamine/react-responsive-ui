@@ -24,7 +24,7 @@ export default class Switch extends PureComponent
 		disabled  : PropTypes.bool,
 
 		// Either `true` or `false`
-		value     : PropTypes.bool.isRequired,
+		value     : PropTypes.bool,
 
 		// Is called when the switch is switched
 		onChange  : PropTypes.func.isRequired,

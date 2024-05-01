@@ -15,8 +15,10 @@ function TextInputComponent({
 	const {
 		id,
 		value,
-		required,
-		floatingLabel,
+		// Set to `true` to mark the field as required.
+		required = false,
+		// Labels float by default.
+		floatingLabel = true,
 		label,
 		placeholder,
 		multiline,
@@ -72,7 +74,7 @@ TextInputComponent = React.forwardRef(TextInputComponent)
 
 TextInputComponent.propTypes = {
 	// Set to `true` to mark the field as required.
-	required : PropTypes.bool.isRequired,
+	required : PropTypes.bool,
 
 	// Indicates that the input is invalid.
 	error: PropTypes.oneOfType([
@@ -81,18 +83,10 @@ TextInputComponent.propTypes = {
 	]),
 
 	// Labels float by default.
-	floatingLabel : PropTypes.bool.isRequired,
+	floatingLabel : PropTypes.bool,
 
 	// `<input/>` icon.
 	icon : PropTypes.func
-}
-
-TextInputComponent.defaultProps = {
-	// Set to `true` to mark the field as required.
-	required : false,
-
-	// Labels float by default.
-	floatingLabel : true
 }
 
 export default TextInputComponent

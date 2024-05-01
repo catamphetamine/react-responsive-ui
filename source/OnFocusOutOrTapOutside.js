@@ -99,8 +99,8 @@ OnFocusOutOrTapOutside.propTypes = {
 	getContainerNode: PropTypes.func.isRequired,
 	getTogglerNode: PropTypes.func,
 	onFocusOut: PropTypes.func.isRequired,
-	onTapOutsideDelay: PropTypes.number.isRequired,
-	listenToTouches: PropTypes.bool.isRequired,
+	onTapOutsideDelay: PropTypes.number,
+	listenToTouches: PropTypes.bool,
 	children: PropTypes.node.isRequired
 }
 

@@ -10,7 +10,9 @@ import { submitFormOnCtrlEnter } from './utility/dom'
 function TextInput({
 	value,
 	multiline,
-	inputComponent,
+	// A custom input component.
+	// (is `<input/>` by default)
+	inputComponent = 'input',
 	// `focus` property is deprecated. Use `autoFocus` instead.
 	focus,
 	onChange,
@@ -20,7 +22,8 @@ function TextInput({
 	label,
 	placeholder,
 	type,
-	autoresize,
+	// `<textarea/>` should autoresize itself
+	autoresize = true,
 	error,
 	initialHeight,
 	onHeightChange,
@@ -29,7 +32,10 @@ function TextInput({
 
 	// Rest
 	containerRef,
-	floatingLabel,
+	// Set to `false` to prevent the `<label/>` from floating
+	floatingLabel = true,
+	// // The maximum number of rows <textarea/> grows up to.
+	// rowsMax = 12,
 	required,
 	children,
 	...rest
@@ -239,7 +245,7 @@ TextInput.propTypes =
 
 	// Whether `<textarea/>` should autoresize itself
 	// (is `true` by default)
-	autoresize : PropTypes.bool.isRequired,
+	autoresize : PropTypes.bool,
 
 	initialHeight: PropTypes.number,
 	onHeightChange: PropTypes.func,
@@ -253,36 +259,20 @@ TextInput.propTypes =
 	// If `<textarea/>` vertical padding was `0`
 	// the line of text near the top border wouldn't be visible.
 	// // The maximum number of rows <textarea/> grows up to.
-	// rowsMax          : PropTypes.number.isRequired,
+	// rowsMax          : PropTypes.number,
 
 	// Set to `false` to prevent the `<label/>` from floating
-	floatingLabel    : PropTypes.bool.isRequired,
+	floatingLabel    : PropTypes.bool,
 
 	// A custom input component.
 	// (is `<input/>` by default)
-	inputComponent   : PropTypes.elementType.isRequired,
+	inputComponent   : PropTypes.elementType,
 
 	// Indicates that the input is invalid.
 	error: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.bool
 	]),
-}
-
-TextInput.defaultProps =
-{
-	// `<textarea/>` should autoresize itself
-	autoresize : true,
-
-	// Set to `false` to prevent the `<label/>` from floating
-	floatingLabel : true,
-
-	// A custom input component.
-	// (is `<input/>` by default)
-	inputComponent : 'input',
-
-	// // The maximum number of rows <textarea/> grows up to.
-	// rowsMax : 12
 }
 
 export default TextInput

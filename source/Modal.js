@@ -26,14 +26,14 @@ class Modal extends Component
 	static propTypes =
 	{
 		// If `true` then the modal is shown
-		isOpen           : PropTypes.bool.isRequired,
+		isOpen           : PropTypes.bool,
 
 		// Closes the modal (must set the `isOpen` flag to `false`)
 		close            : PropTypes.func.isRequired,
 
 		// A time required for CSS hiding animation to complete
 		// (150 milliseconds by default)
-		closeTimeout     : PropTypes.number.isRequired,
+		closeTimeout     : PropTypes.number,
 
 		// Is called after the modal is shown
 		afterOpen        : PropTypes.func,
@@ -70,7 +70,7 @@ class Modal extends Component
 
 		// The default `overflow-x` of the <body/>.
 		// Is `auto` by default.
-		bodyOverflowX    : PropTypes.string.isRequired,
+		bodyOverflowX    : PropTypes.string,
 
 		// The default `overflow-x` of the <body/>.
 		// Is `scroll` by default
@@ -78,7 +78,7 @@ class Modal extends Component
 		//  because the document width won't be jumpy
 		//  while navigating the website —
 		//  it will be consistent across all pages)
-		bodyOverflowY    : PropTypes.string.isRequired,
+		bodyOverflowY    : PropTypes.string,
 
 		// Deprecated, use `aria-label` instead.
 		ariaLabel        : PropTypes.string,
@@ -99,10 +99,10 @@ class Modal extends Component
 
 		// If set to `false` will prevent modal contents
 		// from being unmounted when the modal is closed.
-		unmount          : PropTypes.bool.isRequired,
+		unmount          : PropTypes.bool,
 
 		// Internal property
-		could_not_close_because_busy_animation_duration : PropTypes.number.isRequired,
+		could_not_close_because_busy_animation_duration : PropTypes.number,
 
 		// CSS class for overlay (e.g. for fullscreen modal background color)
 		overlayClassName : PropTypes.string,

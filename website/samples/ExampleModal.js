@@ -12,17 +12,51 @@ window.ExampleModal = class ExampleComponent extends React.Component
 			<Example name="modal" title="Modal">
 
 								<Button
-									action={() => this.setState({ show_modal: true })}>
-									Show
+									action={() => this.setState({ showSmallModal: true })}>
+									Show Small Modal
+								</Button>
+
+								<br/>
+								<br/>
+
+								<Button
+									action={() => this.setState({ showLargeModal: true })}>
+									Show Large Modal
 								</Button>
 
 {/*
 	closeButtonIcon={true}
 	closeLabel="x"
 */}
+
 								<Modal
-									isOpen={this.state.show_modal}
-									close={() => this.setState({ show_modal: false })}
+									isOpen={this.state.showSmallModal}
+									close={() => this.setState({ showSmallModal: false })}
+									style={{ maxWidth : '40em' }}
+									ariaLabel="An example modal"
+									appElementId="content">
+
+									<Modal.Title>
+										Modal Title
+									</Modal.Title>
+
+									<Modal.Content>
+										<p style={{ marginTop: 0, marginBottom: 0 }}>
+											Some text content inside the modal
+										</p>
+									</Modal.Content>
+
+									<Modal.Actions>
+										<Button
+											action={ () => this.setState({ showSmallModal: false }) }>
+											Hide
+										</Button>
+									</Modal.Actions>
+								</Modal>
+
+								<Modal
+									isOpen={this.state.showLargeModal}
+									close={() => this.setState({ showLargeModal: false })}
 									style={{ maxWidth : '40em' }}
 									ariaLabel="An example modal"
 									appElementId="content">
@@ -55,7 +89,7 @@ window.ExampleModal = class ExampleComponent extends React.Component
 
 									<Modal.Actions>
 										<Button
-											action={ () => this.setState({ show_modal: false }) }>
+											action={ () => this.setState({ showLargeModal: false }) }>
 											Hide
 										</Button>
 									</Modal.Actions>

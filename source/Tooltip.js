@@ -33,7 +33,7 @@ export default class Tooltip extends PureComponent
 			'right',
 			'right-start',
 			'right-end'
-		]).isRequired,
+		]),
 
 		// Tooltip content.
 		content : PropTypes.node,
@@ -45,7 +45,7 @@ export default class Tooltip extends PureComponent
 
 		// Whether this element should be displayed as `inline-block`.
 		// (is `true` by default)
-		inline : PropTypes.bool.isRequired,
+		inline : PropTypes.bool,
 
 		// If `true` then the tooltip will be accessible via keyboard.
 		// The tooltipped element will be wrapped in a focusable `<button/>`
@@ -57,14 +57,14 @@ export default class Tooltip extends PureComponent
 		accessible : PropTypes.bool,
 
 		// The delay before the tooltip is shown (in milliseconds)
-		delay : PropTypes.number.isRequired,
+		delay : PropTypes.number,
 
 		// The duration of the tooltip hiding animation.
 		// The DOM element will retain `display: block` for this time period.
 		// When changing this timeout also change `transition` time for
 		// `.tooltip--after-show` and `.tooltip--before-hide` CSS classes.
 		// Is `120` by default.
-		hidingAnimationDuration : PropTypes.number.isRequired,
+		hidingAnimationDuration : PropTypes.number,
 
 		// (`hideTimeout` is deprecated, use `hideDelay` instead)
 		// The tooltip waits `hideTimeout` milliseconds before hiding
@@ -73,11 +73,11 @@ export default class Tooltip extends PureComponent
 
 		// The tooltip waits `hideDelay` milliseconds before hiding
 		// to support mouseovering over itself.
-		hideDelay : PropTypes.number.isRequired,
+		hideDelay : PropTypes.number,
 
-		screenMargin : PropTypes.number.isRequired,
+		screenMargin : PropTypes.number,
 		// When passing `offsetTop`, also set `--rrui-tooltip-visible-distance` to `0px`.
-		offsetTop : PropTypes.number.isRequired,
+		offsetTop : PropTypes.number,
 
 		// `container: () => DOMElement` property is optional
 		// and is gonna be the parent DOM Element for the tooltip itself

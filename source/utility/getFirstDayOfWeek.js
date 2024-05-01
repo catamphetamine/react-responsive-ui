@@ -264,6 +264,7 @@ const languagesByFirstDayOfWeek = [
     "hr",
     "hu",
     "hy",
+    "ie",
     "ii",
     "is",
     "it",
@@ -311,6 +312,7 @@ const languagesByFirstDayOfWeek = [
     "uz",
     "vi",
     "wa",
+    "yi",
     "za",
     "zh"
   ],

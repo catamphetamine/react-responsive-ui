@@ -262,7 +262,7 @@ ScrollableList.propTypes =
 	// Maximum items fitting the list height (scrollable).
 	// Set to `0` to disable overflow.
 	// Is `6` by default.
-	scrollMaxItems : PropTypes.number.isRequired,
+	scrollMaxItems : PropTypes.number,
 
 	// Whether should add `margin-right` for scrollbar width on overflow.
 	// Is `true` by default.

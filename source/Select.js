@@ -99,20 +99,20 @@ class Select extends PureComponent
 		alignment : PropTypes.string,
 
 		// Whether to use native `<select/>`
-		native      : PropTypes.bool.isRequired,
+		native      : PropTypes.bool,
 
 		// Whether to use native `<select/>` when expanded
-		nativeExpanded : PropTypes.bool.isRequired,
+		nativeExpanded : PropTypes.bool,
 
 		// Show icon only for selected item,
 		// and only if `icon` is `true`.
-		saveOnIcons : PropTypes.bool.isRequired,
+		saveOnIcons : PropTypes.bool,
 
 		// Disables this control
 		disabled   : PropTypes.bool,
 
 		// Set to `true` to mark the field as required
-		required   : PropTypes.bool.isRequired,
+		required   : PropTypes.bool,
 
 		// Indicates that the input is invalid.
 		error: PropTypes.oneOfType([
@@ -123,7 +123,7 @@ class Select extends PureComponent
 		showErrorMessage : PropTypes.bool,
 
 		// Set to `true` to display the loading indicator
-		wait       : PropTypes.bool.isRequired,
+		wait       : PropTypes.bool,
 
 		// Selected option value
 		value      : PropTypes.any,
@@ -140,7 +140,7 @@ class Select extends PureComponent
 		// If `scroll` is `false`, then options list
 		// is not limited in height.
 		// Is `true` by default (scrollable).
-		scroll     : PropTypes.bool.isRequired,
+		scroll     : PropTypes.bool,
 
 		// Component CSS class
 		className  : PropTypes.string,
@@ -886,7 +886,7 @@ function DefaultSelectedOptionComponent({
 	icon,
 	required,
 	indicateRequired,
-	arrowComponent: ArrowComponent
+	arrowComponent: ArrowComponent = ArrowComponentDefault
 }) {
 	// The `<span/>` wrapper is required for vertical centering.
 	// http://stackoverflow.com/questions/35464067/flexbox-not-working-on-button-element-in-some-browsers
@@ -915,14 +915,10 @@ DefaultSelectedOptionComponent.propTypes = {
 	icon: PropTypes.node,
 	required: PropTypes.bool,
 	indicateRequired: PropTypes.bool,
-	arrowComponent: PropTypes.elementType.isRequired
+	arrowComponent: PropTypes.elementType
 }
 
-DefaultSelectedOptionComponent.defaultProps = {
-	arrowComponent: ArrowComponent
-}
-
-function ArrowComponent() {
+function ArrowComponentDefault() {
 	return <span className="rrui__select__arrow"/>
 }
 

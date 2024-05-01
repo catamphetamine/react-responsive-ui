@@ -23,21 +23,25 @@ import transformDateInputAccordingToTemplate from './utility/transformDateInputA
 import parseDate, { getSameDateAndTimeInUtc0TimeZone } from './utility/parseDate'
 
 let DatePicker = function({
-	format: formatAnyCase,
-	// noon,
-	utc,
+	// Default US format
+	format: formatAnyCase = 'mm/dd/yyyy',
+	// // Whether to set time to 12:00 for dates being selected
+	// noon = false,
+	// Whether dates being selected should be in UTC+0 timezone
+	utc = true,
 	value,
 	error,
-	showErrorMessage,
+	// Show `error` (if passed).
+	showErrorMessage = true,
 	disabledDays,
-	selectYearsIntoPast,
-	selectYearsIntoFuture,
+	selectYearsIntoPast = 100,
+	selectYearsIntoFuture = 100,
 	initialCalendarDate,
 	locale,
 	label,
-	alignment,
-	waitForKeyboardSlideIn,
-	keyboardSlideInAnimationDuration,
+	alignment = 'left',
+	waitForKeyboardSlideIn = true,
+	keyboardSlideInAnimationDuration = 300,
 	buttonAriaLabel,
 	closeLabel,
 	closeButtonIcon : CloseButtonIcon,
@@ -778,8 +782,8 @@ DatePicker.propTypes =
 	// Date format. Only supports `dd`, `mm`, `yy` and `yyyy` for now.
 	// Can support custom localized formats, perhaps, when `date-fns@2` is released.
 	// (is US `mm/dd/yyyy` by default)
-	format : PropTypes.string.isRequired,
-	// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+	format : PropTypes.string,
+	// format : PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
 	// Internationalization
 	// locale : PropTypes.string,
@@ -828,10 +832,10 @@ DatePicker.propTypes =
 	]),
 
 	// How much years back can a user navigate using the year `<select/>`
-	selectYearsIntoPast : PropTypes.number.isRequired,
+	selectYearsIntoPast : PropTypes.number,
 
 	// How much years forward can a user navigate using the year `<select/>`
-	selectYearsIntoFuture : PropTypes.number.isRequired,
+	selectYearsIntoFuture : PropTypes.number,
 
 	// A `date`` from which the initially shown month of the calendar will be derived
 	// when no `value` is selected. Is the current month by default.
@@ -839,11 +843,11 @@ DatePicker.propTypes =
 
 	// Whether dates being selected should be in UTC+0 timezone.
 	// (is `false` by default)
-	utc : PropTypes.bool.isRequired,
+	utc : PropTypes.bool,
 
 	// // Whether to set time to 12:00 for dates being selected.
 	// // (is `true` by default)
-	// noon : PropTypes.bool.isRequired,
+	// noon : PropTypes.bool,
 
 	// The calendar icon.
 	icon : PropTypes.oneOfType([
@@ -854,38 +858,14 @@ DatePicker.propTypes =
 	// `aria-label` attribute for the toggle calendar button.
 	buttonAriaLabel : PropTypes.string,
 
-	waitForKeyboardSlideIn : PropTypes.bool.isRequired,
-	keyboardSlideInAnimationDuration : PropTypes.number.isRequired,
+	waitForKeyboardSlideIn : PropTypes.bool,
+	keyboardSlideInAnimationDuration : PropTypes.number,
 
 	// CSS class
 	className : PropTypes.string,
 
 	// CSS style object
 	style : PropTypes.object
-}
-
-DatePicker.defaultProps =
-{
-	alignment : 'left',
-
-	// Default US format
-	format : 'mm/dd/yyyy',
-
-	// Show `error` (if passed).
-	showErrorMessage : true,
-
-	// Whether dates being selected should be in UTC+0 timezone
-	utc : true,
-
-	// // Whether to set time to 12:00 for dates being selected
-	// noon : false,
-
-	// A sensible default.
-	selectYearsIntoPast : 100,
-	selectYearsIntoFuture : 100,
-
-	waitForKeyboardSlideIn : true,
-	keyboardSlideInAnimationDuration : 300
 }
 
 export default DatePicker

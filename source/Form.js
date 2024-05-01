@@ -33,12 +33,12 @@ export default class Form extends Component
 		post        : PropTypes.string,
 
 		// Is form submission in progress
-		wait        : PropTypes.bool.isRequired,
+		wait        : PropTypes.bool,
 
 		// (deprecated)
 		// (use `wait` instead)
 		// Is form submission in progress
-		busy        : PropTypes.bool.isRequired,
+		busy        : PropTypes.bool,
 
 		// CSS class
 		className   : PropTypes.string,
