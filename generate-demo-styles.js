@@ -239,6 +239,7 @@ function transformStyle(filePath)
     .replace_all('var(--rrui-list-vertical-padding)', '0.6rem')
     .replace_all('var(--rrui-list-item-side-padding)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-list-item-height)', 'calc(0.6rem * 4)')
+    .replace_all('var(--rrui-list-item-icon-width)', 'calc(0.6rem * 1.5)')
     .replace_all('var(--rrui-list-item-icon-margin)', '0.6rem')
     /* `<Select menu/>` */
     .replace_all('var(--rrui-expandable-menu-item-side-padding)', 'var(--rrui-collapsible-menu-item-side-padding)')

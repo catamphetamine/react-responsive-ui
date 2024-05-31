@@ -74,6 +74,7 @@
 
 .rrui__list__item-icon
 {
+	width        : var(--rrui-list-item-icon-width);
 	margin-right : var(--rrui-list-item-icon-margin);
 	flex-shrink  : 0;
 }

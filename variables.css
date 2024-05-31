@@ -162,6 +162,7 @@
   --rrui-list-vertical-padding  : var(--rrui-unit);
   --rrui-list-item-height       : calc(var(--rrui-unit) * 4);
   --rrui-list-item-side-padding : calc(var(--rrui-unit) * 1.5);
+  --rrui-list-item-icon-width   : calc(var(--rrui-unit) * 1.5);
   --rrui-list-item-icon-margin  : var(--rrui-unit);
 
   /* `<Select/>` options colors. */
